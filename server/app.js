@@ -43,10 +43,13 @@ app.use(
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
+      // sameSite: "none",
+      sameSite: "strict",
     },
   })
 );
+
+console.log(process.env.NODE_ENV);
 
 app.use(passport.initialize());
 app.use(passport.session());
