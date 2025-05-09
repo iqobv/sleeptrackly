@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "http://localhost:3000/api/$1"
+      "destination": "https://improve-yourself-d5wh.onrender.com/api/$1"
     }
   ]
 }
