@@ -4,10 +4,7 @@
       "source": "/api/(.*)",
       "destination": "https://improve-yourself-d5wh.onrender.com/api/$1"
     },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/(.*)", "destination": "/" }
   ],
   "headers": [
     {
