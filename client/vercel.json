@@ -4,5 +4,20 @@
       "source": "/api/(.*)",
       "destination": "https://improve-yourself-d5wh.onrender.com/api/$1"
     }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Credentials",
+          "value": "true"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://improve-yourself.vercel.app/"
+        }
+      ]
+    }
   ]
 }

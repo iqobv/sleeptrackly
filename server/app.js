@@ -23,6 +23,8 @@ redisClient.on("error", (err) => {
   console.error("Redis connection error:", err);
 });
 
+console.log(process.env.CLIENT_URL);
+
 app.use(
   cors({
     credentials: true,
@@ -43,13 +45,10 @@ app.use(
       httpOnly: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      // sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     },
   })
 );
-
-console.log(process.env.NODE_ENV);
 
 app.use(passport.initialize());
 app.use(passport.session());
