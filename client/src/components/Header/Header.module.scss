@@ -1,6 +1,12 @@
 .header {
   background-color: var(--bg-header);
   height: 60px;
-  display: flex;
-  align-items: center;
+  width: 100%;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
 }

@@ -1,4 +1,31 @@
 :root {
   --bg-body: #fff;
   --bg-header: #e1e1e1;
+  --color-main-text: #000;
+
+  --nav-color-link: #000;
+  --nav-color-link-active: #6e8387;
+  --nav-color-link-hover: #6e8387;
+
+  --auth-bg-login: #465362;
+  --auth-bg-register: #fcfafa;
+  --auth-bg-logout: #6e8387;
+
+  --nav-bg-menu: #969696;
+  --nav-button-bg: #000;
+
+  --auth-color-login: #fcfafa;
+  --auth-color-register: #465362;
+  --auth-color-logout: #fcfafa;
 }
+
+// --auth-bg-login: #353535;
+// --auth-bg-register: #FFFFFF;
+
+// --auth-color-login: #FFFFFF;
+// --auth-color-register: #353535;
+// --auth-bg-login: #0A122A;
+// --auth-bg-register: #FBFAF8;
+
+// --auth-color-login: #E7DECD;
+// --auth-color-register: #0A122A;

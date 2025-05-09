@@ -31,4 +31,10 @@ const createUser = async (data) => {
   return user;
 };
 
-export default { createUser };
+const getUserById = async (id) => {
+  const user = await User.findById(id).select("-password");
+
+  return user;
+};
+
+export default { createUser, getUserById };

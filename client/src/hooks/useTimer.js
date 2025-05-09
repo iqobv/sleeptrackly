@@ -33,7 +33,7 @@ export const useTimer = () => {
   useEffect(() => {
     if (!isLoading && !isError && data) {
       if (data.isSleeping) {
-        setInitialTime(data.sleepStart);
+        setInitialTime(data.sleepStart.date);
         startTimer();
       }
     }

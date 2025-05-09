@@ -5,7 +5,7 @@ const router = Router();
 
 const { getSleepStatus, updateSleepStatus } = userSleepStatusController;
 
-router.get("/user/:userId", getSleepStatus);
-router.patch("/user/:userId", updateSleepStatus);
+router.get("/me", getSleepStatus);
+router.patch("/me", updateSleepStatus);
 
 export default router;

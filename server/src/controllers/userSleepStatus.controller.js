@@ -1,9 +1,7 @@
 import userSleepStatusService from "../services/userSleepStatus.service.js";
 
-// userSleepStatusService.getSleepStatus(), userSleepStatusService.updateSleepStatus()
-
 const getSleepStatus = async (req, res) => {
-  const { userId } = req.params;
+  const { _id: userId } = req?.user;
 
   try {
     const userSleepStatus = await userSleepStatusService.getSleepStatus(userId);
@@ -18,16 +16,16 @@ const getSleepStatus = async (req, res) => {
 };
 
 const updateSleepStatus = async (req, res) => {
-  const { userId } = req.params;
+  const { _id: userId } = req?.user;
+  const { clickedBy } = req.body;
 
-  console.log(userId);
+  console.log("date", clickedBy);
 
   try {
     const userSleepStatus = await userSleepStatusService.updateSleepStatus(
-      userId
+      userId,
+      clickedBy
     );
-
-    console.log(userSleepStatus);
 
     return res.status(200).json(userSleepStatus);
   } catch (error) {

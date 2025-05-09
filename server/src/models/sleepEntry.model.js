@@ -1,24 +1,30 @@
 import { Schema, model } from "mongoose";
+import dayjs from "dayjs";
+
+const dateSchema = new Schema(
+  {
+    localeDate: {
+      type: String,
+      default: () => dayjs().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+    },
+    date: { type: Date, default: Date.now },
+  },
+  { _id: false }
+);
 
 const sleepEntrySchema = new Schema({
   userId: {
     type: String,
     required: true,
   },
-  sleepStart: {
-    type: Date,
-    required: true,
-  },
-  sleepEnd: {
-    type: Date,
-    required: true,
-  },
+  sleepStart: dateSchema,
+  sleepEnd: dateSchema,
   sleepDuration: {
     type: Number,
     required: true,
   },
   dateForChart: {
-    type: Date,
+    type: String,
     required: true,
   },
   createdAt: {

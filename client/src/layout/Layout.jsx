@@ -1,19 +1,18 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 
-import Header from "../components/Header/Header";
+import useAuth from "../hooks/useAuth";
 
-import { setUserId } from "../reducers/slices/userSlice";
+import Header from "../components/Header/Header";
 
 import styles from "./Layout.module.scss";
 
 const Layout = () => {
-  const dispatch = useDispatch();
+  const { checkAuth, user } = useAuth();
 
   useEffect(() => {
-    dispatch(setUserId("681cddabf1378fbefb2337e4"));
-  }, [dispatch]);
+    checkAuth();
+  }, [user]);
 
   return (
     <>
