@@ -1,20 +1,15 @@
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { Navigate } from "react-router-dom";
+
+import useAuth from "../../hooks/useAuth";
 
 import styles from "./LoginPage.module.scss";
-import { useMutation } from "@tanstack/react-query";
-import { login } from "../../api/auth";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, setUserId } from "../../reducers/slices/userSlice";
-import useAuth from "../../hooks/useAuth";
-import { Navigate, useLocation } from "react-router-dom";
 
 const LoginPage = () => {
   const { register, handleSubmit } = useForm();
-  const { pathname } = useLocation();
 
-  const { isLogin } = useSelector((state) => state.user);
-
-  const { login } = useAuth();
+  const { login, isLogin } = useAuth();
 
   const onSubmit = async (data) => {
     login({ email: data.email, password: data.password });
@@ -28,8 +23,18 @@ const LoginPage = () => {
         action='POST'
         onSubmit={handleSubmit(onSubmit)}
         className={styles["login-form"]}>
-        <input {...register("email")} placeholder='Email' />
-        <input {...register("password")} placeholder='Password' />
+        <input
+          {...register("email")}
+          placeholder='Email'
+          name='email'
+          type='email'
+        />
+        <input
+          {...register("password")}
+          name='password'
+          placeholder='Password'
+          type='password'
+        />
         <button type='submit'>Login</button>
       </form>
     </div>

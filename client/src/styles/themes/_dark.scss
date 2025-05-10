@@ -2,4 +2,27 @@ body.dark {
   --bg-body: #000;
   --bg-header: #333;
   --color-main-text: #fff;
+
+  --nav-color-link: #ede6e3;
+  --nav-color-link-active: #c6c7c4;
+  --nav-color-link-hover: #71a2b6;
+
+  --auth-bg-login: #465362;
+  --auth-bg-register: #fcfafa;
+  --auth-bg-logout: #6e8387;
+
+  --nav-bg-menu: #2f2f2f;
+  --nav-button-bg: #dfdfdf;
+
+  --auth-color-login: #fcfafa;
+  --auth-color-register: #465362;
+  --auth-color-logout: #fcfafa;
+
+  --pagination-bg: #333;
+  --pagination-color: #fff;
+  --pagination-button-bg: #4c5b61;
+  --pagination-button-color: #e8eef2;
+
+  --day-card-bg: #333;
+  --day-card-color: #fff;
 }

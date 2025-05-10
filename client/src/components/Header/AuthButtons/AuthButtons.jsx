@@ -1,17 +1,22 @@
 import { Link } from "react-router-dom";
 
-import styles from "./AuthButtons.module.scss";
-
 import useAuth from "../../../hooks/useAuth";
 
-const AuthButtons = () => {
+import styles from "./AuthButtons.module.scss";
+
+const AuthButtons = ({ closeMenu = () => {} }) => {
   const { isLogin, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+  };
 
   return (
     <div className={styles["auth-buttons"]}>
       {isLogin && (
         <button
-          onClick={logout}
+          onClick={handleLogout}
           className={`${styles["auth-button"]} ${styles["logout"]}`}>
           Logout
         </button>
@@ -20,12 +25,14 @@ const AuthButtons = () => {
         <>
           <Link
             className={`${styles["auth-button"]} ${styles["register"]}`}
-            to='/login'>
+            to='/login'
+            onClick={closeMenu}>
             Register
           </Link>
           <Link
             className={`${styles["auth-button"]} ${styles["login"]}`}
-            to='/login'>
+            to='/login'
+            onClick={closeMenu}>
             Login
           </Link>
         </>

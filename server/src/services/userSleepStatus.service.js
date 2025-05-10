@@ -20,6 +20,8 @@ const updateSleepStatus = async (userId, clickedBy) => {
   let isSleeping = userSleepStatus?.isSleeping;
   let sleepStart = userSleepStatus?.sleepStart;
 
+  let sleepEntry = {};
+
   if (isSleeping) {
     const sleepEndDate = dayjs(clickedBy).toDate();
 
@@ -28,7 +30,7 @@ const updateSleepStatus = async (userId, clickedBy) => {
     const sleepDuration = dayjs(sleepEndDate).diff(sleepStart.date, "second");
     const dateForChart = dayjs(sleepEndDate).startOf("day");
 
-    await SleepEntry.create({
+    const createdSleepEntry = await SleepEntry.create({
       userId,
       sleepStart: {
         localeDate: dayjs(sleepStart.date).format(),
@@ -42,6 +44,9 @@ const updateSleepStatus = async (userId, clickedBy) => {
       dateForChart: dateForChart.format("YYYY-MM-DD"),
     });
 
+    createdSleepEntry.toObject();
+    sleepEntry = createdSleepEntry;
+
     isSleeping = false;
     sleepStart = null;
   } else {
@@ -52,11 +57,14 @@ const updateSleepStatus = async (userId, clickedBy) => {
     isSleeping = true;
   }
 
-  console.log(sleepStart, isSleeping);
-
   await userSleepStatus.updateOne({ isSleeping, sleepStart });
 
-  return userSleepStatus;
+  const result = {
+    userSleepStatus,
+    sleepEntry,
+  };
+
+  return result;
 };
 
 export default { getSleepStatus, updateSleepStatus };

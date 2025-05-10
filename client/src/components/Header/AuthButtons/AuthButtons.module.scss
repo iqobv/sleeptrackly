@@ -15,7 +15,7 @@
   width: 120px;
   padding: 7px 0;
   border: none;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
 
   &.login {
@@ -32,5 +32,9 @@
   &.logout {
     background-color: var(--auth-bg-logout);
     color: var(--auth-color-logout);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 70%;
   }
 }

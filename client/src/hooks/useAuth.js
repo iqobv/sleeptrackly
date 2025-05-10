@@ -16,7 +16,12 @@ const useAuth = () => {
 
   const dispatch = useDispatch();
 
-  const { mutate: login } = useMutation({
+  const {
+    mutate: login,
+    isLoading: isLoadingLogin,
+    isError: isErrorLogin,
+    error: errorLogin,
+  } = useMutation({
     mutationFn: ({ email, password }) => apiLogin(email, password),
     mutationKey: ["login"],
     onSuccess: (data) => {
@@ -24,7 +29,12 @@ const useAuth = () => {
     },
   });
 
-  const { mutate: logout } = useMutation({
+  const {
+    mutate: logout,
+    isLoading: isLoadingLogout,
+    isError: isErrorLogout,
+    error: errorLogout,
+  } = useMutation({
     mutationFn: async () => await apiLogout(),
     mutationKey: ["logout"],
     onSuccess: () => {
@@ -32,7 +42,12 @@ const useAuth = () => {
     },
   });
 
-  const { mutate: register } = useMutation({
+  const {
+    mutate: register,
+    isLoading: isLoadingRegister,
+    isError: isErrorRegister,
+    error: errorRegister,
+  } = useMutation({
     mutationFn: ({ username, email, password }) =>
       apiRegister(username, email, password),
     mutationKey: ["register"],
@@ -66,6 +81,21 @@ const useAuth = () => {
     isLogin,
     loadingAuth: isLoadingAuth,
     loading,
+    loginState: {
+      isLoading: isLoadingLogin,
+      isError: isErrorLogin,
+      error: errorLogin,
+    },
+    registerState: {
+      isLoading: isLoadingRegister,
+      isError: isErrorRegister,
+      error: errorRegister,
+    },
+    logoutState: {
+      isLoading: isLoadingLogout,
+      isError: isErrorLogout,
+      error: errorLogout,
+    },
     login,
     logout,
     register,

@@ -1,7 +1,6 @@
-import React from "react";
+import SleepTimer from "../../components/SleepTimer/SleepTimer";
 
 import styles from "./SleepPage.module.scss";
-import SleepTimer from "../../components/SleepTimer/SleepTimer";
 
 const SleepPage = () => {
   return (

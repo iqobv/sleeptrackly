@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
-import styles from "./Nav.module.scss";
 import NavLinks from "../NavLinks/NavLinks";
 import MenuButton from "../MenuButton/MenuButton";
 import AuthButtons from "../AuthButtons/AuthButtons";
+import SwitchThemeButton from "../SwitchThemeButton/SwitchThemeButton";
+
+import styles from "./Nav.module.scss";
 
 const Nav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenForBtn, setIsOpenForBtn] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const show = useMediaQuery({
+    query: "(max-width: 768px)",
+  });
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -31,6 +37,24 @@ const Nav = () => {
     }
   }, [isClosing]);
 
+  useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "unset");
+  }, [isOpen]);
+
+  const handleCloseOnOverlay = (e) => {
+    e.target === e.currentTarget && handleClick();
+  };
+
+  useEffect(() => {
+    if (!show) {
+      setIsOpen(false);
+      setIsClosing(false);
+      setIsOpenForBtn(false);
+    }
+  }, [show]);
+
   return (
     <>
       <MenuButton
@@ -42,20 +66,28 @@ const Nav = () => {
         <nav className={styles.nav}>
           <NavLinks />
         </nav>
-        <AuthButtons />
-      </div>
-      <div
-        className={`${styles["nav-overlay"]} ${isOpen ? styles["open"] : ""} ${
-          isClosing ? styles["closing"] : ""
-        }`}
-        tabIndex={isOpen ? 0 : -1}>
-        <div className={styles["nav-overlay-content"]}>
-          <nav className={styles.nav}>
-            <NavLinks closeMenu={handleClick} />
-          </nav>
-          <AuthButtons />
+        <div className={styles["theme-auth-container"]}>
+          <SwitchThemeButton />
+          <div className={styles["auth-container"]}>
+            <AuthButtons />
+          </div>
         </div>
       </div>
+      {show && (
+        <div
+          className={`${styles["nav-overlay"]} ${
+            isOpen ? styles["open"] : ""
+          } ${isClosing ? styles["closing"] : ""}`}
+          onClick={handleCloseOnOverlay}
+          tabIndex={isOpen ? 0 : -1}>
+          <div className={styles["nav-overlay-content"]}>
+            <nav className={styles.nav}>
+              <NavLinks closeMenu={handleClick} />
+            </nav>
+            <AuthButtons closeMenu={handleClick} />
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -13,6 +13,7 @@ export const useTimer = () => {
   const interval = useRef(null);
   const { userId } = useSelector((state) => state.user);
   const [isSleeping, setIsSleeping] = useState(false);
+  const [sleepFinished, setSleepFinished] = useState({});
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["timer", userId],
@@ -24,6 +25,7 @@ export const useTimer = () => {
     mutationFn: (userId) => updateSleepStatus(userId),
     onSuccess: (data) => {
       console.log("Sleep status updated:", data);
+      setSleepFinished(data?.sleepEntry || {});
     },
     onError: (error) => {
       console.error("Error updating sleep status:", error);
@@ -34,17 +36,18 @@ export const useTimer = () => {
     if (!isLoading && !isError && data) {
       if (data.isSleeping) {
         setInitialTime(data.sleepStart.date);
-        startTimer();
       }
     }
   }, [data, isLoading, error, isError]);
 
-  const startTimer = () => {
+  const startTimer = ({ skipUpdate = false } = {}) => {
     if (interval.current !== null) return;
     setTimer(0);
-
-    updateSleep(userId);
     setIsSleeping(true);
+
+    if (!skipUpdate) {
+      updateSleep(userId);
+    }
 
     interval.current = setInterval(() => {
       setTimer((prevTimer) => prevTimer + 1);
@@ -57,7 +60,8 @@ export const useTimer = () => {
     const start = new Date(initialTime);
     const now = new Date();
     setTimer(Math.floor((now - start) / 1000));
-    startTimer();
+    formatTime();
+    startTimer({ skipUpdate: true });
   }, [initialTime]);
 
   const stopTimer = () => {
@@ -69,7 +73,7 @@ export const useTimer = () => {
     }
   };
 
-  useEffect(() => {
+  const formatTime = () => {
     const hours = Math.floor(timer / 3600);
     const minutes = Math.floor((timer % 3600) / 60);
     const seconds = timer % 60;
@@ -79,11 +83,16 @@ export const useTimer = () => {
       minutes.toString().padStart(2, "0"),
       seconds.toString().padStart(2, "0"),
     ]);
+  };
+
+  useEffect(() => {
+    formatTime();
   }, [timer]);
 
   return {
     timer: formatedTimer,
     isSleeping,
+    sleepFinished,
     startTimer,
     stopTimer,
   };

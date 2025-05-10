@@ -3,9 +3,27 @@
   justify-content: space-between;
   width: 100%;
 
-  @media screen and (max-width: 768px) {
-    display: none;
+  .nav {
+    display: flex;
+    align-items: center;
   }
+
+  @media screen and (max-width: 768px) {
+    justify-content: end;
+
+    .nav {
+      display: none;
+    }
+    .auth-container {
+      display: none;
+    }
+  }
+}
+
+.theme-auth-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .nav-overlay {
@@ -27,6 +45,7 @@
       flex-direction: column;
       gap: 30px;
       padding-top: 80px;
+      min-height: 100%;
 
       .nav {
         display: block;

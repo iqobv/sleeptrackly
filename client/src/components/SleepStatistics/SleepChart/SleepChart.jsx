@@ -7,7 +7,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+
+import { colorize } from "../../../utils/colorize";
 
 import styles from "./SleepChart.module.scss";
 
@@ -18,6 +21,7 @@ const SleepChart = ({ data }) => {
   const durations = data.map((item) =>
     item.data ? (item.data.sleepDuration / 60 / 60).toFixed(1) : 0
   );
+  const { theme } = useSelector((state) => state.theme);
 
   const chartData = {
     labels,
@@ -25,8 +29,10 @@ const SleepChart = ({ data }) => {
       {
         label: "Sleep duration (hours)",
         data: durations,
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
+        backgroundColor: colorize(false, theme),
+        borderColor: colorize(true, theme),
         borderRadius: 6,
+        borderWidth: 3,
       },
     ],
   };
@@ -44,10 +50,17 @@ const SleepChart = ({ data }) => {
     scales: {
       y: {
         beginAtZero: true,
+        min: 0,
         title: { display: true, text: "Hours" },
+        grid: {
+          color: theme === "dark" ? "#444" : "#ccc",
+        },
       },
       x: {
         title: { display: true, text: "Day" },
+        grid: {
+          color: theme === "dark" ? "#444" : "#ccc",
+        },
       },
     },
   };

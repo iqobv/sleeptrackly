@@ -1,13 +1,53 @@
+.sleep-timer {
+  margin-top: 100px;
+}
+
 .sleep-timer-time {
   background-color: #333;
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
   font-size: 40px;
   color: #fff;
   border: 5px solid #000;
+  display: flex;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.3s ease;
+
+  &.show {
+    transform: scaleY(1);
+  }
+}
+
+.sleep-timer-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+
+  .sleep-timer-button {
+    padding: 10px 20px;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
 }
