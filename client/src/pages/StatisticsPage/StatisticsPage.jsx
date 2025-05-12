@@ -8,16 +8,22 @@ import SleepStatistics from "../../components/SleepStatistics/SleepStatistics";
 import WeekPagination from "../../components/WeekPagination/WeekPagination";
 
 import styles from "./StatisticsPage.module.scss";
+import useAuth from "../../hooks/useAuth";
+import Loader from "../../components/Loader/Loader";
+import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
 const StatisticsPage = () => {
-  const { userId } = useSelector((state) => state.user);
+  const { isLogin, userId } = useAuth();
+
   const [week, setWeek] = useState(0);
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["sleeps", userId, week],
-    queryFn: () => getStatisticsByWeekForUser(userId, week),
-    enabled: !!userId,
+    queryFn: () => getStatisticsByWeekForUser(week),
+    enabled: !!isLogin,
   });
+
+  changeDocumentTitle("Statistics");
 
   return (
     <div className={`container ${styles["statistics-page"]}`}>
@@ -30,7 +36,11 @@ const StatisticsPage = () => {
         />
       )}
 
-      {isLoading && <p>Loading...</p>}
+      {isLoading && (
+        <div style={{ marginTop: "50px" }}>
+          <Loader />
+        </div>
+      )}
       {error && <p>Error: {error.message}</p>}
 
       {data && <SleepStatistics data={data} />}

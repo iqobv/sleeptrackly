@@ -1,4 +1,5 @@
 import passport from "passport";
+import "dotenv/config";
 
 import userService from "../services/user.service.js";
 
@@ -21,6 +22,14 @@ const register = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
+    const isRegisterDisabled = process.env.REGISTER_DISABLED === "true";
+
+    if (isRegisterDisabled) {
+      return res
+        .status(500)
+        .json({ message: "Register temporarily disabled!" });
+    }
+
     const user = await userService.createUser({
       username,
       email,

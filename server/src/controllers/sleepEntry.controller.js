@@ -1,7 +1,7 @@
 import sleepEntryService from "../services/sleepEntry.service.js";
 
 const getSleepsEntryForWeek = async (req, res) => {
-  const { userId } = req.params;
+  const { _id: userId } = req.user;
   const { week = 0 } = req.query;
 
   try {

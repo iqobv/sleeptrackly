@@ -1,21 +1,23 @@
 body.dark {
-  --bg-body: #000;
-  --bg-header: #333;
+  --bg-body: #111111;
+  --bg-header: #343434;
   --color-main-text: #fff;
+
+  --loader-color: #fff;
 
   --nav-color-link: #ede6e3;
   --nav-color-link-active: #c6c7c4;
   --nav-color-link-hover: #71a2b6;
 
-  --auth-bg-login: #465362;
-  --auth-bg-register: #fcfafa;
+  --auth-bg-login: #335c81;
+  --auth-bg-register: #7a7a7a;
   --auth-bg-logout: #6e8387;
 
   --nav-bg-menu: #2f2f2f;
   --nav-button-bg: #dfdfdf;
 
   --auth-color-login: #fcfafa;
-  --auth-color-register: #465362;
+  --auth-color-register: #00132d;
   --auth-color-logout: #fcfafa;
 
   --pagination-bg: #333;
@@ -25,4 +27,14 @@ body.dark {
 
   --day-card-bg: #333;
   --day-card-color: #fff;
+
+  --auth-container-bg: #333;
+  --auth-text: #fff;
+  --auth-field-bg: #494949;
+  --auth-field-color: #fff;
+  --auth-btn-bg: #335c81;
+  --auth-btn-color: #f6f6f6;
+  --auth-btn-bg-hover: #040f0f;
+
+  --theme-btn-color: #fff;
 }

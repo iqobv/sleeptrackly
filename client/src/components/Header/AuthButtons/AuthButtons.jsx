@@ -1,11 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import useAuth from "../../../hooks/useAuth";
+
+import Loader from "../../Loader/Loader";
 
 import styles from "./AuthButtons.module.scss";
 
 const AuthButtons = ({ closeMenu = () => {} }) => {
-  const { isLogin, logout } = useAuth();
+  const { isLogin, logout, loading } = useAuth();
+  const { pathname } = useLocation();
 
   const handleLogout = () => {
     logout();
@@ -14,27 +17,34 @@ const AuthButtons = ({ closeMenu = () => {} }) => {
 
   return (
     <div className={styles["auth-buttons"]}>
-      {isLogin && (
-        <button
-          onClick={handleLogout}
-          className={`${styles["auth-button"]} ${styles["logout"]}`}>
-          Logout
-        </button>
-      )}
-      {!isLogin && (
+      {loading && <Loader size='small' />}
+      {!loading && (
         <>
-          <Link
-            className={`${styles["auth-button"]} ${styles["register"]}`}
-            to='/login'
-            onClick={closeMenu}>
-            Register
-          </Link>
-          <Link
-            className={`${styles["auth-button"]} ${styles["login"]}`}
-            to='/login'
-            onClick={closeMenu}>
-            Login
-          </Link>
+          {isLogin && (
+            <button
+              onClick={handleLogout}
+              className={`${styles["auth-button"]} ${styles["logout"]}`}>
+              Logout
+            </button>
+          )}
+          {!isLogin && (
+            <>
+              <Link
+                className={`${styles["auth-button"]} ${styles["register"]}`}
+                to='/login'
+                state={{ from: pathname }}
+                onClick={closeMenu}>
+                Register
+              </Link>
+              <Link
+                className={`${styles["auth-button"]} ${styles["login"]}`}
+                to='/login'
+                state={{ from: pathname }}
+                onClick={closeMenu}>
+                Login
+              </Link>
+            </>
+          )}
         </>
       )}
     </div>

@@ -1,8 +1,10 @@
-import React from 'react';
+import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
-import styles from './ChallangesPage.module.scss';
+import styles from "./ChallangesPage.module.scss";
 
 const ChallangesPage = () => {
+  changeDocumentTitle("Challanges");
+
   return <div>ChallangesPage</div>;
 };
 

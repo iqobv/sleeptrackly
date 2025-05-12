@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 const useAuth = () => {
   const { user, userId, isLogin } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdin] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -61,10 +62,12 @@ const useAuth = () => {
     data: authData,
     isLoading: isLoadingAuth,
     isError: isErrorAuth,
+    error: errorAuth,
   } = useQuery({
     queryKey: ["checkAuth"],
     queryFn: () => apiCheckAuth(),
     enabled: false,
+    refetchInterval: 20000,
   });
 
   useEffect(() => {
@@ -72,6 +75,8 @@ const useAuth = () => {
     if (!isLoadingAuth && !isErrorAuth && authData) {
       dispatch(setUser(authData?.user));
       setLoading(false);
+      if (authData?.user?.role === "admin") setIsAdin(true);
+      console.log(authData?.user?.role);
     }
   }, [authData, isLoadingAuth, isErrorAuth]);
 
@@ -79,8 +84,14 @@ const useAuth = () => {
     user,
     userId,
     isLogin,
+    isAdmin,
     loadingAuth: isLoadingAuth,
     loading,
+    checkAuthState: {
+      isLoading: isLoadingAuth,
+      isError: isErrorAuth,
+      error: errorAuth,
+    },
     loginState: {
       isLoading: isLoadingLogin,
       isError: isErrorLogin,

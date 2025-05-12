@@ -1,13 +1,15 @@
 :root {
-  --bg-body: #fff;
-  --bg-header: #e1e1e1;
+  --bg-body: #f2f2f2;
+  --bg-header: #cccccc;
   --color-main-text: #000;
 
-  --nav-color-link: #000;
-  --nav-color-link-active: #6e8387;
-  --nav-color-link-hover: #6e8387;
+  --loader-color: #000;
 
-  --auth-bg-login: #465362;
+  --nav-color-link: #000;
+  --nav-color-link-active: #0353a4;
+  --nav-color-link-hover: #0353a4;
+
+  --auth-bg-login: #002e4e;
   --auth-bg-register: #fcfafa;
   --auth-bg-logout: #6e8387;
 
@@ -25,4 +27,14 @@
 
   --day-card-bg: #e1e1e1;
   --day-card-color: #000;
+
+  --auth-container-bg: #dddddd;
+  --auth-text: #000000;
+  --auth-field-bg: #cccccc;
+  --auth-field-color: #040f0f;
+  --auth-btn-bg: #00487c;
+  --auth-btn-color: #f6f6f6;
+  --auth-btn-bg-hover: #003a61;
+
+  --theme-btn-color: #000000;
 }

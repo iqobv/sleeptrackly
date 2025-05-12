@@ -19,8 +19,6 @@ const updateSleepStatus = async (req, res) => {
   const { _id: userId } = req?.user;
   const { clickedBy } = req.body;
 
-  console.log("date", clickedBy);
-
   try {
     const userSleepStatus = await userSleepStatusService.updateSleepStatus(
       userId,

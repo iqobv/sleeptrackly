@@ -1,15 +1,30 @@
 import { useEffect } from "react";
-import useAuth from "../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
-export const PrivateRoute = ({ children, path = "/login" }) => {
-  const { isLogin, checkAuth, loading } = useAuth();
+import useAuth from "../hooks/useAuth";
+
+export const PrivateRoute = ({
+  children,
+  redirect = "/login",
+  isAdminRoute = false,
+  adminRedirect = "/",
+}) => {
+  const { isLogin, checkAuth, loading, isAdmin } = useAuth();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
   if (loading) return null;
 
-  return isLogin ? children : <Navigate to={path} />;
+  return isLogin ? (
+    isAdminRoute && !isAdmin ? (
+      <Navigate to={adminRedirect} state={{ from: pathname }} replace />
+    ) : (
+      children
+    )
+  ) : (
+    <Navigate to={redirect} state={{ from: pathname }} replace />
+  );
 };

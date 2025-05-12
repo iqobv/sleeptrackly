@@ -1,0 +1,25 @@
+.switch-theme-button {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: var(--theme-btn-color);
+    animation: scale 0.2s linear;
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}

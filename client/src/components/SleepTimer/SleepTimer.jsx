@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { IoMdBed } from "react-icons/io";
+
 import { useTimer } from "../../hooks/useTimer";
 import useAuth from "../../hooks/useAuth";
 
@@ -35,22 +37,32 @@ const SleepTimer = () => {
 
   return (
     <div className={styles["sleep-timer"]}>
-      <div
-        className={`${styles["sleep-timer-time"]} ${show ? styles.show : ""}`}>
-        {timer.map((time, index) => (
-          <span key={index}>{time}</span>
-        ))}
-      </div>
-      {Object.keys(sleepFinished).length > 0 && (
-        <EndSleep data={sleepFinished} />
-      )}
       <div className={styles["sleep-timer-control"]}>
         <button
           onClick={handleContolTimer}
           className={styles["sleep-timer-button"]}>
-          {isSleeping ? "Stop" : "Start"}
+          {isSleeping ? (
+            "Stop"
+          ) : (
+            <span>
+              <IoMdBed /> Start
+            </span>
+          )}
         </button>
       </div>
+      <div className={styles["sleep-timer-time-container"]}>
+        <div
+          className={`${styles["sleep-timer-time"]} ${
+            show ? styles.show : ""
+          }`}>
+          {timer.map((time, index) => (
+            <span key={index}>{time}</span>
+          ))}
+        </div>
+      </div>
+      {Object.keys(sleepFinished).length > 0 && (
+        <EndSleep data={sleepFinished} />
+      )}
     </div>
   );
 };

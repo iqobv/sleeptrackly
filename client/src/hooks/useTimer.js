@@ -35,17 +35,17 @@ export const useTimer = () => {
   useEffect(() => {
     if (!isLoading && !isError && data) {
       if (data.isSleeping) {
-        setInitialTime(data.sleepStart.date);
+        setInitialTime(data?.sleepStart?.date);
       }
     }
   }, [data, isLoading, error, isError]);
 
   const startTimer = ({ skipUpdate = false } = {}) => {
     if (interval.current !== null) return;
-    setTimer(0);
     setIsSleeping(true);
 
     if (!skipUpdate) {
+      setTimer(0);
       updateSleep(userId);
     }
 
