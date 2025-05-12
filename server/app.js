@@ -57,4 +57,8 @@ app.use(passport.session());
 
 initRoutes(app);
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 export default app;
