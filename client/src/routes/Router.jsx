@@ -13,6 +13,15 @@ const StatisticsPage = lazy(() =>
   import("../pages/StatisticsPage/StatisticsPage")
 );
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"));
+const ChangelogsPage = lazy(() =>
+  import("../pages/ChangelogsPage/ChangelogsPage")
+);
+const ChangelogCreatePage = lazy(() =>
+  import("../pages/ChangelogCreatePage/ChangelogCreatePage")
+);
+const ChangelogPage = lazy(() =>
+  import("../pages/ChangelogPage/ChangelogPage")
+);
 
 const router = createBrowserRouter([
   {
@@ -42,6 +51,38 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
+      },
+      {
+        path: "changelogs",
+        element: (
+          <PrivateRoute>
+            <ChangelogsPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "changelogs/:id",
+        element: (
+          <PrivateRoute>
+            <ChangelogPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "changelogs/edit/:id",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/changelogs'>
+            <ChangelogCreatePage isEditMode />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "changelogs/new",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/changelogs'>
+            <ChangelogCreatePage />
+          </PrivateRoute>
+        ),
       },
     ],
   },

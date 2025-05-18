@@ -76,7 +76,6 @@ const useAuth = () => {
       dispatch(setUser(authData?.user));
       setLoading(false);
       if (authData?.user?.role === "admin") setIsAdin(true);
-      console.log(authData?.user?.role);
     }
   }, [authData, isLoadingAuth, isErrorAuth]);
 
