@@ -11,7 +11,7 @@ const getSleepStatus = async (req, res) => {
 
     return res.status(200).json(userSleepStatus);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -27,7 +27,7 @@ const updateSleepStatus = async (req, res) => {
 
     return res.status(200).json(userSleepStatus);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 

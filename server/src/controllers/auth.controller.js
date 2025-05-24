@@ -26,7 +26,7 @@ const register = async (req, res) => {
 
     if (isRegisterDisabled) {
       return res
-        .status(500)
+        .status(403)
         .json({ message: "Register temporarily disabled!" });
     }
 
@@ -37,18 +37,20 @@ const register = async (req, res) => {
     });
 
     req.login(user, (err) => {
-      if (err) return res.status(500).json({ message: err.message });
+      if (err)
+        return res.status(err.status || 500).json({ message: err.message });
 
       return res.json({ message: "Register success!", user });
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
 const logout = async (req, res) => {
   req.logout((err) => {
-    if (err) return res.status(500).json({ message: "Logout error" });
+    if (err)
+      return res.status(err.status || 500).json({ message: "Logout error" });
     res.json({ message: "Logout successful" });
   });
 };

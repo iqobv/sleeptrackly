@@ -6,9 +6,9 @@ const Link = (name, label, path, isAdmin = false) => ({
 });
 
 export const links = [
-  Link("Home", "Home", "/"),
-  Link("Sleep", "Sleep", "/sleep"),
-  Link("Challanges", "Challanges", "/challanges"),
-  Link("Statistics", "Statistics", "/statistics"),
-  Link("Changelog", "Changelog", "/changelogs", true),
+  Link("home", "Home", "/"),
+  Link("sleep", "Sleep", "/sleep"),
+  Link("challenges", "Challenges", "/challenges", true),
+  Link("statistics", "Statistics", "/statistics"),
+  Link("changelog", "Changelog", "/changelogs", true),
 ];

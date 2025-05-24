@@ -17,7 +17,7 @@ const createUser = async (req, res) => {
 
     return res.status(201).json(user);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -25,11 +25,11 @@ const getUserById = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const user = await userService.getUserById(userId)
+    const user = await userService.getUserById(userId);
 
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 

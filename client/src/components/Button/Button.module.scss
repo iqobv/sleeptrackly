@@ -1,0 +1,89 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-width: 100px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+  border-radius: 5px;
+  color: var(--button-color);
+
+  &.icon-btn {
+    min-width: unset;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 20px;
+  }
+
+  --hover-bg: var(--button-bg-hover);
+
+  &.filled {
+    background-color: var(--button-bg);
+
+    &.primary {
+      background-color: var(--button-bg-primary);
+      --hover-bg: var(--button-bg-primary);
+    }
+
+    &.secondary {
+      background-color: var(--button-bg-secondary);
+      --hover-bg: var(--button-bg-secondary);
+    }
+
+    &.error {
+      background-color: var(--button-bg-error);
+      --hover-bg: var(--button-bg-error);
+    }
+
+    &.success {
+      background-color: var(--button-bg-success);
+      --hover-bg: var(--button-bg-success);
+    }
+  }
+
+  &.outlined {
+    background-color: transparent;
+    outline: 2px solid var(--button-bg);
+    outline-offset: -2px;
+
+    &.primary {
+      outline-color: var(--button-bg-primary);
+      --hover-bg: var(--button-bg-primary);
+    }
+
+    &.secondary {
+      outline-color: var(--button-bg-secondary);
+      --hover-bg: var(--button-bg-secondary);
+    }
+
+    &.error {
+      outline-color: var(--button-bg-error);
+      --hover-bg: var(--button-bg-error);
+    }
+
+    &.success {
+      outline-color: var(--button-bg-success);
+      --hover-bg: var(--button-bg-success);
+    }
+  }
+
+  &.text {
+    background-color: transparent;
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  @media (hover: hover) {
+    &:not(.disabled):hover {
+      filter: brightness(1.1);
+      background-color: var(--hover-bg);
+    }
+  }
+}

@@ -3,16 +3,28 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "../layout/Layout";
 import { PrivateRoute } from "./PrivateRoute";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 
 const MainPage = lazy(() => import("../pages/MainPage/MainPage"));
+
 const SleepPage = lazy(() => import("../pages/SleepPage/SleepPage"));
-const ChallangesPage = lazy(() =>
-  import("../pages/ChallangesPage/ChallangesPage")
+
+const ChallengesPage = lazy(() =>
+  import("../pages/ChallengesPage/ChallengesPage")
 );
+const ChallengePage = lazy(() =>
+  import("../pages/ChallengePage/ChallengePage")
+);
+const ChallengePanelPage = lazy(() =>
+  import("../pages/ChallengesPanelPage/ChallengesPanelPage")
+);
+
 const StatisticsPage = lazy(() =>
   import("../pages/StatisticsPage/StatisticsPage")
 );
+
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"));
+
 const ChangelogsPage = lazy(() =>
   import("../pages/ChangelogsPage/ChangelogsPage")
 );
@@ -27,6 +39,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         index: true,
@@ -37,8 +50,36 @@ const router = createBrowserRouter([
         element: <SleepPage />,
       },
       {
-        path: "challanges",
-        element: <ChallangesPage />,
+        path: "challenges",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/'>
+            <ChallengesPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "challenges/:id",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/'>
+            <ChallengePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "challenges/new",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/'>
+            <ChallengePanelPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "challenges/edit/:id",
+        element: (
+          <PrivateRoute isAdminRoute adminRedirect='/'>
+            <ChallengePanelPage isEdit />
+          </PrivateRoute>
+        ),
       },
       {
         path: "statistics",

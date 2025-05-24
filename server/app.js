@@ -7,6 +7,8 @@ import "dotenv/config";
 
 import passport from "./src/config/passport.config.js";
 
+import "./src/schedulers/challengeScheduler.scheduler.js";
+
 const app = express();
 
 import initRoutes from "./src/routes/index.js";

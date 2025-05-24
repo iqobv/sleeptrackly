@@ -5,6 +5,8 @@ import { IoMdSunny, IoMdMoon } from "react-icons/io";
 
 import { toggleTheme } from "../../../reducers/slices/themeSlice";
 
+import Button from "../../Button/Button";
+
 import styles from "./SwitchThemeButton.module.scss";
 
 const SwitchThemeButton = () => {
@@ -19,9 +21,14 @@ const SwitchThemeButton = () => {
   }, [theme]);
 
   return (
-    <button onClick={switchTheme} className={styles["switch-theme-button"]}>
-      {theme === "light" ? <IoMdMoon /> : <IoMdSunny />}
-    </button>
+    <Button
+      content={theme === "light" ? <IoMdMoon /> : <IoMdSunny />}
+      onClick={switchTheme}
+      title='Switch theme'
+      aria-label='Switch theme'
+      className={styles["switch-theme-button"]}
+      isIcon
+    />
   );
 };
 

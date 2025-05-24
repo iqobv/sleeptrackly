@@ -1,0 +1,12 @@
+.completed-day {
+  background-color: #86efac;
+  color: black;
+}
+.pending-day {
+  background-color: #fcd34d;
+  color: black;
+}
+
+:global(.rdp-selected) {
+  --rdp-selected-border: transparent;
+}

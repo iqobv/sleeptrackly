@@ -1,6 +1,4 @@
 .switch-theme-button {
-  width: 30px;
-  height: 30px;
   background-color: transparent;
   border: none;
   display: flex;
@@ -8,8 +6,8 @@
   align-items: center;
 
   svg {
-    width: 100%;
-    height: 100%;
+    width: 25px;
+    height: 25px;
     fill: var(--theme-btn-color);
     animation: scale 0.2s linear;
   }

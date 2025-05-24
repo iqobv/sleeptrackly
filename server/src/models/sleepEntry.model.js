@@ -1,16 +1,6 @@
 import { Schema, model } from "mongoose";
-import dayjs from "dayjs";
 
-const dateSchema = new Schema(
-  {
-    localeDate: {
-      type: String,
-      default: () => dayjs().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-    },
-    date: { type: Date, default: Date.now },
-  },
-  { _id: false }
-);
+import { dateSchema } from "../schemas/date.schema.js";
 
 const sleepEntrySchema = new Schema({
   userId: {

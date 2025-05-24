@@ -6,7 +6,7 @@ const getAllVersions = async (req, res) => {
 
     return res.status(200).json(versions);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -18,7 +18,7 @@ const getChangelogByVer = async (req, res) => {
 
     return res.status(200).json(changelog);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -37,7 +37,7 @@ const createChangelog = async (req, res) => {
 
     return res.status(201).json(changelog);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -56,7 +56,7 @@ const updateChangelog = async (req, res) => {
 
     return res.status(200).json(changelog);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
@@ -68,7 +68,7 @@ const deleteChangelog = async (req, res) => {
 
     return res.status(200).json({ message: "Deleted" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
