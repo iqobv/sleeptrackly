@@ -5,6 +5,7 @@ import {
   fetchSleepStatusByUserId,
   updateSleepStatus,
 } from "../api/sleepStatus";
+import { toast } from "react-toastify";
 
 export const useTimer = () => {
   const [timer, setTimer] = useState(0);
@@ -24,11 +25,10 @@ export const useTimer = () => {
   const { mutate: updateSleep } = useMutation({
     mutationFn: (userId) => updateSleepStatus(userId),
     onSuccess: (data) => {
-      console.log("Sleep status updated:", data);
       setSleepFinished(data?.sleepEntry || {});
     },
     onError: (error) => {
-      console.error("Error updating sleep status:", error);
+      toast.error(error.message || "Failed to update sleep status");
     },
   });
 

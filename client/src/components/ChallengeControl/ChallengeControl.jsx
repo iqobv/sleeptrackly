@@ -40,7 +40,7 @@ const ChallengeControl = ({ challengeId }) => {
   const handleDelete = () => deleteChallenge(challengeId);
 
   return (
-    <div className={styles["challenge-control-container"]}>
+    <div className={`section ${styles["challenge-control-container"]}`}>
       <Button
         variant='outlined'
         content='Edit'

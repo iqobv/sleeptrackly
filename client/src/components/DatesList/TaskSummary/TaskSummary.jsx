@@ -5,6 +5,8 @@ import { toast } from "react-toastify";
 
 import { updateTask } from "../../../api/challenges";
 
+import { taskSummaryItems } from "./taskSummaryList";
+
 import Button from "../../Button/Button";
 
 import styles from "./TaskSummary.module.scss";
@@ -85,21 +87,17 @@ const TaskSummary = ({ selectedDate, challenge, type = "daily" }) => {
   }, [selectedDate]);
 
   return (
-    <div>
-      <p>Info about task: {info}</p>
-      <p>
-        <strong>Description:</strong> {selectedDate.description}
-      </p>
-      <p>
-        <strong>Target value:</strong> {selectedDate.targetValue}
-      </p>
-      <p>
-        <strong>Your completed value:</strong>{" "}
-        {selectedDate.completedValue ?? "—"}
-      </p>
-      <p>
-        <strong>Status:</strong> {selectedDate.isCompleted ? "" : ""}
-      </p>
+    <div className={styles["task-summary"]}>
+      <div className={styles["task-summary-item"]}>
+        <p className={styles["task-summary-item-name"]}>Info about task:</p>
+        <p className={styles["task-summary-item-value"]}>{info}</p>
+      </div>
+      {taskSummaryItems(selectedDate).map((item) => (
+        <div key={item.name} className={styles["task-summary-item"]}>
+          <p className={styles["task-summary-item-name"]}>{item.label}:</p>
+          <p className={styles["task-summary-item-value"]}>{item.value}</p>
+        </div>
+      ))}
       <div>
         <Button
           content='Mark as completed'

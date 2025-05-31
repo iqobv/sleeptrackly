@@ -8,7 +8,7 @@ const ChallengeInfo = ({ data }) => {
   if (!data) return null;
 
   return (
-    <div className={styles["challenge-info"]}>
+    <div className={`section ${styles["challenge-info"]}`}>
       <h3 className={styles["challenge-info-title"]}>{data?.title}</h3>
       <p className={styles["challenge-info-text"]}>{data?.description}</p>
       <div className={styles["challenge-info-dates"]}>
@@ -25,10 +25,10 @@ const ChallengeInfo = ({ data }) => {
           </span>
         </p>
       </div>
-      <p className={styles["challenge-info-frequency"]}>
+      <p className={styles["challenge-info-text"]}>
         Frequency:{" "}
         <span className={styles["challenge-info-value"]}>
-          {data?.frequency}
+          {(data?.frequency).charAt(0).toUpperCase() + data?.frequency.slice(1)}
         </span>
       </p>
       <div>

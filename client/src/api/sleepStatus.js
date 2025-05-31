@@ -20,8 +20,6 @@ export const updateSleepStatus = async () => {
     .tz(dayjs.tz.guess())
     .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
 
-  console.log(clickedBy);
-
   const res = await fetch(`/api/v1/sleep/me`, {
     method: "PATCH",
     headers: {
@@ -32,9 +30,6 @@ export const updateSleepStatus = async () => {
       clickedBy,
     }),
   });
-
-  console.log(clickedBy);
-  console.log(clickedBy);
 
   if (!res.ok) throw new Error("Failed to update sleep status");
 
