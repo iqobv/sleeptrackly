@@ -2,8 +2,8 @@ import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "../layout/Layout";
-import { PrivateRoute } from "./PrivateRoute";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import { PrivateRoute } from "./PrivateRoute";
 
 const MainPage = lazy(() => import("../pages/MainPage/MainPage"));
 
@@ -60,7 +60,7 @@ const router = createBrowserRouter([
       {
         path: "challenges/:id",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/'>
+          <PrivateRoute isAdminRoute adminRedirect="/">
             <ChallengePage />
           </PrivateRoute>
         ),
@@ -82,7 +82,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "statistics",
+        path: "dashboard",
         element: (
           <PrivateRoute>
             <DashboardPage />
