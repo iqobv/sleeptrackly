@@ -1,0 +1,23 @@
+.switch-theme-button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 25px;
+    height: 25px;
+    fill: var(--theme-btn-color);
+    animation: scale 0.2s linear;
+  }
+}
+
+@keyframes scale {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}

@@ -1,9 +1,7 @@
 import userSleepStatusService from "../services/userSleepStatus.service.js";
 
-// userSleepStatusService.getSleepStatus(), userSleepStatusService.updateSleepStatus()
-
 const getSleepStatus = async (req, res) => {
-  const { userId } = req.params;
+  const { _id: userId } = req?.user;
 
   try {
     const userSleepStatus = await userSleepStatusService.getSleepStatus(userId);
@@ -13,25 +11,23 @@ const getSleepStatus = async (req, res) => {
 
     return res.status(200).json(userSleepStatus);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 
 const updateSleepStatus = async (req, res) => {
-  const { userId } = req.params;
-
-  console.log(userId);
+  const { _id: userId } = req?.user;
+  const { clickedBy } = req.body;
 
   try {
     const userSleepStatus = await userSleepStatusService.updateSleepStatus(
-      userId
+      userId,
+      clickedBy
     );
-
-    console.log(userSleepStatus);
 
     return res.status(200).json(userSleepStatus);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(error.status || 500).json({ message: error.message });
   }
 };
 

@@ -1,15 +1,12 @@
-import React from "react";
+import Nav from "./Nav/Nav";
 
 import styles from "./Header.module.scss";
-import { Link } from "react-router-dom";
-import NavLinks from "./NavLinks/NavLinks";
 
 const Header = () => {
   return (
-    <header>
-      <div className={`container ${styles.header}`}>
-        {/* <Link to='/'>Home</Link> */}
-        <NavLinks />
+    <header className={styles.header}>
+      <div className={`container ${styles["header-container"]}`}>
+        <Nav />
       </div>
     </header>
   );

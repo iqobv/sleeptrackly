@@ -1,0 +1,40 @@
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.auth-button {
+  border-radius: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  width: 120px;
+  padding: 7px 0;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+
+  &.login {
+    background-color: var(--auth-bg-login);
+    color: var(--auth-color-login);
+  }
+
+  &.register {
+    background-color: var(--auth-bg-register);
+    color: var(--auth-color-register);
+    font-weight: 500;
+  }
+
+  &.logout {
+    background-color: var(--auth-bg-logout);
+    color: var(--auth-color-logout);
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 70%;
+  }
+}

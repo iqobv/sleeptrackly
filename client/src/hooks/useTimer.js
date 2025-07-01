@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   fetchSleepStatusByUserId,
   updateSleepStatus,
@@ -13,6 +14,7 @@ export const useTimer = () => {
   const interval = useRef(null);
   const { userId } = useSelector((state) => state.user);
   const [isSleeping, setIsSleeping] = useState(false);
+  const [sleepFinished, setSleepFinished] = useState({});
 
   const { data, isLoading, error, isError } = useQuery({
     queryKey: ["timer", userId],
@@ -23,28 +25,29 @@ export const useTimer = () => {
   const { mutate: updateSleep } = useMutation({
     mutationFn: (userId) => updateSleepStatus(userId),
     onSuccess: (data) => {
-      console.log("Sleep status updated:", data);
+      setSleepFinished(data?.sleepEntry || {});
     },
     onError: (error) => {
-      console.error("Error updating sleep status:", error);
+      toast.error(error.message || "Failed to update sleep status");
     },
   });
 
   useEffect(() => {
     if (!isLoading && !isError && data) {
       if (data.isSleeping) {
-        setInitialTime(data.sleepStart);
-        startTimer();
+        setInitialTime(data?.sleepStart?.date);
       }
     }
   }, [data, isLoading, error, isError]);
 
-  const startTimer = () => {
+  const startTimer = ({ skipUpdate = false } = {}) => {
     if (interval.current !== null) return;
-    setTimer(0);
-
-    updateSleep(userId);
     setIsSleeping(true);
+
+    if (!skipUpdate) {
+      setTimer(0);
+      updateSleep(userId);
+    }
 
     interval.current = setInterval(() => {
       setTimer((prevTimer) => prevTimer + 1);
@@ -57,7 +60,8 @@ export const useTimer = () => {
     const start = new Date(initialTime);
     const now = new Date();
     setTimer(Math.floor((now - start) / 1000));
-    startTimer();
+    formatTime();
+    startTimer({ skipUpdate: true });
   }, [initialTime]);
 
   const stopTimer = () => {
@@ -69,7 +73,7 @@ export const useTimer = () => {
     }
   };
 
-  useEffect(() => {
+  const formatTime = () => {
     const hours = Math.floor(timer / 3600);
     const minutes = Math.floor((timer % 3600) / 60);
     const seconds = timer % 60;
@@ -79,11 +83,16 @@ export const useTimer = () => {
       minutes.toString().padStart(2, "0"),
       seconds.toString().padStart(2, "0"),
     ]);
+  };
+
+  useEffect(() => {
+    formatTime();
   }, [timer]);
 
   return {
     timer: formatedTimer,
     isSleeping,
+    sleepFinished,
     startTimer,
     stopTimer,
   };

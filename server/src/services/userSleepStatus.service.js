@@ -12,7 +12,7 @@ const getSleepStatus = async (userId) => {
   return userSleepStatus;
 };
 
-const updateSleepStatus = async (userId) => {
+const updateSleepStatus = async (userId, clickedBy) => {
   const userSleepStatus = await UserSleepStatus.findOne({ userId });
 
   if (!userSleepStatus) return { error: true, message: "User not found" };
@@ -20,31 +20,49 @@ const updateSleepStatus = async (userId) => {
   let isSleeping = userSleepStatus?.isSleeping;
   let sleepStart = userSleepStatus?.sleepStart;
 
+  let sleepEntry = {};
+
   if (isSleeping) {
-    const sleepEnd = dayjs().toDate();
+    const sleepEndDate = dayjs(clickedBy).toDate();
 
-    const sleepDuration = dayjs().diff(sleepStart, "second");
-    const dateForChart = dayjs(sleepEnd).utc().startOf("day").toDate();
-    // const dateForChart = dayjs(sleepStart).format("YYYY-MM-DD");
+    const sleepDuration = dayjs(sleepEndDate).diff(sleepStart.date, "second");
+    const dateForChart = dayjs(sleepEndDate).startOf("day");
 
-    await SleepEntry.create({
+    const createdSleepEntry = await SleepEntry.create({
       userId,
-      sleepStart: sleepStart,
-      sleepEnd,
+      sleepStart: {
+        localeDate: dayjs(sleepStart.date).format(),
+        date: sleepStart.date,
+      },
+      sleepEnd: {
+        localeDate: dayjs(clickedBy).format(),
+        date: sleepEndDate,
+      },
       sleepDuration,
-      dateForChart,
+      dateForChart: dateForChart.format("YYYY-MM-DD"),
     });
+
+    createdSleepEntry.toObject();
+    sleepEntry = createdSleepEntry;
 
     isSleeping = false;
     sleepStart = null;
   } else {
-    sleepStart = new Date();
+    sleepStart = {
+      localeDate: dayjs(clickedBy).format(),
+      date: dayjs(clickedBy).toDate(),
+    };
     isSleeping = true;
   }
 
   await userSleepStatus.updateOne({ isSleeping, sleepStart });
 
-  return userSleepStatus;
+  const result = {
+    userSleepStatus,
+    sleepEntry,
+  };
+
+  return result;
 };
 
 export default { getSleepStatus, updateSleepStatus };

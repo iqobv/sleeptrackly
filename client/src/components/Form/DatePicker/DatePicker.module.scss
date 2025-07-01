@@ -1,0 +1,23 @@
+@use "../../../styles/mixins" as *;
+
+.date-picker-wrapper {
+  @include field-wrapper;
+
+  &.fullwidth {
+    width: 100%;
+  }
+}
+
+.date-picker {
+  @include field-default;
+  font-size: 14px;
+
+  &.error {
+    outline: 1px solid red;
+    outline-offset: -1px;
+  }
+
+  &.fullwidth {
+    width: 100%;
+  }
+}

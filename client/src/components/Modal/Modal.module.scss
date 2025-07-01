@@ -1,0 +1,60 @@
+.modal-overlay {
+  width: 100vw;
+  position: fixed;
+  z-index: 1500;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.3);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  &.open {
+    display: flex;
+  }
+
+  .modal-container {
+    background-color: var(--modal-bg);
+    color: var(--modal-color);
+    border-radius: 10px;
+    animation-duration: var(--animation-duration);
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    padding: 20px;
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      padding: 0 0 10px 0;
+    }
+  }
+
+  &.open .modal-container {
+    animation-name: fade-in;
+  }
+
+  &.closing .modal-container {
+    animation-name: fade-out;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-out {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
+}

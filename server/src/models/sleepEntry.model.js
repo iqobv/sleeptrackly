@@ -1,24 +1,20 @@
 import { Schema, model } from "mongoose";
 
+import { dateSchema } from "../schemas/date.schema.js";
+
 const sleepEntrySchema = new Schema({
   userId: {
     type: String,
     required: true,
   },
-  sleepStart: {
-    type: Date,
-    required: true,
-  },
-  sleepEnd: {
-    type: Date,
-    required: true,
-  },
+  sleepStart: dateSchema,
+  sleepEnd: dateSchema,
   sleepDuration: {
     type: Number,
     required: true,
   },
   dateForChart: {
-    type: Date,
+    type: String,
     required: true,
   },
   createdAt: {

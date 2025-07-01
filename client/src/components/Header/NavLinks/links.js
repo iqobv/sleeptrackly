@@ -1,8 +1,14 @@
-const Link = (name, label, path) => ({ name, label, path });
+const Link = (name, label, path, isAdmin = false) => ({
+  name,
+  label,
+  path,
+  isAdmin,
+});
 
 export const links = [
-  Link("Home", "Home", "/"),
-  Link("Sleep", "Sleep", "/sleep"),
-  Link("Challanges", "Challanges", "/challanges"),
-  Link("Statistics", "Statistics", "/statistics"),
+  Link("home", "Home", "/"),
+  Link("timer", "Timer", "/timer"),
+  Link("challenges", "Challenges", "/challenges", true),
+  Link("dashboard", "Dashboard", "/dashboard"),
+  Link("changelog", "Changelog", "/changelogs", true),
 ];

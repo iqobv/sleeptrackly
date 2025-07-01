@@ -1,11 +1,14 @@
-import React from "react";
+import SleepTimer from "../../components/SleepTimer/SleepTimer";
+import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
 import styles from "./SleepPage.module.scss";
-import SleepTimer from "../../components/SleepTimer/SleepTimer";
 
 const SleepPage = () => {
+  changeDocumentTitle("Sleep");
+
   return (
     <div className={`container ${styles["sleep-page"]}`}>
+      <h1 className={styles["sleep-page-title"]}>Bedtime Timer</h1>
       <SleepTimer />
     </div>
   );

@@ -1,4 +1,76 @@
 :root {
-  --bg-body: #fff;
-  --bg-header: #e1e1e1;
+  --bg-body: #ffffff;
+  --bg-header: #ffffff;
+  --header-border-color: #e5e8eb;
+  --color-main-text: #000;
+
+  --loader-color: #000;
+
+  --nav-color-link: #000;
+  --nav-color-link-active: #0353a4;
+  --nav-color-link-hover: #0353a4;
+
+  --auth-bg-login: #002e4e;
+  --auth-bg-register: #fcfafa;
+  --auth-bg-logout: #6e8387;
+
+  --nav-bg-menu: #ffffff;
+  --nav-button-bg: #000;
+
+  --auth-color-login: #fcfafa;
+  --auth-color-register: #465362;
+  --auth-color-logout: #fcfafa;
+
+  --pagination-bg: #e1e1e1;
+  --pagination-color: #000;
+  --pagination-button-bg: #37393a;
+  --pagination-button-color: #e8eef2;
+
+  --day-card-bg: #e1e1e1;
+  --day-card-color: #000;
+
+  --auth-container-bg: #dddddd;
+  --auth-text: #000000;
+  --auth-field-bg: #cccccc;
+  --auth-field-color: #040f0f;
+  --auth-btn-bg: #00487c;
+  --auth-btn-color: #f6f6f6;
+  --auth-btn-bg-hover: #003a61;
+
+  --timer-bg: #e2e2e2;
+  --timer-color: #0d141c;
+
+  --theme-btn-color: #37393a;
+
+  --challenge-list-item-bg: #e1e1e1;
+  --challenge-list-item-color: #000000;
+
+  --input-bg: #cccccc;
+  --input-color: #000000;
+
+  --button-bg: #e1e1e1;
+  --button-color: #ffffff;
+  --button-bg-hover: #cccccc;
+
+  --modal-bg: #e1e1e1;
+  --modal-color: #000000;
+
+  --button-bg-primary: #0353a4;
+  --button-bg-secondary: #fcfafa;
+  --button-bg-error: #ff0000;
+  --button-bg-success: #00ff00;
+
+  --button-color-primary: #fcfafa;
+  --button-color-secondary: #0353a4;
+  --button-color-error: #fcfafa;
+  --button-color-success: #fcfafa;
+
+  --bg-section: #e1e1e1;
+  --color-section: #000000;
+
+  --dropdown-bg: #e3e3e3;
+  --dropdown-color: #000000;
+  --dropdown-item-bg: #dbdbdb;
+  --dropdown-item-color: #000000;
+  --dropdown-item-bg-hover: #d1d1d1;
 }

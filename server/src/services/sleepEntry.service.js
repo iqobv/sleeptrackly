@@ -5,21 +5,15 @@ import utc from "dayjs/plugin/utc.js";
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
 
-// dayjs.extend(isoWeek);
-
 import SleepEntry from "../models/sleepEntry.model.js";
 
 const getSleepsEntryForWeek = async (userId, queries) => {
   const { week = 0 } = queries;
-
   const sleepEntries = await SleepEntry.find({ userId });
 
-  console.log(sleepEntries);
-
   const groupedByWeek = {};
-
   for (const entry of sleepEntries) {
-    const date = dayjs(entry.dateForChart);
+    const date = dayjs(entry.dateForChart, "YYYY-MM-DD");
     const key = `${date.year()}-W${date.isoWeek()}`;
     if (!groupedByWeek[key]) {
       groupedByWeek[key] = [];
@@ -31,74 +25,78 @@ const getSleepsEntryForWeek = async (userId, queries) => {
     const [yearA, weekA] = a.split("-W").map(Number);
     const [yearB, weekB] = b.split("-W").map(Number);
     return (
-      dayjs(`${yearB}-W${weekB}`).startOf("week").valueOf() -
-      dayjs(`${yearA}-W${weekA}`).startOf("week").valueOf()
+      dayjs().isoWeek(weekB).year(yearB).startOf("isoWeek").valueOf() -
+      dayjs().isoWeek(weekA).year(yearA).startOf("isoWeek").valueOf()
     );
   });
 
-  const selectedWeekKey = sortedWeeks[week];
+  let year, weekNumber, entriesForWeek;
 
-  if (!selectedWeekKey) return [];
+  if (week === 0) {
+    const now = dayjs();
+    year = now.year();
+    weekNumber = now.isoWeek();
+    const currentKey = `${year}-W${weekNumber}`;
+    entriesForWeek = groupedByWeek[currentKey] || [];
+  } else {
+    const selectedKey = sortedWeeks[week];
+    if (!selectedKey) {
+      const now = dayjs();
+      year = now.year();
+      weekNumber = now.isoWeek();
+      const startOfWeek = now.startOf("isoWeek");
 
-  const selectedWeek = Object.keys(groupedByWeek).find(
-    (key) => key === selectedWeekKey
-  );
-  const weekNumber = selectedWeek.split("-W")[1];
+      const days = [...Array(7)].map((_, i) => ({
+        day: startOfWeek.clone().add(i, "day").format("YYYY-MM-DD"),
+        data: null,
+      }));
 
-  const startOfWeek = dayjs().isoWeek(weekNumber).startOf("isoWeek");
+      return {
+        statistics: {
+          weekNumber,
+          totalSleepDuration: 0,
+          averageSleepDurationByData: 0,
+          averageSleepDurationForWeek: 0,
+        },
+        days,
+        totalWeeks: 1,
+      };
+    }
 
-  const days = [...Array(7)].map((_, index) =>
-    dayjs(startOfWeek)
-      .add(index + 1, "day")
-      .utc()
-      .startOf("day")
-      .toISOString()
-  );
+    const [yearStr, weekStr] = selectedKey.split("-W");
+    year = Number(yearStr);
+    weekNumber = Number(weekStr);
+    entriesForWeek = groupedByWeek[selectedKey];
+  }
 
-  console.log(days);
-
-  const groupedByDay = days.map((day) => {
-    console.log(day);
+  const startOfWeek = dayjs().year(year).isoWeek(weekNumber).startOf("isoWeek");
+  const days = [...Array(7)].map((_, i) => {
+    const day = startOfWeek.clone().add(i, "day").format("YYYY-MM-DD");
     const data =
-      groupedByWeek[selectedWeekKey].find(
-        (entry) =>
-          dayjs(entry.dateForChart).toISOString() === dayjs(day).toISOString()
-      ) || null;
-    return {
-      day: dayjs(day).format("YYYY-MM-DD"),
-      data,
-    };
+      entriesForWeek.find((entry) => entry.dateForChart === day) || null;
+    return { day, data };
   });
 
-  const lengthWithData = groupedByDay.filter((day) => day.data).length;
+  const totalSleepDuration = days.reduce(
+    (acc, d) => acc + (d.data?.sleepDuration || 0),
+    0
+  );
+  const daysWithData = days.filter((d) => d.data).length;
 
-  const summary = {
-    weekNumber: Number(weekNumber),
-    totalSleepDuration: groupedByDay.reduce((acc, day) => {
-      if (!day.data) return acc;
-      return acc + day.data.sleepDuration;
-    }, 0),
-    averageSleepDurationByData:
-      groupedByDay.reduce((acc, day) => {
-        if (!day.data) return acc;
-        return acc + day.data.sleepDuration;
-      }, 0) / lengthWithData,
-    averageSleepDurationForWeek:
-      groupedByDay.reduce((acc, day) => {
-        if (!day.data) return acc;
-        return acc + day.data.sleepDuration;
-      }, 0) / groupedByDay.length,
+  return {
+    statistics: {
+      weekNumber,
+      totalSleepDuration,
+      averageSleepDurationByData: daysWithData
+        ? totalSleepDuration / daysWithData
+        : 0,
+      averageSleepDurationForWeek: totalSleepDuration / 7,
+    },
+    days,
+    totalWeeks: sortedWeeks.includes(`${year}-W${weekNumber}`)
+      ? sortedWeeks.length
+      : sortedWeeks.length + 1,
   };
-
-  const totalWeeks = Object.keys(groupedByWeek).length;
-
-  const result = {
-    statistics: summary,
-    days: groupedByDay,
-    totalWeeks,
-  };
-
-  return result;
 };
 
 export default { getSleepsEntryForWeek };

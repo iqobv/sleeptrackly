@@ -1,18 +1,32 @@
-import React from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { links } from "./links";
 
-import styles from "./NavLinks.module.scss";
-import { NavLink } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
-const NavLinks = () => {
+import styles from "./NavLinks.module.scss";
+
+const NavLinks = ({ closeMenu = () => {} }) => {
+  const { pathname } = useLocation();
+  const { isAdmin } = useAuth();
+
   return (
     <ul className={styles["nav-list"]}>
-      {links.map(({ name, label, path }) => (
-        <li key={name} className={styles["nav-item"]}>
-          <NavLink to={path}>{label}</NavLink>
-        </li>
-      ))}
+      {links.map((link) => {
+        if (!isAdmin && link.isAdmin) return null;
+        return (
+          <li key={link.name} className={styles["nav-item"]}>
+            <NavLink
+              className={`${styles["nav-link"]} ${
+                pathname === link.path ? styles.active : ""
+              }`}
+              to={link.path}
+              onClick={closeMenu}>
+              {link.label}
+            </NavLink>
+          </li>
+        );
+      })}
     </ul>
   );
 };
