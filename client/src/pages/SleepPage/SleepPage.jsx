@@ -8,6 +8,7 @@ const SleepPage = () => {
 
   return (
     <div className={`container ${styles["sleep-page"]}`}>
+      <h1 className={styles["sleep-page-title"]}>Bedtime Timer</h1>
       <SleepTimer />
     </div>
   );

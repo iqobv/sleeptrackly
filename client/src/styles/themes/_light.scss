@@ -1,6 +1,7 @@
 :root {
-  --bg-body: #f2f2f2;
-  --bg-header: #cccccc;
+  --bg-body: #ffffff;
+  --bg-header: #ffffff;
+  --header-border-color: #e5e8eb;
   --color-main-text: #000;
 
   --loader-color: #000;
@@ -13,7 +14,7 @@
   --auth-bg-register: #fcfafa;
   --auth-bg-logout: #6e8387;
 
-  --nav-bg-menu: #969696;
+  --nav-bg-menu: #ffffff;
   --nav-button-bg: #000;
 
   --auth-color-login: #fcfafa;
@@ -36,6 +37,9 @@
   --auth-btn-color: #f6f6f6;
   --auth-btn-bg-hover: #003a61;
 
+  --timer-bg: #e2e2e2;
+  --timer-color: #0d141c;
+
   --theme-btn-color: #37393a;
 
   --challenge-list-item-bg: #e1e1e1;
@@ -45,7 +49,7 @@
   --input-color: #000000;
 
   --button-bg: #e1e1e1;
-  --button-color: #000000;
+  --button-color: #ffffff;
   --button-bg-hover: #cccccc;
 
   --modal-bg: #e1e1e1;
@@ -64,9 +68,9 @@
   --bg-section: #e1e1e1;
   --color-section: #000000;
 
-  --dropdown-bg: #b5b5b5;
+  --dropdown-bg: #e3e3e3;
   --dropdown-color: #000000;
-  --dropdown-item-bg: #acacac;
+  --dropdown-item-bg: #dbdbdb;
   --dropdown-item-color: #000000;
-  --dropdown-item-bg-hover: #9d9d9d;
+  --dropdown-item-bg-hover: #d1d1d1;
 }

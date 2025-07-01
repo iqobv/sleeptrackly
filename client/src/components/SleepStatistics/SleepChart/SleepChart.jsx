@@ -1,24 +1,22 @@
-import { Bar } from "react-chartjs-2";
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
-  Tooltip,
+  CategoryScale,
+  Chart as ChartJS,
   Legend,
+  LinearScale,
+  Tooltip,
 } from "chart.js";
-import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { Bar } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
 import { colorize } from "../../../utils/colorize";
-
-import styles from "./SleepChart.module.scss";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const SleepChart = ({ data }) => {
-  const labels = data.map((item) => dayjs(item.day).format("dddd"));
-  const durations = data.map((item) =>
+  const labels = data?.map((item) => dayjs(item.day).format("dddd"));
+  const durations = data?.map((item) =>
     item.data ? (item.data.sleepDuration / 60 / 60).toFixed(1) : 0
   );
   const { theme } = useSelector((state) => state.theme);

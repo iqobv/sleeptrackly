@@ -1,18 +1,18 @@
-import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
 import { getStatisticsByWeekForUser } from "../../api/statistics";
 
 import SleepStatistics from "../../components/SleepStatistics/SleepStatistics";
 import WeekPagination from "../../components/WeekPagination/WeekPagination";
 
-import styles from "./StatisticsPage.module.scss";
-import useAuth from "../../hooks/useAuth";
 import Loader from "../../components/Loader/Loader";
+import useAuth from "../../hooks/useAuth";
 import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
-const StatisticsPage = () => {
+import styles from "./DashboardPage.module.scss";
+
+const DashboardPage = () => {
   const { isLogin, userId } = useAuth();
 
   const [week, setWeek] = useState(0);
@@ -48,4 +48,4 @@ const StatisticsPage = () => {
   );
 };
 
-export default StatisticsPage;
+export default DashboardPage;

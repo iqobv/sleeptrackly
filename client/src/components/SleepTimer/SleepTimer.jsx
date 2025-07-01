@@ -1,24 +1,21 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { IoMdBed } from "react-icons/io";
-
-import { useTimer } from "../../hooks/useTimer";
 import useAuth from "../../hooks/useAuth";
+import { useTimer } from "../../hooks/useTimer";
 
 import EndSleep from "./EndSleep/EndSleep";
 
+import Button from "../Button/Button";
 import styles from "./SleepTimer.module.scss";
+
+const labels = ["Hours", "Minutes", "Seconds"];
 
 const SleepTimer = () => {
   const { timer, isSleeping, sleepFinished, startTimer, stopTimer } =
     useTimer();
   const { isLogin, checkAuth } = useAuth();
-  const [show, setShow] = useState(false);
 
   const navigate = useNavigate();
-
-  const handleShowTimer = () => setShow(isSleeping);
 
   const handleContolTimer = () => {
     checkAuth();
@@ -31,38 +28,29 @@ const SleepTimer = () => {
     isSleeping ? stopTimer() : startTimer();
   };
 
-  useEffect(() => {
-    handleShowTimer();
-  }, [isSleeping]);
-
   return (
     <div className={styles["sleep-timer"]}>
-      <div className={styles["sleep-timer-control"]}>
-        <button
-          onClick={handleContolTimer}
-          className={styles["sleep-timer-button"]}>
-          {isSleeping ? (
-            "Stop"
-          ) : (
-            <span>
-              <IoMdBed /> Start
-            </span>
-          )}
-        </button>
-      </div>
       <div className={styles["sleep-timer-time-container"]}>
-        <div
-          className={`${styles["sleep-timer-time"]} ${
-            show ? styles.show : ""
-          }`}>
+        <div className={styles["sleep-timer-time"]}>
           {timer.map((time, index) => (
-            <span key={index}>{time}</span>
+            <div className={styles["sleep-timer-time-item"]} key={index}>
+              <div className={styles["sleep-timer-time-item-time"]}>{time}</div>
+              <p className={styles["sleep-timer-time-item-label"]}>
+                {labels[index]}
+              </p>
+            </div>
           ))}
         </div>
       </div>
-      {Object.keys(sleepFinished).length > 0 && (
-        <EndSleep data={sleepFinished} />
-      )}
+      <div className={styles["sleep-timer-control"]}>
+        {Object.keys(sleepFinished).length > 0 ? (
+          <EndSleep data={sleepFinished} />
+        ) : (
+          <Button onClick={handleContolTimer}>
+            {isSleeping ? "Stop Timer" : "Start Timer"}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };

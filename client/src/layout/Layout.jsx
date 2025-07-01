@@ -17,6 +17,10 @@ const Layout = () => {
     checkAuth();
   }, [user]);
 
+  useEffect(() => {
+    document.body.classList.toggle("dark", theme === "dark");
+  }, [theme]);
+
   return (
     <>
       <Header />

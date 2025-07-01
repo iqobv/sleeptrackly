@@ -19,8 +19,8 @@ const ChallengePanelPage = lazy(() =>
   import("../pages/ChallengesPanelPage/ChallengesPanelPage")
 );
 
-const StatisticsPage = lazy(() =>
-  import("../pages/StatisticsPage/StatisticsPage")
+const DashboardPage = lazy(() =>
+  import("../pages/DashboardPage/DashboardPage")
 );
 
 const LoginPage = lazy(() => import("../pages/LoginPage/LoginPage"));
@@ -46,13 +46,13 @@ const router = createBrowserRouter([
         element: <MainPage />,
       },
       {
-        path: "sleep",
+        path: "timer",
         element: <SleepPage />,
       },
       {
         path: "challenges",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/'>
+          <PrivateRoute isAdminRoute adminRedirect="/">
             <ChallengesPage />
           </PrivateRoute>
         ),
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
       {
         path: "challenges/new",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/'>
+          <PrivateRoute isAdminRoute adminRedirect="/">
             <ChallengePanelPage />
           </PrivateRoute>
         ),
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
       {
         path: "challenges/edit/:id",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/'>
+          <PrivateRoute isAdminRoute adminRedirect="/">
             <ChallengePanelPage isEdit />
           </PrivateRoute>
         ),
@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         path: "statistics",
         element: (
           <PrivateRoute>
-            <StatisticsPage />
+            <DashboardPage />
           </PrivateRoute>
         ),
       },
@@ -112,7 +112,7 @@ const router = createBrowserRouter([
       {
         path: "changelogs/edit/:id",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/changelogs'>
+          <PrivateRoute isAdminRoute adminRedirect="/changelogs">
             <ChangelogCreatePage isEditMode />
           </PrivateRoute>
         ),
@@ -120,7 +120,7 @@ const router = createBrowserRouter([
       {
         path: "changelogs/new",
         element: (
-          <PrivateRoute isAdminRoute adminRedirect='/changelogs'>
+          <PrivateRoute isAdminRoute adminRedirect="/changelogs">
             <ChangelogCreatePage />
           </PrivateRoute>
         ),

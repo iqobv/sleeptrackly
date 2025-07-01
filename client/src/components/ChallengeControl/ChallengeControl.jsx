@@ -1,7 +1,7 @@
-import { useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "react-toastify";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import { deleteChallenge as apiDeleteChallenge } from "../../api/challenges";
 
@@ -42,17 +42,22 @@ const ChallengeControl = ({ challengeId }) => {
   return (
     <div className={`section ${styles["challenge-control-container"]}`}>
       <Button
-        variant='outlined'
-        content='Edit'
+        variant="outlined"
         isLink
         redirect={`/challenges/edit/${challengeId}`}
-      />
-      <Button content='Delete' onClick={handleOpen} color='error' />
+      >
+        Edit
+      </Button>
+      <Button onClick={handleOpen} color="error">
+        Delete
+      </Button>
       <Modal ref={modalRef} isOpen={isOpen} onClose={handleClose}>
         <h2>Are you sure you want to delete this challenge?</h2>
         <div className={styles["modal-buttons"]}>
-          <Button content='Yes' onClick={handleDelete} color='error' />
-          <Button content='No' onClick={handleCloseModal} />
+          <Button onClick={handleDelete} color="error">
+            Yes
+          </Button>
+          <Button onClick={handleCloseModal}>No</Button>
         </div>
       </Modal>
     </div>

@@ -1,19 +1,19 @@
 export const colors = {
   light: [
     {
-      hours: 2,
+      hours: 1,
       color: "#ff4c4c",
     },
     {
-      hours: 4,
+      hours: 3,
       color: "#ff884d",
     },
     {
-      hours: 6,
+      hours: 5,
       color: "#ffd83b",
     },
     {
-      hours: 8,
+      hours: 7,
       color: "#4caf4f",
     },
     {
@@ -23,19 +23,19 @@ export const colors = {
   ],
   dark: [
     {
-      hours: 2,
+      hours: 1,
       color: "#ff6b6b",
     },
     {
-      hours: 4,
+      hours: 3,
       color: "#ff9e5e",
     },
     {
-      hours: 6,
+      hours: 5,
       color: "#ffe066",
     },
     {
-      hours: 8,
+      hours: 7,
       color: "#81c784",
     },
     {

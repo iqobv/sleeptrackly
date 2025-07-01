@@ -1,11 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   fetchSleepStatusByUserId,
   updateSleepStatus,
 } from "../api/sleepStatus";
-import { toast } from "react-toastify";
 
 export const useTimer = () => {
   const [timer, setTimer] = useState(0);

@@ -2,8 +2,6 @@ import SleepChart from "./SleepChart/SleepChart";
 import StatByDays from "./StatByDays/StatByDays";
 import Stats from "./Stats/Stats";
 
-import styles from "./SleepStatistics.module.scss";
-
 const SleepStatistics = ({ data }) => {
   const { statistics, days } = data;
 

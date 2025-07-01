@@ -25,8 +25,6 @@ const updateSleepStatus = async (userId, clickedBy) => {
   if (isSleeping) {
     const sleepEndDate = dayjs(clickedBy).toDate();
 
-    console.log(sleepEndDate);
-
     const sleepDuration = dayjs(sleepEndDate).diff(sleepStart.date, "second");
     const dateForChart = dayjs(sleepEndDate).startOf("day");
 

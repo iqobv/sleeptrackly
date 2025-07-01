@@ -1,6 +1,7 @@
 body.dark {
-  --bg-body: #111111;
-  --bg-header: #343434;
+  --bg-body: #121417;
+  --bg-header: #121417;
+  --header-border-color: #e5e8eb;
   --color-main-text: #fff;
 
   --loader-color: #fff;
@@ -19,6 +20,9 @@ body.dark {
   --auth-color-login: #fcfafa;
   --auth-color-register: #00132d;
   --auth-color-logout: #fcfafa;
+
+  --timer-bg: #293038;
+  --timer-color: #ffffff;
 
   --pagination-bg: #333;
   --pagination-color: #fff;

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { updateTask } from "../../../api/challenges";
@@ -99,11 +99,9 @@ const TaskSummary = ({ selectedDate, challenge, type = "daily" }) => {
         </div>
       ))}
       <div>
-        <Button
-          content='Mark as completed'
-          onClick={handleMarkAsCompleted}
-          disabled={!canUpdate}
-        />
+        <Button onClick={handleMarkAsCompleted} disabled={!canUpdate}>
+          Mark as completed
+        </Button>
       </div>
     </div>
   );

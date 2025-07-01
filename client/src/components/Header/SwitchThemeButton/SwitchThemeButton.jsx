@@ -1,7 +1,6 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { IoMdSunny, IoMdMoon } from "react-icons/io";
+import { IoMdMoon, IoMdSunny } from "react-icons/io";
 
 import { toggleTheme } from "../../../reducers/slices/themeSlice";
 
@@ -16,19 +15,16 @@ const SwitchThemeButton = () => {
 
   const switchTheme = () => dispatch(toggleTheme());
 
-  useEffect(() => {
-    document.body.classList.toggle("dark", theme === "dark");
-  }, [theme]);
-
   return (
     <Button
-      content={theme === "light" ? <IoMdMoon /> : <IoMdSunny />}
       onClick={switchTheme}
-      title='Switch theme'
-      aria-label='Switch theme'
+      title="Switch theme"
+      aria-label="Switch theme"
       className={styles["switch-theme-button"]}
       isIcon
-    />
+    >
+      {theme === "light" ? <IoMdMoon /> : <IoMdSunny />}
+    </Button>
   );
 };
 

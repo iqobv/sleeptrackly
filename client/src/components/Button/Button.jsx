@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Button.module.scss";
 
 const Button = ({
-  content,
+  children,
   onClick,
   className = "",
   isLink = false,
@@ -31,13 +31,14 @@ const Button = ({
           onClick={onClick}
           className={classList}
           type={type}
-          {...props}>
-          {content}
+          {...props}
+        >
+          {children}
         </button>
       )}
       {isLink && (
         <Link className={classList} to={redirect} {...props}>
-          {content}
+          {children}
         </Link>
       )}
     </>

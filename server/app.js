@@ -1,17 +1,17 @@
-import express from "express";
-import cors from "cors";
-import session from "express-session";
 import { RedisStore } from "connect-redis";
-import Redis from "ioredis";
+import cors from "cors";
 import "dotenv/config";
+import express from "express";
+import session from "express-session";
+import Redis from "ioredis";
 
 import passport from "./src/config/passport.config.js";
+import { errorHandler } from "./src/handlers/erorHandler.handler.js";
+import initRoutes from "./src/routes/index.js";
 
 import "./src/schedulers/challengeScheduler.scheduler.js";
 
 const app = express();
-
-import initRoutes from "./src/routes/index.js";
 
 const redisClient = new Redis({
   host: process.env.REDIS_HOST,
@@ -60,7 +60,9 @@ app.use(passport.session());
 initRoutes(app);
 
 app.get("/health", (req, res) => {
-  res.status(200).send("OK");
+  return res.status(200).send("OK");
 });
+
+app.use(errorHandler);
 
 export default app;

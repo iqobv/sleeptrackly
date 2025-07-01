@@ -51,15 +51,13 @@ const Modal = ({ children, isOpen, onClose, ref }) => {
       style={{
         "--animation-duration": `${ANIMATION_DURATION}ms`,
       }}
-      onClick={handleCloseByOverlay}>
+      onClick={handleCloseByOverlay}
+    >
       <div className={styles["modal-container"]}>
         <div className={styles["modal-header"]}>
-          <Button
-            content={<MdClose />}
-            onClick={handleClose}
-            variant='text'
-            isIcon
-          />
+          <Button onClick={handleClose} variant="text" isIcon>
+            <MdClose />
+          </Button>
         </div>
         <div className={styles["modal-content"]}>{children}</div>
       </div>

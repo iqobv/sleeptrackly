@@ -1,9 +1,9 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import dayjs from "dayjs";
 
 import {
   createChallenge,
@@ -13,10 +13,10 @@ import {
 
 import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
+import Button from "../../components/Button/Button";
+import DatePicker from "../../components/Form/DatePicker/DatePicker";
 import Input from "../../components/Form/Input/Input";
 import Select from "../../components/Form/Select/Select";
-import DatePicker from "../../components/Form/DatePicker/DatePicker";
-import Button from "../../components/Button/Button";
 
 import styles from "./ChallengesPanelPage.module.scss";
 
@@ -128,53 +128,54 @@ const ChallengesPanelPage = ({ isEdit = false }) => {
       )}
       <form
         className={styles["challenge-form"]}
-        action=''
-        onSubmit={handleSubmit(onSubmit)}>
+        action=""
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Input
           fullWidth
-          name='title'
-          label='Title'
+          name="title"
+          label="Title"
           control={control}
           rules={{ required: "Title is required" }}
-          placeholder='Title'
+          placeholder="Title"
         />
         <Input
           multiline
           fullWidth
-          label='Description'
-          name='description'
+          label="Description"
+          name="description"
           control={control}
           rules={{ required: "Description is required" }}
-          placeholder='Description'
+          placeholder="Description"
         />
         {!isEdit && (
           <div className={styles["tasks-options"]}>
             <Input
               fullWidth
-              label='Value for tasks'
-              name='tasksOptions.value'
-              type='number'
+              label="Value for tasks"
+              name="tasksOptions.value"
+              type="number"
               rules={{ min: 0, required: "Value for tasks is required" }}
               control={control}
-              placeholder='Value for tasks'
+              placeholder="Value for tasks"
             />
             <Input
               fullWidth
-              label='Increment value'
-              name='tasksOptions.increment'
-              type='number'
+              label="Increment value"
+              name="tasksOptions.increment"
+              type="number"
               rules={{ min: 0, required: "Increment value is required" }}
               control={control}
-              placeholder='Increment value'
+              placeholder="Increment value"
             />
             <Input
               fullWidth
               multiline
-              label='Tasks'
-              name='tasksOptions.description'
+              label="Tasks"
+              name="tasksOptions.description"
               control={control}
               rules={{ required: "Tasks description is required" }}
-              placeholder='Description for tasks'
+              placeholder="Description for tasks"
             />
           </div>
         )}
@@ -195,22 +196,22 @@ const ChallengesPanelPage = ({ isEdit = false }) => {
             <div className={styles["start-end-date"]}>
               <DatePicker
                 control={control}
-                name='startDate'
-                label='Start Date'
+                name="startDate"
+                label="Start Date"
                 fullWidth
                 rules={{ required: "Start date is required" }}
               />
               <DatePicker
                 control={control}
-                name='endDate'
-                label='End Date'
+                name="endDate"
+                label="End Date"
                 fullWidth
                 rules={{ required: "End date is required" }}
               />
             </div>
           </>
         )}
-        <Button type='submit' content={isEdit ? "Update" : "Create"} />
+        <Button type="submit">{isEdit ? "Update" : "Create"}</Button>
       </form>
     </div>
   );

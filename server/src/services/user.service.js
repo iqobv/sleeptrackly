@@ -1,3 +1,6 @@
+import createError from "http-errors";
+import bcrypt from "bcrypt";
+
 import User from "../models/user.model.js";
 import UserSleepStatus from "../models/userSleepStatus.model.js";
 
@@ -37,4 +40,43 @@ const getUserById = async (id) => {
   return user;
 };
 
-export default { createUser, getUserById };
+const getUserProfile = async (username) => {
+  const user = await User.findOne({ username })
+    .select("-password")
+    .select("-email")
+    .select("-googleId")
+    .select("-_id");
+
+  return user;
+};
+
+const updateUser = async (id, data) => {
+  const user = await User.findByIdAndUpdate(id, data, { new: true });
+
+  return user;
+};
+
+const updatePassword = async (userId, password) => {
+  const user = await User.findById(userId);
+
+  if (user) {
+    const passwordIsMatched = await bcrypt.compare(password, user.password);
+
+    if (passwordIsMatched) throw createError(400, "New password is the same");
+
+    const hashedPassword = await hashPassword(password);
+
+    user.password = hashedPassword;
+    await user.save();
+  }
+
+  return user;
+};
+
+export default {
+  createUser,
+  getUserById,
+  getUserProfile,
+  updateUser,
+  updatePassword,
+};

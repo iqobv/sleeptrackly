@@ -11,6 +11,7 @@ const themeSlice = createSlice({
     toggleTheme: (state) => {
       state.theme = state.theme === "light" ? "dark" : "light";
       localStorage.setItem("theme", state.theme);
+      document.body.classList.toggle("dark", state.theme === "dark");
     },
   },
 });
