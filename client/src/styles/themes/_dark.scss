@@ -2,9 +2,10 @@ body.dark {
   --bg-body: #121417;
   --bg-header: #121417;
   --header-border-color: #e5e8eb;
-  --color-main-text: #fff;
+  --color-main-text: #ffffff;
+  --secondary-color: #9eabb8;
 
-  --loader-color: #fff;
+  --loader-color: #ffffff;
 
   --nav-color-link: #ede6e3;
   --nav-color-link-active: #c6c7c4;
@@ -55,13 +56,13 @@ body.dark {
   --modal-bg: #333;
   --modal-color: #fff;
 
-  --button-color-primary: #0353a4;
-  --button-color-secondary: #fcfafa;
+  --button-color-primary: #1a78e5;
+  --button-color-secondary: #ffffff;
   --button-color-error: #ff0000;
   --button-color-success: #00ff00;
 
   --button-bg-primary: #0353a4;
-  --button-bg-secondary: #fcfafa;
+  --button-bg-secondary: #293038;
   --button-bg-error: #ff0000;
   --button-bg-success: #00ff00;
 
@@ -72,4 +73,9 @@ body.dark {
   --dropdown-item-bg: #3d3d3d;
   --dropdown-item-color: #fff;
   --dropdown-item-bg-hover: #2d2d2d;
+
+  --page-title-color: #ffffff;
+  --page-description-color: #9eabb8;
+
+  --challenge-list-item-border: #333;
 }

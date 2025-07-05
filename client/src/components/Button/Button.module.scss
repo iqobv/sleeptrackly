@@ -10,7 +10,24 @@
   transition: background-color 0.3s ease;
   font-size: 16px;
   border-radius: 5px;
-  color: var(--button-color);
+  color: var(--color-main-text);
+  font-weight: 600;
+
+  .primary {
+    color: var(--button-bg-primary);
+  }
+
+  .secondary {
+    color: var(--button-bg-secondary);
+  }
+
+  .error {
+    color: var(--button-bg-error);
+  }
+
+  .success {
+    color: var(--button-bg-success);
+  }
 
   &.icon-btn {
     min-width: unset;
@@ -82,7 +99,7 @@
 
   @media (hover: hover) {
     &:not(.disabled):hover {
-      filter: brightness(1.1);
+      filter: brightness(0.95);
       background-color: var(--hover-bg);
     }
   }

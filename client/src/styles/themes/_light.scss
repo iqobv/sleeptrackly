@@ -2,7 +2,8 @@
   --bg-body: #ffffff;
   --bg-header: #ffffff;
   --header-border-color: #e5e8eb;
-  --color-main-text: #000;
+  --color-main-text: #0d141c;
+  --secondary-color: #4f7096;
 
   --loader-color: #000;
 
@@ -55,13 +56,13 @@
   --modal-bg: #e1e1e1;
   --modal-color: #000000;
 
-  --button-bg-primary: #0353a4;
-  --button-bg-secondary: #fcfafa;
+  --button-bg-primary: #1a78e5;
+  --button-bg-secondary: #e8edf2;
   --button-bg-error: #ff0000;
   --button-bg-success: #00ff00;
 
-  --button-color-primary: #fcfafa;
-  --button-color-secondary: #0353a4;
+  --button-color-primary: #f7fafc;
+  --button-color-secondary: #0d141c;
   --button-color-error: #fcfafa;
   --button-color-success: #fcfafa;
 
@@ -73,4 +74,9 @@
   --dropdown-item-bg: #dbdbdb;
   --dropdown-item-color: #000000;
   --dropdown-item-bg-hover: #d1d1d1;
+
+  --page-title-color: #0d141c;
+  --page-description-color: #4f7096;
+
+  --challenge-list-item-border: #e1e1e1;
 }

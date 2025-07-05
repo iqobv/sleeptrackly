@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-
+import Button from "../../Button/Button";
 import styles from "./ChallengesListItem.module.scss";
 
 const ChallengesListItem = ({ data }) => {
@@ -7,21 +6,29 @@ const ChallengesListItem = ({ data }) => {
 
   return (
     <li className={styles["challenges-list-item"]}>
-      <Link
-        className={styles["challenges-list-item-link"]}
-        to={`/challenges/${data._id}`}>
-        {data.title}
-      </Link>
+      <div className={styles["challenges-list-item-info"]}>
+        <p className={styles["challenges-list-item-info-tag"]}>Challenge</p>
+        <div className={styles["challenges-list-item-info-content"]}>
+          <h3 className={styles["challenges-list-item-info-title"]}>
+            {data.title}
+          </h3>
+          <p className={styles["challenges-list-item-info-text"]}>
+            {data.description}
+          </p>
+        </div>
+        <div className={styles["challenges-list-item-info-actions"]}>
+          <Button
+            isLink
+            to={`/challenges/${data._id}`}
+            variant="filled"
+            color="secondary"
+          >
+            View Progress
+          </Button>
+        </div>
+      </div>
     </li>
   );
 };
-
-ChallengesListItem.CreateNew = () => (
-  <li className={`${styles["challenges-list-item"]} ${styles["create-new"]}`}>
-    <Link className={styles["create-new-link"]} to={"/challenges/new"}>
-      +
-    </Link>
-  </li>
-);
 
 export default ChallengesListItem;
