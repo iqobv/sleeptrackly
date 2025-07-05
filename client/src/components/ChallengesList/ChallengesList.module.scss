@@ -2,9 +2,16 @@
   width: 100%;
 
   .challenges-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 20px;
     padding: 20px 0;
+  }
+
+  .challenges-list-create-challenge {
+    width: 100%;
+    display: flex;
+    justify-content: center;
   }
 }

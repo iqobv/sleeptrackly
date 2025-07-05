@@ -1,14 +1,17 @@
 import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
 
 import ChallengesList from "../../components/ChallengesList/ChallengesList";
-
-import styles from "./ChallengesPage.module.scss";
+import PageHeader from "../../components/PageHeader/PageHeader";
 
 const ChallengesPage = () => {
   changeDocumentTitle("Challenges");
 
   return (
-    <div className={`container ${styles["challenges-page"]}`}>
+    <div className={`container page`}>
+      <PageHeader
+        title={"My Challenges"}
+        description={"Track and manage your personal sleep challenges."}
+      />
       <ChallengesList />
     </div>
   );

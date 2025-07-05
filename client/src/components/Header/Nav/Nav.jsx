@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import NavLinks from "../NavLinks/NavLinks";
-import MenuButton from "../MenuButton/MenuButton";
 import AuthButtons from "../AuthButtons/AuthButtons";
+import MenuButton from "../MenuButton/MenuButton";
+import NavLinks from "../NavLinks/NavLinks";
 import SwitchThemeButton from "../SwitchThemeButton/SwitchThemeButton";
 
 import styles from "./Nav.module.scss";
@@ -79,12 +79,13 @@ const Nav = () => {
             isOpen ? styles["open"] : ""
           } ${isClosing ? styles["closing"] : ""}`}
           onClick={handleCloseOnOverlay}
-          tabIndex={isOpen ? 0 : -1}>
+          tabIndex={isOpen ? 0 : -1}
+        >
           <div className={styles["nav-overlay-content"]}>
             <nav className={styles.nav}>
               <NavLinks closeMenu={handleClick} />
             </nav>
-            <AuthButtons closeMenu={handleClick} />
+            <AuthButtons closeMenu={handleClick} isFull />
           </div>
         </div>
       )}

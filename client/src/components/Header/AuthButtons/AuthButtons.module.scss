@@ -2,9 +2,13 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  flex-direction: row;
+  justify-content: center;
 
-  @media screen and (max-width: 768px) {
-    flex-direction: column;
+  @media screen and (max-width: 520px) {
+    &:not(.full) > .auth-button > .auth-text {
+      display: none;
+    }
   }
 }
 
@@ -12,11 +16,13 @@
   border-radius: 0.5rem;
   cursor: pointer;
   text-align: center;
-  width: 120px;
-  padding: 7px 0;
+  padding: 10px 26px;
   border: none;
   font-size: 16px;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 
   &.login {
     background-color: var(--auth-bg-login);
@@ -32,9 +38,5 @@
   &.logout {
     background-color: var(--auth-bg-logout);
     color: var(--auth-color-logout);
-  }
-
-  @media screen and (max-width: 768px) {
-    width: 70%;
   }
 }

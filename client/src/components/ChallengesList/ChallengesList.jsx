@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import { getChallengesByUser } from "../../api/challenges";
 
+import Button from "../Button/Button";
+import Loader from "../Loader/Loader";
 import ActiveChallengesList from "./ActiveChallengesList/ActiveChallengesList";
 import ChallengesListItem from "./ChallengesListItem/ChallengesListItem";
-import Loader from "../Loader/Loader";
 
 import styles from "./ChallengesList.module.scss";
 
@@ -31,19 +32,23 @@ const ChallengesList = () => {
         <>
           {activeChallenges.length > 0 && (
             <>
-              <p>Active challenges</p>
+              <h2>Active Challenges</h2>
               <ul className={styles["challenges-list"]}>
                 <ActiveChallengesList data={activeChallenges} />
               </ul>
             </>
           )}
-          <p>All challenges</p>
+          <h2>Created Challenges</h2>
           <ul className={styles["challenges-list"]}>
-            <ChallengesListItem.CreateNew />
             {data?.map((el) => (
               <ChallengesListItem key={el._id} data={el} />
             ))}
           </ul>
+          <div className={styles["challenges-list-create-challenge"]}>
+            <Button isLink to="/challenges/new" color="secondary">
+              Create Challenge
+            </Button>
+          </div>
         </>
       )}
     </div>
