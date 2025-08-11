@@ -1,3 +1,3 @@
-export const changeDocumentTitle = (title = "") => {
-  document.title = `IY - ${title}`;
+export const changeDocumentTitle = (title = '') => {
+	document.title = `IY - ${title}`;
 };

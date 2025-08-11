@@ -1,19 +1,19 @@
 .task-summary {
-  padding-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: center;
-  text-align: center;
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	align-items: center;
+	text-align: center;
 }
 
 .task-summary-item {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	font-size: 16px;
 
-  .task-summary-item-name {
-    font-weight: 700;
-  }
+	.task-summary-item-name {
+		font-weight: 700;
+	}
 }

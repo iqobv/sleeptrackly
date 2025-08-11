@@ -1,74 +1,74 @@
 .login-page {
-  .login-form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
+	.login-form-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .login-form {
-  margin-top: 100px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 40%;
-  background-color: var(--auth-container-bg);
-  padding: 20px;
-  border-radius: 8px;
-  color: var(--auth-text);
+	margin-top: 100px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 40%;
+	background-color: var(--auth-container-bg);
+	padding: 20px;
+	border-radius: 8px;
+	color: var(--auth-text);
 
-  @media screen and (max-width: 1140px) {
-    width: 60%;
-  }
+	@media screen and (max-width: 1140px) {
+		width: 60%;
+	}
 
-  @media screen and (max-width: 768px) {
-    width: 80%;
-  }
+	@media screen and (max-width: 768px) {
+		width: 80%;
+	}
 
-  @media screen and (max-width: 530px) {
-    width: 90%;
-  }
+	@media screen and (max-width: 530px) {
+		width: 90%;
+	}
 
-  @media screen and (max-width: 400px) {
-    width: 100%;
-  }
+	@media screen and (max-width: 400px) {
+		width: 100%;
+	}
 
-  .login-title {
-    text-align: center;
-    padding: 10px 0;
-  }
+	.login-title {
+		text-align: center;
+		padding: 10px 0;
+	}
 
-  .login-row {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+	.login-row {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
 
-    .login-label {
-      font-size: 16px;
-      font-weight: 600;
-    }
-  }
+		.login-label {
+			font-size: 16px;
+			font-weight: 600;
+		}
+	}
 
-  .login-field {
-    width: 100%;
-    height: 40px;
-    border-radius: 4px;
-    border: none;
-    font-size: 14px;
+	.login-field {
+		width: 100%;
+		height: 40px;
+		border-radius: 4px;
+		border: none;
+		font-size: 14px;
 
-    &.login-input {
-      padding: 0 10px;
-      background-color: var(--auth-field-bg);
-      color: var(--auth-field-color);
-    }
+		&.login-input {
+			padding: 0 10px;
+			background-color: var(--auth-field-bg);
+			color: var(--auth-field-color);
+		}
 
-    &.login-button {
-      margin-top: 20px;
-      font-weight: 600;
-      background-color: var(--auth-btn-bg);
-      color: var(--auth-btn-color);
-    }
-  }
+		&.login-button {
+			margin-top: 20px;
+			font-weight: 600;
+			background-color: var(--auth-btn-bg);
+			color: var(--auth-btn-color);
+		}
+	}
 }

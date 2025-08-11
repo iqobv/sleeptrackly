@@ -1,13 +1,13 @@
-import { useFormContext } from "react-hook-form";
+import { useFormContext } from 'react-hook-form';
 
-import Textarea from "../../Textarea/Textarea";
+import Textarea from '../../Textarea/Textarea';
 
-import styles from "./TextareaField.module.scss";
+import styles from './TextareaField.module.scss';
 
 const TextareaField = ({ field, ...props }) => {
-  const { register } = useFormContext();
+	const { register } = useFormContext();
 
-  return <Textarea fieldName={field?.name} register={register(field.name)} />;
+	return <Textarea fieldName={field?.name} register={register(field.name)} />;
 };
 
 export default TextareaField;

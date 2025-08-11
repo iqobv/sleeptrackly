@@ -1,17 +1,17 @@
 .challenges-list-container {
-  width: 100%;
+	width: 100%;
 
-  .challenges-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px 0;
-  }
+	.challenges-list {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 20px;
+		padding: 20px 0;
+	}
 
-  .challenges-list-create-challenge {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
+	.challenges-list-create-challenge {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+	}
 }

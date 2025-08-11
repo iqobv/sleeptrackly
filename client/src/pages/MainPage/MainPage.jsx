@@ -1,12 +1,9 @@
-import React from "react";
-
-import styles from "./MainPage.module.scss";
-import { changeDocumentTitle } from "../../utils/changeDocumentTitle";
+import { changeDocumentTitle } from '../../utils/changeDocumentTitle';
 
 const MainPage = () => {
-  changeDocumentTitle("Home");
+	changeDocumentTitle('Home');
 
-  return <div>MainPage</div>;
+	return <div>MainPage</div>;
 };
 
 export default MainPage;

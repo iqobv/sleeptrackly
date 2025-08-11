@@ -1,17 +1,17 @@
-@use "../../../styles/variables" as *;
+@use '../../../styles/variables' as *;
 
 .textarea {
-  resize: none;
-  width: 100%;
-  font-size: 16px;
-  font-family: $roboto-font;
-  padding: 5px 10px;
+	resize: none;
+	width: 100%;
+	font-size: 16px;
+	font-family: $roboto-font;
+	padding: 5px 10px;
 
-  &.summary {
-    min-height: 70px;
-  }
+	&.summary {
+		min-height: 70px;
+	}
 
-  &.items {
-    min-height: 30px;
-  }
+	&.items {
+		min-height: 30px;
+	}
 }

@@ -1,23 +1,23 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import {
 	fetchSleepStatusByUserId,
 	updateSleepStatus,
-} from "../api/sleepStatus";
+} from '../api/sleepStatus';
 
 export const useTimer = () => {
 	const [timer, setTimer] = useState(0);
 	const [initialTime, setInitialTime] = useState(null);
-	const [formatedTimer, setFormattedTimer] = useState(["00", "00", "00"]);
+	const [formatedTimer, setFormattedTimer] = useState(['00', '00', '00']);
 	const interval = useRef(null);
 	const { userId } = useSelector((state) => state.user);
 	const [isSleeping, setIsSleeping] = useState(false);
 	const [sleepFinished, setSleepFinished] = useState({});
 
 	const { data, isLoading, error, isError } = useQuery({
-		queryKey: ["timer", userId],
+		queryKey: ['timer', userId],
 		queryFn: () => fetchSleepStatusByUserId(userId),
 		enabled: !!userId,
 	});
@@ -28,7 +28,7 @@ export const useTimer = () => {
 			setSleepFinished(data?.sleepEntry || {});
 		},
 		onError: (error) => {
-			toast.error(error.message || "Failed to update sleep status");
+			toast.error(error.message || 'Failed to update sleep status');
 		},
 	});
 
@@ -80,9 +80,9 @@ export const useTimer = () => {
 		const seconds = timer % 60;
 
 		setFormattedTimer([
-			hours.toString().padStart(2, "0"),
-			minutes.toString().padStart(2, "0"),
-			seconds.toString().padStart(2, "0"),
+			hours.toString().padStart(2, '0'),
+			minutes.toString().padStart(2, '0'),
+			seconds.toString().padStart(2, '0'),
 		]);
 	};
 

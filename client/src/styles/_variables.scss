@@ -1,31 +1,31 @@
-$roboto-font: "Roboto", sans-serif;
+$roboto-font: 'Roboto', sans-serif;
 
 $btn-colors-bg: (
-  light: (
-    primary: #0353a4,
-    secondary: #fcfafa,
-    error: #ff0000,
-    success: #00ff00,
-  ),
-  dark: (
-    primary: #002e4e,
-    secondary: #fcfafa,
-    error: #ff0000,
-    success: #00ff00,
-  ),
+	light: (
+		primary: #0353a4,
+		secondary: #fcfafa,
+		error: #ff0000,
+		success: #00ff00,
+	),
+	dark: (
+		primary: #002e4e,
+		secondary: #fcfafa,
+		error: #ff0000,
+		success: #00ff00,
+	),
 );
 
 $btn-colors-text: (
-  light: (
-    primary: #fcfafa,
-    secondary: #0353a4,
-    error: #fcfafa,
-    success: #fcfafa,
-  ),
-  dark: (
-    primary: #fcfafa,
-    secondary: #0353a4,
-    error: #fcfafa,
-    success: #fcfafa,
-  ),
+	light: (
+		primary: #fcfafa,
+		secondary: #0353a4,
+		error: #fcfafa,
+		success: #fcfafa,
+	),
+	dark: (
+		primary: #fcfafa,
+		secondary: #0353a4,
+		error: #fcfafa,
+		success: #fcfafa,
+	),
 );

@@ -1,37 +1,37 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const fetchSleepStatusByUserId = async () => {
-  const res = await fetch(`/api/v1/sleep/me`, {
-    credentials: "include",
-  });
+	const res = await fetch(`/api/v1/sleep/me`, {
+		credentials: 'include',
+	});
 
-  if (!res.ok) throw new Error("Failed to fetch sleep status");
+	if (!res.ok) throw new Error('Failed to fetch sleep status');
 
-  return res.json();
+	return res.json();
 };
 
 export const updateSleepStatus = async () => {
-  const clickedBy = dayjs()
-    .tz(dayjs.tz.guess())
-    .format("YYYY-MM-DDTHH:mm:ss.SSSZ");
+	const clickedBy = dayjs()
+		.tz(dayjs.tz.guess())
+		.format('YYYY-MM-DDTHH:mm:ss.SSSZ');
 
-  const res = await fetch(`/api/v1/sleep/me`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
-      clickedBy,
-    }),
-  });
+	const res = await fetch(`/api/v1/sleep/me`, {
+		method: 'PATCH',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		credentials: 'include',
+		body: JSON.stringify({
+			clickedBy,
+		}),
+	});
 
-  if (!res.ok) throw new Error("Failed to update sleep status");
+	if (!res.ok) throw new Error('Failed to update sleep status');
 
-  return res.json();
+	return res.json();
 };
