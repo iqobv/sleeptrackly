@@ -1,49 +1,49 @@
 .stat-by-days-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
 
-  .stat-by-days-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-align: center;
-    width: 250px;
-    background-color: var(--day-card-bg);
-    height: 250px;
-    color: var(--day-card-color);
-    padding: 10px;
-    border-radius: 6px;
-  }
+	.stat-by-days-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		text-align: center;
+		width: 250px;
+		background-color: var(--day-card-bg);
+		height: 250px;
+		color: var(--day-card-color);
+		padding: 10px;
+		border-radius: 6px;
+	}
 }
 
 .stat-by-days-item-date {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
 
-  .stat-by-days-item-date-day {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
+	.stat-by-days-item-date-day {
+		font-size: 20px;
+		font-weight: 600;
+		margin-bottom: 2px;
+	}
 }
 
 .stat-by-days-item-info {
-  display: flex;
-  gap: 5px;
-  flex-direction: column;
-  align-items: center;
+	display: flex;
+	gap: 5px;
+	flex-direction: column;
+	align-items: center;
 
-  .stat-by-days-item-info-item {
-    .stat-by-days-item-info-item-data {
-      font-weight: 600;
-      margin-top: 3px;
-      font-size: 18px;
-    }
-  }
+	.stat-by-days-item-info-item {
+		.stat-by-days-item-info-item-data {
+			font-weight: 600;
+			margin-top: 3px;
+			font-size: 18px;
+		}
+	}
 }

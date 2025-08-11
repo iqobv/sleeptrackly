@@ -1,62 +1,62 @@
 .challenges-panel-page {
-  padding-top: 10px;
+	padding-top: 10px;
 
-  .page-title {
-    text-align: center;
-    padding: 20px;
-  }
+	.page-title {
+		text-align: center;
+		padding: 20px;
+	}
 
-  .to-challenge-link {
-    color: var(--main-color);
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    font-size: 16px;
-  }
+	.to-challenge-link {
+		color: var(--main-color);
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		font-size: 16px;
+	}
 
-  .challenge-form {
-    width: 50%;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    gap: 15px;
-    padding-top: 30px;
-    padding-bottom: 60px;
+	.challenge-form {
+		width: 50%;
+		margin: 0 auto;
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		gap: 15px;
+		padding-top: 30px;
+		padding-bottom: 60px;
 
-    .tasks-options {
-      display: flex;
-      gap: 15px;
-      flex-direction: column;
-    }
+		.tasks-options {
+			display: flex;
+			gap: 15px;
+			flex-direction: column;
+		}
 
-    @media (max-width: 1124px) {
-      width: 60%;
-    }
+		@media (max-width: 1124px) {
+			width: 60%;
+		}
 
-    @media (max-width: 900px) {
-      width: 70%;
-    }
+		@media (max-width: 900px) {
+			width: 70%;
+		}
 
-    @media (max-width: 720px) {
-      width: 80%;
-    }
+		@media (max-width: 720px) {
+			width: 80%;
+		}
 
-    @media (max-width: 600px) {
-      width: 90%;
-    }
+		@media (max-width: 600px) {
+			width: 90%;
+		}
 
-    @media (max-width: 460px) {
-      width: 100%;
-    }
-  }
+		@media (max-width: 460px) {
+			width: 100%;
+		}
+	}
 }
 
 .start-end-date {
-  display: flex;
-  gap: 10px;
+	display: flex;
+	gap: 10px;
 
-  @media screen and (max-width: 460px) {
-    flex-direction: column;
-  }
+	@media screen and (max-width: 460px) {
+		flex-direction: column;
+	}
 }

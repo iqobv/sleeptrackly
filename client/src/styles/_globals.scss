@@ -1,53 +1,55 @@
-@use "./variables" as *;
+@use './variables' as *;
 
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  transition: background-color 0.3s ease, color 0.3s ease;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	transition:
+		background-color 0.3s ease,
+		color 0.3s ease;
 }
 
 body {
-  font-family: $roboto-font;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-body);
-  color: var(--color-main-text);
+	font-family: $roboto-font;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: var(--bg-body);
+	color: var(--color-main-text);
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 ul {
-  list-style: none;
+	list-style: none;
 }
 
 button {
-  cursor: pointer;
+	cursor: pointer;
 
-  &:disabled {
-    cursor: not-allowed;
-  }
+	&:disabled {
+		cursor: not-allowed;
+	}
 }
 
 #root {
-  min-height: 100vh;
+	min-height: 100vh;
 }
 
 .container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 20px;
+	max-width: 1440px;
+	margin: 0 auto;
+	padding: 0 20px;
 }
 
 .section {
-  padding: 20px;
-  background-color: var(--bg-section);
-  border-radius: 8px;
+	padding: 20px;
+	background-color: var(--bg-section);
+	border-radius: 8px;
 }
 
 .page {
-  padding-top: 20px;
-  padding-bottom: 50px;
+	padding-top: 20px;
+	padding-bottom: 50px;
 }

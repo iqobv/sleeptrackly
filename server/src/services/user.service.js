@@ -1,82 +1,82 @@
-import createError from "http-errors";
-import bcrypt from "bcrypt";
+import createError from 'http-errors';
+import bcrypt from 'bcrypt';
 
-import User from "../models/user.model.js";
-import UserSleepStatus from "../models/userSleepStatus.model.js";
+import User from '../models/user.model.js';
+import UserSleepStatus from '../models/userSleepStatus.model.js';
 
-import { hashPassword } from "../utils/hashPassword.js";
+import { hashPassword } from '../utils/hashPassword.js';
 
 const createUser = async (data) => {
-  const { username, email, password, googleId } = data;
+	const { username, email, password, googleId } = data;
 
-  const existingUser = await User.findOne({ email });
+	const existingUser = await User.findOne({ email });
 
-  if (existingUser) return { error: true, message: "User already exists" };
+	if (existingUser) return { error: true, message: 'User already exists' };
 
-  const countOfUsers = await User.countDocuments();
+	const countOfUsers = await User.countDocuments();
 
-  const hashedPassword = await hashPassword(password);
+	const hashedPassword = await hashPassword(password);
 
-  const role = countOfUsers === 0 ? "admin" : "user";
+	const role = countOfUsers === 0 ? 'admin' : 'user';
 
-  const user = await User.create({
-    username,
-    email,
-    password: hashedPassword,
-    googleId,
-    role,
-  });
+	const user = await User.create({
+		username,
+		email,
+		password: hashedPassword,
+		googleId,
+		role,
+	});
 
-  if (user) {
-    await UserSleepStatus.create({ userId: user._id });
-  }
+	if (user) {
+		await UserSleepStatus.create({ userId: user._id });
+	}
 
-  return user;
+	return user;
 };
 
 const getUserById = async (id) => {
-  const user = await User.findById(id).select("-password");
+	const user = await User.findById(id).select('-password');
 
-  return user;
+	return user;
 };
 
 const getUserProfile = async (username) => {
-  const user = await User.findOne({ username })
-    .select("-password")
-    .select("-email")
-    .select("-googleId")
-    .select("-_id");
+	const user = await User.findOne({ username })
+		.select('-password')
+		.select('-email')
+		.select('-googleId')
+		.select('-_id');
 
-  return user;
+	return user;
 };
 
 const updateUser = async (id, data) => {
-  const user = await User.findByIdAndUpdate(id, data, { new: true });
+	const user = await User.findByIdAndUpdate(id, data, { new: true });
 
-  return user;
+	return user;
 };
 
 const updatePassword = async (userId, password) => {
-  const user = await User.findById(userId);
+	const user = await User.findById(userId);
 
-  if (user) {
-    const passwordIsMatched = await bcrypt.compare(password, user.password);
+	if (user) {
+		const passwordIsMatched = await bcrypt.compare(password, user.password);
 
-    if (passwordIsMatched) throw createError(400, "New password is the same");
+		if (passwordIsMatched) throw createError(400, 'New password is the same');
 
-    const hashedPassword = await hashPassword(password);
+		const hashedPassword = await hashPassword(password);
 
-    user.password = hashedPassword;
-    await user.save();
-  }
+		user.password = hashedPassword;
+		await user.save();
+	}
 
-  return user;
+	return user;
 };
 
 export default {
-  createUser,
-  getUserById,
-  getUserProfile,
-  updateUser,
-  updatePassword,
+	createUser,
+	getUserById,
+	getUserProfile,
+	updateUser,
+	updatePassword,
 };

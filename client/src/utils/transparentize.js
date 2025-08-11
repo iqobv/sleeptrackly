@@ -1,6 +1,6 @@
-import colorLib from "@kurkle/color";
+import colorLib from '@kurkle/color';
 
 export const transparentize = (value, opacity) => {
-  const alpha = opacity === undefined ? 0.5 : 1 - opacity;
-  return colorLib(value).alpha(alpha).rgbString();
+	const alpha = opacity === undefined ? 0.5 : 1 - opacity;
+	return colorLib(value).alpha(alpha).rgbString();
 };
