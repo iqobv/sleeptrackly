@@ -1,69 +1,69 @@
-import {
-	BarElement,
-	CategoryScale,
-	Chart as ChartJS,
-	Legend,
-	LinearScale,
-	Tooltip,
-} from 'chart.js';
 import dayjs from 'dayjs';
-import { Bar } from 'react-chartjs-2';
-import { useSelector } from 'react-redux';
-
-import { colorize } from '../../../utils/colorize';
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+import { useEffect, useState } from 'react';
+import {
+	Area,
+	AreaChart,
+	ResponsiveContainer,
+	Tooltip,
+	XAxis,
+	YAxis,
+} from 'recharts';
+import styles from './SleepChart.module.scss';
 
 const SleepChart = ({ data }) => {
-	const labels = data?.map((item) => dayjs(item.day).format('dddd'));
+	const [sleepDuration, setSleepDuration] = useState(0);
+
 	const durations = data?.map((item) =>
-		item.data ? (item.data.sleepDuration / 60 / 60).toFixed(1) : 0,
+		item.data ? (item.data.sleepDuration / 60 / 60).toFixed(1) : 0
 	);
-	const { theme } = useSelector((state) => state.theme);
+	const labels = data?.map((item) => dayjs(item.day).format('ddd'));
 
-	const chartData = {
-		labels,
-		datasets: [
-			{
-				label: 'Sleep duration (hours)',
-				data: durations,
-				backgroundColor: colorize(false, theme),
-				borderColor: colorize(true, theme),
-				borderRadius: 6,
-				borderWidth: 3,
-			},
-		],
-	};
+	const chartData = data?.map((item, index) => ({
+		name: labels[index],
+		time: durations[index],
+	}));
 
-	const options = {
-		responsive: true,
-		plugins: {
-			legend: { position: 'top' },
-			tooltip: {
-				callbacks: {
-					label: (context) => `${context.parsed.y} h`,
-				},
-			},
-		},
-		scales: {
-			y: {
-				beginAtZero: true,
-				min: 0,
-				title: { display: true, text: 'Hours' },
-				grid: {
-					color: theme === 'dark' ? '#444' : '#ccc',
-				},
-			},
-			x: {
-				title: { display: true, text: 'Day' },
-				grid: {
-					color: theme === 'dark' ? '#444' : '#ccc',
-				},
-			},
-		},
-	};
+	useEffect(() => {
+		if (durations) setSleepDuration(durations.reduce((a, b) => +a + +b, 0));
+	}, [durations]);
 
-	return <Bar data={chartData} options={options} />;
+	return (
+		<div className={styles['sleep-chart']}>
+			<div className={styles['sleep-chart-title-container']}>
+				<p className={styles['sleep-chart-title']}>Sleep duration</p>
+				<p className={styles['sleep-chart-subtitle']}>{sleepDuration} hours</p>
+			</div>
+			<div className={styles['chart-wrapper']}>
+				<ResponsiveContainer width="100%" height="100%">
+					<AreaChart
+						width={500}
+						height={400}
+						data={chartData}
+						margin={{
+							top: 10,
+							right: 30,
+							left: -10,
+							bottom: 0,
+						}}
+					>
+						<XAxis dataKey="name" strokeOpacity={0} />
+						<YAxis strokeOpacity={0} />
+						<Tooltip
+							formatter={(value) => [`${value}h`, null]}
+							contentStyle={{ backgroundColor: '#20262D' }}
+						/>
+						<Area
+							type="monotone"
+							dataKey="time"
+							stroke="var(--chart-stroke)"
+							strokeWidth={5}
+							fill="var(--chart-bg)"
+						/>
+					</AreaChart>
+				</ResponsiveContainer>
+			</div>
+		</div>
+	);
 };
 
 export default SleepChart;

@@ -4,9 +4,7 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	transition:
-		background-color 0.3s ease,
-		color 0.3s ease;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
@@ -31,6 +29,10 @@ button {
 	&:disabled {
 		cursor: not-allowed;
 	}
+}
+
+.recharts-surface:focus {
+	outline: none !important;
 }
 
 #root {
