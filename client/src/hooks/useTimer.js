@@ -16,7 +16,7 @@ export const useTimer = () => {
 	const [isSleeping, setIsSleeping] = useState(false);
 	const [sleepFinished, setSleepFinished] = useState({});
 
-	const { data, isLoading, error, isError } = useQuery({
+	const { data, isLoading, refetch, error, isError } = useQuery({
 		queryKey: ['timer', userId],
 		queryFn: () => fetchSleepStatusByUserId(userId),
 		enabled: !!userId,
@@ -26,6 +26,7 @@ export const useTimer = () => {
 		mutationFn: (userId) => updateSleepStatus(userId),
 		onSuccess: (data) => {
 			setSleepFinished(data?.sleepEntry || {});
+			refetch();
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Failed to update sleep status');
@@ -33,37 +34,44 @@ export const useTimer = () => {
 	});
 
 	useEffect(() => {
-		if (!isLoading && !isError && data) {
-			if (data.isSleeping) {
-				setInitialTime(data?.sleepStart?.date);
+		if (!isLoading && data) {
+			if (data.isSleeping && data.sleepStart?.date) {
+				const startDate = new Date(data.sleepStart.date);
+				if (!isNaN(startDate.getTime())) {
+					setInitialTime(startDate.toISOString());
+					setIsSleeping(true);
+				}
+			} else {
+				setIsSleeping(false);
 			}
 		}
-	}, [data, isLoading, error, isError]);
-
-	const startTimer = ({ skipUpdate = false } = {}) => {
-		if (interval.current !== null) return;
-		setIsSleeping(true);
-
-		if (!skipUpdate) {
-			setTimer(0);
-			updateSleep(userId);
-		}
-
-		interval.current = setInterval(() => {
-			const diff = Math.floor((Date.now() - +new Date(initialTime)) / 1000);
-			setTimer(diff);
-		}, 1000);
-	};
+	}, [data, isLoading]);
 
 	useEffect(() => {
-		if (!initialTime) return;
+		if (!initialTime || !isSleeping) return;
 
-		const start = new Date(initialTime);
-		const now = new Date();
-		setTimer(Math.floor((now - start) / 1000));
-		formatTime();
-		startTimer({ skipUpdate: true });
-	}, [initialTime]);
+		const start = new Date(initialTime).getTime();
+
+		interval.current = setInterval(() => {
+			setTimer(Math.floor((Date.now() - start) / 1000));
+		}, 1000);
+
+		return () => clearInterval(interval.current);
+	}, [initialTime, isSleeping]);
+
+	const startTimer = () => {
+		if (interval.current) return;
+
+		setIsSleeping(true);
+
+		if (!initialTime) {
+			const now = new Date().toISOString();
+			setInitialTime(now);
+			setTimer(0);
+		}
+
+		updateSleep(userId);
+	};
 
 	const stopTimer = () => {
 		if (interval.current !== null) {
