@@ -31,7 +31,9 @@ const SleepChart = ({ data }) => {
 		<div className={styles['sleep-chart']}>
 			<div className={styles['sleep-chart-title-container']}>
 				<p className={styles['sleep-chart-title']}>Sleep duration</p>
-				<p className={styles['sleep-chart-subtitle']}>{sleepDuration} hours</p>
+				<p className={styles['sleep-chart-subtitle']}>
+					{sleepDuration.toFixed(1)} hours
+				</p>
 			</div>
 			<div className={styles['chart-wrapper']}>
 				<ResponsiveContainer width="100%" height="100%">
