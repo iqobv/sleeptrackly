@@ -29,7 +29,7 @@ export const useTimer = () => {
 		mutationFn: updateSleepStatus,
 		mutationKey: ['update-sleep'],
 		onSuccess: (data) => {
-			!!data.sleepEntry && setFinishedSleep(data.sleepEntry);
+			if (!!data.sleepEntry) setFinishedSleep(data.sleepEntry);
 		},
 	});
 

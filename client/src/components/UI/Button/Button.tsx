@@ -31,6 +31,7 @@ export default function Button({
 					href={href}
 					className={`${styles} ${className}`}
 					style={style}
+					id={id}
 					{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
 				>
 					{children}
@@ -42,6 +43,7 @@ export default function Button({
 					style={style}
 					disabled={disabled || loading}
 					type={type}
+					id={id}
 					{...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
 				>
 					{children}

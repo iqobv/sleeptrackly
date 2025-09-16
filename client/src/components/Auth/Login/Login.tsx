@@ -18,7 +18,7 @@ const Login = () => {
 			schema={LoginSchema}
 			bottomText={
 				<BottomText redirectText={'Register'} redirectUrl={PAGES.REGISTER}>
-					Don't have an account?
+					Don&apos;t have an account?
 				</BottomText>
 			}
 		/>

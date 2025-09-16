@@ -20,7 +20,8 @@ const Nav = () => {
 	const show = mounted && isMobile;
 
 	const handleClick = () => {
-		isOpen ? setIsClosing(true) : setIsOpen(true);
+		if (isOpen) setIsClosing(true);
+		else setIsOpen(true);
 		setIsOpenForBtn(!isOpenForBtn);
 	};
 
@@ -39,7 +40,7 @@ const Nav = () => {
 	}, [isOpen]);
 
 	const handleCloseOnOverlay = (e: React.MouseEvent) => {
-		e.target === e.currentTarget && handleClick();
+		if (e.target === e.currentTarget) handleClick();
 	};
 
 	return (

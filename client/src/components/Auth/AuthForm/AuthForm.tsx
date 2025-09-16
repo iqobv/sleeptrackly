@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import { Button, TextField } from '@/components/UI';
@@ -53,7 +55,7 @@ const AuthForm = <T extends FieldValues, R>({
 			setUser(data as IUser);
 			router.refresh();
 		},
-		onError(error, variables, context) {
+		onError(error) {
 			setError('root', { message: error.message });
 			resetField('password' as Path<T>);
 		},

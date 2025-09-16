@@ -11,7 +11,7 @@ import styles from './WeekPagination.module.scss';
 
 interface WeekPaginationProps {
 	totalWeeks: number;
-	days: any[];
+	days: { day: string }[];
 }
 
 const iconProps: IconBaseProps = {

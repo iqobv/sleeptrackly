@@ -6,7 +6,7 @@ import styles from './OptionsMenu.module.scss';
 interface OptionsMenuProps {
 	highlightedIndex: number;
 	handleSelect: (opt: IOption) => void;
-	getFilteredOptions: () => any[];
+	getFilteredOptions: () => IOption[];
 }
 
 export default function OptionsMenu({

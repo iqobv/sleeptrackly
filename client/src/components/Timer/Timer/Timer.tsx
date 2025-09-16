@@ -19,7 +19,9 @@ const Timer = () => {
 	} = useTimer();
 
 	const handleClick = () => {
-		isSleeping ? stopTimer() : startTimer();
+		// isSleeping ? stopTimer() : startTimer();
+		if (isSleeping) stopTimer();
+		else startTimer();
 	};
 
 	return (

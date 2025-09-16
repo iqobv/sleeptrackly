@@ -52,7 +52,7 @@ export const useTaskSummary = ({
 			toast.success('Task marked as completed');
 			queryClient.invalidateQueries({ queryKey: ['challenge', challenge?.id] });
 		},
-		onError: (error: any) => {
+		onError: (error) => {
 			toast.error(error.message);
 		},
 	});

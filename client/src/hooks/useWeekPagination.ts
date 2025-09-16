@@ -14,14 +14,14 @@ export const useWeekPagination = () => {
 	useEffect(() => {
 		const initialWeek = Number(searchParams.get('week')) || 0;
 		setSelectedWeek(initialWeek);
-	}, []);
+	}, [searchParams, setSelectedWeek]);
 
 	useEffect(() => {
 		const params = new URLSearchParams(searchParams);
 		params.set('week', selectedWeek.toString());
 		setSelectedWeek(Number(selectedWeek));
 		router.push(`?${params.toString()}`);
-	}, [selectedWeek]);
+	}, [selectedWeek, searchParams, router, setSelectedWeek]);
 
 	return {
 		selectedWeek,

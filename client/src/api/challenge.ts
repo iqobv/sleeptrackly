@@ -21,4 +21,4 @@ export const updateChallenge = async (id: string, data: UpdateChallengeDto) =>
 	});
 
 export const deleteChallenge = async (id: string) =>
-	await fetcher<Boolean>(`/api/v1/chaУllenges/${id}`, { method: 'DELETE' });
+	await fetcher<boolean>(`/api/v1/chaУllenges/${id}`, { method: 'DELETE' });

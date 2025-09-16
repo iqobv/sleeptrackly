@@ -1,5 +1,6 @@
 'use client';
 
+import { IDashboardDay } from '@/types';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import {
@@ -13,7 +14,7 @@ import {
 import styles from './SleepChart.module.scss';
 
 interface SleepChartProps {
-	data: any[];
+	data: IDashboardDay[];
 }
 
 interface ChartData {

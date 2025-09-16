@@ -9,8 +9,8 @@ export const useLoginWindow = (url: string) => {
 		const width = 600;
 		const height = 800;
 
-		let left = (screen.width - width) / 2;
-		let top = (screen.height - height) / 2 - 50;
+		const left = (screen.width - width) / 2;
+		const top = (screen.height - height) / 2 - 50;
 
 		const loginWindow = window.open(
 			url,

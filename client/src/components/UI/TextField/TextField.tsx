@@ -28,6 +28,8 @@ export default function TextField({
 	rightIconClassName,
 	...rest
 }: TextFieldProps) {
+	const generatedId = useId();
+	const id = rest.id ?? generatedId;
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
 	const originalType = (rest as React.ComponentProps<'input'>)?.type;
@@ -44,8 +46,6 @@ export default function TextField({
 	});
 
 	const handleTogglePassword = () => setIsPasswordVisible((prev) => !prev);
-
-	const id = rest.id || useId();
 
 	return (
 		<div

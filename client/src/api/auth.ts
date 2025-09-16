@@ -15,6 +15,6 @@ export const registerWithPassword = async (data: RegisterDto) =>
 	});
 
 export const logout = async () =>
-	await fetcher<Boolean>('/api/v1/auth/logout', { method: 'POST' });
+	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });
 
 export const getUser = async () => await fetcher<IUser>('/api/v1/auth/me');

@@ -91,7 +91,8 @@ export const useCustomSelect = ({
 			(opt) => opt.label.toLowerCase() === searchValue.toLowerCase()
 		);
 
-		match ? handleSelect(match) : setSearchValue('');
+		if (match) handleSelect(match);
+		else setSearchValue('');
 	};
 
 	return {

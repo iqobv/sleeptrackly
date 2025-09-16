@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
 import { Button, Select, TextField } from '@/components/UI';
@@ -49,7 +51,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 
 	useEffect(() => {
 		if (defaultValues) reset(defaultValues);
-	}, [defaultValues]);
+	}, [defaultValues, reset]);
 
 	const { mutate } = useMutation({
 		mutationFn,
@@ -57,7 +59,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 			reset();
 			onSuccess?.(data);
 		},
-		onError(error, variables, context) {
+		onError(error) {
 			setError('root', { message: error.message });
 		},
 	});
@@ -110,7 +112,9 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 					)}
 				</div>
 			))}
-			<Button type="submit" className={styles['submit-button']}>{buttonLabel}</Button>
+			<Button type="submit" className={styles['submit-button']}>
+				{buttonLabel}
+			</Button>
 		</form>
 	);
 };
