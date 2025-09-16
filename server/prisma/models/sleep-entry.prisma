@@ -1,0 +1,17 @@
+model SleepEntry {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+
+  sleepStart    DateTime @map("sleep_start")
+  sleepEnd      DateTime @map("sleep_end")
+  sleepDuration Int      @map("sleep_duration")
+  dateForChart  String   @map("date_for_chart")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sleep_entries")
+}

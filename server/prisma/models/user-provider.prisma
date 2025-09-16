@@ -1,0 +1,10 @@
+model UserProvider {
+  userId     String @map("user_id")
+  provider   String @map("provider_name")
+  providerId String @unique @map("provider_id")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerId])
+  @@map("user_providers")
+}

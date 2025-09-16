@@ -1,57 +1,86 @@
 @use './variables' as *;
+@use './mixins' as *;
+@use 'sass:map';
 
 * {
+	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
-	box-sizing: border-box;
-	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html,
+body {
+	max-width: 100vw;
 }
 
 body {
-	font-family: $roboto-font;
+	color: var(--foreground);
+	background: var(--bg-body);
+	font-family: Arial, Helvetica, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background-color: var(--bg-body);
-	color: var(--color-main-text);
 }
 
 a {
+	color: inherit;
 	text-decoration: none;
 }
 
-ul {
+li,
+ul,
+ol {
 	list-style: none;
 }
 
-button {
-	cursor: pointer;
-
-	&:disabled {
-		cursor: not-allowed;
-	}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+	-webkit-transition: background-color 99999s ease-out;
+	-webkit-transition-delay: 99999s;
+	background-color: transparent !important;
+	-webkit-text-fill-color: unset !important;
 }
 
 .recharts-surface:focus {
 	outline: none !important;
 }
 
-#root {
-	min-height: 100vh;
-}
-
 .container {
-	max-width: 1440px;
+	width: 100%;
 	margin: 0 auto;
-	padding: 0 20px;
-}
+	padding: 0 0.7rem;
 
-.section {
-	padding: 20px;
-	background-color: var(--bg-section);
-	border-radius: 8px;
+	@include response(sm) {
+		max-width: map.get($breakpoints, 'sm');
+		padding: 0 1rem;
+	}
+
+	@include response(md) {
+		max-width: map.get($breakpoints, 'md');
+	}
+
+	@include response(lg) {
+		max-width: map.get($breakpoints, 'lg');
+		padding: 0 1.25rem;
+	}
+
+	@include response(xl) {
+		max-width: map.get($breakpoints, 'xl');
+	}
+
+	@include response(xxl) {
+		max-width: map.get($breakpoints, 'xxl');
+	}
 }
 
 .page {
+	min-height: 100vh;
 	padding-top: 20px;
-	padding-bottom: 50px;
+	padding-bottom: 100px;
 }

@@ -1,0 +1,22 @@
+model ChallengeTask {
+  id String @id @default(uuid())
+
+  challengeId String @map("challenge_id")
+
+  description String
+
+  targetValue    Int? @map("target_value")
+  completedValue Int? @map("completed_value")
+
+  isCompleted Boolean @map("is_completed")
+
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@map("challenge_tasks")
+}

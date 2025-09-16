@@ -1,0 +1,121 @@
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { comparePassword, hashPassword } from 'src/libs/utils';
+import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
+import { CreateUserDto, UpdateUserDto } from './dto';
+
+const select: Prisma.UserSelect = {
+	id: true,
+	email: true,
+	username: true,
+	role: true,
+	createdAt: true,
+};
+
+@Injectable()
+export class UserService {
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly userSleepStatusService: UserSleepStatusService,
+	) {}
+
+	async create(dto: CreateUserDto) {
+		const { email, username, password } = dto;
+
+		await this.alreadyExists({ email, username });
+
+		const hashedPassword = !!password ? await hashPassword(password) : null;
+
+		const user = await this.prismaService.user.create({
+			data: {
+				email,
+				username,
+				password: hashedPassword,
+			},
+			select,
+		});
+
+		await this.userSleepStatusService.createSleepStatus(user.id);
+
+		return user;
+	}
+
+	async findByEmail(email: string, full: boolean = false) {
+		return this.prismaService.user.findUnique({
+			where: { email },
+			select: {
+				...select,
+				...(full && { password: true }),
+			},
+		});
+	}
+
+	async findById(id: string, full: boolean = false) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id },
+			select: {
+				...select,
+				...(full && { password: true }),
+			},
+		});
+
+		if (!user) throw new NotFoundException('User not found');
+
+		return user;
+	}
+
+	async update(id: string, dto: UpdateUserDto) {
+		const { email, username, password } = dto;
+
+		const user = await this.findById(id, true);
+
+		await this.alreadyExists({ email, username });
+
+		const isMatch =
+			!!password &&
+			!!user.password &&
+			(await comparePassword(password, user.password));
+
+		if (isMatch) throw new ConflictException('Password is the same');
+
+		const updated = await this.prismaService.user.update({
+			where: { id: user.id },
+			data: {
+				email,
+				username,
+				...(password && { password: await hashPassword(password) }),
+			},
+			select,
+		});
+
+		return updated;
+	}
+
+	async remove(id: string) {
+		const user = await this.findById(id);
+
+		await this.prismaService.user.delete({ where: { id: user.id } });
+
+		return true;
+	}
+
+	private async alreadyExists({
+		email,
+		username,
+	}: {
+		email?: string;
+		username?: string;
+	}) {
+		const user = await this.prismaService.user.findFirst({
+			where: { OR: [{ email }, { username }] },
+			select,
+		});
+
+		if (user) throw new ConflictException('User already exists');
+	}
+}

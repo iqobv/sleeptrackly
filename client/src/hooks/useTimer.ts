@@ -1,0 +1,87 @@
+'use client';
+
+import { getSleepStatus, updateSleepStatus } from '@/api';
+import { useUserStore } from '@/store';
+import { ISleepEntry } from '@/types';
+import { formatTime } from '@/utils';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect, useRef, useState } from 'react';
+
+export const useTimer = () => {
+	const [isSleeping, setIsSleeping] = useState(false);
+	const [isFinished, setIsFinished] = useState(false);
+	const [finishedSleep, setFinishedSleep] = useState<ISleepEntry | null>(null);
+	const [timer, setTimer] = useState(0);
+	const [initialTime, setInitialTime] = useState<Date | null>(null);
+	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
+	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
+
+	const user = useUserStore((state) => state.user);
+
+	const { data } = useQuery({
+		queryKey: ['timer', user?.id],
+		queryFn: getSleepStatus,
+		enabled: !!user?.id,
+		retry: false,
+	});
+
+	const { mutate: update } = useMutation({
+		mutationFn: updateSleepStatus,
+		mutationKey: ['update-sleep'],
+		onSuccess: (data) => {
+			!!data.sleepEntry && setFinishedSleep(data.sleepEntry);
+		},
+	});
+
+	useEffect(() => {
+		if (data) {
+			setIsSleeping(data.isSleeping);
+			setInitialTime(data.sleepStart ? new Date(data.sleepStart) : null);
+		}
+	}, [data]);
+
+	const startTimer = () => {
+		if (isSleeping) return;
+
+		setIsSleeping(true);
+		setTimer(0);
+		setFormattedTimer(formatTime(0));
+		setInitialTime(new Date());
+		update();
+	};
+
+	useEffect(() => {
+		if (!isSleeping || !initialTime) return;
+
+		const start = initialTime.getTime() || 0;
+
+		interval.current = setInterval(() => {
+			setTimer(Math.floor((Date.now() - start) / 1000));
+		}, 1000);
+
+		return () => {
+			if (interval.current) clearInterval(interval.current);
+		};
+	}, [isSleeping, initialTime]);
+
+	useEffect(() => {
+		setFormattedTimer(formatTime(timer));
+	}, [timer]);
+
+	const stopTimer = () => {
+		setIsSleeping(false);
+		setIsFinished(true);
+		setFinishedSleep(null);
+		update();
+		if (interval.current) clearInterval(interval.current);
+	};
+
+	return {
+		formatedTimer,
+		isSleeping,
+		isFinished,
+		finishedSleep,
+		startTimer,
+		stopTimer,
+	};
+};

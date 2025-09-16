@@ -1,0 +1,39 @@
+@use '../../../styles/mixins' as *;
+
+.challenge-info {
+	width: 100%;
+	padding-top: 20px;
+	padding-bottom: 80px;
+}
+
+.challenge-info__table {
+	width: 100%;
+	display: grid;
+	gap: 10px;
+	grid-template-columns: repeat(1, 1fr);
+
+	@include response(md) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.challenge-info__table-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 1px solid #333;
+	padding: 4px 10px;
+
+	&:last-child {
+		border-bottom: none;
+	}
+}
+
+.challenge-info__table-name {
+	color: var(--page-description-color);
+}
+
+.challenge-info__table-value {
+	color: var(--page-title-color);
+}

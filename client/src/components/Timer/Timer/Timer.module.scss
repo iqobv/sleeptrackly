@@ -1,0 +1,87 @@
+@use '../../../styles/mixins' as *;
+
+.timer {
+	padding: 50px 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.timer__time-container {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+.timer__time-container-inner {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	font-size: 20px;
+	color: var(--timer-color);
+
+	@include response(md) {
+		gap: 20px;
+
+		.timer__time-item-value {
+			font-size: 40px;
+			height: 100px;
+		}
+	}
+
+	.timer__time-item {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+		width: 100%;
+
+		@include response(md) {
+			max-width: 300px;
+		}
+
+		.timer__time-item-value {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+			height: 80px;
+			font-size: 25px;
+			font-weight: 700;
+			background-color: var(--timer-bg);
+			border-radius: 10px;
+
+			@include response(lg) {
+				font-size: 30px;
+			}
+		}
+	}
+}
+
+.timer__control {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+@keyframes fade-in {
+	from {
+		transform: scaleY(0);
+	}
+	to {
+		transform: scaleY(1);
+	}
+}
+
+@keyframes fade-out {
+	from {
+		transform: scaleY(1);
+	}
+	to {
+		transform: scaleY(0);
+	}
+}

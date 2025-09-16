@@ -1,0 +1,52 @@
+@use '../../../../styles/mixins' as *;
+
+.challenge {
+	flex: 1 0 calc(49% - 20px);
+	padding: 15px;
+	border: 1px solid var(--challenge-list-item-border);
+	border-radius: 8px;
+	flex: 1 0 100%;
+
+	@include response(md) {
+		flex: 1 0 calc(49% - 20px);
+	}
+
+	// @media screen and (max-width: 768px) {
+	// }
+
+	.challenge__wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 3px;
+
+		.challenge__tag {
+			color: var(--secondary-color);
+			font-size: 16px;
+		}
+
+		.challenge__content {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			.challenge__title {
+				font-size: 20px;
+			}
+
+			.challenge__text {
+				font-size: 16px;
+				color: var(--secondary-color);
+			}
+		}
+
+		.challenge__actions {
+			padding-top: 10px;
+			display: flex;
+			justify-content: center;
+
+			@include response(md) {
+				justify-content: flex-start;
+			}
+		}
+	}
+}

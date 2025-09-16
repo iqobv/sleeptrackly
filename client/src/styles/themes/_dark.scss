@@ -1,41 +1,28 @@
-body.dark {
+html.dark {
+	/* General Colors */
 	--bg-body: #121417;
 	--bg-header: #121417;
 	--header-border-color: #e5e8eb30;
 	--color-main-text: #ffffff;
 	--secondary-color: #9eabb8;
 
+	/* Loader */
 	--loader-color: #ffffff;
 
+	/* Navigation */
 	--nav-color-link: #ede6e3;
 	--nav-color-link-active: #c6c7c4;
 	--nav-color-link-hover: #71a2b6;
-
-	--auth-bg-login: #7a7a7a;
-	--auth-bg-register: #335c81;
-	--auth-bg-logout: #6e8387;
-
 	--nav-bg-menu: #2f2f2f;
 	--nav-button-bg: #dfdfdf;
 
+	/* Auth Pages */
+	--auth-bg-login: #7a7a7a;
+	--auth-bg-register: #335c81;
+	--auth-bg-logout: #6e8387;
 	--auth-color-login: #00132d;
 	--auth-color-register: #fcfafa;
 	--auth-color-logout: #fcfafa;
-
-	--timer-bg: #293038;
-	--timer-color: #ffffff;
-
-	--pagination-bg: #333;
-	--pagination-color: #fff;
-	--pagination-button-bg: #4c5b61;
-	--pagination-button-color: #e8eef2;
-
-	--chart-bg: #20262D;
-	--chart-stroke: #9DABB9;
-
-	--day-card-bg: #293038;
-	--day-card-color: #fff;
-
 	--auth-container-bg: #333;
 	--auth-text: #fff;
 	--auth-field-bg: #494949;
@@ -44,41 +31,99 @@ body.dark {
 	--auth-btn-color: #f6f6f6;
 	--auth-btn-bg-hover: #040f0f;
 
+	/* Timer */
+	--timer-bg: #293038;
+	--timer-color: #ffffff;
+
+	/* Pagination */
+	--pagination-bg: #333;
+	--pagination-color: #fff;
+	--pagination-button-bg: #4c5b61;
+	--pagination-button-color: #e8eef2;
+
+	/* Charts */
+	--chart-bg: #20262d;
+	--chart-stroke: #9dabb9;
+
+	/* Day Cards */
+	--day-card-bg: #293038;
+	--day-card-color: #fff;
+
+	/* Theme */
 	--theme-btn-color: #fff;
 
+	/* Challenges */
 	--challenge-list-item-bg: #333;
 	--challenge-list-item-color: #fff;
+	--challenge-list-item-border: #333;
 
-	--input-bg: #494949;
+	/* Inputs & Forms */
+	--input-bg: #0f1114;
 	--input-color: #fff;
+	--input-border: #333;
+	--input-border-focus: #1e40af;
+	--input-border-error: #ff0000;
+	--input-color-error: #f55d5d;
 
+	/* Select */
+	--bg-options: #1c1e22;
+	--bg-option-hover: #17191c;
+	--border-options: #333;
+
+	/* Buttons */
 	--button-bg: #333;
 	--button-color: #fff;
 	--button-bg-hover: #1e1e1e;
-
-	--modal-bg: #333;
-	--modal-color: #fff;
-
-	--button-color-primary: #1a78e5;
-	--button-color-secondary: #ffffff;
-	--button-color-error: #ff0000;
-	--button-color-success: #00ff00;
 
 	--button-bg-primary: #0353a4;
 	--button-bg-secondary: #293038;
 	--button-bg-error: #ff0000;
 	--button-bg-success: #00ff00;
 
+	--button-color-primary: #1a78e5;
+	--button-color-secondary: #ffffff;
+	--button-color-error: #ff0000;
+	--button-color-success: #00ff00;
+
+	/* Button Variants */
+	--btn-bg-contained: #0c5ba9;
+	--btn-bg-contained-hover: #1e40af;
+	--btn-color-contained: #f7fafc;
+
+	--btn-bg-outlined: #e8edf2;
+	--btn-bg-outlined-hover: #1e40af4d;
+	--btn-border-outlined: #ffffff66;
+	--btn-border-outlined-hover: #3b82f6;
+	--btn-color-outlined: #0d141c;
+
+	--btn-bg-text-hover: #37415140;
+	--btn-color-text: #e8edf2;
+
+	--btn-color-link: #e8edf2;
+
+	/* Calendar */
+	--calendar-accent: #1e40af;
+	--calendar-comleted: #91cb3e;
+	--calendar-selected: #1273d4;
+	--calendar-selected-color: #ffffff;
+	--calendar-today: #177ce1;
+	--calendar-today-active: #ffffff;
+
+	/* Modals */
+	--modal-bg: #333;
+	--modal-color: #fff;
+
+	/* Sections */
 	--bg-section: #333;
 
+	/* Dropdowns */
 	--dropdown-bg: #333;
 	--dropdown-color: #000000;
 	--dropdown-item-bg: #3d3d3d;
 	--dropdown-item-color: #fff;
 	--dropdown-item-bg-hover: #2d2d2d;
 
+	/* Page Titles */
 	--page-title-color: #ffffff;
 	--page-description-color: #9eabb8;
-
-	--challenge-list-item-border: #333;
 }

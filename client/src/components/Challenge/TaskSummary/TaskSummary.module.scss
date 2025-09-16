@@ -1,0 +1,53 @@
+@use '../../../styles/mixins' as *;
+
+.task-summary {
+	margin-top: 10px;
+}
+
+.task-summary__title {
+	padding-top: 0;
+	padding-bottom: 10px;
+	font-size: 1.3rem;
+}
+
+.task-summary__item {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 15px;
+	justify-content: space-between;
+	flex: 1 0 100%;
+	border: 1px solid var(--challenge-list-item-border);
+	padding: 10px;
+	border-radius: 9px;
+
+	@include response(md) {
+		flex-direction: row;
+	}
+}
+
+.task-summary__info {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+
+.task-summary__name {
+	font-size: 1.3rem;
+	color: var(--page-title-color);
+}
+
+.task-summary__target {
+	font-size: 1.1rem;
+	color: var(--page-description-color);
+}
+
+.task-summary__status {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.completed {
+		opacity: 0.9;
+	}
+}

@@ -1,0 +1,19 @@
+@use '../../../styles/mixins' as *;
+
+.challenge-form {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+	padding-bottom: 80px;
+}
+
+.submit-button {
+	width: 100%;
+	margin: 0 auto;
+	margin-top: 15px;
+
+	@include response(md) {
+		width: 300px;
+	}
+}
