@@ -9,6 +9,7 @@ import {
 	Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiBody } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { Auth, Authorized } from 'src/libs/decorators';
@@ -26,6 +27,7 @@ export class AuthController {
 	) {}
 
 	@LocalAuth()
+	@ApiBody({ type: CreateUserDto })
 	@Post('login')
 	async login(@Req() req: Request) {
 		const user = req.user as User;

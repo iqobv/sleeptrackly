@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
@@ -14,7 +15,7 @@ import {
 import { setupSwagger } from './libs/utils';
 
 async function bootstrap() {
-	const app = await NestFactory.create(AppModule);
+	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	const config = app.get(ConfigService);
 
@@ -25,9 +26,11 @@ async function bootstrap() {
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
+	app.set('trust proxy', 1);
+
+	app.enableCors(getCorsConfig(config));
 	app.useGlobalPipes(getValidationPipeConfig());
 	app.enableVersioning(getApiVersioningConfig());
-	app.enableCors(getCorsConfig(config));
 	app.use(session(getSessionConfig(config, redisClient)));
 
 	app.use(passport.initialize());
