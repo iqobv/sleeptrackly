@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function ChallengesPage() {
 	return (
-		<div className="container page">
+		<div className="container">
 			<PageHeader
 				title={'Challenges'}
 				description={'Track and manage your personal challenges.'}

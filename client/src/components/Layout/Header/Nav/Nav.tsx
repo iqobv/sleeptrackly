@@ -73,7 +73,6 @@ const Nav = () => {
 						<nav className={styles.nav}>
 							<NavLinks closeMenu={handleClick} />
 						</nav>
-						<AuthButtons closeMenu={handleClick} />
 					</div>
 				</div>
 			)}

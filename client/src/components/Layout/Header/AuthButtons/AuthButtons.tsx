@@ -3,6 +3,7 @@
 import { Button, Loader } from '@/components/UI';
 import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
+import UserMenu from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
 
 interface AuthButtonsProps {
@@ -10,7 +11,7 @@ interface AuthButtonsProps {
 }
 
 const AuthButtons = ({ closeMenu = () => {} }: AuthButtonsProps) => {
-	const { isAuthenticated, isloading, logout } = useAuth();
+	const { isAuthenticated, isloading, user, logout } = useAuth();
 
 	const handleLogout = () => {
 		logout();
@@ -24,7 +25,8 @@ const AuthButtons = ({ closeMenu = () => {} }: AuthButtonsProps) => {
 			) : (
 				<>
 					{isAuthenticated ? (
-						<Button onClick={handleLogout}>Logout</Button>
+						// <Button onClick={handleLogout}>Logout</Button>
+						<UserMenu />
 					) : (
 						<>
 							<Button href={PAGES.LOGIN} variant="link">
