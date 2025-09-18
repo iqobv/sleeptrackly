@@ -8,7 +8,7 @@ import { IUser } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { FieldValues, Path, useForm } from 'react-hook-form';
+import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
 import { ZodType } from 'zod';
 import { AuthField } from '../../../types/authField.types';
@@ -21,6 +21,7 @@ interface AuthFormProps<T extends FieldValues, R> {
 	schema?: ZodType<T, any, any>;
 	buttonLabel?: string;
 	bottomText?: React.ReactNode;
+	defaultValues?: DefaultValues<T>;
 }
 
 const AuthForm = <T extends FieldValues, R>({
@@ -30,6 +31,7 @@ const AuthForm = <T extends FieldValues, R>({
 	onSuccess,
 	schema,
 	bottomText,
+	defaultValues,
 }: AuthFormProps<T, R>) => {
 	const { setUser } = useAuth();
 	const router = useRouter();
@@ -45,6 +47,7 @@ const AuthForm = <T extends FieldValues, R>({
 		formState: { errors },
 	} = useForm<T>({
 		resolver,
+		defaultValues,
 	});
 
 	const { mutate } = useMutation({

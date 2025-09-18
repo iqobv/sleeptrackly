@@ -16,6 +16,7 @@ const Register = () => {
 			mutationFn={registerWithPassword}
 			fields={REGISTER_FIELDS}
 			schema={RegisterSchema}
+			defaultValues={{ email: '', password: '', username: '' }}
 			bottomText={
 				<BottomText redirectText={'Login'} redirectUrl={PAGES.LOGIN}>
 					Already have an account?

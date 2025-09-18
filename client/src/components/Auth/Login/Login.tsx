@@ -16,6 +16,7 @@ const Login = () => {
 			mutationFn={loginWithPassword}
 			buttonLabel="Login"
 			schema={LoginSchema}
+			defaultValues={{ email: '', password: '' }}
 			bottomText={
 				<BottomText redirectText={'Register'} redirectUrl={PAGES.REGISTER}>
 					Don&apos;t have an account?
