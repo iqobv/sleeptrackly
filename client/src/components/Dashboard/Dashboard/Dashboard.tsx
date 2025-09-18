@@ -3,6 +3,7 @@
 import { getStatisticsByWeekForUser } from '@/api';
 import { useAuth, useWeekPagination } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
+import DashboardLoader from '../DashboardLoader/DashboardLoader';
 import SleepChart from '../SleepChart/SleepChart';
 import Stats from '../Stats/Stats';
 import StatsByDays from '../StatsByDays/StatsByDays';
@@ -13,15 +14,18 @@ const Dashboard = () => {
 	const { isAuthenticated } = useAuth();
 	const { selectedWeek } = useWeekPagination();
 
-	const { data } = useQuery({
+	const { data, isLoading, isFetching } = useQuery({
 		queryKey: ['dashboard', selectedWeek],
 		queryFn: () => getStatisticsByWeekForUser(selectedWeek),
 		enabled: !!isAuthenticated,
 	});
 
+	const showSkeleton = isLoading || isFetching;
+
 	return (
 		<div className={styles['dashboard']}>
-			{data && (
+			{showSkeleton && <DashboardLoader />}
+			{data && !showSkeleton && (
 				<>
 					<WeekPagination totalWeeks={data?.totalWeeks} days={data?.days} />
 					<Stats data={data.statistics} />

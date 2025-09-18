@@ -3,5 +3,7 @@ export { default as Calendar } from './Calendar/Calendar';
 export { default as FormLabel } from './FormLabel/FormLabel';
 export { default as Loader } from './Loader/Loader';
 export { default as PageHeader } from './PageHeader/PageHeader';
+export { default as PageLoader } from './PageLoader/PageLoader';
 export { default as Select } from './Select/Select';
+export { default as SkeletonLoader } from './SkeletonLoader/SkeletonLoader';
 export { default as TextField } from './TextField/TextField';

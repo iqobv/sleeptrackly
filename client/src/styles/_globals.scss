@@ -84,3 +84,16 @@ select:-webkit-autofill:focus {
 	padding-top: 20px;
 	padding-bottom: 100px;
 }
+
+.fade-in {
+	opacity: 0;
+	transform: translateY(20px);
+	animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

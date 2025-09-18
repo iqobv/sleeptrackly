@@ -16,7 +16,7 @@ const Stats = ({ data }: StatsProps) => {
 	} = data;
 
 	return (
-		<div className={styles['stats']}>
+		<div className={`${styles['stats']} fade-in`}>
 			<p>In this week you slept {formatTime(total).join(':')}</p>
 			<p>Average sleep duration for week: {formatTime(avgForWeek).join(':')}</p>
 			<p>Average sleep duration by data: {formatTime(avgByData).join(':')}</p>

@@ -20,7 +20,7 @@ const AuthButtons = ({ closeMenu = () => {} }: AuthButtonsProps) => {
 	return (
 		<div className={styles['auth-buttons']}>
 			{isloading ? (
-				<Loader />
+				<Loader disablePadding />
 			) : (
 				<>
 					{isAuthenticated ? (

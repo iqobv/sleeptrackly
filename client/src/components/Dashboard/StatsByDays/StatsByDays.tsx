@@ -11,7 +11,7 @@ interface StatsByDaysProps {
 
 const StatsByDays = ({ days }: StatsByDaysProps) => {
 	return (
-		<div className={styles['stats-by-days']}>
+		<div className={`${styles['stats-by-days']} fade-in`}>
 			<ul className={styles['stats-by-days__list']}>
 				{days.map((el) => (
 					<li key={el.day} className={styles['stats-by-days__item']}>
