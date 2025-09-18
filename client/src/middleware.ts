@@ -9,9 +9,10 @@ export async function middleware(request: NextRequest) {
 	const path = request.nextUrl.pathname;
 
 	if (
-		(!isAuthenticated &&
-			(path.startsWith(PAGES.DASHBOARD) || path.startsWith(PAGES.TIMER))) ||
-		path.startsWith(PAGES.CHALLENGES)
+		!isAuthenticated &&
+		(path.startsWith(PAGES.DASHBOARD) ||
+			path.startsWith(PAGES.TIMER) ||
+			path.startsWith(PAGES.CHALLENGES))
 	) {
 		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 	}
