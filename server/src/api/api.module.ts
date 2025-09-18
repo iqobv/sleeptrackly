@@ -6,8 +6,10 @@ import { SleepEntryModule } from './sleep-entry/sleep-entry.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { ChallengeModule } from './challenge/challenge.module';
 import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
+import { UserAvatarModule } from './user-avatar/user-avatar.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
-  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule]
+  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule]
 })
 export class ApiModule {}

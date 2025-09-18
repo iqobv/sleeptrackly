@@ -1,4 +1,5 @@
 export * from './api-versioning.config';
+export * from './cloudinary.config';
 export * from './cookie.config';
 export * from './cors.config';
 export * from './session.config';

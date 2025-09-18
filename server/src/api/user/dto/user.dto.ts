@@ -18,4 +18,15 @@ export class UserDto {
 
 	@ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
 	createdAt: Date;
+
+	@ApiProperty({
+		example: {
+			url: 'default-avatar.png',
+			isDefault: true,
+		},
+	})
+	avatar: {
+		url: string;
+		isDefault: boolean;
+	};
 }
