@@ -3,6 +3,7 @@ import {
 	ConflictException,
 	Injectable,
 } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { CloudinaryService } from 'src/infra/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { DEFAULT_AVATAR } from 'src/libs/constants';
@@ -37,8 +38,11 @@ export class UserAvatarService {
 	async upload(file: Express.Multer.File, userId: string) {
 		const avatar = await this.findByUserId(userId);
 
-		const filename = avatar.id;
+		const filename = randomUUID();
 		file.filename = filename;
+
+		if (!avatar.isDefault)
+			await this.cloudinaryService.deleteFile(avatar.url.split('.')[0]);
 
 		const metadata = await this.cloudinaryService.uploadFile(file, {
 			filename_override: filename,
