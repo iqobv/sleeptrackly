@@ -1,0 +1,16 @@
+model UserAvatar {
+  id String @id @default(uuid())
+
+  userId String @unique @map("user_id")
+
+  url String @default("default-avatar.png")
+
+  isDefault Boolean @default(true) @map("is_default")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_avatars")
+}

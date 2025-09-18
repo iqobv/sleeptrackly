@@ -6,6 +6,7 @@ import {
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { comparePassword, hashPassword } from 'src/libs/utils';
+import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
 
@@ -15,6 +16,12 @@ const select: Prisma.UserSelect = {
 	username: true,
 	role: true,
 	createdAt: true,
+	avatar: {
+		select: {
+			url: true,
+			isDefault: true,
+		},
+	},
 };
 
 @Injectable()
@@ -22,6 +29,7 @@ export class UserService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly userSleepStatusService: UserSleepStatusService,
+		private readonly userAvatarService: UserAvatarService,
 	) {}
 
 	async create(dto: CreateUserDto) {
@@ -41,6 +49,7 @@ export class UserService {
 		});
 
 		await this.userSleepStatusService.createSleepStatus(user.id);
+		await this.userAvatarService.create(user.id);
 
 		return user;
 	}
