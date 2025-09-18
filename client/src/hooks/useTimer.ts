@@ -25,7 +25,7 @@ export const useTimer = () => {
 		retry: false,
 	});
 
-	const { mutate: update } = useMutation({
+	const { mutate: update, isPending } = useMutation({
 		mutationFn: updateSleepStatus,
 		mutationKey: ['update-sleep'],
 		onSuccess: (data) => {
@@ -81,6 +81,7 @@ export const useTimer = () => {
 		isSleeping,
 		isFinished,
 		finishedSleep,
+		isPending,
 		startTimer,
 		stopTimer,
 	};

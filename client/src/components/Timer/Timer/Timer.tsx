@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button, Loader } from '@/components/UI';
 import { useTimer } from '@/hooks';
 
 import styles from './Timer.module.scss';
@@ -14,12 +14,12 @@ const Timer = () => {
 		isSleeping,
 		isFinished,
 		finishedSleep,
+		isPending,
 		startTimer,
 		stopTimer,
 	} = useTimer();
 
 	const handleClick = () => {
-		// isSleeping ? stopTimer() : startTimer();
 		if (isSleeping) stopTimer();
 		else startTimer();
 	};
@@ -39,12 +39,18 @@ const Timer = () => {
 				</div>
 			</div>
 			<div className={styles['timer__control']}>
-				{isFinished && !!finishedSleep ? (
-					<TimerEnd data={finishedSleep} />
+				{isPending ? (
+					<Loader />
 				) : (
-					<Button onClick={handleClick}>
-						{isSleeping ? 'Stop Timer' : 'Start Timer'}
-					</Button>
+					<>
+						{isFinished && !!finishedSleep ? (
+							<TimerEnd data={finishedSleep} />
+						) : (
+							<Button onClick={handleClick}>
+								{isSleeping ? 'Stop Timer' : 'Start Timer'}
+							</Button>
+						)}
+					</>
 				)}
 			</div>
 		</div>
