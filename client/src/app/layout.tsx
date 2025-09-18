@@ -42,7 +42,11 @@ export default async function RootLayout({
 		return null;
 	};
 
-	if (hasSession) user = await getUser();
+	if (hasSession) {
+		const res = await getUser();
+		if (res?.id) user = res;
+		else cookieStore.delete('session');
+	}
 
 	return (
 		<html lang="en" suppressHydrationWarning>
