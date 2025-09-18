@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+'use client';
+
 import styles from './Loader.module.scss';
 import { LoaderProps } from './Loader.types';
 
