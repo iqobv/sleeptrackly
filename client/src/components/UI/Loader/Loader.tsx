@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client';
 
 import styles from './Loader.module.scss';
@@ -19,11 +17,11 @@ export default function Loader({
 			} ${containerClassName}`}
 		>
 			<div
-				className={`${styles.loader}  ${loaderClassName}`}
+				className={`${styles.loader} ${loaderClassName}`}
 				style={{
 					width: size,
 					height: size,
-					['--thickness' as any]: `${thickness}px`,
+					['--thickness' as string]: `${thickness}px`,
 				}}
 			/>
 		</div>

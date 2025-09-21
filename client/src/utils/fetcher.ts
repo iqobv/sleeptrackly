@@ -6,12 +6,14 @@ export const fetcher = async <T>(
 	url: string,
 	init?: RequestInit
 ): Promise<T> => {
+	const isFormData = init?.body instanceof FormData;
+
 	const res = await fetch(url, {
 		...init,
 		credentials: 'include',
 		headers: {
+			...(isFormData ? {} : { 'Content-Type': 'application/json' }),
 			...init?.headers,
-			'Content-Type': 'application/json',
 		},
 	});
 

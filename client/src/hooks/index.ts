@@ -1,4 +1,5 @@
 export * from './useAuth';
+export * from './useBlockScroll';
 export * from './useChallengeTaskCalendar';
 export * from './useCustomSelect';
 export * from './useLoginWindow';

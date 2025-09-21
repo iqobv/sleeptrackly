@@ -21,7 +21,7 @@ export const useAuth = () => {
 		setIsLoading(false);
 	}, [user]);
 
-	useEffect(() => {}, [isAuthenticated]);
+	// useEffect(() => {}, [isAuthenticated]);
 
 	const { mutate: logout } = useMutation({
 		mutationFn: apiLogout,

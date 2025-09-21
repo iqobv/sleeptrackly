@@ -33,7 +33,8 @@ export async function middleware(request: NextRequest) {
 		!isAuthenticated &&
 		(path.startsWith(PAGES.DASHBOARD) ||
 			path.startsWith(PAGES.TIMER) ||
-			path.startsWith(PAGES.CHALLENGES))
+			path.startsWith(PAGES.CHALLENGES) ||
+			path.startsWith(PAGES.SETTINGS))
 	) {
 		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 	}
