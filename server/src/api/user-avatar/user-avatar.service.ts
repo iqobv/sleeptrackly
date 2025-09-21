@@ -1,18 +1,22 @@
+import { HttpService } from '@nestjs/axios';
 import {
 	BadGatewayException,
 	ConflictException,
 	Injectable,
 } from '@nestjs/common';
 import { randomUUID } from 'crypto';
+import { firstValueFrom } from 'rxjs';
 import { CloudinaryService } from 'src/infra/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { DEFAULT_AVATAR } from 'src/libs/constants';
+import { Readable } from 'stream';
 
 @Injectable()
 export class UserAvatarService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly cloudinaryService: CloudinaryService,
+		private readonly httpService: HttpService,
 	) {}
 
 	async createForAllUsers() {
@@ -56,10 +60,37 @@ export class UserAvatarService {
 		return this.update(avatar.id, url);
 	}
 
-	async create(userId: string) {
-		const avatar = await this.findByUserId(userId);
+	async uploadProviderAvatar(avatarUrl: string, userId: string) {
+		const response = await firstValueFrom(
+			this.httpService.get(avatarUrl, {
+				responseType: 'arraybuffer',
+			}),
+		);
 
-		if (avatar) throw new ConflictException('Avatar already exists');
+		const buffer = Buffer.from(response.data);
+
+		const file: Express.Multer.File = {
+			fieldname: 'file',
+			originalname: 'avatar.jpg',
+			encoding: '7bit',
+			mimetype: 'image/jpeg',
+			size: response.data.byteLength,
+			destination: '',
+			filename: 'avatar.jpg',
+			path: '',
+			buffer,
+			stream: Readable.from(buffer),
+		};
+
+		await this.upload(file, userId);
+	}
+
+	async create(userId: string) {
+		const existingAvatar = await this.prismaService.userAvatar.findUnique({
+			where: { userId },
+		});
+
+		if (existingAvatar) throw new ConflictException('Avatar already exists');
 
 		const newAvatar = await this.prismaService.userAvatar.create({
 			data: { user: { connect: { id: userId } } },
@@ -73,7 +104,11 @@ export class UserAvatarService {
 			where: { userId },
 		});
 
-		if (!avatar) avatar = await this.create(userId);
+		if (!avatar) {
+			avatar = await this.prismaService.userAvatar.create({
+				data: { user: { connect: { id: userId } } },
+			});
+		}
 
 		return avatar;
 	}

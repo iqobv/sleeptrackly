@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { getCookieConfig } from 'src/config';
 import { comparePassword } from 'src/libs/utils';
+import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserProviderService } from '../user-provider/user-provider.service';
 import { CreateUserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
@@ -15,6 +16,7 @@ export class AuthService {
 		private readonly userService: UserService,
 		private readonly configService: ConfigService,
 		private readonly userProviderService: UserProviderService,
+		private readonly userAvatarService: UserAvatarService,
 	) {}
 
 	async validateUser(email: string, password: string) {
@@ -62,7 +64,7 @@ export class AuthService {
 	}
 
 	async validateOAuthLogin(dto: OAuthDto) {
-		const { provider, providerId, email, username } = dto;
+		const { provider, providerId, avatarUrl, email, username } = dto;
 
 		let providerUser = await this.userProviderService.findProvider(
 			provider,
@@ -77,6 +79,8 @@ export class AuthService {
 				email,
 				username,
 			});
+			if (avatarUrl && user)
+				await this.userAvatarService.uploadProviderAvatar(avatarUrl, user.id);
 		}
 
 		await this.userProviderService.createProvider(
