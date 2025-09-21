@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
+import basicAuth from 'express-basic-auth';
 import session from 'express-session';
 import passport from 'passport';
 import { createClient } from 'redis';
@@ -28,6 +29,17 @@ async function bootstrap() {
 	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
 	app.set('trust proxy', 1);
+
+	app.use(
+		'/docs*splat',
+		basicAuth({
+			challenge: true,
+			users: {
+				[config.getOrThrow<string>('SWAGGER_USER')]:
+					config.getOrThrow<string>('SWAGGER_PASSWORD'),
+			},
+		}),
+	);
 
 	app.enableCors(getCorsConfig(config));
 	app.useGlobalPipes(getValidationPipeConfig());
