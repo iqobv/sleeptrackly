@@ -15,32 +15,32 @@ The app allows to track the sleep duration. You can start the sleep timer, end i
 
 ## Stack
 
-<div style="display: flex; flex-wrap: wrap; gap: 10px;">
-<a href="https://nodejs.org/" target="_blank">
+<div style="display: flex; flex-wrap: wrap; gap: 10px; list-style-type: none; padding: 0; margin: 0;">
+<a href="https://nodejs.org/" target="_blank" style="text-decoration: none;">
   <img src="https://img.shields.io/badge/Node.js-22.17.0-339933?logo=node.js&logoColor=white"/>
 </a>
-<a href="https://nestjs.com/" target="_blank">
+<a href="https://nestjs.com/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/NestJS-11.0.1-E0234E?logo=nestjs&logoColor=white"/>
 </a>
-<a href="https://www.prisma.io/" target="_blank">
+<a href="https://www.prisma.io/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/Prisma-6.15.0-2D374A?logo=prisma&logoColor=white"/>
 </a>
-<a href="https://www.postgresql.org/" target="_blank">
+<a href="https://www.postgresql.org/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/PostgreSQL-17.6-336791?logo=postgresql&logoColor=white"/>
 </a>
-<a href="https://nextjs.org/" target="_blank">
+<a href="https://nextjs.org/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/Next.js-15.5.2-000000?logo=next.js&logoColor=white"/>
 </a>
-<a href="https://sass-lang.com/" target="_blank">
+<a href="https://sass-lang.com/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/SCSS-1.92.1-CC6699?logo=sass&logoColor=white"/>
 </a>
-<a href="https://www.typescriptlang.org/" target="_blank">
+<a href="https://www.typescriptlang.org/" target="_blank" style="text-decoration: none;">
   <img src="https://img.shields.io/badge/TypeScript-5.7.3-3178C6?logo=typescript&logoColor=white"/>
 </a>
-<a href="https://www.passportjs.org/" target="_blank">
+<a href="https://www.passportjs.org/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/Passport-0.7.0-34E27A?logo=passport&logoColor=white"/>
 </a>
-<a href="https://redis.io/" target="_blank">
+<a href="https://redis.io/" target="_blank" style="text-decoration: none;">
 	<img src="https://img.shields.io/badge/Redis-7.4-DC382D?logo=redis&logoColor=white"/>
 </a>
 </div>
