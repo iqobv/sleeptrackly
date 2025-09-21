@@ -22,13 +22,13 @@ const SettingsTabs = () => {
 			SETTINGS_TABS.find((tab) => tab.name === searchParams.get('tab')) ||
 				SETTINGS_TABS[0]
 		);
-	}, [searchParams]);
+	}, [searchParams, setActiveTab]);
 
 	useEffect(() => {
 		const newParams = new URLSearchParams(searchParams);
 		newParams.set('tab', activeTab.name);
 		router.push(`?${newParams.toString()}`);
-	}, [activeTab]);
+	}, [activeTab, searchParams, router]);
 
 	return (
 		<div className={styles['settings-tabs']}>

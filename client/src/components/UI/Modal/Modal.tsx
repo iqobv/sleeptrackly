@@ -27,7 +27,7 @@ export default function Modal({
 	useEffect(() => {
 		document.addEventListener('click', handleClickOutside);
 		return () => document.removeEventListener('click', handleClickOutside);
-	}, []);
+	}, [handleClickOutside]);
 
 	if (!isOpen) return null;
 

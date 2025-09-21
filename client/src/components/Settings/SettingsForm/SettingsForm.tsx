@@ -45,9 +45,9 @@ const SettingsForm = <T extends FieldValues, R>({
 
 	useEffect(() => {
 		reset(defaultValues);
-	}, [defaultValues]);
+	}, [defaultValues, reset]);
 
-	const onSubmit: SubmitHandler<T> = (data: T) => {
+	const onSubmit: SubmitHandler<T> = () => {
 		const changedFields: Partial<T> = {};
 		const currentValues = getValues();
 

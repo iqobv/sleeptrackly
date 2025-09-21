@@ -20,7 +20,7 @@ const UploadAvatar = () => {
 	const { mutate: upload, isPending } = useMutation({
 		mutationFn: (file: File) => uploadUserAvatar(file),
 		mutationKey: ['avatar'],
-		onSuccess(data) {
+		onSuccess() {
 			toast.success('Avatar updated');
 			router.refresh();
 			setAvatar(null);
@@ -58,7 +58,7 @@ const UploadAvatar = () => {
 						className={styles['avatar__wrapper']}
 					>
 						<Image
-							src={`/api/images/${user?.avatar.url || 'default-avatar.png'}`}
+							src={`/api/images/${user?.avatar?.url || 'default-avatar.png'}`}
 							width={250}
 							height={250}
 							alt="avatar"

@@ -45,7 +45,7 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 				<Button
 					className={styles['week-pagination__button']}
 					onClick={handlePrevWeek}
-					disabled={week === totalWeeks - 1}
+					disabled={totalWeeks > 0 ? week === totalWeeks - 1 : true}
 				>
 					<MdKeyboardArrowLeft size={40} {...iconProps} />
 				</Button>
