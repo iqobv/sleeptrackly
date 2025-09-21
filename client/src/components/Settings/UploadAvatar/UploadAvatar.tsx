@@ -1,9 +1,9 @@
 'use client';
 
 import { uploadUserAvatar } from '@/api';
-import { Loader, TextField } from '@/components/UI';
+import { Loader, PageHeader, TextField } from '@/components/UI';
 import { useAuth } from '@/hooks';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -15,15 +15,12 @@ const UploadAvatar = () => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [avatar, setAvatar] = useState<File | null>(null);
-	const queryClient = useQueryClient();
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const { mutate: upload, isPending } = useMutation({
 		mutationFn: (file: File) => uploadUserAvatar(file),
 		mutationKey: ['avatar'],
 		onSuccess(data) {
-			queryClient.setQueryData(['user'], data);
-			queryClient.invalidateQueries({ queryKey: ['user'] });
 			toast.success('Avatar updated');
 			router.refresh();
 			setAvatar(null);
@@ -50,29 +47,35 @@ const UploadAvatar = () => {
 			{isPending ? (
 				<Loader />
 			) : (
-				<>
-					<div className={styles['avatar__wrapper']}>
+				<div className={styles['avatar__container']}>
+					<PageHeader
+						title="Avatar"
+						description="To change your avatar, click on avatar and select a new one."
+						titleComponent="h3"
+					/>
+					<button
+						onClick={() => inputRef.current?.click()}
+						className={styles['avatar__wrapper']}
+					>
 						<Image
 							src={`/api/images/${user?.avatar.url || 'default-avatar.png'}`}
-							width={100}
-							height={100}
+							width={250}
+							height={250}
 							alt="avatar"
 							className={styles['avatar__image']}
 							priority
 						/>
-					</div>
+					</button>
 					<div>
 						<TextField
 							ref={inputRef}
 							type="file"
 							id="avatar"
+							hidden
 							accept="image/*"
 							className={styles['avatar__input']}
 							onChange={handleUpload}
 						/>
-						<label htmlFor="avatar" className={styles['avatar__label']}>
-							Upload
-						</label>
 					</div>
 					{avatar && (
 						<UploadModal
@@ -81,7 +84,7 @@ const UploadAvatar = () => {
 							handleUpdate={handleUpdate}
 						/>
 					)}
-				</>
+				</div>
 			)}
 		</div>
 	);

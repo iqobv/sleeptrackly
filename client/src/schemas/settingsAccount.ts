@@ -1,7 +1,7 @@
 import z from 'zod';
 
-export const SettingsSchema = z.object({
-	email: z.email().nonempty({ error: 'Email is required' }),
+export const SettingsAccountSchema = z.object({
+	// email: z.email().nonempty({ error: 'Email is required' }),
 	username: z
 		.string()
 		.nonempty({ error: 'Username is required' })

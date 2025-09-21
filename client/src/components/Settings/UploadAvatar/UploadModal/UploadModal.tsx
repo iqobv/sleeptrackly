@@ -4,6 +4,8 @@ import { Button, Modal } from '@/components/UI';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
+import styles from './UploadModal.module.scss';
+
 interface UploadModalProps {
 	file: File;
 	handleClear: () => void;
@@ -28,17 +30,28 @@ const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
 	};
 
 	return (
-		<Modal isOpen={isOpen} onClose={handleClose}>
+		<Modal
+			isOpen={isOpen}
+			onClose={handleClose}
+			containerClassName={styles['upload-modal__container']}
+			bodyClassName={styles['upload-modal']}
+		>
 			<Image
 				src={URL.createObjectURL(file)}
-				width={200}
-				height={200}
+				width={250}
+				height={250}
 				alt={file.name}
+				className={styles['upload-modal__image']}
 			/>
-			<p>Are you sure you want to upload this image?</p>
-			<p>{file.name}</p>
-			<Button onClick={handleClose}>Cancel</Button>
-			<Button onClick={handleUpload}>Upload</Button>
+			<p className={styles['upload-modal__text']}>
+				Are you sure you want to upload this image?
+			</p>
+			<div className={styles['upload-modal__buttons']}>
+				<Button variant="outlined" onClick={handleClose}>
+					Cancel
+				</Button>
+				<Button onClick={handleUpload}>Upload</Button>
+			</div>
 		</Modal>
 	);
 };

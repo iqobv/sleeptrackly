@@ -8,7 +8,13 @@ import Button from '../Button/Button';
 import styles from './Modal.module.scss';
 import { ModalProps } from './Modal.types';
 
-export default function Modal({ children, isOpen, onClose }: ModalProps) {
+export default function Modal({
+	children,
+	isOpen,
+	bodyClassName = '',
+	containerClassName = '',
+	onClose,
+}: ModalProps) {
 	const modalRef = useRef<HTMLInputElement>(null);
 	useBlockScroll(isOpen);
 
@@ -27,13 +33,18 @@ export default function Modal({ children, isOpen, onClose }: ModalProps) {
 
 	return createPortal(
 		<div className={styles['modal']}>
-			<div className={styles['modal__container']} ref={modalRef}>
+			<div
+				className={`${styles['modal__container']} ${containerClassName}`}
+				ref={modalRef}
+			>
 				<div className={styles['modal__header']}>
 					<Button onClick={onClose} isIcon variant="text">
 						<MdClose size={25} />
 					</Button>
 				</div>
-				<div className={styles['modal__body']}>{children}</div>
+				<div className={`${styles['modal__body']} ${bodyClassName}`}>
+					{children}
+				</div>
 			</div>
 		</div>,
 		document.body

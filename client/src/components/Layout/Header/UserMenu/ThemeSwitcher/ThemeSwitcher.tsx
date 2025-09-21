@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
-import { FaRegMoon, FaRegSun } from 'react-icons/fa6';
-import styles from './ThemeSwitcher.module.scss';
+import { FaRegMoon } from 'react-icons/fa6';
+import { MdOutlineWbSunny } from 'react-icons/md';
+import MenuItem from '../MenuItem/MenuItem';
 
 const iconProps: IconBaseProps = {
-	size: 22,
+	size: 20,
 	suppressHydrationWarning: true,
 };
 
@@ -26,15 +26,17 @@ const ThemeSwitcher = () => {
 	if (!mounted) return null;
 
 	return (
-		<div className={styles['theme-switcher']}>
-			<Button onClick={handleClick} isIcon variant="text">
-				{resolvedTheme === 'dark' ? (
-					<FaRegSun {...iconProps} />
-				) : (
+		<MenuItem
+			onClick={handleClick}
+			icon={
+				resolvedTheme === 'dark' ? (
 					<FaRegMoon {...iconProps} />
-				)}
-			</Button>
-		</div>
+				) : (
+					<MdOutlineWbSunny {...iconProps} />
+				)
+			}
+			label="Switch Theme"
+		/>
 	);
 };
 

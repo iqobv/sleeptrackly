@@ -1,15 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { SettingsFormFields } from '@/types';
 import { DefaultValues, FieldValues } from 'react-hook-form';
-import { ZodObject } from 'zod';
+import { ZodType } from 'zod';
 
-export interface SettingsFormProps<
-	T extends FieldValues,
-	R extends { id: string }
-> {
+export interface SettingsFormProps<T extends FieldValues, R> {
 	fields: SettingsFormFields<T>[];
 	mutationFn: (data: T) => Promise<R>;
 	onSuccess?: (data: R) => void;
-	schema?: ZodObject<T>;
-	buttonLabel?: string;
-	defaultValues?: Partial<T> | DefaultValues<T>;
+	schema?: ZodType<T, any, any>;
+	defaultValues?: DefaultValues<T>;
 }

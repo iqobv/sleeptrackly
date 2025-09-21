@@ -17,7 +17,7 @@ export class UserAvatarController {
 
 	@Auth()
 	@Post('upload')
-	@UseInterceptors(FileInterceptor('image'))
+	@UseInterceptors(FileInterceptor('avatar'))
 	async upload(
 		@UploadedFile() file: Express.Multer.File,
 		@Authorized('id') userId: string,

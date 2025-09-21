@@ -1,10 +1,11 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button, Divider } from '@/components/UI';
 import { useAuth, useBlockScroll } from '@/hooks';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import MenuItem from './MenuItem/MenuItem';
+import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
 import styles from './UserMenu.module.scss';
 import { USER_MENU_LINKS } from './userManuLinks';
 
@@ -48,9 +49,17 @@ const UserMenu = () => {
 			</button>
 			{open && (
 				<div className={styles['user-menu__dropdown']}>
-					{USER_MENU_LINKS.map((link) => (
-						<MenuItem item={link} key={link.label} onClick={handleOpen} />
+					{USER_MENU_LINKS.map(({ label, name, path, icon }) => (
+						<MenuItem
+							icon={icon}
+							label={label}
+							key={name}
+							path={path}
+							onClick={handleOpen}
+						/>
 					))}
+					<Divider />
+					<ThemeSwitcher />
 					<Button onClick={handleLogout} fullWidth>
 						Logout
 					</Button>

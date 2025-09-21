@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
-import ThemeSwitcher from '../../ThemeSwitcher/ThemeSwitcher';
 import AuthButtons from '../AuthButtons/AuthButtons';
 import MenuButton from '../MenuButton/MenuButton';
 import NavLinks from '../NavLinks/NavLinks';
@@ -55,7 +54,6 @@ const Nav = () => {
 					<NavLinks />
 				</nav>
 				<div className={styles['theme-auth-container']}>
-					<ThemeSwitcher />
 					<div className={styles['auth-container']}>
 						<AuthButtons />
 					</div>

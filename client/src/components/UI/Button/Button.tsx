@@ -32,6 +32,7 @@ export default function Button({
 					className={`${styles} ${className}`}
 					style={style}
 					id={id}
+					onClick={onClick}
 					{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
 				>
 					{children}

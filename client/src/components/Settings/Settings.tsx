@@ -1,12 +1,12 @@
 'use client';
 
 import styles from './Settings.module.scss';
-import SettingsForm from './SettingsForm/SettingsForm';
+import SettingsTabs from './SettingsTabs/SettingsTabs';
 
 const Settings = () => {
 	return (
 		<div className={styles['settings']}>
-			<SettingsForm />
+			<SettingsTabs />
 		</div>
 	);
 };

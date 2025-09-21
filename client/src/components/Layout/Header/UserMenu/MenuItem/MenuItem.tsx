@@ -1,24 +1,28 @@
 'use client';
 
-import Link from 'next/link';
-import type { Link as LinkType } from '../userManuLinks';
+import { Button } from '@/components/UI';
 import styles from './MenuItem.module.scss';
 
 interface MenuItemProps {
-	item: LinkType;
 	onClick: () => void;
+	label: string;
+	icon: React.ReactNode;
+	path?: string;
 }
 
-const MenuItem = ({ item, onClick }: MenuItemProps) => {
+const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
 	return (
 		<div className={styles['menu-item']}>
-			<Link
+			<Button
+				variant="text"
 				onClick={onClick}
 				className={styles['menu-item__link']}
-				href={item.path}
+				fullWidth
+				{...(path && { href: path })}
 			>
-				{item.label}
-			</Link>
+				{icon}
+				{label}
+			</Button>
 		</div>
 	);
 };
