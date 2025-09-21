@@ -1,10 +1,31 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PAGES } from './config';
+import { IUser } from './types';
 
 export async function middleware(request: NextRequest) {
 	const cookiesStore = await cookies();
-	const isAuthenticated = cookiesStore.has('session');
+	const hasSession = cookiesStore.has('session');
+	const allCookies = cookiesStore.toString();
+
+	let isAuthenticated = false;
+
+	if (hasSession) {
+		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
+			headers: {
+				'Content-Type': 'application/json',
+				cookie: allCookies,
+			},
+		});
+		const data = (await res.json()) as IUser;
+
+		if (res.ok && data?.id) {
+			isAuthenticated = true;
+		} else {
+			cookiesStore.delete('session');
+			isAuthenticated = false;
+		}
+	}
 
 	const path = request.nextUrl.pathname;
 
