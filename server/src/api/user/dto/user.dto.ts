@@ -7,12 +7,6 @@ export class UserDto {
 	@ApiProperty({ example: '2Ct8e@example.com' })
 	email: string;
 
-	@ApiProperty({ example: 'John' })
-	firstName: string;
-
-	@ApiProperty({ example: 'Doe' })
-	lastName: string;
-
 	@ApiProperty({ example: 'USER' })
 	role: string;
 

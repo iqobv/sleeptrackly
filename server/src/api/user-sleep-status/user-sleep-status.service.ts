@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 
@@ -85,7 +85,7 @@ export class UserSleepStatusService {
 
 	async updateSleepStatus(userId: string, clickedBy: Date) {
 		let userSleepStatus = await this.getSleepStatus(userId);
-		if (!userSleepStatus) return { error: true, message: 'User not found' };
+		if (!userSleepStatus) throw new NotFoundException('User not found');
 
 		let { isSleeping, sleepStart } = userSleepStatus;
 		let sleepEntry = {};

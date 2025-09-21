@@ -7,14 +7,43 @@ import {
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiExcludeEndpoint } from '@nestjs/swagger';
+import {
+	ApiBadGatewayResponse,
+	ApiBody,
+	ApiConsumes,
+	ApiExcludeEndpoint,
+	ApiOkResponse,
+	ApiOperation,
+	ApiTags,
+} from '@nestjs/swagger';
 import { Auth, Authorized } from 'src/libs/decorators';
+import { UserAvatarDto } from './dto';
 import { UserAvatarService } from './user-avatar.service';
 
+@ApiTags('User Avatar')
 @Controller('user-avatar')
 export class UserAvatarController {
 	constructor(private readonly userAvatarService: UserAvatarService) {}
 
+	@ApiOperation({ summary: 'Upload user avatar' })
+	@ApiBody({ type: 'file' })
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				avatar: {
+					type: 'file',
+					items: {
+						type: 'string',
+						format: 'binary',
+					},
+				},
+			},
+		},
+	})
+	@ApiOkResponse({ type: UserAvatarDto })
+	@ApiBadGatewayResponse({ description: 'Error uploading image' })
 	@Auth()
 	@Post('upload')
 	@UseInterceptors(FileInterceptor('avatar'))
@@ -26,6 +55,8 @@ export class UserAvatarController {
 		return this.userAvatarService.upload(file, userId);
 	}
 
+	@ApiOperation({ summary: 'Delete user avatar' })
+	@ApiOkResponse({ type: UserAvatarDto })
 	@Auth()
 	@Delete()
 	async deleteAvatar(@Authorized('id') userId: string) {

@@ -1,5 +1,5 @@
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 
@@ -25,7 +25,7 @@ export class ImageService {
 			}),
 		);
 
-		if (!response) throw new BadRequestException('Error getting image');
+		if (!response) throw new BadGatewayException('Error getting image');
 
 		return response;
 	}

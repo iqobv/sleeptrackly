@@ -9,14 +9,23 @@ import {
 	Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiBody } from '@nestjs/swagger';
+import {
+	ApiBody,
+	ApiConflictResponse,
+	ApiCreatedResponse,
+	ApiExcludeEndpoint,
+	ApiOkResponse,
+	ApiOperation,
+	ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { Auth, Authorized } from 'src/libs/decorators';
-import { CreateUserDto } from '../user/dto';
+import { CreateUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { GoogleAuth, LocalAuth } from './decorators';
+import { LoginDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -26,23 +35,35 @@ export class AuthController {
 		private readonly configService: ConfigService,
 	) {}
 
+	@ApiOperation({ summary: 'Login with email and password' })
+	@ApiBody({ type: LoginDto })
+	@ApiUnauthorizedResponse({ description: 'Email or password is incorrect' })
+	@ApiOkResponse({ type: UserDto })
 	@LocalAuth()
-	@ApiBody({ type: CreateUserDto })
+	@HttpCode(HttpStatus.OK)
 	@Post('login')
 	async login(@Req() req: Request) {
 		const user = req.user as User;
 		return await this.authService.login(user, req);
 	}
 
+	@ApiOperation({ summary: 'Register with email and password' })
+	@ApiBody({ type: CreateUserDto })
+	@ApiCreatedResponse({ type: UserDto })
+	@ApiConflictResponse({ description: 'User already exists' })
+	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
 	async register(@Req() req: Request, @Body() dto: CreateUserDto) {
 		return await this.authService.register(dto, req);
 	}
 
+	@ApiOperation({ summary: 'Login with Google' })
+	@ApiOkResponse({ type: UserDto })
 	@Get('google')
 	@GoogleAuth()
 	async googleLogin(@Req() req: Request) {}
 
+	@ApiExcludeEndpoint()
 	@Get('google/callback')
 	@GoogleAuth()
 	async googleLoginCallback(
@@ -59,12 +80,16 @@ export class AuthController {
 			</script>`);
 	}
 
+	@ApiOperation({ summary: 'Logout' })
+	@ApiOkResponse()
 	@Post('logout')
 	@HttpCode(HttpStatus.OK)
 	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
 		await this.authService.logout(req, res);
 	}
 
+	@ApiOperation({ summary: 'Get profile' })
+	@ApiOkResponse({ type: UserDto })
 	@Auth()
 	@HttpCode(HttpStatus.OK)
 	@Get('me')

@@ -1,12 +1,28 @@
 import { Body, Controller, Param, Patch } from '@nestjs/common';
+import {
+	ApiNotFoundResponse,
+	ApiOkResponse,
+	ApiOperation,
+	ApiTags,
+} from '@nestjs/swagger';
 import { Authorized } from 'src/libs/decorators';
 import { ChallengeTaskService } from './challenge-task.service';
-import { UpdateChallengeTaskDto, UpdateChallengeTaskParamsDto } from './dto';
+import {
+	ChallengeTaskDto,
+	UpdateChallengeTaskDto,
+	UpdateChallengeTaskParamsDto,
+} from './dto';
 
+@ApiTags('Challenge Task')
 @Controller('challenge-tasks')
 export class ChallengeTaskController {
 	constructor(private readonly challengeTaskService: ChallengeTaskService) {}
 
+	@ApiOperation({ summary: 'Update challenge task' })
+	@ApiOkResponse({ type: ChallengeTaskDto })
+	@ApiNotFoundResponse({
+		description: 'Challenge not found<br/>Task not found',
+	})
 	@Patch('challenge/:challengeId/task/:taskId')
 	async update(
 		@Authorized('id') userId: string,
