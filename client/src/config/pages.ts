@@ -9,4 +9,5 @@ export const PAGES = {
 	LOGIN: '/login',
 	REGISTER: '/register',
 	SETTINGS: '/settings',
+	PROFILE: (username: string) => `/u/${username}`,
 };

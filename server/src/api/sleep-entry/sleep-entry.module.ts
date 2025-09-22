@@ -4,6 +4,7 @@ import { SleepEntryController } from './sleep-entry.controller';
 
 @Module({
   controllers: [SleepEntryController],
+	exports: [SleepEntryService],
   providers: [SleepEntryService],
 })
 export class SleepEntryModule {}

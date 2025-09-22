@@ -23,6 +23,10 @@ const UserMenu = () => {
 		}
 	};
 
+	const handleCloseOnEscape = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') setOpen(false);
+	};
+
 	const handleLogout = () => {
 		setOpen(false);
 		logout();
@@ -30,10 +34,14 @@ const UserMenu = () => {
 
 	useEffect(() => {
 		document.addEventListener('click', handleClickOutside, true);
+		document.addEventListener('keydown', handleCloseOnEscape, true);
 		return () => {
 			document.removeEventListener('click', handleClickOutside, true);
+			document.removeEventListener('keydown', handleCloseOnEscape, true);
 		};
 	}, []);
+
+	if (!user) return null;
 
 	return (
 		<div className={styles['user-menu']} ref={menuRef}>
@@ -49,7 +57,7 @@ const UserMenu = () => {
 			</button>
 			{open && (
 				<div className={styles['user-menu__dropdown']}>
-					{USER_MENU_LINKS.map(({ label, name, path, icon }) => (
+					{USER_MENU_LINKS(user).map(({ label, name, path, icon }) => (
 						<MenuItem
 							icon={icon}
 							label={label}

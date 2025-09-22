@@ -4,13 +4,14 @@
 
 export const fetcher = async <T>(
 	url: string,
-	init?: RequestInit
+	init?: RequestInit,
+	withCredentials = true
 ): Promise<T> => {
 	const isFormData = init?.body instanceof FormData;
 
 	const res = await fetch(url, {
 		...init,
-		credentials: 'include',
+		credentials: withCredentials ? 'include' : 'same-origin',
 		headers: {
 			...(isFormData ? {} : { 'Content-Type': 'application/json' }),
 			...init?.headers,

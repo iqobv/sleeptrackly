@@ -1,6 +1,7 @@
 import { PAGES } from '@/config';
+import { IUser } from '@/types';
 import { IconBaseProps } from 'react-icons';
-import { MdOutlineSettings } from 'react-icons/md';
+import { MdOutlinePerson, MdOutlineSettings } from 'react-icons/md';
 
 export interface Link {
 	name: string;
@@ -13,7 +14,13 @@ const iconProps: IconBaseProps = {
 	size: 22,
 };
 
-export const USER_MENU_LINKS: Link[] = [
+export const USER_MENU_LINKS = (user: IUser): Link[] => [
+	{
+		name: 'profile',
+		label: 'Profile',
+		path: PAGES.PROFILE(user.username),
+		icon: <MdOutlinePerson {...iconProps} />,
+	},
 	{
 		name: 'settings',
 		label: 'Settings',

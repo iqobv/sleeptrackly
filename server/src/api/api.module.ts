@@ -8,8 +8,9 @@ import { ChallengeModule } from './challenge/challenge.module';
 import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { ImageModule } from './image/image.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
-  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule]
+  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule, ProfileModule]
 })
 export class ApiModule {}

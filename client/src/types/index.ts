@@ -6,6 +6,7 @@ export * from './dashboard.types';
 export * from './dashboardDay.types';
 export * from './field.types';
 export * from './option.types';
+export * from './profile.types';
 export * from './settingsField.types';
 export * from './sleepEntrie.types';
 export * from './sleepStatus.types';
