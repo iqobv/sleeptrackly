@@ -1,7 +1,16 @@
 import { z } from 'zod';
 
 export const baseAuthSchema = z.object({
-	email: z.email().nonempty({ error: 'Email is required' }),
+	email: z
+		.email()
+		.refine(
+			(email) => {
+				const domain = email.split('@')[1];
+				return domain === 'gmail.com';
+			},
+			{ message: 'Only gmail.com addresses are allowed.' }
+		)
+		.nonempty({ error: 'Email is required' }),
 	password: z
 		.string()
 		.nonempty({ error: 'Password is required' })
