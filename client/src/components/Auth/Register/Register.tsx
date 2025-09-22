@@ -5,6 +5,7 @@ import { PAGES } from '@/config';
 import { RegisterDto } from '@/dto';
 import { RegisterSchema } from '@/schemas';
 import { IUser } from '@/types';
+import { toast } from 'react-toastify';
 import AuthForm from '../AuthForm/AuthForm';
 import BottomText from '../BottomText/BottomText';
 import { REGISTER_FIELDS } from './registerFields';
@@ -16,6 +17,9 @@ const Register = () => {
 			mutationFn={registerWithPassword}
 			fields={REGISTER_FIELDS}
 			schema={RegisterSchema}
+			onSuccess={() =>
+				toast.success('Account created. Please confirm your email.')
+			}
 			defaultValues={{ email: '', password: '', username: '' }}
 			bottomText={
 				<BottomText redirectText={'Login'} redirectUrl={PAGES.LOGIN}>

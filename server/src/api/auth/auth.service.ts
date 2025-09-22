@@ -9,6 +9,7 @@ import { UserProviderService } from '../user-provider/user-provider.service';
 import { CreateUserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { OAuthDto } from './dto';
+import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
 		private readonly configService: ConfigService,
 		private readonly userProviderService: UserProviderService,
 		private readonly userAvatarService: UserAvatarService,
+		private readonly emailConfirmationService: EmailConfirmationService,
 	) {}
 
 	async validateUser(email: string, password: string) {
@@ -46,6 +48,8 @@ export class AuthService {
 
 	async register(dto: CreateUserDto, req: Request) {
 		const user = await this.userService.create(dto);
+
+		await this.emailConfirmationService.sendVerificationToken(user);
 
 		return await this.login(user, req);
 	}
@@ -81,6 +85,7 @@ export class AuthService {
 			});
 			if (avatarUrl && user)
 				await this.userAvatarService.uploadProviderAvatar(avatarUrl, user.id);
+			await this.emailConfirmationService.sendVerificationToken(user);
 		}
 
 		await this.userProviderService.createProvider(

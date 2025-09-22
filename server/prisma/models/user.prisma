@@ -5,6 +5,8 @@ model User {
   email    String  @unique
   password String?
 
+  emailVerified Boolean @default(false) @map("email_verified")
+
   role UserRole @default(USER)
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -15,6 +17,7 @@ model User {
   sleepStatus  UserSleepStatus?
   challenges   Challenge[]
   avatar       UserAvatar?
+  tokens       Token[]
 
   @@map("users")
 }

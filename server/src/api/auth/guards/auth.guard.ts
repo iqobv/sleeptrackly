@@ -20,7 +20,12 @@ export class AuthGuard implements CanActivate {
 			throw new UnauthorizedException();
 		}
 
-		const user = await this.userService.findById(userId);
+		const user = await this.userService.getById(userId);
+
+		if (!user) {
+			req.cookies['session'] = '';
+			return false;
+		}
 
 		req.user = user;
 

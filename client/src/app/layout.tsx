@@ -44,8 +44,17 @@ export default async function RootLayout({
 
 	if (hasSession) {
 		const res = await getUser();
-		if (res?.id) user = res;
-		else cookieStore.delete('session');
+		if (res?.id) {
+			user = res;
+		} else {
+			await fetch(`${process.env.API_URL}/v1/auth/logout`, {
+				headers: {
+					'Content-Type': 'application/json',
+					cookie: allCookies,
+				},
+			});
+			user = null;
+		}
 	}
 
 	return (

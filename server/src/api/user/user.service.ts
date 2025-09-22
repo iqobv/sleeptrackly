@@ -15,6 +15,7 @@ const select: Prisma.UserSelect = {
 	email: true,
 	username: true,
 	role: true,
+	emailVerified: true,
 	createdAt: true,
 	avatar: {
 		select: {
@@ -78,6 +79,18 @@ export class UserService {
 		return user;
 	}
 
+	async getById(id: string, full: boolean = false) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id },
+			select: {
+				...select,
+				...(full && { password: true }),
+			},
+		});
+
+		return user;
+	}
+
 	async findByUsername(username: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { username },
@@ -90,7 +103,7 @@ export class UserService {
 	}
 
 	async update(id: string, dto: UpdateUserDto) {
-		const { email, username, password } = dto;
+		const { email, username, password, emailVerified } = dto;
 
 		const user = await this.findById(id, true);
 
@@ -108,6 +121,7 @@ export class UserService {
 			data: {
 				email,
 				username,
+				emailVerified,
 				...(password && { password: await hashPassword(password) }),
 			},
 			select,

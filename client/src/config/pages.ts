@@ -10,4 +10,5 @@ export const PAGES = {
 	REGISTER: '/register',
 	SETTINGS: '/settings',
 	PROFILE: (username: string) => `/u/${username}`,
+	EMAIL_CONFIRMATION :"/email-confirmation"
 };

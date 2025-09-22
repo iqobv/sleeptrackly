@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
 	const allCookies = cookiesStore.toString();
 
 	let isAuthenticated = false;
+	let user: IUser | null = null;
 
 	if (hasSession) {
 		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
@@ -20,6 +21,7 @@ export async function middleware(request: NextRequest) {
 		const data = (await res.json()) as IUser;
 
 		if (res.ok && data?.id) {
+			user = data;
 			isAuthenticated = true;
 		} else {
 			cookiesStore.delete('session');
@@ -39,14 +41,26 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 	}
 
-	if (
-		isAuthenticated &&
-		(path.startsWith(PAGES.LOGIN) || path.startsWith(PAGES.REGISTER))
-	) {
+	const redirectBack = () => {
 		const redirectTo = request.cookies.get('previousPage')?.value || PAGES.HOME;
 		const response = NextResponse.redirect(new URL(redirectTo, request.url));
 		response.cookies.delete('previousPage');
 		return response;
+	};
+
+	if (
+		isAuthenticated &&
+		(path.startsWith(PAGES.LOGIN) || path.startsWith(PAGES.REGISTER))
+	) {
+		return redirectBack();
+	}
+
+	if (
+		isAuthenticated &&
+		user?.emailVerified &&
+		path.startsWith(PAGES.EMAIL_CONFIRMATION)
+	) {
+		return redirectBack();
 	}
 
 	if (

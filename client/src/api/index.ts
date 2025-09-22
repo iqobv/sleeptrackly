@@ -4,5 +4,6 @@ export * from './challengeTask';
 export * from './dashboard';
 export * from './profile';
 export * from './sleepStatus';
+export * from './token';
 export * from './user';
 export * from './userAvatar';

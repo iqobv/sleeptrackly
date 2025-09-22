@@ -3,6 +3,7 @@ export interface IUser {
 	email: string;
 	username: string;
 	role: 'USER' | 'ADMIN';
+	emailVerified: boolean;
 	createdAt: Date;
 	avatar: {
 		url: string;

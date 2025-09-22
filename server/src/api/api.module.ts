@@ -9,8 +9,9 @@ import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
 import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { ImageModule } from './image/image.module';
 import { ProfileModule } from './profile/profile.module';
+import { TokenModule } from './token/token.module';
 
 @Module({
-  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule, ProfileModule]
+  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule, ProfileModule, TokenModule]
 })
 export class ApiModule {}
