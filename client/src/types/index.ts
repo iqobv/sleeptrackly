@@ -4,6 +4,7 @@ export * from './challengeField.types';
 export * from './challengeTask.types';
 export * from './dashboard.types';
 export * from './dashboardDay.types';
+export * from './error.types';
 export * from './field.types';
 export * from './option.types';
 export * from './profile.types';

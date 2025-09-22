@@ -1,4 +1,5 @@
 import { Profile } from '@/components/Profile';
+import { IError } from '@/types';
 import { notFound } from 'next/navigation';
 
 interface ProfilePageProps {
@@ -20,9 +21,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 		const res = await fetch(`${process.env.API_URL}/v1/profiles/${username}`);
 		const data = await res.json();
 		if (!res.ok) throw data;
-	} catch (error: any) {
-		if (error.statusCode === 404) notFound();
-		throw error;
+	} catch (error: unknown) {
+		const err = error as IError;
+		if (err.statusCode === 404) {
+			notFound();
+		}
+		throw err;
 	}
 
 	return (

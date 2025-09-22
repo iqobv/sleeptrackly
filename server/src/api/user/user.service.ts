@@ -79,14 +79,10 @@ export class UserService {
 	}
 
 	async findByUsername(username: string) {
-		console.log('user service');
-
 		const user = await this.prismaService.user.findUnique({
 			where: { username },
 			select: select,
 		});
-
-		console.log(user, username);
 
 		if (!user) throw new NotFoundException('User not found');
 

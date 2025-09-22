@@ -1,7 +1,7 @@
 'use client';
 
 import { useBlockScroll } from '@/hooks';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { MdClose } from 'react-icons/md';
 import Button from '../Button/Button';
@@ -18,11 +18,14 @@ export default function Modal({
 	const modalRef = useRef<HTMLInputElement>(null);
 	useBlockScroll(isOpen);
 
-	const handleClickOutside = (e: MouseEvent) => {
-		if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-			onClose();
-		}
-	};
+	const handleClickOutside = useCallback(
+		(e: MouseEvent) => {
+			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+				onClose();
+			}
+		},
+		[onClose]
+	);
 
 	useEffect(() => {
 		document.addEventListener('click', handleClickOutside);
