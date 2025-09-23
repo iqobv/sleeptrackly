@@ -13,10 +13,12 @@
 	}
 }
 
-.edit-challenge {
-	width: 100%;
+.summary__buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 
 	@include response(md) {
-		width: unset;
+		flex-direction: row;
 	}
 }

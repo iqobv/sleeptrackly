@@ -57,7 +57,7 @@ export class ChallengeService {
 			frequency,
 		);
 
-		let targetValue = 0;
+		let targetValue = tasksOptions.value;
 
 		dates.map(({ startDate, endDate }) => {
 			tasks.push({
@@ -67,7 +67,7 @@ export class ChallengeService {
 				targetValue:
 					tasksOptions.increment !== null ? targetValue : tasksOptions.value,
 			});
-			targetValue += tasksOptions.value;
+			targetValue += tasksOptions.increment;
 		});
 
 		await this.challengeTaskService.createMany(challenge.id, userId, tasks);

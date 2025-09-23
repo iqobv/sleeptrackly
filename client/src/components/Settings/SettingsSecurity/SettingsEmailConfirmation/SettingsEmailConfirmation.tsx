@@ -10,7 +10,7 @@ const SettingsEmailConfirmation = () => {
 		<SettingsSecurityField
 			label="Your email is not confirmed. Please confirm your email to continue."
 			action={sendConfirmation}
-			buttonText="Activate"
+			buttonText="Confirm email"
 		/>
 	);
 };
