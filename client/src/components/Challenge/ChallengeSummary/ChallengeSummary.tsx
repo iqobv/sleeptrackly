@@ -5,7 +5,7 @@ import { Button, PageHeader } from '@/components/UI';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import { PAGES } from '@/config';
 import { IChallengeFull } from '@/types/challenge.types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IconBaseProps } from 'react-icons';
@@ -22,6 +22,7 @@ const iconProps: IconBaseProps = {
 
 const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	const [open, setOpen] = useState(false);
+	const queryClient = useQueryClient();
 
 	const router = useRouter();
 
@@ -29,6 +30,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 		mutationFn: () => deleteChallenge(data?.id),
 		mutationKey: ['challenge', data?.id],
 		onSuccess() {
+			queryClient.invalidateQueries({ queryKey: ['challenges'] });
 			router.push(PAGES.CHALLENGES);
 		},
 	});
