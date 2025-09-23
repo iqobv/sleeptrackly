@@ -12,7 +12,10 @@ interface TaskSummaryProps {
 }
 
 const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
-	const { info, canUpdate, handleMarkAsCompleted } = useTaskSummary({ challenge, selectedDate });
+	const { info, canUpdate, handleMarkAsCompleted } = useTaskSummary({
+		challenge,
+		selectedDate,
+	});
 
 	return (
 		<div className={styles['task-summary']}>

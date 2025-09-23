@@ -1,6 +1,7 @@
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
 	HttpCode,
 	HttpStatus,
@@ -61,6 +62,7 @@ export class AuthController {
 	@ApiOkResponse({ type: UserDto })
 	@Get('google')
 	@GoogleAuth()
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async googleLogin(@Req() req: Request) {}
 
 	@ApiExcludeEndpoint()
@@ -95,5 +97,14 @@ export class AuthController {
 	@Get('me')
 	async getProfile(@Authorized('id') userId: string) {
 		return await this.userService.findById(userId);
+	}
+
+	@ApiOperation({ summary: 'Delete account' })
+	@ApiOkResponse()
+	@Auth()
+	@HttpCode(HttpStatus.NO_CONTENT)
+	@Delete('delete')
+	async deleteAccount(@Authorized('id') userId: string) {
+		await this.userService.remove(userId);
 	}
 }

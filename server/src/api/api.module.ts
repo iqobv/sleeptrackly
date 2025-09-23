@@ -12,6 +12,18 @@ import { ProfileModule } from './profile/profile.module';
 import { TokenModule } from './token/token.module';
 
 @Module({
-  imports: [UserModule, AuthModule, UserProviderModule, SleepEntryModule, UserSleepStatusModule, ChallengeModule, ChallengeTaskModule, UserAvatarModule, ImageModule, ProfileModule, TokenModule]
+	imports: [
+		UserModule,
+		AuthModule,
+		UserProviderModule,
+		SleepEntryModule,
+		UserSleepStatusModule,
+		ChallengeModule,
+		ChallengeTaskModule,
+		UserAvatarModule,
+		ImageModule,
+		ProfileModule,
+		TokenModule,
+	],
 })
 export class ApiModule {}

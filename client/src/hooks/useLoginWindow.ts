@@ -15,7 +15,7 @@ export const useLoginWindow = (url: string) => {
 		const loginWindow = window.open(
 			url,
 			'_blank',
-			`width=${width},height=${height},top=${top},left=${left}`
+			`width=${width},height=${height},top=${top},left=${left}`,
 		);
 
 		const messageListener = (event: MessageEvent) => {

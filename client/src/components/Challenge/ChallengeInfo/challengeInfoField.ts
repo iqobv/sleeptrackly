@@ -7,7 +7,7 @@ export interface ChallengeInfoField {
 }
 
 export const CHALLENGE_INFO_FIELDS = (
-	data: IChallenge
+	data: IChallenge,
 ): ChallengeInfoField[] => [
 	{
 		name: 'Start date',

@@ -2,6 +2,7 @@ export * from './useAuth';
 export * from './useBlockScroll';
 export * from './useChallengeTaskCalendar';
 export * from './useCustomSelect';
+export * from './useEmaillConfirm';
 export * from './useLoginWindow';
 export * from './useTaskSummary';
 export * from './useTimer';

@@ -8,4 +8,4 @@ export { default as PageLoader } from './PageLoader/PageLoader';
 export { default as Select } from './Select/Select';
 export { default as SkeletonLoader } from './SkeletonLoader/SkeletonLoader';
 export { default as TextField } from './TextField/TextField';
-export { default as Divider } from './Divider/Divider'
+export { default as Divider } from './Divider/Divider';

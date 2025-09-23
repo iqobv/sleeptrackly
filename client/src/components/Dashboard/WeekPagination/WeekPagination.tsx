@@ -34,8 +34,8 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 
 		setWeekLabel(
 			`${dayjs(firstDay).format('DD.MM.YYYY')} - ${dayjs(lastDay).format(
-				'DD.MM.YYYY'
-			)}`
+				'DD.MM.YYYY',
+			)}`,
 		);
 	}, [days]);
 

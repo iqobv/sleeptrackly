@@ -54,7 +54,7 @@ export default function ConfirmationTemplate({
 						Confirm Email
 					</Link>
 					<Text>
-						This link will expire in 24 hours. If you did not request this email
+						This link will expire in 1 hour. If you did not request this email
 						you can safely ignore it.
 					</Text>
 					<Text>Thanks, for using our service!</Text>

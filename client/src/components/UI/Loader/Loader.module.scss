@@ -9,7 +9,8 @@
 	--thickness: 6px;
 	aspect-ratio: 1;
 	border-radius: 50%;
-	background: radial-gradient(farthest-side, var(--loader-color) 94%, #0000)
+	background:
+		radial-gradient(farthest-side, var(--loader-color) 94%, #0000)
 			top/var(--thickness) var(--thickness) no-repeat,
 		conic-gradient(#0000 30%, var(--loader-color));
 	-webkit-mask: radial-gradient(

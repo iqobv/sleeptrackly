@@ -6,7 +6,11 @@ import {
 	Version,
 	VERSION_NEUTRAL,
 } from '@nestjs/common';
-import { ApiBadGatewayResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+	ApiBadGatewayResponse,
+	ApiOkResponse,
+	ApiOperation,
+} from '@nestjs/swagger';
 import type { Response } from 'express';
 import { ImageService } from './image.service';
 
@@ -28,8 +32,10 @@ export class ImageController {
 	async getImage(@Param('filename') filename: string, @Res() res: Response) {
 		const image = await this.imageService.getImage(filename);
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
 		res.setHeader('Content-Type', image.headers['content-type']);
 
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		return image.data.pipe(res);
 	}
 }

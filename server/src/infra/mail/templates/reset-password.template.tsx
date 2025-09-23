@@ -1,0 +1,63 @@
+import {
+	Body,
+	Head,
+	Heading,
+	Html,
+	Link,
+	Preview,
+	Tailwind,
+	Text,
+} from '@react-email/components';
+import * as React from 'react';
+
+interface ResetPasswordTemplateProps {
+	domain: string;
+	token: string;
+}
+
+export default function ResetPasswordTemplate({
+	domain,
+	token,
+}: ResetPasswordTemplateProps) {
+	const url = `${domain}/reset-password?token=${token}`;
+
+	return (
+		<Html>
+			<Head />
+			<Preview>Reset your password</Preview>
+			<Tailwind>
+				<Body className="text-black text-center">
+					<Heading className="text-center text-3xl">
+						Welcome to Sleep Tracker
+					</Heading>
+					<Text className="text-center">
+						Please click the button below to reset your password.
+					</Text>
+					<Link
+						href={url}
+						target="_blank"
+						rel="noopener noreferrer"
+						style={{
+							backgroundColor: '#3b82f6',
+							color: '#ffffff',
+							padding: '12px 24px',
+							borderRadius: '8px',
+							textDecoration: 'none',
+							display: 'inline-block',
+							fontWeight: 'bold',
+							marginTop: '16px',
+							textAlign: 'center',
+						}}
+					>
+						Reset Password
+					</Link>
+					<Text>
+						This link will expire in 1 hour. If you did not request this email
+						you can ignore it.
+					</Text>
+					<Text>Thanks, for using our service!</Text>
+				</Body>
+			</Tailwind>
+		</Html>
+	);
+}

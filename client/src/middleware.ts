@@ -50,7 +50,9 @@ export async function middleware(request: NextRequest) {
 
 	if (
 		isAuthenticated &&
-		(path.startsWith(PAGES.LOGIN) || path.startsWith(PAGES.REGISTER))
+		(path.startsWith(PAGES.LOGIN) ||
+			path.startsWith(PAGES.REGISTER) ||
+			path.startsWith(PAGES.RESET_PASSWORD))
 	) {
 		return redirectBack();
 	}
@@ -66,6 +68,8 @@ export async function middleware(request: NextRequest) {
 	if (
 		!path.startsWith(PAGES.LOGIN) &&
 		!path.startsWith(PAGES.REGISTER) &&
+		!path.startsWith(PAGES.EMAIL_CONFIRMATION) &&
+		!path.startsWith(PAGES.RESET_PASSWORD) &&
 		!path.startsWith('/api') &&
 		!path.startsWith('/_next') &&
 		!path.startsWith('/favicon.ico') &&

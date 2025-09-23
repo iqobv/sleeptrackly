@@ -1,7 +1,7 @@
 'use client';
 
 import { useLoginWindow } from '@/hooks';
-import { FaGoogle } from 'react-icons/fa6';
+import { FcGoogle } from 'react-icons/fc';
 import SocialButton from '../SocialButton/SocialButton';
 
 const Google = () => {
@@ -9,7 +9,7 @@ const Google = () => {
 
 	return (
 		<SocialButton onClick={handleOpen}>
-			<FaGoogle /> Google
+			<FcGoogle /> Google
 		</SocialButton>
 	);
 };

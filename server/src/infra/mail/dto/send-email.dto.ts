@@ -3,6 +3,4 @@ export class SendEmailDto {
 	recipients: string[];
 	subject: string;
 	html: string;
-	text?: string;
-	placeholder?: Record<string, string>;
 }

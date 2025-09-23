@@ -6,4 +6,3 @@ dotenv.config();
 export default defineConfig({
 	schema: 'prisma',
 });
-

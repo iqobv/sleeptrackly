@@ -3,10 +3,12 @@
 'use client';
 
 import { Button, TextField } from '@/components/UI';
+import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
 import { IUser } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
@@ -94,6 +96,9 @@ const AuthForm = <T extends FieldValues, R>({
 			<Button fullWidth type="submit" className={styles['auth-form__button']}>
 				{buttonLabel}
 			</Button>
+			<Link className={styles['auth-form__link']} href={PAGES.RESET_PASSWORD}>
+				Forgot password?
+			</Link>
 			{!!bottomText && (
 				<div className={styles['auth-form__bottom-text']}>{bottomText}</div>
 			)}

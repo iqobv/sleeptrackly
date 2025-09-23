@@ -19,7 +19,7 @@ export const useTaskSummary = ({
 
 	const task = useMemo(
 		() => challenge?.tasks.find((t) => t.id === selectedDate?.id) || null,
-		[challenge, selectedDate]
+		[challenge, selectedDate],
 	);
 
 	const info = useMemo(() => {

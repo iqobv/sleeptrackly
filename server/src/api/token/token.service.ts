@@ -11,7 +11,7 @@ export class TokenService {
 		private readonly userService: UserService,
 	) {}
 
-	private async generateToken(expiresInHours: number) {
+	private generateToken(expiresInHours: number) {
 		const token = crypto.randomBytes(32).toString('hex');
 		const expires = new Date();
 		expires.setHours(expires.getHours() + expiresInHours);
@@ -24,7 +24,7 @@ export class TokenService {
 		type: TokenType,
 		expiresInHours: number = 1,
 	) {
-		const { token, expires } = await this.generateToken(expiresInHours);
+		const { token, expires } = this.generateToken(expiresInHours);
 
 		const user = await this.userService.findById(userId);
 

@@ -26,7 +26,7 @@ const SleepChart = ({ data }: SleepChartProps) => {
 	const [sleepDuration, setSleepDuration] = useState<number>(0);
 
 	const durations = data?.map((item) =>
-		item.data ? Number((item.data.sleepDuration / 60 / 60).toFixed(1)) : 0
+		item.data ? Number((item.data.sleepDuration / 60 / 60).toFixed(1)) : 0,
 	);
 	const labels = data?.map((item) => dayjs(item.day).format('ddd'));
 

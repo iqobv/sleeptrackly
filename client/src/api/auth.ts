@@ -18,3 +18,6 @@ export const logout = async () =>
 	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });
 
 export const getUser = async () => await fetcher<IUser>('/api/v1/auth/me');
+
+export const deleteAccount = async () =>
+	await fetcher<boolean>('/api/v1/auth/delete', { method: 'DELETE' });

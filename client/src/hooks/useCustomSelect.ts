@@ -37,7 +37,7 @@ export const useCustomSelect = ({
 	const getFilteredOptions = () => {
 		if (!isSearchable || !searchValue.trim()) return options;
 		return options.filter((opt) =>
-			opt.label.toLowerCase().includes(searchValue.toLowerCase())
+			opt.label.toLowerCase().includes(searchValue.toLowerCase()),
 		);
 	};
 
@@ -66,12 +66,12 @@ export const useCustomSelect = ({
 		if (e.key === 'ArrowDown') {
 			e.preventDefault();
 			setHighlightedIndex((prev) =>
-				prev < filtered.length - 1 ? prev + 1 : 0
+				prev < filtered.length - 1 ? prev + 1 : 0,
 			);
 		} else if (e.key === 'ArrowUp') {
 			e.preventDefault();
 			setHighlightedIndex((prev) =>
-				prev > 0 ? prev - 1 : filtered.length - 1
+				prev > 0 ? prev - 1 : filtered.length - 1,
 			);
 		} else if (e.key === 'Enter') {
 			e.preventDefault();
@@ -88,7 +88,7 @@ export const useCustomSelect = ({
 		if (!isSearchable) return;
 
 		const match = options.find(
-			(opt) => opt.label.toLowerCase() === searchValue.toLowerCase()
+			(opt) => opt.label.toLowerCase() === searchValue.toLowerCase(),
 		);
 
 		if (match) handleSelect(match);

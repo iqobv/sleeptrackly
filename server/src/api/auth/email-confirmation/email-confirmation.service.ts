@@ -38,6 +38,14 @@ export class EmailConfirmationService {
 		return await this.authService.login(user, req);
 	}
 
+	async sendVerificationEmail(userId: string) {
+		const user = await this.userService.findById(userId);
+
+		const token = await this.generateVerificationToken(userId);
+
+		await this.mailService.sendVerificationEmail(user.email, token.token);
+	}
+
 	async sendVerificationToken(user: User) {
 		const token = await this.generateVerificationToken(user.id);
 

@@ -1,1 +1,1 @@
-export * from './confirmation.dto'
+export * from './confirmation.dto';

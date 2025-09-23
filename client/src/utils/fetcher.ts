@@ -5,7 +5,7 @@
 export const fetcher = async <T>(
 	url: string,
 	init?: RequestInit,
-	withCredentials = true
+	withCredentials = true,
 ): Promise<T> => {
 	const isFormData = init?.body instanceof FormData;
 

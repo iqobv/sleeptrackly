@@ -17,9 +17,7 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 				<p className={styles['challenge__tag']}>Challenge</p>
 				<div className={styles['challenge__content']}>
 					<h3 className={styles['challenge__title']}>{challenge.title}</h3>
-					<p className={styles['challenge__text']}>
-						{challenge.description}
-					</p>
+					<p className={styles['challenge__text']}>{challenge.description}</p>
 				</div>
 				<div className={styles['challenge__actions']}>
 					<Button href={`/challenges/${challenge.id}`}>View Progress</Button>

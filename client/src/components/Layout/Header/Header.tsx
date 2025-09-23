@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './Header.module.scss';
+import HeaderEmailConfirmation from './HeaderEmailConfirmation/HeaderEmailConfirmation';
 import Nav from './Nav/Nav';
 
 const Header = () => {
@@ -9,6 +10,7 @@ const Header = () => {
 			<div className={`container ${styles['header__container']}`}>
 				<Nav />
 			</div>
+			<HeaderEmailConfirmation />
 		</header>
 	);
 };

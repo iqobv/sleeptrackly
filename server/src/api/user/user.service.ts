@@ -8,7 +8,7 @@ import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { comparePassword, hashPassword } from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
-import { CreateUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
 
 const select: Prisma.UserSelect = {
 	id: true,
@@ -38,7 +38,7 @@ export class UserService {
 
 		await this.alreadyExists({ email, username });
 
-		const hashedPassword = !!password ? await hashPassword(password) : null;
+		const hashedPassword = password ? await hashPassword(password) : null;
 
 		const user = await this.prismaService.user.create({
 			data: {
@@ -102,6 +102,36 @@ export class UserService {
 		return user;
 	}
 
+	async changePassword(id: string, dto: PasswordRecoveryDto) {
+		const { newPassword, oldPassword } = dto;
+
+		const user = await this.findById(id, true);
+
+		const oldPasswordMatch =
+			oldPassword &&
+			user.password &&
+			(await this.passwordIsMatch(id, oldPassword));
+
+		if (oldPassword && !oldPasswordMatch)
+			throw new ConflictException('Wrong password');
+
+		if (oldPassword)
+			if (newPassword === oldPassword)
+				throw new ConflictException('Same password');
+
+		const newHashedPassword = newPassword
+			? await hashPassword(newPassword)
+			: null;
+
+		return await this.prismaService.user.update({
+			where: { id: user.id },
+			data: {
+				password: newHashedPassword,
+			},
+			select,
+		});
+	}
+
 	async update(id: string, dto: UpdateUserDto) {
 		const { email, username, password, emailVerified } = dto;
 
@@ -128,6 +158,15 @@ export class UserService {
 		});
 
 		return updated;
+	}
+
+	async passwordIsMatch(id: string, password: string) {
+		const user = await this.findById(id, true);
+
+		const isMatch =
+			user.password && (await comparePassword(password, user.password));
+
+		return isMatch;
 	}
 
 	async remove(id: string) {

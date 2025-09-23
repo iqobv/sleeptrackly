@@ -1,7 +1,6 @@
 'use client';
 
 import { validateVerificationToken } from '@/api';
-import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -20,11 +19,11 @@ const EmailConfirmation = () => {
 			validateVerificationToken(token),
 		mutationKey: ['validate-verification-token'],
 		onSuccess: () => {
-			router.push(PAGES.HOME);
+			router.refresh();
 			toast.success('Email confirmed');
 		},
 		onError: (error) => {
-			router.push(PAGES.HOME);
+			router.refresh();
 			if (user && user.emailVerified) {
 				toast.info('Email already confirmed');
 			} else {

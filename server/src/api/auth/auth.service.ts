@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
+
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
@@ -67,10 +70,14 @@ export class AuthService {
 		});
 	}
 
+	async deleteAccount(id: string) {
+		await this.userService.remove(id);
+	}
+
 	async validateOAuthLogin(dto: OAuthDto) {
 		const { provider, providerId, avatarUrl, email, username } = dto;
 
-		let providerUser = await this.userProviderService.findProvider(
+		const providerUser = await this.userProviderService.findProvider(
 			provider,
 			providerId,
 		);

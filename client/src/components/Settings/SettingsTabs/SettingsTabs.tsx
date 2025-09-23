@@ -14,13 +14,13 @@ const SettingsTabs = () => {
 		searchParams.get('tab')
 			? SETTINGS_TABS.find((tab) => tab.name === searchParams.get('tab')) ||
 					SETTINGS_TABS[0]
-			: SETTINGS_TABS[0]
+			: SETTINGS_TABS[0],
 	);
 
 	useEffect(() => {
 		setActiveTab(
 			SETTINGS_TABS.find((tab) => tab.name === searchParams.get('tab')) ||
-				SETTINGS_TABS[0]
+				SETTINGS_TABS[0],
 		);
 	}, [searchParams, setActiveTab]);
 

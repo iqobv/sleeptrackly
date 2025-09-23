@@ -7,5 +7,5 @@ export const validateVerificationToken = async (token: string) =>
 			method: 'POST',
 			body: JSON.stringify({ token }),
 		},
-		false
+		false,
 	);

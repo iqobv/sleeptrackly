@@ -7,7 +7,7 @@ export interface SettingsFormFields<T extends FieldValues> extends Field<T> {
 			register: UseFormRegister<T>;
 			setValue: UseFormSetValue<T>;
 			error?: string;
-		} & Field<T>
+		} & Field<T>,
 	) => React.ReactNode;
 	accept?: string;
 }

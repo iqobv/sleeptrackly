@@ -3,8 +3,8 @@ import { SleepEntryService } from './sleep-entry.service';
 import { SleepEntryController } from './sleep-entry.controller';
 
 @Module({
-  controllers: [SleepEntryController],
+	controllers: [SleepEntryController],
 	exports: [SleepEntryService],
-  providers: [SleepEntryService],
+	providers: [SleepEntryService],
 })
 export class SleepEntryModule {}

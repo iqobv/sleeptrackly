@@ -1,5 +1,5 @@
 export * from './api-versioning.config';
-export * from './mailer.config'
+export * from './mailer.config';
 export * from './cloudinary.config';
 export * from './cookie.config';
 export * from './cors.config';

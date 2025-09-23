@@ -8,6 +8,7 @@ import { AuthService } from './auth.service';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { SessionSerializer } from './passport.serializer';
 import { GoogleStrategy, LocalStrategy } from './strategies';
+import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { GoogleStrategy, LocalStrategy } from './strategies';
 		UserAvatarModule,
 		PassportModule.register({ session: true }),
 		forwardRef(() => EmailConfirmationModule),
+		PasswordRecoveryModule,
 	],
 	exports: [AuthService],
 	controllers: [AuthController],

@@ -29,7 +29,7 @@ export const useChallengeTaskCalendar = ({
 		.map((t) =>
 			mode === 'daily'
 				? [dayjs(t.startDate).toDate()]
-				: createWeekArr(t.startDate.toString(), t.endDate.toString())
+				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);
 
 	const pendingGroups = tasks
@@ -37,20 +37,20 @@ export const useChallengeTaskCalendar = ({
 		.map((t) =>
 			mode === 'daily'
 				? [dayjs(t.startDate).toDate()]
-				: createWeekArr(t.startDate.toString(), t.endDate.toString())
+				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);
 
 	const allDates = [...completedGroups, ...pendingGroups].flat();
 
 	const handleClick = (date: Date) => {
 		const matchedGroup = [...completedGroups, ...pendingGroups].find((g) =>
-			g.some((d) => dayjs(d).isSame(date, 'day'))
+			g.some((d) => dayjs(d).isSame(date, 'day')),
 		);
 
 		if (!matchedGroup) return;
 		const formatted = dayjs(matchedGroup[0]).format('YYYY-MM-DD');
 		const task = tasks.find((t) =>
-			t.startDate.toString().startsWith(formatted)
+			t.startDate.toString().startsWith(formatted),
 		);
 		setSelectedTask(task || null);
 	};

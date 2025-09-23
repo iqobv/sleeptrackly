@@ -2,6 +2,8 @@ export * from './auth';
 export * from './challenge';
 export * from './challengeTask';
 export * from './dashboard';
+export * from './email';
+export * from './password';
 export * from './profile';
 export * from './sleepStatus';
 export * from './token';
