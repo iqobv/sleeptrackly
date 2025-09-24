@@ -12,8 +12,8 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
 	title: {
-		default: 'Sleep Tracker',
-		template: '%s - Sleep Tracker',
+		default: 'Sleeptrackly',
+		template: '%s - Sleeptrackly',
 	},
 	description: 'Sleep Tracker',
 };
