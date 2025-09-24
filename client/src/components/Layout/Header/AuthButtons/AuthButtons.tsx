@@ -7,7 +7,7 @@ import UserMenu from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
 
 const AuthButtons = () => {
-	const { isAuthenticated, isloading } = useAuth();
+	const { user, isloading } = useAuth();
 
 	return (
 		<div className={styles['auth-buttons']}>
@@ -15,7 +15,7 @@ const AuthButtons = () => {
 				<Loader disablePadding />
 			) : (
 				<>
-					{isAuthenticated ? (
+					{!!user ? (
 						<UserMenu />
 					) : (
 						<>

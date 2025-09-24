@@ -7,10 +7,10 @@ export interface ProfileStatisticsList {
 }
 
 export const PROFILE_STATISTICS_LIST: ProfileStatisticsList[] = [
+	{ label: 'Nights Tracked', name: 'nightsTracked', field: 'sleepEntries' },
 	{
 		name: 'completedChallenges',
 		label: 'Completed Challenges',
 		field: 'completedChallenges',
 	},
-	{ label: 'Nights Tracked', name: 'nightsTracked', field: 'sleepEntries' },
 ];

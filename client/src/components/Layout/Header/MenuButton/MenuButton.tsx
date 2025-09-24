@@ -14,6 +14,7 @@ const MenuButton = ({ onClick, isOpen, isClosing }: MenuButtonProps) => {
 			className={`${styles['menu-button']} ${isOpen ? styles.open : ''} ${
 				isClosing ? styles.closing : ''
 			}`}
+			disabled={isClosing}
 			onClick={onClick}
 		>
 			<span></span>

@@ -26,7 +26,7 @@ const SleepChart = ({ data }: SleepChartProps) => {
 	const [sleepDuration, setSleepDuration] = useState<number>(0);
 
 	const durations = data?.map((item) =>
-		item.data ? Number((item.data.sleepDuration / 60 / 60).toFixed(1)) : 0,
+		item.data ? Number((item.data.sleepDuration / 60 / 60).toFixed(1)) : 0
 	);
 	const labels = data?.map((item) => dayjs(item.day).format('ddd'));
 
@@ -64,7 +64,13 @@ const SleepChart = ({ data }: SleepChartProps) => {
 						<YAxis strokeOpacity={0} />
 						<Tooltip
 							formatter={(value) => [`${value}h`, null]}
-							contentStyle={{ backgroundColor: '#20262D' }}
+							contentStyle={{
+								backgroundColor: 'var(--chart-tooltip-bg)',
+								border: '1px solid var(--chart-tooltip-border)',
+								textAlign: 'center',
+								minWidth: '70px',
+								borderRadius: '4px',
+							}}
 						/>
 						<Area
 							type="monotone"
