@@ -8,3 +8,11 @@
 	color: var(--page-description-color);
 	font-size: 1rem;
 }
+
+.settings-sessions-info__location {
+	font-size: 1rem;
+	color: var(--page-description-color);
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}

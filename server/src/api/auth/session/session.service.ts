@@ -29,13 +29,13 @@ export class SessionService {
 			data: {
 				sessionId,
 				expiresAt,
-				ipAddress,
+				ipAddress: ipData?.query ?? ipAddress,
 				userAgent,
 				...(ipData && {
 					city: ipData.city,
 					country: ipData.country,
 					countryCode: ipData.countryCode,
-					region: ipData.region,
+					region: ipData.regionName,
 				}),
 				...(userAgentData && {
 					deviceType: userAgentData.deviceType,

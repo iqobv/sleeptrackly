@@ -19,12 +19,12 @@ const SettingsSessionsInfo = ({ session }: SettingsSessionsInfoProps) => {
 				{session.browserName && `${session.browserName}`}
 				{session.browserVersion && `, ${session.browserVersion}`}
 			</p>
-			<div>
+			<div className={styles['settings-sessions-info__location']}>
 				{session.countryCode && (
 					<Image
 						src={`https://flagsapi.com/${session.countryCode}/flat/64.png`}
-						width={32}
-						height={32}
+						width={24}
+						height={24}
 						alt="flag"
 					/>
 				)}
