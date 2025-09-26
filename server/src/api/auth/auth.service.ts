@@ -79,7 +79,7 @@ export class AuthService {
 		const sessionID = req.sessionID;
 
 		if (req.user && sessionID)
-			await this.sessionService.terminateSession(req.user.id, sessionID);
+			await this.sessionService.terminateBySessionId(sessionID, req.user.id);
 
 		return new Promise<void>((resolve, reject) => {
 			req.session.destroy((err: Error) => {

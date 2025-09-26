@@ -4,7 +4,7 @@ import { Session } from '@prisma/client';
 import { RedisStore } from 'connect-redis';
 import { UserService } from 'src/api/user/user.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { normalizeIp } from 'src/libs/utils';
+import { extractClientIP, normalizeIp } from 'src/libs/utils';
 import { UAParser } from 'ua-parser-js';
 import { CreateSessionDto, IpApiDto } from './dto';
 
@@ -76,6 +76,16 @@ export class SessionService {
 		return session;
 	}
 
+	async terminateBySessionId(sessionId: string, userId: string) {
+		const session = await this.prismaService.session.findUnique({
+			where: { sessionId, userId },
+		});
+
+		if (!session) return null;
+
+		return await this.terminateSession(session.userId, session.id, false);
+	}
+
 	async terminateSession(
 		userId: string,
 		id: string,
@@ -115,9 +125,10 @@ export class SessionService {
 
 	private async getInfoFromIp(ip: string) {
 		const normalizedIp = normalizeIp(ip);
+		const clientIp = extractClientIP(normalizedIp);
 
 		const response = await this.httpService.axiosRef.get<IpApiDto>(
-			`http://ip-api.com/json/${normalizedIp}?fields=status,message,country,countryCode,region,regionName,city,timezone,query`,
+			`http://ip-api.com/json/${clientIp}?fields=status,message,country,countryCode,region,regionName,city,timezone,query`,
 		);
 
 		return response.data;
