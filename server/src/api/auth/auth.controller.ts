@@ -62,8 +62,7 @@ export class AuthController {
 	@ApiOkResponse({ type: UserDto })
 	@Get('google')
 	@GoogleAuth()
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async googleLogin(@Req() req: Request) {}
+	async googleLogin() {}
 
 	@ApiExcludeEndpoint()
 	@Get('google/callback')

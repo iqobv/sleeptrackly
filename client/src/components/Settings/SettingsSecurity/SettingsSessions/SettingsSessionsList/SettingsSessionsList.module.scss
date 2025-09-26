@@ -1,0 +1,14 @@
+.settings-sessions {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	height: 100%;
+}
+
+.settings-sessions__list {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	max-height: 400px;
+	overflow-y: auto;
+}

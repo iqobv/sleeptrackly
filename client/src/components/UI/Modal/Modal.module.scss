@@ -16,7 +16,7 @@
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	background-color: rgba(0, 0, 0, 1);
+	background-color: var(--modal-bg);
 	padding: 20px;
 	gap: 10px;
 	border-radius: 8px;

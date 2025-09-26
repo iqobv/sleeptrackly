@@ -1,0 +1,38 @@
+@use '../../../../../../styles/mixins' as *;
+
+.settings-sessions-item {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	flex-direction: column;
+	padding: 10px;
+
+	@include response(md) {
+		flex-direction: row;
+	}
+}
+
+.settings-sessions-item__terminate {
+	width: 100%;
+
+	@include response(md) {
+		width: unset;
+	}
+}
+
+.settings-sessions-item--active {
+	align-items: unset;
+	flex-direction: column;
+}
+
+.settings-sessions-item__content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	width: 100%;
+	gap: 20px;
+}
+
+.settings-sessions-item__all-terminate {
+	color: var(--terminate-all-color);
+}

@@ -8,6 +8,7 @@ export * from './error.types';
 export * from './field.types';
 export * from './option.types';
 export * from './profile.types';
+export * from './session.types';
 export * from './settingsField.types';
 export * from './sleepEntrie.types';
 export * from './sleepStatus.types';

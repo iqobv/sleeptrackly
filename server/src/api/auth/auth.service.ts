@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/prefer-promise-reject-errors */
-
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { getCookieConfig } from 'src/config';
-import { comparePassword } from 'src/libs/utils';
+import { comparePassword, normalizeIp } from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserProviderService } from '../user-provider/user-provider.service';
 import { CreateUserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { OAuthDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
+import { SessionService } from './session/session.service';
 
 @Injectable()
 export class AuthService {
@@ -22,6 +21,7 @@ export class AuthService {
 		private readonly userProviderService: UserProviderService,
 		private readonly userAvatarService: UserAvatarService,
 		private readonly emailConfirmationService: EmailConfirmationService,
+		private readonly sessionService: SessionService,
 	) {}
 
 	async validateUser(email: string, password: string) {
@@ -39,14 +39,32 @@ export class AuthService {
 	}
 
 	async login(user: User, req: Request) {
-		return new Promise((resolve, reject) => {
-			req.login(user, (err) => {
-				if (err) return reject(err);
-				const { password, ...result } = user;
+		const { ip, userAgent } = this.getInfoFromRequest(req);
 
-				resolve(result);
+		const oldSessionId = req.sessionID;
+
+		if (oldSessionId)
+			await this.sessionService.terminateSession(user.id, oldSessionId, false);
+
+		await new Promise<void>((resolve, reject) => {
+			req.login(user, (err: Error) => {
+				if (err) return reject(err);
+				resolve();
 			});
 		});
+
+		const newSessionId = req.sessionID;
+
+		await this.sessionService.createSession(user.id, {
+			sessionId: newSessionId,
+			expiresAt: req.session.cookie.expires as Date,
+			ipAddress: normalizeIp(Array.isArray(ip) ? ip[0] : ip) ?? undefined,
+			userAgent,
+		});
+
+		const { password, ...result } = user;
+
+		return { ...result };
 	}
 
 	async register(dto: CreateUserDto, req: Request) {
@@ -58,8 +76,13 @@ export class AuthService {
 	}
 
 	async logout(req: Request, res: Response) {
+		const sessionID = req.sessionID;
+
+		if (req.user && sessionID)
+			await this.sessionService.terminateSession(req.user.id, sessionID);
+
 		return new Promise<void>((resolve, reject) => {
-			req.session.destroy((err) => {
+			req.session.destroy((err: Error) => {
 				if (err) return reject(err);
 				res.clearCookie(
 					this.configService.getOrThrow<string>('SESSION_NAME') || 'session',
@@ -102,5 +125,16 @@ export class AuthService {
 		);
 
 		return user;
+	}
+
+	private getInfoFromRequest(req: Request) {
+		return {
+			ip:
+				req.headers['x-forwarded-for'] ||
+				req.headers['x-real-ip'] ||
+				req.ip ||
+				'unknown',
+			userAgent: req.headers['user-agent'],
+		};
 	}
 }

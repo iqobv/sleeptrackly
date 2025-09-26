@@ -8,6 +8,13 @@ export async function middleware(request: NextRequest) {
 	const hasSession = cookiesStore.has('session');
 	const allCookies = cookiesStore.toString();
 
+	const ip =
+		request.headers.get('x-forwarded-for') ??
+		request.headers.get('x-real-ip') ??
+		'unknown';
+	const requestHeaders = new Headers(request.headers);
+	requestHeaders.set('x-forwarded-for', ip);
+
 	let isAuthenticated = false;
 	let user: IUser | null = null;
 
@@ -85,7 +92,9 @@ export async function middleware(request: NextRequest) {
 		return response;
 	}
 
-	return NextResponse.next();
+	return NextResponse.next({
+		request: { headers: requestHeaders },
+	});
 }
 
 export const config = {

@@ -9,6 +9,7 @@ import { EmailConfirmationModule } from './email-confirmation/email-confirmation
 import { SessionSerializer } from './passport.serializer';
 import { GoogleStrategy, LocalStrategy } from './strategies';
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
+import { SessionModule } from './session/session.module';
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { PasswordRecoveryModule } from './password-recovery/password-recovery.mo
 		PassportModule.register({ session: true }),
 		forwardRef(() => EmailConfirmationModule),
 		PasswordRecoveryModule,
+		SessionModule,
 	],
 	exports: [AuthService],
 	controllers: [AuthController],

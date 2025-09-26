@@ -5,6 +5,7 @@ export * from './dashboard';
 export * from './email';
 export * from './password';
 export * from './profile';
+export * from './session';
 export * from './sleepStatus';
 export * from './token';
 export * from './user';
