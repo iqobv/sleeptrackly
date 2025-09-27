@@ -19,7 +19,12 @@ const SettingsSessions = () => {
 				label="View your sessions"
 				buttonText="View sessions"
 			/>
-			<Modal isOpen={open} onClose={handleClose} containerClassName={styles['sessions-modal']}>
+			<Modal
+				isOpen={open}
+				onClose={handleClose}
+				containerClassName={styles['sessions-modal']}
+				bodyClassName={styles['sessions-modal__body']}
+			>
 				<SettingsSessionsList />
 			</Modal>
 		</>

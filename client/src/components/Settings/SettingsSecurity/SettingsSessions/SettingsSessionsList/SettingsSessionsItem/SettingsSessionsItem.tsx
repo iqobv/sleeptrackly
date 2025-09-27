@@ -12,11 +12,13 @@ import styles from './SettingsSessionsItem.module.scss';
 
 interface SettingsSessionsItemProps {
 	session: ISession;
+	disableAllButton?: boolean;
 	isActive?: boolean;
 }
 
 const SettingsSessionsItem = ({
 	session,
+	disableAllButton = false,
 	isActive = false,
 }: SettingsSessionsItemProps) => {
 	const queryClient = useQueryClient();
@@ -40,6 +42,10 @@ const SettingsSessionsItem = ({
 		},
 	});
 
+	const handleTerminateAll = () => {
+		if (!disableAllButton) terminateAll();
+	};
+
 	if (!session) return null;
 
 	return (
@@ -53,15 +59,19 @@ const SettingsSessionsItem = ({
 				<SettingsSessionsInfo session={session} />
 			</div>
 			{isActive ? (
-				<Button
-					variant="text"
-					className={styles['settings-sessions-item__all-terminate']}
-					fullWidth
-					onClick={terminateAll}
-					disabled={isTerminating || isTerminatingAll}
-				>
-					Terminate all other sessions
-				</Button>
+				<>
+					{!disableAllButton && (
+						<Button
+							variant="text"
+							className={styles['settings-sessions-item__all-terminate']}
+							fullWidth
+							onClick={handleTerminateAll}
+							disabled={isTerminating || isTerminatingAll || disableAllButton}
+						>
+							Terminate all other sessions
+						</Button>
+					)}
+				</>
 			) : (
 				<Button
 					variant="outlined"

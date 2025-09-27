@@ -1,5 +1,6 @@
 'use client';
 
+import { Loader } from '@/components/UI';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SettingsTab from './SettingsTab/SettingsTab';
@@ -9,18 +10,19 @@ import { SETTINGS_TABS, SettingsTab as SettingsTabType } from './tabs';
 const SettingsTabs = () => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
+	const [loading, setLoading] = useState(true);
 
 	const [activeTab, setActiveTab] = useState<SettingsTabType>(
 		searchParams.get('tab')
 			? SETTINGS_TABS.find((tab) => tab.name === searchParams.get('tab')) ||
 					SETTINGS_TABS[0]
-			: SETTINGS_TABS[0],
+			: SETTINGS_TABS[0]
 	);
 
 	useEffect(() => {
 		setActiveTab(
 			SETTINGS_TABS.find((tab) => tab.name === searchParams.get('tab')) ||
-				SETTINGS_TABS[0],
+				SETTINGS_TABS[0]
 		);
 	}, [searchParams, setActiveTab]);
 
@@ -28,7 +30,14 @@ const SettingsTabs = () => {
 		const newParams = new URLSearchParams(searchParams);
 		newParams.set('tab', activeTab.name);
 		router.push(`?${newParams.toString()}`);
-	}, [activeTab, searchParams, router]);
+
+		setLoading(true);
+		const timer = setTimeout(() => {
+			setLoading(false);
+		}, 400);
+
+		return () => clearTimeout(timer);
+	}, [activeTab, router, searchParams, setLoading]);
 
 	return (
 		<div className={styles['settings-tabs']}>
@@ -41,7 +50,8 @@ const SettingsTabs = () => {
 					/>
 				))}
 			</div>
-			<div className={styles['settings-tabs__form']}>{activeTab.form}</div>
+			{loading && <Loader size={50} />}
+			{!loading && <div>{activeTab.form}</div>}
 		</div>
 	);
 };

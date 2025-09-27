@@ -1,15 +1,20 @@
 @use '../../../../styles/mixins' as *;
 
-.sessions-modal {
-	width: 90%;
-	max-height: 80vh;
-	overflow: hidden;
+.sessions-modal__body {
+	max-height: 80dvh;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	overflow-y: auto;
+}
+
+.sessions-modal {
+	width: 90%;
+	margin-bottom: 60px;
 
 	@include response(md) {
 		width: 80%;
+		margin-bottom: unset;
 	}
 
 	@include response(xl) {

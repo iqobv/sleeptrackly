@@ -12,7 +12,7 @@ export default function ToastProvider({
 	return (
 		<>
 			{children}
-			<ToastContainer theme={resolvedTheme} />
+			<ToastContainer theme={resolvedTheme} position="bottom-right" />
 		</>
 	);
 }

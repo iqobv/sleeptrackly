@@ -9,6 +9,7 @@
 
 	@include response(md) {
 		flex-direction: row;
+		align-items: center;
 	}
 }
 

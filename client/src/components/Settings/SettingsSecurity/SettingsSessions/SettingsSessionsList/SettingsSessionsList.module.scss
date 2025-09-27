@@ -5,6 +5,11 @@
 	height: 100%;
 }
 
+.settings-sessions__header {
+	padding: 3px 0 10px 0;
+	gap: 3px;
+}
+
 .settings-sessions__list {
 	display: flex;
 	flex-direction: column;
