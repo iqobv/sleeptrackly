@@ -5,7 +5,7 @@
 import { Button, Select, TextField } from '@/components/UI';
 import { ChallengeField, IOption } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
 	Controller,
 	DefaultValues,
@@ -15,6 +15,7 @@ import {
 } from 'react-hook-form';
 import { ZodType } from 'zod';
 
+import { useAuth } from '@/hooks';
 import { useEffect } from 'react';
 import styles from './ChallengeForm.module.scss';
 
@@ -35,6 +36,9 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 	schema,
 	defaultValues,
 }: AuthFormProps<T, R>) => {
+	const queryClient = useQueryClient();
+	const { user } = useAuth();
+
 	const resolver = !!schema ? zodResolver(schema) : undefined;
 
 	const {
@@ -55,8 +59,10 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 
 	const { mutate } = useMutation({
 		mutationFn,
+		gcTime: 0,
 		onSuccess(data) {
 			reset();
+			queryClient.invalidateQueries({ queryKey: ['challenges', user?.id] });
 			onSuccess?.(data);
 		},
 		onError(error) {
