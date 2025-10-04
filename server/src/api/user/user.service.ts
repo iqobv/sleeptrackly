@@ -102,6 +102,13 @@ export class UserService {
 		return user;
 	}
 
+	async findManyByUsername(username: string) {
+		return this.prismaService.user.findMany({
+			where: { username: { contains: username } },
+			select,
+		});
+	}
+
 	async changePassword(id: string, dto: PasswordRecoveryDto) {
 		const { newPassword, oldPassword } = dto;
 

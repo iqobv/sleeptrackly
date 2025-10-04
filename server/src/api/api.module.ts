@@ -10,6 +10,7 @@ import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { ImageModule } from './image/image.module';
 import { ProfileModule } from './profile/profile.module';
 import { TokenModule } from './token/token.module';
+import { FriendshipModule } from './friendship/friendship.module';
 
 @Module({
 	imports: [
@@ -24,6 +25,7 @@ import { TokenModule } from './token/token.module';
 		ImageModule,
 		ProfileModule,
 		TokenModule,
+		FriendshipModule,
 	],
 })
 export class ApiModule {}

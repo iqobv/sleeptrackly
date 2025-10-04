@@ -32,7 +32,7 @@ export const getDateRanges = (
 				currentEnd = currentStart;
 				break;
 			case 'WEEKLY':
-				currentEnd = currentStart.add(6, 'day');
+				currentEnd = currentStart.add(7, 'day');
 				break;
 			case 'MONTHLY':
 				currentEnd = currentStart.add(1, 'month').subtract(1, 'day');

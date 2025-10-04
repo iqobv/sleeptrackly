@@ -1,4 +1,4 @@
-import { Body, Controller, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
 import {
 	ApiConflictResponse,
 	ApiOkResponse,
@@ -22,5 +22,13 @@ export class UserController {
 		@Body() dto: UpdateUserDto,
 	) {
 		return await this.userService.update(userId, dto);
+	}
+
+	@ApiOperation({
+		summary: 'Search for a user by username',
+	})
+	@Get('search')
+	async findByUsername(@Query('query') query: string) {
+		return await this.userService.findByUsername(query);
 	}
 }
