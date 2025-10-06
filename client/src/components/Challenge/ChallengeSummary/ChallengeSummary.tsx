@@ -1,7 +1,7 @@
 'use client';
 
 import { deleteChallenge } from '@/api';
-import { Button, PageHeader } from '@/components/UI';
+import { Button, SectionHeader } from '@/components/UI';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
@@ -46,7 +46,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 
 	return (
 		<div className={styles['summary']}>
-			<PageHeader
+			<SectionHeader
 				title={data?.title}
 				description={data?.description}
 				titleComponent="h2"

@@ -104,8 +104,12 @@ export class UserService {
 
 	async findManyByUsername(username: string) {
 		return this.prismaService.user.findMany({
-			where: { username: { contains: username } },
-			select,
+			where: { username: { contains: username, mode: 'insensitive' } },
+			select: {
+				id: true,
+				username: true,
+				avatar: { select: { url: true } },
+			},
 		});
 	}
 

@@ -86,13 +86,31 @@ export class FriendshipController {
 		type: FriendshipDto,
 	})
 	@Auth()
-	@Patch(':id')
+	@Patch('id/:id')
 	async update(
 		@Authorized('id') userId: string,
 		@Param('id') id: string,
 		@Body() dto: UpdateFriendshipDto,
 	) {
 		return await this.friendshipService.update(id, userId, dto);
+	}
+
+	@ApiOperation({
+		summary: 'Accept or reject all pending requests',
+	})
+	@ApiOkResponse({
+		type: [FriendshipDto],
+	})
+	@Auth()
+	@Patch('pendings')
+	async updateManyPendingRequests(
+		@Authorized('id') userId: string,
+		@Body() dto: UpdateFriendshipDto,
+	) {
+		return await this.friendshipService.updateManyPendingRequests(
+			userId,
+			dto.status,
+		);
 	}
 
 	@ApiOperation({

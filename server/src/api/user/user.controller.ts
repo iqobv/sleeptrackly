@@ -5,7 +5,7 @@ import {
 	ApiOperation,
 } from '@nestjs/swagger';
 import { Auth, Authorized } from 'src/libs/decorators';
-import { UpdateUserDto, UserDto } from './dto';
+import { SearchDto, UpdateUserDto, UserDto } from './dto';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -28,7 +28,9 @@ export class UserController {
 		summary: 'Search for a user by username',
 	})
 	@Get('search')
-	async findByUsername(@Query('query') query: string) {
-		return await this.userService.findByUsername(query);
+	async findByUsername(@Query() queries: SearchDto) {
+		const { username } = queries;
+
+		return await this.userService.findManyByUsername(username);
 	}
 }

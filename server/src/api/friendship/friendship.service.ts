@@ -4,10 +4,17 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { FriendshipStatus } from '@prisma/client';
+import { FriendshipStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { UpdateFriendshipDto } from './dto';
+
+const selectUserFields: Prisma.UserSelect = {
+	username: true,
+	id: true,
+	avatar: { select: { url: true } },
+	sleepStatus: { select: { isSleeping: true } },
+};
 
 @Injectable()
 export class FriendshipService {
@@ -47,18 +54,58 @@ export class FriendshipService {
 	}
 
 	async getAllByUserId(userId: string) {
-		return await this.prismaService.friendship.findMany({
+		const friendships = await this.prismaService.friendship.findMany({
 			where: {
 				OR: [{ requesterId: userId }, { addresseeId: userId }],
 				status: FriendshipStatus.ACCEPTED,
 			},
+			include: {
+				addressee: { select: selectUserFields },
+				requester: { select: selectUserFields },
+			},
 		});
+
+		const countOfPendingRequests = await this.prismaService.friendship.count({
+			where: { addresseeId: userId, status: FriendshipStatus.PENDING },
+		});
+
+		const friends = friendships.map((f) => {
+			const isRequester = f.requesterId === userId;
+			const user = isRequester ? f.addressee : f.requester;
+
+			return {
+				id: f.id,
+				status: f.status,
+				user: {
+					id: user.id,
+					username: user.username,
+					avatar: user.avatar?.url,
+					isSleeping: user.sleepStatus?.isSleeping,
+				},
+			};
+		});
+
+		return { friends, countOfPendingRequests };
 	}
 
 	async getRequestsByUserId(userId: string) {
-		return await this.prismaService.friendship.findMany({
+		const friendships = await this.prismaService.friendship.findMany({
 			where: { addresseeId: userId, status: FriendshipStatus.PENDING },
+			include: { requester: { select: selectUserFields } },
 		});
+
+		const result = friendships.map((f) => ({
+			id: f.id,
+			status: f.status,
+			createdAt: f.createdAt,
+			user: {
+				id: f.requesterId,
+				username: f.requester.username,
+				avatar: f.requester.avatar?.url,
+			},
+		}));
+
+		return result;
 	}
 
 	private async findFriendshipById(id: string, userId: string) {
@@ -88,6 +135,13 @@ export class FriendshipService {
 		});
 
 		return newFriendship;
+	}
+
+	async updateManyPendingRequests(userId: string, status: FriendshipStatus) {
+		return await this.prismaService.friendship.updateManyAndReturn({
+			where: { addresseeId: userId, status: FriendshipStatus.PENDING },
+			data: { status },
+		});
 	}
 
 	async remove(userId: string, id: string) {

@@ -1,0 +1,26 @@
+@use '../../../../styles/mixins' as *;
+
+.pendings-list-item {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+	flex-direction: column;
+	border: 1px solid var(--input-border);
+	padding: 10px;
+	border-radius: 12px;
+
+	@include response(md) {
+		flex-direction: row;
+	}
+
+	&__user {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+
+	&__actions {
+		display: flex;
+		gap: 10px;
+	}
+}

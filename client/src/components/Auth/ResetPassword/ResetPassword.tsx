@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { useSearchParams } from 'next/navigation';
 import EmailField from './EmailField/EmailField';
 import NewPasswordField from './NewPasswordField/NewPasswordField';
@@ -14,7 +14,7 @@ const ResetPassword = () => {
 
 	return (
 		<div className={styles['reset-password']}>
-			<PageHeader
+			<SectionHeader
 				title="Reset Password"
 				containerClassName={styles['reset-password__header']}
 			/>

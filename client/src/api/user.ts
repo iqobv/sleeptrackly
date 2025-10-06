@@ -7,3 +7,6 @@ export const updateUser = async (data: SettingsAccountDto) =>
 		method: 'PATCH',
 		body: JSON.stringify(data),
 	});
+
+export const searchByUsername = async (username: string) =>
+	await fetcher<IUser[]>(`/api/v1/users/search?username=${username}`);
