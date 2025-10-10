@@ -2,6 +2,7 @@
 
 import { Avatar, SectionHeader } from '@/components/UI';
 import { IProfile } from '@/types';
+import ProfileAddToFriendButton from './ProfileAddToFriendButton/ProfileAddToFriendButton';
 import styles from './ProfileMainInfo.module.scss';
 
 interface ProfileMainInfoProps {
@@ -20,6 +21,7 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 				description={`Joined ${year}`}
 				containerClassName={styles['profile-main-info__username']}
 			/>
+			<ProfileAddToFriendButton profile={profile} />
 		</div>
 	);
 };

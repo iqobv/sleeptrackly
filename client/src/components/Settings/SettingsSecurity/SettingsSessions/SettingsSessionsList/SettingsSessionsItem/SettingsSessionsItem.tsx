@@ -75,7 +75,7 @@ const SettingsSessionsItem = ({
 			) : (
 				<Button
 					variant="outlined"
-					onClick={terminate}
+					onClick={() => terminate()}
 					className={styles['settings-sessions-item__terminate']}
 					disabled={isTerminating || isTerminatingAll}
 				>

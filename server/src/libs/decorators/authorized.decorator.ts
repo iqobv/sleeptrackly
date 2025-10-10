@@ -7,6 +7,8 @@ export const Authorized = createParamDecorator(
 		const req: Request = ctx.switchToHttp().getRequest();
 		const user = req.user as User;
 
+		if (!user) return null;
+
 		return data ? user[data] : user;
 	},
 );

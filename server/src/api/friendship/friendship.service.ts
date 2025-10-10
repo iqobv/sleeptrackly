@@ -108,6 +108,17 @@ export class FriendshipService {
 		return result;
 	}
 
+	async getFriendshipByUsersIds(userA: string, userB: string) {
+		return await this.prismaService.friendship.findFirst({
+			where: {
+				OR: [
+					{ requesterId: userA, addresseeId: userB },
+					{ requesterId: userB, addresseeId: userA },
+				],
+			},
+		});
+	}
+
 	private async findFriendshipById(id: string, userId: string) {
 		const friendship = await this.prismaService.friendship.findUnique({
 			where: { id, OR: [{ requesterId: userId }, { addresseeId: userId }] },

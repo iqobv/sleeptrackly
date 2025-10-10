@@ -6,6 +6,7 @@ import { FriendshipService } from './friendship.service';
 @Module({
 	controllers: [FriendshipController],
 	imports: [UserModule],
+	exports: [FriendshipService],
 	providers: [FriendshipService],
 })
 export class FriendshipModule {}

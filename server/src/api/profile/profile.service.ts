@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Friendship } from '@prisma/client';
 import { ChallengeService } from '../challenge/challenge.service';
+import { FriendshipService } from '../friendship/friendship.service';
 import { SleepEntryService } from '../sleep-entry/sleep-entry.service';
 import { UserService } from '../user/user.service';
 
@@ -9,9 +11,10 @@ export class ProfileService {
 		private readonly userService: UserService,
 		private readonly challengeService: ChallengeService,
 		private readonly sleepEntryService: SleepEntryService,
+		private readonly friendshipService: FriendshipService,
 	) {}
 
-	async getProfileByUsername(username: string) {
+	async getProfileByUsername(username: string, userId: string | null) {
 		const user = await this.userService.findByUsername(username);
 
 		const completedChallenges = (
@@ -21,8 +24,17 @@ export class ProfileService {
 		const sleepEntries = (await this.sleepEntryService.findByUserId(user.id))
 			.length;
 
-		const { email, id, role, ...result } = user;
+		let friendship: Friendship | null = null;
 
-		return { ...result, completedChallenges, sleepEntries };
+		if (userId && user.id !== userId) {
+			friendship = await this.friendshipService.getFriendshipByUsersIds(
+				userId,
+				user.id,
+			);
+		}
+
+		const { email, role, ...result } = user;
+
+		return { ...result, friendship, completedChallenges, sleepEntries };
 	}
 }
