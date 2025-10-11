@@ -1,6 +1,5 @@
 import SettingsAccount from '../SettingsAccount/SettingsAccount';
 import SettingsSecurity from '../SettingsSecurity/SettingsSecurity';
-// import SettingsSecurity from '../SettingsSecurity/SettingsSecurity';
 
 export interface SettingsTab {
 	name: string;
@@ -19,8 +18,4 @@ export const SETTINGS_TABS: SettingsTab[] = [
 		label: 'Security',
 		form: <SettingsSecurity />,
 	},
-	// {
-	// 	name: 'notifications',
-	// 	label: 'Notifications',
-	// },
 ];

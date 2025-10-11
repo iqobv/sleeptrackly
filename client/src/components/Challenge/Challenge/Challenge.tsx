@@ -26,12 +26,7 @@ const Challenge = ({ id }: ChallengeProps) => {
 			{challenge && (
 				<>
 					<ChallengeSummary data={challenge} />
-					{challenge.frequency === 'DAILY' && (
-						<Calendar data={challenge} mode="daily" />
-					)}
-					{challenge.frequency === 'WEEKLY' && (
-						<Calendar data={challenge} mode="weekly" />
-					)}
+					<Calendar data={challenge} mode={challenge.frequency} />
 					<ChallengeInfo data={challenge} />
 				</>
 			)}

@@ -1,3 +1,4 @@
+import { TChallengeFrequency } from './challengeFrequncy.types';
 import { IChallengeTask } from './challengeTask.types';
 
 export interface IChallenge {
@@ -5,7 +6,7 @@ export interface IChallenge {
 	userId: string;
 	title: string;
 	description: string;
-	frequency: string;
+	frequency: TChallengeFrequency;
 	isStarted: boolean;
 	isCompleted: boolean;
 	startDate: Date;

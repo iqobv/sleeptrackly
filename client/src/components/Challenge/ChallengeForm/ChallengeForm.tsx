@@ -113,7 +113,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 									error={get(errors, f.name)?.message as string}
 									{...field}
 									onChange={(option) =>
-										field.onChange(option ? option.value.toUpperCase() : '')
+										field.onChange(option ? option.value : '')
 									}
 								/>
 							)}

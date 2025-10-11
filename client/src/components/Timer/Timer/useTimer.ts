@@ -2,11 +2,11 @@
 
 import { getSleepStatus, updateSleepStatus } from '@/api';
 import { QUERY_KEYS } from '@/config';
+import { useAuth } from '@/hooks';
 import { ISleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
-import { useAuth } from './useAuth';
 
 export const useTimer = () => {
 	const { user } = useAuth();

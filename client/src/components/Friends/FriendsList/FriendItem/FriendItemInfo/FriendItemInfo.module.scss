@@ -1,0 +1,15 @@
+.friend-item__info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10px;
+}
+
+.friend-item__username {
+	font-size: 1.05rem;
+}
+
+.friend-item__status {
+	font-size: 0.9rem;
+	color: var(--secondary-color);
+}

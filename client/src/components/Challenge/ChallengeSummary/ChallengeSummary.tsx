@@ -1,8 +1,7 @@
 'use client';
 
 import { deleteChallenge } from '@/api';
-import { Button, SectionHeader } from '@/components/UI';
-import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
+import { Button, ConfirmModal, SectionHeader } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { IChallengeFull } from '@/types';

@@ -1,34 +1,14 @@
 'use client';
 
-import { searchByUsername } from '@/api';
-import {
-	Button,
-	SectionHeader,
-	SkeletonLoader,
-	TextField,
-} from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
-import { MdOutlinePersonAdd } from 'react-icons/md';
+import { SectionHeader } from '@/components/UI';
 import styles from './AddFriend.module.scss';
-import AddFriendItem from './AddFriendItem/AddFriendItem';
+import AddFriendList from './AddFriendList/AddFriendList';
+import AddFriendSearchContainer from './AddFriendSearchContainer/AddFriendSearchContainer';
+import { useAddFriend } from './useAddFriend';
 
 const AddFriend = () => {
-	const [search, setSearch] = useState('');
-
-	const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-		setSearch(e.target.value);
-
-	const { mutate, data, isPending } = useMutation({
-		mutationFn: ({ username }: { username: string }) =>
-			searchByUsername(username),
-		mutationKey: QUERY_KEYS.friends.search(search),
-	});
-
-	const handleSearch = () => {
-		if (search.trim().length >= 3) mutate({ username: search });
-	};
+	const { search, setSearch, onChange, handleSearch, data, isPending } =
+		useAddFriend();
 
 	return (
 		<div className={styles['add-friend']}>
@@ -38,32 +18,12 @@ const AddFriend = () => {
 				titleClassName={styles['add-friend__title']}
 				containerClassName={styles['add-friend__title-container']}
 			/>
-			<div className={styles['add-friend__input-container']}>
-				<TextField
-					type="text"
-					className={styles['add-friend__input']}
-					placeholder="Enter a username"
-					value={search}
-					onChange={onChange}
-					fullWidth
-				/>
-				<Button className={styles['add-friend__btn']} onClick={handleSearch}>
-					<MdOutlinePersonAdd />
-					Search
-				</Button>
-			</div>
-			<div className={styles['add-friend__list']}>
-				{isPending && <SkeletonLoader width="100%" height={55} />}
-				{data ? (
-					data.length > 0 ? (
-						data.map((user) => (
-							<AddFriendItem key={user.id} user={user} setSearch={setSearch} />
-						))
-					) : (
-						<p className={styles['add-friend__list-empty']}>No results</p>
-					)
-				) : null}
-			</div>
+			<AddFriendSearchContainer
+				search={search}
+				onChange={onChange}
+				handleSearch={handleSearch}
+			/>
+			<AddFriendList data={data} isPending={isPending} setSearch={setSearch} />
 		</div>
 	);
 };

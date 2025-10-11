@@ -1,0 +1,14 @@
+.stats-by-days__item-info {
+	display: flex;
+	gap: 5px;
+	flex-direction: column;
+	align-items: center;
+
+	.stats-by-days__item-info-item {
+		.stats-by-days__item-info-item-data {
+			font-weight: 600;
+			margin-top: 3px;
+			font-size: 18px;
+		}
+	}
+}
