@@ -10,8 +10,6 @@ const ResetPassword = () => {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 
-	console.log(token);
-
 	return (
 		<div className={styles['reset-password']}>
 			<SectionHeader

@@ -15,12 +15,10 @@ const HeaderEmailConfirmation = () => {
 	const handleClose = () => setShow(false);
 
 	useEffect(() => {
-		if (!isloading && user) {
-			if (!user.emailVerified) {
-				setShow(true);
-			} else {
-				setShow(false);
-			}
+		if (!isloading && user && !user.emailVerified) {
+			setShow(true);
+		} else {
+			setShow(false);
 		}
 	}, [user, isloading]);
 
