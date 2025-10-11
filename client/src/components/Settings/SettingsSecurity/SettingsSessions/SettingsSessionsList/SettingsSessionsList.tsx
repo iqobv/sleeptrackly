@@ -2,6 +2,7 @@
 
 import { getAllSessions } from '@/api';
 import { Divider, SectionHeader } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -20,7 +21,7 @@ const SettingsSessionsList = () => {
 		error,
 	} = useQuery({
 		queryFn: getAllSessions,
-		queryKey: ['sessions', user?.id],
+		queryKey: QUERY_KEYS.auth.sessions(user?.id || ''),
 		enabled: !!user,
 		gcTime: 0,
 		retry: false,

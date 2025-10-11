@@ -2,7 +2,7 @@
 
 import { changeRequestStatus } from '@/api';
 import { Avatar, Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { FRIEND_STATUS } from '@/constants';
 import { useAuth } from '@/hooks';
 import { IFriend, TFriendStatus } from '@/types';
@@ -22,9 +22,11 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 	const { mutate } = useMutation({
 		mutationFn: ({ id, status }: { id: string; status: TFriendStatus }) =>
 			changeRequestStatus(id, status),
-		mutationKey: ['pendingsChange', user?.id],
+		mutationKey: QUERY_KEYS.friends.pendingsChange(user?.id || ''),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ['pendings', user?.id] }),
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
+			}),
 	});
 
 	const handleUpdate = (id: string, status: TFriendStatus) => {

@@ -3,6 +3,7 @@
 import { Button } from '@/components/UI';
 import { FriendItemMenu } from '../friendItemMenu';
 
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { IFriend } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -23,7 +24,7 @@ const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
 		mutationFn: item.mutationFn,
 		onSuccess: () => {
 			queryClient.refetchQueries({
-				queryKey: ['friends', user?.id],
+				queryKey: QUERY_KEYS.friends.all(user?.id || ''),
 			});
 			toast.success(item.successText);
 		},

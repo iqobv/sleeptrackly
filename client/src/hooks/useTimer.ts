@@ -1,13 +1,16 @@
 'use client';
 
 import { getSleepStatus, updateSleepStatus } from '@/api';
-import { useUserStore } from '@/store';
+import { QUERY_KEYS } from '@/config';
 import { ISleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
+import { useAuth } from './useAuth';
 
 export const useTimer = () => {
+	const { user } = useAuth();
+
 	const [isSleeping, setIsSleeping] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
 	const [finishedSleep, setFinishedSleep] = useState<ISleepEntry | null>(null);
@@ -16,10 +19,8 @@ export const useTimer = () => {
 	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
 	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
 
-	const user = useUserStore((state) => state.user);
-
 	const { data } = useQuery({
-		queryKey: ['timer', user?.id],
+		queryKey: QUERY_KEYS.timer.one(user?.id || ''),
 		queryFn: getSleepStatus,
 		enabled: !!user?.id,
 		retry: false,
@@ -27,7 +28,7 @@ export const useTimer = () => {
 
 	const { mutate: update, isPending } = useMutation({
 		mutationFn: updateSleepStatus,
-		mutationKey: ['update-sleep'],
+		mutationKey: QUERY_KEYS.timer.update(user?.id || ''),
 		onSuccess: (data) => {
 			if (!!data.sleepEntry) setFinishedSleep(data.sleepEntry);
 		},

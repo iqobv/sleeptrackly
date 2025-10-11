@@ -7,6 +7,7 @@ import {
 	SkeletonLoader,
 	TextField,
 } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MdOutlinePersonAdd } from 'react-icons/md';
@@ -22,7 +23,7 @@ const AddFriend = () => {
 	const { mutate, data, isPending } = useMutation({
 		mutationFn: ({ username }: { username: string }) =>
 			searchByUsername(username),
-		mutationKey: ['search', search],
+		mutationKey: QUERY_KEYS.friends.search(search),
 	});
 
 	const handleSearch = () => {

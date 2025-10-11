@@ -2,6 +2,7 @@
 
 import { uploadUserAvatar } from '@/api';
 import { Loader, SectionHeader, TextField } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -19,7 +20,7 @@ const UploadAvatar = () => {
 
 	const { mutate: upload, isPending } = useMutation({
 		mutationFn: (file: File) => uploadUserAvatar(file),
-		mutationKey: ['avatar'],
+		mutationKey: QUERY_KEYS.user.avatar(user?.id || ''),
 		onSuccess() {
 			toast.success('Avatar updated');
 			router.refresh();

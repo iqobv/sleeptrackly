@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { IFriend, IProfile, TFriendStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -31,7 +32,9 @@ const ProfileAddToFriendButton = ({
 	const { mutate, isPending } = useMutation({
 		mutationFn: buttonConfig.mutationFn as () => Promise<IFriend>,
 		onSuccess: () => {
-			queryClient.refetchQueries({ queryKey: ['profile', profile.username] });
+			queryClient.refetchQueries({
+				queryKey: QUERY_KEYS.profile.username(profile.username),
+			});
 			toast.success(buttonConfig.successText || SUCCESS_TEXT);
 		},
 		onError: (error) => {

@@ -2,6 +2,7 @@
 
 import { resetPassword } from '@/api';
 import { TextField } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { PassordDto } from '@/dto';
 import { passwordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,7 +30,7 @@ const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 
 	const { mutate } = useMutation({
 		mutationFn: ({ password }: PassordDto) => resetPassword(token, password),
-		mutationKey: ['reset-password'],
+		mutationKey: QUERY_KEYS.auth.resetPassword,
 		onSuccess() {
 			router.refresh();
 		},
