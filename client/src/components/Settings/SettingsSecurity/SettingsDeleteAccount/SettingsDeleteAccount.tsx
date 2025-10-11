@@ -7,6 +7,7 @@ import { useState } from 'react';
 import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
 
 import { deleteAccount } from '@/api';
+import { QUERY_KEYS } from '@/config';
 
 const SettingsDeleteAccount = () => {
 	const router = useRouter();
@@ -17,7 +18,7 @@ const SettingsDeleteAccount = () => {
 
 	const { mutate } = useMutation({
 		mutationFn: deleteAccount,
-		mutationKey: ['delete-account'],
+		mutationKey: QUERY_KEYS.auth.deleteAccount,
 		onSuccess() {
 			router.refresh();
 		},

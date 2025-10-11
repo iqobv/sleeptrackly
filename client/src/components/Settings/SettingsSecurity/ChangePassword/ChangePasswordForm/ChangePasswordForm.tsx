@@ -2,6 +2,7 @@
 
 import { changePassword, needOldPassword } from '@/api';
 import { Button, Loader, TextField } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { ChangePasswordDto } from '@/dto';
 import { useAuth } from '@/hooks';
 import { changePasswordSchema } from '@/schemas';
@@ -36,14 +37,14 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 
 	const { data, isFetched, isLoading } = useQuery<boolean>({
 		queryFn: needOldPassword,
-		queryKey: ['need-old-password', user?.id],
+		queryKey: QUERY_KEYS.auth.needOldPassword(user?.id || ''),
 		enabled: !!user?.id,
 	});
 
 	const { mutate } = useMutation({
 		mutationFn: ({ oldPassword, newPassword }: ChangePasswordDto) =>
 			changePassword({ oldPassword, newPassword }),
-		mutationKey: ['change-password'],
+		mutationKey: QUERY_KEYS.auth.changePassword(user?.id || ''),
 		onSuccess() {
 			reset();
 			toast.success('Password changed');

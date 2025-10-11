@@ -2,6 +2,7 @@
 
 import { terminateAllSessions, terminateSession } from '@/api';
 import { Button } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { ISession } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,20 +25,24 @@ const SettingsSessionsItem = ({
 	const queryClient = useQueryClient();
 	const { user } = useAuth();
 
+	const queryKey = QUERY_KEYS.auth.sessions(user?.id || '');
+
 	const { mutate: terminate, isPending: isTerminating } = useMutation({
 		mutationFn: () => terminateSession(session.id),
-		mutationKey: ['terminateSession', session.id],
+		mutationKey: QUERY_KEYS.auth.terminateSession(user?.id || '', session.id),
 		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: ['sessions', user?.id] });
+			queryClient.invalidateQueries({ queryKey });
 			toast.success('Session terminated');
 		},
 	});
 
 	const { mutate: terminateAll, isPending: isTerminatingAll } = useMutation({
 		mutationFn: () => terminateAllSessions(isActive ? session.id : ''),
-		mutationKey: ['terminateAllSessions', session.id],
-		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: ['sessions', user?.id] });
+		mutationKey: QUERY_KEYS.auth.terminateAllSession(user?.id || ''),
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey,
+			});
 			toast.success('All other sessions terminated');
 		},
 	});

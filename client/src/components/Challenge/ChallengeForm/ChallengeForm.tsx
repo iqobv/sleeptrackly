@@ -15,6 +15,7 @@ import {
 } from 'react-hook-form';
 import { ZodType } from 'zod';
 
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useEffect } from 'react';
 import styles from './ChallengeForm.module.scss';
@@ -62,7 +63,9 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 		gcTime: 0,
 		onSuccess(data) {
 			reset();
-			queryClient.invalidateQueries({ queryKey: ['challenges', user?.id] });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
+			});
 			onSuccess?.(data);
 		},
 		onError(error) {

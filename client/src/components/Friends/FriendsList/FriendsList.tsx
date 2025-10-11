@@ -2,7 +2,7 @@
 
 import { getAllFriends } from '@/api';
 import { Button, SectionHeader } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import FriendItem from './FriendItem/FriendItem';
@@ -12,7 +12,7 @@ const FriendsList = () => {
 	const { user } = useAuth();
 
 	const { data } = useQuery({
-		queryKey: ['friends', user?.id],
+		queryKey: QUERY_KEYS.friends.all(user?.id || ''),
 		queryFn: getAllFriends,
 		enabled: !!user?.id,
 	});

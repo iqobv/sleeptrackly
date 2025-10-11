@@ -3,7 +3,7 @@
 import { deleteChallenge } from '@/api';
 import { Button, SectionHeader } from '@/components/UI';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
-import { PAGES } from '@/config';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { IChallengeFull } from '@/types/challenge.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -30,9 +30,11 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 
 	const { mutate } = useMutation({
 		mutationFn: () => deleteChallenge(data?.id),
-		mutationKey: ['challenge', data?.id],
+		mutationKey: QUERY_KEYS.challenges.deleteChallenge(data?.id),
 		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: ['challenges', user?.id] });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
+			});
 			router.push(PAGES.CHALLENGES);
 		},
 	});

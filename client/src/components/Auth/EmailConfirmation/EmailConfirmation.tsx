@@ -1,6 +1,7 @@
 'use client';
 
 import { validateVerificationToken } from '@/api';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,7 +18,7 @@ const EmailConfirmation = () => {
 	const { mutate, isSuccess } = useMutation({
 		mutationFn: ({ token }: { token: string }) =>
 			validateVerificationToken(token),
-		mutationKey: ['validate-verification-token'],
+		mutationKey: QUERY_KEYS.auth.validateVerificationToken(user?.id || '', token),
 		onSuccess: () => {
 			router.refresh();
 			toast.success('Email confirmed');

@@ -1,6 +1,7 @@
 'use client';
 
 import { logout as apiLogout } from '@/api';
+import { QUERY_KEYS } from '@/config';
 import { useUserStore } from '@/store';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -23,7 +24,7 @@ export const useAuth = () => {
 
 	const { mutate: logout } = useMutation({
 		mutationFn: apiLogout,
-		mutationKey: ['logout'],
+		mutationKey: QUERY_KEYS.auth.logout(user?.id || ''),
 		onSuccess: () => {
 			storeLogout();
 			router.refresh();

@@ -2,6 +2,7 @@
 
 import { getChellenges } from '@/api';
 import { Loader } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import ActiveChallenges from '../ActiveChallenges/ActiveChallenges';
@@ -13,7 +14,7 @@ const Challenges = () => {
 	const { user } = useAuth();
 
 	const { data: challenges, isLoading } = useQuery({
-		queryKey: ['challenges', user?.id],
+		queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
 		queryFn: getChellenges,
 		enabled: !!user?.id,
 	});

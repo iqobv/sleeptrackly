@@ -2,6 +2,7 @@
 
 import { sendEmailForResetPassword } from '@/api';
 import { Button, TextField } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { EmailDto } from '@/dto';
 import { emailSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,7 +26,7 @@ const EmailField = () => {
 
 	const { mutate, isSuccess } = useMutation({
 		mutationFn: ({ email }: EmailDto) => sendEmailForResetPassword(email),
-		mutationKey: ['send-email-for-reset-password'],
+		mutationKey: QUERY_KEYS.auth.sendEmailForResetPassword,
 	});
 
 	const onSubmit = (data: EmailDto) => mutate(data);

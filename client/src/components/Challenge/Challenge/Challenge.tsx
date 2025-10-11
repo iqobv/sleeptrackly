@@ -2,6 +2,7 @@
 
 import { getChallengeById } from '@/api';
 import { Loader } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import Calendar from '../Calendar/Calendar';
 import ChallengeInfo from '../ChallengeInfo/ChallengeInfo';
@@ -14,7 +15,7 @@ interface ChallengeProps {
 
 const Challenge = ({ id }: ChallengeProps) => {
 	const { data: challenge, isLoading } = useQuery({
-		queryKey: ['challenge', id],
+		queryKey: QUERY_KEYS.challenges.one(id),
 		queryFn: () => getChallengeById(id),
 		enabled: !!id,
 	});

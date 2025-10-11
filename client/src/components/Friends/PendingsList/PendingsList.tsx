@@ -2,7 +2,7 @@
 
 import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
 import { Button, SectionHeader } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { FRIEND_STATUS } from '@/constants';
 import { useAuth } from '@/hooks';
 import { TFriendStatus } from '@/types';
@@ -18,7 +18,7 @@ const PendingsList = () => {
 
 	const { data, refetch } = useQuery({
 		queryFn: getPendingFriendRequests,
-		queryKey: ['pendings', user?.id],
+		queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
 		staleTime: 0,
 		enabled: !!user?.id,
 	});
@@ -26,7 +26,7 @@ const PendingsList = () => {
 	const { mutate: mutateMany } = useMutation({
 		mutationFn: ({ status }: { status: TFriendStatus }) =>
 			updateManyPendingRequests(status),
-		mutationKey: ['pendingsManyChange', user?.id],
+		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
 		onSuccess: () => {
 			refetch();
 			router.push(PAGES.FRIENDS);
