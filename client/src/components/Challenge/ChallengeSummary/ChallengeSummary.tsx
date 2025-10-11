@@ -5,7 +5,7 @@ import { Button, SectionHeader } from '@/components/UI';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { IChallengeFull } from '@/types/challenge.types';
+import { IChallengeFull } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

@@ -1,13 +1,13 @@
 import { FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { Field } from './field.types';
+import { IField } from '../ui/field.types';
 
-export interface SettingsFormFields<T extends FieldValues> extends Field<T> {
+export interface SettingsFormFields<T extends FieldValues> extends IField<T> {
 	render?: (
 		props: {
 			register: UseFormRegister<T>;
 			setValue: UseFormSetValue<T>;
 			error?: string;
-		} & Field<T>,
+		} & IField<T>
 	) => React.ReactNode;
 	accept?: string;
 }

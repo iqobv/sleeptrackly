@@ -1,4 +1,4 @@
-import { IFriendship } from './friendship.types';
+import { IFriendship } from '../friend/friendship.types';
 
 export interface IProfile {
 	id: string;

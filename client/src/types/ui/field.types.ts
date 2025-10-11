@@ -1,6 +1,6 @@
 import { Path } from 'react-hook-form';
 
-export interface Field<T> {
+export interface IField<T> {
 	name: Path<T>;
 	label: string;
 	placeholder: string;
