@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { Authorized } from 'src/libs/decorators';
 import { ProfileDto } from './dto';
 import { ProfileService } from './profile.service';
 
@@ -10,7 +11,10 @@ export class ProfileController {
 	@ApiOperation({ summary: 'Get profile by username' })
 	@ApiOkResponse({ type: ProfileDto })
 	@Get(':username')
-	async getProfile(@Param('username') username: string) {
-		return await this.profileService.getProfileByUsername(username);
+	async getProfile(
+		@Param('username') username: string,
+		@Authorized('id') userId: string,
+	) {
+		return await this.profileService.getProfileByUsername(username, userId);
 	}
 }

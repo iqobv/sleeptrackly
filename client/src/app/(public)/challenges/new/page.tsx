@@ -1,10 +1,10 @@
 import { CreateChallenge } from '@/components/Challenge';
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 
 export default function NewChallengePage() {
 	return (
 		<div className="container">
-			<PageHeader title="New Challenge" />
+			<SectionHeader title="New Challenge" />
 			<CreateChallenge />
 		</div>
 	);

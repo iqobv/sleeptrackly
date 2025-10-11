@@ -4,12 +4,15 @@
 
 .user-menu__btn {
 	border-radius: 50%;
-	background-color: var(--nav-button-bg);
+	background-color: transparent;
 	border: none;
 	outline: none;
 	width: 40px;
 	height: 40px;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .user-menu__avatar {

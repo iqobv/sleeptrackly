@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, PageHeader } from '@/components/UI';
+import { Button, SectionHeader } from '@/components/UI';
 import { useTaskSummary } from '@/hooks';
 import { IChallengeFull, IChallengeTask } from '@/types';
 import Default from './Default/Default';
@@ -20,7 +20,7 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 
 	return (
 		<div className={styles['task-summary']}>
-			<PageHeader
+			<SectionHeader
 				title="Selected Date Task"
 				titleComponent="h3"
 				containerClassName={styles['task-summary__title']}

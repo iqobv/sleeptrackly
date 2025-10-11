@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllSessions } from '@/api';
-import { Divider, PageHeader } from '@/components/UI';
+import { Divider, SectionHeader } from '@/components/UI';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -36,7 +36,7 @@ const SettingsSessionsList = () => {
 			{!isLoading && sessions && (
 				<>
 					<div>
-						<PageHeader
+						<SectionHeader
 							title="Current Session"
 							description="Your current session"
 							titleComponent="h3"
@@ -52,7 +52,7 @@ const SettingsSessionsList = () => {
 						<>
 							<Divider />
 							<div>
-								<PageHeader
+								<SectionHeader
 									title="Other Sessions"
 									description="Your other sessions"
 									titleComponent="h3"

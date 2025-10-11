@@ -1,9 +1,10 @@
 'use client';
 
 import { deleteChallenge } from '@/api';
-import { Button, PageHeader } from '@/components/UI';
+import { Button, SectionHeader } from '@/components/UI';
 import ConfirmModal from '@/components/UI/ConfirmModal/ConfirmModal';
 import { PAGES } from '@/config';
+import { useAuth } from '@/hooks';
 import { IChallengeFull } from '@/types/challenge.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -22,6 +23,7 @@ const iconProps: IconBaseProps = {
 
 const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	const [open, setOpen] = useState(false);
+	const { user } = useAuth();
 	const queryClient = useQueryClient();
 
 	const router = useRouter();
@@ -30,7 +32,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 		mutationFn: () => deleteChallenge(data?.id),
 		mutationKey: ['challenge', data?.id],
 		onSuccess() {
-			queryClient.invalidateQueries({ queryKey: ['challenges'] });
+			queryClient.invalidateQueries({ queryKey: ['challenges', user?.id] });
 			router.push(PAGES.CHALLENGES);
 		},
 	});
@@ -44,7 +46,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 
 	return (
 		<div className={styles['summary']}>
-			<PageHeader
+			<SectionHeader
 				title={data?.title}
 				description={data?.description}
 				titleComponent="h2"

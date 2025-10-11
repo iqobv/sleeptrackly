@@ -43,7 +43,9 @@ export async function middleware(request: NextRequest) {
 		(path.startsWith(PAGES.DASHBOARD) ||
 			path.startsWith(PAGES.TIMER) ||
 			path.startsWith(PAGES.CHALLENGES) ||
-			path.startsWith(PAGES.SETTINGS))
+			path.startsWith(PAGES.SETTINGS) ||
+			path.startsWith(PAGES.FRIENDS) ||
+			path.startsWith(PAGES.FRIENDS_REQUESTS))
 	) {
 		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 	}

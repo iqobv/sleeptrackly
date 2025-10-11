@@ -1,11 +1,11 @@
 'use client';
 
-import styles from './PageHeader.module.scss';
+import styles from './SectionHeader.module.scss';
 
 type Component = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
 
-interface PageHeaderProps {
-	title: string;
+interface SectionHeaderProps {
+	title?: string;
 	description?: string;
 	titleComponent?: Component;
 	descriptionComponent?: Component;
@@ -14,26 +14,26 @@ interface PageHeaderProps {
 	descriptionClassName?: string;
 }
 
-export default function PageHeader({
-	title,
+export default function SectionHeader({
+	title = '',
 	description = '',
 	titleComponent = 'h1',
 	descriptionComponent = 'p',
 	titleClassName = '',
 	descriptionClassName = '',
 	containerClassName = '',
-}: PageHeaderProps) {
+}: SectionHeaderProps) {
 	const Title = titleComponent;
 	const Description = descriptionComponent;
 
 	return (
-		<div className={`${styles['page-header']} ${containerClassName}`}>
-			<Title className={`${styles['page-header__title']} ${titleClassName}`}>
+		<div className={`${styles['section-header']} ${containerClassName}`}>
+			<Title className={`${styles['section-header__title']} ${titleClassName}`}>
 				{title}
 			</Title>
 			{!!description && (
 				<Description
-					className={`${styles['page-header__description']} ${descriptionClassName}`}
+					className={`${styles['section-header__description']} ${descriptionClassName}`}
 				>
 					{description}
 				</Description>

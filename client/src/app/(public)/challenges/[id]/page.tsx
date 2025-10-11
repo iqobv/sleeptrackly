@@ -1,5 +1,5 @@
 import { Challenge } from '@/components/Challenge';
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { cookies } from 'next/headers';
 
 interface ChallengePageProps {
@@ -28,7 +28,7 @@ export default async function ChallengePage({ params }: ChallengePageProps) {
 
 	return (
 		<div className="container">
-			<PageHeader
+			<SectionHeader
 				title="Challenge Details"
 				description="View the details of your current challenge."
 			/>

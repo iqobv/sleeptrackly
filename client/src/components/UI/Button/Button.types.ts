@@ -5,7 +5,9 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 export interface ButtonBaseProps {
 	children: React.ReactNode;
 	variant?: ButtonVariant;
-	onClick?: () => void;
+	onClick?: (
+		event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+	) => void;
 	disabled?: boolean;
 	loading?: boolean;
 	className?: string;

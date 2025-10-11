@@ -102,6 +102,21 @@ export class UserService {
 		return user;
 	}
 
+	async findManyByUsername(username: string, userId: string) {
+		const user = await this.getById(userId);
+
+		const users = await this.prismaService.user.findMany({
+			where: { username: { contains: username, mode: 'insensitive' } },
+			select: {
+				id: true,
+				username: true,
+				avatar: { select: { url: true } },
+			},
+		});
+
+		return users.filter(({ id }) => id !== user?.id);
+	}
+
 	async changePassword(id: string, dto: PasswordRecoveryDto) {
 		const { newPassword, oldPassword } = dto;
 

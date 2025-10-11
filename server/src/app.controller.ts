@@ -6,7 +6,7 @@ import { ApiExcludeController } from '@nestjs/swagger';
 export class AppController {
 	@Get('health')
 	@Version(VERSION_NEUTRAL)
-	async health() {
+	health() {
 		return 'OK';
 	}
 }
