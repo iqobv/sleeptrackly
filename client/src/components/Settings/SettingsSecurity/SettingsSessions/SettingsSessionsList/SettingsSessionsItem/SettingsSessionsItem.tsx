@@ -67,6 +67,7 @@ const SettingsSessionsItem = ({
 							fullWidth
 							onClick={handleTerminateAll}
 							disabled={isTerminating || isTerminatingAll || disableAllButton}
+							loading={isTerminatingAll}
 						>
 							Terminate all other sessions
 						</Button>
@@ -78,6 +79,7 @@ const SettingsSessionsItem = ({
 					onClick={() => terminate()}
 					className={styles['settings-sessions-item__terminate']}
 					disabled={isTerminating || isTerminatingAll}
+					loading={isTerminating}
 				>
 					Terminate
 				</Button>

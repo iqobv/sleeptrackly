@@ -52,7 +52,7 @@ const AuthForm = <T extends FieldValues, R>({
 		defaultValues,
 	});
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn,
 		onSuccess(data) {
 			reset();
@@ -93,7 +93,12 @@ const AuthForm = <T extends FieldValues, R>({
 					/>
 				</div>
 			))}
-			<Button fullWidth type="submit" className={styles['auth-form__button']}>
+			<Button
+				loading={isPending}
+				fullWidth
+				type="submit"
+				className={styles['auth-form__button']}
+			>
 				{buttonLabel}
 			</Button>
 			<Link className={styles['auth-form__link']} href={PAGES.RESET_PASSWORD}>

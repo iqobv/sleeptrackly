@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { buttonVariants } from './butonStyles';
 import { ButtonProps } from './Button.types';
+import ButtonContent from './ButtonContent';
 
 export default function Button({
 	children,
@@ -22,7 +23,13 @@ export default function Button({
 }: ButtonProps) {
 	const isLink = !!href && !disabled && !loading;
 
-	const styles = buttonVariants({ variant, size, fullWidth, isIcon, disabled });
+	const styles = buttonVariants({
+		variant,
+		size,
+		fullWidth,
+		isIcon,
+		disabled,
+	});
 
 	return (
 		<>
@@ -35,7 +42,7 @@ export default function Button({
 					onClick={onClick}
 					{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
 				>
-					{children}
+					<ButtonContent loading={loading}>{children}</ButtonContent>
 				</Link>
 			) : (
 				<button
@@ -47,7 +54,7 @@ export default function Button({
 					id={id}
 					{...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
 				>
-					{children}
+					<ButtonContent loading={loading}>{children}</ButtonContent>
 				</button>
 			)}
 		</>
