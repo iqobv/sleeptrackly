@@ -24,13 +24,17 @@ export class UserController {
 		return await this.userService.update(userId, dto);
 	}
 
+	@Auth()
 	@ApiOperation({
 		summary: 'Search for a user by username',
 	})
 	@Get('search')
-	async findByUsername(@Query() queries: SearchDto) {
+	async findByUsername(
+		@Query() queries: SearchDto,
+		@Authorized('id') userId: string,
+	) {
 		const { username } = queries;
 
-		return await this.userService.findManyByUsername(username);
+		return await this.userService.findManyByUsername(username, userId);
 	}
 }

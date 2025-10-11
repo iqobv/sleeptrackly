@@ -56,6 +56,12 @@ const PendingsList = () => {
 				</Button>
 			</div>
 			<div className={styles['pendings-list__list']}>
+				{data && data.length === 0 && (
+					<SectionHeader
+						description="You don't have any friends requests"
+						descriptionClassName={styles['pendings-list__empty']}
+					/>
+				)}
 				{data && data.map((el) => <PendingsItem key={el.id} friend={el} />)}
 			</div>
 		</div>

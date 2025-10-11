@@ -4,65 +4,18 @@ import { Avatar, Button } from '@/components/UI';
 import { PAGES } from '@/config';
 import { IFriend } from '@/types';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
 import { MdOutlineMoreVert } from 'react-icons/md';
 import styles from './FriendItem.module.scss';
-import { FRIEND_ITEM_MENU } from './friendItemMenu';
+import FriendItemMenu from './FriendItemMenu/FriendItemMenu';
+import { useFriendItemMenu } from './useFriendItemMenu';
 
 interface FriendItemProps {
 	friend: IFriend;
 }
 
 const FriendItem = ({ friend }: FriendItemProps) => {
-	const menuRef = useRef<HTMLDivElement>(null);
-	const containerRef = useRef<HTMLDivElement>(null);
-
-	const [menuOpen, setMenuOpen] = useState(false);
-	const [menuUp, setMenuUp] = useState(false);
-
-	const handleCloseOutside = (event: MouseEvent) => {
-		if (
-			containerRef.current &&
-			!containerRef.current.contains(event.target as Node)
-		) {
-			setMenuOpen(false);
-		}
-	};
-
-	const updateMenuPosition = useCallback(() => {
-		if (menuOpen && menuRef.current && containerRef.current) {
-			const menuRect = menuRef.current.getBoundingClientRect();
-			const containerRect = containerRef.current.getBoundingClientRect();
-			const viewportHeight = window.innerHeight;
-
-			if (containerRect.bottom + menuRect.height > viewportHeight) {
-				setMenuUp(true);
-			} else {
-				setMenuUp(false);
-			}
-		}
-	}, [menuOpen]);
-
-	useEffect(() => {
-		document.addEventListener('mousedown', handleCloseOutside);
-		window.addEventListener('resize', updateMenuPosition);
-		window.addEventListener('scroll', updateMenuPosition, true);
-
-		return () => {
-			document.removeEventListener('mousedown', handleCloseOutside);
-			window.removeEventListener('resize', updateMenuPosition);
-			window.removeEventListener('scroll', updateMenuPosition, true);
-		};
-	}, [menuOpen, updateMenuPosition]);
-
-	useEffect(() => {
-		updateMenuPosition();
-	}, [menuOpen, updateMenuPosition]);
-
-	const handleOpenMenu = (e: React.MouseEvent) => {
-		e.stopPropagation();
-		setMenuOpen((prev) => !prev);
-	};
+	const { containerRef, menuRef, menuOpen, handleOpenMenu, menuUp } =
+		useFriendItemMenu();
 
 	return (
 		<div className={styles['friend-item']}>
@@ -85,24 +38,7 @@ const FriendItem = ({ friend }: FriendItemProps) => {
 					<MdOutlineMoreVert size={24} />
 				</Button>
 				{menuOpen && (
-					<div
-						ref={menuRef}
-						className={`${styles['friend-item__menu']} ${
-							menuUp ? styles['friend-item__menu--up'] : ''
-						}`}
-					>
-						{FRIEND_ITEM_MENU.map((item) => (
-							<Button
-								variant="text"
-								fullWidth
-								className={styles['friend-item__menu-item']}
-								key={item.label}
-								onClick={() => item.onClick(friend.id)}
-							>
-								{item.label}
-							</Button>
-						))}
-					</div>
+					<FriendItemMenu menuRef={menuRef} friend={friend} menuUp={menuUp} />
 				)}
 			</div>
 		</div>

@@ -39,7 +39,7 @@ const HeaderEmailConfirmation = () => {
 						size="sm"
 						variant="contained"
 						fullWidth
-						onClick={sendConfirmation}
+						onClick={() => sendConfirmation}
 					>
 						Confirm
 					</Button>

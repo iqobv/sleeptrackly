@@ -5,6 +5,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { FriendshipStatus, Prisma } from '@prisma/client';
+import ms from 'ms';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 import { UpdateFriendshipDto } from './dto';
@@ -50,7 +51,23 @@ export class FriendshipService {
 			},
 		});
 
-		if (friendship) throw new ConflictException('Friendship already exists');
+		if (friendship) {
+			if (friendship?.status === FriendshipStatus.REJECTED) {
+				const now = new Date();
+				if (ms('1d') > now.getTime() - friendship.updatedAt.getTime())
+					throw new BadRequestException(
+						'You can send a new request in 24 hours',
+					);
+			}
+
+			if (
+				friendship?.status === FriendshipStatus.BLOCKED &&
+				friendship.addresseeId === requesterId
+			)
+				throw new BadRequestException('You are blocked');
+
+			throw new ConflictException('Friendship already exists');
+		}
 	}
 
 	async getAllByUserId(userId: string) {
@@ -120,7 +137,7 @@ export class FriendshipService {
 	}
 
 	private async findFriendshipById(id: string, userId: string) {
-		const friendship = await this.prismaService.friendship.findUnique({
+		const friendship = await this.prismaService.friendship.findFirst({
 			where: { id, OR: [{ requesterId: userId }, { addresseeId: userId }] },
 		});
 

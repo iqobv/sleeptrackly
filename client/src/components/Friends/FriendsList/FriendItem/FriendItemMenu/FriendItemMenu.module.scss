@@ -1,0 +1,25 @@
+.friend-item-menu {
+	position: absolute;
+	right: 0;
+	background-color: var(--dropdown-bg);
+	z-index: 100;
+	padding: 4px;
+	border-radius: 8px;
+	min-width: 150px;
+
+	&--up {
+		top: auto;
+		bottom: 100%;
+	}
+
+	&--down {
+		top: 100%;
+		bottom: auto;
+	}
+}
+
+.friend-item-menu__item {
+	text-align: start;
+	justify-content: start;
+	padding: 12px 6px;
+}

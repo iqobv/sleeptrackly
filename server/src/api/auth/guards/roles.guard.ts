@@ -5,7 +5,7 @@ import {
 	Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRole } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { Request } from 'express';
 import { ROLES_KEY } from '../decorators/roles.decortor';
 
@@ -19,12 +19,15 @@ export class RolesGuard implements CanActivate {
 			context.getClass(),
 		]);
 
+		if (!roles || roles.length === 0) {
+			return true;
+		}
+
 		const req: Request = context.switchToHttp().getRequest();
+		const user = req.user as User;
 
-		if (!roles) return true;
-
-		if (req.user && !roles.includes(req?.user?.role)) {
-			throw new ForbiddenException('Access denied');
+		if (!user || !roles.includes(user.role)) {
+			throw new ForbiddenException('Access denied.');
 		}
 
 		return true;

@@ -14,7 +14,7 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 
 	return (
 		<div className={styles['profile-main-info']}>
-			<Avatar avatar={profile.avatar?.url} size={300} />
+			<Avatar avatar={profile.avatar?.url} size={300} priority />
 			<SectionHeader
 				title={profile.username}
 				titleComponent="h2"

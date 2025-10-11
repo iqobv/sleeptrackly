@@ -11,7 +11,10 @@ interface ProfileButton {
 	}) => Promise<IFriend> | void;
 	isShow?: boolean;
 	isDisabled?: boolean;
+	successText?: string;
 }
+
+export const SUCCESS_TEXT = 'Friend request sent';
 
 export const DEFAULT_BUTTON = (
 	profileUserId: string,
@@ -21,6 +24,7 @@ export const DEFAULT_BUTTON = (
 	mutationFn: () => sendFriendRequest(profileUserId),
 	isShow: false,
 	isDisabled: userId === profileUserId,
+	successText: SUCCESS_TEXT,
 });
 
 export const PROFILE_FRIENDS_BUTTONS = (
@@ -29,9 +33,13 @@ export const PROFILE_FRIENDS_BUTTONS = (
 	userId: string | null | undefined
 ): Record<TFriendStatus, ProfileButton> => ({
 	[FRIEND_STATUS.ACCEPTED]: {
-		text: 'In friends',
-		mutationFn: () => {},
-		isDisabled: true,
+		text: 'Unfriend',
+		mutationFn: () => {
+			if (!friendship?.id || !userId || !profileUserId) return;
+
+			return deleteFriend(friendship.id);
+		},
+		successText: "You're not friends anymore",
 	},
 	[FRIEND_STATUS.PENDING]: {
 		text:
@@ -44,16 +52,24 @@ export const PROFILE_FRIENDS_BUTTONS = (
 
 			return changeRequestStatus(friendship.id, FRIEND_STATUS.ACCEPTED);
 		},
+		successText:
+			userId === friendship?.requesterId
+				? 'Request canceled'
+				: 'Friend request accepted',
 		isDisabled: userId === profileUserId,
 	},
-	[FRIEND_STATUS.REJECTED]: {
-		text: 'Request rejected',
-		mutationFn: () => {},
-		isDisabled: true,
-	},
+	[FRIEND_STATUS.REJECTED]: DEFAULT_BUTTON(profileUserId, userId),
 	[FRIEND_STATUS.BLOCKED]: {
-		text: 'Blocked',
-		mutationFn: () => {},
-		isDisabled: true,
+		...(userId === friendship?.requesterId
+			? {
+					text: 'Unblock',
+					mutationFn: () => {
+						if (!friendship?.id || !userId || !profileUserId) return;
+
+						return deleteFriend(friendship?.id);
+					},
+					successText: 'Unblocked',
+			  }
+			: { ...DEFAULT_BUTTON(profileUserId, userId), isDisabled: true }),
 	},
 });

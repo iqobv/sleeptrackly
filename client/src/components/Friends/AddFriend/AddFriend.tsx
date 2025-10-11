@@ -53,11 +53,15 @@ const AddFriend = () => {
 			</div>
 			<div className={styles['add-friend__list']}>
 				{isPending && <SkeletonLoader width="100%" height={55} />}
-				{data &&
-					data.length > 0 &&
-					data.map((user) => (
-						<AddFriendItem key={user.id} user={user} setSearch={setSearch} />
-					))}
+				{data ? (
+					data.length > 0 ? (
+						data.map((user) => (
+							<AddFriendItem key={user.id} user={user} setSearch={setSearch} />
+						))
+					) : (
+						<p className={styles['add-friend__list-empty']}>No results</p>
+					)
+				) : null}
 			</div>
 		</div>
 	);

@@ -26,4 +26,4 @@ export const updateManyPendingRequests = async (status: TFriendStatus) =>
 	});
 
 export const deleteFriend = async (id: string) =>
-	await fetcher<IFriend>(`/api/v1/friends/id/${id}`, { method: 'DELETE' });
+	await fetcher<IFriend>(`/api/v1/friends/${id}`, { method: 'DELETE' });

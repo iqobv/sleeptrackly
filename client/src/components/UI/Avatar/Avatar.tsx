@@ -11,6 +11,7 @@ export default function Avatar({
 	size = 40,
 	avatarClassName,
 	containerClassName,
+	priority = false,
 }: AvatarProps) {
 	const [loaded, setLoaded] = useState(false);
 
@@ -31,6 +32,7 @@ export default function Avatar({
 				width={size}
 				height={size}
 				onLoad={() => setLoaded(true)}
+				priority={priority}
 				style={{ opacity: loaded ? 1 : 0 }}
 			/>
 		</div>

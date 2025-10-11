@@ -20,7 +20,7 @@ const FriendsList = () => {
 	return (
 		<div className={styles['friends']}>
 			<SectionHeader title="My Friends" titleComponent="h3" />
-			{data && (
+			{data && user && (
 				<>
 					<Button href={PAGES.FRIENDS_REQUESTS} variant="outlined">
 						View Pending Requests

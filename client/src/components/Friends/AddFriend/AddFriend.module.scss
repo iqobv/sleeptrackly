@@ -4,7 +4,14 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-}	
+	background-color: var(--friend-add-bg);
+	padding: 10px;
+	border-radius: 12px;
+
+	@include response(md) {
+		padding: 10px 20px;
+	}
+}
 
 .add-friend__title-container {
 	padding: 10px 0;
@@ -26,4 +33,16 @@
 			width: unset;
 		}
 	}
+}
+
+.add-friend__list {
+	padding-top: 20px;
+}
+
+.add-friend__list-empty {
+	padding: 10px 0;
+	text-align: center;
+	font-size: 1.1rem;
+	font-weight: 600;
+	height: 55px;
 }

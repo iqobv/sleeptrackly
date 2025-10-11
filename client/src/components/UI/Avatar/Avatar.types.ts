@@ -3,4 +3,5 @@ export interface AvatarProps {
 	size?: number;
 	containerClassName?: string;
 	avatarClassName?: string;
+	priority?: boolean;
 }

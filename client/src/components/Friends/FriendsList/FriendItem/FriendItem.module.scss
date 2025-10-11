@@ -23,25 +23,3 @@
 .friend-item__actions {
 	position: relative;
 }
-
-.friend-item__menu {
-	position: absolute;
-	right: 0;
-	background-color: var(--dropdown-bg);
-	z-index: 100;
-	padding: 4px;
-	border-radius: 8px;
-	min-width: 150px;
-	top: 100%;
-
-	&--up {
-		top: auto;
-		bottom: 100%;
-	}
-}
-
-.friend-item__menu-item {
-	text-align: start;
-	justify-content: start;
-	padding: 12px 6px;
-}

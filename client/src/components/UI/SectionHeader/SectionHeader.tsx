@@ -5,7 +5,7 @@ import styles from './SectionHeader.module.scss';
 type Component = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
 
 interface SectionHeaderProps {
-	title: string;
+	title?: string;
 	description?: string;
 	titleComponent?: Component;
 	descriptionComponent?: Component;
@@ -15,7 +15,7 @@ interface SectionHeaderProps {
 }
 
 export default function SectionHeader({
-	title,
+	title = '',
 	description = '',
 	titleComponent = 'h1',
 	descriptionComponent = 'p',
