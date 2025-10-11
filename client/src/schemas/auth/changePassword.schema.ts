@@ -1,5 +1,5 @@
 import z from 'zod';
-import { passwordSchema } from './baseAuth';
+import { passwordSchema } from './baseAuth.schema';
 
 export const changePasswordSchema = z.object({
 	oldPassword: z.preprocess(

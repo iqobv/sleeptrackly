@@ -1,12 +1,12 @@
 'use client';
 
 import { Calendar as UICalendar } from '@/components/UI';
-import { useChallengeTaskCalendar } from '@/hooks';
 import { IChallengeFull } from '@/types';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import TaskSumary from '../TaskSummary/TaskSummary';
 import styles from './Calendar.module.scss';
+import { useChallengeTaskCalendar } from './useChallengeTaskCalendar';
 
 dayjs.extend(isSameOrBefore);
 

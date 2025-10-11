@@ -1,1 +1,1 @@
-export * from './friendStatus';
+export * from './friendStatus.constants';

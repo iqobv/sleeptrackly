@@ -1,7 +1,6 @@
 import z from 'zod';
-import { baseAuthSchema } from './baseAuth';
 
-export const RegisterSchema = baseAuthSchema.extend({
+export const SettingsAccountSchema = z.object({
 	username: z
 		.string()
 		.nonempty({ error: 'Username is required' })

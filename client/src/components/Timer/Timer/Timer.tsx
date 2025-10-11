@@ -1,10 +1,9 @@
 'use client';
 
 import { Button, Loader } from '@/components/UI';
-import { useTimer } from '@/hooks';
-
 import styles from './Timer.module.scss';
 import TimerEnd from './TimerEnd/TimerEnd';
+import { useTimer } from './useTimer';
 
 const labels = ['Hours', 'Minutes', 'Seconds'];
 
