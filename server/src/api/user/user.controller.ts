@@ -1,11 +1,11 @@
-import { Body, Controller, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
 import {
 	ApiConflictResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
 import { Auth, Authorized } from 'src/libs/decorators';
-import { UpdateUserDto, UserDto } from './dto';
+import { SearchDto, UpdateUserDto, UserDto } from './dto';
 import { UserService } from './user.service';
 
 @Controller('users')
@@ -22,5 +22,19 @@ export class UserController {
 		@Body() dto: UpdateUserDto,
 	) {
 		return await this.userService.update(userId, dto);
+	}
+
+	@Auth()
+	@ApiOperation({
+		summary: 'Search for a user by username',
+	})
+	@Get('search')
+	async findByUsername(
+		@Query() queries: SearchDto,
+		@Authorized('id') userId: string,
+	) {
+		const { username } = queries;
+
+		return await this.userService.findManyByUsername(username, userId);
 	}
 }

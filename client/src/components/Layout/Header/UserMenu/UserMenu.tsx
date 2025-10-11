@@ -1,8 +1,7 @@
 'use client';
 
-import { Button, Divider } from '@/components/UI';
+import { Avatar, Button, Divider } from '@/components/UI';
 import { useAuth, useBlockScroll } from '@/hooks';
-import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import MenuItem from './MenuItem/MenuItem';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
@@ -46,14 +45,7 @@ const UserMenu = () => {
 	return (
 		<div className={styles['user-menu']} ref={menuRef}>
 			<button onClick={handleOpen} className={styles['user-menu__btn']}>
-				<Image
-					src={`/api/images/${user?.avatar?.url || 'default-avatar.png'}`}
-					alt="avatar"
-					className={styles['user-menu__avatar']}
-					width={40}
-					height={40}
-					priority
-				/>
+				<Avatar avatar={user.avatar?.url} size={40} />
 			</button>
 			{open && (
 				<div className={styles['user-menu__dropdown']}>

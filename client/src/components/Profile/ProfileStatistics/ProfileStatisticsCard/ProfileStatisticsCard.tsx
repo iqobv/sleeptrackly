@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { IProfile } from '@/types';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
@@ -16,9 +16,10 @@ const ProfileStatisticsCard = ({
 }: ProfileStatisticsCardProps) => {
 	return (
 		<li className={styles['profile-statistics__card']}>
-			<PageHeader
+			<SectionHeader
 				title={(profile[item.field] as number).toString()}
 				titleComponent="p"
+				titleClassName={styles['profile-statistics__card-title']}
 				description={item.label}
 			/>
 		</li>

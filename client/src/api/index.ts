@@ -3,6 +3,7 @@ export * from './challenge';
 export * from './challengeTask';
 export * from './dashboard';
 export * from './email';
+export * from './friend';
 export * from './password';
 export * from './profile';
 export * from './session';

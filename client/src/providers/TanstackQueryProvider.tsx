@@ -11,10 +11,10 @@ export function TanstackQueryProvider({
 			defaultOptions: {
 				queries: {
 					refetchOnWindowFocus: false,
-					refetchOnMount: false,
+					refetchOnMount: true,
 				},
 			},
-		}),
+		})
 	);
 
 	return <QueryClientProvider client={client}>{children}</QueryClientProvider>;

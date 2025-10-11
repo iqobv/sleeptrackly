@@ -1,6 +1,6 @@
 'use client';
 
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { useSearchParams } from 'next/navigation';
 import EmailField from './EmailField/EmailField';
 import NewPasswordField from './NewPasswordField/NewPasswordField';
@@ -10,11 +10,9 @@ const ResetPassword = () => {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 
-	console.log(token);
-
 	return (
 		<div className={styles['reset-password']}>
-			<PageHeader
+			<SectionHeader
 				title="Reset Password"
 				containerClassName={styles['reset-password__header']}
 			/>

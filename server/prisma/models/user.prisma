@@ -20,5 +20,8 @@ model User {
   tokens       Token[]
   sessions     Session[]
 
+  sentFriendRequests     Friendship[] @relation("SentFriendRequests")
+  receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
+
   @@map("users")
 }

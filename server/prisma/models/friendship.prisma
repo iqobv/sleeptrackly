@@ -1,0 +1,17 @@
+model Friendship {
+  id String @id @unique @default(uuid())
+
+  requesterId String @map("requester_id")
+  addresseeId String @map("addressee_id")
+
+  status FriendshipStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  requester User    @relation("SentFriendRequests", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User    @relation("ReceivedFriendRequests", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@map("friendships")
+}

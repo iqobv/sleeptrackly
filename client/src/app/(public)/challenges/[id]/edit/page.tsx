@@ -1,5 +1,5 @@
 import { EditChallenge } from '@/components/Challenge';
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { cookies } from 'next/headers';
 
 interface EditChallengePageProps {
@@ -30,7 +30,7 @@ export default async function EditChallengePage({
 
 	return (
 		<div className="container">
-			<PageHeader title="Edit Challenge" />
+			<SectionHeader title="Edit Challenge" />
 			<EditChallenge id={id} />
 		</div>
 	);

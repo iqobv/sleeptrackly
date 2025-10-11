@@ -1,0 +1,26 @@
+@use '../../../styles/mixins' as *;
+
+.pendings-list__buttons {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+}
+
+.pendings-list__button {
+	width: 100%;
+
+	@include response(md) {
+		width: unset;
+	}
+}
+
+.pendings-list__list {
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.pendings-list__empty {
+	text-align: center;
+}

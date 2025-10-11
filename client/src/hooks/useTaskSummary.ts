@@ -1,6 +1,7 @@
 'use client';
 
 import { updateTask } from '@/api';
+import { QUERY_KEYS } from '@/config';
 import { ChallengeTaskDto } from '@/dto';
 import { IChallengeFull, IChallengeTask } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -47,10 +48,12 @@ export const useTaskSummary = ({
 			taskId: string;
 			data: ChallengeTaskDto;
 		}) => updateTask(challengeId, taskId, data),
-		mutationKey: ['mark-as-completed'],
+		mutationKey: QUERY_KEYS.challenges.markTaskAsCompleted(task?.id || ''),
 		onSuccess: () => {
 			toast.success('Task marked as completed');
-			queryClient.invalidateQueries({ queryKey: ['challenge', challenge?.id] });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.challenges.one(challenge.id),
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message);

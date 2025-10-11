@@ -1,6 +1,7 @@
 'use client';
 
 import { getProfile } from '@/api';
+import { QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import styles from './Profile.module.scss';
 import ProfileMainInfo from './ProfileMainInfo/ProfileMainInfo';
@@ -13,8 +14,8 @@ interface ProfileProps {
 
 const Profile = ({ username }: ProfileProps) => {
 	const { data, isLoading } = useQuery({
-		queryKey: ['profile', username],
 		queryFn: () => getProfile(username),
+		queryKey: QUERY_KEYS.profile.username(username),
 		enabled: !!username,
 		retry: false,
 	});

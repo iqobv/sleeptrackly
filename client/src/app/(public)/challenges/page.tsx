@@ -1,5 +1,5 @@
 import { Challenges } from '@/components/Challenges';
-import { PageHeader } from '@/components/UI';
+import { SectionHeader } from '@/components/UI';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function ChallengesPage() {
 	return (
 		<div className="container">
-			<PageHeader
+			<SectionHeader
 				title={'Challenges'}
 				description={'Track and manage your personal challenges.'}
 			/>
