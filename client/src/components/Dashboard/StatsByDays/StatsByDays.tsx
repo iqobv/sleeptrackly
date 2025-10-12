@@ -12,7 +12,7 @@ interface StatsByDaysProps {
 
 const StatsByDays = ({ days }: StatsByDaysProps) => {
 	return (
-		<div className={`${styles['stats-by-days']} fade-in`}>
+		<div className={`${styles['stats-by-days']}`}>
 			<List
 				items={days}
 				gap={20}

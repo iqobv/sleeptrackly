@@ -17,12 +17,12 @@ const Dashboard = () => {
 				<DashboardLoader />
 			) : (
 				data && (
-					<>
+					<div className={`${styles['dashboard__wrapper']} fade-in`}>
 						<WeekPagination totalWeeks={data?.totalWeeks} days={data?.days} />
 						<Stats data={data.statistics} />
 						<SleepChart data={data.days} />
 						<StatsByDays days={data.days} />
-					</>
+					</div>
 				)
 			)}
 		</div>

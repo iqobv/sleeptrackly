@@ -20,7 +20,7 @@ const SleepChart = ({ data }: SleepChartProps) => {
 	const { sleepDuration, chartData } = useSleepChart(data);
 
 	return (
-		<div className={`${styles['sleep-chart']} fade-in`}>
+		<div className={`${styles['sleep-chart']}`}>
 			<div className={styles['sleep-chart-title-container']}>
 				<p className={styles['sleep-chart-title']}>Sleep duration</p>
 				<p className={styles['sleep-chart-subtitle']}>
