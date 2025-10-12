@@ -1,7 +1,7 @@
 'use client';
 
+import { List } from '@/components/UI';
 import { IProfile } from '@/types';
-import styles from './ProfileStatistics.module.scss';
 import ProfileStatisticsCard from './ProfileStatisticsCard/ProfileStatisticsCard';
 import { PROFILE_STATISTICS_LIST } from './profileStatisticsList';
 
@@ -11,13 +11,17 @@ interface ProfileStatisticsProps {
 
 const ProfileStatistics = ({ profile }: ProfileStatisticsProps) => {
 	return (
-		<div className={styles['profile-statistics']}>
-			<ul className={styles['profile-statistics__list']}>
-				{PROFILE_STATISTICS_LIST.map((el) => (
-					<ProfileStatisticsCard key={el.name} item={el} profile={profile} />
-				))}
-			</ul>
-		</div>
+		<List
+			items={PROFILE_STATISTICS_LIST}
+			isHorizontal
+			gap={20}
+			style={{
+				flexWrap: 'wrap',
+			}}
+			renderItem={(el) => (
+				<ProfileStatisticsCard key={el.name} item={el} profile={profile} />
+			)}
+		/>
 	);
 };
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { SectionHeader } from '@/components/UI';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import SocialAuth from '../SocialAuth/SocialAuth';
@@ -12,7 +13,7 @@ interface AuthProps {
 const Auth = ({ isRegister = false }: AuthProps) => {
 	return (
 		<div className={`container ${styles['auth']}`}>
-			<h1>{isRegister ? 'Register' : 'Login'}</h1>
+			<SectionHeader title={isRegister ? 'Register' : 'Login'} />
 			{isRegister ? <Register /> : <Login />}
 			<SocialAuth />
 		</div>

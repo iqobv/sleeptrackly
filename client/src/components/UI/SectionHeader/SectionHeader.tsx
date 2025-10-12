@@ -1,18 +1,7 @@
 'use client';
 
 import styles from './SectionHeader.module.scss';
-
-type Component = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
-
-interface SectionHeaderProps {
-	title?: string;
-	description?: string;
-	titleComponent?: Component;
-	descriptionComponent?: Component;
-	containerClassName?: string;
-	titleClassName?: string;
-	descriptionClassName?: string;
-}
+import { SectionHeaderProps } from './SectionHeader.types';
 
 export default function SectionHeader({
 	title = '',
@@ -22,12 +11,20 @@ export default function SectionHeader({
 	titleClassName = '',
 	descriptionClassName = '',
 	containerClassName = '',
+	padding = 20,
 }: SectionHeaderProps) {
 	const Title = titleComponent;
 	const Description = descriptionComponent;
 
 	return (
-		<div className={`${styles['section-header']} ${containerClassName}`}>
+		<div
+			className={`${styles['section-header']} ${containerClassName}`}
+			style={
+				{
+					'--padding': `${padding}px`,
+				} as React.CSSProperties
+			}
+		>
 			<Title className={`${styles['section-header__title']} ${titleClassName}`}>
 				{title}
 			</Title>

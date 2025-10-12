@@ -3,6 +3,7 @@
 import { IChallenge } from '@/types';
 import { useEffect, useState } from 'react';
 
+import { SectionHeader } from '@/components/UI';
 import ChallengesList from '../ChallengesList/ChallengesList';
 import styles from './ActiveChallenges.module.scss';
 
@@ -21,7 +22,12 @@ const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
 
 	return (
 		<div className={styles['active-challenges']}>
-			<h2>Active Challenges</h2>
+			<SectionHeader
+				title="Active Challenges"
+				titleComponent="h2"
+				description="Track and manage your active challenges."
+				padding={5}
+			/>
 			<ChallengesList data={activeChallenges} />
 		</div>
 	);

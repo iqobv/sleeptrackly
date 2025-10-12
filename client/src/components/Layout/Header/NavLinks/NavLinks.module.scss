@@ -1,9 +1,6 @@
 @use '../../../../styles/mixins' as *;
 
 .nav-list {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
 	align-items: center;
 
 	.nav-link {

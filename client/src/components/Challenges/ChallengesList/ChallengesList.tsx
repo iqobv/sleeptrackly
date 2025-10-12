@@ -1,5 +1,6 @@
 'use client';
 
+import { List } from '@/components/UI';
 import { IChallenge } from '@/types';
 import ChallengeItem from './ChallengeItem/ChallengeItem';
 import styles from './ChallengesList.module.scss';
@@ -10,12 +11,19 @@ interface ChallengesListProps {
 
 const ChallengesList = ({ data }: ChallengesListProps) => {
 	return (
-		<ul className={styles['challenges-list']}>
-			{data &&
-				data.map((challenge) => (
-					<ChallengeItem key={challenge.id} challenge={challenge} />
-				))}
-		</ul>
+		<>
+			{data && (
+				<List
+					items={data}
+					renderItem={(challenge) => (
+						<ChallengeItem key={challenge.id} challenge={challenge} />
+					)}
+					isHorizontal
+					gap={20}
+					className={styles['challenges-list']}
+				/>
+			)}
+		</>
 	);
 };
 

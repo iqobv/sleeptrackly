@@ -1,5 +1,6 @@
 'use client';
 
+import { List } from '@/components/UI';
 import { IDashboardDay } from '@/types';
 import dayjs from 'dayjs';
 import styles from './StatsByDays.module.scss';
@@ -12,9 +13,12 @@ interface StatsByDaysProps {
 const StatsByDays = ({ days }: StatsByDaysProps) => {
 	return (
 		<div className={`${styles['stats-by-days']} fade-in`}>
-			<ul className={styles['stats-by-days__list']}>
-				{days.map((el) => (
-					<li key={el.day} className={styles['stats-by-days__item']}>
+			<List
+				items={days}
+				gap={20}
+				className={styles['stats-by-days__list']}
+				renderItem={(el) => (
+					<div key={el.day} className={styles['stats-by-days__item']}>
 						<div className={styles['stats-by-days__item-date']}>
 							<p className={styles['stats-by-days__item-date-day']}>
 								{dayjs(el.day).format('dddd')}{' '}
@@ -22,9 +26,9 @@ const StatsByDays = ({ days }: StatsByDaysProps) => {
 							<p>{dayjs(el.day).format('DD.MM.YYYY')}</p>
 						</div>
 						{!el?.data ? <p>No info</p> : <StatsByDaysInfo day={el} />}
-					</li>
-				))}
-			</ul>
+					</div>
+				)}
+			/>
 		</div>
 	);
 };
