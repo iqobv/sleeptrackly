@@ -1,8 +1,8 @@
 'use client';
 
-import { Loader, SectionHeader, TextField } from '@/components/UI';
-import Image from 'next/image';
+import { Avatar, SectionHeader, TextField } from '@/components/UI';
 import styles from './UploadAvatar.module.scss';
+import UploadAvatarLoader from './UploadAvatarLoader';
 import UploadModal from './UploadModal/UploadModal';
 import { useUploadAvatar } from './useUploadAvatar';
 
@@ -19,8 +19,8 @@ const UploadAvatar = () => {
 
 	return (
 		<div className={styles['avatar']}>
-			{isPending ? (
-				<Loader />
+			{isPending || !user ? (
+				<UploadAvatarLoader />
 			) : (
 				<div className={styles['avatar__container']}>
 					<SectionHeader
@@ -32,14 +32,7 @@ const UploadAvatar = () => {
 						onClick={() => inputRef.current?.click()}
 						className={styles['avatar__wrapper']}
 					>
-						<Image
-							src={`/api/images/${user?.avatar?.url || 'default-avatar.png'}`}
-							width={250}
-							height={250}
-							alt="avatar"
-							className={styles['avatar__image']}
-							priority
-						/>
+						<Avatar avatar={user.avatar?.url} size={250} />
 					</button>
 					<div>
 						<TextField

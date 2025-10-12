@@ -9,20 +9,24 @@ import UploadAvatar from '../UploadAvatar/UploadAvatar';
 import { ACCOUNT_FIELDS } from './settingsAccountFields';
 
 import styles from './SettingsAccount.module.scss';
+import SettingsAccountLoader from './SettingsAccountLoader';
 
 const SettingsAccount = () => {
-	const { user } = useAuth();
+	const { user, isloading } = useAuth();
 
 	return (
 		<div className={styles['settings-account']}>
 			<UploadAvatar />
-			<SettingsForm<SettingsAccountDto, IUser>
-				fields={ACCOUNT_FIELDS}
-				mutationFn={updateUser}
-				defaultValues={{
-					username: user?.username || '',
-				}}
-			/>
+			{isloading && <SettingsAccountLoader />}
+			{!isloading && user && (
+				<SettingsForm<SettingsAccountDto, IUser>
+					fields={ACCOUNT_FIELDS}
+					mutationFn={updateUser}
+					defaultValues={{
+						username: user?.username || '',
+					}}
+				/>
+			)}
 		</div>
 	);
 };
