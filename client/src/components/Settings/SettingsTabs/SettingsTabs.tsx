@@ -1,13 +1,13 @@
 'use client';
 
-import { List, Loader } from '@/components/UI';
+import { List } from '@/components/UI';
 import SettingsTab from './SettingsTab/SettingsTab';
 import styles from './SettingsTabs.module.scss';
 import { SETTINGS_TABS } from './tabs';
 import { useSettingsTabs } from './useSettingsTabs';
 
 const SettingsTabs = () => {
-	const { loading, activeTab } = useSettingsTabs();
+	const { activeTab } = useSettingsTabs();
 
 	return (
 		<div className={styles['settings-tabs']}>
@@ -23,8 +23,7 @@ const SettingsTabs = () => {
 					/>
 				)}
 			/>
-			{loading && <Loader size={50} />}
-			{!loading && <div>{activeTab.form}</div>}
+			{<div>{activeTab.form}</div>}
 		</div>
 	);
 };
