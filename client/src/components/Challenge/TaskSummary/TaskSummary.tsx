@@ -1,10 +1,10 @@
 'use client';
 
 import { Button, SectionHeader } from '@/components/UI';
-import { useTaskSummary } from '@/hooks';
 import { IChallengeFull, IChallengeTask } from '@/types';
 import Default from './Default/Default';
 import styles from './TaskSummary.module.scss';
+import { useTaskSummary } from './useTaskSummary';
 
 interface TaskSummaryProps {
 	selectedDate: IChallengeTask | null;

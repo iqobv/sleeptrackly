@@ -1,6 +1,6 @@
 'use client';
 
-import { IChallenge } from '@/types/challenge.types.js';
+import { IChallenge } from '@/types';
 import ChallengesList from '../ChallengesList/ChallengesList';
 import styles from './AllChallenges.module.scss';
 

@@ -1,0 +1,52 @@
+'use client';
+
+import { uploadUserAvatar } from '@/api';
+import { QUERY_KEYS } from '@/config';
+import { useAuth } from '@/hooks';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+
+export const useUploadAvatar = () => {
+	const inputRef = useRef<HTMLInputElement | null>(null);
+	const [avatar, setAvatar] = useState<File | null>(null);
+
+	const router = useRouter();
+	const { user } = useAuth();
+
+	const { mutate: upload, isPending } = useMutation({
+		mutationFn: (file: File) => uploadUserAvatar(file),
+		mutationKey: QUERY_KEYS.user.avatar(user?.id || ''),
+		onSuccess() {
+			toast.success('Avatar updated');
+			router.refresh();
+			setAvatar(null);
+			if (inputRef.current) inputRef.current.value = '';
+		},
+	});
+
+	const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (file) setAvatar(file);
+	};
+
+	const handleUpdate = () => {
+		if (avatar) upload(avatar);
+	};
+
+	const handleClear = () => {
+		setAvatar(null);
+		if (inputRef.current) inputRef.current.value = '';
+	};
+
+	return {
+		inputRef,
+		user,
+		isPending,
+		avatar,
+		handleUpload,
+		handleUpdate,
+		handleClear,
+	};
+};

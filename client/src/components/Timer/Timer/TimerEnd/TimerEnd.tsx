@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/UI';
 import { PAGES } from '@/config';
-import { ISleepEntry } from '@/types/sleepEntrie.types.js';
+import { ISleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import dayjs from 'dayjs';
 import styles from './TimerEnd.module.scss';

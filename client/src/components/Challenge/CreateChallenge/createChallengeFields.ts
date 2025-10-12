@@ -1,23 +1,16 @@
+import { CHALLENGE_FREQUENCY } from '@/constants';
 import { CreateChallengeDto } from '@/dto';
 import { ChallengeField, IOption } from '@/types';
 
 const options: IOption[] = [
 	{
 		label: 'Daily',
-		value: 'daily',
+		value: CHALLENGE_FREQUENCY.DAILY,
 	},
 	{
 		label: 'Weekly',
-		value: 'weekly',
+		value: CHALLENGE_FREQUENCY.WEEKLY,
 	},
-	// {
-	// 	label: 'Monthly',
-	// 	value: 'monthly',
-	// },
-	// {
-	// 	label: 'Once',
-	// 	value: 'once',
-	// },
 ];
 
 export const CREATE_CHALLENGE_FIELDS: ChallengeField<CreateChallengeDto>[] = [

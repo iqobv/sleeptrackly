@@ -20,7 +20,6 @@ const SettingsAccount = () => {
 				fields={ACCOUNT_FIELDS}
 				mutationFn={updateUser}
 				defaultValues={{
-					// email: user?.email || '',
 					username: user?.username || '',
 				}}
 			/>

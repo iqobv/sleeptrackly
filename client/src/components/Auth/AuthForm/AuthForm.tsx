@@ -5,7 +5,7 @@
 import { Button, TextField } from '@/components/UI';
 import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
-import { IUser } from '@/types';
+import { AuthField, IUser } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
 import { ZodType } from 'zod';
-import { AuthField } from '../../../types/authField.types';
 import styles from './AuthForm.module.scss';
 
 interface AuthFormProps<T extends FieldValues, R> {

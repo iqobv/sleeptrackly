@@ -1,6 +1,5 @@
 'use client';
 
-import { useCustomSelect } from '@/hooks';
 import FormLabel from '../FormLabel/FormLabel';
 import ClearButton from './ClearButton/ClearButton';
 import OptionsMenu from './OptionsMenu/OptionsMenu';
@@ -8,6 +7,7 @@ import styles from './Select.module.scss';
 import { SelectProps } from './Select.types';
 import SelectArrow from './SelectArrow/SelectArrow';
 import { selectInputVariants } from './selectStyles';
+import { useCustomSelect } from './useCustomSelect';
 
 export default function Select({
 	options,

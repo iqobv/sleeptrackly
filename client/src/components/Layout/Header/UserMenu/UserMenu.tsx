@@ -1,46 +1,18 @@
 'use client';
 
 import { Avatar, Button, Divider } from '@/components/UI';
-import { useAuth, useBlockScroll } from '@/hooks';
-import { useEffect, useRef, useState } from 'react';
 import MenuItem from './MenuItem/MenuItem';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
-import styles from './UserMenu.module.scss';
 import { USER_MENU_LINKS } from './userManuLinks';
+import styles from './UserMenu.module.scss';
+import { useUserMenu } from './useUserMenu';
 
 const UserMenu = () => {
-	const [open, setOpen] = useState(false);
-	const menuRef = useRef<HTMLDivElement>(null);
-	useBlockScroll(open);
-	const { logout, user } = useAuth();
+	const userMenuData = useUserMenu();
 
-	const handleOpen = () => setOpen(!open);
+	if (!userMenuData) return null;
 
-	const handleClickOutside = (event: MouseEvent) => {
-		if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-			setOpen(false);
-		}
-	};
-
-	const handleCloseOnEscape = (event: KeyboardEvent) => {
-		if (event.key === 'Escape') setOpen(false);
-	};
-
-	const handleLogout = () => {
-		setOpen(false);
-		logout();
-	};
-
-	useEffect(() => {
-		document.addEventListener('click', handleClickOutside, true);
-		document.addEventListener('keydown', handleCloseOnEscape, true);
-		return () => {
-			document.removeEventListener('click', handleClickOutside, true);
-			document.removeEventListener('keydown', handleCloseOnEscape, true);
-		};
-	}, []);
-
-	if (!user) return null;
+	const { menuRef, open, user, handleOpen, handleLogout } = userMenuData;
 
 	return (
 		<div className={styles['user-menu']} ref={menuRef}>

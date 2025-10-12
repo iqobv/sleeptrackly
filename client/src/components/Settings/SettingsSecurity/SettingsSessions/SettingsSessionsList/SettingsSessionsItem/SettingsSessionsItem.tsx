@@ -1,15 +1,11 @@
 'use client';
 
-import { terminateAllSessions, terminateSession } from '@/api';
 import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
 import { ISession } from '@/types';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
 import SettingsSessionsDevice from './SettingsSessionsDevice/SettingsSessionsDevice';
 import SettingsSessionsInfo from './SettingsSessionsInfo/SettingsSessionsInfo';
 import styles from './SettingsSessionsItem.module.scss';
+import { useSettingsSessionsItem } from './useSettingsSessionsItem';
 
 interface SettingsSessionsItemProps {
 	session: ISession;
@@ -22,34 +18,12 @@ const SettingsSessionsItem = ({
 	disableAllButton = false,
 	isActive = false,
 }: SettingsSessionsItemProps) => {
-	const queryClient = useQueryClient();
-	const { user } = useAuth();
-
-	const queryKey = QUERY_KEYS.auth.sessions(user?.id || '');
-
-	const { mutate: terminate, isPending: isTerminating } = useMutation({
-		mutationFn: () => terminateSession(session.id),
-		mutationKey: QUERY_KEYS.auth.terminateSession(user?.id || '', session.id),
-		onSuccess() {
-			queryClient.invalidateQueries({ queryKey });
-			toast.success('Session terminated');
-		},
-	});
-
-	const { mutate: terminateAll, isPending: isTerminatingAll } = useMutation({
-		mutationFn: () => terminateAllSessions(isActive ? session.id : ''),
-		mutationKey: QUERY_KEYS.auth.terminateAllSession(user?.id || ''),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey,
-			});
-			toast.success('All other sessions terminated');
-		},
-	});
-
-	const handleTerminateAll = () => {
-		if (!disableAllButton) terminateAll();
-	};
+	const {
+		isTerminating,
+		isTerminatingAll,
+		handleTerminateAll,
+		handleTerminate,
+	} = useSettingsSessionsItem(session, disableAllButton, isActive);
 
 	if (!session) return null;
 
@@ -81,7 +55,7 @@ const SettingsSessionsItem = ({
 			) : (
 				<Button
 					variant="outlined"
-					onClick={() => terminate()}
+					onClick={handleTerminate}
 					className={styles['settings-sessions-item__terminate']}
 					disabled={isTerminating || isTerminatingAll}
 					loading={isTerminating}

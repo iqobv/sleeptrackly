@@ -1,47 +1,21 @@
 'use client';
 
-import { uploadUserAvatar } from '@/api';
 import { Loader, SectionHeader, TextField } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
-import { toast } from 'react-toastify';
 import styles from './UploadAvatar.module.scss';
 import UploadModal from './UploadModal/UploadModal';
+import { useUploadAvatar } from './useUploadAvatar';
 
 const UploadAvatar = () => {
-	const { user } = useAuth();
-	const router = useRouter();
-	const [avatar, setAvatar] = useState<File | null>(null);
-	const inputRef = useRef<HTMLInputElement | null>(null);
-
-	const { mutate: upload, isPending } = useMutation({
-		mutationFn: (file: File) => uploadUserAvatar(file),
-		mutationKey: QUERY_KEYS.user.avatar(user?.id || ''),
-		onSuccess() {
-			toast.success('Avatar updated');
-			router.refresh();
-			setAvatar(null);
-			if (inputRef.current) inputRef.current.value = '';
-		},
-	});
-
-	const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files?.[0];
-		if (file) setAvatar(file);
-	};
-
-	const handleUpdate = () => {
-		if (avatar) upload(avatar);
-	};
-
-	const handleClear = () => {
-		setAvatar(null);
-		if (inputRef.current) inputRef.current.value = '';
-	};
+	const {
+		inputRef,
+		user,
+		isPending,
+		avatar,
+		handleUpload,
+		handleUpdate,
+		handleClear,
+	} = useUploadAvatar();
 
 	return (
 		<div className={styles['avatar']}>
