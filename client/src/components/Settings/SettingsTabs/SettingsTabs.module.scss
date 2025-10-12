@@ -5,9 +5,6 @@
 }
 
 .settings-tabs__list {
-	display: flex;
-	flex-direction: row;
-	gap: 10px;
 	border-bottom: 1px solid var(--settings-list-border);
 	overflow-y: auto;
 }

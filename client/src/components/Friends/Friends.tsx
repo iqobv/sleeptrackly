@@ -1,12 +1,11 @@
 'use client';
 
 import AddFriend from './AddFriend/AddFriend';
-import styles from './Friends.module.scss';
 import FriendsList from './FriendsList/FriendsList';
 
 const Friends = () => {
 	return (
-		<div className={styles['friends']}>
+		<div>
 			<AddFriend />
 			<FriendsList />
 		</div>

@@ -1,0 +1,19 @@
+@use '../../../../styles/mixins' as *;
+
+.add-friend__input-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	.add-friend__btn {
+		width: 100%;
+	}
+
+	@include response(md) {
+		flex-direction: row;
+
+		.add-friend__btn {
+			width: unset;
+		}
+	}
+}

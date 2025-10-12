@@ -1,8 +1,6 @@
 'use client';
 
 import { IDashboardDay } from '@/types';
-import dayjs from 'dayjs';
-import { useEffect, useState } from 'react';
 import {
 	Area,
 	AreaChart,
@@ -12,35 +10,17 @@ import {
 	YAxis,
 } from 'recharts';
 import styles from './SleepChart.module.scss';
+import { useSleepChart } from './useSleepChart';
 
 interface SleepChartProps {
 	data: IDashboardDay[];
 }
 
-interface ChartData {
-	name: string;
-	time: number;
-}
-
 const SleepChart = ({ data }: SleepChartProps) => {
-	const [sleepDuration, setSleepDuration] = useState<number>(0);
-
-	const durations = data?.map((item) =>
-		item.data ? Number((item.data.sleepDuration / 60 / 60).toFixed(1)) : 0
-	);
-	const labels = data?.map((item) => dayjs(item.day).format('ddd'));
-
-	const chartData: ChartData[] = data?.map((item, index) => ({
-		name: labels[index],
-		time: durations[index],
-	}));
-
-	useEffect(() => {
-		if (durations) setSleepDuration(durations.reduce((a, b) => a + b, 0));
-	}, [durations]);
+	const { sleepDuration, chartData } = useSleepChart(data);
 
 	return (
-		<div className={`${styles['sleep-chart']} fade-in`}>
+		<div className={`${styles['sleep-chart']}`}>
 			<div className={styles['sleep-chart-title-container']}>
 				<p className={styles['sleep-chart-title']}>Sleep duration</p>
 				<p className={styles['sleep-chart-subtitle']}>

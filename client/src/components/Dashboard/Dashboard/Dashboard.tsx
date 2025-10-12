@@ -1,37 +1,15 @@
 'use client';
 
-import { getStatisticsByWeekForUser } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth, useWeekPagination } from '@/hooks';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
 import DashboardLoader from '../DashboardLoader/DashboardLoader';
 import SleepChart from '../SleepChart/SleepChart';
 import Stats from '../Stats/Stats';
 import StatsByDays from '../StatsByDays/StatsByDays';
 import WeekPagination from '../WeekPagination/WeekPagination';
 import styles from './Dashboard.module.scss';
+import { useDashboard } from './useDashboard';
 
 const Dashboard = () => {
-	const { isAuthenticated, user } = useAuth();
-	const { selectedWeek } = useWeekPagination();
-
-	const { data, isLoading, isFetching } = useQuery({
-		queryKey: QUERY_KEYS.dashboard.all(user?.id || '', selectedWeek),
-		queryFn: () => getStatisticsByWeekForUser(selectedWeek),
-		enabled: !!isAuthenticated,
-	});
-
-	const [showSkeleton, setShowSkeleton] = useState(true);
-
-	useEffect(() => {
-		if (!isLoading && !isFetching && data) {
-			const timer = setTimeout(() => setShowSkeleton(false), 300);
-			return () => clearTimeout(timer);
-		} else {
-			setShowSkeleton(true);
-		}
-	}, [isLoading, isFetching, data]);
+	const { showSkeleton, data } = useDashboard();
 
 	return (
 		<div className={styles['dashboard']}>
@@ -39,12 +17,12 @@ const Dashboard = () => {
 				<DashboardLoader />
 			) : (
 				data && (
-					<>
+					<div className={`${styles['dashboard__wrapper']} fade-in`}>
 						<WeekPagination totalWeeks={data?.totalWeeks} days={data?.days} />
 						<Stats data={data.statistics} />
 						<SleepChart data={data.days} />
 						<StatsByDays days={data.days} />
-					</>
+					</div>
 				)
 			)}
 		</div>

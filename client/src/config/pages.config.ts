@@ -1,0 +1,18 @@
+export const PAGES = {
+	HOME: '/',
+	TIMER: '/timer',
+	CHALLENGES: '/challenges',
+	CHALLENGE: (id: string) => `/challenges/${id}`,
+	NEW_CHALLENGE: '/challenges/new',
+	EDIT_CHALLENGE: (id: string) => `/challenges/${id}/edit`,
+	DASHBOARD: '/dashboard',
+	LOGIN: '/login',
+	REGISTER: '/register',
+	SETTINGS: '/settings',
+	PROFILE: (username: string) => `/u/${username}`,
+	EMAIL_CONFIRMATION: '/email-confirmation',
+	RESET_PASSWORD: '/reset-password',
+	RESET_PASSWORD_TOKEN: (token: string) => `/reset-password?token=${token}`,
+	FRIENDS: '/friends',
+	FRIENDS_REQUESTS: '/friends/pending',
+} as const;

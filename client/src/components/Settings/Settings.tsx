@@ -1,11 +1,12 @@
 'use client';
 
-import styles from './Settings.module.scss';
+import { SectionHeader } from '../UI';
 import SettingsTabs from './SettingsTabs/SettingsTabs';
 
 const Settings = () => {
 	return (
-		<div className={styles['settings']}>
+		<div>
+			<SectionHeader title="Settings" />
 			<SettingsTabs />
 		</div>
 	);

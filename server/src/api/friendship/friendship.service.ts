@@ -4,7 +4,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { FriendshipStatus, Prisma } from '@prisma/client';
+import { Friendship, FriendshipStatus, Prisma } from '@prisma/client';
 import ms from 'ms';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -29,16 +29,24 @@ export class FriendshipService {
 
 		const addressee = await this.userService.findById(addresseeId);
 
-		await this.alreadyExists(requesterId, addressee.id);
+		const friendship = await this.alreadyExists(requesterId, addressee.id);
 
-		const friendship = await this.prismaService.friendship.create({
-			data: {
-				requester: { connect: { id: requesterId } },
-				addressee: { connect: { id: addressee.id } },
-			},
-		});
+		let newFriendship: Friendship;
 
-		return friendship;
+		if (friendship) {
+			newFriendship = await this.update(friendship.id, requesterId, {
+				status: FriendshipStatus.PENDING,
+			});
+		} else {
+			newFriendship = await this.prismaService.friendship.create({
+				data: {
+					requester: { connect: { id: requesterId } },
+					addressee: { connect: { id: addressee.id } },
+				},
+			});
+		}
+
+		return newFriendship;
 	}
 
 	async alreadyExists(requesterId: string, addresseeId: string) {
@@ -54,19 +62,23 @@ export class FriendshipService {
 		if (friendship) {
 			if (friendship?.status === FriendshipStatus.REJECTED) {
 				const now = new Date();
-				if (ms('1d') > now.getTime() - friendship.updatedAt.getTime())
+
+				if (ms('1d') > now.getTime() - friendship.updatedAt.getTime()) {
 					throw new BadRequestException(
 						'You can send a new request in 24 hours',
 					);
+				}
+
+				return friendship;
+			} else {
+				if (
+					friendship?.status === FriendshipStatus.BLOCKED &&
+					friendship.addresseeId === requesterId
+				)
+					throw new BadRequestException('You are blocked');
+
+				throw new ConflictException('Friendship already exists');
 			}
-
-			if (
-				friendship?.status === FriendshipStatus.BLOCKED &&
-				friendship.addresseeId === requesterId
-			)
-				throw new BadRequestException('You are blocked');
-
-			throw new ConflictException('Friendship already exists');
 		}
 	}
 

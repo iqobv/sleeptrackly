@@ -9,7 +9,6 @@ const DashboardLoader = () => {
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={500} />
-			{/* <SkeletonLoader height={250} /> */}
 		</div>
 	);
 };

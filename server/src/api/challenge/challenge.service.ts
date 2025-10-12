@@ -101,7 +101,7 @@ export class ChallengeService {
 		});
 	}
 
-	@Cron(CronExpression.EVERY_10_MINUTES)
+	@Cron(CronExpression.EVERY_5_MINUTES)
 	async updateChallengeStatuses() {
 		const nowDate = dayjs().toDate();
 

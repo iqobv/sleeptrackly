@@ -16,33 +16,3 @@
 .add-friend__title-container {
 	padding: 10px 0;
 }
-
-.add-friend__input-container {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-
-	.add-friend__btn {
-		width: 100%;
-	}
-
-	@include response(md) {
-		flex-direction: row;
-
-		.add-friend__btn {
-			width: unset;
-		}
-	}
-}
-
-.add-friend__list {
-	padding-top: 20px;
-}
-
-.add-friend__list-empty {
-	padding: 10px 0;
-	text-align: center;
-	font-size: 1.1rem;
-	font-weight: 600;
-	height: 55px;
-}

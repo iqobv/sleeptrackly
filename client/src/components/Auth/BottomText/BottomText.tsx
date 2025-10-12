@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import styles from './BottomText.module.scss';

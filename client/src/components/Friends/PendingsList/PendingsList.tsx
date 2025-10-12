@@ -1,41 +1,13 @@
 'use client';
 
-import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
-import { Button, SectionHeader } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { Button, List, SectionHeader } from '@/components/UI';
 import { FRIEND_STATUS } from '@/constants';
-import { useAuth } from '@/hooks';
-import { TFriendStatus } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import PendingsItem from './PendingsItem/PendingsItem';
 import styles from './PendingsList.module.scss';
+import { usePendingsList } from './usePendingsList';
 
 const PendingsList = () => {
-	const router = useRouter();
-
-	const { user } = useAuth();
-
-	const { data, refetch } = useQuery({
-		queryFn: getPendingFriendRequests,
-		queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
-		staleTime: 0,
-		enabled: !!user?.id,
-	});
-
-	const { mutate: mutateMany } = useMutation({
-		mutationFn: ({ status }: { status: TFriendStatus }) =>
-			updateManyPendingRequests(status),
-		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
-		onSuccess: () => {
-			refetch();
-			router.push(PAGES.FRIENDS);
-		},
-	});
-
-	const handleUpdateMany = (status: TFriendStatus) => {
-		if (data && data.length > 0) mutateMany({ status });
-	};
+	const { data, handleUpdateMany } = usePendingsList();
 
 	return (
 		<div className={styles['pendings-list']}>
@@ -62,7 +34,14 @@ const PendingsList = () => {
 						descriptionClassName={styles['pendings-list__empty']}
 					/>
 				)}
-				{data && data.map((el) => <PendingsItem key={el.id} friend={el} />)}
+				{data && (
+					<List
+						items={data}
+						renderItem={(friend) => (
+							<PendingsItem key={friend.id} friend={friend} />
+						)}
+					/>
+				)}
 			</div>
 		</div>
 	);

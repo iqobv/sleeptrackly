@@ -1,2 +1,2 @@
-export * from './pages';
+export * from './pages.config';
 export * from './queryClient.config';

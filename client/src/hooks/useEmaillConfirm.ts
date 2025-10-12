@@ -1,3 +1,5 @@
+'use client';
+
 import { sendVerificationEmail } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { useMutation } from '@tanstack/react-query';

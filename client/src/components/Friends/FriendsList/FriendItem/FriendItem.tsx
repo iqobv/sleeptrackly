@@ -1,11 +1,10 @@
 'use client';
 
-import { Avatar, Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { Button } from '@/components/UI';
 import { IFriend } from '@/types';
-import Link from 'next/link';
 import { MdOutlineMoreVert } from 'react-icons/md';
 import styles from './FriendItem.module.scss';
+import FriendItemInfo from './FriendItemInfo/FriendItemInfo';
 import FriendItemMenu from './FriendItemMenu/FriendItemMenu';
 import { useFriendItemMenu } from './useFriendItemMenu';
 
@@ -19,20 +18,7 @@ const FriendItem = ({ friend }: FriendItemProps) => {
 
 	return (
 		<div className={styles['friend-item']}>
-			<div className={styles['friend-item__info']}>
-				<Avatar avatar={friend.user?.avatar} size={45} />
-				<div>
-					<Link
-						className={styles['friend-item__username']}
-						href={PAGES.PROFILE(friend.user.username)}
-					>
-						{friend.user.username}
-					</Link>
-					<p className={styles['friend-item__status']}>
-						{friend.user.isSleeping ? 'Sleeping' : 'Offline'}
-					</p>
-				</div>
-			</div>
+			<FriendItemInfo friend={friend} />
 			<div ref={containerRef} className={styles['friend-item__actions']}>
 				<Button onClick={handleOpenMenu} variant="text" isIcon>
 					<MdOutlineMoreVert size={24} />

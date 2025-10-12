@@ -7,7 +7,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import styles from './EmailConfirmation.module.scss';
 
 const EmailConfirmation = () => {
 	const searchParams = useSearchParams();
@@ -18,7 +17,10 @@ const EmailConfirmation = () => {
 	const { mutate, isSuccess } = useMutation({
 		mutationFn: ({ token }: { token: string }) =>
 			validateVerificationToken(token),
-		mutationKey: QUERY_KEYS.auth.validateVerificationToken(user?.id || '', token),
+		mutationKey: QUERY_KEYS.auth.validateVerificationToken(
+			user?.id || '',
+			token
+		),
 		onSuccess: () => {
 			router.refresh();
 			toast.success('Email confirmed');
@@ -37,11 +39,7 @@ const EmailConfirmation = () => {
 		if (token) mutate({ token });
 	}, [token, mutate]);
 
-	return (
-		<div className={styles['email-confirmation']}>
-			{isSuccess && 'Email confirmed'}
-		</div>
-	);
+	return <div>{isSuccess && 'Email confirmed'}</div>;
 };
 
 export default EmailConfirmation;

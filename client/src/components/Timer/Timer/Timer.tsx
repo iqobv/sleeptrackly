@@ -1,10 +1,9 @@
 'use client';
 
-import { Button, Loader } from '@/components/UI';
-import { useTimer } from '@/hooks';
-
+import { Button, List, Loader } from '@/components/UI';
 import styles from './Timer.module.scss';
 import TimerEnd from './TimerEnd/TimerEnd';
+import { useTimer } from './useTimer';
 
 const labels = ['Hours', 'Minutes', 'Seconds'];
 
@@ -27,16 +26,19 @@ const Timer = () => {
 	return (
 		<div className={styles['timer']}>
 			<div className={styles['timer__time-container']}>
-				<div className={styles['timer__time-container-inner']}>
-					{formatedTimer.map((time, index) => (
+				<List
+					items={formatedTimer}
+					isHorizontal
+					className={styles['timer__time-container-inner']}
+					renderItem={(time, index) => (
 						<div className={styles['timer__time-item']} key={index}>
 							<div className={styles['timer__time-item-value']}>{time}</div>
 							<p className={styles['timer__time-item-label']}>
 								{labels[index]}
 							</p>
 						</div>
-					))}
-				</div>
+					)}
+				/>
 			</div>
 			<div className={styles['timer__control']}>
 				{isPending ? (
