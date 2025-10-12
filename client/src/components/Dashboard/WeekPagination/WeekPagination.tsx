@@ -20,13 +20,13 @@ const iconProps: IconBaseProps = {
 };
 
 const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
-	const { selectedWeek: week, setSelectedWeek } = useWeekPagination();
+	const [weekLabel, setWeekLabel] = useState('');
+
+	const { selectedWeek: week, changeWeek } = useWeekPagination();
 
 	const handlePrevWeek = () =>
-		setSelectedWeek(week < totalWeeks - 1 ? week + 1 : week);
-	const handleNextWeek = () => setSelectedWeek(week === 0 ? week : week - 1);
-
-	const [weekLabel, setWeekLabel] = useState('');
+		changeWeek(week < totalWeeks - 1 ? week + 1 : week);
+	const handleNextWeek = () => changeWeek(week === 0 ? week : week - 1);
 
 	useEffect(() => {
 		const firstDay = days[0].day;
@@ -34,8 +34,8 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 
 		setWeekLabel(
 			`${dayjs(firstDay).format('DD.MM.YYYY')} - ${dayjs(lastDay).format(
-				'DD.MM.YYYY',
-			)}`,
+				'DD.MM.YYYY'
+			)}`
 		);
 	}, [days]);
 

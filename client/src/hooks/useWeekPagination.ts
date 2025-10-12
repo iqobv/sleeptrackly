@@ -1,30 +1,31 @@
 'use client';
 
-import { useWeekStore } from '@/store';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useWeekPagination = () => {
+	const [selectedWeek, setSelectedWeek] = useState(0);
+
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const selectedWeek = useWeekStore((state) => state.currentWeek);
-	const setSelectedWeek = useWeekStore((state) => state.setCurrentWeek);
-
 	useEffect(() => {
-		const initialWeek = Number(searchParams.get('week')) || 0;
-		setSelectedWeek(initialWeek);
-	}, [searchParams, setSelectedWeek]);
+		const weekFromUrl = Number(searchParams.get('week')) || 0;
 
-	useEffect(() => {
-		const params = new URLSearchParams(searchParams);
-		params.set('week', selectedWeek.toString());
-		setSelectedWeek(Number(selectedWeek));
-		router.push(`?${params.toString()}`, { scroll: false });
-	}, [selectedWeek, searchParams, router, setSelectedWeek]);
+		if (weekFromUrl !== selectedWeek) setSelectedWeek(weekFromUrl);
+	}, [searchParams, selectedWeek, setSelectedWeek]);
+
+	const changeWeek = useCallback(
+		(newWeek: number) => {
+			const params = new URLSearchParams(searchParams);
+			params.set('week', newWeek.toString());
+			router.push(`?${params.toString()}`, { scroll: false });
+		},
+		[searchParams, router]
+	);
 
 	return {
 		selectedWeek,
-		setSelectedWeek,
+		changeWeek,
 	};
 };
