@@ -7,10 +7,10 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 export const useDashboard = () => {
+	const [showSkeleton, setShowSkeleton] = useState(true);
+
 	const { isAuthenticated, user } = useAuth();
 	const { selectedWeek } = useWeekPagination();
-
-	const [showSkeleton, setShowSkeleton] = useState(true);
 
 	const { data, isLoading, isFetching } = useQuery({
 		queryKey: QUERY_KEYS.dashboard.all(user?.id || '', selectedWeek),
@@ -20,8 +20,7 @@ export const useDashboard = () => {
 
 	useEffect(() => {
 		if (!isLoading && !isFetching && data) {
-			const timer = setTimeout(() => setShowSkeleton(false), 300);
-			return () => clearTimeout(timer);
+			setShowSkeleton(false);
 		} else {
 			setShowSkeleton(true);
 		}

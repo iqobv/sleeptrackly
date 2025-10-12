@@ -40,7 +40,7 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 	}, [days]);
 
 	return (
-		<div className={`${styles['week-pagination']} fade-in`}>
+		<div className={`${styles['week-pagination']}`}>
 			<div className={styles['week-pagination__container']}>
 				<Button
 					className={styles['week-pagination__button']}

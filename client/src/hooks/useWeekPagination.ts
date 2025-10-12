@@ -20,7 +20,7 @@ export const useWeekPagination = () => {
 		const params = new URLSearchParams(searchParams);
 		params.set('week', selectedWeek.toString());
 		setSelectedWeek(Number(selectedWeek));
-		router.push(`?${params.toString()}`);
+		router.push(`?${params.toString()}`, { scroll: false });
 	}, [selectedWeek, searchParams, router, setSelectedWeek]);
 
 	return {
