@@ -1,0 +1,12 @@
+.list {
+	--gap: 10px;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	width: 100%;
+
+	&--horizontal {
+		flex-direction: row;
+	}
+}

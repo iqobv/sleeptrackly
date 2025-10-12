@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllSessions } from '@/api';
-import { Divider, SectionHeader } from '@/components/UI';
+import { Divider, List, SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
@@ -59,8 +59,10 @@ const SettingsSessionsList = () => {
 									titleComponent="h3"
 									containerClassName={styles['settings-sessions__header']}
 								/>
-								<div className={styles['settings-sessions__list']}>
-									{sessions.map((session) => (
+								<List
+									items={sessions}
+									className={styles['settings-sessions__list']}
+									renderItem={(session) => (
 										<React.Fragment key={session.id}>
 											{!session.current && (
 												<SettingsSessionsItem
@@ -69,8 +71,8 @@ const SettingsSessionsList = () => {
 												/>
 											)}
 										</React.Fragment>
-									))}
-								</div>
+									)}
+								/>
 							</div>
 						</>
 					)}

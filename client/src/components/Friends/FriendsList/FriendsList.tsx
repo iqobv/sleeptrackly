@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllFriends } from '@/api';
-import { Button, SectionHeader } from '@/components/UI';
+import { Button, List, SectionHeader } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
@@ -27,11 +27,13 @@ const FriendsList = () => {
 						{data?.countOfPendingRequests > 0 &&
 							` (${data.countOfPendingRequests})`}
 					</Button>
-					<ul className={styles['friends__list']}>
-						{data.friends.map((friend) => (
-							<FriendItem key={friend.id} friend={friend} />
-						))}
-					</ul>
+					<List
+						items={data.friends}
+						renderItem={(item) => <FriendItem key={item.id} friend={item} />}
+						style={{
+							paddingTop: '20px',
+						}}
+					/>
 				</>
 			)}
 		</div>

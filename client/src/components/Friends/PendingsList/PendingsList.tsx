@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, SectionHeader } from '@/components/UI';
+import { Button, List, SectionHeader } from '@/components/UI';
 import { FRIEND_STATUS } from '@/constants';
 import PendingsItem from './PendingsItem/PendingsItem';
 import styles from './PendingsList.module.scss';
@@ -34,7 +34,14 @@ const PendingsList = () => {
 						descriptionClassName={styles['pendings-list__empty']}
 					/>
 				)}
-				{data && data.map((el) => <PendingsItem key={el.id} friend={el} />)}
+				{data && (
+					<List
+						items={data}
+						renderItem={(friend) => (
+							<PendingsItem key={friend.id} friend={friend} />
+						)}
+					/>
+				)}
 			</div>
 		</div>
 	);
