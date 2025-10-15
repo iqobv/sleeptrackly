@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { TokenType } from '@prisma/client';
+import { TokenType, User } from '@prisma/client';
 import crypto from 'crypto';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
@@ -11,31 +11,42 @@ export class TokenService {
 		private readonly userService: UserService,
 	) {}
 
-	private generateToken(expiresInHours: number) {
+	private generateToken(expiresInMins: number) {
 		const token = crypto.randomBytes(32).toString('hex');
 		const expires = new Date();
-		expires.setHours(expires.getHours() + expiresInHours);
+		expires.setMinutes(expires.getMinutes() + expiresInMins);
 
 		return { token, expires };
 	}
 
 	async createToken(
-		userId: string,
+		userId: string | null,
 		type: TokenType,
-		expiresInHours: number = 1,
+		expiresInMins: number = 60,
 	) {
-		const { token, expires } = this.generateToken(expiresInHours);
+		const { token, expires } = this.generateToken(expiresInMins);
 
-		const user = await this.userService.findById(userId);
+		let user: User | null = null;
 
-		const existingToken = await this.prismaService.token.findFirst({
-			where: { type, user: { id: user?.id } },
-		});
+		if (userId) user = await this.userService.findById(userId);
 
-		if (existingToken) await this.deleteToken(existingToken.id);
+		if (user) {
+			const existingToken = await this.prismaService.token.findFirst({
+				where: { type, user: { id: user.id } },
+			});
+
+			if (existingToken) await this.deleteToken(existingToken.id);
+		}
 
 		const newToken = await this.prismaService.token.create({
-			data: { token, expires, type, user: { connect: { id: user?.id } } },
+			data: {
+				token,
+				expires,
+				type,
+				...(user && {
+					user: { connect: { id: user?.id } },
+				}),
+			},
 		});
 
 		return newToken;

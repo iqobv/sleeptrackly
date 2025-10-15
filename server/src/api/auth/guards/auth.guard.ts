@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
 		const user = await this.userService.getById(userId);
 
 		if (!user) {
-			req.cookies['session'] = '';
+			req.session.destroy(() => {});
 			return false;
 		}
 

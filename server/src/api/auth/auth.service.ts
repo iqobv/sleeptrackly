@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
@@ -39,7 +38,7 @@ export class AuthService {
 	}
 
 	async login(user: User, req: Request) {
-		const { ip, userAgent } = this.getInfoFromRequest(req);
+		const deviceInfo = this.getInfoFromRequest(req);
 
 		const oldSessionId = req.sessionID;
 
@@ -47,20 +46,15 @@ export class AuthService {
 			await this.sessionService.terminateSession(user.id, oldSessionId, false);
 
 		await new Promise<void>((resolve, reject) => {
-			req.login(user, (err: Error) => {
-				if (err) return reject(err);
-				resolve();
-			});
+			req.login(user, (err: Error) => (err ? reject(err) : resolve()));
 		});
 
-		const newSessionId = req.sessionID;
-
-		await this.sessionService.createSession(user.id, {
-			sessionId: newSessionId,
-			expiresAt: req.session.cookie.expires as Date,
-			ipAddress: normalizeIp(Array.isArray(ip) ? ip[0] : ip) ?? undefined,
-			userAgent,
-		});
+		await this.logSessionToDb(
+			user,
+			req.sessionID,
+			req.session.cookie.expires as Date,
+			deviceInfo,
+		);
 
 		const { password, ...result } = user;
 
@@ -112,10 +106,10 @@ export class AuthService {
 			user = await this.userService.create({
 				email,
 				username,
+				emailVerified: true,
 			});
 			if (avatarUrl && user)
 				await this.userAvatarService.uploadProviderAvatar(avatarUrl, user.id);
-			await this.emailConfirmationService.sendVerificationToken(user);
 		}
 
 		await this.userProviderService.createProvider(
@@ -127,7 +121,21 @@ export class AuthService {
 		return user;
 	}
 
-	private getInfoFromRequest(req: Request) {
+	private async logSessionToDb(
+		user: User,
+		sessionId: string,
+		expiresAt: Date,
+		deviceInfo: { ipAddress?: string; userAgent?: string },
+	) {
+		await this.sessionService.createSession(user.id, {
+			sessionId,
+			expiresAt,
+			ipAddress: normalizeIp(deviceInfo.ipAddress || null) ?? undefined,
+			userAgent: deviceInfo.userAgent,
+		});
+	}
+
+	getInfoFromRequest(req: Request) {
 		return {
 			ip:
 				req.headers['x-forwarded-for'] ||

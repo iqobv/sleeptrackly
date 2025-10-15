@@ -1,6 +1,7 @@
 export * from './auth/auth.api';
 export * from './auth/email.api';
 export * from './auth/password.api';
+export * from './auth/qr.api';
 export * from './auth/session.api';
 export * from './auth/token.api';
 export * from './challenge/challenge.api';

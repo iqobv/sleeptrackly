@@ -34,7 +34,7 @@ export class UserService {
 	) {}
 
 	async create(dto: CreateUserDto) {
-		const { email, username, password } = dto;
+		const { email, username, password, emailVerified = false } = dto;
 
 		await this.alreadyExists({ email, username });
 
@@ -45,6 +45,7 @@ export class UserService {
 				email,
 				username,
 				password: hashedPassword,
+				emailVerified,
 			},
 			select,
 		});
