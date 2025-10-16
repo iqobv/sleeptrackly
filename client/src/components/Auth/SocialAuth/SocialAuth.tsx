@@ -1,6 +1,7 @@
 'use client';
 
 import Google from './Buttons/Google';
+import QrCode from './Buttons/QrCode/QrCode';
 import styles from './SocialAuth.module.scss';
 
 const SocialAuth = () => {
@@ -14,6 +15,7 @@ const SocialAuth = () => {
 				<div className={styles['social-auth__divider-line']} />
 			</div>
 			<div className={styles['social-auth__buttons']}>
+				<QrCode />
 				<Google />
 			</div>
 		</div>

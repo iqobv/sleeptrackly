@@ -1,5 +1,6 @@
 export * from './api/error.types';
 export * from './auth/authField.types';
+export * from './auth/qrCode.types';
 export * from './auth/session.types';
 export * from './challenge/challenge.types';
 export * from './challenge/challengeField.types';

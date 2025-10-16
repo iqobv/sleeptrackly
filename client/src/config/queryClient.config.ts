@@ -13,6 +13,9 @@ export const QUERY_KEYS = {
 		resetPassword: ['resetPassword'] as const,
 		changePassword: (userId: string) => ['changePassword', userId] as const,
 		deleteAccount: ['deleteAccount'] as const,
+		generateQr: ['generateQr'] as const,
+		setSession: ['setSession'] as const,
+		approveQrLogin: ['approveQrLogin'] as const,
 		logout: (userId: string) => ['logout', userId] as const,
 	},
 	challenges: {
