@@ -14,86 +14,102 @@ export const useCustomSelect = ({
 }) => {
 	const [selectedValue, setSelectedValue] = useState<IOption | null>(null);
 	const [showMenu, setShowMenu] = useState(false);
-	const [searchValue, setSearchValue] = useState('');
+	const [searchTerm, setSearchTerm] = useState('');
 	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
+
 	const inputRef = useRef<HTMLInputElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 	const id = useId();
 
-	const handler = (e: MouseEvent) => {
-		if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-			setShowMenu(false);
-			setHighlightedIndex(-1);
-		}
-	};
-
 	useEffect(() => {
-		document.addEventListener('click', handler);
-		return () => {
-			document.removeEventListener('click', handler);
+		const handler = (e: MouseEvent) => {
+			if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+				setShowMenu(false);
+			}
 		};
+		document.addEventListener('click', handler);
+		return () => document.removeEventListener('click', handler);
 	}, []);
 
 	const getFilteredOptions = () => {
-		if (!isSearchable || !searchValue.trim()) return options;
+		if (!isSearchable || !searchTerm.trim()) return options;
 		return options.filter((opt) =>
-			opt.label.toLowerCase().includes(searchValue.toLowerCase()),
+			opt.label.toLowerCase().includes(searchTerm.toLowerCase())
 		);
+	};
+
+	const filteredOptions = getFilteredOptions();
+
+	const handleFocus = () => {
+		setShowMenu(true);
+		if (selectedValue) {
+			const currentIndex = filteredOptions.findIndex(
+				(opt) => opt.value === selectedValue.value
+			);
+			setHighlightedIndex(currentIndex > -1 ? currentIndex : 0);
+		} else {
+			setHighlightedIndex(0);
+		}
 	};
 
 	const handleSelect = (opt: IOption) => {
 		setSelectedValue(opt);
-		setShowMenu(false);
 		onChange?.(opt);
-		setSearchValue('');
+		setShowMenu(false);
+		setSearchTerm('');
 		setHighlightedIndex(-1);
+		inputRef.current?.focus();
 	};
 
 	const handleClear = () => {
 		setSelectedValue(null);
-		setSearchValue('');
 		onChange?.(null);
-		setShowMenu(false);
+		setSearchTerm('');
 		setHighlightedIndex(-1);
 	};
 
-	const handleOpen = () => setShowMenu((prev) => !prev);
-
-	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-		const filtered = getFilteredOptions();
-		if (!showMenu) return;
-
-		if (e.key === 'ArrowDown') {
-			e.preventDefault();
-			setHighlightedIndex((prev) =>
-				prev < filtered.length - 1 ? prev + 1 : 0,
-			);
-		} else if (e.key === 'ArrowUp') {
-			e.preventDefault();
-			setHighlightedIndex((prev) =>
-				prev > 0 ? prev - 1 : filtered.length - 1,
-			);
-		} else if (e.key === 'Enter') {
-			e.preventDefault();
-			if (highlightedIndex >= 0 && highlightedIndex < filtered.length) {
-				handleSelect(filtered[highlightedIndex]);
-			}
-		} else if (e.key === 'Escape') {
-			setShowMenu(false);
-			setHighlightedIndex(-1);
+	const handleKeyDown = (e: React.KeyboardEvent) => {
+		switch (e.key) {
+			case 'Enter':
+				e.preventDefault();
+				if (showMenu && highlightedIndex >= 0) {
+					handleSelect(filteredOptions[highlightedIndex]);
+				} else {
+					setShowMenu(true);
+				}
+				break;
+			case 'ArrowDown':
+				e.preventDefault();
+				if (!showMenu) setShowMenu(true);
+				setHighlightedIndex((prev) =>
+					prev < filteredOptions.length - 1 ? prev + 1 : 0
+				);
+				break;
+			case 'ArrowUp':
+				e.preventDefault();
+				if (!showMenu) setShowMenu(true);
+				setHighlightedIndex((prev) =>
+					prev > 0 ? prev - 1 : filteredOptions.length - 1
+				);
+				break;
+			case 'Escape':
+				setShowMenu(false);
+				setHighlightedIndex(-1);
+				break;
+			case 'Tab':
+				setShowMenu(false);
+				break;
 		}
 	};
 
-	const handleBlur = () => {
-		if (!isSearchable) return;
+	const displayValue = isSearchable
+		? searchTerm || selectedValue?.label || ''
+		: selectedValue?.label || '';
 
-		const match = options.find(
-			(opt) => opt.label.toLowerCase() === searchValue.toLowerCase(),
-		);
-
-		if (match) handleSelect(match);
-		else setSearchValue('');
-	};
+	const activeDescendant =
+		highlightedIndex >= 0 && filteredOptions[highlightedIndex]
+			? `${id}-option-${filteredOptions[highlightedIndex].value}`
+			: undefined;
 
 	return {
 		id,
@@ -101,17 +117,15 @@ export const useCustomSelect = ({
 		menuRef,
 		selectedValue,
 		showMenu,
-		searchValue,
 		highlightedIndex,
+		displayValue,
+		activeDescendant,
 		getFilteredOptions,
 		handleSelect,
 		handleClear,
-		handleOpen,
 		handleKeyDown,
-		handleBlur,
-		setSelectedValue,
+		handleFocus,
 		setShowMenu,
-		setHighlightedIndex,
-		setSearchValue,
+		setSearchTerm,
 	};
 };
