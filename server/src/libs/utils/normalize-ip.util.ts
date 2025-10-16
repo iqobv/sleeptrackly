@@ -1,5 +1,9 @@
-export const normalizeIp = (ip: string | null) => {
+export const normalizeIp = (ip: string | string[] | null) => {
 	if (!ip) return null;
-	if (ip.startsWith('::ffff:')) return ip.replace('::ffff:', '');
-	return ip;
+
+	const currentIp = Array.isArray(ip) ? ip[0] : ip;
+
+	if (currentIp.startsWith('::ffff:')) return currentIp.replace('::ffff:', '');
+
+	return currentIp;
 };

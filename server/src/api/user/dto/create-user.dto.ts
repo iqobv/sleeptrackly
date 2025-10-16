@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+	IsBoolean,
 	IsEmail,
 	IsNotEmpty,
 	IsOptional,
@@ -26,4 +27,9 @@ export class CreateUserDto {
 	@MinLength(6, { message: 'Password must be at least 6 characters long' })
 	@IsOptional()
 	password?: string;
+
+	@ApiProperty({ example: true })
+	@IsBoolean()
+	@IsOptional()
+	emailVerified?: boolean;
 }

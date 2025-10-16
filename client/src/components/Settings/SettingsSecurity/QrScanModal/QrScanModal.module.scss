@@ -1,0 +1,16 @@
+@use '../../../../styles/mixins' as *;
+
+.qr-scan-modal {
+	max-width: 100%;
+	width: 90%;
+
+	@include response(md) {
+		max-width: 400px;
+	}
+}
+
+.qr-scan-modal__body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

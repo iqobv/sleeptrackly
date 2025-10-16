@@ -108,7 +108,6 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 									options={f.options as IOption[]}
 									{...f}
 									isClearable
-									isSearchable
 									fullWidth
 									error={get(errors, f.name)?.message as string}
 									{...field}

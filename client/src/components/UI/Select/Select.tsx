@@ -12,7 +12,7 @@ import { useCustomSelect } from './useCustomSelect';
 export default function Select({
 	options,
 	placeholder,
-	onChange = () => {},
+	onChange,
 	label,
 	isClearable = false,
 	isSearchable = false,
@@ -20,85 +20,70 @@ export default function Select({
 	fullWidth = false,
 }: SelectProps) {
 	const {
+		id,
 		inputRef,
 		menuRef,
-		id,
 		selectedValue,
-		searchValue,
 		showMenu,
 		highlightedIndex,
-		handleOpen,
-		handleBlur,
+		displayValue,
+		activeDescendant,
+		getFilteredOptions,
+		handleSelect,
 		handleClear,
 		handleKeyDown,
-		handleSelect,
-		getFilteredOptions,
+		handleFocus,
 		setShowMenu,
-		setHighlightedIndex,
-		setSearchValue,
-	} = useCustomSelect({
-		options,
-		isSearchable,
-		onChange,
-	});
+		setSearchTerm,
+	} = useCustomSelect({ options, isSearchable, onChange });
 
-	const inputStyles = selectInputVariants({
-		fullWidth,
-		isClearable,
-	});
-
+	const inputStyles = selectInputVariants({ fullWidth, isClearable });
 	const fullWidthStyles = fullWidth ? styles['full-width--true'] : '';
+
+	const handleContainerClick = () => {
+		if (!showMenu) {
+			handleFocus();
+		} else {
+			setShowMenu(false);
+		}
+	};
 
 	return (
 		<div className={`${styles['select']} ${fullWidthStyles}`}>
-			{!!label && <FormLabel id={id}>{label}</FormLabel>}
+			{label && <FormLabel id={id}>{label}</FormLabel>}
 			<div
 				ref={menuRef}
-				tabIndex={-1}
-				className={`${styles['select__container']} ${fullWidthStyles} ${
-					!!error ? styles['error'] : ''
+				role="combobox"
+				aria-haspopup="listbox"
+				aria-expanded={showMenu}
+				aria-labelledby={label ? `${id}-label` : undefined}
+				aria-controls={showMenu ? `${id}-listbox` : undefined}
+				className={`${styles['select__container']} ${
+					error ? styles['error'] : ''
 				}`}
-				onClick={(e) => {
-					e.stopPropagation();
-					if (inputRef.current) inputRef.current.focus();
-				}}
 				onKeyDown={handleKeyDown}
-				onBlur={(e) => {
-					if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-						setShowMenu(false);
-						setHighlightedIndex(-1);
-					}
-				}}
+				onClick={handleContainerClick}
 			>
 				<input
-					type="text"
 					ref={inputRef}
-					readOnly={!isSearchable}
+					type="text"
 					className={inputStyles}
 					placeholder={placeholder}
 					id={id}
-					onFocus={handleOpen}
-					autoComplete="off"
-					onClick={(e) => {
-						e.stopPropagation();
-						handleOpen();
-					}}
-					value={
-						isSearchable
-							? searchValue || selectedValue?.label || ''
-							: selectedValue?.label || ''
-					}
+					readOnly={!isSearchable}
+					value={displayValue}
+					onFocus={handleFocus}
+					onClick={(e) => e.stopPropagation()}
 					onChange={(e) => {
-						if (isSearchable) {
-							setSearchValue(e.target.value);
-							setShowMenu(true);
-							setHighlightedIndex(0);
-						}
+						setSearchTerm(e.target.value);
+						setShowMenu(true);
 					}}
-					onBlur={handleBlur}
+					aria-activedescendant={activeDescendant}
+					aria-autocomplete="list"
+					autoComplete="off"
 				/>
 				<div className={styles['select__arrow-container']}>
-					{isClearable && !!selectedValue && (
+					{isClearable && selectedValue && (
 						<ClearButton onClick={handleClear} />
 					)}
 					<SelectArrow showMenu={showMenu} />
@@ -106,9 +91,11 @@ export default function Select({
 			</div>
 			{showMenu && (
 				<OptionsMenu
-					getFilteredOptions={getFilteredOptions}
+					listboxId={`${id}-listbox`}
+					idPrefix={id}
 					highlightedIndex={highlightedIndex}
 					handleSelect={handleSelect}
+					getFilteredOptions={getFilteredOptions}
 				/>
 			)}
 			{error && <p className={styles['error__text']}>{error}</p>}

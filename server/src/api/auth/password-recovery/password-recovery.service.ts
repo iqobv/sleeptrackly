@@ -41,7 +41,9 @@ export class PasswordRecoveryService {
 			TokenType.PASSWORD_RESET,
 		);
 
-		const user = await this.userService.findById(existsToken.userId);
+		if (!existsToken.userId) throw new NotFoundException('Token not found');
+
+		const user = await this.userService.findById(existsToken?.userId);
 
 		await this.userService.changePassword(user.id, {
 			newPassword: dto.password,

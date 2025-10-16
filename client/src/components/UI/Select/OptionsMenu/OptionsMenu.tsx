@@ -7,21 +7,27 @@ interface OptionsMenuProps {
 	highlightedIndex: number;
 	handleSelect: (opt: IOption) => void;
 	getFilteredOptions: () => IOption[];
+	idPrefix: string;
+	listboxId: string;
 }
 
 export default function OptionsMenu({
 	highlightedIndex,
 	handleSelect,
 	getFilteredOptions,
+	idPrefix,
+	listboxId,
 }: OptionsMenuProps) {
 	const filtered = getFilteredOptions();
 
 	return (
-		<div className={styles['select__menu']}>
+		<div id={listboxId} role="listbox" className={styles['select__menu']}>
 			{filtered.map((opt, i) => (
 				<div
 					key={opt.value}
-					tabIndex={1}
+					id={`${idPrefix}-option-${opt.value}`}
+					role="option"
+					aria-selected={i === highlightedIndex}
 					className={`${styles['select__option']} ${
 						i === highlightedIndex ? styles['select__option--highlighted'] : ''
 					}`}
@@ -34,7 +40,7 @@ export default function OptionsMenu({
 				</div>
 			))}
 			{filtered.length === 0 && (
-				<div className={styles['select__no-options']}>No options found</div>
+				<div className={styles['select__no-options']}>No options</div>
 			)}
 		</div>
 	);

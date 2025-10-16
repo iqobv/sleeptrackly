@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+	forwardRef,
+	Inject,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TokenType, User } from '@prisma/client';
 import type { Request } from 'express';
@@ -26,6 +31,8 @@ export class EmailConfirmationService {
 			dto.token,
 			TokenType.EMAIL_VERIFICATION,
 		);
+
+		if (!existsToken.userId) throw new NotFoundException('Token not found');
 
 		await this.userService.update(existsToken.userId, {
 			emailVerified: true,

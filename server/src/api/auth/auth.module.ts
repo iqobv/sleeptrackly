@@ -7,9 +7,10 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { SessionSerializer } from './passport.serializer';
-import { GoogleStrategy, LocalStrategy } from './strategies';
 import { PasswordRecoveryModule } from './password-recovery/password-recovery.module';
+import { QrLoginModule } from './qr-login/qr-login.module';
 import { SessionModule } from './session/session.module';
+import { GoogleStrategy, LocalStrategy } from './strategies';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { SessionModule } from './session/session.module';
 		forwardRef(() => EmailConfirmationModule),
 		PasswordRecoveryModule,
 		SessionModule,
+		QrLoginModule,
 	],
 	exports: [AuthService],
 	controllers: [AuthController],
