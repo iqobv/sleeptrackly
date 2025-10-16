@@ -9,6 +9,7 @@ export const PAGES = {
 	LOGIN: '/login',
 	REGISTER: '/register',
 	SETTINGS: '/settings',
+	SETTINGS_SESSIONS: '/settings/sessions',
 	PROFILE: (username: string) => `/u/${username}`,
 	EMAIL_CONFIRMATION: '/email-confirmation',
 	RESET_PASSWORD: '/reset-password',

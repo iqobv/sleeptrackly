@@ -1,32 +1,21 @@
 'use client';
 
-import { Modal } from '@/components/UI';
-import { useState } from 'react';
+import { PAGES } from '@/config';
+import { useRouter } from 'next/navigation';
 import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
-import SettingsSessionsList from './SettingsSessionsList/SettingsSessionsList';
-
-import styles from './SettingsSessions.module.scss';
 
 const SettingsSessions = () => {
-	const [open, setOpen] = useState(false);
+	const router = useRouter();
 
-	const handleClose = () => setOpen(!open);
+	const handleCLick = () => router.push(PAGES.SETTINGS_SESSIONS);
 
 	return (
 		<>
 			<SettingsSecurityField
-				action={handleClose}
+				action={handleCLick}
 				label="View your sessions"
 				buttonText="View sessions"
 			/>
-			<Modal
-				isOpen={open}
-				onClose={handleClose}
-				containerClassName={styles['sessions-modal']}
-				bodyClassName={styles['sessions-modal__body']}
-			>
-				<SettingsSessionsList />
-			</Modal>
 		</>
 	);
 };

@@ -3,11 +3,18 @@
 	flex-direction: column;
 	gap: 10px;
 	height: 100%;
+	padding-top: 20px;
 }
 
 .settings-sessions__header {
-	padding: 3px 0 10px 0;
 	gap: 3px;
+}
+
+.settings-sessions__header-actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	align-items: center;
 }
 
 .settings-sessions__list {

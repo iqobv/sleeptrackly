@@ -1,13 +1,15 @@
 'use client';
 
+import QrCodeModal from '@/components/Auth/SocialAuth/Buttons/QrCode/QrCodeModal/QrCodeModal';
 import { Modal } from '@/components/UI';
 import { useState } from 'react';
 import { MdOutlineQrCode2 } from 'react-icons/md';
-import QrCodeModal from '../../QrCodeModal/QrCodeModal';
-import SocialButton from '../SocialButton/SocialButton';
+import SocialButton from '../../SocialButton/SocialButton';
+import styles from './QrCode.module.scss';
 
 const QrCode = () => {
 	const [open, setOpen] = useState(false);
+
 	const handleModal = () => setOpen(!open);
 
 	return (
@@ -17,7 +19,11 @@ const QrCode = () => {
 				<span>QR Code</span>
 			</SocialButton>
 			{open && (
-				<Modal isOpen={open} onClose={handleModal}>
+				<Modal
+					containerClassName={styles['qr-code-modal']}
+					isOpen={open}
+					onClose={handleModal}
+				>
 					<QrCodeModal />
 				</Modal>
 			)}

@@ -1,7 +1,7 @@
 'use client';
 
 import Google from './Buttons/Google';
-import QrCode from './Buttons/QrCode';
+import QrCode from './Buttons/QrCode/QrCode';
 import styles from './SocialAuth.module.scss';
 
 const SocialAuth = () => {

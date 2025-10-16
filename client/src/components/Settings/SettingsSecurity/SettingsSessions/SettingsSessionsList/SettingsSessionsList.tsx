@@ -1,12 +1,14 @@
 'use client';
 
 import { getAllSessions } from '@/api';
-import { Divider, List, SectionHeader } from '@/components/UI';
+import { Button, Divider, List, SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
+import { MdOutlineArrowBack } from 'react-icons/md';
+import QrScanModal from '../../QrScanModal/QrScanModal';
 import SettingsSessionsItem from './SettingsSessionsItem/SettingsSessionsItem';
 import styles from './SettingsSessionsList.module.scss';
 import SettingsSessionsLoader from './SettingsSessionsLoader/SettingsSessionsLoader';
@@ -37,6 +39,13 @@ const SettingsSessionsList = () => {
 			{!isLoading && sessions && (
 				<>
 					<div>
+						<div className={styles['settings-sessions__header-actions']}>
+							<Button variant="text" onClick={() => router.back()}>
+								<MdOutlineArrowBack size={25} />
+								Back
+							</Button>
+							<QrScanModal />
+						</div>
 						<SectionHeader
 							title="Current Session"
 							description="Your current session"

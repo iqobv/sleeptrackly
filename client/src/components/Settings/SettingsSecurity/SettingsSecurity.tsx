@@ -2,7 +2,6 @@
 
 import { useAuth } from '@/hooks';
 import ChangePassword from './ChangePassword/ChangePassword';
-import QrScanModal from './QrScanModal/QrScanModal';
 import SettingsDeleteAccount from './SettingsDeleteAccount/SettingsDeleteAccount';
 import SettingsEmailConfirmation from './SettingsEmailConfirmation/SettingsEmailConfirmation';
 import styles from './SettingsSecurity.module.scss';
@@ -14,7 +13,6 @@ const SettingsSecurity = () => {
 	return (
 		<div className={styles['settings-security']}>
 			{user && !user?.emailVerified && <SettingsEmailConfirmation />}
-			<QrScanModal />
 			<SettingsSessions />
 			<ChangePassword />
 			<SettingsDeleteAccount />
