@@ -53,7 +53,7 @@ export class AuthService {
 			user,
 			req.sessionID,
 			req.session.cookie.expires as Date,
-			deviceInfo,
+			{ ipAddress: deviceInfo.ip.toString(), ...deviceInfo },
 		);
 
 		const { password, ...result } = user;
