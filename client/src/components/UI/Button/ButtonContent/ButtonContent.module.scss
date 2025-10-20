@@ -1,6 +1,9 @@
 .button__inner {
 	position: relative;
 	font-weight: 600;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	.button__content {
 		display: flex;

@@ -1,38 +1,38 @@
 html.dark {
 	/* General Colors */
-	--bg-body: #121417;
-	--bg-header: #121417;
-	--header-border-color: #e5e8eb30;
+	--bg-body: #0a0a0a;
+	--bg-header: #0b0b0b;
+	--header-border-color: #7a7a7a30;
 	--color-main-text: #ffffff;
-	--secondary-color: #9eabb8;
+	--secondary-color: #b9bec3;
 
 	/* Loader */
 	--loader-color: #ffffff;
 
 	/* Skeleton */
-	--skeleton-color: #1a1d21;
-	--skeleton-highlight: #2e343b;
+	--skeleton-color: #131313;
+	--skeleton-highlight: #18191b;
 
 	/* Navigation */
 	--nav-color-link: #ede6e3;
 	--nav-color-link-active: #c6c7c4;
 	--nav-color-link-hover: #71a2b6;
-	--nav-bg-menu: #2f2f2f;
+	--nav-bg-menu: #161616;
 	--nav-button-bg: #dfdfdf;
 
 	/* Features */
-	--feature-item-bg: #1a1d21;
-	--feature-item-icon-bg: #222427;
+	--feature-item-bg: #131313;
+	--feature-item-icon-bg: #18191b;
 
 	/* How it works */
-	--how-it-works-bg: #1a1d21;
-	--how-it-works-step-color: #6c737b;
+	--how-it-works-bg: #131313;
+	--how-it-works-step-color: #8e949c;
 
 	/* FAQ */
-	--faq-question-bg: #1a1d21;
+	--faq-question-bg: #131313;
 
 	/* CTA */
-	--cta-bg: #0d0f12;
+	--cta-bg: #121417;
 
 	/* Auth Pages */
 	--auth-bg-login: #7a7a7a;
@@ -50,8 +50,12 @@ html.dark {
 	--auth-btn-bg-hover: #040f0f;
 
 	/* Timer */
-	--timer-bg: #293038;
+	--timer-bg: #191a1b;
 	--timer-color: #ffffff;
+
+	/* Profile */
+	--profile-stat-card-bg: #151515;
+	--profile-stat-card-border: #333;
 
 	/* Pagination */
 	--pagination-bg: #333;
@@ -61,12 +65,13 @@ html.dark {
 
 	/* Charts */
 	--chart-bg: #20262d;
-	--chart-tooltip-bg: #20262d;
+	--chart-tooltip-bg: #161616;
 	--chart-tooltip-border: #545454;
 	--chart-stroke: #9dabb9;
+	--chart-border: #333;
 
 	/* Day Cards */
-	--day-card-bg: #1a1d21;
+	--day-card-bg: #111214;
 	--day-card-color: #fff;
 
 	/* Theme */
@@ -78,7 +83,7 @@ html.dark {
 	--challenge-list-item-border: #333;
 
 	/* Inputs & Forms */
-	--input-bg: #0f1114;
+	--input-bg: #151515;
 	--input-color: #fff;
 	--input-border: #333;
 	--input-border-focus: #737373;
@@ -86,8 +91,8 @@ html.dark {
 	--input-color-error: #f55d5d;
 
 	/* Select */
-	--bg-options: #1c1e22;
-	--bg-option-hover: #17191c;
+	--bg-options: #151515;
+	--bg-option-hover: #26262699;
 	--border-options: #333;
 
 	/* Button Variants */
@@ -123,14 +128,14 @@ html.dark {
 	--calendar-today-active: #0d141c;
 
 	/* Modals */
-	--modal-bg: #121417;
+	--modal-bg: #151515;
 	--modal-color: #fff;
 
 	/* Sections */
 	--bg-section: #333;
 
 	/* Dropdowns */
-	--dropdown-bg: #333;
+	--dropdown-bg: #191919;
 	--dropdown-color: #000000;
 	--dropdown-item-bg: #3d3d3d;
 	--dropdown-item-color: #fff;
@@ -145,6 +150,10 @@ html.dark {
 	--settings-item-bg: #383838;
 	--settings-item-bg-active: #1a78e5;
 
+	/* Settings Security */
+	--settings-security-item-bg: #151515;
+	--settings-security-item-border: #333;
+
 	/* Avatar */
 	--avatar-border: #333;
 
@@ -157,5 +166,5 @@ html.dark {
 	--terminate-all-color: #ff5252;
 
 	/* Friends */
-	--friend-add-bg: #0e1012;
+	--friend-add-bg: #0f0f10;
 }

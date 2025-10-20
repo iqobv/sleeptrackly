@@ -19,7 +19,9 @@ const TimerEnd = ({ data }: TimerEndProps) => {
 			<p>Your sleep duration: {formatTime(sleepDuration).join(':')}</p>
 			<p>Started at: {dayjs(sleepStart).format('DD.MM.YYYY HH:mm:ss')}</p>
 			<p>Ended at: {dayjs(sleepEnd).format('DD.MM.YYYY HH:mm:ss')}</p>
-			<Button href={PAGES.DASHBOARD}>View Statistics</Button>
+			<Button variant="secondary" href={PAGES.DASHBOARD}>
+				View Statistics
+			</Button>
 		</div>
 	);
 };

@@ -1,9 +1,10 @@
 .section-header {
 	--padding: 20px;
+	--gap: 10px;
 
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: var(--gap);
 	padding: var(--padding) 0;
 
 	.section-header__title {

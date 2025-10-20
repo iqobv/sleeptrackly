@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button, SectionHeader } from '@/components/UI';
 import { IChallenge } from '@/types';
 import styles from './ChallengeItem.module.scss';
 
@@ -16,8 +16,14 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 			<div className={styles['challenge__wrapper']}>
 				<p className={styles['challenge__tag']}>Challenge</p>
 				<div className={styles['challenge__content']}>
-					<h3 className={styles['challenge__title']}>{challenge.title}</h3>
-					<p className={styles['challenge__text']}>{challenge.description}</p>
+					<SectionHeader
+						title={challenge.title}
+						titleComponent="h3"
+						titleClassName={styles['challenge__title']}
+						description={challenge.description}
+						gap={3}
+						padding={0}
+					/>
 				</div>
 				<div className={styles['challenge__actions']}>
 					<Button variant="secondary" href={`/challenges/${challenge.id}`}>
