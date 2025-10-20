@@ -1,12 +1,11 @@
 'use client';
 
-import { useBlockScroll } from '@/hooks';
-import { useCallback, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { MdClose } from 'react-icons/md';
 import Button from '../Button/Button';
 import styles from './Modal.module.scss';
 import { ModalProps } from './Modal.types';
+import { useModal } from './useModal';
 
 export default function Modal({
 	children,
@@ -15,22 +14,7 @@ export default function Modal({
 	containerClassName = '',
 	onClose,
 }: ModalProps) {
-	const modalRef = useRef<HTMLInputElement>(null);
-	useBlockScroll(isOpen);
-
-	const handleClickOutside = useCallback(
-		(e: MouseEvent) => {
-			if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-				onClose();
-			}
-		},
-		[onClose]
-	);
-
-	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutside);
-		return () => document.removeEventListener('mousedown', handleClickOutside);
-	}, [handleClickOutside]);
+	const { modalRef } = useModal({ isOpen, onClose });
 
 	if (!isOpen) return null;
 
@@ -39,6 +23,8 @@ export default function Modal({
 			<div
 				className={`${styles['modal__container']} ${containerClassName}`}
 				ref={modalRef}
+				role="dialog"
+				aria-modal
 			>
 				<div className={styles['modal__header']}>
 					<Button onClick={onClose} isIcon variant="text">
