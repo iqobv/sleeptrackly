@@ -17,23 +17,14 @@
 	justify-content: space-between;
 	align-items: center;
 	height: 100%;
-	background-color: var(--pagination-bg);
-}
-
-.week-pagination__button {
-	width: 50px;
-	height: 100%;
-	background-color: var(--pagination-button-bg);
-	color: var(--pagination-button-color);
-	border: none;
-	border-radius: 0;
-	padding: 0;
-
-	&:disabled {
-		opacity: 0.6;
-	}
 }
 
 .week-pagination__label {
 	text-align: center;
+}
+
+.week-pagination__label-week {
+	font-size: 1.1rem;
+	padding-bottom: 5px;
+	font-weight: 600;
 }
