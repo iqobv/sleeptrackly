@@ -3,6 +3,11 @@
 import styles from './SectionHeader.module.scss';
 import { SectionHeaderProps } from './SectionHeader.types';
 
+interface CustomCSSProperties extends React.CSSProperties {
+	'--padding': string;
+	'--gap'?: string;
+}
+
 export default function SectionHeader({
 	title = '',
 	description = '',
@@ -12,9 +17,16 @@ export default function SectionHeader({
 	descriptionClassName = '',
 	containerClassName = '',
 	padding = 20,
+	gap = 10,
 }: SectionHeaderProps) {
 	const Title = titleComponent;
 	const Description = descriptionComponent;
+
+	const style: CustomCSSProperties = {
+		'--padding': `${padding}px`,
+	};
+
+	if (description) style['--gap'] = `${gap}px`;
 
 	return (
 		<div
@@ -22,6 +34,7 @@ export default function SectionHeader({
 			style={
 				{
 					'--padding': `${padding}px`,
+					'--gap': `${gap}px`,
 				} as React.CSSProperties
 			}
 		>

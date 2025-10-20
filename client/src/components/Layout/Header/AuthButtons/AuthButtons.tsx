@@ -1,10 +1,11 @@
 'use client';
 
-import { Button, Loader } from '@/components/UI';
+import { Button } from '@/components/UI';
 import { PAGES } from '@/config';
 import { useAuth } from '@/hooks';
 import UserMenu from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
+import AuthButtonsLoader from './AuthButtonsLoader';
 
 const AuthButtons = () => {
 	const { user, isloading } = useAuth();
@@ -12,7 +13,7 @@ const AuthButtons = () => {
 	return (
 		<div className={styles['auth-buttons']}>
 			{isloading ? (
-				<Loader disablePadding />
+				<AuthButtonsLoader />
 			) : (
 				<>
 					{!!user ? (

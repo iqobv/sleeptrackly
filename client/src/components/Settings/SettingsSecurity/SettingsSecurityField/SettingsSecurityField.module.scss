@@ -5,8 +5,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
-	border: 1px solid var(--input-border);
-	background-color: var(--input-bg);
+	border: 1px solid var(--settings-security-item-border);
+	background-color: var(--settings-security-item-bg);
 	border-radius: 6px;
 	padding: 10px;
 	font-size: 1.1rem;
@@ -14,11 +14,6 @@
 
 .settings-security-field__label {
 	flex: 1 1 100%;
-}
-
-.settings-security-field--important {
-	background-color: rgba(132, 58, 58, 0.161);
-	border: 1px solid rgb(240, 86, 86);
 }
 
 .settings-security-field__button {
