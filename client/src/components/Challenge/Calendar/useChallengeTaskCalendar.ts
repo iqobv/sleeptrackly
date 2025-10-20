@@ -41,7 +41,9 @@ export const useChallengeTaskCalendar = ({
 				: createWeekArr(t.startDate.toString(), t.endDate.toString())
 		);
 
-	const allDates = [...completedGroups, ...pendingGroups].flat();
+	const unsortedDates = [...completedGroups, ...pendingGroups].flat();
+
+	const allDates = unsortedDates.sort((a, b) => a.getTime() - b.getTime());
 
 	const handleClick = (date: Date) => {
 		const matchedGroup = [...completedGroups, ...pendingGroups].find((g) =>

@@ -1,4 +1,5 @@
-import { HowItWorksStep } from '../howItWorksSteps.js';
+import { SectionHeader } from '@/components/UI';
+import { HowItWorksStep } from '../howItWorksSteps';
 import styles from './HowItWorksItem.module.scss';
 
 interface HowItWorksItemProps {
@@ -20,10 +21,12 @@ const HowItWorksItem = ({ item, index }: HowItWorksItemProps) => {
 				{(index + 1).toString().padStart(2, '0')}
 			</div>
 			<div>
-				<p className={styles['how-it-works-item__title']}>{item.title}</p>
-				<p className={styles['how-it-works-item__description']}>
-					{item.description}
-				</p>
+				<SectionHeader
+					title={item.title}
+					titleComponent="h3"
+					padding={0}
+					description={item.description}
+				/>
 			</div>
 		</div>
 	);

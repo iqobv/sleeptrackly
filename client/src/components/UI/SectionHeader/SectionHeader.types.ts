@@ -9,4 +9,5 @@ export interface SectionHeaderProps {
 	titleClassName?: string;
 	descriptionClassName?: string;
 	padding?: number;
+	gap?: number;
 }

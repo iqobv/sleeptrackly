@@ -33,6 +33,14 @@ export const buttonVariants = cva(baseStyles['button'], {
 			true: buttonProperties['disabled--true'],
 		},
 	},
+	compoundVariants: [
+		{ isIcon: false, size: 'sm', className: sizeStyles['padding-sm'] },
+		{ isIcon: false, size: 'md', className: sizeStyles['padding-md'] },
+		{ isIcon: false, size: 'lg', className: sizeStyles['padding-lg'] },
+		{ isIcon: true, size: 'sm', className: sizeStyles['icon-padding-sm'] },
+		{ isIcon: true, size: 'md', className: sizeStyles['icon-padding-md'] },
+		{ isIcon: true, size: 'lg', className: sizeStyles['icon-padding-lg'] },
+	],
 	defaultVariants: {
 		variant: 'contained',
 		size: 'md',

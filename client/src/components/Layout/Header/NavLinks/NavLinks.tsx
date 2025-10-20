@@ -38,24 +38,6 @@ const NavLinks = ({ closeMenu = () => {} }: NavLinksProps) => {
 				);
 			}}
 		/>
-		// <ul className={styles['nav-list']}>
-		// 	{LINKS.map((link) => {
-		// 		if (user?.role !== 'ADMIN' && link.isAdmin) return null;
-		// 		return (
-		// 			<li key={link.name} className={styles['nav-item']}>
-		// 				<Link
-		// 					href={link.path}
-		// 					className={`${styles['nav-link']} ${
-		// 						pathname === link.path ? styles.active : ''
-		// 					}`}
-		// 					onClick={closeMenu}
-		// 				>
-		// 					{link.label}
-		// 				</Link>
-		// 			</li>
-		// 		);
-		// 	})}
-		// </ul>
 	);
 };
 

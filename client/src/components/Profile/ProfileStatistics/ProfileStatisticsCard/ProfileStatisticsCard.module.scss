@@ -1,8 +1,8 @@
 @use '../../../../styles/mixins' as *;
 
 .profile-statistics__card {
-	background-color: var(--input-bg);
-	border: 1px solid var(--input-border);
+	background-color: var(--profile-stat-card-bg);
+	border: 1px solid var(--profile-stat-card-border);
 	border-radius: 8px;
 	display: flex;
 	justify-content: center;
