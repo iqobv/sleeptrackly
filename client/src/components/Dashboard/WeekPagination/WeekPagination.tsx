@@ -43,19 +43,21 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 		<div className={`${styles['week-pagination']}`}>
 			<div className={styles['week-pagination__container']}>
 				<Button
-					className={styles['week-pagination__button']}
 					onClick={handlePrevWeek}
+					isIcon
+					variant="text"
 					disabled={totalWeeks > 0 ? week === totalWeeks - 1 : true}
 				>
 					<MdKeyboardArrowLeft size={40} {...iconProps} />
 				</Button>
 				<div className={styles['week-pagination__label']}>
-					<p>Week</p>
+					<div className={styles['week-pagination__label-week']}>Week</div>
 					<p>{weekLabel}</p>
 				</div>
 				<Button
-					className={styles['week-pagination__button']}
 					onClick={handleNextWeek}
+					isIcon
+					variant="text"
 					disabled={week === 0}
 				>
 					<MdKeyboardArrowRight {...iconProps} />
