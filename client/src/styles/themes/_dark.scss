@@ -81,8 +81,8 @@ html.dark {
 	--input-bg: #0f1114;
 	--input-color: #fff;
 	--input-border: #333;
-	--input-border-focus: #1e40af;
-	--input-border-error: #ff0000;
+	--input-border-focus: #737373;
+	--input-border-error: #e7000b;
 	--input-color-error: #f55d5d;
 
 	/* Select */
@@ -90,44 +90,37 @@ html.dark {
 	--bg-option-hover: #17191c;
 	--border-options: #333;
 
-	/* Buttons */
-	--button-bg: #333;
-	--button-color: #fff;
-	--button-bg-hover: #1e1e1e;
-
-	--button-bg-primary: #0353a4;
-	--button-bg-secondary: #293038;
-	--button-bg-error: #ff0000;
-	--button-bg-success: #00ff00;
-
-	--button-color-primary: #1a78e5;
-	--button-color-secondary: #ffffff;
-	--button-color-error: #ff0000;
-	--button-color-success: #00ff00;
-
 	/* Button Variants */
-	--btn-bg-contained: #0c5ba9;
-	--btn-bg-contained-hover: #1e40af;
-	--btn-color-contained: #f7fafc;
+	--btn-bg-contained: #e5e5e5;
+	--btn-bg-contained-hover: #e5e5e5d4;
+	--btn-color-contained: #171717;
 
-	--btn-bg-outlined: #e8edf2;
-	--btn-bg-outlined-hover: #1e40af4d;
-	--btn-border-outlined: #ffffff66;
-	--btn-border-outlined-hover: #3b82f6;
+	--btn-bg-secondary: #262626;
+	--btn-bg-secondary-hover: #262626cc;
+	--btn-color-secondary: #fafafa;
+
+	--btn-bg-outlined: #ffffff26;
+	--btn-bg-outlined-hover: #28282833;
+	--btn-border-outlined: #ffffff26;
+	--btn-border-outlined-hover: #ffffff66;
 	--btn-color-outlined: #0d141c;
 
-	--btn-bg-text-hover: #37415140;
+	--btn-bg-text-hover: #26262699;
 	--btn-color-text: #e8edf2;
 
-	--btn-color-link: #e8edf2;
+	--btn-color-link: #e5e5e5;
+
+	--btn-danger-bg: #ff6467;
+	--btn-danger-bg-hover: #ff6467b3;
+	--btn-danger-color: #ffffff;
 
 	/* Calendar */
-	--calendar-accent: #1e40af;
+	--calendar-accent: #e8edf2;
 	--calendar-comleted: #91cb3e;
-	--calendar-selected: #1273d4;
-	--calendar-selected-color: #ffffff;
-	--calendar-today: #177ce1;
-	--calendar-today-active: #ffffff;
+	--calendar-selected: #e5e5e5d4;
+	--calendar-selected-color: #0d141c;
+	--calendar-today: #acd6ff;
+	--calendar-today-active: #0d141c;
 
 	/* Modals */
 	--modal-bg: #121417;
@@ -145,7 +138,7 @@ html.dark {
 
 	/* Page Titles */
 	--page-title-color: #ffffff;
-	--page-description-color: #b3bcc5;
+	--page-description-color: #cdcecf;
 
 	/* Settings */
 	--settings-list-border: #333;

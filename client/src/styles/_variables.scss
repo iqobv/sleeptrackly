@@ -8,32 +8,43 @@ $breakpoints: (
 	xxl: 1400px,
 );
 
-$btn-colors-bg: (
-	light: (
-		primary: #0353a4,
-		secondary: #fcfafa,
-		error: #ff0000,
-		success: #00ff00,
+$button-variants: (
+	'contained': (
+		'bg': var(--btn-bg-contained),
+		'color': var(--btn-color-contained),
+		'border': transparent,
+		'bg-hover': var(--btn-bg-contained-hover),
 	),
-	dark: (
-		primary: #002e4e,
-		secondary: #fcfafa,
-		error: #ff0000,
-		success: #00ff00,
+	'outlined': (
+		'bg': transparent,
+		'border': var(--btn-border-outlined),
+		'bg-hover': var(--btn-bg-outlined-hover),
+		'border-hover': var(--btn-border-outlined-hover),
 	),
-);
-
-$btn-colors-text: (
-	light: (
-		primary: #fcfafa,
-		secondary: #0353a4,
-		error: #fcfafa,
-		success: #fcfafa,
+	'text': (
+		'bg': transparent,
+		'border': transparent,
+		'color': var(--btn-color-text),
+		'bg-hover': var(--btn-bg-text-hover),
 	),
-	dark: (
-		primary: #fcfafa,
-		secondary: #0353a4,
-		error: #fcfafa,
-		success: #fcfafa,
+	'link': (
+		'bg': transparent,
+		'border': transparent,
+		'color': var(--btn-color-link),
+		'text-decoration': none,
+		'text-underline-offset': 6px,
+		'text-decoration-hover': underline,
+	),
+	'secondary': (
+		'bg': var(--btn-bg-secondary),
+		'color': var(--btn-color-secondary),
+		'border': transparent,
+		'bg-hover': var(--btn-bg-secondary-hover),
+	),
+	'danger': (
+		'bg': var(--btn-danger-bg),
+		'color': var(--btn-danger-color),
+		'border': transparent,
+		'bg-hover': var(--btn-danger-bg-hover),
 	),
 );

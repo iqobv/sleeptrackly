@@ -34,7 +34,7 @@
 	transition: border-color 0.2s ease;
 
 	&:focus-within {
-		border-color: #007bff;
+		border-color: var(--input-border-focus);
 	}
 
 	&:disabled {

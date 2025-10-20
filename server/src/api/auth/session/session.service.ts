@@ -127,11 +127,16 @@ export class SessionService {
 		const normalizedIp = normalizeIp(ip);
 		const clientIp = extractClientIP(normalizedIp);
 
-		const response = await this.httpService.axiosRef.get<IpApiDto>(
-			`http://ip-api.com/json/${clientIp}?fields=status,message,country,countryCode,region,regionName,city,timezone,query`,
-		);
+		try {
+			const response = await this.httpService.axiosRef.get<IpApiDto>(
+				`http://ip-api.com/json/${clientIp}?fields=status,message,country,countryCode,region,regionName,city,timezone,query`,
+			);
 
-		return response.data;
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			return null;
+		}
 	}
 
 	private destroyRedisSession(sessionId: string): Promise<void> {

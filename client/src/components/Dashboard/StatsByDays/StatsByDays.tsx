@@ -16,6 +16,7 @@ const StatsByDays = ({ days }: StatsByDaysProps) => {
 			<List
 				items={days}
 				gap={20}
+				isHorizontal
 				className={styles['stats-by-days__list']}
 				renderItem={(el) => (
 					<div key={el.day} className={styles['stats-by-days__item']}>

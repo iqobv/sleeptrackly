@@ -17,15 +17,11 @@ const SettingsSecurityField = ({
 	action,
 }: SettingsSecurityFieldProps) => {
 	return (
-		<div
-			className={`${styles['settings-security-field']} ${
-				isImportant ? styles['settings-security-field--important'] : ''
-			}`}
-		>
+		<div className={`${styles['settings-security-field']}`}>
 			<div className={styles['settings-security-field__label']}>{label}</div>
 			<Button
 				onClick={action}
-				variant="outlined"
+				variant={isImportant ? 'danger' : 'outlined'}
 				className={styles['settings-security-field__button']}
 			>
 				{buttonText}

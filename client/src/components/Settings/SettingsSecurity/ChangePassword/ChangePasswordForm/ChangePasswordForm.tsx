@@ -82,7 +82,9 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 					})}
 				</>
 			)}
-			<Button type="submit">Change password</Button>
+			<Button type="submit" className={styles['change-password-form__button']}>
+				Change password
+			</Button>
 		</form>
 	);
 };

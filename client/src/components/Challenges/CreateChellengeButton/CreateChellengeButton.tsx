@@ -2,11 +2,10 @@
 
 import { Button } from '@/components/UI';
 import { PAGES } from '@/config';
-import styles from './CreateChellengeButton.module.scss';
 
 const CreateChellengeButton = () => {
 	return (
-		<div className={styles['challenges-list-create-challenge']}>
+		<div>
 			<Button href={PAGES.NEW_CHALLENGE}>Create Challenge</Button>
 		</div>
 	);

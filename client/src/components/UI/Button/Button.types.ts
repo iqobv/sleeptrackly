@@ -1,4 +1,10 @@
-export type ButtonVariant = 'contained' | 'outlined' | 'text' | 'link';
+export type ButtonVariant =
+	| 'contained'
+	| 'outlined'
+	| 'text'
+	| 'link'
+	| 'secondary'
+	| 'danger';
 export type ButtonType = 'button' | 'submit' | 'reset';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
