@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { buttonVariants } from './butonStyles';
 import { ButtonProps } from './Button.types';
-import ButtonContent from './ButtonContent';
+import ButtonContent from './ButtonContent/ButtonContent';
 
 export default function Button({
 	children,

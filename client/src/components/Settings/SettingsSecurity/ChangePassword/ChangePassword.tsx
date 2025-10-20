@@ -3,6 +3,7 @@
 import { Modal } from '@/components/UI';
 import { useState } from 'react';
 import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
+import styles from './ChangePassword.module.scss';
 import ChangePasswordForm from './ChangePasswordForm/ChangePasswordForm';
 
 const ChangePassword = () => {
@@ -18,7 +19,11 @@ const ChangePassword = () => {
 				buttonText="Change password"
 				isImportant
 			/>
-			<Modal isOpen={open} onClose={handleCLose}>
+			<Modal
+				isOpen={open}
+				onClose={handleCLose}
+				containerClassName={styles['change-password-modal']}
+			>
 				<ChangePasswordForm handleCLose={handleCLose} />
 			</Modal>
 		</>
