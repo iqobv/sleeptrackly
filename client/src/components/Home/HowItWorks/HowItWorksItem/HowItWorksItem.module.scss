@@ -1,0 +1,33 @@
+@use '../../../../styles/mixins' as *;
+
+.how-it-works-item {
+	margin-top: unset;
+	background-color: var(--how-it-works-bg);
+	width: 100%;
+	padding: 20px;
+	border-radius: 12px;
+
+	@include response(md) {
+		max-width: 230px;
+		margin-top: calc(var(--i, 0) * 20px);
+	}
+}
+
+.how-it-works-item__step {
+	font-size: 80px;
+	text-align: start;
+	color: var(--how-it-works-step-color);
+	opacity: 0.4;
+	user-select: none;
+}
+
+.how-it-works-item__title {
+	font-size: 1.3rem;
+	font-weight: 600;
+	color: var(--color-main-text);
+	padding-bottom: 6px;
+}
+.how-it-works-item__description {
+	font-size: 1rem;
+	color: var(--secondary-color);
+}

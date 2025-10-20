@@ -1,0 +1,13 @@
+.cta-section {
+	background-color: var(--cta-bg);
+}
+
+.cta-section__container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 50px 0;
+}

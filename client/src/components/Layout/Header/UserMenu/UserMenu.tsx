@@ -17,7 +17,7 @@ const UserMenu = () => {
 	return (
 		<div className={styles['user-menu']} ref={menuRef}>
 			<button onClick={handleOpen} className={styles['user-menu__btn']}>
-				<Avatar avatar={user.avatar?.url} size={40} />
+				<Avatar avatar={user.avatar?.url} size={40} priority />
 			</button>
 			{open && (
 				<div className={styles['user-menu__dropdown']}>

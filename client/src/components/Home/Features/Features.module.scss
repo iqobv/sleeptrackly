@@ -1,0 +1,10 @@
+@use '../../../styles/mixins' as *;
+
+.features__list {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+
+	@include response(md) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
