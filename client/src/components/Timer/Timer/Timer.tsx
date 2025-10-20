@@ -1,8 +1,10 @@
 'use client';
 
-import { Button, List, Loader } from '@/components/UI';
+import { Button, List } from '@/components/UI';
 import styles from './Timer.module.scss';
+import TimerButtonLoader from './TimerButtonLoader';
 import TimerEnd from './TimerEnd/TimerEnd';
+import TimerLoader from './TimerLoader';
 import { useTimer } from './useTimer';
 
 const labels = ['Hours', 'Minutes', 'Seconds'];
@@ -14,6 +16,8 @@ const Timer = () => {
 		isFinished,
 		finishedSleep,
 		isPending,
+		isLoading,
+		isFetched,
 		startTimer,
 		stopTimer,
 	} = useTimer();
@@ -26,32 +30,33 @@ const Timer = () => {
 	return (
 		<div className={styles['timer']}>
 			<div className={styles['timer__time-container']}>
-				<List
-					items={formatedTimer}
-					isHorizontal
-					className={styles['timer__time-container-inner']}
-					renderItem={(time, index) => (
-						<div className={styles['timer__time-item']} key={index}>
-							<div className={styles['timer__time-item-value']}>{time}</div>
-							<p className={styles['timer__time-item-label']}>
-								{labels[index]}
-							</p>
-						</div>
-					)}
-				/>
+				{isLoading || !isFetched ? (
+					<TimerLoader />
+				) : (
+					<List
+						items={formatedTimer}
+						isHorizontal
+						className={styles['timer__time-container-inner']}
+						renderItem={(time, index) => (
+							<div className={styles['timer__time-item']} key={index}>
+								<div className={styles['timer__time-item-value']}>{time}</div>
+								<p className={styles['timer__time-item-label']}>
+									{labels[index]}
+								</p>
+							</div>
+						)}
+					/>
+				)}
 			</div>
 			<div className={styles['timer__control']}>
-				{isPending ? (
-					<Loader />
+				{isLoading || !isFetched ? (
+					<TimerButtonLoader />
 				) : (
 					<>
-						{isFinished && !!finishedSleep ? (
-							<TimerEnd data={finishedSleep} />
-						) : (
-							<Button onClick={handleClick}>
-								{isSleeping ? 'Stop Timer' : 'Start Timer'}
-							</Button>
-						)}
+						{isFinished && !!finishedSleep && <TimerEnd data={finishedSleep} />}
+						<Button onClick={handleClick} loading={isPending}>
+							{isSleeping ? 'Stop Timer' : 'Start Timer'}
+						</Button>
 					</>
 				)}
 			</div>

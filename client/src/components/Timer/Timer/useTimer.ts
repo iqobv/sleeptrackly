@@ -19,7 +19,7 @@ export const useTimer = () => {
 	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
 	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
 
-	const { data } = useQuery({
+	const { data, isLoading, isFetched } = useQuery({
 		queryKey: QUERY_KEYS.timer.one(user?.id || ''),
 		queryFn: getSleepStatus,
 		enabled: !!user?.id,
@@ -46,6 +46,7 @@ export const useTimer = () => {
 
 		setIsSleeping(true);
 		setTimer(0);
+		setIsFinished(false);
 		setFormattedTimer(formatTime(0));
 		setInitialTime(new Date());
 		update();
@@ -83,6 +84,8 @@ export const useTimer = () => {
 		isFinished,
 		finishedSleep,
 		isPending,
+		isLoading,
+		isFetched,
 		startTimer,
 		stopTimer,
 	};
