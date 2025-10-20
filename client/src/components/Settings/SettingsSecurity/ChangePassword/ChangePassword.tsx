@@ -17,7 +17,6 @@ const ChangePassword = () => {
 				label="Change password"
 				action={handleCLose}
 				buttonText="Change password"
-				isImportant
 			/>
 			<Modal
 				isOpen={open}

@@ -24,9 +24,9 @@ const Challenges = () => {
 			{isLoading && <Loader />}
 			{!isLoading && challenges && (
 				<>
+					<CreateChellengeButton />
 					<ActiveChallenges data={challenges} />
 					<AllChallenges data={challenges} />
-					<CreateChellengeButton />
 				</>
 			)}
 		</div>

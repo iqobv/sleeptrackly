@@ -2,6 +2,7 @@
 
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
+import SectionHeader from '../SectionHeader/SectionHeader';
 import styles from './ConfirmModal.module.scss';
 import { ConfirmModalProps } from './ConfirmModal.types';
 
@@ -19,15 +20,14 @@ export default function ConfirmModal({
 			onClose={onClose}
 			containerClassName={styles['confirm-modal']}
 		>
-			{!!title && (
-				<div className={styles['confirm-modal__header']}>{title}</div>
-			)}
-			<div className={styles['confirm-modal__body']}>{text}</div>
+			<SectionHeader title={title} titleComponent="h2" description={text} />
 			<div className={styles['confirm-modal__footer']}>
 				<Button variant="outlined" onClick={onCancel}>
 					Cancel
 				</Button>
-				<Button onClick={onConfirm}>Confirm</Button>
+				<Button variant="danger" onClick={onConfirm}>
+					Confirm
+				</Button>
 			</div>
 		</Modal>
 	);
