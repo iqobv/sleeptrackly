@@ -1,0 +1,23 @@
+.button__inner {
+	position: relative;
+
+	.button__content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.5rem;
+		white-space: nowrap;
+		opacity: 1;
+	}
+
+	&--loading {
+		.button__content {
+			opacity: 0;
+		}
+	}
+
+	.button__loader {
+		position: absolute;
+		top: 0;
+	}
+}
