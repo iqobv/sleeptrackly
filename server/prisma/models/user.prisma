@@ -23,5 +23,8 @@ model User {
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
 
+  sentReports     Report[] @relation("SentReports")
+  receivedReports Report[] @relation("ReceivedReports")
+
   @@map("users")
 }

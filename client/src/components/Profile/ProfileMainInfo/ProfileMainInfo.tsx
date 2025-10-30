@@ -1,9 +1,11 @@
 'use client';
 
 import { Avatar, SectionHeader } from '@/components/UI';
+import { useAuth } from '@/hooks';
 import { IProfile } from '@/types';
 import ProfileAddToFriendButton from './ProfileAddToFriendButton/ProfileAddToFriendButton';
 import styles from './ProfileMainInfo.module.scss';
+import ProfileReportButton from './ProfileReportButton/ProfileReportButton';
 
 interface ProfileMainInfoProps {
 	profile: IProfile;
@@ -11,6 +13,7 @@ interface ProfileMainInfoProps {
 
 const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const year = new Date(profile.createdAt).getFullYear().toString();
+	const { user } = useAuth();
 
 	return (
 		<div className={styles['profile-main-info']}>
@@ -21,7 +24,12 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 				description={`Joined ${year}`}
 				containerClassName={styles['profile-main-info__username']}
 			/>
-			<ProfileAddToFriendButton profile={profile} />
+			{profile && user && user.id !== profile.id && (
+				<div className={styles['profile-main-info__buttons']}>
+					<ProfileAddToFriendButton profile={profile} />
+					<ProfileReportButton profile={profile} />
+				</div>
+			)}
 		</div>
 	);
 };

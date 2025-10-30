@@ -1,0 +1,22 @@
+model Report {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+
+  senderId   String  @map("sender_id")
+  reportedId String? @map("reported_id")
+
+  response String?
+
+  status     ReportStatus @default(PENDING)
+  reportType ReportType   @map("report_type")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  reported User? @relation("ReceivedReports", fields: [reportedId], references: [id], onDelete: Cascade)
+  sender   User  @relation("SentReports", fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@map("reports")
+}

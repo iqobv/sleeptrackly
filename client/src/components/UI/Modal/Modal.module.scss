@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .modal {
 	width: 100vw;
 	height: 100vh;
@@ -14,7 +16,7 @@
 }
 
 .modal__container {
-	width: 70%;
+	width: 90%;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
@@ -22,6 +24,10 @@
 	padding: 20px;
 	gap: 10px;
 	border-radius: 8px;
+
+	@include response(md) {
+		width: 70%;
+	}
 }
 
 .modal__header {

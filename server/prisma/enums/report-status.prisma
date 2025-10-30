@@ -1,0 +1,6 @@
+enum ReportStatus {
+  PENDING
+	IN_PROGRESS
+  APPROVED
+  REJECTED
+}

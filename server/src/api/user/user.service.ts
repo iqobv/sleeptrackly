@@ -3,27 +3,12 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { userSelect } from 'src/libs/prisma';
 import { comparePassword, hashPassword } from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
-
-const select: Prisma.UserSelect = {
-	id: true,
-	email: true,
-	username: true,
-	role: true,
-	emailVerified: true,
-	createdAt: true,
-	avatar: {
-		select: {
-			url: true,
-			isDefault: true,
-		},
-	},
-};
 
 @Injectable()
 export class UserService {
@@ -47,7 +32,7 @@ export class UserService {
 				password: hashedPassword,
 				emailVerified,
 			},
-			select,
+			select: userSelect,
 		});
 
 		await this.userSleepStatusService.createSleepStatus(user.id);
@@ -60,7 +45,7 @@ export class UserService {
 		return this.prismaService.user.findUnique({
 			where: { email },
 			select: {
-				...select,
+				...userSelect,
 				...(full && { password: true }),
 			},
 		});
@@ -70,7 +55,7 @@ export class UserService {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
 			select: {
-				...select,
+				...userSelect,
 				...(full && { password: true }),
 			},
 		});
@@ -84,7 +69,7 @@ export class UserService {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
 			select: {
-				...select,
+				...userSelect,
 				...(full && { password: true }),
 			},
 		});
@@ -95,7 +80,7 @@ export class UserService {
 	async findByUsername(username: string) {
 		const user = await this.prismaService.user.findUnique({
 			where: { username },
-			select: select,
+			select: userSelect,
 		});
 
 		if (!user) throw new NotFoundException('User not found');
@@ -144,7 +129,7 @@ export class UserService {
 			data: {
 				password: newHashedPassword,
 			},
-			select,
+			select: userSelect,
 		});
 	}
 
@@ -170,7 +155,7 @@ export class UserService {
 				emailVerified,
 				...(password && { password: await hashPassword(password) }),
 			},
-			select,
+			select: userSelect,
 		});
 
 		return updated;
@@ -202,7 +187,7 @@ export class UserService {
 	}) {
 		const user = await this.prismaService.user.findFirst({
 			where: { OR: [{ email }, { username }] },
-			select,
+			select: userSelect,
 		});
 
 		if (user) throw new ConflictException('User already exists');

@@ -74,6 +74,11 @@ export default function Select({
 					value={displayValue}
 					onFocus={handleFocus}
 					onClick={(e) => e.stopPropagation()}
+					onMouseDown={(e) => {
+						e.stopPropagation();
+						e.preventDefault();
+						handleFocus();
+					}}
 					onChange={(e) => {
 						setSearchTerm(e.target.value);
 						setShowMenu(true);

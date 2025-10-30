@@ -5,5 +5,6 @@ export * from './auth/register.schema';
 export * from './challenge/challenge.schema';
 export * from './challenge/createChallenge.schema';
 export * from './challenge/updateChallenge.schema';
+export * from './report/report.schema';
 export * from './settings/settingsAccount.schema';
 export * from './settings/settingsSecurity.schema';

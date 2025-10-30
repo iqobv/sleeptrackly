@@ -11,6 +11,7 @@ import { ImageModule } from './image/image.module';
 import { ProfileModule } from './profile/profile.module';
 import { TokenModule } from './token/token.module';
 import { FriendshipModule } from './friendship/friendship.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { FriendshipModule } from './friendship/friendship.module';
 		ProfileModule,
 		TokenModule,
 		FriendshipModule,
+		ReportModule,
 	],
 })
 export class ApiModule {}
