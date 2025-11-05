@@ -34,5 +34,5 @@ export const useProfileAddToFriendButton = (profile: IProfile) => {
 		},
 	});
 
-	return { user, buttonConfig, isPending, mutate };
+	return { buttonConfig, isPending, mutate };
 };

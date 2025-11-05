@@ -1,0 +1,4 @@
+enum UserSanctionType {
+  AVATAR_CHANGE_BAN
+  USERNAME_CHANGE_BAN
+}

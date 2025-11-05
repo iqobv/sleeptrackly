@@ -13,3 +13,10 @@
 .profile-main-info__username {
 	text-align: center;
 }
+
+.profile-main-info__buttons {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+}

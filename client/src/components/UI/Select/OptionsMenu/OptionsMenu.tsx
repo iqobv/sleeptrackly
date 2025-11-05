@@ -21,7 +21,12 @@ export default function OptionsMenu({
 	const filtered = getFilteredOptions();
 
 	return (
-		<div id={listboxId} role="listbox" className={styles['select__menu']}>
+		<div
+			id={listboxId}
+			role="listbox"
+			className={styles['select__menu']}
+			onMouseDown={(e) => e.stopPropagation()}
+		>
 			{filtered.map((opt, i) => (
 				<div
 					key={opt.value}

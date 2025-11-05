@@ -14,6 +14,7 @@ export default function ClearButton({ onClick }: ClearButtonProps) {
 			onClick={onClick}
 			className={styles['select__clear']}
 			tabIndex={-1}
+			onMouseDown={(e) => e.stopPropagation()}
 		>
 			<MdOutlineClose size={20} />
 		</button>
