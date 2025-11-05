@@ -4,19 +4,23 @@ model Report {
   title       String
   description String?
 
-  senderId   String  @map("sender_id")
-  reportedId String? @map("reported_id")
+  reporterId   String  @map("reporter_id")
+  targetUserId String? @map("target_user_id")
+  reviewedById String? @map("reviewed_by_id")
 
   response String?
 
-  status     ReportStatus @default(PENDING)
   reportType ReportType   @map("report_type")
+  status     ReportStatus @default(PENDING)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  reported User? @relation("ReceivedReports", fields: [reportedId], references: [id], onDelete: Cascade)
-  sender   User  @relation("SentReports", fields: [senderId], references: [id], onDelete: Cascade)
+  reporter   User  @relation("ReportsMade", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetUser User? @relation("ReportsAgainst", fields: [targetUserId], references: [id], onDelete: Cascade)
+  reviewedBy User? @relation("ReportsViewed", fields: [reviewedById], references: [id], onDelete: Cascade)
+
+  sanctions UserSanction[]
 
   @@map("reports")
 }

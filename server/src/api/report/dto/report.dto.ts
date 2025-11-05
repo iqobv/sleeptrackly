@@ -12,10 +12,10 @@ export class ReportDto {
 	description: string;
 
 	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	senderId: string;
+	reporterId: string;
 
 	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	reportedId?: string;
+	targetUserId?: string;
 
 	@ApiProperty({ example: 'Test Report Response' })
 	response?: string;

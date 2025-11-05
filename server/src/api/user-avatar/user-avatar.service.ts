@@ -62,7 +62,7 @@ export class UserAvatarService {
 
 	async uploadProviderAvatar(avatarUrl: string, userId: string) {
 		const response = await firstValueFrom(
-			this.httpService.get(avatarUrl, {
+			this.httpService.get<ArrayBuffer>(avatarUrl, {
 				responseType: 'arraybuffer',
 			}),
 		);

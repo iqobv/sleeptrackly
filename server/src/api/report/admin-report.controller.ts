@@ -6,7 +6,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { Auth } from 'src/libs/decorators';
+import { Auth, Authorized } from 'src/libs/decorators';
 import {
 	AllReportsDto,
 	ReportDto,
@@ -43,7 +43,11 @@ export class AdminReportController {
 	@ApiNotFoundResponse({ description: 'Report not found' })
 	@ApiBadRequestResponse({ description: 'Status is the same' })
 	@Patch(':id')
-	async update(@Param('id') id: string, @Body() dto: UpdateReportDto) {
-		return await this.reportService.update(id, dto);
+	async update(
+		@Param('id') id: string,
+		@Authorized('id') userId: string,
+		@Body() dto: UpdateReportDto,
+	) {
+		return await this.reportService.update(id, userId, dto);
 	}
 }

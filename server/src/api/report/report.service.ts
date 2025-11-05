@@ -3,6 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { ReportStatus } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { userSelect } from 'src/libs/prisma';
 import { CreateReportDto, SearchQueryDto, UpdateReportDto } from './dto';
@@ -18,11 +19,11 @@ export class ReportService {
 
 		const report = await this.prismaService.report.create({
 			data: {
-				sender: { connect: { id: userId } },
+				reporter: { connect: { id: userId } },
 				title,
 				description,
 				reportType,
-				reported: { connect: { id: reportedId } },
+				targetUser: { connect: { id: reportedId } },
 			},
 		});
 
@@ -33,8 +34,8 @@ export class ReportService {
 		const report = await this.prismaService.report.findUnique({
 			where: { id },
 			include: {
-				sender: { select: userSelect },
-				reported: { select: userSelect },
+				reporter: { select: userSelect },
+				targetUser: { select: userSelect },
 			},
 		});
 
@@ -84,7 +85,7 @@ export class ReportService {
 		};
 	}
 
-	async update(id: string, dto: UpdateReportDto) {
+	async update(id: string, userId: string, dto: UpdateReportDto) {
 		const { response, status } = dto;
 
 		const report = await this.findById(id);
@@ -92,15 +93,24 @@ export class ReportService {
 		if (status === report.status)
 			throw new BadRequestException('Status is the same');
 
+		if (status === ReportStatus.PENDING)
+			throw new BadRequestException('Cannot change status to pending');
+
 		return await this.prismaService.report.update({
 			where: { id: report.id },
-			data: { response, status },
+			data: {
+				response,
+				status,
+				...(report.status === ReportStatus.PENDING && {
+					reviewedBy: { connect: { id: userId } },
+				}),
+			},
 		});
 	}
 
 	private async findSendReports(userId: string, reportedId: string) {
 		const report = await this.prismaService.report.findFirst({
-			where: { senderId: userId, reportedId },
+			where: { reporterId: userId, targetUserId: reportedId },
 			orderBy: { createdAt: 'desc' },
 		});
 

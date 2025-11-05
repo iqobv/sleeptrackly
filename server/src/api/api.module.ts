@@ -12,6 +12,7 @@ import { ProfileModule } from './profile/profile.module';
 import { TokenModule } from './token/token.module';
 import { FriendshipModule } from './friendship/friendship.module';
 import { ReportModule } from './report/report.module';
+import { UserSanctionModule } from './user-sanction/user-sanction.module';
 
 @Module({
 	imports: [
@@ -28,6 +29,7 @@ import { ReportModule } from './report/report.module';
 		TokenModule,
 		FriendshipModule,
 		ReportModule,
+		UserSanctionModule,
 	],
 })
 export class ApiModule {}
