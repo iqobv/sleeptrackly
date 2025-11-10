@@ -41,6 +41,9 @@ const SettingsForm = <T extends FieldValues, R>({
 			router.refresh();
 			onSuccess?.(data);
 		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
 	});
 
 	useEffect(() => {

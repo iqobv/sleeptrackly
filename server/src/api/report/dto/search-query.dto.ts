@@ -16,7 +16,7 @@ export class SearchQueryDto {
 	@ApiProperty({ example: 10 })
 	@Type(() => Number)
 	@IsNumber({ allowNaN: false, allowInfinity: false })
-	@Min(10)
+	@Min(1)
 	pageSize: number = 10;
 
 	@ApiProperty({

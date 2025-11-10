@@ -18,18 +18,27 @@ export class CloudinaryService {
 					if (result) {
 						return resolve(result);
 					} else {
-						return reject(error);
+						return reject(error as Error);
 					}
 				})
 				.end(file.buffer);
 		});
 	}
 
-	async deleteFile(publicId: string) {
-		return await v2.uploader.destroy(publicId);
+	async deleteFile(
+		publicId: string,
+	): Promise<UploadApiResponse | UploadApiErrorResponse> {
+		const result = (await v2.uploader.destroy(publicId)) as
+			| UploadApiResponse
+			| UploadApiErrorResponse;
+		return result;
 	}
-
-	async getImageByPublicId(publicId: string): Promise<UploadApiResponse> {
-		return await v2.api.resource(publicId);
+	async getImageByPublicId(
+		publicId: string,
+	): Promise<UploadApiResponse | UploadApiErrorResponse> {
+		const result = (await v2.api.resource(publicId)) as
+			| UploadApiResponse
+			| UploadApiErrorResponse;
+		return result;
 	}
 }

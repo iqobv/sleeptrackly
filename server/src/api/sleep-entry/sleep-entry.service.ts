@@ -47,12 +47,12 @@ export class SleepEntryService {
 		year: number,
 		weekNumber: number,
 		entries: SleepEntryDto[],
-	) {
+	): { day: string; data: SleepEntryDto | null }[] {
 		const startOfWeek = dayjs()
 			.year(year)
 			.isoWeek(weekNumber)
 			.startOf('isoWeek');
-		return [...Array(7)].map((_, i) => {
+		return Array.from({ length: 7 }, (_, i) => {
 			const day = startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD');
 			const data = entries.find((entry) => entry.dateForChart === day) || null;
 			return { day, data };
@@ -101,7 +101,7 @@ export class SleepEntryService {
 				weekNumber = now.isoWeek();
 				const startOfWeek = now.startOf('isoWeek');
 
-				const days = [...Array(7)].map((_, i) => ({
+				const days = Array.from({ length: 7 }, (_, i) => ({
 					day: startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD'),
 					data: null,
 				}));

@@ -24,6 +24,7 @@ export const useUploadAvatar = () => {
 			setAvatar(null);
 			if (inputRef.current) inputRef.current.value = '';
 		},
+		onError: (error) => toast.error(error.message),
 	});
 
 	const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

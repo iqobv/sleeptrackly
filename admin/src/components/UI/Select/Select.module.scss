@@ -1,0 +1,60 @@
+.select {
+	width: fit-content;
+	padding: 0;
+	position: relative;
+}
+
+.select__container {
+	display: flex;
+	align-items: center;
+	background: #000;
+	cursor: pointer;
+	position: relative;
+	border-radius: 4px;
+	padding: 10px 12px;
+	font-size: 1rem;
+	justify-content: space-between;
+	background-color: var(--input-bg);
+	border: 1px solid var(--input-border);
+	border-radius: 6px;
+
+	&:focus {
+		outline: none;
+	}
+}
+
+.select__input {
+	padding: 0;
+	font-size: 1rem;
+	background-color: transparent;
+	border: none;
+	outline: none;
+
+	.select__input--clearable {
+		padding-right: 30px;
+	}
+
+	&:placeholder-shown {
+		user-select: none;
+	}
+}
+
+.full-width {
+	&--true {
+		width: 100%;
+	}
+
+	&--false {
+		width: fit-content;
+	}
+}
+
+.error {
+	border-color: var(--input-border-error);
+}
+
+.error__text {
+	margin-top: 5px;
+	margin-left: 10px;
+	color: var(--input-color-error);
+}

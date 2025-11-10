@@ -1,12 +1,13 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { UserModule } from '../user/user.module';
 import { UserAvatarController } from './user-avatar.controller';
 import { UserAvatarService } from './user-avatar.service';
 
 @Module({
 	controllers: [UserAvatarController],
 	providers: [UserAvatarService],
-	imports: [HttpModule],
+	imports: [HttpModule, forwardRef(() => UserModule)],
 	exports: [UserAvatarService],
 })
 export class UserAvatarModule {}

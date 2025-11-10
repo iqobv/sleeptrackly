@@ -1,0 +1,50 @@
+$roboto-font: 'Roboto', sans-serif;
+
+$breakpoints: (
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1400px,
+);
+
+$button-variants: (
+	'contained': (
+		'bg': var(--btn-bg-contained),
+		'color': var(--btn-color-contained),
+		'border': transparent,
+		'bg-hover': var(--btn-bg-contained-hover),
+	),
+	'outlined': (
+		'bg': transparent,
+		'border': var(--btn-border-outlined),
+		'bg-hover': var(--btn-bg-outlined-hover),
+		'border-hover': var(--btn-border-outlined-hover),
+	),
+	'text': (
+		'bg': transparent,
+		'border': transparent,
+		'color': var(--btn-color-text),
+		'bg-hover': var(--btn-bg-text-hover),
+	),
+	'link': (
+		'bg': transparent,
+		'border': transparent,
+		'color': var(--btn-color-link),
+		'text-decoration': none,
+		'text-underline-offset': 6px,
+		'text-decoration-hover': underline,
+	),
+	'secondary': (
+		'bg': var(--btn-bg-secondary),
+		'color': var(--btn-color-secondary),
+		'border': transparent,
+		'bg-hover': var(--btn-bg-secondary-hover),
+	),
+	'danger': (
+		'bg': var(--btn-danger-bg),
+		'color': var(--btn-danger-color),
+		'border': transparent,
+		'bg-hover': var(--btn-danger-bg-hover),
+	),
+);

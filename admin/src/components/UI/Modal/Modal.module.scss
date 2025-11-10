@@ -1,0 +1,40 @@
+@use '../../../styles/mixins' as *;
+
+.modal {
+	width: 100vw;
+	height: 100vh;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1500;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.4);
+	-webkit-backdrop-filter: blur(3px);
+	backdrop-filter: blur(3px);
+}
+
+.modal__container {
+	width: 90%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	background-color: var(--modal-bg);
+	padding: 20px;
+	gap: 10px;
+	border-radius: 8px;
+
+	@include response(md) {
+		width: 70%;
+	}
+}
+
+.modal__header {
+	display: flex;
+	justify-content: end;
+}
+
+.modal__body {
+	width: 100%;
+}

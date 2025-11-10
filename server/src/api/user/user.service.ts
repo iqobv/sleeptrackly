@@ -1,11 +1,21 @@
 import {
 	ConflictException,
+	ForbiddenException,
+	forwardRef,
+	Inject,
 	Injectable,
+	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
+import { UserSanctionType } from '@prisma/client';
+import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { userSelect } from 'src/libs/prisma';
-import { comparePassword, hashPassword } from 'src/libs/utils';
+import {
+	comparePassword,
+	generateUsername as generateUsernameUtil,
+	hashPassword,
+} from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
@@ -15,6 +25,7 @@ export class UserService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly userSleepStatusService: UserSleepStatusService,
+		@Inject(forwardRef(() => UserAvatarService))
 		private readonly userAvatarService: UserAvatarService,
 	) {}
 
@@ -57,6 +68,7 @@ export class UserService {
 			select: {
 				...userSelect,
 				...(full && { password: true }),
+				sanctions: true,
 			},
 		});
 
@@ -133,19 +145,26 @@ export class UserService {
 		});
 	}
 
-	async update(id: string, dto: UpdateUserDto) {
-		const { email, username, password, emailVerified } = dto;
+	async update(id: string, dto: UpdateUserDto, isSystem = false) {
+		const { email, username, emailVerified } = dto;
 
 		const user = await this.findById(id, true);
 
+		if (user.sanctions.length > 0) {
+			const activeChangeUsernameSanction = user.sanctions.find(
+				({ endsAt, type }) =>
+					endsAt &&
+					new Date(endsAt) > new Date() &&
+					type === UserSanctionType.USERNAME_CHANGE_BAN,
+			);
+
+			if (activeChangeUsernameSanction && username && !isSystem)
+				throw new ForbiddenException(
+					`You are banned from changing username${activeChangeUsernameSanction.endsAt ? ` until ${dayjs(activeChangeUsernameSanction.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
+				);
+		}
+
 		await this.alreadyExists({ email, username });
-
-		const isMatch =
-			!!password &&
-			!!user.password &&
-			(await comparePassword(password, user.password));
-
-		if (isMatch) throw new ConflictException('Password is the same');
 
 		const updated = await this.prismaService.user.update({
 			where: { id: user.id },
@@ -153,7 +172,6 @@ export class UserService {
 				email,
 				username,
 				emailVerified,
-				...(password && { password: await hashPassword(password) }),
 			},
 			select: userSelect,
 		});
@@ -176,6 +194,26 @@ export class UserService {
 		await this.prismaService.user.delete({ where: { id: user.id } });
 
 		return true;
+	}
+
+	async generateUsername(): Promise<string> {
+		let attempts = 0;
+
+		while (attempts < 100) {
+			const username = generateUsernameUtil();
+
+			const user = await this.prismaService.user.findUnique({
+				where: { username },
+			});
+
+			if (!user) {
+				return username;
+			}
+
+			attempts++;
+		}
+
+		throw new InternalServerErrorException();
 	}
 
 	private async alreadyExists({

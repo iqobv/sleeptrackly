@@ -1,0 +1,33 @@
+.size {
+	&--sm {
+		gap: 6px;
+	}
+
+	&--md {
+		gap: 8px;
+	}
+
+	&--lg {
+		gap: 10px;
+	}
+}
+
+.padding-sm {
+	padding: 6px 12px;
+}
+.padding-md {
+	padding: 12px 20px;
+}
+.padding-lg {
+	padding: 12px 24px;
+}
+
+.icon-padding-sm {
+	padding: 6px;
+}
+.icon-padding-md {
+	padding: 12px;
+}
+.icon-padding-lg {
+	padding: 12px;
+}
