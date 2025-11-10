@@ -1,0 +1,23 @@
+model UserSanction {
+  id String @id @default(uuid())
+
+  userId      String  @map("user_id")
+  reportId    String? @map("report_id")
+  createdById String  @map("created_by_id")
+
+  startsAt DateTime  @map("starts_at")
+  endsAt   DateTime? @map("ends_at")
+
+  type UserSanctionType
+
+  user      User @relation("UserSanctions", fields: [userId], references: [id], onDelete: Cascade)
+  createdBy User @relation("CreatedUserSanctions", fields: [createdById], references: [id], onDelete: Cascade)
+
+  report Report? @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, type])
+  @@map("user_sanctions")
+}

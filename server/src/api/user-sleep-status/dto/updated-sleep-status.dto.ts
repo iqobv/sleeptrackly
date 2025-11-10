@@ -7,5 +7,5 @@ export class UpdatedSleepStatusDto {
 	userSleepStatus: SleepStatusDto;
 
 	@ApiProperty({ type: SleepEntryDto })
-	sleepEntry: SleepEntryDto | {};
+	sleepEntry: SleepEntryDto | null;
 }

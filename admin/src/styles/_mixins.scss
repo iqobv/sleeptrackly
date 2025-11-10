@@ -1,0 +1,14 @@
+@use './variables' as *;
+@use 'sass:map';
+
+@mixin response($size) {
+	@media screen and (min-width: map.get($breakpoints, $size)) {
+		@content;
+	}
+}
+
+@mixin hover {
+	@media (hover: hover) {
+		@content;
+	}
+}

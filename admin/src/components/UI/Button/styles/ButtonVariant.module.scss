@@ -1,0 +1,37 @@
+@use 'sass:map';
+@use '../../../../styles/variables' as *;
+
+@mixin apply-hover-styles($props) {
+	@if map.has-key($props, 'bg-hover') {
+		background-color: map.get($props, 'bg-hover');
+	}
+	@if map.has-key($props, 'border-hover') {
+		border-color: map.get($props, 'border-hover');
+	}
+	@if map.has-key($props, 'text-decoration-hover') {
+		text-decoration: map.get($props, 'text-decoration-hover');
+	}
+}
+
+.variant {
+	@each $name, $props in $button-variants {
+		&--#{$name} {
+			background-color: map.get($props, 'bg');
+			border-color: map.get($props, 'border');
+			color: map.get($props, 'color');
+			text-decoration: map.get($props, 'text-decoration');
+			text-underline-offset: map.get($props, 'text-underline-offset');
+
+			&:active,
+			&:focus-visible {
+				@include apply-hover-styles($props);
+			}
+
+			@media (hover: hover) {
+				&:hover {
+					@include apply-hover-styles($props);
+				}
+			}
+		}
+	}
+}

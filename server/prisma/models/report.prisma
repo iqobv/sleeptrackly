@@ -1,0 +1,26 @@
+model Report {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+
+  reporterId   String  @map("reporter_id")
+  targetUserId String? @map("target_user_id")
+  reviewedById String? @map("reviewed_by_id")
+
+  response String?
+
+  reportType ReportType   @map("report_type")
+  status     ReportStatus @default(PENDING)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  reporter   User  @relation("ReportsMade", fields: [reporterId], references: [id], onDelete: Cascade)
+  targetUser User? @relation("ReportsAgainst", fields: [targetUserId], references: [id], onDelete: Cascade)
+  reviewedBy User? @relation("ReportsViewed", fields: [reviewedById], references: [id], onDelete: Cascade)
+
+  sanctions UserSanction[]
+
+  @@map("reports")
+}

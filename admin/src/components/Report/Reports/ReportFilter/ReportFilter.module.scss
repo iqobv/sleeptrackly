@@ -1,0 +1,11 @@
+.report-filter__selects {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.report-filter__select {
+	padding: 3px;
+}

@@ -1,0 +1,28 @@
+.select__menu {
+	background-color: var(--bg-options);
+	margin-top: 8px;
+	left: 0;
+	padding: 6px 0;
+	border-radius: 6px;
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	font-size: 1rem;
+	border: 1px solid var(--border-options);
+	border-radius: 8px;
+	max-height: 40dvh;
+	overflow-y: auto;
+}
+
+.select__option {
+	padding: 6px 12px;
+	cursor: pointer;
+	user-select: none;
+	font-size: 1rem;
+
+	&:hover,
+	&.select__option--highlighted,
+	&:focus-visible {
+		background-color: var(--bg-option-hover);
+	}
+}
