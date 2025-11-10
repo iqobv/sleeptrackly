@@ -92,7 +92,7 @@ export class AuthService {
 	}
 
 	async validateOAuthLogin(dto: OAuthDto) {
-		const { provider, providerId, avatarUrl, email, username } = dto;
+		const { provider, providerId, avatarUrl, email } = dto;
 
 		const providerUser = await this.userProviderService.findProvider(
 			provider,
@@ -100,6 +100,8 @@ export class AuthService {
 		);
 
 		if (providerUser) return providerUser.user;
+
+		const username = await this.userService.generateUsername();
 
 		let user = await this.userService.findByEmail(email, true);
 		if (!user) {

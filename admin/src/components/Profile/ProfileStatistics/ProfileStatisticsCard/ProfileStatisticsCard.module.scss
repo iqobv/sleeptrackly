@@ -1,0 +1,24 @@
+@use '../../../../styles/mixins' as *;
+
+.profile-statistics__card {
+	background-color: var(--profile-stat-card-bg);
+	border: 1px solid var(--profile-stat-card-border);
+	border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 6px;
+	flex: 1 0 100%;
+	padding: 10px;
+	text-align: center;
+
+	@include response(md) {
+		flex: 1 0 calc(50% - 10px);
+	}
+}
+
+.profile-statistics__card-title {
+	font-size: 1.5rem;
+	font-weight: 600;
+}

@@ -36,6 +36,12 @@ export class ReportService {
 			include: {
 				reporter: { select: userSelect },
 				targetUser: { select: userSelect },
+				sanctions: {
+					include: {
+						user: { select: userSelect },
+						createdBy: { select: userSelect },
+					},
+				},
 			},
 		});
 

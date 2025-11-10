@@ -6,11 +6,17 @@ import {
 import { UserSanction, UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { UserAvatarService } from '../user-avatar/user-avatar.service';
+import { UserService } from '../user/user.service';
 import { CreaeteUserSanctionDto, UpdateUserSanctionDto } from './dto';
 
 @Injectable()
 export class UserSanctionService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly userService: UserService,
+		private readonly userAvatarService: UserAvatarService,
+	) {}
 
 	async findByUserId(userId: string) {
 		return await this.prismaService.userSanction.findMany({
@@ -61,14 +67,28 @@ export class UserSanctionService {
 		} else {
 			userSanction = await this.prismaService.userSanction.create({
 				data: {
-					report: { connect: { id: reportId } },
 					user: { connect: { id: targetUserId } },
 					createdBy: { connect: { id: userId } },
 					startsAt,
 					endsAt: endDate,
 					type,
+					...(reportId && { report: { connect: { id: reportId } } }),
 				},
 			});
+		}
+
+		if (userSanction.type === UserSanctionType.USERNAME_CHANGE_BAN) {
+			await this.userService.update(
+				targetUserId,
+				{
+					username: await this.userService.generateUsername(),
+				},
+				true,
+			);
+		}
+
+		if (userSanction.type === UserSanctionType.AVATAR_CHANGE_BAN) {
+			await this.userAvatarService.deleteAvatar(targetUserId);
 		}
 
 		return userSanction;
