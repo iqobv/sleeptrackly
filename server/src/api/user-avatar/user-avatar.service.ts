@@ -2,14 +2,20 @@ import { HttpService } from '@nestjs/axios';
 import {
 	BadGatewayException,
 	ConflictException,
+	ForbiddenException,
+	forwardRef,
+	Inject,
 	Injectable,
 } from '@nestjs/common';
+import { UserSanctionType } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import dayjs from 'dayjs';
 import { firstValueFrom } from 'rxjs';
 import { CloudinaryService } from 'src/infra/cloudinary/cloudinary.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { DEFAULT_AVATAR } from 'src/libs/constants';
 import { Readable } from 'stream';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class UserAvatarService {
@@ -17,6 +23,8 @@ export class UserAvatarService {
 		private readonly prismaService: PrismaService,
 		private readonly cloudinaryService: CloudinaryService,
 		private readonly httpService: HttpService,
+		@Inject(forwardRef(() => UserService))
+		private readonly userService: UserService,
 	) {}
 
 	async createForAllUsers() {
@@ -42,6 +50,24 @@ export class UserAvatarService {
 	async upload(file: Express.Multer.File, userId: string) {
 		const avatar = await this.findByUserId(userId);
 
+		const user = await this.userService.findById(userId, true);
+
+		console.log(user);
+
+		if (user.sanctions.length > 0) {
+			const activeBan = user.sanctions.find(
+				({ endsAt, type }) =>
+					endsAt &&
+					new Date(endsAt) > new Date() &&
+					type === UserSanctionType.AVATAR_CHANGE_BAN,
+			);
+
+			if (activeBan)
+				throw new ForbiddenException(
+					`You are banned from changing avatar${activeBan.endsAt ? ` until ${dayjs(activeBan.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
+				);
+		}
+
 		const filename = randomUUID();
 		file.filename = filename;
 
@@ -62,7 +88,7 @@ export class UserAvatarService {
 
 	async uploadProviderAvatar(avatarUrl: string, userId: string) {
 		const response = await firstValueFrom(
-			this.httpService.get(avatarUrl, {
+			this.httpService.get<ArrayBuffer>(avatarUrl, {
 				responseType: 'arraybuffer',
 			}),
 		);

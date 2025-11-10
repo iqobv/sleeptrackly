@@ -49,4 +49,7 @@ export const QUERY_KEYS = {
 		one: (userId: string) => ['timer', userId] as const,
 		update: (userId: string) => ['updateSleep', userId] as const,
 	},
+	report: {
+		send: ['sendReport'] as const,
+	},
 } as const;

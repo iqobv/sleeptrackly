@@ -1,0 +1,18 @@
+.report-detail__info {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	padding: 20px 0;
+}
+
+.report-detail__user {
+	display: inline-flex;
+	font-size: 16px;
+	gap: 5px;
+}
+
+.report-detail__username {
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}

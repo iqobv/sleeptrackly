@@ -1,0 +1,15 @@
+.divider {
+	--thickness: 1px;
+	display: block;
+	background-color: var(--divider-color);
+
+	&--vertical {
+		width: var(--thickness);
+		height: 100%;
+	}
+
+	&--horizontal {
+		height: var(--thickness);
+		width: 100%;
+	}
+}

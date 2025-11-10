@@ -1,0 +1,17 @@
+@use '../../styles/mixins' as *;
+
+.main {
+	display: flex;
+	flex-direction: row;
+	gap: 20px;
+	min-height: calc(100dvh - var(--header-height));
+}
+
+.main__content {
+	width: 100%;
+	padding: 0 20px;
+
+	@include response(md) {
+		padding: 0 20px 0 0;
+	}
+}
