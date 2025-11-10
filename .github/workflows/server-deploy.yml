@@ -1,0 +1,47 @@
+name: Deploy NestJS server to Cloud Run
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy-server:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure Docker auth
+        run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev --quiet
+
+      - name: Build server image
+        run: |
+          IMAGE_BASE=${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.REPO }}/sleep-tracker-api
+          docker build \
+            --build-arg POSTGRES_URI=${{ secrets.POSTGRES_URI }} \
+            -t $IMAGE_BASE:${{ github.sha }} ./server
+          docker tag $IMAGE_BASE:${{ github.sha }} $IMAGE_BASE:latest
+          echo "IMAGE_SHA=$IMAGE_BASE:${{ github.sha }}" >> $GITHUB_ENV
+
+      - name: Push server image
+        run: |
+          docker push $IMAGE_SHA
+          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.REPO }}/sleep-tracker-api:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${{ secrets.SERVICE_NAME }} \
+            --image $IMAGE_SHA \
+            --region ${{ secrets.GCP_REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
