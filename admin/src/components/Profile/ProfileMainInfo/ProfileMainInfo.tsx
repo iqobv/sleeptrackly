@@ -26,9 +26,6 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 			{profile && user && user.id !== profile.id && (
 				<div className={styles['profile-main-info__buttons']}>
 					<ProfileSanctionsButton profile={profile} />
-					{/* <Button isIcon variant="text">
-						<MdOutlineAdminPanelSettings size={25} />
-					</Button> */}
 				</div>
 			)}
 		</div>
