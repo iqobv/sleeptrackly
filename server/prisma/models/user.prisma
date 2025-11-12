@@ -29,6 +29,7 @@ model User {
 
   createdSanctions UserSanction[] @relation("CreatedUserSanctions")
   sanctions        UserSanction[] @relation("UserSanctions")
+  notifications    Notification[]
 
   @@map("users")
 }
