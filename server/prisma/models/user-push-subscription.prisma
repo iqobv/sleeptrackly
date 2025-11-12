@@ -3,7 +3,7 @@ model UserPushSubscription {
 
   userId String @map("user_id")
 
-  endpoint String
+  endpoint String @unique
   p256dh   String
   auth     String
 
@@ -14,5 +14,6 @@ model UserPushSubscription {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("user_push_subscriptions")
 }

@@ -13,12 +13,13 @@ model Notification {
   title String
   body  String?
 
-  scheduledAt DateTime? @default(now()) @map("scheduled_at")
+  scheduledAt DateTime? @map("scheduled_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([userId])
   @@map("notifications")
 }
