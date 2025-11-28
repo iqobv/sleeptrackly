@@ -1,0 +1,26 @@
+model Notification {
+  id String @id @default(uuid())
+
+  userId String? @map("user_id")
+
+  isGlobal    Boolean @default(false) @map("is_global")
+  isRead      Boolean @default(false) @map("is_read")
+  isPush      Boolean @default(false) @map("is_push")
+  showInApp   Boolean @default(true) @map("show_in_app")
+  isScheduled Boolean @default(false) @map("is_scheduled")
+  isEmail     Boolean @default(false) @map("is_email")
+
+  title       String
+  body        String?
+  redirectUrl String? @map("redirect_url")
+
+  scheduledAt DateTime? @map("scheduled_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("notifications")
+}
