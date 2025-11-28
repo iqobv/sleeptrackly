@@ -10,8 +10,9 @@ model Notification {
   isScheduled Boolean @default(false) @map("is_scheduled")
   isEmail     Boolean @default(false) @map("is_email")
 
-  title String
-  body  String?
+  title       String
+  body        String?
+  redirectUrl String? @map("redirect_url")
 
   scheduledAt DateTime? @map("scheduled_at")
 
