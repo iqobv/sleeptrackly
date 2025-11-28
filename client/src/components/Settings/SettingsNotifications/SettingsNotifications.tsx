@@ -6,7 +6,6 @@ import SettingsNotificationsPush from './SettingsNotificationsPush/SettingsNotif
 const SettingsNotifications = () => {
 	return (
 		<div className={styles['settings-notifications']}>
-			SettingsNotifications
 			<SettingsNotificationsPush />
 		</div>
 	);

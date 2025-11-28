@@ -38,4 +38,25 @@ export class UserFcmTokenService {
 			},
 		});
 	}
+
+	async checkTokenExists(userId: string, token: string) {
+		const count = await this.prismaService.userFcmToken.count({
+			where: {
+				userId,
+				token,
+			},
+		});
+		return count > 0;
+	}
+
+	async removeByToken(userId: string, token: string) {
+		await this.prismaService.userFcmToken.deleteMany({
+			where: {
+				userId,
+				token,
+			},
+		});
+
+		return true;
+	}
 }
