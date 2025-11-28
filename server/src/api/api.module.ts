@@ -14,6 +14,7 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { UserFcmTokenModule } from './user-fcm-token/user-fcm-token.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
 	imports: [
@@ -32,6 +33,7 @@ import { UserFcmTokenModule } from './user-fcm-token/user-fcm-token.module';
 		ReportModule,
 		UserSanctionModule,
 		UserFcmTokenModule,
+		NotificationModule,
 	],
 })
 export class ApiModule {}

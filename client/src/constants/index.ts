@@ -1,3 +1,4 @@
+export * from './authErrorMessages.constants';
 export * from './challengeFrequency.constants';
 export * from './friendStatus.constants';
 export * from './reportTitle.constats';
