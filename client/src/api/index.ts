@@ -10,6 +10,7 @@ export * from './dashboard/dashboard.api';
 export * from './friend/friend.api';
 export * from './profile/profile.api';
 export * from './report/report.api';
+export * from './settings/notifications.api';
 export * from './user/fcmToken.api';
 export * from './user/sleepStatus.api';
 export * from './user/user.api';

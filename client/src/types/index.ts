@@ -15,6 +15,7 @@ export * from './friend/friendResponse.types';
 export * from './friend/friendship.types';
 export * from './friend/friendStatus.types';
 export * from './profile/profile.types';
+export * from './settings/notifications.types';
 export * from './settings/settingsField.types';
 export * from './ui/field.types';
 export * from './ui/option.types';

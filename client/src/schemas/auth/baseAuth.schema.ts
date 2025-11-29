@@ -18,6 +18,13 @@ export const passwordSchema = z.object({
 	password: z
 		.string()
 		.nonempty({ error: 'Password is required' })
+		.min(8, { error: AUTH_ERROR_MESSAGES.MIN_LENGTH_ERROR_MESSAGE }),
+});
+
+export const newPasswordSchema = z.object({
+	password: z
+		.string()
+		.nonempty({ error: 'Password is required' })
 		.min(8, { error: AUTH_ERROR_MESSAGES.MIN_LENGTH_ERROR_MESSAGE })
 		.refine((password) => /[A-Z]/.test(password), {
 			message: AUTH_ERROR_MESSAGES.UPPERCASE_ERROR_MESSAGE,

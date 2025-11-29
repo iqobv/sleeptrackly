@@ -1,0 +1,23 @@
+model UserNotificationSettings {
+  id String @id @default(uuid())
+
+  userId String @unique @map("user_id")
+
+  isEmailNotificationsEnabled Boolean @default(false) @map("is_email_notifications_enabled")
+  isInAppNotificationsEnabled Boolean @default(true) @map("is_in_app_notifications_enabled")
+  isReminderEnabled           Boolean @default(false) @map("is_reminder_timer_enabled")
+
+  isUpdatesEnabled             Boolean @default(true) @map("is_updates_enabled")
+  isFriendRequestsEnabled      Boolean @default(true) @map("is_friend_requests_enabled")
+  isAchievementUnlockedEnabled Boolean @default(true) @map("is_achievement_unlocked_enabled")
+
+  reminderTime String? @map("reminder_time")
+  userTimeZone String? @map("user_time_zone")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_notification_settings")
+}
