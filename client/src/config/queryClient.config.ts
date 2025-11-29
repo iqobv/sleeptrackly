@@ -52,4 +52,9 @@ export const QUERY_KEYS = {
 	report: {
 		send: ['sendReport'] as const,
 	},
+	notifications: {
+		settings: (userId: string) => ['notificationSettings', userId] as const,
+		updateSettings: (userId: string) =>
+			['updateNotificationSettings', userId] as const,
+	},
 } as const;

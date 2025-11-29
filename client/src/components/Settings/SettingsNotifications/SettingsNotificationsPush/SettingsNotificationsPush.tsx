@@ -21,7 +21,10 @@ const SettingsNotificationsPush = () => {
 							size={24}
 						/>
 					) : (
-						<ToggleSwitch checked={isPushEnabled} onChange={handleTogglePush} />
+						<ToggleSwitch
+							checked={isPushEnabled}
+							onChange={(e) => handleTogglePush(e.target.checked)}
+						/>
 					)}
 				</>
 			}

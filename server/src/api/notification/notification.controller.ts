@@ -8,7 +8,6 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import {
 	ApiNotFoundResponse,
 	ApiOkResponse,
@@ -67,10 +66,5 @@ export class NotificationController {
 	@Delete(':id')
 	async remove(@Param('id') id: string) {
 		return await this.notificationService.remove(id);
-	}
-
-	@Cron(CronExpression.EVERY_MINUTE)
-	async sendTestNotification() {
-		await this.notificationService.sendPushNotification();
 	}
 }
