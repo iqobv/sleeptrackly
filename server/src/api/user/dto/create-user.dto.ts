@@ -5,7 +5,7 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsString,
-	MinLength,
+	IsStrongPassword,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -23,8 +23,18 @@ export class CreateUserDto {
 	username: string;
 
 	@ApiProperty({ example: 'password' })
-	@IsString({ message: 'Password is required' })
-	@MinLength(6, { message: 'Password must be at least 6 characters long' })
+	@IsStrongPassword(
+		{
+			minLength: 8,
+			minLowercase: 1,
+			minUppercase: 1,
+			minNumbers: 1,
+		},
+		{
+			message:
+				'Password is not strong enough. It must contain at least 8 characters, including lowercase, uppercase, and numbers.',
+		},
+	)
 	@IsOptional()
 	password?: string;
 

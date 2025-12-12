@@ -1,0 +1,26 @@
+@use '../../../styles/mixins' as *;
+
+.settings-field {
+	--mobile-direction: column;
+
+	width: 100%;
+	display: flex;
+	flex-direction: var(--mobile-direction);
+	gap: 10px;
+	border: 1px solid var(--settings-item-border);
+	background-color: var(--settings-item-bg);
+	border-radius: 6px;
+	padding: 10px;
+	font-size: 1.1rem;
+
+	&__label {
+		flex: 1 1 100%;
+	}
+
+	@include response(md) {
+		& {
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+}

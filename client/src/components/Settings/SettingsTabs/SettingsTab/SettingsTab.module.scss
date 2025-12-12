@@ -10,13 +10,13 @@
 		left: 0;
 		bottom: 0;
 		height: 3px;
-		background-color: var(--settings-item-bg);
+		background-color: var(--settings-tabs-item-bg);
 		transition: background-color 0.3s ease;
 	}
 }
 
 .settings-tab--active {
 	&::after {
-		background-color: var(--settings-item-bg-active);
+		background-color: var(--settings-tabs-item-bg-active);
 	}
 }

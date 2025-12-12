@@ -4,9 +4,10 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { Friendship, FriendshipStatus, Prisma } from '@prisma/client';
+import { FriendshipStatus, Prisma } from '@prisma/client';
 import ms from 'ms';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { NotificationService } from '../notification/notification.service';
 import { UserService } from '../user/user.service';
 import { UpdateFriendshipDto } from './dto';
 
@@ -17,10 +18,15 @@ const selectUserFields: Prisma.UserSelect = {
 	sleepStatus: { select: { isSleeping: true } },
 };
 
+const selectFriendshipFields: Prisma.FriendshipInclude = {
+	requester: { select: selectUserFields },
+};
+
 @Injectable()
 export class FriendshipService {
 	constructor(
 		private readonly prismaService: PrismaService,
+		private readonly notificationService: NotificationService,
 		private readonly userService: UserService,
 	) {}
 
@@ -31,7 +37,9 @@ export class FriendshipService {
 
 		const friendship = await this.alreadyExists(requesterId, addressee.id);
 
-		let newFriendship: Friendship;
+		let newFriendship: Prisma.FriendshipGetPayload<{
+			include: typeof selectFriendshipFields;
+		}>;
 
 		if (friendship) {
 			newFriendship = await this.update(friendship.id, requesterId, {
@@ -43,8 +51,20 @@ export class FriendshipService {
 					requester: { connect: { id: requesterId } },
 					addressee: { connect: { id: addressee.id } },
 				},
+				include: selectFriendshipFields,
 			});
 		}
+
+		await this.notificationService.create({
+			userId: addressee.id,
+			title: 'New Friend Request',
+			body: `You have a new friend request from ${newFriendship.requester.username}`,
+			isEmail: false,
+			isGlobal: false,
+			isPush: false,
+			showInApp: true,
+			redirectUrl: `/friends/pending`,
+		});
 
 		return newFriendship;
 	}
@@ -172,6 +192,7 @@ export class FriendshipService {
 				OR: [{ requesterId: userId }, { addresseeId: userId }],
 			},
 			data: { status },
+			include: selectFriendshipFields,
 		});
 
 		return newFriendship;

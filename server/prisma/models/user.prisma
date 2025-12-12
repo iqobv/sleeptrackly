@@ -12,13 +12,16 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  providers    UserProvider[]
-  sleepEntries SleepEntry[]
-  sleepStatus  UserSleepStatus?
-  challenges   Challenge[]
-  avatar       UserAvatar?
-  tokens       Token[]
-  sessions     Session[]
+  providers            UserProvider[]
+  sleepEntries         SleepEntry[]
+  sleepStatus          UserSleepStatus?
+  challenges           Challenge[]
+  avatar               UserAvatar?
+  tokens               Token[]
+  sessions             Session[]
+  notifications        Notification[]
+  userFcmTokens        UserFcmToken[]
+  notificationSettings UserNotificationSettings?
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")

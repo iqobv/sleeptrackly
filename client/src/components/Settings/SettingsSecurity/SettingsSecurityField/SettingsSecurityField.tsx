@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
+import SettingsField from '../../SettingsField/SettingsField';
 import styles from './SettingsSecurityField.module.scss';
 
 interface SettingsSecurityFieldProps {
@@ -17,16 +18,18 @@ const SettingsSecurityField = ({
 	action,
 }: SettingsSecurityFieldProps) => {
 	return (
-		<div className={`${styles['settings-security-field']}`}>
-			<div className={styles['settings-security-field__label']}>{label}</div>
-			<Button
-				onClick={action}
-				variant={isImportant ? 'danger' : 'outlined'}
-				className={styles['settings-security-field__button']}
-			>
-				{buttonText}
-			</Button>
-		</div>
+		<SettingsField
+			label={label}
+			actionElement={
+				<Button
+					onClick={action}
+					variant={isImportant ? 'danger' : 'outlined'}
+					className={styles['settings-security-field__button']}
+				>
+					{buttonText}
+				</Button>
+			}
+		/>
 	);
 };
 

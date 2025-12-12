@@ -2,9 +2,9 @@
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
-}
 
-.settings-tabs__list {
-	border-bottom: 1px solid var(--settings-list-border);
-	overflow-y: auto;
+	&__list {
+		border-bottom: 1px solid var(--settings-tabs-list-border);
+		overflow-y: auto;
+	}
 }

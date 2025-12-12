@@ -19,6 +19,7 @@ export default function Button({
 	size = 'md',
 	fullWidth = false,
 	isIcon = false,
+	isRounded = false,
 	...rest
 }: ButtonProps) {
 	const isLink = !!href && !disabled && !loading;
@@ -29,6 +30,7 @@ export default function Button({
 		fullWidth,
 		isIcon,
 		disabled,
+		isRounded,
 	});
 
 	return (

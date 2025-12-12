@@ -12,3 +12,4 @@ export { default as SectionHeader } from './SectionHeader/SectionHeader';
 export { default as Select } from './Select/Select';
 export { default as SkeletonLoader } from './SkeletonLoader/SkeletonLoader';
 export { default as TextField } from './TextField/TextField';
+export { default as ToggleSwitch } from './ToggleSwitch/ToggleSwitch';
