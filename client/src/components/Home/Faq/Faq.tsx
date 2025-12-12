@@ -21,7 +21,7 @@ const Faq = () => {
 
 	return (
 		<div className="container">
-			<SectionHeader title="Frequently Asked Questions" />
+			<SectionHeader title="FAQ" titleComponent="h3" />
 			<List
 				items={FAQ_QUESTIONS}
 				renderItem={(item, index) => (

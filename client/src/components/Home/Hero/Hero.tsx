@@ -1,5 +1,3 @@
-'use client';
-
 import { Button } from '@/components/UI';
 import { PAGES } from '@/config';
 import styles from './Hero.module.scss';
