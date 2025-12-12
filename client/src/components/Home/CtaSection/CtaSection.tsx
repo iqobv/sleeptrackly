@@ -1,5 +1,3 @@
-'use client';
-
 import { Button, SectionHeader } from '@/components/UI';
 import { PAGES } from '@/config';
 import styles from './CtaSection.module.scss';

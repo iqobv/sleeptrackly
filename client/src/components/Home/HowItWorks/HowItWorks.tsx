@@ -1,5 +1,3 @@
-'use client';
-
 import { List, SectionHeader } from '@/components/UI';
 import styles from './HowItWorks.module.scss';
 import HowItWorksItem from './HowItWorksItem/HowItWorksItem';

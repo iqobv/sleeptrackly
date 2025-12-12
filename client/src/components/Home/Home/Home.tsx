@@ -1,5 +1,3 @@
-'use client';
-
 import CtaSection from '../CtaSection/CtaSection';
 import Faq from '../Faq/Faq';
 import Features from '../Features/Features';
