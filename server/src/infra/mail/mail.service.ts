@@ -15,7 +15,7 @@ export class MailService {
 	}
 
 	async sendVerificationEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('ALLOWED_ORIGIN');
+		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
 		const html = await render(ConfirmationTemplate({ domain, token }));
 
 		return this.sendEmail({
@@ -26,7 +26,7 @@ export class MailService {
 	}
 
 	async sendResetPasswordEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('ALLOWED_ORIGIN');
+		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
 		const html = await render(ResetPasswordTemplate({ domain, token }));
 
 		return this.sendEmail({
