@@ -1,4 +1,11 @@
-.user-menu {
+.user-menu__controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+}
+
+.user-menu__wrapper {
 	position: relative;
 }
 

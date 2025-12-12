@@ -6,6 +6,9 @@ html.dark {
 	--color-main-text: #ffffff;
 	--secondary-color: #b9bec3;
 	--header-height: 70px;
+	--text-primary: #f3f4f6;
+	--text-secondary: #c2c2c2;
+	--border-color: #27272a;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -174,4 +177,11 @@ html.dark {
 
 	/* Friends */
 	--friend-add-bg: #0f0f10;
+
+	/* Notifications */
+	--notification-popup-bg: #161616;
+	--notification-unread-bg: #1a1a1a;
+	--notification-unread-border: #3b82f6;
+	--notification-read-opacity: 1;
+	--notification-read-gray-scale: 0;
 }

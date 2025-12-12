@@ -4,7 +4,7 @@ import { getReports } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { IReportPaginationQuery } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import ReportsPagination from '../ReportsPagination/ReportsPagination';
 import styles from './ReportsList.module.scss';
 import ReportsListItem from './ReportsListItem/ReportsListItem';
@@ -20,8 +20,6 @@ const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 		queryKey: QUERY_KEYS.report.getReports(filters),
 		queryFn: () => getReports(filters),
 	});
-
-	useEffect(() => console.log(data), [data]);
 
 	return (
 		<div className={styles['reports']}>

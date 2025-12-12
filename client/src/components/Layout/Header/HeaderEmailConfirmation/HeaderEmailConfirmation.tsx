@@ -41,7 +41,13 @@ const HeaderEmailConfirmation = () => {
 					>
 						Confirm
 					</Button>
-					<Button size="sm" variant="text" isIcon onClick={handleClose}>
+					<Button
+						size="sm"
+						variant="text"
+						isIcon
+						isRounded
+						onClick={handleClose}
+					>
 						<IoMdClose />
 					</Button>
 				</div>

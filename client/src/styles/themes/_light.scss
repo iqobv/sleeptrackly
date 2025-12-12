@@ -6,6 +6,9 @@
 	--color-main-text: #0d141c;
 	--secondary-color: #464f58;
 	--header-height: 70px;
+	--text-primary: #111827;
+	--text-secondary: #6b7280;
+	--border-color: #e5e7eb;
 
 	/* Loader */
 	--loader-color: #000;
@@ -174,4 +177,11 @@
 
 	/* Friends */
 	--friend-add-bg: #f0f0f0;
+
+	/* Notifications */
+	--notification-popup-bg: #f6f6f6;
+	--notification-unread-bg: #ffffff;
+	--notification-unread-border: #2563eb;
+	--notification-read-opacity: 1;
+	--notification-read-gray-scale: 0;
 }
