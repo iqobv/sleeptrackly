@@ -27,7 +27,7 @@ export default function Modal({
 				aria-modal
 			>
 				<div className={styles['modal__header']}>
-					<Button onClick={onClose} isIcon variant="text">
+					<Button onClick={onClose} isIcon isRounded variant="text">
 						<MdClose size={25} />
 					</Button>
 				</div>

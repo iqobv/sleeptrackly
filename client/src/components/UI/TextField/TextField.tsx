@@ -101,6 +101,7 @@ export default function TextField({
 							variant="text"
 							onClick={handleTogglePassword}
 							isIcon
+							isRounded
 							size="sm"
 						>
 							{isPasswordVisible ? <FaRegEyeSlash /> : <FaRegEye />}

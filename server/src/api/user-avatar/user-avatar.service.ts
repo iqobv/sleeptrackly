@@ -52,8 +52,6 @@ export class UserAvatarService {
 
 		const user = await this.userService.findById(userId, true);
 
-		console.log(user);
-
 		if (user.sanctions.length > 0) {
 			const activeBan = user.sanctions.find(
 				({ endsAt, type }) =>

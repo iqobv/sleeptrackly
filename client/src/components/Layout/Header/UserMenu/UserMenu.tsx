@@ -1,5 +1,6 @@
 'use client';
 
+import NotificationsButton from '@/components/Notification/NotificationsButton/NotificationsButton';
 import { Avatar, Button, Divider } from '@/components/UI';
 import MenuItem from './MenuItem/MenuItem';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
@@ -15,28 +16,31 @@ const UserMenu = () => {
 	const { menuRef, open, user, handleOpen, handleLogout } = userMenuData;
 
 	return (
-		<div className={styles['user-menu']} ref={menuRef}>
-			<button onClick={handleOpen} className={styles['user-menu__btn']}>
-				<Avatar avatar={user.avatar?.url} size={40} priority />
-			</button>
-			{open && (
-				<div className={styles['user-menu__dropdown']}>
-					{USER_MENU_LINKS(user).map(({ label, name, path, icon }) => (
-						<MenuItem
-							icon={icon}
-							label={label}
-							key={name}
-							path={path}
-							onClick={handleOpen}
-						/>
-					))}
-					<Divider />
-					<ThemeSwitcher />
-					<Button onClick={handleLogout} fullWidth>
-						Logout
-					</Button>
-				</div>
-			)}
+		<div className={styles['user-menu__controls']}>
+			<NotificationsButton />
+			<div className={styles['user-menu__wrapper']} ref={menuRef}>
+				<button onClick={handleOpen} className={styles['user-menu__btn']}>
+					<Avatar avatar={user.avatar?.url} size={40} priority />
+				</button>
+				{open && (
+					<div className={styles['user-menu__dropdown']}>
+						{USER_MENU_LINKS(user).map(({ label, name, path, icon }) => (
+							<MenuItem
+								icon={icon}
+								label={label}
+								key={name}
+								path={path}
+								onClick={handleOpen}
+							/>
+						))}
+						<Divider />
+						<ThemeSwitcher />
+						<Button onClick={handleLogout} fullWidth>
+							Logout
+						</Button>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
