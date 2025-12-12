@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Prisma } from '@prisma/client';
 import { FcmService } from 'src/infra/fcm/fcm.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
@@ -49,7 +50,7 @@ export class NotificationService {
 		const [notifications, total] = await this.prismaService.$transaction([
 			this.prismaService.notification.findMany({
 				where,
-				orderBy: { createdAt: 'desc', isRead: 'asc' },
+				orderBy: [{ isRead: 'asc' }, { createdAt: 'desc' }],
 				skip,
 				take: safeSize,
 			}),
@@ -127,6 +128,30 @@ export class NotificationService {
 				);
 			}
 		}
+	}
+
+	@Cron(CronExpression.EVERY_MINUTE)
+	async handleScheduledNotifications() {
+		await this.sendPushNotification();
+	}
+
+	async sendDirectPush(
+		tokens: string[],
+		title: string,
+		body: string,
+		redirectUrl: string,
+	) {
+		if (tokens.length === 0) return;
+
+		await this.fcmService.sendNotification(tokens, {
+			notification: {
+				title,
+				...(!!body && { body }),
+			},
+			data: {
+				url: redirectUrl ?? '/',
+			},
+		});
 	}
 
 	private async findById(id: string) {

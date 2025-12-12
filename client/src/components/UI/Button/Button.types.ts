@@ -22,6 +22,7 @@ export interface ButtonBaseProps {
 	size?: ButtonSize;
 	fullWidth?: boolean;
 	isIcon?: boolean;
+	isRounded?: boolean;
 }
 
 interface AnchorButtonProps

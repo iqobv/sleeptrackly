@@ -15,6 +15,7 @@ import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.mod
 import { UserModule } from './user/user.module';
 import { UserFcmTokenModule } from './user-fcm-token/user-fcm-token.module';
 import { NotificationModule } from './notification/notification.module';
+import { UserNotificationSettingsModule } from './user-notification-settings/user-notification-settings.module';
 
 @Module({
 	imports: [
@@ -34,6 +35,7 @@ import { NotificationModule } from './notification/notification.module';
 		UserSanctionModule,
 		UserFcmTokenModule,
 		NotificationModule,
+		UserNotificationSettingsModule,
 	],
 })
 export class ApiModule {}

@@ -4,4 +4,5 @@ export interface LoaderProps {
 	containerClassName?: string;
 	loaderClassName?: string;
 	disablePadding?: boolean;
+	containerStyle?: React.CSSProperties;
 }

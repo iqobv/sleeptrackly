@@ -20,7 +20,7 @@ const FriendItem = ({ friend }: FriendItemProps) => {
 		<div className={styles['friend-item']}>
 			<FriendItemInfo friend={friend} />
 			<div ref={containerRef} className={styles['friend-item__actions']}>
-				<Button onClick={handleOpenMenu} variant="text" isIcon>
+				<Button onClick={handleOpenMenu} variant="text" isIcon isRounded>
 					<MdOutlineMoreVert size={24} />
 				</Button>
 				{menuOpen && (

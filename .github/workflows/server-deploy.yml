@@ -38,6 +38,20 @@ jobs:
           docker push $IMAGE_SHA
           docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.REPO }}/sleep-tracker-api:latest
 
+      - name: Run Prisma Schema Migration (migrate deploy)
+        run: |
+          docker run --rm \
+            -e DATABASE_URL=${{ secrets.POSTGRES_URI }} \
+            $IMAGE_SHA \
+            npx prisma migrate deploy
+
+      - name: Run Data Migration Script
+        run: |
+          docker run --rm \
+            -e DATABASE_URL=${{ secrets.POSTGRES_URI }} \
+            $IMAGE_SHA \
+            node dist/src/data-migration-runner.js
+
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ${{ secrets.SERVICE_NAME }} \

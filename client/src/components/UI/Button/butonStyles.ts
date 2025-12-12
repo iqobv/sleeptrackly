@@ -32,6 +32,10 @@ export const buttonVariants = cva(baseStyles['button'], {
 			false: null,
 			true: buttonProperties['disabled--true'],
 		},
+		isRounded: {
+			false: null,
+			true: buttonProperties['rounded'],
+		},
 	},
 	compoundVariants: [
 		{ isIcon: false, size: 'sm', className: sizeStyles['padding-sm'] },
@@ -47,5 +51,6 @@ export const buttonVariants = cva(baseStyles['button'], {
 		fullWidth: false,
 		isIcon: false,
 		disabled: false,
+		isRounded: false,
 	},
 });

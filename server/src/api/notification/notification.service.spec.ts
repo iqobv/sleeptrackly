@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { FcmService } from 'src/infra/fcm/fcm.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { NotificationService } from './notification.service';
 
@@ -13,12 +14,20 @@ type PrismaMock = {
 		update: jest.Mock;
 		updateMany: jest.Mock;
 	};
+	userFcmToken: {
+		findMany: jest.Mock;
+	};
 	$transaction: jest.Mock;
+};
+
+type FcmMock = {
+	sendNotification: jest.Mock;
 };
 
 describe('NotificationService', () => {
 	let service: NotificationService;
 	let prisma: PrismaMock;
+	let fcmService: FcmMock;
 
 	const notification = {
 		id: 'notif_1',
@@ -38,6 +47,10 @@ describe('NotificationService', () => {
 	};
 
 	beforeEach(async () => {
+		fcmService = {
+			sendNotification: jest.fn().mockResolvedValue({}),
+		};
+
 		prisma = {
 			notification: {
 				create: jest.fn(),
@@ -49,6 +62,9 @@ describe('NotificationService', () => {
 				update: jest.fn(),
 				updateMany: jest.fn(),
 			},
+			userFcmToken: {
+				findMany: jest.fn(),
+			},
 			$transaction: jest.fn(),
 		};
 
@@ -56,6 +72,7 @@ describe('NotificationService', () => {
 			providers: [
 				NotificationService,
 				{ provide: PrismaService, useValue: prisma },
+				{ provide: FcmService, useValue: fcmService },
 			],
 		}).compile();
 

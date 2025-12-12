@@ -17,6 +17,7 @@ import {
 	hashPassword,
 } from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
+import { UserNotificationSettingsService } from '../user-notification-settings/user-notification-settings.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
 
@@ -27,6 +28,7 @@ export class UserService {
 		private readonly userSleepStatusService: UserSleepStatusService,
 		@Inject(forwardRef(() => UserAvatarService))
 		private readonly userAvatarService: UserAvatarService,
+		private readonly userNotificationSettingsService: UserNotificationSettingsService,
 	) {}
 
 	async create(dto: CreateUserDto) {
@@ -48,6 +50,7 @@ export class UserService {
 
 		await this.userSleepStatusService.createSleepStatus(user.id);
 		await this.userAvatarService.create(user.id);
+		await this.userNotificationSettingsService.create(user.id);
 
 		return user;
 	}

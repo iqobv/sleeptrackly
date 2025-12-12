@@ -1,10 +1,9 @@
 import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
-import { PAGES } from './config';
+import { NextResponse } from 'next/server';
 import { USER_ROLES } from './constants';
 import { IUser } from './types';
 
-export async function middleware(request: NextRequest) {
+export async function middleware() {
 	const cookiesStore = await cookies();
 	const hasSession = cookiesStore.has('session');
 	const allCookies = cookiesStore.toString();
@@ -38,15 +37,8 @@ export async function middleware(request: NextRequest) {
 	}
 
 	if (!isAuthenticated || !haveAccess) {
-		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
-	}
-
-	if (
-		isAuthenticated &&
-		haveAccess &&
-		request.nextUrl.pathname.startsWith(PAGES.LOGIN)
-	) {
-		return NextResponse.redirect(new URL(PAGES.HOME, request.url));
+		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+		return NextResponse.redirect(new URL(siteUrl));
 	}
 
 	return NextResponse.next();

@@ -6,6 +6,7 @@ import {
 import { UserSanction, UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { NotificationService } from '../notification/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserService } from '../user/user.service';
 import { CreaeteUserSanctionDto, UpdateUserSanctionDto } from './dto';
@@ -16,6 +17,7 @@ export class UserSanctionService {
 		private readonly prismaService: PrismaService,
 		private readonly userService: UserService,
 		private readonly userAvatarService: UserAvatarService,
+		private readonly notificationService: NotificationService,
 	) {}
 
 	async findByUserId(userId: string) {
@@ -90,6 +92,18 @@ export class UserSanctionService {
 		if (userSanction.type === UserSanctionType.AVATAR_CHANGE_BAN) {
 			await this.userAvatarService.deleteAvatar(targetUserId);
 		}
+
+		await this.notificationService.create({
+			userId: targetUserId,
+			title: 'New Sanction Applied',
+			body: `You have been sanctioned with a ${type.replace(/_/g, ' ')} until ${dayjs(
+				endDate,
+			).format('DD.MM.YYYY HH:mm')}.`,
+			isEmail: false,
+			isPush: false,
+			isGlobal: false,
+			showInApp: true,
+		});
 
 		return userSanction;
 	}
