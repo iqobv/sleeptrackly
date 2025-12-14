@@ -20,4 +20,7 @@ export const QUERY_KEYS = {
 		create: ['createSanction'] as const,
 		remove: ['removeSanction'] as const,
 	},
+	notifications: {
+		create: ['createNotification'] as const,
+	},
 } as const;
