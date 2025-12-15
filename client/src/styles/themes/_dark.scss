@@ -6,6 +6,9 @@ html.dark {
 	--color-main-text: #ffffff;
 	--secondary-color: #b9bec3;
 	--header-height: 70px;
+	--text-primary: #f3f4f6;
+	--text-secondary: #c2c2c2;
+	--border-color: #27272a;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -120,6 +123,12 @@ html.dark {
 	--btn-danger-bg-hover: #ff6467b3;
 	--btn-danger-color: #ffffff;
 
+	/* Switch */
+	--switch-bg: #ffffff26;
+	--switch-bg-checked: #e5e5e5;
+	--switch-slider-bg: #ffffff;
+	--switch-slider-bg-active: #0d141c;
+
 	/* Calendar */
 	--calendar-accent: #e8edf2;
 	--calendar-comleted: #91cb3e;
@@ -147,13 +156,13 @@ html.dark {
 	--page-description-color: #cdcecf;
 
 	/* Settings */
-	--settings-list-border: #333;
-	--settings-item-bg: #383838;
-	--settings-item-bg-active: #1a78e5;
+	--settings-tabs-list-border: #333;
+	--settings-tabs-item-bg: #383838;
+	--settings-tabs-item-bg-active: #1a78e5;
 
 	/* Settings Security */
-	--settings-security-item-bg: #151515;
-	--settings-security-item-border: #333;
+	--settings-item-bg: #151515;
+	--settings-item-border: #333;
 
 	/* Avatar */
 	--avatar-border: #333;
@@ -168,4 +177,11 @@ html.dark {
 
 	/* Friends */
 	--friend-add-bg: #0f0f10;
+
+	/* Notifications */
+	--notification-popup-bg: #161616;
+	--notification-unread-bg: #1a1a1a;
+	--notification-unread-border: #3b82f6;
+	--notification-read-opacity: 1;
+	--notification-read-gray-scale: 0;
 }

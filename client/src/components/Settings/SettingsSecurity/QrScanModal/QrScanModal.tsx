@@ -11,7 +11,7 @@ const QrScanModal = () => {
 
 	return (
 		<>
-			<Button variant="text" isIcon onClick={() => setIsOpen(true)}>
+			<Button variant="text" isIcon isRounded onClick={() => setIsOpen(true)}>
 				<MdOutlineQrCodeScanner size={25} />
 			</Button>
 			<Modal

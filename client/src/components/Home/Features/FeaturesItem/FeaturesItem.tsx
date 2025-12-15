@@ -1,5 +1,3 @@
-'use client';
-
 import { FeatureItem } from '../featuresItems';
 import styles from './FeaturesItem.module.scss';
 

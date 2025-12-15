@@ -1,5 +1,3 @@
-'use client';
-
 import styles from './List.module.scss';
 import { ListProps } from './List.types';
 

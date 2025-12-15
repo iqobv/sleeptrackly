@@ -1,5 +1,3 @@
-'use client';
-
 import { List, SectionHeader } from '@/components/UI';
 import styles from './Features.module.scss';
 import FeaturesItem from './FeaturesItem/FeaturesItem';

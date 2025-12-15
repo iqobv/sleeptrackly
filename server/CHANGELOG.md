@@ -1,5 +1,17 @@
 # Admin changelog
 
+## [2.0.0] - 2025-12-15 - "Notification system"
+
+### Added
+
+- Notification system
+- Push notifications using firebase
+- User preferences for notifications
+
+### Fixed
+
+- Fixed vulnerability in tokens system
+
 ## [1.0.0] - 2025-11-10 - "Report system"
 
 ### Added

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TokenType, User } from '@prisma/client';
-import crypto from 'crypto';
+import crypto, { createHash } from 'crypto';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 
@@ -38,9 +38,11 @@ export class TokenService {
 			if (existingToken) await this.deleteToken(existingToken.id);
 		}
 
+		const hashToken = this.hashToken(token);
+
 		const newToken = await this.prismaService.token.create({
 			data: {
-				token,
+				token: hashToken,
 				expires,
 				type,
 				...(user && {
@@ -49,7 +51,10 @@ export class TokenService {
 			},
 		});
 
-		return newToken;
+		return {
+			...newToken,
+			token,
+		};
 	}
 
 	async deleteToken(tokenId: string) {
@@ -57,8 +62,10 @@ export class TokenService {
 	}
 
 	async findToken(token: string, type: TokenType) {
+		const hashedToken = this.hashToken(token);
+
 		const existsToken = await this.prismaService.token.findFirst({
-			where: { type, token },
+			where: { type, token: hashedToken },
 		});
 
 		if (!existsToken) throw new NotFoundException('Token not found');
@@ -74,4 +81,8 @@ export class TokenService {
 
 		return existsToken;
 	}
+
+	private readonly hashToken = (token: string) => {
+		return createHash('sha256').update(token).digest('hex');
+	};
 }

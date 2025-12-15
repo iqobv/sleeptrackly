@@ -5,4 +5,6 @@ export const PAGES = {
 	USER: (username: string) => `/users/${username}`,
 	REPORTS: '/reports',
 	REPORT: (id: string) => `/reports/${id}`,
+	NOTIFICATIONS: '/notifications',
+	NOTIFICATION: (id: string) => `/notifications/${id}`,
 } as const;
