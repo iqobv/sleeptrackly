@@ -1,6 +1,6 @@
 # Admin changelog
 
-## [2.0.0] - 2025-12-12 - "Notification system"
+## [2.0.0] - 2025-12-15 - "Notification system"
 
 ### Added
 
