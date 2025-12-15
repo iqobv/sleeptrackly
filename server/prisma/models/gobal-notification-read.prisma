@@ -1,0 +1,13 @@
+model GlobalNotificationRead {
+  id String @id @default(uuid())
+
+  userId         String   @map("user_id")
+  notificationId String   @map("notification_id")
+  readAt         DateTime @map("read_at")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, notificationId])
+  @@map("global_notification_read")
+}

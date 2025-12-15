@@ -30,8 +30,9 @@ model User {
   reportsAgainst Report[] @relation("ReportsAgainst")
   reportsViewed  Report[] @relation("ReportsViewed")
 
-  createdSanctions UserSanction[] @relation("CreatedUserSanctions")
-  sanctions        UserSanction[] @relation("UserSanctions")
+  createdSanctions        UserSanction[]           @relation("CreatedUserSanctions")
+  sanctions               UserSanction[]           @relation("UserSanctions")
+  globalNotificationReads GlobalNotificationRead[]
 
   @@map("users")
 }
