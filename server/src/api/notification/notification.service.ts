@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Prisma } from '@prisma/client';
 import { FcmService } from 'src/infra/fcm/fcm.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import {
@@ -8,6 +7,7 @@ import {
 	NotificationQueryDto,
 	UpdateNotificationDto,
 } from './dto';
+import { getNotificationsForUserSql } from './sql';
 
 @Injectable()
 export class NotificationService {
@@ -37,28 +37,24 @@ export class NotificationService {
 
 		const safePage = Math.max(Number(page) || 1, 1);
 		const safeSize = Math.max(Number(limit) || 10, 1);
-		const skip = (safePage - 1) * safeSize;
+		const offset = (safePage - 1) * safeSize;
 
-		const where: Prisma.NotificationWhereInput = {
-			userId,
-			showInApp: true,
-			isPush: false,
-			isScheduled: false,
-			isEmail: false,
-		};
+		const items = await this.prismaService.$queryRaw(
+			getNotificationsForUserSql(userId, safeSize, offset),
+		);
 
-		const [notifications, total] = await this.prismaService.$transaction([
-			this.prismaService.notification.findMany({
-				where,
-				orderBy: [{ isRead: 'asc' }, { createdAt: 'desc' }],
-				skip,
-				take: safeSize,
-			}),
-			this.prismaService.notification.count({ where }),
-		]);
+		const total = await this.prismaService.notification.count({
+			where: {
+				showInApp: true,
+				isPush: false,
+				isScheduled: false,
+				isEmail: false,
+				OR: [{ isGlobal: false, userId }, { isGlobal: true }],
+			},
+		});
 
 		return {
-			items: notifications,
+			items,
 			meta: {
 				total,
 				page: safePage,
@@ -80,9 +76,30 @@ export class NotificationService {
 	}
 
 	async markAllAsRead(userId: string) {
-		return await this.prismaService.notification.updateMany({
-			where: { userId, isRead: false },
+		await this.prismaService.notification.updateMany({
+			where: {
+				userId,
+				isGlobal: false,
+				isRead: false,
+			},
 			data: { isRead: true },
+		});
+
+		const globals = await this.prismaService.notification.findMany({
+			where: {
+				isGlobal: true,
+				showInApp: true,
+			},
+			select: { id: true },
+		});
+
+		await this.prismaService.globalNotificationRead.createMany({
+			data: globals.map((n) => ({
+				userId,
+				notificationId: n.id,
+				readAt: new Date(),
+			})),
+			skipDuplicates: true,
 		});
 	}
 
