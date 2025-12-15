@@ -2,6 +2,7 @@ import { PAGES } from '@/config';
 import { IconType } from 'react-icons';
 import {
 	MdOutlineHome,
+	MdOutlineNotifications,
 	MdOutlinePerson,
 	MdOutlineReport,
 } from 'react-icons/md';
@@ -27,5 +28,10 @@ export const NAV_MENU_LINKS: NavMenuLinksProps[] = [
 		label: 'Reports',
 		href: PAGES.REPORTS,
 		Icon: MdOutlineReport,
+	},
+	{
+		label: 'Notifications',
+		href: PAGES.NOTIFICATIONS,
+		Icon: MdOutlineNotifications,
 	},
 ];
