@@ -6,10 +6,13 @@ importScripts(
 );
 
 firebase.initializeApp({
-	apiKey: self.origin,
-	projectId: 'placeholder',
-	messagingSenderId: 'placeholder',
-	appId: 'placeholder',
+	apiKey: 'AIzaSyBBG7HyB2c3AHDb-my3Ix-rMR0KwZsVCsU',
+	authDomain: 'sleeptrackly.firebaseapp.com',
+	projectId: 'sleeptrackly',
+	storageBucket: 'sleeptrackly.firebasestorage.app',
+	messagingSenderId: '567224368591',
+	appId: '1:567224368591:web:79db3442de95cb933026ba',
+	measurementId: 'G-JDKRG6XN5C',
 });
 
 const messaging = firebase.messaging();
