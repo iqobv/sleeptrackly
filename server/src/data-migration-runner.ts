@@ -3,42 +3,35 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function runDataMigration() {
-	console.log('Starting data migration: creating default UserSettings...');
+	console.log('Starting data migration');
 
-	const usersWithoutSettings = await prisma.user.findMany({
+	const usersWithoutTables = await prisma.user.findMany({
 		where: {
-			notificationSettings: null,
+			coins: null,
 		},
 		select: {
 			id: true,
 		},
 	});
 
-	if (usersWithoutSettings.length === 0) {
-		console.log(
-			'No existing users require default settings. Migration complete.',
-		);
+	if (usersWithoutTables.length === 0) {
+		console.log('No existing users without new tables. Migration complete.');
 		return;
 	}
 
-	const dataToCreate = usersWithoutSettings.map((user) => ({
+	const dataToCreate = usersWithoutTables.map((user) => ({
 		userId: user.id,
 	}));
 
 	try {
-		const result = await prisma.userNotificationSettings.createMany({
+		const result = await prisma.userCoin.createMany({
 			data: dataToCreate,
 			skipDuplicates: true,
 		});
 
-		console.log(
-			`Successfully created ${result.count} default UserNotificationSettings records.`,
-		);
+		console.log(`Successfully created ${result.count} default records.`);
 	} catch (error) {
-		console.error(
-			'ERROR during UserNotificationSettings data migration:',
-			error,
-		);
+		console.error('ERROR durin data migration:', error);
 		process.exit(1);
 	}
 }
