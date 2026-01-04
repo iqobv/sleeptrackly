@@ -17,6 +17,7 @@ import { UserFcmTokenModule } from './user-fcm-token/user-fcm-token.module';
 import { NotificationModule } from './notification/notification.module';
 import { UserNotificationSettingsModule } from './user-notification-settings/user-notification-settings.module';
 import { CoinModule } from './coin/coin.module';
+import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 
 @Module({
 	imports: [
@@ -38,6 +39,7 @@ import { CoinModule } from './coin/coin.module';
 		NotificationModule,
 		UserNotificationSettingsModule,
 		CoinModule,
+		CoinTransactionModule,
 	],
 })
 export class ApiModule {}
