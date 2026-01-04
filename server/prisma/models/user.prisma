@@ -23,6 +23,7 @@ model User {
   userFcmTokens           UserFcmToken[]
   notificationSettings    UserNotificationSettings?
   globalNotificationReads GlobalNotificationRead[]
+  coinTransactions        CoinTransaction[]
   coins                   UserCoin?
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
