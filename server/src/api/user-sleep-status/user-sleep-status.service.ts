@@ -1,10 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { RewardService } from '../reward/reward.service';
 
 @Injectable()
 export class UserSleepStatusService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly rewardService: RewardService,
+	) {}
 
 	async getSleepStatus(userId: string) {
 		const userSleepStatus = await this.prismaService.userSleepStatus.findUnique(
@@ -54,6 +58,7 @@ export class UserSleepStatusService {
 			sleepStart,
 			clickedBy,
 		);
+
 		const sleepEntry = await this.createSleepEntry(
 			userId,
 			sleepStart,
@@ -61,7 +66,14 @@ export class UserSleepStatusService {
 			sleepDuration,
 			dateForChart,
 		);
-		return { sleepEntry, isSleeping: false, sleepStart: null };
+
+		const reward = await this.rewardService.rewardForSleep(
+			userId,
+			sleepEntry.id,
+			Math.floor(sleepDuration / 60),
+		);
+
+		return { sleepEntry, isSleeping: false, sleepStart: null, reward };
 	}
 
 	private handleSleepStart(clickedBy: Date) {
@@ -89,17 +101,20 @@ export class UserSleepStatusService {
 
 		let { isSleeping, sleepStart } = userSleepStatus;
 		let sleepEntry = {};
+		let reward: { rewarded: boolean; amount: number } | null = null;
 
 		if (isSleeping && sleepStart) {
 			const result = await this.handleWakeUp(userId, sleepStart, clickedBy);
 			sleepEntry = result.sleepEntry;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;
+			reward = result.reward;
 		} else {
 			const result = this.handleSleepStart(clickedBy);
 			sleepEntry = result.sleepEntry;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;
+			reward = null;
 		}
 
 		userSleepStatus = await this.updateUserSleepStatus(
@@ -108,6 +123,6 @@ export class UserSleepStatusService {
 			sleepStart,
 		);
 
-		return { userSleepStatus, sleepEntry };
+		return { userSleepStatus, sleepEntry, reward };
 	}
 }
