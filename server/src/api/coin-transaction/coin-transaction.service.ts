@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { CoinTransactionType } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { InsufficientCoinsException } from 'src/libs/exceptions';
 import { CreateCoinTransactionDto } from './dto';
@@ -61,5 +62,28 @@ export class CoinTransactionService {
 		});
 
 		return transactions;
+	}
+
+	async getLastTransactionByType(userId: string, type: CoinTransactionType) {
+		return await this.prismaService.coinTransaction.findFirst({
+			where: { userId, type },
+			orderBy: { createdAt: 'desc' },
+		});
+	}
+
+	async getLastTransactionToday(userId: string, type?: CoinTransactionType) {
+		const startOfToday = new Date();
+		startOfToday.setHours(0, 0, 0, 0);
+
+		return await this.prismaService.coinTransaction.findMany({
+			where: {
+				userId,
+				createdAt: {
+					gte: startOfToday,
+				},
+				...(type ? { type } : {}),
+			},
+			orderBy: { createdAt: 'desc' },
+		});
 	}
 }

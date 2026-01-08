@@ -18,6 +18,7 @@ import { NotificationModule } from './notification/notification.module';
 import { UserNotificationSettingsModule } from './user-notification-settings/user-notification-settings.module';
 import { CoinModule } from './coin/coin.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
+import { RewardModule } from './reward/reward.module';
 
 @Module({
 	imports: [
@@ -40,6 +41,7 @@ import { CoinTransactionModule } from './coin-transaction/coin-transaction.modul
 		UserNotificationSettingsModule,
 		CoinModule,
 		CoinTransactionModule,
+		RewardModule,
 	],
 })
 export class ApiModule {}
