@@ -1,0 +1,25 @@
+model CoinTransaction {
+  id String @id @default(uuid())
+
+  userId      String  @map("user_id")
+  userCoinId  String  @map("user_coin_id")
+  referenceId String? @map("reference_id")
+
+  type CoinTransactionType
+
+  balanceBefore Int @map("balance_before")
+  amount        Int
+  balanceAfter  Int @map("balance_after")
+
+  meta Json?
+
+  user     User     @relation(fields: [userId], references: [id])
+  userCoin UserCoin @relation(fields: [userCoinId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([referenceId])
+  @@map("coin_transactions")
+}

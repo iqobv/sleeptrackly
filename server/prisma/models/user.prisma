@@ -12,16 +12,19 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  providers            UserProvider[]
-  sleepEntries         SleepEntry[]
-  sleepStatus          UserSleepStatus?
-  challenges           Challenge[]
-  avatar               UserAvatar?
-  tokens               Token[]
-  sessions             Session[]
-  notifications        Notification[]
-  userFcmTokens        UserFcmToken[]
-  notificationSettings UserNotificationSettings?
+  providers               UserProvider[]
+  sleepEntries            SleepEntry[]
+  sleepStatus             UserSleepStatus?
+  challenges              Challenge[]
+  avatar                  UserAvatar?
+  tokens                  Token[]
+  sessions                Session[]
+  notifications           Notification[]
+  userFcmTokens           UserFcmToken[]
+  notificationSettings    UserNotificationSettings?
+  globalNotificationReads GlobalNotificationRead[]
+  coinTransactions        CoinTransaction[]
+  coins                   UserCoin?
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
@@ -30,9 +33,8 @@ model User {
   reportsAgainst Report[] @relation("ReportsAgainst")
   reportsViewed  Report[] @relation("ReportsViewed")
 
-  createdSanctions        UserSanction[]           @relation("CreatedUserSanctions")
-  sanctions               UserSanction[]           @relation("UserSanctions")
-  globalNotificationReads GlobalNotificationRead[]
+  createdSanctions UserSanction[] @relation("CreatedUserSanctions")
+  sanctions        UserSanction[] @relation("UserSanctions")
 
   @@map("users")
 }
