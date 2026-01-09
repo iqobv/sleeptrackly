@@ -69,4 +69,11 @@ export class UserAvatarController {
 	async createForAllUsers() {
 		return this.userAvatarService.createForAllUsers();
 	}
+
+	@Auth('ADMIN')
+	// @ApiExcludeEndpoint()
+	@Post('fix-urls')
+	async fixAvatarUrls() {
+		return await this.userAvatarService.fixAvatarUrls();
+	}
 }
