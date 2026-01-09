@@ -19,6 +19,7 @@ import { UserNotificationSettingsModule } from './user-notification-settings/use
 import { CoinModule } from './coin/coin.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { RewardModule } from './reward/reward.module';
+import { ItemModule } from './item/item.module';
 
 @Module({
 	imports: [
@@ -42,6 +43,7 @@ import { RewardModule } from './reward/reward.module';
 		CoinModule,
 		CoinTransactionModule,
 		RewardModule,
+		ItemModule,
 	],
 })
 export class ApiModule {}
