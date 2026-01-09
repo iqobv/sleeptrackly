@@ -67,6 +67,7 @@ export class UserAvatarService {
 		}
 
 		const filename = randomUUID();
+		console.log(filename);
 		file.filename = filename;
 
 		if (!avatar.isDefault)
