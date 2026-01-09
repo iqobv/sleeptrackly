@@ -1,14 +1,19 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { randomUUID } from 'crypto';
-import { CloudinaryService } from 'src/infra/cloudinary/cloudinary.service';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { R2Service } from 'src/infra/r2/r2.service';
+import { v4 as uuidv4 } from 'uuid';
 import { CreateItemDto, QueryItemDto, UpdateItemDto } from './dto';
 
 @Injectable()
 export class ItemService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly cloudinaryService: CloudinaryService,
+		private readonly r2Service: R2Service,
 	) {}
 
 	async createItem(dto: CreateItemDto) {
@@ -33,25 +38,39 @@ export class ItemService {
 			throw new NotFoundException('Item not found');
 		}
 
-		const filename = randomUUID();
-		file.filename = filename;
+		let processedBuffer: Buffer;
+		try {
+			const pipeline = sharp(file.buffer, { animated: true });
 
-		const uploadResult = await this.cloudinaryService.uploadFile(file, {
-			folder: 'items',
-			public_id: itemId,
-			filename_override: filename,
-		});
+			processedBuffer = await pipeline
+				.webp({ quality: 80, effort: 6, lossless: false })
+				.toBuffer();
+		} catch (error) {
+			console.error('Sharp error:', error);
+			throw new BadRequestException('Failed to process image');
+		}
 
-		if (!uploadResult.secure_url) return;
+		if (item.mediaUrl) {
+			try {
+				await this.r2Service.delete(item.mediaUrl);
+			} catch (e) {
+				console.error('Delete old file error:', e);
+			}
+		}
 
-		const url = `${uploadResult.public_id}.${uploadResult.format}`;
+		const filename = `${uuidv4()}.webp`;
+		const key = `items/${filename}`;
 
-		if (!url) return;
+		const uploadResult = await this.r2Service.upload(
+			processedBuffer,
+			key,
+			'image/webp',
+		);
 
 		return await this.prismaService.item.update({
 			where: { id: itemId },
 			data: {
-				mediaUrl: url,
+				mediaUrl: uploadResult.key,
 			},
 		});
 	}

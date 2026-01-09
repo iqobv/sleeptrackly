@@ -7,8 +7,13 @@ import {
 	Patch,
 	Post,
 	Query,
+	UploadedFile,
+	UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
+	ApiBody,
+	ApiConsumes,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
@@ -66,5 +71,28 @@ export class BundleController {
 	@Delete(':id')
 	async removeBundle(@Param('id') id: string) {
 		return await this.bundleService.removeBundle(id);
+	}
+
+	@ApiOperation({ summary: 'Upload bundle image' })
+	@ApiConsumes('multipart/form-data')
+	@ApiOkResponse({ type: BundleDto })
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				file: {
+					type: 'string',
+					format: 'binary',
+				},
+			},
+		},
+	})
+	@Post('upload/:id')
+	@UseInterceptors(FileInterceptor('file'))
+	async uploadBundleImage(
+		@UploadedFile() file: Express.Multer.File,
+		@Param('id') id: string,
+	) {
+		return await this.bundleService.uploadBundleImage(file, id);
 	}
 }

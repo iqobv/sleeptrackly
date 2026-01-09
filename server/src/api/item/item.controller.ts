@@ -12,6 +12,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+	ApiBody,
+	ApiConsumes,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
@@ -39,6 +41,20 @@ export class ItemController {
 		return await this.itemService.createItem(dto);
 	}
 
+	@ApiOperation({ summary: 'Upload item image' })
+	@ApiConsumes('multipart/form-data')
+	@ApiOkResponse({ type: ItemDto })
+	@ApiBody({
+		schema: {
+			type: 'object',
+			properties: {
+				file: {
+					type: 'string',
+					format: 'binary',
+				},
+			},
+		},
+	})
 	@Post('upload/:id')
 	@UseInterceptors(FileInterceptor('file'))
 	async uploadItemImage(

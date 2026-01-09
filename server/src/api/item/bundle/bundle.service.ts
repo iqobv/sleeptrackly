@@ -1,11 +1,21 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { R2Service } from 'src/infra/r2/r2.service';
 import { bundleSelect, BundleWithTranslations } from 'src/libs/prisma';
+import { v4 as uuidv4 } from 'uuid';
 import { BundleQueryDto, CreateBundleDto, UpdateBundleDto } from './dto';
 
 @Injectable()
 export class BundleService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly r2Service: R2Service,
+	) {}
 
 	async createBundle(dto: CreateBundleDto) {
 		const { translations, itemsIds, ...rest } = dto;
@@ -127,6 +137,52 @@ export class BundleService {
 	async removeBundle(id: string) {
 		return await this.prismaService.bundle.delete({
 			where: { id },
+		});
+	}
+
+	async uploadBundleImage(file: Express.Multer.File, bundleId: string) {
+		const bundle = await this.prismaService.bundle.findUnique({
+			where: { id: bundleId },
+		});
+
+		if (!bundle) {
+			throw new NotFoundException('Bundle not found');
+		}
+
+		let processedBuffer: Buffer;
+		try {
+			const pipeline = sharp(file.buffer, { animated: true });
+
+			processedBuffer = await pipeline
+				.webp({ quality: 80, effort: 6, lossless: false })
+				.toBuffer();
+		} catch (error) {
+			console.error('Sharp error:', error);
+			throw new BadRequestException('Failed to process image');
+		}
+
+		if (bundle.mediaUrl) {
+			try {
+				await this.r2Service.delete(bundle.mediaUrl);
+			} catch (e) {
+				console.error('Delete old file error:', e);
+			}
+		}
+
+		const filename = `${uuidv4()}.webp`;
+		const key = `bundles/${filename}`;
+
+		const uploadResult = await this.r2Service.upload(
+			processedBuffer,
+			key,
+			'image/webp',
+		);
+
+		return await this.prismaService.bundle.update({
+			where: { id: bundleId },
+			data: {
+				mediaUrl: uploadResult.key,
+			},
 		});
 	}
 
