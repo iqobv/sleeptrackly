@@ -7,7 +7,7 @@ import styles from './Avatar.module.scss';
 import { AvatarProps } from './Avatar.types';
 
 export default function Avatar({
-	avatar = 'default-avatar.png',
+	avatar = 'defaults/default-avatar.png',
 	size = 40,
 	avatarClassName,
 	containerClassName,
@@ -26,7 +26,7 @@ export default function Avatar({
 				/>
 			)}
 			<Image
-				src={`/api/images/${avatar}`}
+				src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
 				alt="avatar"
 				className={`${styles['avatar__image']} ${avatarClassName}`}
 				width={size}
