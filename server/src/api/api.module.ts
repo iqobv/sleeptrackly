@@ -20,6 +20,7 @@ import { CoinModule } from './coin/coin.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { RewardModule } from './reward/reward.module';
 import { ItemModule } from './item/item.module';
+import { UserInventoryModule } from './user-inventory/user-inventory.module';
 
 @Module({
 	imports: [
@@ -44,6 +45,7 @@ import { ItemModule } from './item/item.module';
 		CoinTransactionModule,
 		RewardModule,
 		ItemModule,
+		UserInventoryModule,
 	],
 })
 export class ApiModule {}
