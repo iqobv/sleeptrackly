@@ -23,6 +23,7 @@ model Item {
 
   translations ItemTranslation[]
   bundles      ItemInBundle[]
+  inventories  UserInventory[]
 
   @@map("items")
 }

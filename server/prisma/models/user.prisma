@@ -25,6 +25,7 @@ model User {
   globalNotificationReads GlobalNotificationRead[]
   coinTransactions        CoinTransaction[]
   coins                   UserCoin?
+  inventory               UserInventory[]
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
