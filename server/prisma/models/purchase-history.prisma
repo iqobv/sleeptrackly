@@ -1,0 +1,20 @@
+model PurchaseHistory {
+  id String @id @default(uuid())
+
+  userId        String? @map("user_id")
+  productId     String? @map("product_id")
+  transactionId String? @unique @map("transaction_id")
+
+  pricePaid     Int  @map("price_paid")
+  priceSnapshot Int  @map("price_snapshot")
+  nameSnapshot  Json @map("name_snapshot")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user        User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  product     Product?         @relation(fields: [productId], references: [id], onDelete: SetNull)
+  transaction CoinTransaction? @relation(fields: [transactionId], references: [id], onDelete: Restrict)
+
+  @@index([userId, productId])
+  @@map("purchase_histories")
+}

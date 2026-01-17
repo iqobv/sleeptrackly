@@ -20,11 +20,11 @@ import {
 } from '@nestjs/swagger';
 import { UserRole } from '@prisma/client';
 import { Auth } from 'src/libs/decorators';
+import { PaginationQueryDto } from 'src/libs/dto';
 import {
 	CreateItemDto,
 	ItemDto,
 	PaginatedItemsDto,
-	QueryItemDto,
 	UpdateItemDto,
 } from './dto';
 import { ItemService } from './item.service';
@@ -41,6 +41,7 @@ export class ItemController {
 		return await this.itemService.createItem(dto);
 	}
 
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Upload item image' })
 	@ApiConsumes('multipart/form-data')
 	@ApiOkResponse({ type: ItemDto })
@@ -64,34 +65,33 @@ export class ItemController {
 		return await this.itemService.uploadItemImage(file, id);
 	}
 
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get all items with pagination' })
 	@ApiOkResponse({ type: PaginatedItemsDto })
 	@Get()
-	async getAllItems(@Query() query: QueryItemDto) {
+	async getAllItems(@Query() query: PaginationQueryDto) {
 		return await this.itemService.getAllItems(query);
 	}
 
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get item by ID' })
 	@ApiOkResponse({ type: ItemDto })
 	@Get('id/:id')
-	async getById(
-		@Param('id') id: string,
-		@Query('language') language: string = 'en',
-	) {
-		return await this.itemService.getById(id, language);
+	async getById(@Param('id') id: string) {
+		return await this.itemService.getById(id);
 	}
 
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update an existing item' })
 	@ApiOkResponse({ type: ItemDto })
-	@Auth(UserRole.ADMIN)
 	@Patch(':id')
 	async updateItem(@Param('id') id: string, @Body() dto: UpdateItemDto) {
 		return await this.itemService.updateItem(id, dto);
 	}
 
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete an item' })
 	@ApiOkResponse({ type: Boolean })
-	@Auth(UserRole.ADMIN)
 	@Delete(':id')
 	async deleteItem(@Param('id') id: string) {
 		return await this.itemService.deleteItem(id);

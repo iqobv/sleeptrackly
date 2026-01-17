@@ -1,11 +1,17 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { IsArray, IsUUID } from 'class-validator';
+import { IsArray, IsNumber, IsUUID, Max, Min } from 'class-validator';
 import { CreateItemDto } from '../../dto';
 
 export class CreateBundleDto extends OmitType(CreateItemDto, [
-	'isExclusive',
+	'rarity',
 	'type',
+	'basePrice',
 ] as const) {
+	@IsNumber({ allowInfinity: false, allowNaN: false })
+	@Min(0)
+	@Max(100)
+	discountPercentage: number;
+
 	@ApiProperty({
 		description: 'Array of item IDs to be included in the bundle',
 		type: [String],

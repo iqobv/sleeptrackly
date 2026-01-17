@@ -6,8 +6,10 @@ import {
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';
+import { PaginationQueryDto } from 'src/libs/dto';
+import { paginate } from 'src/libs/utils';
 import { v4 as uuidv4 } from 'uuid';
-import { CreateItemDto, QueryItemDto, UpdateItemDto } from './dto';
+import { CreateItemDto, UpdateItemDto } from './dto';
 
 @Injectable()
 export class ItemService {
@@ -75,85 +77,41 @@ export class ItemService {
 		});
 	}
 
-	async getAllItems(query: QueryItemDto) {
-		const { language, page = 1, limit = 20 } = query;
+	async getAllItems(query: PaginationQueryDto) {
+		const { page = 1, limit = 20 } = query;
 
-		const safePage = Math.max(Number(page), 1);
-		const safeSize = Math.max(Number(limit), 1);
-		const offset = (safePage - 1) * safeSize;
-
-		const [total, items] = await this.prismaService.$transaction([
-			this.prismaService.item.count({
-				where: {
-					isShowInStore: true,
-				},
-			}),
-			this.prismaService.item.findMany({
-				where: {
-					isShowInStore: true,
-				},
-				skip: offset,
-				take: safeSize,
-				orderBy: {
-					createdAt: 'desc',
-				},
-				include: {
-					translations: {
-						where: { language: { in: [language, 'en'] } },
+		return await paginate({ page, limit }, async (limit, offset) => {
+			const [total, items] = await this.prismaService.$transaction([
+				this.prismaService.item.count(),
+				this.prismaService.item.findMany({
+					skip: offset,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
 					},
-				},
-			}),
-		]);
+					include: {
+						translations: true,
+					},
+				}),
+			]);
 
-		const mappedItems = items.map((item) => {
-			const translation =
-				item.translations.find((t) => t.language === language) ||
-				item.translations.find((t) => t.language === 'en');
-
-			const { translations, ...rest } = item;
-
-			return {
-				...rest,
-				name: translation ? translation.name : null,
-			};
+			return { items, total };
 		});
-
-		return {
-			items: mappedItems,
-			meta: {
-				total,
-				page: safePage,
-				pageSize: safeSize,
-				totalPages: Math.ceil(total / safeSize),
-			},
-		};
 	}
 
-	async getById(id: string, language: string) {
+	async getById(id: string) {
 		const item = await this.prismaService.item.findFirst({
 			where: {
 				id,
-				isShowInStore: true,
 			},
 			include: {
-				translations: {
-					where: { language: { in: [language, 'en'] } },
-				},
+				translations: true,
 			},
 		});
 
 		if (!item) throw new NotFoundException('Item not found');
 
-		const translation =
-			item.translations.find((t) => t.language === language) ||
-			item.translations.find((t) => t.language === 'en');
-
-		const { translations, ...rest } = item;
-
-		return {
-			...rest,
-			name: translation ? translation.name : null,
-		};
+		return item;
 	}
 
 	async updateItem(id: string, dto: UpdateItemDto) {

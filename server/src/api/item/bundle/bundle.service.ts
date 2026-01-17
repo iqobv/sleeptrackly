@@ -6,9 +6,11 @@ import {
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';
-import { bundleSelect, BundleWithTranslations } from 'src/libs/prisma';
+import { PaginationQueryDto } from 'src/libs/dto';
+import { bundleInclude } from 'src/libs/prisma';
+import { paginate } from 'src/libs/utils';
 import { v4 as uuidv4 } from 'uuid';
-import { BundleQueryDto, CreateBundleDto, UpdateBundleDto } from './dto';
+import { CreateBundleDto, UpdateBundleDto } from './dto';
 
 @Injectable()
 export class BundleService {
@@ -20,8 +22,18 @@ export class BundleService {
 	async createBundle(dto: CreateBundleDto) {
 		const { translations, itemsIds, ...rest } = dto;
 
+		const price = await this.prismaService.item.aggregate({
+			where: { id: { in: itemsIds } },
+			_sum: {
+				basePrice: true,
+			},
+		});
+
+		const finalPrice = Math.round(price._sum.basePrice ?? 0);
+
 		const bundle = await this.prismaService.bundle.create({
 			data: {
+				basePrice: finalPrice,
 				...rest,
 				translations: {
 					create: translations,
@@ -41,59 +53,40 @@ export class BundleService {
 		return bundle;
 	}
 
-	async getAllBundles(query: BundleQueryDto) {
-		const { language, page = 1, limit = 20 } = query;
+	async getAllBundles(query: PaginationQueryDto) {
+		const { page = 1, limit = 20 } = query;
 
-		const safePage = Math.max(Number(page), 1);
-		const safeSize = Math.max(Number(limit), 1);
-		const offset = (safePage - 1) * safeSize;
+		return await paginate({ page, limit }, async (limit, offset) => {
+			const [total, bundles] = await this.prismaService.$transaction([
+				this.prismaService.bundle.count(),
+				this.prismaService.bundle.findMany({
+					skip: offset,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: bundleInclude,
+				}),
+			]);
 
-		const [total, bundles] = await this.prismaService.$transaction([
-			this.prismaService.bundle.count({
-				where: {
-					isShowInStore: true,
-				},
-			}),
-			this.prismaService.bundle.findMany({
-				where: {
-					isShowInStore: true,
-				},
-				skip: offset,
-				take: safeSize,
-				orderBy: {
-					createdAt: 'desc',
-				},
-				include: bundleSelect(language),
-			}),
-		]);
-
-		const mappedBundles = bundles.map((bundle) =>
-			this.mapBundle(bundle, language),
-		);
-
-		return {
-			items: mappedBundles,
-			meta: {
+			return {
+				items: bundles,
 				total,
-				page: safePage,
-				pageSize: safeSize,
-				totalPages: Math.ceil(total / safeSize),
-			},
-		};
+			};
+		});
 	}
 
-	async getById(id: string, language: string) {
+	async getById(id: string) {
 		const bundle = await this.prismaService.bundle.findFirst({
 			where: {
 				id,
-				isShowInStore: true,
 			},
-			include: bundleSelect(language),
+			include: bundleInclude,
 		});
 
 		if (!bundle) throw new NotFoundException('Bundle not found');
 
-		return this.mapBundle(bundle, language);
+		return bundle;
 	}
 
 	async updateBundle(id: string, dto: UpdateBundleDto) {
@@ -184,34 +177,5 @@ export class BundleService {
 				mediaUrl: uploadResult.key,
 			},
 		});
-	}
-
-	private mapBundle(bundle: BundleWithTranslations, language: string) {
-		const { translations, ...rest } = bundle;
-
-		const translation = this.mapTranslation(translations, language);
-
-		return {
-			...rest,
-			name: translation ? translation.name : null,
-			items: bundle.items.map((bi) => {
-				const { translations, ...itemRest } = bi.item;
-				const itemTranslation = this.mapTranslation(translations, language);
-				return {
-					...itemRest,
-					name: itemTranslation ? itemTranslation.name : null,
-				};
-			}),
-		};
-	}
-
-	private mapTranslation<T extends { language: string }>(
-		items: T[],
-		language: string,
-	): T | undefined {
-		return (
-			items.find((t) => t.language === language) ||
-			items.find((t) => t.language === 'en')
-		);
 	}
 }

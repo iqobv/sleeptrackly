@@ -1,0 +1,32 @@
+model Product {
+  id String @id @default(uuid())
+
+  type     ProductType
+  itemType ProfileItemType? @map("item_type")
+
+  bundleId String? @unique @map("bundle_id")
+  itemId   String? @unique @map("item_id")
+
+  isNew         Boolean @default(true) @map("is_new")
+  isPopular     Boolean @default(false) @map("is_popular")
+  isExclusive   Boolean @default(false) @map("is_exclusive")
+  isShowInStore Boolean @default(true) @map("is_show_in_store")
+  isLimited     Boolean @default(false) @map("is_limited")
+
+  price           Int
+  discountedPrice Int? @map("discounted_price")
+  maxStock        Int? @map("max_stock")
+  soldCount       Int  @default(0) @map("sold_count")
+
+  expiresAt DateTime? @map("expires_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  purchaseHistories PurchaseHistory[]
+
+  item   Item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  bundle Bundle? @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+
+  @@map("products")
+}

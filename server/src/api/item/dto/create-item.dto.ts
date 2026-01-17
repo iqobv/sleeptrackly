@@ -1,33 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProfileItemType } from '@prisma/client';
+import { ItemRarity, ProfileItemType } from '@prisma/client';
 import {
 	IsArray,
 	IsBoolean,
-	IsDate,
 	IsEnum,
 	IsNumber,
 	IsOptional,
 	IsString,
 	Min,
 } from 'class-validator';
-import { TranslationDto } from './translation.dto';
+import { TranslationDto } from 'src/libs/dto';
 
 export class CreateItemDto {
-	@ApiProperty({ example: true, required: false })
-	@IsBoolean()
-	@IsOptional()
-	isLimited?: boolean;
-
-	@ApiProperty({ example: true, required: false })
-	@IsBoolean()
-	@IsOptional()
-	isShowInStore?: boolean;
-
-	@ApiProperty({ example: true, required: false })
-	@IsBoolean()
-	@IsOptional()
-	isNew?: boolean;
-
 	@ApiProperty({ example: false, required: false })
 	@IsBoolean()
 	@IsOptional()
@@ -40,13 +24,11 @@ export class CreateItemDto {
 	@ApiProperty({ example: 1200 })
 	@IsNumber()
 	@Min(0)
-	price: number;
+	basePrice: number;
 
-	@ApiProperty({ example: 100, required: false })
-	@IsNumber()
-	@Min(0)
-	@IsOptional()
-	maxStock?: number;
+	@ApiProperty({ example: ItemRarity.COMMON, enum: ItemRarity })
+	@IsEnum(ItemRarity)
+	rarity: ItemRarity;
 
 	@ApiProperty({ example: 'http://example.com/media/item.gif' })
 	@IsString()
@@ -55,9 +37,4 @@ export class CreateItemDto {
 	@ApiProperty({ type: [TranslationDto] })
 	@IsArray()
 	translations: TranslationDto[];
-
-	@ApiProperty({ example: new Date(), required: false })
-	@IsDate()
-	@IsOptional()
-	expiresAt?: Date;
 }

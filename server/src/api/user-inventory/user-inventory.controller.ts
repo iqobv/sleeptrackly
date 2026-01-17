@@ -9,9 +9,9 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { Auth, Authorized } from 'src/libs/decorators';
+import { LanguageQueryDto, PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import {
 	PaginatedUserInventoryDto,
-	QueryUserInventoryDto,
 	UpdateUserInvetoryDto,
 	UserInventoryItemDto,
 } from './dto';
@@ -27,7 +27,7 @@ export class UserInventoryController {
 	@Get('me')
 	async getUserInventory(
 		@Authorized('id') userId: string,
-		@Query() query: QueryUserInventoryDto,
+		@Query() query: PaginationQueryWithLanguageDto,
 	) {
 		return await this.userInventoryService.getUserInventory(userId, query);
 	}
@@ -39,9 +39,13 @@ export class UserInventoryController {
 	async findById(
 		@Authorized('id') userId: string,
 		@Param('id') id: string,
-		@Query('language') language: string,
+		@Query() query: LanguageQueryDto,
 	) {
-		return await this.userInventoryService.findById(id, userId, language);
+		return await this.userInventoryService.findById(
+			id,
+			userId,
+			query.language ?? 'en',
+		);
 	}
 
 	@ApiOperation({ summary: 'Update user inventory item' })

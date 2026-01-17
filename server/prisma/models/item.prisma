@@ -3,20 +3,12 @@ model Item {
 
   type ProfileItemType
 
-  isLimited     Boolean @default(false) @map("is_limited")
-  isShowInStore Boolean @default(true) @map("is_show_in_store")
-  isNew         Boolean @default(true) @map("is_new")
-  isPopular     Boolean @default(false) @map("is_popular")
-  isExclusive   Boolean @default(false) @map("is_exclusive")
+  isExclusive Boolean @default(false) @map("is_exclusive")
 
-  price           Int
-  maxStock        Int? @map("max_stock")
-  discountedPrice Int? @map("discounted_price")
-  soldCount       Int  @default(0) @map("sold_count")
+  rarity    ItemRarity
+  basePrice Int        @map("base_price")
 
   mediaUrl String @map("media_url")
-
-  expiresAt DateTime? @map("expires_at")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -24,6 +16,7 @@ model Item {
   translations ItemTranslation[]
   bundles      ItemInBundle[]
   inventories  UserInventory[]
+  products     Product?
 
   @@map("items")
 }
