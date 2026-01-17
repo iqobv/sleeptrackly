@@ -18,7 +18,7 @@ const iconProps: IconBaseProps = {
 	size: 22,
 };
 
-export const USER_MENU_LINKS = (user: IUser): Link[] => [
+export const USER_MAIN_LINKS = (user: IUser): Link[] => [
 	{
 		name: 'profile',
 		label: 'Profile',
@@ -31,6 +31,9 @@ export const USER_MENU_LINKS = (user: IUser): Link[] => [
 		path: PAGES.FRIENDS,
 		icon: <MdPeopleOutline {...iconProps} />,
 	},
+];
+
+export const USER_SYSTEM_LINKS: Link[] = [
 	{
 		name: 'settings',
 		label: 'Settings',

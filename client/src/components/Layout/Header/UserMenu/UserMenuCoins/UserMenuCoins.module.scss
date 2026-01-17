@@ -1,0 +1,68 @@
+.coins {
+	&__container {
+		background: linear-gradient(
+			135deg,
+			rgba(var(--balance-background-gradient-rgb), 0.05) 0%,
+			rgba(var(--balance-background-gradient-rgb), 0.02) 100%
+		);
+		border: 1px solid rgba(var(--balance-border-rgb), 0.08);
+		border-radius: 12px;
+		padding: 12px 16px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-direction: column;
+		gap: 6px;
+		position: relative;
+		overflow: hidden;
+
+		&::before {
+			content: '';
+			position: absolute;
+			top: -50%;
+			left: -50%;
+			width: 200%;
+			height: 200%;
+			background: radial-gradient(
+				circle,
+				rgba(var(--balance-background-gradient-rgb), 0.03) 0%,
+				transparent 70%
+			);
+			pointer-events: none;
+		}
+	}
+
+	&__label {
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		font-weight: 700;
+		color: var(--balance-label-color);
+		margin-bottom: 4px;
+		position: relative;
+	}
+
+	&__balance {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+
+	&__amount {
+		font-size: 20px;
+		font-weight: 900;
+		color: var(--color-main-text);
+		letter-spacing: -0.02em;
+		font-variant-numeric: tabular-nums;
+		margin: 0;
+	}
+
+	&__icon {
+		filter: drop-shadow(0 0 10px rgba(var(--balance-shadow-rgb), 0.2));
+		transition: transform 0.3s ease;
+	}
+
+	&:hover &__icon {
+		transform: scale(1.1) rotate(10deg);
+	}
+}

@@ -4,8 +4,9 @@ import NotificationsButton from '@/components/Notification/NotificationsButton/N
 import { Avatar, Button, Divider } from '@/components/UI';
 import MenuItem from './MenuItem/MenuItem';
 import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
-import { USER_MENU_LINKS } from './userManuLinks';
+import { USER_MAIN_LINKS, USER_SYSTEM_LINKS } from './userManuLinks';
 import styles from './UserMenu.module.scss';
+import UserMenuCoins from './UserMenuCoins/UserMenuCoins';
 import { useUserMenu } from './useUserMenu';
 
 const UserMenu = () => {
@@ -24,13 +25,21 @@ const UserMenu = () => {
 				</button>
 				{open && (
 					<div className={styles['user-menu__dropdown']}>
-						{USER_MENU_LINKS(user).map(({ label, name, path, icon }) => (
+						<UserMenuCoins />
+						{USER_MAIN_LINKS(user).map((link) => (
 							<MenuItem
-								icon={icon}
-								label={label}
-								key={name}
-								path={path}
+								{...link}
+								key={link.name}
 								onClick={handleOpen}
+								icon={link.icon || undefined}
+							/>
+						))}
+						{USER_SYSTEM_LINKS.map((link) => (
+							<MenuItem
+								{...link}
+								key={link.name}
+								onClick={handleOpen}
+								icon={link.icon || undefined}
 							/>
 						))}
 						<Divider />
