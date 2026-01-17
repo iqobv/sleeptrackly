@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PaginatedDataDto } from 'src/libs/dtos';
+import { PaginatedDataDto } from 'src/libs/dto';
 import { ItemDto } from './item.dto';
 
 export class PaginatedItemsDto extends PaginatedDataDto<ItemDto> {

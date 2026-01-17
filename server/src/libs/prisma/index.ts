@@ -1,3 +1,3 @@
 export * from './bundle.select';
-export * from './item.select';
+export * from './product-include.prisma';
 export * from './user.select';

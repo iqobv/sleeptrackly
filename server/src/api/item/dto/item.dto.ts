@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ProfileItemType } from '@prisma/client';
+import { ItemRarity, ProfileItemType } from '@prisma/client';
+import { TranslationDto } from 'src/libs/dto';
 
 export class ItemDto {
-	@ApiProperty({
-		example: 'b3f71cf8-b1eb-4c8f-909e-e4454cb95a4a',
-	})
+	@ApiProperty({ example: 'b3f71cf8-b1eb-4c8f-909e-e4454cb95a4a' })
 	id: string;
 
 	@ApiProperty({
-		example: 'Sample Item Name',
+		type: [TranslationDto],
+		example: [{ name: 'Cool Avatar Frame', language: 'en' }],
 	})
-	name: string | null;
+	translations: TranslationDto[];
 
 	@ApiProperty({
 		example: ProfileItemType.AVATAR_FRAME,
@@ -18,68 +18,21 @@ export class ItemDto {
 	})
 	type: ProfileItemType;
 
-	@ApiProperty({
-		example: false,
-	})
-	isLimited: boolean;
-
-	@ApiProperty({
-		example: true,
-	})
-	isShowInStore: boolean;
-
-	@ApiProperty({
-		example: true,
-	})
-	isNew: boolean;
-
-	@ApiProperty({
-		example: true,
-	})
-	isPopular: boolean;
-
-	@ApiProperty({
-		example: true,
-	})
+	@ApiProperty({ example: false })
 	isExclusive: boolean;
 
-	@ApiProperty({
-		example: 100,
-	})
-	price: number;
+	@ApiProperty({ example: 1000 })
+	basePrice: number;
 
-	@ApiProperty({
-		example: 50,
-	})
-	maxStock: number | null;
+	@ApiProperty({ example: ItemRarity.COMMON, enum: ItemRarity })
+	rarity: ItemRarity;
 
-	@ApiProperty({
-		example: 80,
-	})
-	discountedPrice: number;
-
-	@ApiProperty({
-		example: 200,
-	})
-	soldCount: number;
-
-	@ApiProperty({
-		example: 'https://example.com/media/item-image.gif',
-	})
+	@ApiProperty({ example: 'https://example.com/media/item-image.gif' })
 	mediaUrl: string;
 
-	@ApiProperty({
-		example: new Date(),
-	})
-	expiresAt: Date | null;
-
-	@ApiProperty({
-		example: new Date(),
-	})
+	@ApiProperty({ example: new Date() })
 	createdAt: Date;
 
-	@ApiProperty({
-		example: new Date(),
-	})
+	@ApiProperty({ example: new Date() })
 	updatedAt: Date;
 }
