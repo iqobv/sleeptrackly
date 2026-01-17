@@ -9,4 +9,7 @@ export interface IUser {
 		url: string;
 		isDefault: boolean;
 	};
+	coins: {
+		amount: number;
+	};
 }
