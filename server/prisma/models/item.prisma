@@ -1,0 +1,22 @@
+model Item {
+  id String @id @default(uuid())
+
+  type ProfileItemType
+
+  isExclusive Boolean @default(false) @map("is_exclusive")
+
+  rarity    ItemRarity
+  basePrice Int        @map("base_price")
+
+  mediaUrl String @map("media_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  translations ItemTranslation[]
+  bundles      ItemInBundle[]
+  inventories  UserInventory[]
+  products     Product?
+
+  @@map("items")
+}

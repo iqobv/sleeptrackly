@@ -71,7 +71,6 @@ export class UserAvatarController {
 	}
 
 	@Auth('ADMIN')
-	// @ApiExcludeEndpoint()
 	@Post('fix-urls')
 	async fixAvatarUrls() {
 		return await this.userAvatarService.fixAvatarUrls();
