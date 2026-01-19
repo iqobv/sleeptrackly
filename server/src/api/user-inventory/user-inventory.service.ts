@@ -103,12 +103,65 @@ export class UserInventoryService {
 		});
 	}
 
+	async equipItem(userId: string, itemId: string) {
+		const userInventoryItem = await this.findById(itemId, userId);
+
+		let isEquipped = true;
+
+		const alreadyEquippedItem =
+			await this.prismaService.userInventory.findFirst({
+				where: {
+					userId,
+					isEquipped: true,
+					item: { type: userInventoryItem.item.type },
+				},
+			});
+
+		if (alreadyEquippedItem) {
+			if (alreadyEquippedItem.id === userInventoryItem.id) {
+				isEquipped = false;
+			} else {
+				await this.prismaService.userInventory.update({
+					where: { id: alreadyEquippedItem.id, userId },
+					data: { isEquipped: false },
+				});
+			}
+		}
+
+		return await this.prismaService.userInventory.update({
+			where: { id: userInventoryItem.id, userId },
+			data: { isEquipped },
+		});
+	}
+
 	async updateUserInventoryItem(
 		id: string,
 		userId: string,
 		dto: UpdateUserInvetoryDto,
 	) {
+		const { isEquipped } = dto;
+
 		const userInventoryItem = await this.findById(id, userId);
+
+		const alreadyEquippedItem = isEquipped
+			? await this.prismaService.userInventory.findFirst({
+					where: {
+						userId,
+						isEquipped: true,
+						item: { type: userInventoryItem.item.type },
+					},
+				})
+			: null;
+
+		if (alreadyEquippedItem) {
+			await this.prismaService.userInventory.update({
+				where: {
+					id: alreadyEquippedItem.id,
+					userId,
+				},
+				data: { isEquipped: false },
+			});
+		}
 
 		return await this.prismaService.userInventory.update({
 			where: { id: userInventoryItem.id, userId },

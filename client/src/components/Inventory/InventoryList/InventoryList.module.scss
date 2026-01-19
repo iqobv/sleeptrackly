@@ -1,0 +1,23 @@
+@use '../../../styles/mixins' as *;
+
+.inventory-list {
+	padding: 20px 16px;
+}
+
+.inventory-items__list {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 16px;
+
+	@include response('md') {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	@include response('lg') {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	@include response('xl') {
+		grid-template-columns: repeat(5, 1fr);
+	}
+}

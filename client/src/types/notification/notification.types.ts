@@ -1,4 +1,4 @@
-import { IPaginatedDateResponse } from '../api/paginatedDate.types';
+import { IPaginatedDataResponse } from '../api/paginatedData.types';
 
 export interface INotification {
 	id: string;
@@ -17,4 +17,4 @@ export interface INotification {
 	scheduledAt: Date;
 }
 
-export type TNotificationPaginated = IPaginatedDateResponse<INotification>;
+export type TNotificationPaginated = IPaginatedDataResponse<INotification>;

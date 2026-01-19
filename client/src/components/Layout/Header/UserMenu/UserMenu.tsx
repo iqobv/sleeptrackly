@@ -1,54 +1,33 @@
 'use client';
 
 import NotificationsButton from '@/components/Notification/NotificationsButton/NotificationsButton';
-import { Avatar, Button, Divider } from '@/components/UI';
-import MenuItem from './MenuItem/MenuItem';
-import ThemeSwitcher from './ThemeSwitcher/ThemeSwitcher';
-import { USER_MAIN_LINKS, USER_SYSTEM_LINKS } from './userManuLinks';
+import { Avatar } from '@/components/UI';
+import { useRef } from 'react';
 import styles from './UserMenu.module.scss';
-import UserMenuCoins from './UserMenuCoins/UserMenuCoins';
+import UserMenuDropdown from './UserMenuDropdown/UserMenuDropdown';
 import { useUserMenu } from './useUserMenu';
 
 const UserMenu = () => {
-	const userMenuData = useUserMenu();
+	const buttonRef = useRef<HTMLDivElement>(null);
 
-	if (!userMenuData) return null;
+	const { open, user, onClose, handleLogout } = useUserMenu();
 
-	const { menuRef, open, user, handleOpen, handleLogout } = userMenuData;
+	if (!user) return null;
 
 	return (
 		<div className={styles['user-menu__controls']}>
 			<NotificationsButton />
-			<div className={styles['user-menu__wrapper']} ref={menuRef}>
-				<button onClick={handleOpen} className={styles['user-menu__btn']}>
+			<div className={styles['user-menu__wrapper']} ref={buttonRef}>
+				<button onClick={onClose} className={styles['user-menu__btn']}>
 					<Avatar avatar={user.avatar?.url} size={40} priority />
 				</button>
-				{open && (
-					<div className={styles['user-menu__dropdown']}>
-						<UserMenuCoins />
-						{USER_MAIN_LINKS(user).map((link) => (
-							<MenuItem
-								{...link}
-								key={link.name}
-								onClick={handleOpen}
-								icon={link.icon || undefined}
-							/>
-						))}
-						{USER_SYSTEM_LINKS.map((link) => (
-							<MenuItem
-								{...link}
-								key={link.name}
-								onClick={handleOpen}
-								icon={link.icon || undefined}
-							/>
-						))}
-						<Divider />
-						<ThemeSwitcher />
-						<Button onClick={handleLogout} fullWidth>
-							Logout
-						</Button>
-					</div>
-				)}
+				<UserMenuDropdown
+					isOpen={open}
+					onClose={onClose}
+					handleLogout={handleLogout}
+					user={user}
+					buttonRef={buttonRef as React.RefObject<HTMLDivElement>}
+				/>
 			</div>
 		</div>
 	);

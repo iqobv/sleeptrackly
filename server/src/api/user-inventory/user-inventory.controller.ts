@@ -48,6 +48,14 @@ export class UserInventoryController {
 		);
 	}
 
+	@ApiOperation({ summary: 'Equip inventory item' })
+	@Auth()
+	@ApiOkResponse({ type: UserInventoryItemDto })
+	@Patch(':id/equip')
+	async equipItem(@Authorized('id') userId: string, @Param('id') id: string) {
+		return await this.userInventoryService.equipItem(userId, id);
+	}
+
 	@ApiOperation({ summary: 'Update user inventory item' })
 	@Auth()
 	@ApiOkResponse({ type: UserInventoryItemDto })
