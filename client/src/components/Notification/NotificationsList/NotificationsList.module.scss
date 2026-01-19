@@ -1,49 +1,6 @@
 @use '../../../styles/mixins' as *;
 
 .notifications {
-	--top: 0;
-	--left: 0;
-	--width: 500px;
-
-	padding: 20px;
-	background-color: var(--notification-popup-bg);
-	border: 1px solid var(--auth-container-bg);
-	border-radius: 8px;
-
-	position: fixed;
-	z-index: 1000;
-	width: 100%;
-	overflow-y: auto;
-
-	top: -9999px;
-	left: -9999px;
-	max-height: 80vh;
-
-	opacity: 0;
-	transform: translateY(-10px);
-
-	transition: opacity 0.3s ease, transform 0.3s ease, top 0s linear 0.3s,
-		left 0s linear 0.3s;
-
-	@include response('md') {
-		width: var(--width);
-	}
-
-	&--open {
-		top: var(--top);
-		left: 0;
-
-		opacity: 1;
-		transform: translateY(0);
-
-		transition: opacity 0.3s ease, transform 0.3s ease, top 0s linear 0s,
-			left 0s linear 0s;
-
-		@include response('md') {
-			left: var(--left);
-		}
-	}
-
 	&__container {
 		display: flex;
 		flex-direction: column;

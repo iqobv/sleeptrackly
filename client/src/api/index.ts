@@ -8,6 +8,7 @@ export * from './challenge/challenge.api';
 export * from './challenge/challengeTask.api';
 export * from './dashboard/dashboard.api';
 export * from './friend/friend.api';
+export * from './inventory/inventory.api';
 export * from './notification/notification.api';
 export * from './profile/profile.api';
 export * from './report/report.api';
@@ -16,3 +17,4 @@ export * from './user/fcmToken.api';
 export * from './user/sleepStatus.api';
 export * from './user/user.api';
 export * from './user/userAvatar.api';
+

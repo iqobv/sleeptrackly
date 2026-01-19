@@ -2,6 +2,7 @@ import { PAGES } from '@/config';
 import { IUser } from '@/types';
 import { IconBaseProps } from 'react-icons';
 import {
+	MdOutlineInventory2,
 	MdOutlinePerson,
 	MdOutlineSettings,
 	MdPeopleOutline,
@@ -30,6 +31,12 @@ export const USER_MAIN_LINKS = (user: IUser): Link[] => [
 		label: 'Friends',
 		path: PAGES.FRIENDS,
 		icon: <MdPeopleOutline {...iconProps} />,
+	},
+	{
+		name: 'inventory',
+		label: 'Inventory',
+		path: PAGES.INVENTORY,
+		icon: <MdOutlineInventory2 {...iconProps} />,
 	},
 ];
 

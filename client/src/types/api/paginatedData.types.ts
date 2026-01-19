@@ -5,7 +5,7 @@ export interface IPaginatedDataMeta {
 	totalPages: number;
 }
 
-export interface IPaginatedDateResponse<T> {
+export interface IPaginatedDataResponse<T> {
 	items: T[];
 	meta: IPaginatedDataMeta;
 }
