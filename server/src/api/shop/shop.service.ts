@@ -9,6 +9,7 @@ import {
 	Item,
 	Prisma,
 	ProductType,
+	UserInventory,
 } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { transformProduct } from 'src/libs/mappers';
@@ -31,26 +32,44 @@ export class ShopService {
 	) {}
 
 	async getFeaturedProducts(language: string) {
-		const products = await this.prismaService.product.findMany({
-			where: {
-				isShowInStore: true,
-				isNew: true,
-			},
+		const itemTypes = await this.prismaService.product.groupBy({
+			by: ['itemType'],
+			where: { isShowInStore: true, itemType: { not: null } },
+		});
+
+		const sections = await Promise.all(
+			itemTypes.map(async (t) => {
+				const products = await this.prismaService.product.findMany({
+					where: { isShowInStore: true, itemType: t.itemType },
+					take: 5,
+					orderBy: { createdAt: 'desc' },
+					include: productInclude(language),
+				});
+
+				return {
+					itemType: t.itemType,
+					items: products.map((product) =>
+						transformProduct(product as ProductWithInclude, language),
+					),
+				};
+			}),
+		);
+
+		const bundles = await this.prismaService.product.findMany({
+			where: { isShowInStore: true, type: ProductType.BUNDLE, isNew: true },
+			take: 6,
+			orderBy: { createdAt: 'desc' },
 			include: productInclude(language),
 		});
 
-		const mappedProducts: TransformedProduct[] = products.map((product) =>
+		const mappedBundles: TransformedProduct[] = bundles.map((product) =>
 			transformProduct(product as ProductWithInclude, language),
 		);
 
-		const items = mappedProducts.filter(
-			(product) => product.type === ProductType.ITEM,
-		);
-		const bundles = mappedProducts.filter(
-			(product) => product.type === ProductType.BUNDLE,
-		);
-
-		return { items, bundles };
+		return {
+			carousel: mappedBundles,
+			sections,
+		};
 	}
 
 	async getAllProducts(query: FilterQueryDto) {
@@ -153,22 +172,11 @@ export class ShopService {
 
 			if (product.bundleId && product.bundle) {
 				if (alreadyOwnedItems.length > 0) {
-					const totalBasePrice = items.reduce(
-						(sum, i) => sum + (i.basePrice ?? 0),
-						0,
+					finalPrice = this.calculateFinalPrice(
+						items,
+						initialPrice,
+						alreadyOwnedItems,
 					);
-
-					if (totalBasePrice > 0) {
-						const k = initialPrice / totalBasePrice;
-
-						alreadyOwnedItems.forEach((ownedItem) => {
-							const item = items.find((i) => i.id === ownedItem.itemId);
-							if (item) {
-								const itemWeight = Math.round(item.basePrice * k);
-								finalPrice -= itemWeight;
-							}
-						});
-					}
 				}
 			}
 
@@ -215,5 +223,32 @@ export class ShopService {
 				inventoryResults,
 			};
 		});
+	}
+
+	private calculateFinalPrice(
+		items: Item[],
+		initialPrice: number,
+		alreadyOwnedItems: UserInventory[],
+	) {
+		let finalPrice = initialPrice;
+
+		const totalBasePrice = items.reduce(
+			(sum, i) => sum + (i.basePrice ?? 0),
+			0,
+		);
+
+		if (totalBasePrice > 0) {
+			const k = initialPrice / totalBasePrice;
+
+			alreadyOwnedItems.forEach((ownedItem) => {
+				const item = items.find((i) => i.id === ownedItem.itemId);
+				if (item) {
+					const itemWeight = Math.round(item.basePrice * k);
+					finalPrice -= itemWeight;
+				}
+			});
+		}
+
+		return finalPrice;
 	}
 }

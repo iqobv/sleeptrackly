@@ -13,8 +13,8 @@ import { TranslationDto } from 'src/libs/dto';
 
 export class CreateItemDto {
 	@ApiProperty({ example: false, required: false })
-	@IsBoolean()
 	@IsOptional()
+	@IsBoolean()
 	isExclusive?: boolean;
 
 	@ApiProperty({ example: ProfileItemType.AVATAR_FRAME })

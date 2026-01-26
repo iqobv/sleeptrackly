@@ -197,4 +197,24 @@
 	--inventory-image-bg: #ffffff;
 	--inventory-equipped-bg: #d1e7ff;
 	--inventory-equipped-border: #a3c4ff;
+
+	/* Shop */
+	--featured-carousel-bg: #e1e8eb;
+	--featured-carousel-gradient: radial-gradient(
+		circle,
+		rgba(136, 158, 165, 1) 1%,
+		rgba(17, 19, 20, 1) 75%
+	);
+	--featured-text-color: #ffffff;
+	--featured-bullet: #ffffff;
+	--featured-arrow: #ffffff;
+	--featured-button-bg: #e5e5e5;
+	--featured-button-bg-hover: #e5e5e5d4;
+	--featured-button-color: #171717;
+	--featured-new-badge: #ff6467;
+	--featured-through-price-color: #888888;
+	--featured-banner-bg: #eaf0f6;
+	--featured-banner-border: #d1d1d1;
+	--shop-card-bg: #f5f5f5;
+	--shop-card-border: #d1d1d1;
 }

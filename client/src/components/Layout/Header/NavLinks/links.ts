@@ -24,6 +24,11 @@ export const LINKS: Link[] = [
 		path: PAGES.CHALLENGES,
 	},
 	{
+		name: 'shop',
+		label: 'Shop',
+		path: PAGES.SHOP,
+	},
+	{
 		name: 'dashboard',
 		label: 'Dashboard',
 		path: PAGES.DASHBOARD,
