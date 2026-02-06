@@ -23,4 +23,5 @@ export interface IProduct {
 	updatedAt: Date;
 	bundle: IBundle | null;
 	item: IItem | null;
+	isOwned: boolean;
 }

@@ -1,109 +1,202 @@
 'use client';
 
-import FormLabel from '../FormLabel/FormLabel';
+import { IOption } from '@/types';
+import React, {
+	forwardRef,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import ClearButton from './ClearButton/ClearButton';
 import OptionsMenu from './OptionsMenu/OptionsMenu';
 import styles from './Select.module.scss';
-import { SelectProps } from './Select.types';
 import SelectArrow from './SelectArrow/SelectArrow';
-import { selectInputVariants } from './selectStyles';
-import { useCustomSelect } from './useCustomSelect';
 
-export default function Select({
-	options,
-	placeholder,
-	onChange,
-	label,
-	isClearable = false,
-	isSearchable = false,
-	error,
-	fullWidth = false,
-}: SelectProps) {
-	const {
-		id,
-		inputRef,
-		menuRef,
-		selectedValue,
-		showMenu,
-		highlightedIndex,
-		displayValue,
-		activeDescendant,
-		getFilteredOptions,
-		handleSelect,
-		handleClear,
-		handleKeyDown,
-		handleFocus,
-		setShowMenu,
-		setSearchTerm,
-	} = useCustomSelect({ options, isSearchable, onChange });
-
-	const inputStyles = selectInputVariants({ fullWidth, isClearable });
-	const fullWidthStyles = fullWidth ? styles['full-width--true'] : '';
-
-	const handleContainerClick = () => {
-		if (!showMenu) {
-			handleFocus();
-		} else {
-			setShowMenu(false);
-		}
-	};
-
-	return (
-		<div className={`${styles['select']} ${fullWidthStyles}`}>
-			{label && <FormLabel id={id}>{label}</FormLabel>}
-			<div
-				ref={menuRef}
-				role="combobox"
-				aria-haspopup="listbox"
-				aria-expanded={showMenu}
-				aria-labelledby={label ? `${id}-label` : undefined}
-				aria-controls={showMenu ? `${id}-listbox` : undefined}
-				className={`${styles['select__container']} ${
-					error ? styles['error'] : ''
-				}`}
-				onKeyDown={handleKeyDown}
-				onClick={handleContainerClick}
-			>
-				<input
-					ref={inputRef}
-					type="text"
-					className={inputStyles}
-					placeholder={placeholder}
-					id={id}
-					readOnly={!isSearchable}
-					value={displayValue}
-					onFocus={handleFocus}
-					onClick={(e) => e.stopPropagation()}
-					onMouseDown={(e) => {
-						e.stopPropagation();
-						e.preventDefault();
-						handleFocus();
-					}}
-					onChange={(e) => {
-						setSearchTerm(e.target.value);
-						setShowMenu(true);
-					}}
-					aria-activedescendant={activeDescendant}
-					aria-autocomplete="list"
-					autoComplete="off"
-				/>
-				<div className={styles['select__arrow-container']}>
-					{isClearable && selectedValue && (
-						<ClearButton onClick={handleClear} />
-					)}
-					<SelectArrow showMenu={showMenu} />
-				</div>
-			</div>
-			{showMenu && (
-				<OptionsMenu
-					listboxId={`${id}-listbox`}
-					idPrefix={id}
-					highlightedIndex={highlightedIndex}
-					handleSelect={handleSelect}
-					getFilteredOptions={getFilteredOptions}
-				/>
-			)}
-			{error && <p className={styles['error__text']}>{error}</p>}
-		</div>
-	);
+interface SelectProps extends Omit<
+	React.InputHTMLAttributes<HTMLInputElement>,
+	'onChange'
+> {
+	options: IOption[];
+	value?: string;
+	onChange?: (value: string) => void;
+	placeholder?: string;
+	label?: string;
+	error?: string;
+	isClearable?: boolean;
+	containerClassName?: string;
 }
+
+const Select = forwardRef<HTMLInputElement, SelectProps>(
+	(
+		{
+			options,
+			value,
+			onChange,
+			placeholder = 'Search...',
+			label,
+			error,
+			isClearable = false,
+			containerClassName = '',
+		},
+		ref,
+	) => {
+		const [isOpen, setIsOpen] = useState(false);
+		const [query, setQuery] = useState('');
+		const [highlightedIndex, setHighlightedIndex] = useState(0);
+		const [dropUp, setDropUp] = useState(false);
+
+		const containerRef = useRef<HTMLDivElement>(null);
+		const inputRef = useRef<HTMLInputElement>(null);
+
+		const selectedOption = useMemo(
+			() => options.find((opt) => opt.value === value),
+			[options, value],
+		);
+
+		useLayoutEffect(() => {
+			setQuery('');
+		}, [value]);
+
+		const filteredOptions = useMemo(() => {
+			if (!query) return options;
+			return options.filter((opt) =>
+				opt.label.toLowerCase().includes(query.toLowerCase()),
+			);
+		}, [options, query]);
+
+		useLayoutEffect(() => {
+			if (isOpen && containerRef.current) {
+				const rect = containerRef.current.getBoundingClientRect();
+				const spaceBelow = window.innerHeight - rect.bottom;
+				const menuHeight = 220;
+
+				setDropUp(spaceBelow < menuHeight && rect.top > menuHeight);
+			}
+		}, [isOpen]);
+
+		useEffect(() => {
+			const handleClickOutside = (e: MouseEvent) => {
+				if (
+					containerRef.current &&
+					!containerRef.current.contains(e.target as Node)
+				) {
+					setIsOpen(false);
+					setQuery('');
+				}
+			};
+			document.addEventListener('mousedown', handleClickOutside);
+			return () =>
+				document.removeEventListener('mousedown', handleClickOutside);
+		}, []);
+
+		const handleSelect = (option: IOption) => {
+			onChange?.(option.value);
+			setQuery('');
+			setIsOpen(false);
+			inputRef.current?.blur();
+		};
+
+		const handleInputFocus = () => {
+			setIsOpen(true);
+			setQuery('');
+			const index = options.findIndex((opt) => opt.value === value);
+			setHighlightedIndex(index !== -1 ? index : 0);
+		};
+
+		const onKeyDown = (e: React.KeyboardEvent) => {
+			if (!isOpen && (e.key === 'ArrowDown' || e.key === 'Enter')) {
+				setIsOpen(true);
+				return;
+			}
+
+			switch (e.key) {
+				case 'ArrowDown':
+					e.preventDefault();
+					setHighlightedIndex((prev) => (prev + 1) % filteredOptions.length);
+					break;
+				case 'ArrowUp':
+					e.preventDefault();
+					setHighlightedIndex(
+						(prev) =>
+							(prev - 1 + filteredOptions.length) % filteredOptions.length,
+					);
+					break;
+				case 'Enter':
+					e.preventDefault();
+					if (filteredOptions[highlightedIndex]) {
+						handleSelect(filteredOptions[highlightedIndex]);
+					}
+					break;
+				case 'Escape':
+					setIsOpen(false);
+					setQuery('');
+					inputRef.current?.blur();
+					break;
+			}
+		};
+
+		return (
+			<div
+				className={`${styles.container} ${containerClassName}`}
+				ref={containerRef}
+			>
+				{label && <label className={styles.label}>{label}</label>}
+
+				<div
+					className={`${styles.wrapper} ${error ? styles['wrapper--error'] : ''} ${isOpen ? styles['wrapper--active'] : ''}`}
+					onClick={() => inputRef.current?.focus()}
+				>
+					<input
+						ref={(node) => {
+							(inputRef as any).current = node;
+							if (typeof ref === 'function') ref(node);
+							else if (ref) (ref as any).current = node;
+						}}
+						className={styles.input}
+						value={isOpen ? query : selectedOption?.label || ''}
+						onChange={(e) => {
+							setQuery(e.target.value);
+							if (!isOpen) setIsOpen(true);
+							setHighlightedIndex(0);
+						}}
+						onFocus={handleInputFocus}
+						onKeyDown={onKeyDown}
+						placeholder={selectedOption ? selectedOption.label : placeholder}
+						autoComplete="off"
+					/>
+
+					<div className={styles.actions} onClick={(e) => e.stopPropagation()}>
+						{isClearable && value && (
+							<ClearButton
+								onClick={() => {
+									onChange?.('');
+									setQuery('');
+								}}
+							/>
+						)}
+						<SelectArrow showMenu={isOpen} onClick={() => setIsOpen(!isOpen)} />
+					</div>
+				</div>
+
+				{isOpen && (
+					<OptionsMenu
+						filteredOptions={filteredOptions}
+						handleSelect={handleSelect}
+						highlightedIndex={highlightedIndex}
+						value={value}
+						setHighlightedIndex={setHighlightedIndex}
+						dropUp={dropUp}
+					/>
+				)}
+
+				{error && <span className={styles['error-message']}>{error}</span>}
+			</div>
+		);
+	},
+);
+
+Select.displayName = 'Select';
+
+export default Select;

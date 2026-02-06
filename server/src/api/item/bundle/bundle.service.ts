@@ -14,13 +14,17 @@ import { CreateBundleDto, UpdateBundleDto } from './dto';
 
 @Injectable()
 export class BundleService {
+	private readonly PLACEHOLDER_IMAGE_URL = 'defaults/placeholder.webp';
+
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly r2Service: R2Service,
 	) {}
 
-	async createBundle(dto: CreateBundleDto) {
+	async createBundle(dto: CreateBundleDto, file: Express.Multer.File) {
 		const { translations, itemsIds, ...rest } = dto;
+
+		if (!file) throw new BadRequestException('Bundle image is required');
 
 		const price = await this.prismaService.item.aggregate({
 			where: { id: { in: itemsIds } },
@@ -33,6 +37,7 @@ export class BundleService {
 
 		const bundle = await this.prismaService.bundle.create({
 			data: {
+				mediaUrl: this.PLACEHOLDER_IMAGE_URL,
 				basePrice: finalPrice,
 				...rest,
 				translations: {
@@ -49,6 +54,10 @@ export class BundleService {
 				translations: true,
 			},
 		});
+
+		if (file && bundle) {
+			await this.uploadBundleImage(file, bundle.id);
+		}
 
 		return bundle;
 	}

@@ -18,15 +18,24 @@ export class ShopController {
 	@ApiOperation({ summary: 'Get featured products' })
 	@ApiOkResponse({ type: FeaturedShopDto })
 	@Get('featured')
-	async getFeaturedProducts(@Query() query: LanguageQueryDto) {
-		return await this.shopService.getFeaturedProducts(query.language ?? 'en');
+	async getFeaturedProducts(
+		@Query() query: LanguageQueryDto,
+		@Authorized('id') userId?: string,
+	) {
+		return await this.shopService.getFeaturedProducts(
+			query.language ?? 'en',
+			userId,
+		);
 	}
 
 	@ApiOperation({ summary: 'Get all products with optional filters' })
 	@ApiOkResponse({ type: AllShopDto })
 	@Get('all')
-	async getAllProducts(@Query() query: FilterQueryDto) {
-		return await this.shopService.getAllProducts(query);
+	async getAllProducts(
+		@Query() query: FilterQueryDto,
+		@Authorized('id') userId?: string,
+	) {
+		return await this.shopService.getAllProducts(query, userId);
 	}
 
 	@ApiOperation({ summary: 'Get product by ID' })

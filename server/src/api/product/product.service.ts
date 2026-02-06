@@ -1,5 +1,6 @@
 import {
 	BadRequestException,
+	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
@@ -29,6 +30,17 @@ export class ProductService {
 
 		if (expiresAt && new Date(expiresAt).getTime() < Date.now())
 			throw new BadRequestException('expiresAt must be a future date');
+
+		const alreadyExists = await this.prismaService.product.findFirst({
+			where: {
+				AND: [
+					{ itemId: itemId ? itemId : null },
+					{ bundleId: bundleId ? bundleId : null },
+				],
+			},
+		});
+
+		if (alreadyExists) throw new ConflictException('Product already exists');
 
 		let type: ProductType;
 		let itemType: ProfileItemType | null = null;

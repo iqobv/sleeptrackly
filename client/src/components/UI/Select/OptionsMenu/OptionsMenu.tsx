@@ -4,48 +4,43 @@ import { IOption } from '@/types';
 import styles from './OptionsMenu.module.scss';
 
 interface OptionsMenuProps {
+	filteredOptions: IOption[];
 	highlightedIndex: number;
-	handleSelect: (opt: IOption) => void;
-	getFilteredOptions: () => IOption[];
-	idPrefix: string;
-	listboxId: string;
+	value?: string;
+	dropUp?: boolean;
+	handleSelect: (option: IOption) => void;
+	setHighlightedIndex: (index: number) => void;
 }
 
 export default function OptionsMenu({
+	filteredOptions,
 	highlightedIndex,
+	value,
+	dropUp = false,
 	handleSelect,
-	getFilteredOptions,
-	idPrefix,
-	listboxId,
+	setHighlightedIndex,
 }: OptionsMenuProps) {
-	const filtered = getFilteredOptions();
-
 	return (
 		<div
-			id={listboxId}
-			role="listbox"
-			className={styles['select__menu']}
-			onMouseDown={(e) => e.stopPropagation()}
+			className={`${styles['options-menu']} ${dropUp ? styles['options-menu--drop-up'] : ''}`}
 		>
-			{filtered.map((opt, i) => (
-				<div
-					key={opt.value}
-					id={`${idPrefix}-option-${opt.value}`}
-					role="option"
-					aria-selected={i === highlightedIndex}
-					className={`${styles['select__option']} ${
-						i === highlightedIndex ? styles['select__option--highlighted'] : ''
-					}`}
-					onMouseDown={(e) => {
-						e.preventDefault();
-						handleSelect(opt);
-					}}
-				>
-					{opt.label}
-				</div>
-			))}
-			{filtered.length === 0 && (
-				<div className={styles['select__no-options']}>No options</div>
+			{filteredOptions.length > 0 ? (
+				filteredOptions.map((option, index) => (
+					<div
+						key={option.value}
+						className={`
+                  ${styles['option']}
+                  ${index === highlightedIndex ? styles['option--highlighted'] : ''}
+                  ${value === option.value ? styles['option--selected'] : ''}
+                `}
+						onMouseEnter={() => setHighlightedIndex(index)}
+						onClick={() => handleSelect(option)}
+					>
+						{option.label}
+					</div>
+				))
+			) : (
+				<div className={styles['no-options']}>No options found</div>
 			)}
 		</div>
 	);

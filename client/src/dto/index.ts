@@ -7,3 +7,4 @@ export * from './query/pagination.dto';
 export * from './report/report.dto';
 export * from './settings/notifications.dto';
 export * from './settings/settings.dto';
+export * from './shop/shop.dto';

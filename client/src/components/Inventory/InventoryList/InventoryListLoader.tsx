@@ -5,7 +5,7 @@ import InventoryListItemLoader from './InventoryListItem/InventoryListItemLoader
 const InventoryListLoader = () => {
 	return (
 		<div className={styles['inventory-list']}>
-			<div className={styles['inventory-items']}>
+			<div className={styles['inventory-items__list']}>
 				{Array.from({ length: 20 }).map((_, index) => (
 					<InventoryListItemLoader key={index} />
 				))}

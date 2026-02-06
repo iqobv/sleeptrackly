@@ -1,0 +1,39 @@
+@use '../../../styles/mixins' as *;
+
+.all-shop {
+	&__content {
+		display: flex;
+		gap: 24px;
+		flex-direction: column;
+
+		@include response('lg') {
+			flex-direction: row;
+		}
+	}
+
+	&__items-container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	&__items {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	&__items-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 16px;
+	}
+
+	&__no-results {
+		text-align: center;
+		font-size: 18px;
+		margin-top: 32px;
+	}
+}

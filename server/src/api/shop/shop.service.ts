@@ -19,6 +19,7 @@ import { paginate } from 'src/libs/utils';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { PurchaseHistoryService } from '../purchase-history/purchase-history.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
+import { SHOP_SORT_BY } from './constats';
 import { FilterQueryDto } from './dto';
 import { TransformedProduct } from './types';
 
@@ -31,11 +32,13 @@ export class ShopService {
 		private readonly userInventoryService: UserInventoryService,
 	) {}
 
-	async getFeaturedProducts(language: string) {
+	async getFeaturedProducts(language: string, userId?: string) {
 		const itemTypes = await this.prismaService.product.groupBy({
 			by: ['itemType'],
 			where: { isShowInStore: true, itemType: { not: null } },
 		});
+
+		const ownedItems = userId ? await this.getOwnedItems(userId) : [];
 
 		const sections = await Promise.all(
 			itemTypes.map(async (t) => {
@@ -46,11 +49,21 @@ export class ShopService {
 					include: productInclude(language),
 				});
 
+				let mappedProducts: TransformedProduct[] = products.map((product) =>
+					transformProduct(product as ProductWithInclude, language),
+				);
+
+				if (userId) {
+					mappedProducts = this.markOwnedProducts(
+						ownedItems,
+						mappedProducts,
+						userId,
+					);
+				}
+
 				return {
 					itemType: t.itemType,
-					items: products.map((product) =>
-						transformProduct(product as ProductWithInclude, language),
-					),
+					items: mappedProducts,
 				};
 			}),
 		);
@@ -62,9 +75,13 @@ export class ShopService {
 			include: productInclude(language),
 		});
 
-		const mappedBundles: TransformedProduct[] = bundles.map((product) =>
+		let mappedBundles: TransformedProduct[] = bundles.map((product) =>
 			transformProduct(product as ProductWithInclude, language),
 		);
+
+		if (userId) {
+			mappedBundles = this.markOwnedProducts(ownedItems, mappedBundles, userId);
+		}
 
 		return {
 			carousel: mappedBundles,
@@ -72,19 +89,54 @@ export class ShopService {
 		};
 	}
 
-	async getAllProducts(query: FilterQueryDto) {
+	async getAllProducts(query: FilterQueryDto, userId?: string) {
 		const {
 			language = 'en',
 			page = 1,
 			limit = 20,
 			itemType,
 			type = 'ALL',
+			search,
+			sortBy = 'DATE',
+			sortOrder = 'desc',
 		} = query;
 
 		const where: Prisma.ProductWhereInput = {
 			isShowInStore: true,
 			...(type === 'ALL' ? {} : { type }),
-			...(itemType ? { itemType } : {}),
+			...(itemType
+				? type === 'BUNDLE'
+					? {
+							bundle: {
+								items: {
+									some: {
+										item: { type: { in: itemType } },
+									},
+								},
+							},
+						}
+					: { itemType: { in: itemType } }
+				: {}),
+			...(search
+				? {
+						OR: [
+							{
+								item: {
+									translations: {
+										some: { name: { contains: search, mode: 'insensitive' } },
+									},
+								},
+							},
+							{
+								bundle: {
+									translations: {
+										some: { name: { contains: search, mode: 'insensitive' } },
+									},
+								},
+							},
+						],
+					}
+				: {}),
 		};
 
 		return await paginate({ page, limit }, async (limit, offset) => {
@@ -92,16 +144,27 @@ export class ShopService {
 				this.prismaService.product.count({ where }),
 				this.prismaService.product.findMany({
 					where,
-					orderBy: { createdAt: 'desc' },
+					orderBy: {
+						[sortBy === SHOP_SORT_BY.DATE ? 'createdAt' : 'price']: sortOrder,
+					},
 					skip: offset,
 					take: limit,
 					include: productInclude(language),
 				}),
 			]);
 
-			const mappedProducts: TransformedProduct[] = products.map((product) =>
+			let mappedProducts: TransformedProduct[] = products.map((product) =>
 				transformProduct(product as ProductWithInclude, language),
 			);
+
+			if (userId) {
+				const ownedItems = await this.getOwnedItems(userId);
+				mappedProducts = this.markOwnedProducts(
+					ownedItems,
+					mappedProducts,
+					userId,
+				);
+			}
 
 			return { items: mappedProducts, total };
 		});
@@ -250,5 +313,43 @@ export class ShopService {
 		}
 
 		return finalPrice;
+	}
+
+	private async getOwnedItems(userId: string) {
+		const ownedItems = await this.prismaService.userInventory.findMany({
+			where: { userId },
+			select: { itemId: true },
+		});
+
+		return ownedItems;
+	}
+
+	private markOwnedProducts(
+		ownedItems: {
+			itemId: string;
+		}[],
+		mappedProducts: TransformedProduct[],
+		userId: string,
+	) {
+		if (userId && ownedItems.length > 0) {
+			const ownedItemIds = ownedItems.map((oi) => oi.itemId);
+			mappedProducts.forEach((product) => {
+				if (product.item && ownedItemIds.includes(product.item.id)) {
+					product.isOwned = true;
+				} else if (product.bundle) {
+					const bundleItemIds = product.bundle.items.map((bi) => bi.item.id);
+					const allItemsOwned = bundleItemIds.every((itemId) =>
+						ownedItemIds.includes(itemId),
+					);
+					product.isOwned = allItemsOwned;
+				} else {
+					product.isOwned = false;
+				}
+			});
+		} else {
+			mappedProducts.forEach((p) => (p.isOwned = false));
+		}
+
+		return mappedProducts;
 	}
 }

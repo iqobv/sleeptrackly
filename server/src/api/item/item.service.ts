@@ -13,22 +13,33 @@ import { CreateItemDto, UpdateItemDto } from './dto';
 
 @Injectable()
 export class ItemService {
+	private readonly PLACEHOLDER_IMAGE_URL = 'defaults/placeholder.webp';
+
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly r2Service: R2Service,
 	) {}
 
-	async createItem(dto: CreateItemDto) {
+	async createItem(dto: CreateItemDto, file: Express.Multer.File) {
 		const { translations, ...rest } = dto;
 
-		return await this.prismaService.item.create({
+		if (!file) throw new BadRequestException('Item image is required');
+
+		const item = await this.prismaService.item.create({
 			data: {
 				...rest,
+				mediaUrl: this.PLACEHOLDER_IMAGE_URL,
 				translations: {
 					create: translations,
 				},
 			},
 		});
+
+		if (file && item) {
+			await this.uploadItemImage(file, item.id);
+		}
+
+		return item;
 	}
 
 	async uploadItemImage(file: Express.Multer.File, itemId: string) {

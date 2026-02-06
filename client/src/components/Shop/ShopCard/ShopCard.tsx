@@ -1,8 +1,13 @@
+import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
 import { Button } from '@/components/UI';
+import { QUERY_KEYS } from '@/config';
 import { PRODUCT_TYPES } from '@/constants';
 import { IProduct } from '@/types';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
 
 interface ShopCardProps {
@@ -10,8 +15,25 @@ interface ShopCardProps {
 }
 
 const ShopCard = ({ product }: ShopCardProps) => {
+	const [isOwned, setIsOwned] = useState(product.isOwned);
+
 	const key =
 		product.type === PRODUCT_TYPES.ITEM ? product.item : product.bundle;
+
+	const { mutate, isPending } = useMutation({
+		mutationFn: () => makePurchase(product.id),
+		mutationKey: QUERY_KEYS.shop.makePurchase(product.id),
+		onMutate: () => {
+			setIsOwned(true);
+		},
+		onSuccess: () => {
+			toast.success('Purchase successful!');
+		},
+		onError: (error) => {
+			toast.error(error.message || 'Purchase failed. Please try again.');
+			setIsOwned(false);
+		},
+	});
 
 	return (
 		<div className={styles['shop-card']}>
@@ -38,7 +60,15 @@ const ShopCard = ({ product }: ShopCardProps) => {
 					)}
 					<Coin width={26} height={26} />
 				</div>
-				<Button>Buy</Button>
+				<Button
+					onClick={() => mutate()}
+					loading={isPending}
+					disabled={isOwned}
+					variant={isOwned ? 'secondary' : 'contained'}
+					type="button"
+				>
+					{isOwned ? 'Owned' : 'Buy Now'}
+				</Button>
 			</div>
 		</div>
 	);

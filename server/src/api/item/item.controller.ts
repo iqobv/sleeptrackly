@@ -2,8 +2,11 @@ import {
 	Body,
 	Controller,
 	Delete,
+	FileTypeValidator,
 	Get,
+	MaxFileSizeValidator,
 	Param,
+	ParseFilePipe,
 	Patch,
 	Post,
 	Query,
@@ -23,6 +26,7 @@ import { Auth } from 'src/libs/decorators';
 import { PaginationQueryDto } from 'src/libs/dto';
 import {
 	CreateItemDto,
+	CreateItemSwaggerDto,
 	ItemDto,
 	PaginatedItemsDto,
 	UpdateItemDto,
@@ -34,11 +38,25 @@ export class ItemController {
 	constructor(private readonly itemService: ItemService) {}
 
 	@ApiOperation({ summary: 'Create a new item' })
+	@ApiConsumes('multipart/form-data')
+	@UseInterceptors(FileInterceptor('file'))
 	@Auth(UserRole.ADMIN)
+	@ApiBody({ type: CreateItemSwaggerDto })
 	@ApiCreatedResponse({ type: ItemDto })
 	@Post()
-	async createItem(@Body() dto: CreateItemDto) {
-		return await this.itemService.createItem(dto);
+	async createItem(
+		@Body() dto: CreateItemDto,
+		@UploadedFile(
+			new ParseFilePipe({
+				validators: [
+					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
+				],
+			}),
+		)
+		file: Express.Multer.File,
+	) {
+		return await this.itemService.createItem(dto, file);
 	}
 
 	@Auth(UserRole.ADMIN)

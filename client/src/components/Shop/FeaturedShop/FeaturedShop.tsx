@@ -21,7 +21,9 @@ const FeaturedShop = () => {
 				<>
 					<div>
 						<SectionHeader title="Featured Shop" />
-						<FeaturedShopCarousel data={data.carousel} />
+						{data.carousel.length > 0 && (
+							<FeaturedShopCarousel data={data.carousel} />
+						)}
 					</div>
 					<FeaturedShopBanner />
 					<div>

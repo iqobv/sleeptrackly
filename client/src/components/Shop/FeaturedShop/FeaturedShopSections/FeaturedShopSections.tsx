@@ -32,7 +32,7 @@ const FeaturedShopSections = ({ sections }: FeaturedShopSectionsProps) => {
 							<Button
 								variant="link"
 								size="sm"
-								href={`/shop/catalog?type=${section.type}`}
+								href={`/shop/catalog?itemType=${section.type.toLowerCase()}`}
 							>
 								View All
 							</Button>
