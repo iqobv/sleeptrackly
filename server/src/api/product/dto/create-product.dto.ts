@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
 	IsBoolean,
 	IsDate,
@@ -63,7 +64,8 @@ export class CreateProductDto {
 	maxStock?: number;
 
 	@ApiProperty({ example: new Date(), required: false })
-	@IsDate()
 	@IsOptional()
+	@Type(() => Date)
+	@IsDate()
 	expiresAt?: Date;
 }

@@ -17,4 +17,6 @@ export const PAGES = {
 	FRIENDS: '/friends',
 	FRIENDS_REQUESTS: '/friends/pending',
 	INVENTORY: '/inventory',
+	SHOP: '/shop',
+	SHOP_CATALOG: '/shop/catalog',
 } as const;

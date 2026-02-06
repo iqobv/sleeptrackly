@@ -1,7 +1,7 @@
-import { IBundle } from '../bundle/bundle.types';
-import { IItem } from '../item/item.types';
+import { IProduct } from '../product/product.types';
+import { IFeaturedShopSection } from './featuredShopSection.types';
 
 export interface IFeaturedShop {
-	items: IItem[];
-	bundles: IBundle[];
+	carousel: IProduct[];
+	sections: IFeaturedShopSection[];
 }

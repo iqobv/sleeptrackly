@@ -7,6 +7,7 @@ import {
 } from './items-with-translations.types';
 
 export type TransformedProduct = Omit<ProductWithInclude, 'item' | 'bundle'> & {
+	isOwned?: boolean;
 	item:
 		| (Omit<ItemWithTranslations, 'translations'> & {
 				translation: Prisma.ItemTranslationSelect | null;

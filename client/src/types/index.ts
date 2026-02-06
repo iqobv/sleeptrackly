@@ -30,6 +30,8 @@ export * from './settings/notifications.types';
 export * from './settings/settingsField.types';
 export * from './shop/allShop.types';
 export * from './shop/featuredShop.types';
+export * from './shop/featuredShopSection.types';
+export * from './shop/shopSortBy.types';
 export * from './translation/translation.types';
 export * from './ui/field.types';
 export * from './ui/option.types';

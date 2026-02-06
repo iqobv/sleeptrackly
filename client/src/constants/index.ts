@@ -7,3 +7,4 @@ export * from './itemType.constants';
 export * from './productType.constants';
 export * from './reportTitle.constats';
 export * from './reportType.constants';
+export * from './shopSortBy.constants';

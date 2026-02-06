@@ -2,8 +2,11 @@ import {
 	Body,
 	Controller,
 	Delete,
+	FileTypeValidator,
 	Get,
+	MaxFileSizeValidator,
 	Param,
+	ParseFilePipe,
 	Patch,
 	Post,
 	Query,
@@ -25,6 +28,7 @@ import { BundleService } from './bundle.service';
 import {
 	BundleDto,
 	CreateBundleDto,
+	CreateBundleSwaggerDto,
 	FullBundleDto,
 	UpdateBundleDto,
 } from './dto';
@@ -36,9 +40,23 @@ export class BundleController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Create a new bundle' })
 	@ApiCreatedResponse({ type: BundleDto })
+	@ApiConsumes('multipart/form-data')
+	@UseInterceptors(FileInterceptor('file'))
+	@ApiBody({ type: CreateBundleSwaggerDto })
 	@Post()
-	async createBundle(@Body() dto: CreateBundleDto) {
-		return await this.bundleService.createBundle(dto);
+	async createBundle(
+		@UploadedFile(
+			new ParseFilePipe({
+				validators: [
+					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
+				],
+			}),
+		)
+		file: Express.Multer.File,
+		@Body() dto: CreateBundleDto,
+	) {
+		return await this.bundleService.createBundle(dto, file);
 	}
 
 	@Auth(UserRole.ADMIN)

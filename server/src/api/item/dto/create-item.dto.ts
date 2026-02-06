@@ -1,20 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { ItemRarity, ProfileItemType } from '@prisma/client';
+import { Transform, Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
 	IsEnum,
 	IsNumber,
 	IsOptional,
-	IsString,
 	Min,
+	ValidateNested,
 } from 'class-validator';
 import { TranslationDto } from 'src/libs/dto';
 
 export class CreateItemDto {
 	@ApiProperty({ example: false, required: false })
-	@IsBoolean()
+	@Type(() => Boolean)
 	@IsOptional()
+	@IsBoolean()
 	isExclusive?: boolean;
 
 	@ApiProperty({ example: ProfileItemType.AVATAR_FRAME })
@@ -22,6 +24,7 @@ export class CreateItemDto {
 	type: ProfileItemType;
 
 	@ApiProperty({ example: 1200 })
+	@Type(() => Number)
 	@IsNumber()
 	@Min(0)
 	basePrice: number;
@@ -30,11 +33,39 @@ export class CreateItemDto {
 	@IsEnum(ItemRarity)
 	rarity: ItemRarity;
 
-	@ApiProperty({ example: 'http://example.com/media/item.gif' })
-	@IsString()
-	mediaUrl: string;
-
 	@ApiProperty({ type: [TranslationDto] })
 	@IsArray()
+	@ValidateNested({ each: true })
+	@Type(() => TranslationDto)
+	@Transform(({ value }) => {
+		if (Array.isArray(value)) {
+			return value.map((item) => {
+				if (typeof item === 'string') {
+					try {
+						return JSON.parse(item) as TranslationDto;
+					} catch {
+						return item as unknown as TranslationDto;
+					}
+				}
+				return item as TranslationDto;
+			});
+		}
+
+		if (typeof value === 'string') {
+			try {
+				const parsed = JSON.parse(value) as unknown;
+				return (Array.isArray(parsed) ? parsed : [parsed]) as TranslationDto[];
+			} catch {
+				return [] as TranslationDto[];
+			}
+		}
+
+		return [] as TranslationDto[];
+	})
 	translations: TranslationDto[];
+}
+
+export class CreateItemSwaggerDto extends CreateItemDto {
+	@ApiProperty({ type: 'string', format: 'binary' })
+	file: Express.Multer.File;
 }
