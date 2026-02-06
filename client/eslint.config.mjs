@@ -11,17 +11,22 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
 	...compat.extends('next/core-web-vitals', 'next/typescript'),
-	...compat.plugins('react', 'react-hooks'),
-	...compat.rules({
-		'@typescript-eslint/no-unused-vars': [
-			'error',
-			{
-				argsIgnorePattern: '^_',
-				varsIgnorePattern: '^_',
-				destructuredArrayIgnorePattern: '^_',
-			},
-		],
-	}),
+	{
+		plugins: {
+			react: (await import('eslint-plugin-react')).default,
+			'react-hooks': (await import('eslint-plugin-react-hooks')).default,
+		},
+		rules: {
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					destructuredArrayIgnorePattern: '^_',
+				},
+			],
+		},
+	},
 	{
 		ignores: [
 			'node_modules/**',

@@ -12,7 +12,9 @@ const UserMenuCoins = () => {
 					<>
 						<p className={styles['coins__label']}>Balance</p>
 						<div className={styles['coins__balance']}>
-							<p className={styles['coins__amount']}>{user.coins.amount}</p>
+							<p className={styles['coins__amount']}>
+								{user.coins?.amount ? user.coins.amount : 0}
+							</p>
 							<Coin
 								className={styles['coins__icon']}
 								width={40}

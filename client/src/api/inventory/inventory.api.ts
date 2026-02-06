@@ -4,7 +4,7 @@ import { fetcher } from '@/utils';
 
 export const getInventory = async (query: PaginationWithLanguageDto) =>
 	await fetcher<IPaginatedDataResponse<IInventory>>(
-		`/api/v1/inventory/me?${new URLSearchParams(query as Record<string, string>)}`,
+		`/api/v1/inventory/me?${new URLSearchParams(Object.entries(query).map(([key, value]) => [key, String(value)]))}`,
 	);
 
 export const equipInventoryItem = async (itemId: string) =>

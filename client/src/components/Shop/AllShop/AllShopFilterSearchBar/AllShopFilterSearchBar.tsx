@@ -11,7 +11,7 @@ import styles from './AllShopFilterSearchBar.module.scss';
 import { SHOP_FILTER_OPTIONS } from './filterSortOptions';
 
 const AllShopFilterSearchBar = () => {
-	const { register, getValues, watch, setValue, control } = useFormContext<
+	const { register, watch, setValue, control } = useFormContext<
 		ShopFilterDto & { sort?: string }
 	>();
 
@@ -41,7 +41,7 @@ const AllShopFilterSearchBar = () => {
 				shouldDirty: true,
 			});
 		}
-	}, [sort]);
+	}, [sort, setValue]);
 
 	return (
 		<div className={styles['search-bar']}>

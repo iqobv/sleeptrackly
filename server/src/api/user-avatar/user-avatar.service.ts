@@ -13,13 +13,14 @@ import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';
-import { DEFAULT_AVATAR } from 'src/libs/constants';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class UserAvatarService {
+	private readonly DEFAULT_AVATAR_PATH = 'defaults/default-avatar.png';
+
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly r2Service: R2Service,
@@ -123,7 +124,10 @@ export class UserAvatarService {
 		if (existingAvatar) throw new ConflictException('Avatar already exists');
 
 		const newAvatar = await this.prismaService.userAvatar.create({
-			data: { user: { connect: { id: userId } } },
+			data: {
+				url: this.DEFAULT_AVATAR_PATH,
+				user: { connect: { id: userId } },
+			},
 		});
 
 		return newAvatar;
@@ -146,7 +150,7 @@ export class UserAvatarService {
 	private async update(id: string, url: string) {
 		return await this.prismaService.userAvatar.update({
 			where: { id },
-			data: { url, isDefault: !!url.includes(DEFAULT_AVATAR) },
+			data: { url, isDefault: !!url.includes(this.DEFAULT_AVATAR_PATH) },
 		});
 	}
 
@@ -155,7 +159,7 @@ export class UserAvatarService {
 
 		if (avatar) await this.r2Service.delete(avatar.url);
 
-		return await this.update(avatar?.id, DEFAULT_AVATAR);
+		return await this.update(avatar?.id, this.DEFAULT_AVATAR_PATH);
 	}
 
 	async fixAvatarUrls() {

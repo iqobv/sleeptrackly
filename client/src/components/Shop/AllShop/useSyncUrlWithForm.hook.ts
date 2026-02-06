@@ -14,7 +14,7 @@ export const useSyncUrlWithForm = () => {
 	const syncUrlWithForm = (values: ShopFilterDto & { sort?: string }) => {
 		if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-		const { sort, ...rest } = values;
+		const { sort: _s, ...rest } = values;
 
 		timeoutRef.current = setTimeout(() => {
 			const params = new URLSearchParams(searchParams.toString());
