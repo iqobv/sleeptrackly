@@ -1,6 +1,27 @@
 .profile {
-	padding-top: 40px;
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
+	background-position: center;
+	background-size: cover;
+	position: relative;
+	z-index: 1;
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.3);
+		z-index: -1;
+	}
+
+	&__container {
+		display: flex;
+		padding-top: 40px;
+		flex-direction: column;
+		gap: 20px;
+		background-color: var(--bg-body);
+		max-width: 1000px;
+		z-index: 2;
+	}
 }

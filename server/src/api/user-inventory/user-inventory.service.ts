@@ -103,6 +103,22 @@ export class UserInventoryService {
 		});
 	}
 
+	async getUserEquippedItems(userId: string) {
+		return await this.prismaService.userInventory.findMany({
+			where: { userId, isEquipped: true },
+			select: {
+				id: true,
+				item: {
+					select: {
+						id: true,
+						type: true,
+						mediaUrl: true,
+					},
+				},
+			},
+		});
+	}
+
 	async equipItem(userId: string, itemId: string) {
 		const userInventoryItem = await this.findById(itemId, userId);
 
@@ -113,7 +129,10 @@ export class UserInventoryService {
 				where: {
 					userId,
 					isEquipped: true,
-					item: { type: userInventoryItem.item.type },
+					item: {
+						type: userInventoryItem.item.type,
+						AND: { type: { not: 'BADGE' } },
+					},
 				},
 			});
 
@@ -148,7 +167,10 @@ export class UserInventoryService {
 					where: {
 						userId,
 						isEquipped: true,
-						item: { type: userInventoryItem.item.type },
+						item: {
+							type: userInventoryItem.item.type,
+							AND: { type: { not: 'BADGE' } },
+						},
 					},
 				})
 			: null;

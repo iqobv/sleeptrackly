@@ -51,19 +51,27 @@ export class ItemService {
 			throw new NotFoundException('Item not found');
 		}
 
-		let processedBuffer: Buffer;
-		try {
-			const pipeline = sharp(file.buffer, { animated: true });
+		const isVideo = file.mimetype.startsWith('video/');
+		let processedBuffer: Buffer = file.buffer;
+		let contentType: string = file.mimetype;
+		let extension: string = file.originalname.split('.').pop() || '';
 
-			processedBuffer = await pipeline
-				.webp({ quality: 80, effort: 6, lossless: false })
-				.toBuffer();
-		} catch (error) {
-			console.error('Sharp error:', error);
-			throw new BadRequestException('Failed to process image');
+		if (!isVideo) {
+			try {
+				const pipeline = sharp(file.buffer, { animated: true });
+
+				processedBuffer = await pipeline
+					.webp({ quality: 80, effort: 6, lossless: false })
+					.toBuffer();
+				contentType = 'image/webp';
+				extension = 'webp';
+			} catch (error) {
+				console.error('Sharp error:', error);
+				throw new BadRequestException('Failed to process image');
+			}
 		}
 
-		if (item.mediaUrl) {
+		if (item.mediaUrl && item.mediaUrl !== this.PLACEHOLDER_IMAGE_URL) {
 			try {
 				await this.r2Service.delete(item.mediaUrl);
 			} catch (e) {
@@ -71,13 +79,13 @@ export class ItemService {
 			}
 		}
 
-		const filename = `${uuidv4()}.webp`;
+		const filename = `${uuidv4()}.${extension}`;
 		const key = `items/${filename}`;
 
 		const uploadResult = await this.r2Service.upload(
 			processedBuffer,
 			key,
-			'image/webp',
+			contentType,
 		);
 
 		return await this.prismaService.item.update({

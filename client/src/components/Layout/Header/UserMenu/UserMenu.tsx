@@ -12,6 +12,10 @@ const UserMenu = () => {
 
 	const { open, user, onClose, handleLogout } = useUserMenu();
 
+	const animatedAvatar = user?.equippedItems.find(
+		(ei) => ei.item.type === 'ANIMATED_AVATAR',
+	);
+
 	if (!user) return null;
 
 	return (
@@ -19,7 +23,14 @@ const UserMenu = () => {
 			<NotificationsButton />
 			<div className={styles['user-menu__wrapper']} ref={buttonRef}>
 				<button onClick={onClose} className={styles['user-menu__btn']}>
-					<Avatar avatar={user.avatar?.url} size={40} priority />
+					<Avatar
+						avatar={
+							animatedAvatar ? animatedAvatar.item.mediaUrl : user.avatar?.url
+						}
+						size={40}
+						priority
+						isVideo={!!animatedAvatar}
+					/>
 				</button>
 				<UserMenuDropdown
 					isOpen={open}

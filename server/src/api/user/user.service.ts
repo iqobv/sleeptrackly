@@ -18,6 +18,7 @@ import {
 } from 'src/libs/utils';
 import { CoinService } from '../coin/coin.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
+import { UserInventoryService } from '../user-inventory/user-inventory.service';
 import { UserNotificationSettingsService } from '../user-notification-settings/user-notification-settings.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
@@ -31,6 +32,7 @@ export class UserService {
 		private readonly userAvatarService: UserAvatarService,
 		private readonly userNotificationSettingsService: UserNotificationSettingsService,
 		private readonly coinService: CoinService,
+		private readonly userInventoryService: UserInventoryService,
 	) {}
 
 	async create(dto: CreateUserDto) {
@@ -81,7 +83,11 @@ export class UserService {
 
 		if (!user) throw new NotFoundException('User not found');
 
-		return user;
+		const equippedItems = await this.userInventoryService.getUserEquippedItems(
+			user.id,
+		);
+
+		return { ...user, equippedItems };
 	}
 
 	async getById(id: string, full: boolean = false) {

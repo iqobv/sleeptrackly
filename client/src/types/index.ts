@@ -19,6 +19,8 @@ export * from './friend/friendship.types';
 export * from './friend/friendStatus.types';
 export * from './inventory/acquiredFrom.types';
 export * from './inventory/inventory.types';
+export * from './item/equippedItem.types';
+export * from './item/equippedItems.types';
 export * from './item/item.types';
 export * from './item/itemRarity.types';
 export * from './item/itemType.types';

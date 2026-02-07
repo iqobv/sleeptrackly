@@ -12,6 +12,7 @@ export default function Avatar({
 	avatarClassName,
 	containerClassName,
 	priority = false,
+	isVideo = false,
 }: AvatarProps) {
 	const [loaded, setLoaded] = useState(false);
 
@@ -25,16 +26,29 @@ export default function Avatar({
 					height={size}
 				/>
 			)}
-			<Image
-				src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
-				alt="avatar"
-				className={`${styles['avatar__image']} ${avatarClassName}`}
-				width={size}
-				height={size}
-				onLoad={() => setLoaded(true)}
-				priority={priority}
-				style={{ opacity: loaded ? 1 : 0 }}
-			/>
+			{isVideo ? (
+				<video
+					src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
+					loop
+					autoPlay
+					muted
+					width={size}
+					height={size}
+					className={`${styles['avatar__image']} ${avatarClassName}`}
+					onLoadedData={() => setLoaded(true)}
+				/>
+			) : (
+				<Image
+					src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
+					alt="avatar"
+					className={`${styles['avatar__image']} ${avatarClassName}`}
+					width={size}
+					height={size}
+					onLoad={() => setLoaded(true)}
+					priority={priority}
+					style={{ opacity: loaded ? 1 : 0 }}
+				/>
+			)}
 		</div>
 	);
 }
