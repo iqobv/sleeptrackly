@@ -50,7 +50,9 @@ export class ItemController {
 			new ParseFilePipe({
 				validators: [
 					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
+					new FileTypeValidator({
+						fileType: /(png|jpeg|jpg|gif|webp|webm|mp4|mov|avi)$/,
+					}),
 				],
 			}),
 		)

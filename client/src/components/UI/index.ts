@@ -1,6 +1,7 @@
 export { default as Avatar } from './Avatar/Avatar';
 export { default as Button } from './Button/Button';
 export { default as Calendar } from './Calendar/Calendar';
+export { default as CDNImage } from './CDNImage/CDNImage';
 export { default as ConfirmModal } from './ConfirmModal/ConfirmModal';
 export { default as Divider } from './Divider/Divider';
 export { default as Dropdown } from './Dropdown/Dropdown';

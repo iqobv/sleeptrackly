@@ -3,6 +3,7 @@ import { Friendship } from '@prisma/client';
 import { ChallengeService } from '../challenge/challenge.service';
 import { FriendshipService } from '../friendship/friendship.service';
 import { SleepEntryService } from '../sleep-entry/sleep-entry.service';
+import { UserInventoryService } from '../user-inventory/user-inventory.service';
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -12,6 +13,7 @@ export class ProfileService {
 		private readonly challengeService: ChallengeService,
 		private readonly sleepEntryService: SleepEntryService,
 		private readonly friendshipService: FriendshipService,
+		private readonly userInventoryService: UserInventoryService,
 	) {}
 
 	async getProfileByUsername(username: string, userId: string | null) {
@@ -24,6 +26,10 @@ export class ProfileService {
 		const sleepEntries = (await this.sleepEntryService.findByUserId(user.id))
 			.length;
 
+		const equippedItems = await this.userInventoryService.getUserEquippedItems(
+			user.id,
+		);
+
 		let friendship: Friendship | null = null;
 
 		if (userId && user.id !== userId) {
@@ -35,6 +41,12 @@ export class ProfileService {
 
 		const { email, role, ...result } = user;
 
-		return { ...result, friendship, completedChallenges, sleepEntries };
+		return {
+			...result,
+			friendship,
+			completedChallenges,
+			sleepEntries,
+			equippedItems,
+		};
 	}
 }

@@ -30,7 +30,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 	}
 
 	return (
-		<div className="container page">
+		<div className="page">
 			<Profile username={username} />
 		</div>
 	);

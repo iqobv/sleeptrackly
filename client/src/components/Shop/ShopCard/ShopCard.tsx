@@ -2,7 +2,7 @@ import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { PRODUCT_TYPES } from '@/constants';
+import { ITEM_TYPES, PRODUCT_TYPES } from '@/constants';
 import { IProduct } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -38,12 +38,24 @@ const ShopCard = ({ product }: ShopCardProps) => {
 	return (
 		<div className={styles['shop-card']}>
 			<div className={styles['shop-card__image-wrapper']}>
-				<Image
-					src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
-					alt={key?.translation.name || 'Product Image'}
-					width={160}
-					height={160}
-				/>
+				{product.itemType === ITEM_TYPES.ANIMATED_AVATAR ? (
+					<video
+						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
+						loop
+						autoPlay
+						muted
+						width={160}
+						height={160}
+						className={styles['shop-card__video']}
+					/>
+				) : (
+					<Image
+						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
+						alt={key?.translation.name || 'Product Image'}
+						width={160}
+						height={160}
+					/>
+				)}
 			</div>
 			<div>
 				<h4 className={styles['shop-card__title']}>{key?.translation.name}</h4>
