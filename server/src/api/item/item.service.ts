@@ -24,8 +24,6 @@ export class ItemService {
 	async createItem(dto: CreateItemDto, file: Express.Multer.File) {
 		const { translations, ...rest } = dto;
 
-		console.log(dto);
-
 		if (!file) throw new BadRequestException('Item image is required');
 
 		const item = await this.prismaService.item.create({
@@ -95,7 +93,7 @@ export class ItemService {
 			where: { id: itemId },
 			data: {
 				mediaUrl: uploadResult.key,
-				isAnimated: isVideo || file.mimetype.startsWith('image/'),
+				isAnimated: isVideo,
 			},
 		});
 	}
