@@ -1,0 +1,13 @@
+.featured-shop-carousel-includes {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	&__bundle-info {
+		font-size: 1.05rem;
+	}
+
+	&__item-list {
+		font-size: 1rem;
+	}
+}

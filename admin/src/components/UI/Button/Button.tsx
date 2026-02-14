@@ -19,6 +19,7 @@ export default function Button({
 	size = 'md',
 	fullWidth = false,
 	isIcon = false,
+	contentClassName = '',
 	...rest
 }: ButtonProps) {
 	const isLink = !!href && !disabled && !loading;
@@ -42,7 +43,9 @@ export default function Button({
 					onClick={onClick}
 					{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
 				>
-					<ButtonContent loading={loading}>{children}</ButtonContent>
+					<ButtonContent loading={loading} className={contentClassName}>
+						{children}
+					</ButtonContent>
 				</Link>
 			) : (
 				<button

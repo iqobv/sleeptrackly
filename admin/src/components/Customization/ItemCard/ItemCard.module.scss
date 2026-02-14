@@ -1,0 +1,21 @@
+.list-item {
+	border: 1px solid #333;
+	border-radius: 8px;
+	padding: 16px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	gap: 20px;
+
+	&__media {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	&__actions {
+		display: flex;
+		justify-content: space-between;
+		gap: 8px;
+	}
+}

@@ -16,4 +16,7 @@ export const PAGES = {
 	RESET_PASSWORD_TOKEN: (token: string) => `/reset-password?token=${token}`,
 	FRIENDS: '/friends',
 	FRIENDS_REQUESTS: '/friends/pending',
+	INVENTORY: '/inventory',
+	SHOP: '/shop',
+	SHOP_CATALOG: '/shop/catalog',
 } as const;

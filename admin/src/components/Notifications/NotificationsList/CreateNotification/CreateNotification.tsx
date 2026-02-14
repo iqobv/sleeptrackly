@@ -35,7 +35,6 @@ const CreateNotification = () => {
 	});
 
 	const onSubmit = (data: CreateNotificationDto) => {
-		console.log(data);
 		mutate(data);
 		reset();
 	};

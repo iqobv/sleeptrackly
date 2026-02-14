@@ -47,7 +47,6 @@ const ReportModal = ({
 				<input type="hidden" {...register('reportedId')} />
 				<Select
 					options={REPORT_TITLES_OPTIONS as IOption[]}
-					fullWidth
 					label="Select a report title"
 					placeholder="Select a report title"
 					error={
@@ -55,7 +54,13 @@ const ReportModal = ({
 							? errors.title?.message
 							: ''
 					}
-					onChange={(option) => setSelectedTitle(option)}
+					value={selectedTitle?.value || ''}
+					onChange={(value) => {
+						setSelectedTitle(
+							REPORT_TITLES_OPTIONS.find((option) => option.value === value) ||
+								null,
+						);
+					}}
 				/>
 				{selectedTitle?.value === REPORT_TITLES.OTHER ? (
 					<TextField

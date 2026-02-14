@@ -1,3 +1,5 @@
+import { IEquippedItems } from '../item/equippedItems.types';
+
 export interface IUser {
 	id: string;
 	email: string;
@@ -9,4 +11,8 @@ export interface IUser {
 		url: string;
 		isDefault: boolean;
 	};
+	coins: {
+		amount: number;
+	};
+	equippedItems: IEquippedItems[];
 }

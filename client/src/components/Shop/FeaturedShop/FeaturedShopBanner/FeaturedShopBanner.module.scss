@@ -1,0 +1,16 @@
+.featured-shop-banner {
+	width: 100%;
+	padding: 20px;
+	background-color: var(--featured-banner-bg);
+	border-radius: 8px;
+	border: 1px solid var(--featured-banner-border);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	gap: 10px;
+
+	&__text {
+		font-size: 1.3rem;
+	}
+}

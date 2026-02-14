@@ -1,12 +1,10 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PAGES } from './config';
-import { IUser } from './types';
 
 export async function middleware(request: NextRequest) {
 	const cookiesStore = await cookies();
 	const hasSession = cookiesStore.has('session');
-	const allCookies = cookiesStore.toString();
 
 	const ip =
 		request.headers.get('x-forwarded-for') ??
@@ -15,31 +13,10 @@ export async function middleware(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set('x-forwarded-for', ip);
 
-	let isAuthenticated = false;
-	let user: IUser | null = null;
-
-	if (hasSession) {
-		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
-			headers: {
-				'Content-Type': 'application/json',
-				cookie: allCookies,
-			},
-		});
-		const data = (await res.json()) as IUser;
-
-		if (res.ok && data?.id) {
-			user = data;
-			isAuthenticated = true;
-		} else {
-			cookiesStore.delete('session');
-			isAuthenticated = false;
-		}
-	}
-
 	const path = request.nextUrl.pathname;
 
 	if (
-		!isAuthenticated &&
+		!hasSession &&
 		(path.startsWith(PAGES.DASHBOARD) ||
 			path.startsWith(PAGES.TIMER) ||
 			path.startsWith(PAGES.CHALLENGES) ||
@@ -58,18 +35,11 @@ export async function middleware(request: NextRequest) {
 	};
 
 	if (
-		isAuthenticated &&
+		hasSession &&
 		(path.startsWith(PAGES.LOGIN) ||
 			path.startsWith(PAGES.REGISTER) ||
-			path.startsWith(PAGES.RESET_PASSWORD))
-	) {
-		return redirectBack();
-	}
-
-	if (
-		isAuthenticated &&
-		user?.emailVerified &&
-		path.startsWith(PAGES.EMAIL_CONFIRMATION)
+			path.startsWith(PAGES.RESET_PASSWORD) ||
+			path.startsWith(PAGES.EMAIL_CONFIRMATION))
 	) {
 		return redirectBack();
 	}

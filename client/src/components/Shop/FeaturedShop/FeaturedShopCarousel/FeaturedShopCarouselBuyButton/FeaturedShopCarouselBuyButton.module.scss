@@ -1,0 +1,41 @@
+.buy-button-container {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.buy-button-content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 15px;
+}
+
+.buy-button {
+	background-color: var(--featured-button-bg);
+	color: var(--featured-button-color);
+
+	&:hover {
+		background-color: var(--featured-button-bg-hover);
+	}
+}
+
+.price-info {
+	position: relative;
+
+	&:has(.discounted-price) {
+		.price {
+			text-decoration: line-through;
+			color: var(--featured-through-price-color);
+			font-size: 0.9rem;
+			position: absolute;
+			bottom: 17px;
+			font-weight: 300;
+		}
+	}
+}
+
+.discounted-price {
+	font-weight: 700;
+	color: var(--primary-color);
+}

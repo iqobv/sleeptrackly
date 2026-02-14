@@ -59,4 +59,13 @@ export const QUERY_KEYS = {
 			['updateNotificationSettings', userId] as const,
 		markAllAsRead: (userId: string) => ['markAllAsRead', userId] as const,
 	},
+	inventory: {
+		all: (userId: string, page: number) => ['inventory', userId, page] as const,
+		equipItem: (itemId: string) => ['equipItem', itemId] as const,
+	},
+	shop: {
+		featured: ['featuredShop'] as const,
+		allProducts: (filters: string) => ['allProducts', filters] as const,
+		makePurchase: (productId: string) => ['makePurchase', productId] as const,
+	},
 } as const;

@@ -1,0 +1,21 @@
+.translations {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	padding: 16px;
+
+	&__item {
+		display: flex;
+		gap: 16px;
+		flex-direction: row;
+		align-items: center;
+	}
+
+	&__fields {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+		flex-direction: column;
+		flex: 1;
+	}
+}

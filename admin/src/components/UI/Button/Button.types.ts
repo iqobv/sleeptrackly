@@ -12,7 +12,7 @@ export interface ButtonBaseProps {
 	children: React.ReactNode;
 	variant?: ButtonVariant;
 	onClick?: (
-		event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+		event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>,
 	) => void;
 	disabled?: boolean;
 	loading?: boolean;
@@ -22,23 +22,20 @@ export interface ButtonBaseProps {
 	size?: ButtonSize;
 	fullWidth?: boolean;
 	isIcon?: boolean;
+	contentClassName?: string;
 }
 
 interface AnchorButtonProps
-	extends Omit<
-			React.AnchorHTMLAttributes<HTMLAnchorElement>,
-			keyof ButtonBaseProps
-		>,
+	extends
+		Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, keyof ButtonBaseProps>,
 		ButtonBaseProps {
 	href: string;
 	type?: never;
 }
 
 interface NativeButtonProps
-	extends Omit<
-			React.ButtonHTMLAttributes<HTMLButtonElement>,
-			keyof ButtonBaseProps
-		>,
+	extends
+		Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, keyof ButtonBaseProps>,
 		ButtonBaseProps {
 	href?: undefined;
 	type?: ButtonType;
