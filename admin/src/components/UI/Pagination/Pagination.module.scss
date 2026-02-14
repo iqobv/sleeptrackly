@@ -1,0 +1,11 @@
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	gap: 8px;
+}
+
+.pagination__ellipsis {
+	cursor: default;
+	pointer-events: none;
+}

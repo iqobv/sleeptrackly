@@ -30,6 +30,7 @@ import {
 	ItemDto,
 	PaginatedItemsDto,
 	UpdateItemDto,
+	UpdateItemDtoSwaggerDto,
 } from './dto';
 import { ItemService } from './item.service';
 
@@ -94,6 +95,14 @@ export class ItemController {
 	}
 
 	@Auth(UserRole.ADMIN)
+	@ApiOperation({ summary: 'Get all available items with pagination' })
+	@ApiOkResponse({ type: PaginatedItemsDto })
+	@Get('available')
+	async getAllAvailableItems(@Query() query: PaginationQueryDto) {
+		return await this.itemService.getAllAvailableItems(query);
+	}
+
+	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get item by ID' })
 	@ApiOkResponse({ type: ItemDto })
 	@Get('id/:id')
@@ -104,9 +113,27 @@ export class ItemController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update an existing item' })
 	@ApiOkResponse({ type: ItemDto })
+	@UseInterceptors(FileInterceptor('file'))
+	@ApiBody({ type: UpdateItemDtoSwaggerDto })
+	@ApiConsumes('multipart/form-data')
 	@Patch(':id')
-	async updateItem(@Param('id') id: string, @Body() dto: UpdateItemDto) {
-		return await this.itemService.updateItem(id, dto);
+	async updateItem(
+		@Param('id') id: string,
+		@Body() dto: UpdateItemDto,
+		@UploadedFile(
+			new ParseFilePipe({
+				fileIsRequired: false,
+				validators: [
+					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+					new FileTypeValidator({
+						fileType: /(png|jpeg|jpg|gif|webp|webm|mp4|mov|avi)$/,
+					}),
+				],
+			}),
+		)
+		file: Express.Multer.File,
+	) {
+		return await this.itemService.updateItem(id, dto, file);
 	}
 
 	@Auth(UserRole.ADMIN)

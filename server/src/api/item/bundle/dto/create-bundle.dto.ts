@@ -28,7 +28,13 @@ export class CreateBundleDto extends OmitType(CreateItemDto, [
 	})
 	@Transform(({ value }: { value: unknown }) => {
 		if (typeof value === 'string') {
-			return value.split(',').map((id: string) => id.trim());
+			const parsed: string[] = JSON.parse(value) as unknown as string[];
+
+			if (Array.isArray(parsed)) {
+				return parsed.map((id: string) => id.trim());
+			}
+
+			return [];
 		}
 		return value;
 	})
