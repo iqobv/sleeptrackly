@@ -6,10 +6,18 @@ on:
     paths:
       - 'server/**'
       - '.github/workflows/**'
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: 'Run data migration? (data-migration-runner)?'
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,6 +34,7 @@ jobs:
           context: ./server
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
+            ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:${{ github.sha }}
           build-args: |
             POSTGRES_URI=${{ secrets.POSTGRES_URI }}
 
@@ -57,7 +66,16 @@ jobs:
               --env-file .env \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest \
               npx prisma migrate deploy
-              sh -c "if [ -f dist/src/data-migration-runner.js ]; then node dist/src/data-migration-runner.js; else echo 'No migration script found, skipping...'; fi"
+
+            docker run --rm \
+              --env-file .env \
+              ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest \
+              sh -c "if [ '${{ github.event.inputs.run_migrations }}' = 'true' ]; then \
+                echo 'Running data migration...'; \
+                node dist/src/data-migration-runner.js; \
+              else \
+                echo 'Skipping data migration...'; \
+              fi"
 
             docker stop nestjs-server || true
             docker rm nestjs-server || true
