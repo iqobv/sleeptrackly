@@ -1,0 +1,16 @@
+model BundleTranslation {
+  id String @id @default(uuid())
+
+  bundleId String @map("bundle_id")
+
+  language String
+  name     String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  bundle Bundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+
+  @@unique([bundleId, language])
+  @@map("bundle_translations")
+}

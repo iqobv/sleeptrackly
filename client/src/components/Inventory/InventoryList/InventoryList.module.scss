@@ -1,0 +1,11 @@
+@use '../../../styles/mixins' as *;
+
+.inventory-list {
+	padding: 20px 16px;
+}
+
+.inventory-items__list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 16px;
+}

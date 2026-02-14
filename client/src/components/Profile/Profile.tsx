@@ -20,15 +20,30 @@ const Profile = ({ username }: ProfileProps) => {
 		retry: false,
 	});
 
+	const backgroundItem = data?.equippedItems.find(
+		(ei) => ei.item.type === 'BACKGROUND_IMAGE',
+	);
+
 	return (
-		<div className={styles['profile']}>
-			{isLoading && <ProfileSkeleton />}
-			{!isLoading && data && (
-				<>
-					<ProfileMainInfo profile={data} />
-					<ProfileStatistics profile={data} />
-				</>
-			)}
+		<div
+			className={`${styles['profile']} page`}
+			style={
+				backgroundItem
+					? {
+							backgroundImage: `url(${process.env.NEXT_PUBLIC_CDN_URL}/${backgroundItem.item.mediaUrl})`,
+						}
+					: {}
+			}
+		>
+			<div className={`${styles['profile__container']} container page`}>
+				{isLoading && <ProfileSkeleton />}
+				{!isLoading && data && (
+					<>
+						<ProfileMainInfo profile={data} />
+						<ProfileStatistics profile={data} />
+					</>
+				)}
+			</div>
 		</div>
 	);
 };

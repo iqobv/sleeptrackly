@@ -23,4 +23,13 @@ export class UserDto {
 		url: string;
 		isDefault: boolean;
 	};
+
+	@ApiProperty({
+		example: {
+			amount: 1000,
+		},
+	})
+	coins: {
+		amount: number;
+	};
 }

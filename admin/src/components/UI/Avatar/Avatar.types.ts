@@ -4,4 +4,5 @@ export interface AvatarProps {
 	containerClassName?: string;
 	avatarClassName?: string;
 	priority?: boolean;
+	isVideo?: boolean;
 }

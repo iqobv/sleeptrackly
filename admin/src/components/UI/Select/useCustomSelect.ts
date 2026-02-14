@@ -7,16 +7,12 @@ export const useCustomSelect = ({
 	options,
 	isSearchable,
 	onChange,
-	initialValue,
 }: {
 	options: IOption[];
 	isSearchable?: boolean;
 	onChange?: (option: IOption | null) => void;
-	initialValue?: IOption | null;
 }) => {
-	const [selectedValue, setSelectedValue] = useState<IOption | null>(
-		initialValue ?? null
-	);
+	const [selectedValue, setSelectedValue] = useState<IOption | null>(null);
 	const [showMenu, setShowMenu] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -24,13 +20,6 @@ export const useCustomSelect = ({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 	const id = useId();
-
-	useEffect(() => {
-		if (initialValue) {
-			setSelectedValue(initialValue);
-			setSearchTerm('');
-		}
-	}, [initialValue]);
 
 	useEffect(() => {
 		const handler = (e: MouseEvent) => {

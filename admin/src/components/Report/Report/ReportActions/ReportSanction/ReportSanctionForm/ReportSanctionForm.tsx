@@ -85,20 +85,15 @@ const ReportSanctionForm = ({
 				name="type"
 				control={control}
 				render={({ field }) => {
-					const options = USER_SANCTIONS_OPTIONS;
-					const currentOption =
-						options.find((opt) => opt.value === field.value) || null;
-
 					return (
 						<Select
 							options={USER_SANCTIONS_OPTIONS as UserSanctionOption[]}
 							isClearable
-							fullWidth
 							label="Sanction type"
 							placeholder="Select sanction type"
 							error={errors['type']?.message as string}
-							value={currentOption}
-							onChange={(option) => field.onChange(option ? option.value : '')}
+							value={field.value}
+							onChange={(value: string) => field.onChange(value)}
 						/>
 					);
 				}}

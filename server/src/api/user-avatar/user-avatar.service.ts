@@ -8,20 +8,22 @@ import {
 	Injectable,
 } from '@nestjs/common';
 import { UserSanctionType } from '@prisma/client';
-import { randomUUID } from 'crypto';
 import dayjs from 'dayjs';
 import { firstValueFrom } from 'rxjs';
-import { CloudinaryService } from 'src/infra/cloudinary/cloudinary.service';
+import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { DEFAULT_AVATAR } from 'src/libs/constants';
+import { R2Service } from 'src/infra/r2/r2.service';
 import { Readable } from 'stream';
+import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class UserAvatarService {
+	private readonly DEFAULT_AVATAR_PATH = 'defaults/default-avatar.png';
+
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly cloudinaryService: CloudinaryService,
+		private readonly r2Service: R2Service,
 		private readonly httpService: HttpService,
 		@Inject(forwardRef(() => UserService))
 		private readonly userService: UserService,
@@ -66,18 +68,23 @@ export class UserAvatarService {
 				);
 		}
 
-		const filename = randomUUID();
+		const processedBuffer = await sharp(file.buffer)
+			.webp({ quality: 100 })
+			.resize(800, 800, { fit: 'cover' })
+			.toBuffer();
+
+		const filename = uuidv4();
 		file.filename = filename;
 
-		if (!avatar.isDefault)
-			await this.cloudinaryService.deleteFile(avatar.url.split('.')[0]);
+		if (!avatar.isDefault) await this.r2Service.delete(avatar.url);
 
-		const metadata = await this.cloudinaryService.uploadFile(file, {
-			filename_override: filename,
-			public_id: filename,
-		});
+		const metadata = await this.r2Service.upload(
+			processedBuffer,
+			`avatars/${filename}.webp`,
+			'image/webp',
+		);
 
-		const url = `${metadata.public_id}.${metadata.format}`;
+		const url = metadata.key;
 
 		if (!metadata) throw new BadGatewayException('Error uploading image');
 
@@ -117,7 +124,10 @@ export class UserAvatarService {
 		if (existingAvatar) throw new ConflictException('Avatar already exists');
 
 		const newAvatar = await this.prismaService.userAvatar.create({
-			data: { user: { connect: { id: userId } } },
+			data: {
+				url: this.DEFAULT_AVATAR_PATH,
+				user: { connect: { id: userId } },
+			},
 		});
 
 		return newAvatar;
@@ -140,15 +150,34 @@ export class UserAvatarService {
 	private async update(id: string, url: string) {
 		return await this.prismaService.userAvatar.update({
 			where: { id },
-			data: { url, isDefault: !!url.includes(DEFAULT_AVATAR) },
+			data: { url, isDefault: !!url.includes(this.DEFAULT_AVATAR_PATH) },
 		});
 	}
 
 	async deleteAvatar(userId: string) {
 		const avatar = await this.findByUserId(userId);
 
-		if (avatar) await this.cloudinaryService.deleteFile(avatar.url);
+		if (avatar) await this.r2Service.delete(avatar.url);
 
-		return await this.update(avatar?.id, DEFAULT_AVATAR);
+		return await this.update(avatar?.id, this.DEFAULT_AVATAR_PATH);
+	}
+
+	async fixAvatarUrls() {
+		const avatars = await this.prismaService.userAvatar.findMany({
+			where: {
+				isDefault: false,
+				url: { not: { startsWith: 'avatars/' } },
+			},
+		});
+
+		for (const avatar of avatars) {
+			const url = avatar.url;
+			if (!url.startsWith('avatars/')) {
+				await this.prismaService.userAvatar.update({
+					where: { id: avatar.id },
+					data: { url: `avatars/${url}` },
+				});
+			}
+		}
 	}
 }

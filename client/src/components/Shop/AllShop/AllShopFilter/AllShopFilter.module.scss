@@ -1,0 +1,30 @@
+@use '../../../../styles/mixins' as *;
+
+.filter {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	width: 100%;
+	background-color: var(--shop-filter-bg);
+	border: 1px solid var(--shop-filter-border);
+	border-radius: 8px;
+	padding: 16px;
+	height: fit-content;
+
+	@include response('lg') {
+		max-width: 300px;
+	}
+
+	&__option {
+		gap: 4px;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.radio,
+.checkbox {
+	margin-right: 8px;
+	width: 16px;
+	height: 16px;
+}
