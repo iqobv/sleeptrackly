@@ -33,7 +33,8 @@ jobs:
         with:
           context: ./server
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
             ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:${{ github.sha }}
           build-args: |
             POSTGRES_URI=${{ secrets.POSTGRES_URI }}
