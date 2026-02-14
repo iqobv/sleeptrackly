@@ -113,6 +113,7 @@ export class UserInventoryService {
 						id: true,
 						type: true,
 						mediaUrl: true,
+						isAnimated: true,
 					},
 				},
 			},

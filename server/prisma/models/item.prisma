@@ -4,6 +4,7 @@ model Item {
   type ProfileItemType
 
   isExclusive Boolean @default(false) @map("is_exclusive")
+  isAnimated  Boolean @default(false) @map("is_animated")
 
   rarity    ItemRarity
   basePrice Int        @map("base_price")

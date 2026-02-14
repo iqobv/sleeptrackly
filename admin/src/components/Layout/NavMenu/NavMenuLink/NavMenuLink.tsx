@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/UI';
 import { useState } from 'react';
+import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { NavMenuLinksProps } from '../navMenuLinks';
 import styles from './NavMenuLink.module.scss';
 
@@ -13,8 +14,10 @@ interface NavMenuLinkProps {
 const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	const [isExpanded, setExpanded] = useState(false);
 
-	const handleExpand = () => {
+	const handleExpand = (e: React.MouseEvent) => {
 		if (link.expanded && link.innerLinks) {
+			e.stopPropagation();
+			e.preventDefault();
 			setExpanded((prev) => !prev);
 		}
 	};
@@ -33,8 +36,14 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 					<p className={styles['menu-link__text']}>{link.label}</p>
 				</div>
 				{isOpen && link.expanded && (
-					<div className={styles['menu-link__expand']} onClick={handleExpand}>
-						▼
+					<div
+						className={`${styles['menu-link__expand']}`}
+						onClick={handleExpand}
+					>
+						<MdOutlineArrowDropDown
+							className={`${styles['menu-link__expand-icon']} ${isExpanded ? styles['menu-link__expand-icon--expanded'] : ''}`}
+							size={30}
+						/>
 					</div>
 				)}
 			</Button>

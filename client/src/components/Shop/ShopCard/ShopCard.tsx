@@ -2,7 +2,7 @@ import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { ITEM_TYPES, PRODUCT_TYPES } from '@/constants';
+import { PRODUCT_TYPES } from '@/constants';
 import { IProduct } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ const ShopCard = ({ product }: ShopCardProps) => {
 	return (
 		<div className={styles['shop-card']}>
 			<div className={styles['shop-card__image-wrapper']}>
-				{product.itemType === ITEM_TYPES.ANIMATED_AVATAR ? (
+				{product.item?.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
 						loop

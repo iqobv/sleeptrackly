@@ -64,6 +64,14 @@
 		}
 	}
 
+	&__expand-icon {
+		transition: transform 0.2s ease;
+
+		&--expanded {
+			transform: rotate(180deg);
+		}
+	}
+
 	&__content {
 		display: flex;
 		align-items: center;

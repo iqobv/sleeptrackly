@@ -12,8 +12,8 @@ const UserMenu = () => {
 
 	const { open, user, onClose, handleLogout } = useUserMenu();
 
-	const animatedAvatar = user?.equippedItems.find(
-		(ei) => ei.item.type === 'ANIMATED_AVATAR',
+	const avatar = user?.equippedItems.find(
+		(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
 	);
 
 	if (!user) return null;
@@ -24,12 +24,10 @@ const UserMenu = () => {
 			<div className={styles['user-menu__wrapper']} ref={buttonRef}>
 				<button onClick={onClose} className={styles['user-menu__btn']}>
 					<Avatar
-						avatar={
-							animatedAvatar ? animatedAvatar.item.mediaUrl : user.avatar?.url
-						}
+						avatar={avatar ? avatar.item.mediaUrl : user.avatar?.url}
 						size={40}
 						priority
-						isVideo={!!animatedAvatar}
+						isVideo={avatar?.item.isAnimated || false}
 					/>
 				</button>
 				<UserMenuDropdown

@@ -21,6 +21,9 @@ export class ItemDto {
 	@ApiProperty({ example: false })
 	isExclusive: boolean;
 
+	@ApiProperty({ example: false })
+	isAnimated: boolean;
+
 	@ApiProperty({ example: 1000 })
 	basePrice: number;
 
