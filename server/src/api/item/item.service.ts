@@ -3,6 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';
@@ -22,6 +23,8 @@ export class ItemService {
 
 	async createItem(dto: CreateItemDto, file: Express.Multer.File) {
 		const { translations, ...rest } = dto;
+
+		console.log(dto);
 
 		if (!file) throw new BadRequestException('Item image is required');
 
@@ -118,6 +121,33 @@ export class ItemService {
 		});
 	}
 
+	async getAllAvailableItems(query: PaginationQueryDto) {
+		const { page = 1, limit = 20 } = query;
+
+		const where: Prisma.ItemWhereInput = {
+			products: { is: null },
+		};
+
+		return await paginate({ page, limit }, async (limit, offset) => {
+			const [total, items] = await this.prismaService.$transaction([
+				this.prismaService.item.count({ where }),
+				this.prismaService.item.findMany({
+					where,
+					skip: offset,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						translations: true,
+					},
+				}),
+			]);
+
+			return { items, total };
+		});
+	}
+
 	async getById(id: string) {
 		const item = await this.prismaService.item.findFirst({
 			where: {
@@ -133,10 +163,24 @@ export class ItemService {
 		return item;
 	}
 
-	async updateItem(id: string, dto: UpdateItemDto) {
+	async updateItem(id: string, dto: UpdateItemDto, file?: Express.Multer.File) {
 		const { translations, ...rest } = dto;
 
+		console.log(dto);
+
 		return await this.prismaService.$transaction(async (tx) => {
+			const item = await tx.item.findUnique({
+				where: { id },
+			});
+
+			if (!item) {
+				throw new NotFoundException('Item not found');
+			}
+
+			if (file) {
+				await this.uploadItemImage(file, id);
+			}
+
 			if (translations && translations.length > 0) {
 				const translationPromises = translations.map((translation) =>
 					tx.itemTranslation.upsert({
@@ -159,11 +203,18 @@ export class ItemService {
 				await Promise.all(translationPromises);
 			}
 
-			return await tx.item.update({
+			await tx.item.update({
 				where: { id },
 				data: {
 					...rest,
 				},
+				include: {
+					translations: true,
+				},
+			});
+
+			return await tx.item.findUnique({
+				where: { id },
 				include: {
 					translations: true,
 				},

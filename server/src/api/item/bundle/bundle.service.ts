@@ -98,22 +98,32 @@ export class BundleService {
 		return bundle;
 	}
 
-	async updateBundle(id: string, dto: UpdateBundleDto) {
-		const { translations, ...rest } = dto;
+	async updateBundle(
+		id: string,
+		dto: UpdateBundleDto,
+		file?: Express.Multer.File,
+	) {
+		const { translations, itemsIds, ...rest } = dto;
 
 		return await this.prismaService.$transaction(async (tx) => {
+			const bundle = await this.getById(id);
+
+			if (file) {
+				await this.uploadBundleImage(file, bundle.id);
+			}
+
 			if (translations && translations.length > 0) {
 				const translationPromises = translations.map((translation) =>
 					tx.bundleTranslation.upsert({
 						where: {
 							bundleId_language: {
-								bundleId: id,
+								bundleId: bundle.id,
 								language: translation.language,
 							},
 						},
 						create: {
 							...translation,
-							bundleId: id,
+							bundleId: bundle.id,
 						},
 						update: {
 							name: translation.name,
@@ -124,12 +134,30 @@ export class BundleService {
 				await Promise.all(translationPromises);
 			}
 
-			return await tx.bundle.update({
-				where: { id },
+			if (itemsIds && itemsIds.length > 0) {
+				await tx.itemInBundle.deleteMany({
+					where: { bundleId: bundle.id },
+				});
+			}
+
+			await tx.bundle.update({
+				where: { id: bundle.id },
 				data: {
 					...rest,
+					items: itemsIds
+						? {
+								create: itemsIds.map((itemId: string) => ({
+									itemId: itemId,
+								})),
+							}
+						: undefined,
 				},
+			});
+
+			return await tx.bundle.findUnique({
+				where: { id: bundle.id },
 				include: {
+					items: true,
 					translations: true,
 				},
 			});

@@ -31,6 +31,7 @@ import {
 	CreateBundleSwaggerDto,
 	FullBundleDto,
 	UpdateBundleDto,
+	UpdateBundleSwaggerDto,
 } from './dto';
 
 @Controller('items/bundles')
@@ -78,9 +79,25 @@ export class BundleController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update a bundle by ID' })
 	@ApiOkResponse({ type: BundleDto })
+	@ApiConsumes('multipart/form-data')
+	@UseInterceptors(FileInterceptor('file'))
+	@ApiBody({ type: UpdateBundleSwaggerDto })
 	@Patch(':id')
-	async updateBundle(@Param('id') id: string, @Body() dto: UpdateBundleDto) {
-		return await this.bundleService.updateBundle(id, dto);
+	async updateBundle(
+		@Param('id') id: string,
+		@Body() dto: UpdateBundleDto,
+		@UploadedFile(
+			new ParseFilePipe({
+				fileIsRequired: false,
+				validators: [
+					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
+					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
+				],
+			}),
+		)
+		file: Express.Multer.File,
+	) {
+		return await this.bundleService.updateBundle(id, dto, file);
 	}
 
 	@Auth(UserRole.ADMIN)
