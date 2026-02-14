@@ -10,6 +10,7 @@ export interface IItem {
 	basePrice: number;
 	mediaUrl: string;
 	createdAt: Date;
+	isAnimated: boolean;
 	updatedAt: Date;
 	translations: ITranslation[];
 }

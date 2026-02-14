@@ -19,7 +19,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 	return (
 		<div className={styles['product-card']}>
 			<div className={styles['product-card__media']}>
-				{product.item?.type === 'ANIMATED_AVATAR' ? (
+				{product.item?.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${product.item.mediaUrl}`}
 						loop

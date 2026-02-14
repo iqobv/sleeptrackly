@@ -95,6 +95,7 @@ export class ItemService {
 			where: { id: itemId },
 			data: {
 				mediaUrl: uploadResult.key,
+				isAnimated: isVideo || file.mimetype.startsWith('image/'),
 			},
 		});
 	}
@@ -165,8 +166,6 @@ export class ItemService {
 
 	async updateItem(id: string, dto: UpdateItemDto, file?: Express.Multer.File) {
 		const { translations, ...rest } = dto;
-
-		console.log(dto);
 
 		return await this.prismaService.$transaction(async (tx) => {
 			const item = await tx.item.findUnique({

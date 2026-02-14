@@ -16,8 +16,8 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const year = new Date(profile.createdAt).getFullYear().toString();
 	const { user } = useAuth();
 
-	const animatedAvatar = profile.equippedItems.find(
-		(ei) => ei.item.type === 'ANIMATED_AVATAR',
+	const avatar = profile.equippedItems.find(
+		(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
 	);
 	const avatarFrame = profile.equippedItems.find(
 		(ei) => ei.item.type === 'AVATAR_FRAME',
@@ -28,12 +28,10 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 		<div className={styles['profile-main-info']}>
 			<div className={styles['profile-main-info__avatar-wrapper']}>
 				<Avatar
-					avatar={
-						animatedAvatar ? animatedAvatar.item.mediaUrl : profile.avatar?.url
-					}
+					avatar={avatar ? avatar.item.mediaUrl : profile.avatar?.url}
 					size={300}
 					priority
-					isVideo={!!animatedAvatar}
+					isVideo={avatar?.item.isAnimated}
 				/>
 				{avatarFrame && (
 					<CDNImage

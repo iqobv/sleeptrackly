@@ -38,7 +38,7 @@ const UpdateItem = ({ id }: UpdateItemProps) => {
 			}}
 		>
 			<ItemForm<UpdateItemDto>
-				isAnimated={data?.type === 'ANIMATED_AVATAR'}
+				isAnimated={data?.isAnimated}
 				mediaUrl={data?.mediaUrl}
 				isEdit
 				buttonLabel="Update Item"

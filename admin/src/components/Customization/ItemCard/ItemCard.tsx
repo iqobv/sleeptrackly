@@ -18,7 +18,7 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 	return (
 		<div key={item.id} className={styles['list-item']}>
 			<div className={styles['list-item__media']}>
-				{item.type === 'ANIMATED_AVATAR' ? (
+				{item.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.mediaUrl}`}
 						loop
