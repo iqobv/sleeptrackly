@@ -45,6 +45,8 @@ jobs:
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             cat <<'EOF' > .env
+            PORT=3000
+            NODE_ENV=production
             ${{ secrets.ENV_FILE }}
             POSTGRES_URI=${{ secrets.POSTGRES_URI }}
             EOF
@@ -64,7 +66,7 @@ jobs:
               --restart always \
               --env-file .env \
               -e NODE_ENV=production \
-              -p 80:3000 \
+              -p 127.0.0.1:3000:3000 \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
 
             docker image prune -f
