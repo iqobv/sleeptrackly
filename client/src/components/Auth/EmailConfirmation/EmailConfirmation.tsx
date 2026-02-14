@@ -1,7 +1,7 @@
 'use client';
 
 import { validateVerificationToken } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -19,7 +19,7 @@ const EmailConfirmation = () => {
 			validateVerificationToken(token),
 		mutationKey: QUERY_KEYS.auth.validateVerificationToken(
 			user?.id || '',
-			token
+			token,
 		),
 		onSuccess: () => {
 			router.refresh();
@@ -36,8 +36,14 @@ const EmailConfirmation = () => {
 	});
 
 	useEffect(() => {
-		if (token) mutate({ token });
-	}, [token, mutate]);
+		if (token && !user?.emailVerified) mutate({ token });
+	}, [token, user, mutate]);
+
+	useEffect(() => {
+		if (user && user.emailVerified) {
+			router.push(PAGES.HOME);
+		}
+	}, [user, router]);
 
 	return <div>{isSuccess && 'Email confirmed'}</div>;
 };

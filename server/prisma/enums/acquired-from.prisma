@@ -1,0 +1,7 @@
+enum AcquiredFrom {
+  BUNDLE
+  REWARD
+  PURCHASE
+  PROMOTION
+  ADMIN_GRANT
+}

@@ -1,0 +1,21 @@
+model UserInventory {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+  itemId String @map("item_id")
+
+  isEquipped Boolean @default(false) @map("is_equipped")
+
+  acquiredFrom AcquiredFrom @map("acquired_from")
+
+  acquiredAt DateTime @default(now()) @map("acquired_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  item Item @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+  @@map("user_inventories")
+}

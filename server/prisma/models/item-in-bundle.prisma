@@ -1,0 +1,10 @@
+model ItemInBundle {
+  itemId   String @map("item_id")
+  bundleId String @map("bundle_id")
+
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  bundle Bundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+
+  @@id([itemId, bundleId])
+  @@map("items_in_bundles")
+}

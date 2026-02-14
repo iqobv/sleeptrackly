@@ -7,7 +7,6 @@ import session, { Store } from 'express-session';
 import passport from 'passport';
 import { AppModule } from './app.module';
 import {
-	cloudinaryConfig,
 	getApiVersioningConfig,
 	getCorsConfig,
 	getSessionConfig,
@@ -45,7 +44,6 @@ async function bootstrap() {
 	app.use(passport.session());
 
 	setupSwagger(app);
-	cloudinaryConfig(config);
 
 	await app.listen(process.env.PORT ?? 5000);
 }

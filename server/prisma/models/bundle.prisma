@@ -1,0 +1,19 @@
+model Bundle {
+  id String @id @default(uuid())
+
+  isExclusive Boolean @default(false) @map("is_exclusive")
+
+  basePrice          Int @map("base_price")
+  discountPercentage Int @default(0) @map("discount_percentage")
+
+  mediaUrl String @map("media_url")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  translations BundleTranslation[]
+  items        ItemInBundle[]
+  products     Product?
+
+  @@map("bundles")
+}
