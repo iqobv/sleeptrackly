@@ -38,14 +38,14 @@ jobs:
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.DO_SSH_KEY }}
           script: |
             mkdir -p ~/app && cd ~/app
 
             echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
             echo "${{ secrets.ENV_FILE }}" > .env
-            echo "DATABASE_URL=${{ secrets.POSTGRES_URI }}" >> .env
+            echo "POSTGRES_URI=${{ secrets.POSTGRES_URI }}" >> .env
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
 
