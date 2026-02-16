@@ -1,9 +1,13 @@
 importScripts(
-	'https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js'
+	'https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js',
 );
 importScripts(
-	'https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js'
+	'https://www.gstatic.com/firebasejs/10.14.1/firebase-messaging-compat.js',
 );
+
+self.addEventListener('install', () => {
+	self.skipWaiting();
+});
 
 firebase.initializeApp({
 	apiKey: 'AIzaSyBBG7HyB2c3AHDb-my3Ix-rMR0KwZsVCsU',
@@ -18,10 +22,13 @@ firebase.initializeApp({
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-	const { title, body, url } = payload.notification || {};
-	self.registration.showNotification(title || 'Notification', {
-		body,
-		data: { url: payload.data?.url || url || '/' },
+	const { title, body, url } = payload.data || {};
+
+	const notificationTitle = title || 'Sleeptrackly';
+
+	self.registration.showNotification(notificationTitle, {
+		body: body || '',
+		data: { url: url || '/' },
 	});
 });
 
@@ -41,6 +48,6 @@ self.addEventListener('notificationclick', (e) => {
 				}
 			}
 			await self.clients.openWindow(targetUrl);
-		})()
+		})(),
 	);
 });
