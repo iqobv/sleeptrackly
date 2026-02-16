@@ -1,5 +1,12 @@
 # Server changelog
 
+## [3.0.1] - 2026-02-16
+
+### Fixed
+
+- Fixed bug which don't send notifications to users
+- Fixed bug when user receive two same notifications
+
 ## [3.0.0] - 2026-02-14 - "Coins and Customization"
 
 ### Added

@@ -1,5 +1,11 @@
 # Client changelog
 
+## [3.0.1] - 2026-02-16
+
+### Fixed
+
+- Fixed bug when user receive two same notifications
+
 ## [3.0.0] - 2026-02-14 - "Coins and Customization"
 
 ### Added
