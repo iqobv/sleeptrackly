@@ -161,11 +161,9 @@ export class NotificationService {
 		if (tokens.length === 0) return;
 
 		await this.fcmService.sendNotification(tokens, {
-			notification: {
-				title,
-				...(!!body && { body }),
-			},
 			data: {
+				title,
+				body: body || '',
 				url: redirectUrl ?? '/',
 			},
 		});
