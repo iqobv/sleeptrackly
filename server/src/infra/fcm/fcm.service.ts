@@ -14,25 +14,30 @@ export class FcmService {
 	) {
 		if (tokens.length === 0) return;
 
-		const res = await this.firebase.messaging().sendEachForMulticast({
-			tokens,
-			...payload,
-		});
+		try {
+			const res = await this.firebase.messaging().sendEachForMulticast({
+				tokens,
+				...payload,
+			});
 
-		const tokensToRemove: string[] = [];
+			const tokensToRemove: string[] = [];
 
-		res.responses.forEach((response, idx) => {
-			if (
-				!response.success &&
-				response.error &&
-				/registration-token-not-registered|invalid-registration-token/.test(
-					response.error.code,
-				)
-			) {
-				tokensToRemove.push(tokens[idx]);
-			}
-		});
+			res.responses.forEach((response, idx) => {
+				if (
+					!response.success &&
+					response.error &&
+					/registration-token-not-registered|invalid-registration-token/.test(
+						response.error.code,
+					)
+				) {
+					tokensToRemove.push(tokens[idx]);
+				}
+			});
 
-		return { ...res, tokensToRemove };
+			return { ...res, tokensToRemove };
+		} catch (error) {
+			console.error('Error sending notification:', error);
+			throw error;
+		}
 	}
 }
