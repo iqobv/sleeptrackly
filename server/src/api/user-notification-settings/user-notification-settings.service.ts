@@ -105,8 +105,6 @@ export class UserNotificationSettingsService {
 						showInApp: false,
 						redirectUrl: '/timer',
 					});
-
-					this.LOGGER.log(`User ${userId} - Push notification sent`);
 				}
 			}
 		}
