@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { Session } from '@prisma/client';
 import { RedisStore } from 'connect-redis';
 import { UserService } from 'src/api/user/user.service';
@@ -47,6 +48,13 @@ export class SessionService {
 		});
 
 		return session;
+	}
+
+	async refreshSession(sessionId: string, newExpiresAt: Date) {
+		await this.prismaService.session.updateMany({
+			where: { sessionId },
+			data: { expiresAt: newExpiresAt },
+		});
 	}
 
 	async getAllSessions(userId: string, currentSessionId: string) {
@@ -121,6 +129,28 @@ export class SessionService {
 		);
 
 		return true;
+	}
+
+	async terminateExpiredSessions() {
+		const now = new Date();
+
+		const expiredSessions = await this.prismaService.session.findMany({
+			where: { expiresAt: { lt: now } },
+		});
+
+		await Promise.all(
+			expiredSessions.map(async (session) => {
+				await this.destroyRedisSession(session.sessionId);
+				await this.prismaService.session.delete({ where: { id: session.id } });
+			}),
+		);
+
+		return true;
+	}
+
+	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+	async handleTerminateExpiredSessions() {
+		return await this.terminateExpiredSessions();
 	}
 
 	private async getInfoFromIp(ip: string) {
