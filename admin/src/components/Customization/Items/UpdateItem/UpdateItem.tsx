@@ -34,12 +34,14 @@ const UpdateItem = ({ id }: UpdateItemProps) => {
 					language: t.language,
 					name: t.name,
 				})) || [{ language: 'en', name: '' }],
-				file: null as unknown as File,
+				media: null as unknown as File,
+				preview: null as unknown as File,
 			}}
 		>
 			<ItemForm<UpdateItemDto>
 				isAnimated={data?.isAnimated}
 				mediaUrl={data?.mediaUrl}
+				previewUrl={data?.previewUrl}
 				isEdit
 				buttonLabel="Update Item"
 				id={id}

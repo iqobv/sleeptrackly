@@ -25,7 +25,8 @@ const CreateItem = () => {
 				basePrice: 0,
 				rarity: 'COMMON',
 				translations: [{ language: 'en', name: '' }],
-				file: null as unknown as File,
+				media: null as unknown as File,
+				preview: null as unknown as File,
 			}}
 		>
 			<ItemForm<CreateItemDto> />

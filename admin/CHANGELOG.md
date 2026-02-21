@@ -1,5 +1,12 @@
 # Admin changelog
 
+## [0.4.0] - 2026-02-21
+
+### Added
+
+- Added previewUrl field to item model
+- Added bundles list for create and edit product page
+
 ## [0.3.0] - 2026-02-14 - "Coins and Customization"
 
 ### Added

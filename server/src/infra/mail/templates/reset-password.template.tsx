@@ -28,7 +28,7 @@ export default function ResetPasswordTemplate({
 			<Tailwind>
 				<Body className="text-black text-center">
 					<Heading className="text-center text-3xl">
-						Welcome to Sleep Tracker
+						Welcome to Sleeptackly!
 					</Heading>
 					<Text className="text-center">
 						Please click the button below to reset your password.

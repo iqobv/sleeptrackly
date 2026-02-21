@@ -5,16 +5,22 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-interface FileFormProps {
+interface FileFormProps<T extends FieldValues> {
 	mediaUrl?: string;
+	pathname?: Path<T>;
+	label?: string;
 	isAnimated?: boolean;
 }
 
 const FileForm = <T extends FieldValues>({
 	mediaUrl,
+	pathname,
+	label = 'Upload File',
 	isAnimated,
-}: FileFormProps) => {
+}: FileFormProps<T>) => {
 	const [previewFile, setPreviewFile] = useState<File | null>(null);
+
+	const fieldPath = pathname as Path<T>;
 
 	const methods = useFormContext<T>();
 
@@ -28,8 +34,9 @@ const FileForm = <T extends FieldValues>({
 		if (files && files.length > 0) {
 			const file = files[0];
 			setPreviewFile(file);
-			setValue('file' as Path<T>, file as PathValue<T, Path<T>>, {
+			setValue(fieldPath, file as PathValue<T, Path<T>>, {
 				shouldValidate: true,
+				shouldDirty: true,
 			});
 		}
 	};
@@ -72,12 +79,12 @@ const FileForm = <T extends FieldValues>({
 			)}
 			<TextField
 				error={
-					typeof errors.file?.message === 'string'
-						? errors.file.message
+					typeof errors[fieldPath]?.message === 'string'
+						? (errors[fieldPath]?.message as string)
 						: undefined
 				}
 				type="file"
-				label="Upload File"
+				label={label}
 				onChange={onFileChange}
 			/>
 		</div>

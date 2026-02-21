@@ -9,6 +9,7 @@ export interface IItem {
 	rarity: TItemRarity;
 	basePrice: number;
 	mediaUrl: string;
+	previewUrl: string;
 	isAnimated: boolean;
 	createdAt: Date;
 	updatedAt: Date;

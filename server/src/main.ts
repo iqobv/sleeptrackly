@@ -12,6 +12,8 @@ import {
 	getSessionConfig,
 	getValidationPipeConfig,
 } from './config';
+import { PrismaService } from './infra/prisma/prisma.service';
+import { SessionRefreshInterceptor } from './libs/Interceptors';
 import { setupSwagger } from './libs/utils';
 
 async function bootstrap() {
@@ -19,6 +21,7 @@ async function bootstrap() {
 
 	const config = app.get(ConfigService);
 	const redisStore: Store = app.get('REDIS_STORE');
+	const prisma = app.get(PrismaService);
 
 	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
@@ -42,6 +45,8 @@ async function bootstrap() {
 
 	app.use(passport.initialize());
 	app.use(passport.session());
+
+	app.useGlobalInterceptors(new SessionRefreshInterceptor(prisma));
 
 	setupSwagger(app);
 

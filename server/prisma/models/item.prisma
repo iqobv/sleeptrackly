@@ -9,7 +9,8 @@ model Item {
   rarity    ItemRarity
   basePrice Int        @map("base_price")
 
-  mediaUrl String @map("media_url")
+  mediaUrl   String @map("media_url")
+  previewUrl String @default("") @map("preview_url")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

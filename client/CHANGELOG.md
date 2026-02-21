@@ -1,5 +1,11 @@
 # Client changelog
 
+## [0.4.1] - 2026-02-21
+
+### Added
+
+- Added previewUrl for items in customization shop
+
 ## [0.3.1] - 2026-02-16
 
 ### Fixed

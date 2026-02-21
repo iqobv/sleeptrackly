@@ -19,6 +19,7 @@ import {
 	ApiOperation,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { Auth, Authorized } from 'src/libs/decorators';
@@ -26,7 +27,7 @@ import { CreateUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { GoogleAuth, LocalAuth } from './decorators';
-import { LoginDto } from './dto';
+import { LoginDto, RegisterResultDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -39,6 +40,11 @@ export class AuthController {
 	@ApiOperation({ summary: 'Login with email and password' })
 	@ApiBody({ type: LoginDto })
 	@ApiUnauthorizedResponse({ description: 'Email or password is incorrect' })
+	@Throttle({
+		short: { limit: 2, ttl: 1000 },
+		medium: { limit: 3, ttl: 10000 },
+		long: { limit: 5, ttl: 60000 },
+	})
 	@ApiOkResponse({ type: UserDto })
 	@LocalAuth()
 	@HttpCode(HttpStatus.OK)
@@ -50,12 +56,17 @@ export class AuthController {
 
 	@ApiOperation({ summary: 'Register with email and password' })
 	@ApiBody({ type: CreateUserDto })
-	@ApiCreatedResponse({ type: UserDto })
+	@ApiCreatedResponse({ type: RegisterResultDto })
 	@ApiConflictResponse({ description: 'User already exists' })
+	@Throttle({
+		short: { limit: 2, ttl: 1000 },
+		medium: { limit: 3, ttl: 10000 },
+		long: { limit: 5, ttl: 60000 },
+	})
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	async register(@Req() req: Request, @Body() dto: CreateUserDto) {
-		return await this.authService.register(dto, req);
+	async register(@Body() dto: CreateUserDto) {
+		return await this.authService.register(dto);
 	}
 
 	@ApiOperation({ summary: 'Login with Google' })
@@ -92,6 +103,7 @@ export class AuthController {
 	@ApiOperation({ summary: 'Get profile' })
 	@ApiOkResponse({ type: UserDto })
 	@Auth()
+	@SkipThrottle()
 	@HttpCode(HttpStatus.OK)
 	@Get('me')
 	async getProfile(@Authorized('id') userId: string) {
@@ -99,6 +111,7 @@ export class AuthController {
 	}
 
 	@ApiOperation({ summary: 'Delete account' })
+	@Throttle({ long: { limit: 5, ttl: 60000 } })
 	@ApiOkResponse()
 	@Auth()
 	@HttpCode(HttpStatus.NO_CONTENT)

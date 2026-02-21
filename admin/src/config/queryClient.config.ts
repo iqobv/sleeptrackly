@@ -31,6 +31,8 @@ export const QUERY_KEYS = {
 			create: ['createItem'] as const,
 			update: (id: string) => ['updateItem', id] as const,
 			delete: (id: string) => ['deleteItem', id] as const,
+			getAllAvailable: (params: PaginationDto) =>
+				['getAllAvailableItems', params] as const,
 		},
 		bundle: {
 			getAll: (params: PaginationDto) => ['getAllBundles', params] as const,
@@ -38,6 +40,8 @@ export const QUERY_KEYS = {
 			create: ['createBundle'] as const,
 			update: (id: string) => ['updateBundle', id] as const,
 			delete: (id: string) => ['deleteBundle', id] as const,
+			getAllAvailable: (params: PaginationDto) =>
+				['getAllAvailableBundles', params] as const,
 		},
 		product: {
 			getAll: (params: PaginationWithLanguageDto) =>

@@ -15,12 +15,14 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 		item.translations[0]?.name ||
 		'No translation';
 
+	const imageUrl = item.previewUrl !== '' ? item.previewUrl : item.mediaUrl;
+
 	return (
 		<div key={item.id} className={styles['list-item']}>
 			<div className={styles['list-item__media']}>
 				{item.isAnimated ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.mediaUrl}`}
+						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
 						loop
 						autoPlay
 						muted
@@ -28,12 +30,7 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 						height={200}
 					/>
 				) : (
-					<CDNImage
-						src={item.mediaUrl}
-						alt={translation}
-						width={200}
-						height={200}
-					/>
+					<CDNImage src={imageUrl} alt={translation} width={200} height={200} />
 				)}
 			</div>
 			<div>

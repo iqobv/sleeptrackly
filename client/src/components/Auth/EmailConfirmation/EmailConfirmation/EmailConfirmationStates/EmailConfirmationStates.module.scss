@@ -1,0 +1,27 @@
+.email-confirmation-state-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+
+	&__icon {
+		font-size: 30px;
+		color: var(--primary-color);
+		background-color: var(--email-confirmation-icon-bg);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-radius: 99999px;
+		padding: 10px;
+	}
+
+	&__children {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		gap: 16px;
+	}
+}
