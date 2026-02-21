@@ -1,5 +1,14 @@
 # Server changelog
 
+## [1.4.1] - 2026-02-21
+
+### Added
+
+- Updated dependencies, removed vulnerable ones
+- Added rate limit for api endpoints
+- Added rolling to sessions (refreshing expiration on each request)
+- Added previewUrl field to item model
+
 ## [1.3.1] - 2026-02-16
 
 ### Fixed
