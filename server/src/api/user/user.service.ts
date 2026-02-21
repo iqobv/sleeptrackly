@@ -7,6 +7,7 @@ import {
 	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import { UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
@@ -207,6 +208,31 @@ export class UserService {
 		await this.prismaService.user.delete({ where: { id: user.id } });
 
 		return true;
+	}
+
+	async removeUnverifiedUsersOlderThan(milliseconds: number) {
+		const cutoffDate = new Date(Date.now() - milliseconds);
+
+		const usersToRemove = await this.prismaService.user.findMany({
+			where: {
+				emailVerified: false,
+				createdAt: { lt: cutoffDate },
+			},
+			select: { id: true },
+		});
+
+		const userIds = usersToRemove.map((user) => user.id);
+
+		await this.prismaService.user.deleteMany({
+			where: { id: { in: userIds } },
+		});
+
+		return true;
+	}
+
+	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+	async handleRemoveUnverifiedUsersOlderThan() {
+		return await this.removeUnverifiedUsersOlderThan(24 * 60 * 60 * 1000);
 	}
 
 	async generateUsername(): Promise<string> {

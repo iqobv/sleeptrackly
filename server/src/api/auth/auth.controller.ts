@@ -26,7 +26,7 @@ import { CreateUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { GoogleAuth, LocalAuth } from './decorators';
-import { LoginDto } from './dto';
+import { LoginDto, RegisterResultDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -50,12 +50,12 @@ export class AuthController {
 
 	@ApiOperation({ summary: 'Register with email and password' })
 	@ApiBody({ type: CreateUserDto })
-	@ApiCreatedResponse({ type: UserDto })
+	@ApiCreatedResponse({ type: RegisterResultDto })
 	@ApiConflictResponse({ description: 'User already exists' })
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	async register(@Req() req: Request, @Body() dto: CreateUserDto) {
-		return await this.authService.register(dto, req);
+	async register(@Body() dto: CreateUserDto) {
+		return await this.authService.register(dto);
 	}
 
 	@ApiOperation({ summary: 'Login with Google' })

@@ -1,5 +1,5 @@
 import { LoginDto, RegisterDto } from '@/dto';
-import { IUser } from '@/types';
+import { IRegisterResult, IUser } from '@/types';
 import { fetcher } from '@/utils';
 
 export const loginWithPassword = async (data: LoginDto) =>
@@ -9,7 +9,7 @@ export const loginWithPassword = async (data: LoginDto) =>
 	});
 
 export const registerWithPassword = async (data: RegisterDto) =>
-	await fetcher<IUser>('/api/v1/auth/register', {
+	await fetcher<IRegisterResult>('/api/v1/auth/register', {
 		method: 'POST',
 		body: JSON.stringify(data),
 	});

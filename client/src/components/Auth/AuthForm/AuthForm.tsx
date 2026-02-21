@@ -4,14 +4,16 @@
 
 import { Button, TextField } from '@/components/UI';
 import { PAGES } from '@/config';
+import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
-import { AuthField, IUser } from '@/types';
+import { AuthField, IRegisterResult, IUser } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
+import { toast } from 'react-toastify';
 import { ZodType } from 'zod';
 import styles from './AuthForm.module.scss';
 
@@ -23,6 +25,7 @@ interface AuthFormProps<T extends FieldValues, R> {
 	buttonLabel?: string;
 	bottomText?: React.ReactNode;
 	defaultValues?: DefaultValues<T>;
+	isRegister?: boolean;
 }
 
 const AuthForm = <T extends FieldValues, R>({
@@ -33,6 +36,7 @@ const AuthForm = <T extends FieldValues, R>({
 	schema,
 	bottomText,
 	defaultValues,
+	isRegister = false,
 }: AuthFormProps<T, R>) => {
 	const { setUser } = useAuth();
 	const router = useRouter();
@@ -53,13 +57,23 @@ const AuthForm = <T extends FieldValues, R>({
 
 	const { mutate, isPending } = useMutation({
 		mutationFn,
-		onSuccess(data) {
-			reset();
-			onSuccess?.(data);
-			setUser(data as IUser);
-			router.refresh();
+		onSuccess: (data) => {
+			if (isRegister) {
+				toast.success((data as IRegisterResult).message);
+				router.push(PAGES.EMAIL_CONFIRMATION);
+				localStorage.setItem(
+					LOCAL_STORAGE_KEYS.auth.registrationEmail,
+					(data as IRegisterResult).email,
+				);
+				onSuccess?.(data);
+			} else {
+				reset();
+				onSuccess?.(data);
+				setUser(data as IUser);
+				router.refresh();
+			}
 		},
-		onError(error) {
+		onError: (error) => {
 			setError('root', { message: error.message });
 			resetField('password' as Path<T>);
 		},

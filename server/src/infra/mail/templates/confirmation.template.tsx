@@ -24,11 +24,11 @@ export default function ConfirmationTemplate({
 	return (
 		<Html>
 			<Head />
-			<Preview>Confirm your email for Sleep Tracker</Preview>
+			<Preview>Confirm your email for Sleeptrackly</Preview>
 			<Tailwind>
 				<Body className="text-black text-center">
 					<Heading className="text-center text-3xl">
-						Welcome to Sleep Tracker
+						Welcome to Sleeptrackly
 					</Heading>
 					<Text className="text-center">
 						Please confirm your email address to activate your account and start
