@@ -1,5 +1,6 @@
 'use client';
 
+import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useUserStore } from '@/store';
 import { IUser } from '@/types';
 import { PropsWithChildren, useEffect } from 'react';
@@ -16,6 +17,9 @@ export default function AuthProvider({
 
 	useEffect(() => {
 		setUser(user);
+		if (user) {
+			localStorage.removeItem(LOCAL_STORAGE_KEYS.auth.registrationEmail);
+		}
 	}, [user, setUser]);
 
 	return <>{children}</>;

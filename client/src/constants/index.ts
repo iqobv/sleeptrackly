@@ -4,6 +4,7 @@ export * from './challengeFrequency.constants';
 export * from './friendStatus.constants';
 export * from './itemRarity.constants';
 export * from './itemType.constants';
+export * from './localStorageKeys.constants';
 export * from './productType.constants';
 export * from './reportTitle.constats';
 export * from './reportType.constants';

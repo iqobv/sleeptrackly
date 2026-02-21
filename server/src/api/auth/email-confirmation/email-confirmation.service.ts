@@ -5,14 +5,14 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TokenType, User } from '@prisma/client';
+import { TokenType } from '@prisma/client';
 import type { Request } from 'express';
 import { TokenService } from 'src/api/token/token.service';
 import { UserService } from 'src/api/user/user.service';
 import { MailService } from 'src/infra/mail/mail.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { AuthService } from '../auth.service';
-import { ConfirmationDto } from './dto';
+import { ConfirmationDto, ResendEmailDto } from './dto';
 
 @Injectable()
 export class EmailConfirmationService {
@@ -45,27 +45,23 @@ export class EmailConfirmationService {
 		return await this.authService.login(user, req);
 	}
 
-	async sendVerificationEmail(userId: string) {
-		const user = await this.userService.findById(userId);
+	async sendVerificationEmail(dto: ResendEmailDto) {
+		const { email } = dto;
 
-		const token = await this.generateVerificationToken(userId);
+		const user = await this.userService.findByEmail(email);
 
-		await this.mailService.sendVerificationEmail(user.email, token.token);
-	}
+		if (!user) return;
 
-	async sendVerificationToken(user: User) {
 		const token = await this.generateVerificationToken(user.id);
 
 		await this.mailService.sendVerificationEmail(user.email, token.token);
-
-		return true;
 	}
 
 	async generateVerificationToken(userId: string) {
 		const token = await this.tokenService.createToken(
 			userId,
 			TokenType.EMAIL_VERIFICATION,
-			1,
+			60,
 		);
 
 		return token;

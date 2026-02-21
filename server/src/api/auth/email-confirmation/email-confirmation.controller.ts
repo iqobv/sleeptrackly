@@ -8,8 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { ConfirmationDto } from './dto';
+import { ConfirmationDto, ResendEmailDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation.service';
 
 @ApiTags('Email Confirmation')
@@ -27,9 +26,8 @@ export class EmailConfirmationController {
 	}
 
 	@ApiOperation({ summary: 'Resend email confirmation' })
-	@Auth()
 	@Post('/resend')
-	async sendVerificationEmail(@Authorized('id') userId: string) {
-		return await this.emailConfirmationService.sendVerificationEmail(userId);
+	async sendVerificationEmail(@Body() dto: ResendEmailDto) {
+		return await this.emailConfirmationService.sendVerificationEmail(dto);
 	}
 }

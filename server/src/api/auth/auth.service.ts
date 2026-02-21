@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
@@ -38,6 +38,8 @@ export class AuthService {
 	}
 
 	async login(user: User, req: Request) {
+		if (!user.emailVerified) throw new ForbiddenException('Email not verified');
+
 		const deviceInfo = this.getInfoFromRequest(req);
 
 		const oldSessionId = req.sessionID;
@@ -61,12 +63,20 @@ export class AuthService {
 		return { ...result };
 	}
 
-	async register(dto: CreateUserDto, req: Request) {
+	async register(dto: CreateUserDto) {
 		const user = await this.userService.create(dto);
 
-		await this.emailConfirmationService.sendVerificationToken(user);
+		await this.emailConfirmationService.sendVerificationEmail({
+			email: user.email,
+		});
 
-		return await this.login(user, req);
+		return {
+			success: true,
+			messageCode: 'REGISTRATION_SUCCESS',
+			message:
+				'Registration successful. Please check your email to verify your account.',
+			email: user.email,
+		};
 	}
 
 	async logout(req: Request, res: Response) {

@@ -17,6 +17,8 @@ export const QUERY_KEYS = {
 		setSession: ['setSession'] as const,
 		approveQrLogin: ['approveQrLogin'] as const,
 		logout: (userId: string) => ['logout', userId] as const,
+		resendVerificationEmail: (email: string) =>
+			['resendVerificationEmail', email] as const,
 	},
 	challenges: {
 		all: (userId: string) => ['challenges', userId] as const,
