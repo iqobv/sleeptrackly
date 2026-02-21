@@ -12,4 +12,5 @@ export const getSessionConfig = (
 	saveUninitialized: false,
 	cookie: getCookieConfig(config),
 	store,
+	rolling: true,
 });
