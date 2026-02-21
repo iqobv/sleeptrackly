@@ -2,18 +2,15 @@ import {
 	Body,
 	Controller,
 	Delete,
-	FileTypeValidator,
 	Get,
-	MaxFileSizeValidator,
 	Param,
-	ParseFilePipe,
 	Patch,
 	Post,
 	Query,
-	UploadedFile,
+	UploadedFiles,
 	UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import {
 	ApiBody,
 	ApiConsumes,
@@ -33,6 +30,7 @@ import {
 	UpdateItemDtoSwaggerDto,
 } from './dto';
 import { ItemService } from './item.service';
+import { CreateItemFiles, UpdateItemFiles } from './types';
 
 @Controller('items')
 export class ItemController {
@@ -40,50 +38,22 @@ export class ItemController {
 
 	@ApiOperation({ summary: 'Create a new item' })
 	@ApiConsumes('multipart/form-data')
-	@UseInterceptors(FileInterceptor('file'))
+	@UseInterceptors(
+		FileFieldsInterceptor([
+			{ name: 'media', maxCount: 1 },
+			{ name: 'preview', maxCount: 1 },
+		]),
+	)
 	@Auth(UserRole.ADMIN)
 	@ApiBody({ type: CreateItemSwaggerDto })
 	@ApiCreatedResponse({ type: ItemDto })
 	@Post()
 	async createItem(
 		@Body() dto: CreateItemDto,
-		@UploadedFile(
-			new ParseFilePipe({
-				validators: [
-					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-					new FileTypeValidator({
-						fileType: /(png|jpeg|jpg|gif|webp|webm|mp4|mov|avi)$/,
-					}),
-				],
-			}),
-		)
-		file: Express.Multer.File,
+		@UploadedFiles()
+		files: CreateItemFiles,
 	) {
-		return await this.itemService.createItem(dto, file);
-	}
-
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Upload item image' })
-	@ApiConsumes('multipart/form-data')
-	@ApiOkResponse({ type: ItemDto })
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				file: {
-					type: 'string',
-					format: 'binary',
-				},
-			},
-		},
-	})
-	@Post('upload/:id')
-	@UseInterceptors(FileInterceptor('file'))
-	async uploadItemImage(
-		@UploadedFile() file: Express.Multer.File,
-		@Param('id') id: string,
-	) {
-		return await this.itemService.uploadItemImage(file, id);
+		return await this.itemService.createItem(dto, files);
 	}
 
 	@Auth(UserRole.ADMIN)
@@ -113,27 +83,22 @@ export class ItemController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update an existing item' })
 	@ApiOkResponse({ type: ItemDto })
-	@UseInterceptors(FileInterceptor('file'))
+	@UseInterceptors(
+		FileFieldsInterceptor([
+			{ name: 'media', maxCount: 1 },
+			{ name: 'preview', maxCount: 1 },
+		]),
+	)
 	@ApiBody({ type: UpdateItemDtoSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@Patch(':id')
 	async updateItem(
 		@Param('id') id: string,
 		@Body() dto: UpdateItemDto,
-		@UploadedFile(
-			new ParseFilePipe({
-				fileIsRequired: false,
-				validators: [
-					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-					new FileTypeValidator({
-						fileType: /(png|jpeg|jpg|gif|webp|webm|mp4|mov|avi)$/,
-					}),
-				],
-			}),
-		)
-		file: Express.Multer.File,
+		@UploadedFiles()
+		files: UpdateItemFiles,
 	) {
-		return await this.itemService.updateItem(id, dto, file);
+		return await this.itemService.updateItem(id, dto, files);
 	}
 
 	@Auth(UserRole.ADMIN)

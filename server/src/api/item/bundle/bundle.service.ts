@@ -1,15 +1,17 @@
 import {
 	BadRequestException,
+	forwardRef,
+	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import sharp from 'sharp';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';
 import { PaginationQueryDto } from 'src/libs/dto';
 import { bundleInclude } from 'src/libs/prisma';
 import { paginate } from 'src/libs/utils';
-import { v4 as uuidv4 } from 'uuid';
+import { ItemService } from '../item.service';
 import { CreateBundleDto, UpdateBundleDto } from './dto';
 
 @Injectable()
@@ -18,6 +20,8 @@ export class BundleService {
 
 	constructor(
 		private readonly prismaService: PrismaService,
+		@Inject(forwardRef(() => ItemService))
+		private readonly itemService: ItemService,
 		private readonly r2Service: R2Service,
 	) {}
 
@@ -35,9 +39,11 @@ export class BundleService {
 
 		const finalPrice = Math.round(price._sum.basePrice ?? 0);
 
+		const mediaFile = await this.itemService.uploadImage(file, 'bundles', null);
+
 		const bundle = await this.prismaService.bundle.create({
 			data: {
-				mediaUrl: this.PLACEHOLDER_IMAGE_URL,
+				mediaUrl: mediaFile.url,
 				basePrice: finalPrice,
 				...rest,
 				translations: {
@@ -54,10 +60,6 @@ export class BundleService {
 				translations: true,
 			},
 		});
-
-		if (file && bundle) {
-			await this.uploadBundleImage(file, bundle.id);
-		}
 
 		return bundle;
 	}
@@ -85,6 +87,33 @@ export class BundleService {
 		});
 	}
 
+	async getAllAvailableItems(query: PaginationQueryDto) {
+		const { page = 1, limit = 20 } = query;
+
+		const where: Prisma.BundleWhereInput = {
+			products: { is: null },
+		};
+
+		return await paginate({ page, limit }, async (limit, offset) => {
+			const [total, items] = await this.prismaService.$transaction([
+				this.prismaService.bundle.count({ where }),
+				this.prismaService.bundle.findMany({
+					where,
+					skip: offset,
+					take: limit,
+					orderBy: {
+						createdAt: 'desc',
+					},
+					include: {
+						translations: true,
+					},
+				}),
+			]);
+
+			return { items, total };
+		});
+	}
+
 	async getById(id: string) {
 		const bundle = await this.prismaService.bundle.findFirst({
 			where: {
@@ -108,9 +137,9 @@ export class BundleService {
 		return await this.prismaService.$transaction(async (tx) => {
 			const bundle = await this.getById(id);
 
-			if (file) {
-				await this.uploadBundleImage(file, bundle.id);
-			}
+			const mediaFile = file
+				? await this.itemService.uploadImage(file, 'bundles', bundle.mediaUrl)
+				: null;
 
 			if (translations && translations.length > 0) {
 				const translationPromises = translations.map((translation) =>
@@ -144,6 +173,7 @@ export class BundleService {
 				where: { id: bundle.id },
 				data: {
 					...rest,
+					mediaUrl: mediaFile ? mediaFile.url : undefined,
 					items: itemsIds
 						? {
 								create: itemsIds.map((itemId: string) => ({
@@ -167,52 +197,6 @@ export class BundleService {
 	async removeBundle(id: string) {
 		return await this.prismaService.bundle.delete({
 			where: { id },
-		});
-	}
-
-	async uploadBundleImage(file: Express.Multer.File, bundleId: string) {
-		const bundle = await this.prismaService.bundle.findUnique({
-			where: { id: bundleId },
-		});
-
-		if (!bundle) {
-			throw new NotFoundException('Bundle not found');
-		}
-
-		let processedBuffer: Buffer;
-		try {
-			const pipeline = sharp(file.buffer, { animated: true });
-
-			processedBuffer = await pipeline
-				.webp({ quality: 80, effort: 6, lossless: false })
-				.toBuffer();
-		} catch (error) {
-			console.error('Sharp error:', error);
-			throw new BadRequestException('Failed to process image');
-		}
-
-		if (bundle.mediaUrl) {
-			try {
-				await this.r2Service.delete(bundle.mediaUrl);
-			} catch (e) {
-				console.error('Delete old file error:', e);
-			}
-		}
-
-		const filename = `${uuidv4()}.webp`;
-		const key = `bundles/${filename}`;
-
-		const uploadResult = await this.r2Service.upload(
-			processedBuffer,
-			key,
-			'image/webp',
-		);
-
-		return await this.prismaService.bundle.update({
-			where: { id: bundleId },
-			data: {
-				mediaUrl: uploadResult.key,
-			},
 		});
 	}
 }

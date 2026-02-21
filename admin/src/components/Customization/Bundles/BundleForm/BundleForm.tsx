@@ -40,7 +40,12 @@ const BundleForm = <T extends FieldValues>({
 					onSuccessNavigateTo={PAGES.BUNDLES}
 				/>
 			)}
-			<FileForm isAnimated={isAnimated} mediaUrl={mediaUrl} />
+			<FileForm
+				isAnimated={isAnimated}
+				mediaUrl={mediaUrl}
+				label="Upload Image"
+				pathname="file"
+			/>
 			<BundleItems initialItems={initialItems} />
 			<FormFields fields={fields} />
 			<TranslationForm />

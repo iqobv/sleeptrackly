@@ -3,7 +3,7 @@ import { Coin } from '@/components/Icons';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PRODUCT_TYPES } from '@/constants';
-import { IProduct } from '@/types';
+import { IItem, IProduct } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -35,12 +35,19 @@ const ShopCard = ({ product }: ShopCardProps) => {
 		},
 	});
 
+	const url =
+		product.type === PRODUCT_TYPES.ITEM
+			? (key as IItem)?.previewUrl
+				? (key as IItem)?.previewUrl
+				: (key as IItem)?.mediaUrl
+			: key?.mediaUrl;
+
 	return (
 		<div className={styles['shop-card']}>
 			<div className={styles['shop-card__image-wrapper']}>
 				{product.item?.isAnimated ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
+						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
 						loop
 						autoPlay
 						muted
@@ -50,7 +57,7 @@ const ShopCard = ({ product }: ShopCardProps) => {
 					/>
 				) : (
 					<Image
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${key?.mediaUrl}`}
+						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
 						alt={key?.translation.name || 'Product Image'}
 						width={160}
 						height={160}
