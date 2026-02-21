@@ -11,6 +11,7 @@ import { PaginationQueryDto } from 'src/libs/dto';
 import { paginate } from 'src/libs/utils';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateItemDto, UpdateItemDto } from './dto';
+import { CreateItemFiles, UpdateItemFiles } from './types';
 
 @Injectable()
 export class ItemService {
@@ -21,37 +22,39 @@ export class ItemService {
 		private readonly r2Service: R2Service,
 	) {}
 
-	async createItem(dto: CreateItemDto, file: Express.Multer.File) {
+	async createItem(dto: CreateItemDto, files: CreateItemFiles) {
 		const { translations, ...rest } = dto;
 
-		if (!file) throw new BadRequestException('Item image is required');
+		if (!files.media) throw new BadRequestException('Item image is required');
+
+		const mediaFile = await this.uploadImage(files.media[0], 'items', null);
+
+		const previewFile = await this.uploadImage(
+			files.preview[0],
+			'previews',
+			null,
+		);
 
 		const item = await this.prismaService.item.create({
 			data: {
 				...rest,
-				mediaUrl: this.PLACEHOLDER_IMAGE_URL,
+				mediaUrl: mediaFile.url,
+				previewUrl: previewFile.url,
+				isAnimated: mediaFile.isAnimated,
 				translations: {
 					create: translations,
 				},
 			},
 		});
 
-		if (file && item) {
-			await this.uploadItemImage(file, item.id);
-		}
-
 		return item;
 	}
 
-	async uploadItemImage(file: Express.Multer.File, itemId: string) {
-		const item = await this.prismaService.item.findUnique({
-			where: { id: itemId },
-		});
-
-		if (!item) {
-			throw new NotFoundException('Item not found');
-		}
-
+	async uploadImage(
+		file: Express.Multer.File,
+		folder: string = 'items',
+		oldUrl: string | null = null,
+	) {
 		const isVideo = file.mimetype.startsWith('video/');
 		let processedBuffer: Buffer = file.buffer;
 		let contentType: string = file.mimetype;
@@ -72,16 +75,16 @@ export class ItemService {
 			}
 		}
 
-		if (item.mediaUrl && item.mediaUrl !== this.PLACEHOLDER_IMAGE_URL) {
+		if (oldUrl && oldUrl !== this.PLACEHOLDER_IMAGE_URL) {
 			try {
-				await this.r2Service.delete(item.mediaUrl);
+				await this.r2Service.delete(oldUrl);
 			} catch (e) {
 				console.error('Delete old file error:', e);
 			}
 		}
 
 		const filename = `${uuidv4()}.${extension}`;
-		const key = `items/${filename}`;
+		const key = `${folder}/${filename}`;
 
 		const uploadResult = await this.r2Service.upload(
 			processedBuffer,
@@ -89,13 +92,11 @@ export class ItemService {
 			contentType,
 		);
 
-		return await this.prismaService.item.update({
-			where: { id: itemId },
-			data: {
-				mediaUrl: uploadResult.key,
-				isAnimated: isVideo,
-			},
-		});
+		return {
+			url: uploadResult.key,
+			isAnimated: isVideo,
+			extension,
+		};
 	}
 
 	async getAllItems(query: PaginationQueryDto) {
@@ -162,7 +163,7 @@ export class ItemService {
 		return item;
 	}
 
-	async updateItem(id: string, dto: UpdateItemDto, file?: Express.Multer.File) {
+	async updateItem(id: string, dto: UpdateItemDto, files?: UpdateItemFiles) {
 		const { translations, ...rest } = dto;
 
 		return await this.prismaService.$transaction(async (tx) => {
@@ -174,9 +175,13 @@ export class ItemService {
 				throw new NotFoundException('Item not found');
 			}
 
-			if (file) {
-				await this.uploadItemImage(file, id);
-			}
+			const mediaFile = files?.media
+				? await this.uploadImage(files.media[0], 'items', item.mediaUrl)
+				: null;
+
+			const previewFile = files?.preview
+				? await this.uploadImage(files.preview[0], 'previews', item.previewUrl)
+				: null;
 
 			if (translations && translations.length > 0) {
 				const translationPromises = translations.map((translation) =>
@@ -204,6 +209,8 @@ export class ItemService {
 				where: { id },
 				data: {
 					...rest,
+					mediaUrl: mediaFile?.url ?? item.mediaUrl,
+					previewUrl: previewFile?.url ?? item.previewUrl,
 				},
 				include: {
 					translations: true,

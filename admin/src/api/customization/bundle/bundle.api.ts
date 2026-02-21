@@ -28,6 +28,14 @@ export const getAllBundles = async (query: PaginationDto) => {
 	);
 };
 
+export const getAllAvailableBundles = async (query: PaginationDto) => {
+	const params = parseSearchParams(query);
+
+	return await fetcher<IPaginatedDataResponse<IBundle>>(
+		`/api/v1/items/bundles/available?${params.toString()}`,
+	);
+};
+
 export const getBundleById = async (id: string) =>
 	await fetcher<IBundle>(`/api/v1/items/bundles/id/${id}`);
 

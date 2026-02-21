@@ -30,6 +30,7 @@ import {
 	CreateBundleDto,
 	CreateBundleSwaggerDto,
 	FullBundleDto,
+	PaginatedBundlesDto,
 	UpdateBundleDto,
 	UpdateBundleSwaggerDto,
 } from './dto';
@@ -66,6 +67,14 @@ export class BundleController {
 	@Get()
 	async getAllBundles(@Query() query: PaginationQueryDto) {
 		return await this.bundleService.getAllBundles(query);
+	}
+
+	@Auth(UserRole.ADMIN)
+	@ApiOperation({ summary: 'Get all available bundles with pagination' })
+	@ApiOkResponse({ type: PaginatedBundlesDto })
+	@Get('available')
+	async getAllAvailableItems(@Query() query: PaginationQueryDto) {
+		return await this.bundleService.getAllAvailableItems(query);
 	}
 
 	@Auth(UserRole.ADMIN)
@@ -106,29 +115,5 @@ export class BundleController {
 	@Delete(':id')
 	async removeBundle(@Param('id') id: string) {
 		return await this.bundleService.removeBundle(id);
-	}
-
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Upload bundle image' })
-	@ApiConsumes('multipart/form-data')
-	@ApiOkResponse({ type: BundleDto })
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				file: {
-					type: 'string',
-					format: 'binary',
-				},
-			},
-		},
-	})
-	@Post('upload/:id')
-	@UseInterceptors(FileInterceptor('file'))
-	async uploadBundleImage(
-		@UploadedFile() file: Express.Multer.File,
-		@Param('id') id: string,
-	) {
-		return await this.bundleService.uploadBundleImage(file, id);
 	}
 }

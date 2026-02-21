@@ -3,6 +3,7 @@ import z from 'zod';
 import { createItemSchema } from './createItem.schema';
 
 export const updateItemSchema = createItemSchema.partial().extend({
-	file: z.instanceof(File).optional().nullable(),
 	translations: z.array(translationSchema.partial()),
+	media: z.instanceof(File).optional().nullable(),
+	preview: z.instanceof(File).optional().nullable(),
 });

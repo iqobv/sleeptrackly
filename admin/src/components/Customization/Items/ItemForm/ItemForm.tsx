@@ -12,6 +12,7 @@ import { getItemsFields } from './itemFields';
 
 interface ItemFormProps {
 	mediaUrl?: string;
+	previewUrl?: string;
 	isAnimated?: boolean;
 	buttonLabel?: string;
 	isEdit?: boolean;
@@ -20,6 +21,7 @@ interface ItemFormProps {
 
 const ItemForm = <T extends FieldValues>({
 	mediaUrl,
+	previewUrl,
 	isAnimated,
 	buttonLabel = 'Save',
 	isEdit = false,
@@ -36,7 +38,18 @@ const ItemForm = <T extends FieldValues>({
 					onSuccessNavigateTo={PAGES.ITEMS}
 				/>
 			)}
-			<FileForm isAnimated={isAnimated} mediaUrl={mediaUrl} />
+			<FileForm
+				isAnimated={isAnimated}
+				mediaUrl={mediaUrl}
+				pathname="media"
+				label="Upload Media"
+			/>
+			<FileForm
+				isAnimated={isAnimated}
+				mediaUrl={previewUrl}
+				pathname="preview"
+				label="Upload Preview"
+			/>
 			<FormFields fields={fields} />
 			<TranslationForm />
 		</FormContent>

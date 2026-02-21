@@ -67,5 +67,8 @@ export class CreateItemDto {
 
 export class CreateItemSwaggerDto extends CreateItemDto {
 	@ApiProperty({ type: 'string', format: 'binary' })
-	file: Express.Multer.File;
+	media: Express.Multer.File;
+
+	@ApiProperty({ type: 'string', format: 'binary' })
+	preview: Express.Multer.File;
 }

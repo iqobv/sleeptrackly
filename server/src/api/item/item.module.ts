@@ -7,5 +7,6 @@ import { ItemService } from './item.service';
 	controllers: [ItemController],
 	providers: [ItemService],
 	imports: [BundleModule],
+	exports: [ItemService],
 })
 export class ItemModule {}
