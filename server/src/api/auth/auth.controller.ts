@@ -19,6 +19,7 @@ import {
 	ApiOperation,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
 import { Auth, Authorized } from 'src/libs/decorators';
@@ -39,6 +40,11 @@ export class AuthController {
 	@ApiOperation({ summary: 'Login with email and password' })
 	@ApiBody({ type: LoginDto })
 	@ApiUnauthorizedResponse({ description: 'Email or password is incorrect' })
+	@Throttle({
+		short: { limit: 2, ttl: 1000 },
+		medium: { limit: 3, ttl: 10000 },
+		long: { limit: 5, ttl: 60000 },
+	})
 	@ApiOkResponse({ type: UserDto })
 	@LocalAuth()
 	@HttpCode(HttpStatus.OK)
@@ -52,6 +58,11 @@ export class AuthController {
 	@ApiBody({ type: CreateUserDto })
 	@ApiCreatedResponse({ type: RegisterResultDto })
 	@ApiConflictResponse({ description: 'User already exists' })
+	@Throttle({
+		short: { limit: 2, ttl: 1000 },
+		medium: { limit: 3, ttl: 10000 },
+		long: { limit: 5, ttl: 60000 },
+	})
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
 	async register(@Body() dto: CreateUserDto) {
@@ -92,6 +103,7 @@ export class AuthController {
 	@ApiOperation({ summary: 'Get profile' })
 	@ApiOkResponse({ type: UserDto })
 	@Auth()
+	@SkipThrottle()
 	@HttpCode(HttpStatus.OK)
 	@Get('me')
 	async getProfile(@Authorized('id') userId: string) {
@@ -99,6 +111,7 @@ export class AuthController {
 	}
 
 	@ApiOperation({ summary: 'Delete account' })
+	@Throttle({ long: { limit: 5, ttl: 60000 } })
 	@ApiOkResponse()
 	@Auth()
 	@HttpCode(HttpStatus.NO_CONTENT)
