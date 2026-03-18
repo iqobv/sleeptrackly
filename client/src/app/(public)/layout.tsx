@@ -1,4 +1,4 @@
-import Header from '@/components/Layout/Header/Header';
+import { Header } from '@/components/Layout/Header';
 import { PropsWithChildren } from 'react';
 
 export default function MainLayout({ children }: PropsWithChildren<unknown>) {
