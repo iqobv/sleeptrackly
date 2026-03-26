@@ -13,6 +13,7 @@ import {
 	getValidationPipeConfig,
 } from './config';
 import { PrismaService } from './infra/prisma/prisma.service';
+import './instrument';
 import { SessionRefreshInterceptor } from './libs/Interceptors';
 import { setupSwagger } from './libs/utils';
 
