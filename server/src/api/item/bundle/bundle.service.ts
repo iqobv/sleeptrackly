@@ -134,64 +134,70 @@ export class BundleService {
 	) {
 		const { translations, itemsIds, ...rest } = dto;
 
-		return await this.prismaService.$transaction(async (tx) => {
-			const bundle = await this.getById(id);
+		return await this.prismaService.$transaction(
+			async (tx) => {
+				const bundle = await this.getById(id);
 
-			const mediaFile = file
-				? await this.itemService.uploadImage(file, 'bundles', bundle.mediaUrl)
-				: null;
+				const mediaFile = file
+					? await this.itemService.uploadImage(file, 'bundles', bundle.mediaUrl)
+					: null;
 
-			if (translations && translations.length > 0) {
-				const translationPromises = translations.map((translation) =>
-					tx.bundleTranslation.upsert({
-						where: {
-							bundleId_language: {
-								bundleId: bundle.id,
-								language: translation.language,
+				if (translations && translations.length > 0) {
+					const translationPromises = translations.map((translation) =>
+						tx.bundleTranslation.upsert({
+							where: {
+								bundleId_language: {
+									bundleId: bundle.id,
+									language: translation.language,
+								},
 							},
-						},
-						create: {
-							...translation,
-							bundleId: bundle.id,
-						},
-						update: {
-							name: translation.name,
-						},
-					}),
-				);
+							create: {
+								...translation,
+								bundleId: bundle.id,
+							},
+							update: {
+								name: translation.name,
+							},
+						}),
+					);
 
-				await Promise.all(translationPromises);
-			}
+					await Promise.all(translationPromises);
+				}
 
-			if (itemsIds && itemsIds.length > 0) {
-				await tx.itemInBundle.deleteMany({
-					where: { bundleId: bundle.id },
+				if (itemsIds && itemsIds.length > 0) {
+					await tx.itemInBundle.deleteMany({
+						where: { bundleId: bundle.id },
+					});
+				}
+
+				await tx.bundle.update({
+					where: { id: bundle.id },
+					data: {
+						...rest,
+						mediaUrl: mediaFile ? mediaFile.url : undefined,
+						items: itemsIds
+							? {
+									create: itemsIds.map((itemId: string) => ({
+										itemId: itemId,
+									})),
+								}
+							: undefined,
+					},
 				});
-			}
 
-			await tx.bundle.update({
-				where: { id: bundle.id },
-				data: {
-					...rest,
-					mediaUrl: mediaFile ? mediaFile.url : undefined,
-					items: itemsIds
-						? {
-								create: itemsIds.map((itemId: string) => ({
-									itemId: itemId,
-								})),
-							}
-						: undefined,
-				},
-			});
-
-			return await tx.bundle.findUnique({
-				where: { id: bundle.id },
-				include: {
-					items: true,
-					translations: true,
-				},
-			});
-		});
+				return await tx.bundle.findUnique({
+					where: { id: bundle.id },
+					include: {
+						items: true,
+						translations: true,
+					},
+				});
+			},
+			{
+				maxWait: 5000,
+				timeout: 20000,
+			},
+		);
 	}
 
 	async removeBundle(id: string) {
