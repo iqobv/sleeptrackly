@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { ApiModule } from './api/api.module';
 import { AppController } from './app.controller';
 import { InfraModule } from './infra/infra.module';
 
 @Module({
 	imports: [
+		SentryModule.forRoot(),
 		ConfigModule.forRoot({ isGlobal: true }),
 		ScheduleModule.forRoot(),
 		ThrottlerModule.forRoot([
@@ -35,6 +37,10 @@ import { InfraModule } from './infra/infra.module';
 		{
 			provide: APP_GUARD,
 			useClass: ThrottlerGuard,
+		},
+		{
+			provide: APP_FILTER,
+			useClass: SentryGlobalFilter,
 		},
 	],
 	controllers: [AppController],
