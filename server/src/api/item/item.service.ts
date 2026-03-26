@@ -166,64 +166,74 @@ export class ItemService {
 	async updateItem(id: string, dto: UpdateItemDto, files?: UpdateItemFiles) {
 		const { translations, ...rest } = dto;
 
-		return await this.prismaService.$transaction(async (tx) => {
-			const item = await tx.item.findUnique({
-				where: { id },
-			});
+		return await this.prismaService.$transaction(
+			async (tx) => {
+				const item = await tx.item.findUnique({
+					where: { id },
+				});
 
-			if (!item) {
-				throw new NotFoundException('Item not found');
-			}
+				if (!item) {
+					throw new NotFoundException('Item not found');
+				}
 
-			const mediaFile = files?.media
-				? await this.uploadImage(files.media[0], 'items', item.mediaUrl)
-				: null;
+				const mediaFile = files?.media
+					? await this.uploadImage(files.media[0], 'items', item.mediaUrl)
+					: null;
 
-			const previewFile = files?.preview
-				? await this.uploadImage(files.preview[0], 'previews', item.previewUrl)
-				: null;
+				const previewFile = files?.preview
+					? await this.uploadImage(
+							files.preview[0],
+							'previews',
+							item.previewUrl,
+						)
+					: null;
 
-			if (translations && translations.length > 0) {
-				const translationPromises = translations.map((translation) =>
-					tx.itemTranslation.upsert({
-						where: {
-							itemId_language: {
-								itemId: id,
-								language: translation.language,
+				if (translations && translations.length > 0) {
+					const translationPromises = translations.map((translation) =>
+						tx.itemTranslation.upsert({
+							where: {
+								itemId_language: {
+									itemId: id,
+									language: translation.language,
+								},
 							},
-						},
-						create: {
-							...translation,
-							itemId: id,
-						},
-						update: {
-							name: translation.name,
-						},
-					}),
-				);
+							create: {
+								...translation,
+								itemId: id,
+							},
+							update: {
+								name: translation.name,
+							},
+						}),
+					);
 
-				await Promise.all(translationPromises);
-			}
+					await Promise.all(translationPromises);
+				}
 
-			await tx.item.update({
-				where: { id },
-				data: {
-					...rest,
-					mediaUrl: mediaFile?.url ?? item.mediaUrl,
-					previewUrl: previewFile?.url ?? item.previewUrl,
-				},
-				include: {
-					translations: true,
-				},
-			});
+				await tx.item.update({
+					where: { id },
+					data: {
+						...rest,
+						mediaUrl: mediaFile?.url ?? item.mediaUrl,
+						previewUrl: previewFile?.url ?? item.previewUrl,
+					},
+					include: {
+						translations: true,
+					},
+				});
 
-			return await tx.item.findUnique({
-				where: { id },
-				include: {
-					translations: true,
-				},
-			});
-		});
+				return await tx.item.findUnique({
+					where: { id },
+					include: {
+						translations: true,
+					},
+				});
+			},
+			{
+				maxWait: 5000,
+				timeout: 20000,
+			},
+		);
 	}
 
 	async deleteItem(id: string) {
