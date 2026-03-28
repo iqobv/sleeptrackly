@@ -11,6 +11,7 @@ export * from './challenge/challenge.types';
 export * from './challenge/challengeField.types';
 export * from './challenge/challengeFrequncy.types';
 export * from './challenge/challengeTask.types';
+export * from './coin/userCoin.types';
 export * from './dashboard/dashboard.types';
 export * from './dashboard/dashboardDay.types';
 export * from './dashboard/sleepEntry.types';

@@ -6,6 +6,7 @@ export * from './auth/session.api';
 export * from './auth/token.api';
 export * from './challenge/challenge.api';
 export * from './challenge/challengeTask.api';
+export * from './coin/userCoins.api';
 export * from './dashboard/dashboard.api';
 export * from './friend/friend.api';
 export * from './inventory/inventory.api';
