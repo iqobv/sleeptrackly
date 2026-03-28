@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import styles from './FeaturedShop.module.scss';
 import FeaturedShopBanner from './FeaturedShopBanner/FeaturedShopBanner';
 import FeaturedShopCarousel from './FeaturedShopCarousel/FeaturedShopCarousel';
+import FeaturedShopLoader from './FeaturedShopLoader';
 import FeaturedShopSections from './FeaturedShopSections/FeaturedShopSections';
 
 const FeaturedShop = () => {
@@ -17,6 +18,7 @@ const FeaturedShop = () => {
 
 	return (
 		<div className={styles['featured-shop']}>
+			{isLoading && <FeaturedShopLoader />}
 			{!isLoading && data && (
 				<>
 					<div>
