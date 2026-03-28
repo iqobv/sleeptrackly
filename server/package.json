@@ -35,6 +35,7 @@
 		"@prisma/client": "^6.15.0",
 		"@react-email/components": "^1.0.8",
 		"@react-email/html": "^0.0.12",
+		"@sentry/nestjs": "^10.46.0",
 		"@types/react": "^19.2.14",
 		"axios": "^1.13.5",
 		"bcrypt": "^6.0.0",

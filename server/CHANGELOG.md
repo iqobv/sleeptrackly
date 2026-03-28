@@ -1,6 +1,16 @@
 # Server changelog
 
-## [1.4.1] - 2026-02-21
+## [1.4.1] - 2026-03-26
+
+### Added
+
+- Added Sentry for logging
+
+### Fixed
+
+- Added timeouts for prisma transactions for bundles and items
+
+## [1.4.0] - 2026-02-21
 
 ### Added
 
