@@ -5,11 +5,12 @@ import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { ISleepEntry } from '@/types';
 import { formatTime } from '@/utils';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 
 export const useTimer = () => {
 	const { user } = useAuth();
+	const queryClient = useQueryClient();
 
 	const [isSleeping, setIsSleeping] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
@@ -31,6 +32,10 @@ export const useTimer = () => {
 		mutationKey: QUERY_KEYS.timer.update(user?.id || ''),
 		onSuccess: (data) => {
 			if (!!data.sleepEntry) setFinishedSleep(data.sleepEntry);
+			if (data.reward && data.reward.rewarded)
+				queryClient.refetchQueries({
+					queryKey: QUERY_KEYS.coin.userCoin,
+				});
 		},
 	});
 

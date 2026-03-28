@@ -1,19 +1,26 @@
+import { getUserCoins } from '@/api';
 import { Coin } from '@/components/Icons';
-import { useAuth } from '@/hooks';
+import { QUERY_KEYS } from '@/config';
+import { useQuery } from '@tanstack/react-query';
 import styles from './UserMenuCoins.module.scss';
+import UserMenuCoinsLoader from './UserMenuCoinsLoader';
 
 const UserMenuCoins = () => {
-	const { user } = useAuth();
+	const { data: userCoins, isLoading } = useQuery({
+		queryFn: () => getUserCoins(),
+		queryKey: QUERY_KEYS.coin.userCoin,
+	});
 
 	return (
 		<div className={styles['coins']}>
-			<div className={styles['coins__container']}>
-				{user && (
+			{isLoading && <UserMenuCoinsLoader />}
+			{userCoins && (
+				<div className={styles['coins__container']}>
 					<>
 						<p className={styles['coins__label']}>Balance</p>
 						<div className={styles['coins__balance']}>
 							<p className={styles['coins__amount']}>
-								{user.coins?.amount ? user.coins.amount : 0}
+								{userCoins.amount ? userCoins.amount : 0}
 							</p>
 							<Coin
 								className={styles['coins__icon']}
@@ -23,8 +30,8 @@ const UserMenuCoins = () => {
 							/>
 						</div>
 					</>
-				)}
-			</div>
+				</div>
+			)}
 		</div>
 	);
 };
