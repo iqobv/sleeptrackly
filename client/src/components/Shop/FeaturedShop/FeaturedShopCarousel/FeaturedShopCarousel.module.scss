@@ -39,6 +39,8 @@
 		font-size: 2rem;
 		margin-bottom: 20px;
 		text-align: center;
+		word-break: break-all;
+		text-wrap: wrap;
 
 		@include response('md') {
 			font-size: 2.5rem;

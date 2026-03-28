@@ -18,71 +18,73 @@ interface FeaturedShopCarouselProps {
 }
 
 const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
+	const validSlides = data.filter((item) => item.bundle);
+
+	if (validSlides.length === 0) {
+		return null;
+	}
+
 	return (
 		<div className={styles['featured-shop-carousel']}>
-			{data.length > 0 && (
-				<Swiper
-					modules={[Navigation, Pagination, Autoplay]}
-					spaceBetween={0}
-					slidesPerView={1}
-					navigation
-					pagination={{ clickable: true }}
-					autoplay={{
-						delay: 5000,
-						pauseOnMouseEnter: true,
-						disableOnInteraction: false,
-					}}
-					loop={true}
-					className={styles['custom-swiper']}
-				>
-					{data.map((item) => {
-						if (!item.bundle) return null;
+			<Swiper
+				modules={[Navigation, Pagination, Autoplay]}
+				spaceBetween={0}
+				slidesPerView={1}
+				navigation
+				pagination={{ clickable: true }}
+				autoplay={{
+					delay: 5000,
+					pauseOnMouseEnter: true,
+					disableOnInteraction: false,
+				}}
+				loop={validSlides.length > 1}
+				className={styles['custom-swiper']}
+			>
+				{validSlides.map((item) => {
+					if (!item.bundle) return null;
 
-						return (
-							<SwiperSlide
-								key={item.id}
-								className={styles['featured-shop-carousel__item']}
-							>
-								<div className={styles['featured-shop-carousel__info']}>
-									{item.isNew && (
-										<div className={styles['featured-shop-carousel__new']}>
-											New
-										</div>
-									)}
-									<div
-										className={styles['featured-shop-carousel__info-content']}
-									>
-										<h3 className={styles['featured-shop-carousel__title']}>
-											{item.bundle.translation.name}
-										</h3>
-										<FeaturedShopCarouselIncludes
-											items={item.bundle.items || []}
-										/>
+					return (
+						<SwiperSlide
+							key={item.id}
+							className={styles['featured-shop-carousel__item']}
+						>
+							<div className={styles['featured-shop-carousel__info']}>
+								{item.isNew && (
+									<div className={styles['featured-shop-carousel__new']}>
+										New
 									</div>
-									<FeaturedShopCarouselBuyButton
-										price={item.price}
-										productId={item.id}
-										discountedPrice={item.discountedPrice}
-										discountPercentage={item.bundle.discountPercentage}
-										basePrice={item.bundle.basePrice}
-										expiresAt={item.expiresAt ? new Date(item.expiresAt) : null}
+								)}
+								<div className={styles['featured-shop-carousel__info-content']}>
+									<h3 className={styles['featured-shop-carousel__title']}>
+										{item.bundle.translation.name}
+									</h3>
+									<FeaturedShopCarouselIncludes
+										items={item.bundle.items || []}
 									/>
 								</div>
-								<div className={styles['image-wrapper']}>
-									<Image
-										src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.bundle.mediaUrl}`}
-										alt={item.bundle.translation.name || 'Featured Shop Item'}
-										priority
-										className={styles['featured-shop-carousel__image']}
-										width={300}
-										height={300}
-									/>
-								</div>
-							</SwiperSlide>
-						);
-					})}
-				</Swiper>
-			)}
+								<FeaturedShopCarouselBuyButton
+									price={item.price}
+									productId={item.id}
+									discountedPrice={item.discountedPrice}
+									discountPercentage={item.bundle.discountPercentage}
+									basePrice={item.bundle.basePrice}
+									expiresAt={item.expiresAt ? new Date(item.expiresAt) : null}
+								/>
+							</div>
+							<div className={styles['image-wrapper']}>
+								<Image
+									src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.bundle.mediaUrl}`}
+									alt={item.bundle.translation.name || 'Featured Shop Item'}
+									priority
+									className={styles['featured-shop-carousel__image']}
+									width={300}
+									height={300}
+								/>
+							</div>
+						</SwiperSlide>
+					);
+				})}
+			</Swiper>
 		</div>
 	);
 };
