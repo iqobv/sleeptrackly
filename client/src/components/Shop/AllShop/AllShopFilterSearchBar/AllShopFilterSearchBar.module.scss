@@ -7,7 +7,7 @@
 	justify-content: space-between;
 	gap: 16px;
 
-	@include response('md') {
+	@include respond-to('md') {
 		flex-direction: row;
 		align-items: center;
 	}
@@ -18,7 +18,7 @@
 	margin-right: 16px;
 	width: 100%;
 
-	@include response('md') {
+	@include respond-to('md') {
 		max-width: 400px;
 	}
 }
@@ -28,7 +28,7 @@
 	flex-direction: column;
 	gap: 6px;
 
-	@include response('md') {
+	@include respond-to('md') {
 		align-items: center;
 		gap: 16px;
 		flex-direction: row;
@@ -44,7 +44,7 @@
 .select {
 	width: 100%;
 
-	@include response('md') {
+	@include respond-to('md') {
 		max-width: 250px;
 	}
 }

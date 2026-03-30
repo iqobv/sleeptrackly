@@ -32,10 +32,8 @@ export class ImageController {
 	async getImage(@Param('filename') filename: string, @Res() res: Response) {
 		const image = await this.imageService.getImage(filename);
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-		res.setHeader('Content-Type', image.headers['content-type']);
+		res.setHeader('Content-Type', String(image.headers['content-type']));
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
 		return image.data.pipe(res);
 	}
 }

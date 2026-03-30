@@ -19,15 +19,15 @@ const UserMenuCoins = () => {
 					<>
 						<p className={styles['coins__label']}>Balance</p>
 						<div className={styles['coins__balance']}>
-							<p className={styles['coins__amount']}>
-								{userCoins.amount ? userCoins.amount : 0}
-							</p>
 							<Coin
 								className={styles['coins__icon']}
 								width={40}
 								height={40}
 								fill="var(--color-main-text)"
 							/>
+							<p className={styles['coins__amount']}>
+								{userCoins.amount ? userCoins.amount : 0}
+							</p>
 						</div>
 					</>
 				</div>

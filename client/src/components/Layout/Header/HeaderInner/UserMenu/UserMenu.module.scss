@@ -1,4 +1,4 @@
-@use '../../../../styles/mixins' as *;
+@use '../../../../../styles/mixins' as *;
 
 .user-menu__controls {
 	display: flex;
@@ -45,7 +45,7 @@
 	width: 100vw;
 	z-index: 1200;
 
-	@include response('md') {
+	@include respond-to('md') {
 		min-width: 300px;
 	}
 }

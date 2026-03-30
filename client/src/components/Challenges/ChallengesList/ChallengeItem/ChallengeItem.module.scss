@@ -7,7 +7,7 @@
 	border-radius: 8px;
 	flex: 1 0 100%;
 
-	@include response(md) {
+	@include respond-to(md) {
 		flex: 1 0 calc(49% - 20px);
 	}
 
@@ -41,7 +41,7 @@
 			display: flex;
 			justify-content: center;
 
-			@include response(md) {
+			@include respond-to(md) {
 				justify-content: flex-start;
 			}
 		}

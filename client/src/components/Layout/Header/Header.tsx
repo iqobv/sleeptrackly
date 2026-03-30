@@ -1,13 +1,22 @@
-'use client';
-
 import styles from './Header.module.scss';
-import Nav from './Nav/Nav';
 
-const Header = () => {
+interface HeaderProps {
+	children: React.ReactNode;
+	headerClassName?: string;
+	containerClassName?: string;
+}
+
+const Header = ({
+	children,
+	headerClassName,
+	containerClassName,
+}: HeaderProps) => {
 	return (
-		<header className={styles['header']}>
-			<div className={`container ${styles['header__container']}`}>
-				<Nav />
+		<header className={`${styles['header']} ${headerClassName || ''}`}>
+			<div
+				className={`${styles['header__container']} ${containerClassName || ''}`}
+			>
+				{children}
 			</div>
 		</header>
 	);

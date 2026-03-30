@@ -28,7 +28,13 @@ const SleepChart = ({ data }: SleepChartProps) => {
 				</p>
 			</div>
 			<div className={styles['chart-wrapper']}>
-				<ResponsiveContainer width="100%" height="100%">
+				<ResponsiveContainer
+					width="100%"
+					height="100%"
+					minWidth={1}
+					minHeight={1}
+					initialDimension={{ width: 100, height: 50 }}
+				>
 					<AreaChart
 						width={500}
 						height={400}

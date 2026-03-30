@@ -1,9 +1,7 @@
-'use client';
-
 import { SkeletonLoader } from '@/components/UI';
 
 const AuthButtonsLoader = () => {
-	return <SkeletonLoader circle height={40} width={40} />;
+	return <SkeletonLoader height={44} width={150} />;
 };
 
 export default AuthButtonsLoader;

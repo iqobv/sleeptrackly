@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllShop } from '@/api';
-import { Pagination } from '@/components/UI';
+import { List, Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ShopFilterDto } from '@/dto';
 import { useDebounce, usePagination } from '@/hooks';
@@ -80,11 +80,13 @@ const AllShop = () => {
 								<div className={styles['all-shop__items']}>
 									{data.items.length > 0 ? (
 										<>
-											<div className={styles['all-shop__items-grid']}>
-												{data.items.map((product) => (
-													<ShopCard key={product.id} product={product} />
-												))}
-											</div>
+											<List
+												items={data.items}
+												className={styles['all-shop__items-grid']}
+												renderItem={(item) => (
+													<ShopCard key={item.id} product={item} />
+												)}
+											/>
 											<Pagination
 												currentPage={currentPage}
 												totalPages={data.meta.totalPages}

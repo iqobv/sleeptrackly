@@ -6,7 +6,7 @@
 		gap: 24px;
 		flex-direction: column;
 
-		@include response('lg') {
+		@include respond-to('lg') {
 			flex-direction: row;
 		}
 	}
