@@ -21,7 +21,7 @@
 	font-size: 20px;
 	color: var(--timer-color);
 
-	@include response(md) {
+	@include respond-to(md) {
 		gap: 20px;
 
 		.timer__time-item-value {
@@ -37,7 +37,7 @@
 		gap: 10px;
 		width: 100%;
 
-		@include response(md) {
+		@include respond-to(md) {
 			max-width: 300px;
 		}
 
@@ -52,7 +52,7 @@
 			background-color: var(--timer-bg);
 			border-radius: 10px;
 
-			@include response(lg) {
+			@include respond-to(lg) {
 				font-size: 30px;
 			}
 		}

@@ -6,14 +6,20 @@ interface MenuButtonProps {
 	onClick: () => void;
 	isOpen: boolean;
 	isClosing: boolean;
+	className?: string;
 }
 
-const MenuButton = ({ onClick, isOpen, isClosing }: MenuButtonProps) => {
+const MenuButton = ({
+	onClick,
+	isOpen,
+	isClosing,
+	className,
+}: MenuButtonProps) => {
 	return (
 		<button
 			className={`${styles['menu-button']} ${isOpen ? styles.open : ''} ${
 				isClosing ? styles.closing : ''
-			}`}
+			} ${className || ''}`.trim()}
 			disabled={isClosing}
 			onClick={onClick}
 		>

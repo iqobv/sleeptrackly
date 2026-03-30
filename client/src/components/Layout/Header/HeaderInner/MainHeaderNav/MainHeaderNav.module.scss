@@ -1,0 +1,22 @@
+@use '../../../../../styles/mixins' as *;
+
+.main-header {
+	&__logo {
+		display: none;
+	}
+
+	&__nav {
+		display: none;
+		align-items: center;
+	}
+
+	@include respond-to(md) {
+		&__logo {
+			display: flex;
+		}
+
+		&__nav {
+			display: flex;
+		}
+	}
+}

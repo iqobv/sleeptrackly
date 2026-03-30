@@ -9,7 +9,7 @@
 .pendings-list__button {
 	width: 100%;
 
-	@include response(md) {
+	@include respond-to(md) {
 		width: unset;
 	}
 }

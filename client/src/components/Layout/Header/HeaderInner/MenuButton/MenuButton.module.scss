@@ -1,3 +1,5 @@
+@use '../../../../../styles/mixins' as *;
+
 .menu-button {
 	width: 30px;
 	background-color: transparent;
@@ -9,11 +11,11 @@
 	gap: 5px;
 	flex-direction: column;
 	z-index: 1200;
-	display: none;
 	cursor: pointer;
+	display: flex;
 
-	@media screen and (max-width: 768px) {
-		display: flex;
+	@include respond-to(md) {
+		display: none;
 	}
 
 	&.open {

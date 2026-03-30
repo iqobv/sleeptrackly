@@ -24,7 +24,7 @@ const EmailField = () => {
 		},
 	});
 
-	const { mutate, isSuccess } = useMutation({
+	const { mutate, isSuccess, isPending } = useMutation({
 		mutationFn: ({ email }: EmailDto) => sendEmailForResetPassword(email),
 		mutationKey: QUERY_KEYS.auth.sendEmailForResetPassword,
 	});
@@ -45,7 +45,11 @@ const EmailField = () => {
 					</Button>
 				</div>
 			)}
-			<ResetForm buttonText="Send reset link" onSubmit={handleSubmit(onSubmit)}>
+			<ResetForm
+				buttonText="Send reset link"
+				onSubmit={handleSubmit(onSubmit)}
+				isPending={isPending}
+			>
 				<TextField
 					label="Enter your email"
 					placeholder="email@gmail.com"

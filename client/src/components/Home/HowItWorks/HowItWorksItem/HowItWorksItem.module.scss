@@ -7,16 +7,16 @@
 	padding: 20px;
 	border-radius: 12px;
 
-	@include response(md) {
+	&__step {
+		font-size: 80px;
+		text-align: start;
+		color: var(--how-it-works-step-color);
+		opacity: 0.4;
+		user-select: none;
+	}
+
+	@include respond-to(md) {
 		max-width: 230px;
 		margin-top: calc(var(--i, 0) * 20px);
 	}
-}
-
-.how-it-works-item__step {
-	font-size: 80px;
-	text-align: start;
-	color: var(--how-it-works-step-color);
-	opacity: 0.4;
-	user-select: none;
 }

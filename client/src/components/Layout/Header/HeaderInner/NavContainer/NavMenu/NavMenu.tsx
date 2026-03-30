@@ -1,6 +1,7 @@
 'use client';
 
 import NavLinks from '../../NavLinks/NavLinks';
+import NavLogo from '../../NavLogo/NavLogo';
 import styles from './NavMenu.module.scss';
 
 interface NavMenuProps {
@@ -25,6 +26,10 @@ const NavMenu = ({
 			tabIndex={isOpen ? 0 : -1}
 		>
 			<div className={styles['nav-overlay-content']}>
+				<NavLogo
+					className={styles['nav-overlay-content__logo']}
+					onClick={handleClick}
+				/>
 				<nav className={styles.nav}>
 					<NavLinks closeMenu={handleClick} />
 				</nav>

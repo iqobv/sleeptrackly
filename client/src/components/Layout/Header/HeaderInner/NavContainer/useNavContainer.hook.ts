@@ -1,9 +1,11 @@
 'use client';
 
+import { BREAKPOINTS } from '@/constants';
+import { TBreakpoint } from '@/types';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-export const useNav = () => {
+export const useNavContainer = (breakpoint: TBreakpoint) => {
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => setMounted(true), []);
 
@@ -11,7 +13,9 @@ export const useNav = () => {
 	const [isClosing, setIsClosing] = useState(false);
 	const [isOpenForBtn, setIsOpenForBtn] = useState(false);
 
-	const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+	const isMobile = useMediaQuery({
+		query: `(max-width: ${BREAKPOINTS[breakpoint]})`,
+	});
 	const show = mounted && isMobile;
 
 	const handleClick = () => {

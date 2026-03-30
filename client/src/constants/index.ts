@@ -1,5 +1,6 @@
 export * from './acquiredFrom.constants';
 export * from './authErrorMessages.constants';
+export * from './breakpoints.constants';
 export * from './challengeFrequency.constants';
 export * from './friendStatus.constants';
 export * from './itemRarity.constants';
