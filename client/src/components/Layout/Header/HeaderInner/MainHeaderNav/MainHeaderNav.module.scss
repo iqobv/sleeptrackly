@@ -3,6 +3,10 @@
 .main-header {
 	&__logo {
 		display: none;
+
+		&--show {
+			display: flex;
+		}
 	}
 
 	&__nav {

@@ -5,6 +5,7 @@ import { PAGES } from './config';
 export async function middleware(request: NextRequest) {
 	const cookiesStore = await cookies();
 	const hasSession = cookiesStore.has('session');
+	const path = request.nextUrl.pathname;
 
 	const ip =
 		request.headers.get('x-forwarded-for') ??
@@ -13,54 +14,69 @@ export async function middleware(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set('x-forwarded-for', ip);
 
-	const path = request.nextUrl.pathname;
+	const protectedRoutes = [
+		PAGES.DASHBOARD,
+		PAGES.TIMER,
+		PAGES.CHALLENGES,
+		PAGES.SETTINGS,
+		PAGES.FRIENDS,
+		PAGES.FRIENDS_REQUESTS,
+		PAGES.SHOP,
+		PAGES.SHOP_CATALOG,
+	];
 
-	if (
-		!hasSession &&
-		(path.startsWith(PAGES.DASHBOARD) ||
-			path.startsWith(PAGES.TIMER) ||
-			path.startsWith(PAGES.CHALLENGES) ||
-			path.startsWith(PAGES.SETTINGS) ||
-			path.startsWith(PAGES.FRIENDS) ||
-			path.startsWith(PAGES.FRIENDS_REQUESTS))
-	) {
-		return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+	const authRoutes = [
+		PAGES.LOGIN,
+		PAGES.REGISTER,
+		PAGES.RESET_PASSWORD,
+		PAGES.EMAIL_CONFIRMATION,
+	];
+
+	const isProtectedRoute = protectedRoutes.some((route) =>
+		path.startsWith(route),
+	);
+	const isAuthRoute = authRoutes.some((route) => path.startsWith(route));
+
+	if (!hasSession && isProtectedRoute) {
+		const loginUrl = new URL(PAGES.LOGIN, request.url);
+		const response = NextResponse.redirect(loginUrl);
+
+		response.cookies.set('previousPage', path + request.nextUrl.search, {
+			httpOnly: true,
+			path: '/',
+			maxAge: 300,
+			sameSite: 'lax',
+		});
+
+		return response;
 	}
 
-	const redirectBack = () => {
+	if (hasSession && isAuthRoute) {
 		const redirectTo = request.cookies.get('previousPage')?.value || PAGES.HOME;
 		const response = NextResponse.redirect(new URL(redirectTo, request.url));
 		response.cookies.delete('previousPage');
 		return response;
-	};
-
-	if (
-		hasSession &&
-		(path.startsWith(PAGES.LOGIN) ||
-			path.startsWith(PAGES.REGISTER) ||
-			path.startsWith(PAGES.RESET_PASSWORD) ||
-			path.startsWith(PAGES.EMAIL_CONFIRMATION))
-	) {
-		return redirectBack();
 	}
 
-	if (
-		!path.startsWith(PAGES.LOGIN) &&
-		!path.startsWith(PAGES.REGISTER) &&
-		!path.startsWith(PAGES.EMAIL_CONFIRMATION) &&
-		!path.startsWith(PAGES.RESET_PASSWORD) &&
-		!path.startsWith('/api') &&
-		!path.startsWith('/_next') &&
-		!path.startsWith('/favicon.ico') &&
-		!path.startsWith('/.well-known')
-	) {
-		const fullUrl = path + request.nextUrl.search;
-		const response = NextResponse.next();
-		response.cookies.set('previousPage', fullUrl, {
+	const isIgnoredPath =
+		path.startsWith('/api') ||
+		path.startsWith('/_next') ||
+		path.startsWith('/favicon.ico') ||
+		path.includes('.') ||
+		isAuthRoute;
+
+	if (!isIgnoredPath) {
+		const response = NextResponse.next({
+			request: { headers: requestHeaders },
+		});
+
+		response.cookies.set('previousPage', path + request.nextUrl.search, {
 			httpOnly: true,
 			path: '/',
-			maxAge: 60 * 5,
+			maxAge: 300,
+			sameSite: 'lax',
 		});
+
 		return response;
 	}
 

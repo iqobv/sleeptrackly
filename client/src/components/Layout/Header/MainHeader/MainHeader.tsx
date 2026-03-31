@@ -1,12 +1,10 @@
 import Header from '../Header';
-import { MainHeaderNav, NavContainer } from '../HeaderInner';
+import { MainHeaderNav } from '../HeaderInner';
 
 const MainHeader = () => {
 	return (
 		<Header>
-			<NavContainer withMenu>
-				<MainHeaderNav />
-			</NavContainer>
+			<MainHeaderNav />
 		</Header>
 	);
 };

@@ -2,6 +2,7 @@
 
 import { TBreakpoint } from '@/types';
 import MenuButton from '../MenuButton/MenuButton';
+import NavLogo from '../NavLogo/NavLogo';
 import styles from './NavContainer.module.scss';
 import NavMenu from './NavMenu/NavMenu';
 import { useNavContainer } from './useNavContainer.hook';
@@ -12,6 +13,7 @@ interface NavContainerProps {
 	menuButtonClassName?: string;
 	className?: string;
 	mobileWidth?: TBreakpoint;
+	renderLogoInsteadOfMenu?: boolean;
 }
 
 const NavContainer = ({
@@ -20,6 +22,7 @@ const NavContainer = ({
 	menuButtonClassName,
 	className,
 	mobileWidth = 'md',
+	renderLogoInsteadOfMenu = false,
 }: NavContainerProps) => {
 	const {
 		isOpenForBtn,
@@ -33,17 +36,23 @@ const NavContainer = ({
 	return (
 		<>
 			{withMenu && (
-				<MenuButton
-					onClick={handleClick}
-					isOpen={isOpenForBtn}
-					isClosing={isClosing}
-					className={menuButtonClassName}
-				/>
+				<>
+					{renderLogoInsteadOfMenu ? (
+						<NavLogo />
+					) : (
+						<MenuButton
+							onClick={handleClick}
+							isOpen={isOpenForBtn}
+							isClosing={isClosing}
+							className={menuButtonClassName}
+						/>
+					)}
+				</>
 			)}
 			<div className={`${styles['nav-container']} ${className || ''}`}>
 				{children}
 			</div>
-			{withMenu && show && (
+			{withMenu && show && !renderLogoInsteadOfMenu && (
 				<NavMenu
 					isOpen={isOpen}
 					isClosing={isClosing}

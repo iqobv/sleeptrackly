@@ -10,7 +10,7 @@ const EmailConfirmationWrapper = ({
 	children,
 }: EmailConfirmationWrapperProps) => {
 	return (
-		<div className={`${styles['email-confirmation-wrapper']} container page`}>
+		<div className={`${styles['email-confirmation-wrapper']} container`}>
 			{children}
 		</div>
 	);
