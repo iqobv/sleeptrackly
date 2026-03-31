@@ -9,6 +9,7 @@ html.dark {
 	--text-primary: #f3f4f6;
 	--text-secondary: #c2c2c2;
 	--border-color: #27272a;
+	--link-color: #4a90e2;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -223,4 +224,12 @@ html.dark {
 
 	/* Email Confirmation */
 	--email-confirmation-icon-bg: #333;
+
+	/* Legal */
+	--legal-title: #fff;
+	--legal-link: #0f0fa4;
+	--legal-subtitle: #d9d9d9;
+	--legal-text: #d1d1d1;
+	--legal-list-marker: #595959;
+	--legal-border: #707070;
 }

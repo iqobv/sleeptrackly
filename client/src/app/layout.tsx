@@ -1,3 +1,4 @@
+import TermlyCMP from '@/components/TermlyCMP';
 import MainProvider from '@/providers/MainProvider';
 import { IUser } from '@/types';
 import type { Metadata } from 'next';
@@ -17,6 +18,8 @@ export const metadata: Metadata = {
 	},
 	description: 'Sleep Tracker',
 };
+
+const WEBSITE_UUID = process.env.WEBSITE_UUID;
 
 export default async function RootLayout({
 	children,
@@ -64,6 +67,7 @@ export default async function RootLayout({
 				content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
 			/>
 			<body className={`${geistSans.variable}`}>
+				{WEBSITE_UUID && <TermlyCMP websiteUUID={WEBSITE_UUID} />}
 				<MainProvider user={user}>{children}</MainProvider>
 			</body>
 		</html>
