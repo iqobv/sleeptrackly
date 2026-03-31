@@ -96,15 +96,6 @@ export class UserNotificationSettingsService {
 						"Your sleep timer is set. Don't forget to stop it when you wake up!",
 						'/timer',
 					);
-
-					await this.notificationService.create({
-						userId,
-						title: 'Timer Reminder',
-						body: "Your sleep timer is set. Don't forget to stop it when you wake up!",
-						isPush: false,
-						showInApp: false,
-						redirectUrl: '/timer',
-					});
 				}
 			}
 		}
