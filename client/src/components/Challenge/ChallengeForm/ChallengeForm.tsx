@@ -107,6 +107,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 								<Select
 									options={f.options as IOption[]}
 									{...f}
+									label={typeof f.label === 'string' ? f.label : undefined}
 									isClearable
 									error={get(errors, f.name)?.message as string}
 									{...field}
