@@ -16,6 +16,7 @@ import { MdErrorOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ZodType } from 'zod';
 import styles from './AuthForm.module.scss';
+import CheckboxField from './CheckboxField';
 
 interface AuthFormProps<T extends FieldValues, R> {
 	fields: AuthField<T>[];
@@ -91,19 +92,27 @@ const AuthForm = <T extends FieldValues, R>({
 			)}
 			{fields.map((f) => (
 				<div key={f.name}>
-					<TextField
-						placeholder={f.placeholder}
-						autoComplete={f.autocomplete}
-						type={f.type}
-						fullWidth
-						label={f.label}
-						error={errors[f.name]?.message as string}
-						leftIcon={f.icon}
-						{...(f.type?.includes('password') && {
-							rightIconClassName: styles['auth-form__password-icon'],
-						})}
-						{...register(f.name)}
-					/>
+					{f.type === 'checkbox' ? (
+						<CheckboxField
+							label={f.label}
+							error={errors[f.name]?.message as string}
+							{...register(f.name)}
+						/>
+					) : (
+						<TextField
+							placeholder={f.placeholder}
+							autoComplete={f.autocomplete}
+							type={f.type}
+							fullWidth
+							label={f.label}
+							error={errors[f.name]?.message as string}
+							leftIcon={f.icon}
+							{...(f.type?.includes('password') && {
+								rightIconClassName: styles['auth-form__password-icon'],
+							})}
+							{...register(f.name)}
+						/>
+					)}
 				</div>
 			))}
 			<Button

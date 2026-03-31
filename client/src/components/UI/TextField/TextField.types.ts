@@ -6,7 +6,7 @@ export interface BaseTextProps {
 	disabled?: boolean;
 	fullWidth?: boolean;
 	register?: UseFormRegisterReturn;
-	label?: string;
+	label?: React.ReactNode;
 	error?: string;
 	leftIcon?: React.ReactNode;
 	rightIcon?: React.ReactNode;
@@ -16,13 +16,13 @@ export interface BaseTextProps {
 }
 
 export interface TextAreaProps
-	extends Omit<TextareaAutosizeProps, keyof BaseTextProps>,
-		BaseTextProps {
+	extends Omit<TextareaAutosizeProps, keyof BaseTextProps>, BaseTextProps {
 	multiline?: boolean;
 }
 
 export interface InputProps
-	extends Omit<React.ComponentProps<'input'>, keyof BaseTextProps>,
+	extends
+		Omit<React.ComponentProps<'input'>, keyof BaseTextProps>,
 		BaseTextProps {
 	multiline?: never;
 }
