@@ -1,9 +1,15 @@
+export interface LogoProps extends React.SVGProps<SVGSVGElement> {
+	width?: number;
+	height?: number;
+	fill?: string;
+}
+
 const Logo = ({
 	width = 32,
 	height = 32,
 	fill = 'var(--color-main-text)',
 	...rest
-}: React.SVGProps<SVGSVGElement>) => (
+}: LogoProps) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 1024 1024"

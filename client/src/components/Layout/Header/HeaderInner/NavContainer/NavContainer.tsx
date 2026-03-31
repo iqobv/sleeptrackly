@@ -1,8 +1,8 @@
 'use client';
 
+import { NavLogo } from '@/components/UI';
 import { TBreakpoint } from '@/types';
 import MenuButton from '../MenuButton/MenuButton';
-import NavLogo from '../NavLogo/NavLogo';
 import styles from './NavContainer.module.scss';
 import NavMenu from './NavMenu/NavMenu';
 import { useNavContainer } from './useNavContainer.hook';

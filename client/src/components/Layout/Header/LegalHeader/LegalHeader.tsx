@@ -1,5 +1,5 @@
+import { NavLogo } from '@/components/UI';
 import Header from '../Header';
-import { NavLogo } from '../HeaderInner';
 import styles from './LegalHeader.module.scss';
 
 const LegalHeader = () => {
