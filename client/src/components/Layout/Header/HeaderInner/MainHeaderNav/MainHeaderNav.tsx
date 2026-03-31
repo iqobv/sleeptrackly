@@ -1,10 +1,10 @@
 'use client';
 
+import { NavLogo } from '@/components/UI';
 import { useAuth } from '@/hooks';
 import AuthButtons from '../AuthButtons/AuthButtons';
 import NavContainer from '../NavContainer/NavContainer';
 import NavLinks from '../NavLinks/NavLinks';
-import NavLogo from '../NavLogo/NavLogo';
 import styles from './MainHeaderNav.module.scss';
 
 const MainHeaderNav = () => {

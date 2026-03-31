@@ -1,5 +1,6 @@
+import { NavLogo } from '@/components/UI';
 import Header from '../Header';
-import { NavContainer, NavLogo, ShopBalance } from '../HeaderInner';
+import { NavContainer, ShopBalance } from '../HeaderInner';
 import AuthButtons from '../HeaderInner/AuthButtons/AuthButtons';
 import NavLinks from '../HeaderInner/NavLinks/NavLinks';
 import styles from './ShopHeader.module.scss';

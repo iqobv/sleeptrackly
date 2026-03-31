@@ -1,4 +1,4 @@
-import { NavLogo } from '../HeaderInner';
+import { NavLogo } from '@/components/UI';
 import styles from './AuthHeader.module.scss';
 
 const AuthHeader = () => {

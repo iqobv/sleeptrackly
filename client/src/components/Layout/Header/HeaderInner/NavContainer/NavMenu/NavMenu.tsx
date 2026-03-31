@@ -1,7 +1,7 @@
 'use client';
 
+import { NavLogo } from '@/components/UI';
 import NavLinks from '../../NavLinks/NavLinks';
-import NavLogo from '../../NavLogo/NavLogo';
 import styles from './NavMenu.module.scss';
 
 interface NavMenuProps {

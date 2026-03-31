@@ -9,6 +9,7 @@ export { default as FormLabel } from './FormLabel/FormLabel';
 export { default as List } from './List/List';
 export { default as Loader } from './Loader/Loader';
 export { default as Modal } from './Modal/Modal';
+export { default as NavLogo } from './NavLogo/NavLogo';
 export { default as PageLoader } from './PageLoader/PageLoader';
 export { default as Pagination } from './Pagination/Pagination';
 export { default as PaginationLoader } from './Pagination/PaginationLoader';
