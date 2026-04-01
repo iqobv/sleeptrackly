@@ -1,0 +1,38 @@
+@use '../../../../styles/mixins' as *;
+
+.sleep-sessions {
+	&__list {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--dashboard-gap);
+
+		@include respond-to(md) {
+			grid-template-columns: repeat(2, 1fr);
+
+			& > *:last-child {
+				grid-column: 1 / -1;
+			}
+		}
+	}
+}
+
+.sleep-session {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--dashboard-gap);
+
+	&__date {
+		font-size: 1.1rem;
+		font-weight: 600;
+		color: var(--dashboard-sleep-session-date-color);
+	}
+
+	&__info {
+		color: var(--dashboard-sleep-session-times-color);
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		font-size: 0.9rem;
+	}
+}

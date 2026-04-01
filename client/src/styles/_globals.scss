@@ -91,6 +91,16 @@ select:-webkit-autofill:focus {
 	animation: fadeIn 0.8s ease-out forwards;
 }
 
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus {
+	outline: none;
+}
+
+.recharts-wrapper:focus-visible,
+.recharts-wrapper *:focus-visible {
+	outline: revert;
+}
+
 @keyframes fadeIn {
 	to {
 		opacity: 1;
