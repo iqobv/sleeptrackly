@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { NotificationService } from '../notification/notification.service';
 import { UserNotificationSettingsService } from './user-notification-settings.service';
 
 type PrismaMock = {
@@ -42,6 +43,7 @@ describe('UserNotificationSettingsService', () => {
 			providers: [
 				UserNotificationSettingsService,
 				{ provide: PrismaService, useValue: prisma },
+				{ provide: NotificationService, useValue: {} },
 			],
 		}).compile();
 

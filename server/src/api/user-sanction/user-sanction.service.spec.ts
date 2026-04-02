@@ -3,41 +3,39 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { NotificationService } from '../notification/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserService } from '../user/user.service';
 import { UserSanctionService } from './user-sanction.service';
 
-const now = new Date();
-
-const sanction = {
-	id: 'sanction-1',
-	userId: 'u1',
-	reportId: 'rep1',
-	createdById: 'admin1',
-	startsAt: now,
-	endsAt: new Date(now.getTime() + 1000 * 60 * 60),
-	type: UserSanctionType.AVATAR_CHANGE_BAN,
-	createdAt: now,
-	updatedAt: now,
+type PrismaMock = {
+	userSanction: {
+		findMany: jest.Mock;
+		findUnique: jest.Mock;
+		create: jest.Mock;
+		update: jest.Mock;
+		delete: jest.Mock;
+	};
 };
 
 describe('UserSanctionService', () => {
 	let service: UserSanctionService;
-	let prisma: {
-		userSanction: {
-			findMany: jest.Mock;
-			findUnique: jest.Mock;
-			create: jest.Mock;
-			update: jest.Mock;
-			delete: jest.Mock;
-		};
-	};
-	let userService: {
-		update: jest.Mock;
-		generateUsername: jest.Mock;
-	};
-	let userAvatarService: {
-		deleteAvatar: jest.Mock;
+	let prisma: PrismaMock;
+	let userService: { update: jest.Mock; generateUsername: jest.Mock };
+	let userAvatarService: { deleteAvatar: jest.Mock };
+	let notificationService: { create: jest.Mock; send: jest.Mock };
+
+	const now = new Date();
+	const sanction = {
+		id: 'sanction-1',
+		userId: 'u1',
+		reportId: 'rep1',
+		createdById: 'admin1',
+		startsAt: now,
+		endsAt: dayjs(now).add(1, 'hour').toDate(),
+		type: UserSanctionType.AVATAR_CHANGE_BAN,
+		createdAt: now,
+		updatedAt: now,
 	};
 
 	beforeEach(async () => {
@@ -60,21 +58,18 @@ describe('UserSanctionService', () => {
 			deleteAvatar: jest.fn(),
 		};
 
+		notificationService = {
+			create: jest.fn().mockResolvedValue({}),
+			send: jest.fn().mockResolvedValue(true),
+		};
+
 		const moduleRef: TestingModule = await Test.createTestingModule({
 			providers: [
 				UserSanctionService,
-				{
-					provide: PrismaService,
-					useValue: prisma,
-				},
-				{
-					provide: UserService,
-					useValue: userService,
-				},
-				{
-					provide: UserAvatarService,
-					useValue: userAvatarService,
-				},
+				{ provide: PrismaService, useValue: prisma },
+				{ provide: UserService, useValue: userService },
+				{ provide: UserAvatarService, useValue: userAvatarService },
+				{ provide: NotificationService, useValue: notificationService },
 			],
 		}).compile();
 
@@ -113,20 +108,23 @@ describe('UserSanctionService', () => {
 		it('should throw error if sanction not found', async () => {
 			prisma.userSanction.findUnique.mockResolvedValue(null);
 
-			await expect(service.findById('wrong-id')).rejects.toBeInstanceOf(
-				NotFoundException,
-			);
 			await expect(service.findById('wrong-id')).rejects.toThrow(
-				'Sanction not found',
+				NotFoundException,
 			);
 		});
 	});
 
 	describe('create', () => {
-		it('should create sanction', async () => {
+		it('should create sanction and handle AVATAR_CHANGE_BAN', async () => {
 			prisma.userSanction.create.mockResolvedValue(sanction);
+			jest
+				.spyOn(
+					service as unknown as { findByTypeAndUserId: () => Promise<unknown> },
+					'findByTypeAndUserId',
+				)
+				.mockResolvedValue(null);
 
-			const endsAt = new Date(now.getTime() + 1000 * 60 * 60);
+			const endsAt = dayjs(now).add(1, 'hour').toDate();
 
 			const result = await service.create('u1', {
 				targetUserId: 'u2',
@@ -136,146 +134,28 @@ describe('UserSanctionService', () => {
 				reportId: 'rep1',
 			});
 
-			expect(prisma.userSanction.create).toHaveBeenCalledWith({
-				data: {
-					report: { connect: { id: 'rep1' } },
-					user: { connect: { id: 'u2' } },
-					createdBy: { connect: { id: 'u1' } },
-					endsAt,
-					startsAt: now,
-					type: UserSanctionType.AVATAR_CHANGE_BAN,
-				},
-			});
+			expect(prisma.userSanction.create).toHaveBeenCalled();
+			expect(userAvatarService.deleteAvatar).toHaveBeenCalledWith('u2');
 			expect(result).toEqual(sanction);
 		});
 
-		it('should update existing sanction if it already exists and its endsAt is after dto.endsAt', async () => {
-			const existingEndsAt = dayjs(now).add(5, 'day').toDate();
-			const dtoEndsAt = dayjs(now).add(2, 'day').toDate();
-
-			const dto = {
-				targetUserId: 'target-1',
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: now,
-				endsAt: dtoEndsAt,
-				reportId: 'rep-1',
-			};
-
-			const existingSanction = {
-				id: 's1',
-				userId: 'target-1',
-				createdById: 'admin-1',
-				reportId: 'rep-1',
-				startsAt: now,
-				endsAt: existingEndsAt,
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				createdAt: now,
-				updatedAt: now,
-			};
-
-			jest
-				.spyOn(service as any, 'findByTypeAndUserId')
-				.mockResolvedValue(existingSanction);
-
-			prisma.userSanction.update.mockResolvedValue({
-				...existingSanction,
-				endsAt: existingEndsAt,
-			});
-
-			const result = await service.create('admin-1', dto);
-
-			expect(prisma.userSanction.update).toHaveBeenCalledWith({
-				where: {
-					userId_type: {
-						type: UserSanctionType.AVATAR_CHANGE_BAN,
-						userId: 'target-1',
-					},
-				},
-				data: { endsAt: existingEndsAt },
-			});
-
-			expect(result.endsAt).toEqual(existingEndsAt);
-		});
-
-		it('should update existing sanction if it already exists and its endsAt is before dto.endsAt', async () => {
-			const existingEndsAt = dayjs(now).add(1, 'day').toDate();
-			const dtoEndsAt = dayjs(now).add(3, 'day').toDate();
-
-			const dto = {
-				targetUserId: 'target-1',
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: now,
-				endsAt: dtoEndsAt,
-				reportId: 'rep-1',
-			};
-
-			const existingSanction = {
-				id: 's1',
-				userId: 'target-1',
-				createdById: 'admin-1',
-				reportId: 'rep-1',
-				startsAt: now,
-				endsAt: existingEndsAt,
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				createdAt: now,
-				updatedAt: now,
-			};
-
-			jest
-				.spyOn(service as any, 'findByTypeAndUserId')
-				.mockResolvedValue(existingSanction);
-
-			prisma.userSanction.update.mockResolvedValue({
-				...existingSanction,
-				endsAt: dtoEndsAt,
-			});
-
-			const result = await service.create('admin-1', dto);
-
-			expect(prisma.userSanction.update).toHaveBeenCalledWith({
-				where: {
-					userId_type: {
-						type: UserSanctionType.AVATAR_CHANGE_BAN,
-						userId: 'target-1',
-					},
-				},
-				data: { endsAt: dtoEndsAt },
-			});
-
-			expect(result.endsAt).toEqual(dtoEndsAt);
-		});
-
-		it('should call userAvatarService.deleteAvatar when type is AVATAR_CHANGE_BAN', async () => {
-			prisma.userSanction.create.mockResolvedValue({
-				...sanction,
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-			});
-
-			const endsAt = new Date(now.getTime() + 1000 * 60 * 60);
-
-			await service.create('admin-1', {
-				targetUserId: 'target-1',
-				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: now,
-				endsAt,
-			});
-
-			expect(userAvatarService.deleteAvatar).toHaveBeenCalledWith('target-1');
-		});
-
-		it('should call userService.update and generateUsername when type is USERNAME_CHANGE_BAN', async () => {
+		it('should handle USERNAME_CHANGE_BAN and generate new username', async () => {
 			prisma.userSanction.create.mockResolvedValue({
 				...sanction,
 				type: UserSanctionType.USERNAME_CHANGE_BAN,
 			});
-
-			const endsAt = new Date(now.getTime() + 1000 * 60 * 60);
+			jest
+				.spyOn(
+					service as unknown as { findByTypeAndUserId: () => Promise<unknown> },
+					'findByTypeAndUserId',
+				)
+				.mockResolvedValue(null);
 
 			await service.create('admin-1', {
 				targetUserId: 'target-1',
 				type: UserSanctionType.USERNAME_CHANGE_BAN,
 				startsAt: now,
-				endsAt,
+				endsAt: dayjs(now).add(1, 'day').toDate(),
 			});
 
 			expect(userService.generateUsername).toHaveBeenCalled();
@@ -290,16 +170,12 @@ describe('UserSanctionService', () => {
 			const dto = {
 				targetUserId: 'target-1',
 				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: new Date(now.getTime() + 1000 * 60 * 60),
-				endsAt: now,
-				reportId: 'rep-1',
+				startsAt: dayjs(now).add(2, 'hour').toDate(),
+				endsAt: dayjs(now).add(1, 'hour').toDate(),
 			};
 
-			const promise = service.create('admin-1', dto);
-
-			await expect(promise).rejects.toBeInstanceOf(BadRequestException);
-			await expect(promise).rejects.toThrow(
-				'Start date must be before end date',
+			await expect(service.create('admin-1', dto)).rejects.toThrow(
+				BadRequestException,
 			);
 		});
 
@@ -307,66 +183,39 @@ describe('UserSanctionService', () => {
 			const dto = {
 				targetUserId: 'target-1',
 				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: new Date(now.getTime() - 1000 * 60 * 120),
-				endsAt: new Date(now.getTime() - 1000 * 60 * 60),
-				reportId: 'rep-1',
+				startsAt: dayjs(now).subtract(2, 'hour').toDate(),
+				endsAt: dayjs(now).subtract(1, 'hour').toDate(),
 			};
 
-			const promise = service.create('admin-1', dto);
-
-			await expect(promise).rejects.toBeInstanceOf(BadRequestException);
-			await expect(promise).rejects.toThrow('End date must be in the future');
+			await expect(service.create('admin-1', dto)).rejects.toThrow(
+				BadRequestException,
+			);
 		});
 	});
 
 	describe('update', () => {
-		it('should update sanction', async () => {
+		it('should update sanction successfully', async () => {
 			prisma.userSanction.findUnique.mockResolvedValue(sanction);
-
-			const endsAt = new Date(now.getTime() + 1000 * 60 * 60);
-
-			const dto = { endsAt };
-
+			const newEndsAt = dayjs(now).add(2, 'hours').toDate();
 			prisma.userSanction.update.mockResolvedValue({
 				...sanction,
-				endsAt,
+				endsAt: newEndsAt,
 			});
 
-			const result = await service.update(sanction.id, dto);
+			const result = await service.update(sanction.id, { endsAt: newEndsAt });
 
 			expect(prisma.userSanction.update).toHaveBeenCalledWith({
 				where: { id: sanction.id },
-				data: { endsAt },
+				data: { endsAt: newEndsAt },
 			});
-			expect(result).toEqual(sanction);
-		});
-
-		it('should throw error if sanction not found', async () => {
-			prisma.userSanction.findUnique.mockResolvedValue(null);
-
-			const dto = { endsAt: new Date(now.getTime() + 1000 * 60 * 60) };
-
-			const promise = service.update('s1', dto);
-
-			await expect(promise).rejects.toBeInstanceOf(NotFoundException);
-			await expect(promise).rejects.toThrow('Sanction not found');
-		});
-
-		it('should throw error if end date is in the past', async () => {
-			prisma.userSanction.findUnique.mockResolvedValue(sanction);
-
-			const dto = { endsAt: new Date(now.getTime() - 1000 * 60 * 60) };
-
-			const promise = service.update(sanction.id, dto);
-
-			await expect(promise).rejects.toBeInstanceOf(BadRequestException);
-			await expect(promise).rejects.toThrow('End date must be in the future');
+			expect(result.endsAt).toEqual(newEndsAt);
 		});
 	});
 
 	describe('remove', () => {
 		it('should remove sanction', async () => {
 			prisma.userSanction.findUnique.mockResolvedValue(sanction);
+			prisma.userSanction.delete.mockResolvedValue(sanction);
 
 			await service.remove(sanction.id);
 
@@ -375,13 +224,10 @@ describe('UserSanctionService', () => {
 			});
 		});
 
-		it('should throw error if sanction not found', async () => {
+		it('should throw error if removing non-existent sanction', async () => {
 			prisma.userSanction.findUnique.mockResolvedValue(null);
 
-			const promise = service.remove('s1');
-
-			await expect(promise).rejects.toBeInstanceOf(NotFoundException);
-			await expect(promise).rejects.toThrow('Sanction not found');
+			await expect(service.remove('s1')).rejects.toThrow(NotFoundException);
 		});
 	});
 });

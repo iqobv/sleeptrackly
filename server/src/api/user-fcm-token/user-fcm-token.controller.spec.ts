@@ -2,19 +2,19 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UserFcmTokenController } from './user-fcm-token.controller';
 import { UserFcmTokenService } from './user-fcm-token.service';
 
-const fcmToken = {
-	id: 'fcmtoken123',
-	userId: 'user123',
-	token: 'fcm_token_abc',
-	userAgent: 'Mozilla/5.0',
-	createdAt: new Date(),
-	updatedAt: new Date(),
-};
-
 describe('UserFcmTokenController', () => {
 	let controller: UserFcmTokenController;
 	let service: {
 		create: jest.Mock;
+	};
+
+	const fcmToken = {
+		id: 'fcmtoken123',
+		userId: 'user123',
+		token: 'fcm_token_abc',
+		userAgent: 'Mozilla/5.0',
+		createdAt: new Date(),
+		updatedAt: new Date(),
 	};
 
 	beforeEach(async () => {
