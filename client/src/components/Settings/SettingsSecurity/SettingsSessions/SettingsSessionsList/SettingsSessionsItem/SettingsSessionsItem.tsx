@@ -41,8 +41,8 @@ const SettingsSessionsItem = ({
 				<>
 					{!disableAllButton && (
 						<Button
-							variant="text"
 							className={styles['settings-sessions-item__all-terminate']}
+							variant="text"
 							fullWidth
 							onClick={handleTerminateAll}
 							disabled={isTerminating || isTerminatingAll || disableAllButton}
