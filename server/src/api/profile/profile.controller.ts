@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 import { Authorized } from 'src/libs/decorators';
 import { ProfileDto } from './dto';
 import { ProfileService } from './profile.service';
@@ -13,8 +14,8 @@ export class ProfileController {
 	@Get(':username')
 	async getProfile(
 		@Param('username') username: string,
-		@Authorized('id') userId: string,
+		@Authorized() user: User,
 	) {
-		return await this.profileService.getProfileByUsername(username, userId);
+		return await this.profileService.getProfileByUsername(username, user);
 	}
 }

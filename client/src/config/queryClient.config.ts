@@ -74,4 +74,8 @@ export const QUERY_KEYS = {
 	coin: {
 		userCoin: ['userCoin'] as const,
 	},
+	privacy: {
+		get: ['privacy', 'get'] as const,
+		update: ['privacy', 'update'] as const,
+	},
 } as const;

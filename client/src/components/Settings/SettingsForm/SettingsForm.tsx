@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import SettingsField from '../SettingsField/SettingsField';
 import styles from './SettingsForm.module.scss';
 import { SettingsFormProps } from './SettingsForm.types';
 
@@ -21,17 +22,18 @@ const SettingsForm = <T extends FieldValues, R>({
 
 	const resolver = !!schema ? zodResolver(schema) : undefined;
 
+	const methods = useForm<T>({
+		resolver,
+		defaultValues,
+	});
+
 	const {
 		register,
 		handleSubmit,
 		reset,
-		setValue,
 		getValues,
 		formState: { errors, isDirty, dirtyFields },
-	} = useForm<T>({
-		resolver,
-		defaultValues,
-	});
+	} = methods;
 
 	const { mutate, isPending } = useMutation({
 		mutationFn,
@@ -70,25 +72,26 @@ const SettingsForm = <T extends FieldValues, R>({
 				onSubmit={handleSubmit(onSubmit)}
 			>
 				{fields.map((f) => (
-					<div key={f.name}>
+					<SettingsField
+						key={f.name}
+						label={f.label}
+						mobileDirection={f.mobileDirection}
+					>
 						{!!f.render ? (
 							f.render({
 								...f,
-								register,
-								setValue: (name, value) =>
-									setValue(name, value, { shouldDirty: true }),
+								methods,
 								error: errors[f.name]?.message as string | undefined,
 							})
 						) : (
 							<TextField
 								type={f.type}
 								placeholder={f.placeholder}
-								label={f.label}
 								error={errors[f.name]?.message as string | undefined}
 								{...register(f.name)}
 							/>
 						)}
-					</div>
+					</SettingsField>
 				))}
 				{isDirty && (
 					<Button

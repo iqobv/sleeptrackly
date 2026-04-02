@@ -1,3 +1,7 @@
+import { IFriendship } from '../friend/friendship.types';
+import { IEquippedItems } from '../item/equippedItems.types';
+import { IProfileStatistics } from './profileStatistics.types';
+
 export interface IProfile {
 	id: string;
 	username: string;
@@ -5,7 +9,8 @@ export interface IProfile {
 		url: string;
 		isDefault: boolean;
 	};
-	completedChallenges: number;
-	sleepEntries: number;
+	equippedItems: IEquippedItems[];
+	friendship: IFriendship | null;
+	statistics: IProfileStatistics | null;
 	createdAt: Date;
 }

@@ -7,7 +7,7 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
-import { UserSanctionType } from '@prisma/client';
+import { Prisma, UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
 import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
@@ -116,14 +116,16 @@ export class UserAvatarService {
 		await this.upload(file, userId);
 	}
 
-	async create(userId: string) {
-		const existingAvatar = await this.prismaService.userAvatar.findUnique({
+	async create(userId: string, tx?: Prisma.TransactionClient) {
+		const prisma = tx || this.prismaService;
+
+		const existingAvatar = await prisma.userAvatar.findUnique({
 			where: { userId },
 		});
 
 		if (existingAvatar) throw new ConflictException('Avatar already exists');
 
-		const newAvatar = await this.prismaService.userAvatar.create({
+		const newAvatar = await prisma.userAvatar.create({
 			data: {
 				url: this.DEFAULT_AVATAR_PATH,
 				user: { connect: { id: userId } },

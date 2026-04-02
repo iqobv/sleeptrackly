@@ -16,6 +16,9 @@ const selectUserFields: Prisma.UserSelect = {
 	id: true,
 	avatar: { select: { url: true } },
 	sleepStatus: { select: { isSleeping: true } },
+	userPrivacySettings: {
+		select: { showActivity: true, acceptFriendRequests: true },
+	},
 };
 
 const selectFriendshipFields: Prisma.FriendshipInclude = {
@@ -34,6 +37,11 @@ export class FriendshipService {
 		if (requesterId === addresseeId) throw new BadRequestException('Same user');
 
 		const addressee = await this.userService.findById(addresseeId);
+
+		if (!addressee.userPrivacySettings?.acceptFriendRequests)
+			throw new BadRequestException(
+				'This user is not accepting friend requests',
+			);
 
 		const friendship = await this.alreadyExists(requesterId, addressee.id);
 
@@ -122,6 +130,12 @@ export class FriendshipService {
 			const isRequester = f.requesterId === userId;
 			const user = isRequester ? f.addressee : f.requester;
 
+			const userStatus = user.userPrivacySettings?.showActivity
+				? user.sleepStatus?.isSleeping
+					? 'Sleeping'
+					: 'Offline'
+				: 'Unknown';
+
 			return {
 				id: f.id,
 				status: f.status,
@@ -129,7 +143,7 @@ export class FriendshipService {
 					id: user.id,
 					username: user.username,
 					avatar: user.avatar?.url,
-					isSleeping: user.sleepStatus?.isSleeping,
+					status: userStatus,
 				},
 			};
 		});

@@ -1,15 +1,15 @@
 'use client';
 
 import { List } from '@/components/UI';
-import { IProfile } from '@/types';
+import { IProfileStatistics } from '@/types';
 import ProfileStatisticsCard from './ProfileStatisticsCard/ProfileStatisticsCard';
 import { PROFILE_STATISTICS_LIST } from './profileStatisticsList';
 
 interface ProfileStatisticsProps {
-	profile: IProfile;
+	statistics: IProfileStatistics;
 }
 
-const ProfileStatistics = ({ profile }: ProfileStatisticsProps) => {
+const ProfileStatistics = ({ statistics }: ProfileStatisticsProps) => {
 	return (
 		<List
 			items={PROFILE_STATISTICS_LIST}
@@ -19,7 +19,11 @@ const ProfileStatistics = ({ profile }: ProfileStatisticsProps) => {
 				flexWrap: 'wrap',
 			}}
 			renderItem={(el) => (
-				<ProfileStatisticsCard key={el.name} item={el} profile={profile} />
+				<ProfileStatisticsCard
+					key={el.name}
+					item={el}
+					statistics={statistics}
+				/>
 			)}
 		/>
 	);

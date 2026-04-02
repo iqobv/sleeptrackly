@@ -3,6 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UpdateCoinDto } from './dto';
 
@@ -10,12 +11,12 @@ import { UpdateCoinDto } from './dto';
 export class CoinService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async create(userId: string) {
+	async create(userId: string, tx?: Prisma.TransactionClient) {
 		if (await this.getUserCoin(userId)) {
 			throw new ConflictException('User coin record already exists');
 		}
 
-		return await this.prismaService.userCoin.create({
+		return await (tx || this.prismaService).userCoin.create({
 			data: {
 				user: { connect: { id: userId } },
 			},

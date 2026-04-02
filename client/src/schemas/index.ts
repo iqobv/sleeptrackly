@@ -12,5 +12,6 @@ export * from './query/paginationWithLanguage.schema';
 export * from './report/report.schema';
 export * from './settings/settingsAccount.schema';
 export * from './settings/settingsNotifications.schema';
+export * from './settings/settingsPrivacy.schema';
 export * from './settings/settingsSecurity.schema';
 export * from './shop/allShopFilter.schema';
