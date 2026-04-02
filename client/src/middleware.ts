@@ -23,6 +23,10 @@ export async function middleware(request: NextRequest) {
 		PAGES.FRIENDS_REQUESTS,
 		PAGES.SHOP,
 		PAGES.SHOP_CATALOG,
+		PAGES.SETTINGS_SESSIONS,
+		PAGES.INVENTORY,
+		PAGES.CHALLENGE(''),
+		PAGES.EDIT_CHALLENGE(''),
 	];
 
 	const authRoutes = [
@@ -63,7 +67,8 @@ export async function middleware(request: NextRequest) {
 		path.startsWith('/_next') ||
 		path.startsWith('/favicon.ico') ||
 		path.includes('.') ||
-		isAuthRoute;
+		isAuthRoute ||
+		path.startsWith(PAGES.LOGOUT);
 
 	if (!isIgnoredPath) {
 		const response = NextResponse.next({

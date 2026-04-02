@@ -12,9 +12,10 @@ const UserMenu = () => {
 
 	const { open, user, onClose, handleLogout } = useUserMenu();
 
-	const avatar = user?.equippedItems.find(
-		(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
-	);
+	const avatar =
+		user?.equippedItems.find(
+			(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
+		) || null;
 
 	if (!user) return null;
 
