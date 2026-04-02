@@ -18,11 +18,12 @@ export async function generateMetadata({ params }: ProfilePageProps) {
 export default async function ProfilePage({ params }: ProfilePageProps) {
 	const { username } = await params;
 	const cookieStore = await cookies();
+	const hasSession = !!cookieStore.get('session');
 
 	try {
 		const res = await fetch(`${process.env.API_URL}/v1/profiles/${username}`, {
 			headers: {
-				Cookie: cookieStore.toString(),
+				...(hasSession && { Cookie: cookieStore.toString() }),
 			},
 		});
 		const data = await res.json();

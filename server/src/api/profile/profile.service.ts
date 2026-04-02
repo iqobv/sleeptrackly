@@ -20,16 +20,20 @@ export class ProfileService {
 	async getProfileByUsername(username: string, authUser: User | null) {
 		const user = await this.userService.findByUsername(username);
 
+		const isSameUser = user.id === authUser?.id;
+		const isAdmin = authUser?.role === 'ADMIN';
+		const isRestrictedViewer = !isSameUser && !isAdmin;
+
 		if (
-			user.userPrivacySettings?.profileVisibility === 'PRIVATE' &&
-			user.id !== authUser?.id &&
-			authUser?.role !== 'ADMIN'
-		)
+			isRestrictedViewer &&
+			user.userPrivacySettings?.profileVisibility === 'PRIVATE'
+		) {
 			throw new NotFoundException('Profile not found');
+		}
 
 		let friendship: Friendship | null = null;
 
-		if (user && authUser?.id && user.id !== authUser.id) {
+		if (authUser?.id && !isSameUser) {
 			friendship = await this.friendshipService.getFriendshipByUsersIds(
 				user.id,
 				authUser.id,
@@ -37,35 +41,39 @@ export class ProfileService {
 		}
 
 		if (
+			isRestrictedViewer &&
 			user.userPrivacySettings?.profileVisibility === 'FRIENDS' &&
 			!friendship
 		) {
 			throw new NotFoundException('Profile not found');
 		}
 
+		const canViewStatistics =
+			!isRestrictedViewer ||
+			user.userPrivacySettings?.statisticsVisibility === 'PUBLIC' ||
+			(user.userPrivacySettings?.statisticsVisibility === 'FRIENDS' &&
+				!!friendship);
+
+		const [equippedItems, statisticsData] = await Promise.all([
+			this.userInventoryService.getUserEquippedItems(user.id),
+			canViewStatistics
+				? Promise.all([
+						this.sleepEntryService.findByUserId(user.id),
+						this.challengeService.findAll(user.id),
+					])
+				: Promise.resolve(null),
+		]);
+
 		let statistics: ProfileStatistics | null = null;
 
-		if (
-			authUser?.id === user.id ||
-			authUser?.role === 'ADMIN' ||
-			(user.userPrivacySettings?.statisticsVisibility === 'FRIENDS' &&
-				friendship) ||
-			user.userPrivacySettings?.statisticsVisibility === 'PUBLIC'
-		) {
+		if (statisticsData) {
+			const [sleepEntries, challenges] = statisticsData;
 			statistics = {
-				countOfSleepEntries: (
-					await this.sleepEntryService.findByUserId(user.id)
-				).length,
-
-				countOfCompletedChallenges: (
-					await this.challengeService.findAll(user.id)
-				).filter((c) => c.isCompleted).length,
+				countOfSleepEntries: sleepEntries.length,
+				countOfCompletedChallenges: challenges.filter((c) => c.isCompleted)
+					.length,
 			};
 		}
-
-		const equippedItems = await this.userInventoryService.getUserEquippedItems(
-			user.id,
-		);
 
 		const { email, role, userPrivacySettings, ...result } = user;
 

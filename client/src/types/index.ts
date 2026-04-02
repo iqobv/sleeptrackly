@@ -33,6 +33,8 @@ export * from './product/productType.types';
 export * from './profile/profile.types';
 export * from './profile/profileStatistics.types';
 export * from './settings/notifications.types';
+export * from './settings/privacySettings.types';
+export * from './settings/privacyVisibility.types';
 export * from './settings/settingsField.types';
 export * from './shop/allShop.types';
 export * from './shop/featuredShop.types';

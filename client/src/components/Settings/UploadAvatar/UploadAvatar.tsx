@@ -4,7 +4,7 @@ import { Avatar, SectionHeader, TextField } from '@/components/UI';
 import styles from './UploadAvatar.module.scss';
 import UploadAvatarLoader from './UploadAvatarLoader';
 import UploadModal from './UploadModal/UploadModal';
-import { useUploadAvatar } from './useUploadAvatar';
+import { ACCEPTED_IMAGE_TYPES, useUploadAvatar } from './useUploadAvatar';
 
 const UploadAvatar = () => {
 	const {
@@ -34,13 +34,13 @@ const UploadAvatar = () => {
 					>
 						<Avatar avatar={user.avatar?.url} size={250} />
 					</button>
-					<div>
+					<div className={styles['avatar__input-container']}>
 						<TextField
 							ref={inputRef}
 							type="file"
 							id="avatar"
 							hidden
-							accept="image/*"
+							accept={ACCEPTED_IMAGE_TYPES.join(', ')}
 							className={styles['avatar__input']}
 							onChange={handleUpload}
 						/>
