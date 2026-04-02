@@ -27,6 +27,7 @@ model User {
   coins                   UserCoin?
   inventory               UserInventory[]
   purchaseHistories       PurchaseHistory[]
+  userPrivacySettings     UserPrivacySettings?
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")
