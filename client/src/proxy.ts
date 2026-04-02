@@ -2,7 +2,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PAGES } from './config';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
 	const cookiesStore = await cookies();
 	const hasSession = cookiesStore.has('session');
 	const path = request.nextUrl.pathname;

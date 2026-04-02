@@ -3,7 +3,7 @@ import { IUser } from '@/types';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
-import './globals.scss';
+import './index.scss';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { USER_ROLES } from './constants';
 import { IUser } from './types';
 
-export async function middleware() {
+export async function proxy() {
 	const cookiesStore = await cookies();
 	const hasSession = cookiesStore.has('session');
 	const allCookies = cookiesStore.toString();
