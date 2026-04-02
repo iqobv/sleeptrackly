@@ -1,3 +1,4 @@
+export * from './default-fields.dto';
 export * from './language-query.dto';
 export * from './message-result.dto';
 export * from './paginated-data.dto';

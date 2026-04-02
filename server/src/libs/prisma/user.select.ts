@@ -13,4 +13,13 @@ export const userSelect: Prisma.UserSelect = {
 			isDefault: true,
 		},
 	},
+	userPrivacySettings: {
+		select: {
+			acceptFriendRequests: true,
+			achievementsVisibility: true,
+			profileVisibility: true,
+			showActivity: true,
+			statisticsVisibility: true,
+		},
+	},
 };

@@ -26,7 +26,9 @@ const Profile = ({ username }: ProfileProps) => {
 			{!isLoading && data && (
 				<>
 					<ProfileMainInfo profile={data} />
-					<ProfileStatistics profile={data} />
+					{data.statistics && (
+						<ProfileStatistics statistics={data.statistics} />
+					)}
 				</>
 			)}
 		</div>

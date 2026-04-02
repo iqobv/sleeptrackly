@@ -21,6 +21,7 @@ import { CoinService } from '../coin/coin.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
 import { UserNotificationSettingsService } from '../user-notification-settings/user-notification-settings.service';
+import { UserPrivacySettingsService } from '../user-privacy-settings/user-privacy-settings.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
 import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
 
@@ -34,6 +35,7 @@ export class UserService {
 		private readonly userNotificationSettingsService: UserNotificationSettingsService,
 		private readonly coinService: CoinService,
 		private readonly userInventoryService: UserInventoryService,
+		private readonly userPrivacySettingsService: UserPrivacySettingsService,
 	) {}
 
 	async create(dto: CreateUserDto) {
@@ -43,22 +45,28 @@ export class UserService {
 
 		const hashedPassword = password ? await hashPassword(password) : null;
 
-		const user = await this.prismaService.user.create({
-			data: {
-				email,
-				username,
-				password: hashedPassword,
-				emailVerified,
-			},
-			select: userSelect,
+		return await this.prismaService.$transaction(async (tx) => {
+			const user = await tx.user.create({
+				data: {
+					email,
+					username,
+					password: hashedPassword,
+					emailVerified,
+				},
+				select: userSelect,
+			});
+
+			await this.userSleepStatusService.createSleepStatus(user.id, tx);
+			await this.userAvatarService.create(user.id, tx);
+			await this.userNotificationSettingsService.create(user.id, tx);
+			await this.coinService.create(user.id, tx);
+			await this.userPrivacySettingsService.createUserPrivacySettings(
+				user.id,
+				tx,
+			);
+
+			return user;
 		});
-
-		await this.userSleepStatusService.createSleepStatus(user.id);
-		await this.userAvatarService.create(user.id);
-		await this.userNotificationSettingsService.create(user.id);
-		await this.coinService.create(user.id);
-
-		return user;
 	}
 
 	async findByEmail(email: string, full: boolean = false) {
@@ -118,7 +126,10 @@ export class UserService {
 		const user = await this.getById(userId);
 
 		const users = await this.prismaService.user.findMany({
-			where: { username: { contains: username, mode: 'insensitive' } },
+			where: {
+				username: { contains: username, mode: 'insensitive' },
+				userPrivacySettings: { acceptFriendRequests: true },
+			},
 			select: {
 				id: true,
 				username: true,

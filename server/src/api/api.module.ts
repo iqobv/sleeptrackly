@@ -5,7 +5,6 @@ import { ChallengeModule } from './challenge/challenge.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { CoinModule } from './coin/coin.module';
 import { FriendshipModule } from './friendship/friendship.module';
-import { ImageModule } from './image/image.module';
 import { ItemModule } from './item/item.module';
 import { NotificationModule } from './notification/notification.module';
 import { ProductModule } from './product/product.module';
@@ -20,6 +19,7 @@ import { UserAvatarModule } from './user-avatar/user-avatar.module';
 import { UserFcmTokenModule } from './user-fcm-token/user-fcm-token.module';
 import { UserInventoryModule } from './user-inventory/user-inventory.module';
 import { UserNotificationSettingsModule } from './user-notification-settings/user-notification-settings.module';
+import { UserPrivacySettingsModule } from './user-privacy-settings/user-privacy-settings.module';
 import { UserProviderModule } from './user-provider/user-provider.module';
 import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
@@ -35,7 +35,6 @@ import { UserModule } from './user/user.module';
 		ChallengeModule,
 		ChallengeTaskModule,
 		UserAvatarModule,
-		ImageModule,
 		ProfileModule,
 		TokenModule,
 		FriendshipModule,
@@ -52,6 +51,7 @@ import { UserModule } from './user/user.module';
 		ProductModule,
 		PurchaseHistoryModule,
 		ShopModule,
+		UserPrivacySettingsModule,
 	],
 })
 export class ApiModule {}
