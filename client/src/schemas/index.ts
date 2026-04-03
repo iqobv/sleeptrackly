@@ -6,6 +6,7 @@ export * from './challenge/challenge.schema';
 export * from './challenge/createChallenge.schema';
 export * from './challenge/updateChallenge.schema';
 export * from './inventory/updateInventory.schema';
+export * from './promotion/promotion.schema';
 export * from './query/language.schema';
 export * from './query/pagination.schema';
 export * from './query/paginationWithLanguage.schema';

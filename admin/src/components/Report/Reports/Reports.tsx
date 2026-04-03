@@ -24,6 +24,7 @@ const Reports = () => {
 
 	useEffect(() => {
 		const newSearchParams = new URLSearchParams(searchParams);
+
 		Object.entries(filters).forEach(([key, value]) => {
 			if (value) {
 				newSearchParams.set(key, String(value));

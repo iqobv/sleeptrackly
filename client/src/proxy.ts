@@ -27,6 +27,7 @@ export async function proxy(request: NextRequest) {
 		PAGES.INVENTORY,
 		PAGES.CHALLENGE(''),
 		PAGES.EDIT_CHALLENGE(''),
+		PAGES.PROMO,
 	];
 
 	const authRoutes = [

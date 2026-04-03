@@ -1,0 +1,14 @@
+model PromotionUsage {
+  id String @id @default(uuid())
+
+  userId      String @map("user_id")
+  promotionId String @map("promotion_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promotion Promotion @relation(fields: [promotionId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, promotionId])
+  @@map("promotion_usages")
+}

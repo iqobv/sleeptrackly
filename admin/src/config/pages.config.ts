@@ -17,4 +17,7 @@ export const PAGES = {
 	PRODUCTS: '/customization/products',
 	PRODUCT: (id: string) => `/customization/products/${id}`,
 	PRODUCT_NEW: '/customization/products/new',
+	PROMOTIONS: '/promotions',
+	PROMOTION: (id: string) => `/promotions/${id}`,
+	PROMOTION_NEW: `/promotions/new`,
 } as const;

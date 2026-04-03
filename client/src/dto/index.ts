@@ -3,6 +3,7 @@ export * from './auth/password.dto';
 export * from './challenge/challenge.dto';
 export * from './challenge/challengeTask.dto';
 export * from './inventory/inventory.dto';
+export * from './promotion/promotion.dto';
 export * from './query/pagination.dto';
 export * from './report/report.dto';
 export * from './settings/notifications.dto';

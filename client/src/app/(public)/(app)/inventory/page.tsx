@@ -1,4 +1,4 @@
-import { Inventory } from '@/components/Inventory';
+import { InventoryList } from '@/components/Inventory';
 import { SectionHeader } from '@/components/UI';
 import { Metadata } from 'next';
 
@@ -14,7 +14,7 @@ export default function InventoryPage() {
 				title="My Inventory"
 				description="Manage your inventory items."
 			/>
-			<Inventory />
+			<InventoryList />
 		</div>
 	);
 }

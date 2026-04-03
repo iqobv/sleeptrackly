@@ -1,0 +1,21 @@
+model Promotion {
+  id String @id @default(uuid())
+
+  alias String @unique
+
+  maxUses   Int?      @default(1) @map("max_uses")
+  usedCount Int       @default(0) @map("used_count")
+  expiresAt DateTime? @map("expires_at")
+
+  coinsReward     Int?    @default(0) @map("coins_reward")
+  productIdReward String? @map("product_id_reward")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  usage PromotionUsage[]
+
+  product Product? @relation(fields: [productIdReward], references: [id], onDelete: Cascade)
+
+  @@map("promotions")
+}

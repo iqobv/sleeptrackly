@@ -2,6 +2,7 @@ export * from './customization/bundle.dto';
 export * from './customization/item.dto';
 export * from './customization/product.dto';
 export * from './notification/notification.dto';
+export * from './promotion/promotion.dto';
 export * from './query/pagination.dto';
 export * from './report/report.dto';
 export * from './translation/translation.dto';

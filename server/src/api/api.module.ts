@@ -24,6 +24,7 @@ import { UserProviderModule } from './user-provider/user-provider.module';
 import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
+import { PromotionModule } from './promotion/promotion.module';
 
 @Module({
 	imports: [
@@ -52,6 +53,7 @@ import { UserModule } from './user/user.module';
 		PurchaseHistoryModule,
 		ShopModule,
 		UserPrivacySettingsModule,
+		PromotionModule,
 	],
 })
 export class ApiModule {}

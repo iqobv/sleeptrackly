@@ -54,4 +54,8 @@ export const QUERY_KEYS = {
 			delete: (id: string) => ['deleteProduct', id] as const,
 		},
 	},
+	promotion: {
+		all: ['getAllPromotions'],
+		byId: (id: string) => ['getPromotionById', id] as const,
+	} as const,
 } as const;
