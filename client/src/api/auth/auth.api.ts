@@ -8,11 +8,14 @@ export const loginWithPassword = async (data: LoginDto) =>
 		body: JSON.stringify(data),
 	});
 
-export const registerWithPassword = async (data: RegisterDto) =>
-	await fetcher<IRegisterResult>('/api/v1/auth/register', {
+export const registerWithPassword = async (data: RegisterDto) => {
+	const { acceptTerms: _, ...rest } = data;
+
+	return await fetcher<IRegisterResult>('/api/v1/auth/register', {
 		method: 'POST',
-		body: JSON.stringify(data),
+		body: JSON.stringify(rest),
 	});
+};
 
 export const logout = async () =>
 	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });

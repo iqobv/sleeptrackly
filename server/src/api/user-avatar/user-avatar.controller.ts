@@ -2,6 +2,8 @@ import {
 	BadRequestException,
 	Controller,
 	Delete,
+	HttpStatus,
+	ParseFilePipeBuilder,
 	Post,
 	UploadedFile,
 	UseInterceptors,
@@ -48,7 +50,17 @@ export class UserAvatarController {
 	@Post('upload')
 	@UseInterceptors(FileInterceptor('avatar'))
 	async upload(
-		@UploadedFile() file: Express.Multer.File,
+		@UploadedFile(
+			new ParseFilePipeBuilder()
+				.addFileTypeValidator({
+					fileType: /(jpg|jpeg|png|webp)$/,
+				})
+				.build({
+					errorHttpStatusCode: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
+					fileIsRequired: true,
+				}),
+		)
+		file: Express.Multer.File,
 		@Authorized('id') userId: string,
 	) {
 		if (!file) throw new BadRequestException('File not provided');

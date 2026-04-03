@@ -2,15 +2,16 @@
 
 import styles from './SettingsField.module.scss';
 
+export type MobileDirection = 'row' | 'column';
 interface SettingsFieldProps {
 	label: string | React.ReactNode;
-	actionElement?: React.ReactNode;
-	mobileDirection?: 'row' | 'column';
+	children?: React.ReactNode;
+	mobileDirection?: MobileDirection;
 }
 
 const SettingsField = ({
 	label,
-	actionElement,
+	children,
 	mobileDirection = 'column',
 }: SettingsFieldProps) => {
 	return (
@@ -19,7 +20,7 @@ const SettingsField = ({
 			style={{ '--mobile-direction': mobileDirection } as React.CSSProperties}
 		>
 			<div className={styles['settings-field__label']}>{label}</div>
-			{actionElement && <>{actionElement}</>}
+			{children && <>{children}</>}
 		</div>
 	);
 };

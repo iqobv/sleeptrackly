@@ -8,4 +8,7 @@ export const RegisterSchema = authSchema.extend({
 		.string()
 		.nonempty({ error: 'Username is required' })
 		.min(3, { error: 'Username must be at least 3 characters' }),
+	acceptTerms: z.literal(true, {
+		error: 'You must accept the terms and conditions',
+	}),
 });

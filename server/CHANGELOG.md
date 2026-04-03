@@ -1,5 +1,17 @@
 # Server changelog
 
+## [1.5.0] - 2026-04-05
+
+### Added
+
+- Added user privacy settings model and endpoints.
+- Added promotion system with models and endpoints.
+
+### Fixed
+
+- Fixed bug when session doesn't terminate from other device.
+- Fixed bug with save in session.
+
 ## [1.4.1] - 2026-03-26
 
 ### Added

@@ -4,7 +4,7 @@ import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PRODUCT_TYPES } from '@/constants';
 import { IItem, IProduct } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -16,6 +16,7 @@ interface ShopCardProps {
 
 const ShopCard = ({ product }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
+	const queryClient = useQueryClient();
 
 	const key =
 		product.type === PRODUCT_TYPES.ITEM ? product.item : product.bundle;
@@ -28,6 +29,9 @@ const ShopCard = ({ product }: ShopCardProps) => {
 		},
 		onSuccess: () => {
 			toast.success('Purchase successful!');
+			queryClient.refetchQueries({
+				queryKey: QUERY_KEYS.coin.userCoin,
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Purchase failed. Please try again.');

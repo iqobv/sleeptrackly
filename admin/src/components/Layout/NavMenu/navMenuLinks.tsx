@@ -1,6 +1,7 @@
 import { PAGES } from '@/config';
 import { IconType } from 'react-icons';
 import {
+	MdCardGiftcard,
 	MdOutlineHome,
 	MdOutlineNotifications,
 	MdOutlinePerson,
@@ -63,5 +64,11 @@ export const NAV_MENU_LINKS: NavMenuLinksProps[] = [
 				Icon: MdOutlineShoppingBag,
 			},
 		],
+	},
+	{
+		label: 'Promotions',
+		href: PAGES.PROMOTIONS,
+		Icon: MdCardGiftcard,
+		expanded: false,
 	},
 ];

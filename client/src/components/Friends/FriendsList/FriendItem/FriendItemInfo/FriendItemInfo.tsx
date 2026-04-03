@@ -22,7 +22,7 @@ const FriendItemInfo = ({ friend }: FriendItemProps) => {
 					{friend.user.username}
 				</Link>
 				<p className={styles['friend-item__status']}>
-					{friend.user.isSleeping ? 'Sleeping' : 'Offline'}
+					{friend.user.status}
 				</p>
 			</div>
 		</div>

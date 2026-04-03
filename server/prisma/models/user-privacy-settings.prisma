@@ -1,0 +1,19 @@
+model UserPrivacySettings {
+  id String @id @default(uuid())
+
+  userId String @unique @map("user_id")
+
+  acceptFriendRequests Boolean @default(true) @map("accept_friend_requests")
+  showActivity         Boolean @default(true) @map("show_activity")
+
+  profileVisibility      Visibility @default(PUBLIC) @map("profile_visibility")
+  achievementsVisibility Visibility @default(PUBLIC) @map("achievements_visibility")
+  statisticsVisibility   Visibility @default(PUBLIC) @map("statistics_visibility")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_privacy_settings")
+}

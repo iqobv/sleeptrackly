@@ -1,10 +1,12 @@
 'use client';
 
-import DashboardLoader from '../DashboardLoader/DashboardLoader';
+import { SectionHeader } from '@/components/UI';
+import DashboardWeekStats from '../DashboardWeekStats/DashboardWeekStats';
 import SleepChart from '../SleepChart/SleepChart';
-import StatsByDays from '../StatsByDays/StatsByDays';
 import WeekPagination from '../WeekPagination/WeekPagination';
 import styles from './Dashboard.module.scss';
+import DashboardLoader from './DashboardLoader';
+import DashboardSleepSessions from './DashboardSleepSessions/DashboardSleepSessions';
 import { useDashboard } from './useDashboard';
 
 const Dashboard = () => {
@@ -12,14 +14,21 @@ const Dashboard = () => {
 
 	return (
 		<div className={styles['dashboard']}>
+			<SectionHeader
+				title="Weekly Rest"
+				containerClassName={styles['dashboard__header']}
+			/>
 			{showSkeleton ? (
 				<DashboardLoader />
 			) : (
 				data && (
 					<div className={`${styles['dashboard__wrapper']} fade-in`}>
 						<WeekPagination totalWeeks={data?.totalWeeks} days={data?.days} />
-						<SleepChart data={data.days} />
-						<StatsByDays days={data.days} />
+						<div className={styles['dashboard__content']}>
+							<DashboardWeekStats data={data} />
+							<SleepChart data={data.days} />
+						</div>
+						<DashboardSleepSessions days={data.days} />
 					</div>
 				)
 			)}

@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import dayjs from 'dayjs';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { RewardService } from '../reward/reward.service';
@@ -18,8 +19,10 @@ export class UserSleepStatusService {
 		return userSleepStatus;
 	}
 
-	async createSleepStatus(userId: string) {
-		return this.prismaService.userSleepStatus.create({ data: { userId } });
+	async createSleepStatus(userId: string, tx: Prisma.TransactionClient) {
+		return await (tx || this.prismaService).userSleepStatus.create({
+			data: { userId },
+		});
 	}
 
 	private calculateSleepDuration(start: Date, end: Date) {

@@ -25,20 +25,15 @@ const SettingsNotificationsFormField = ({
 	});
 
 	return (
-		<SettingsField
-			key={name}
-			label={label}
-			mobileDirection="row"
-			actionElement={
-				<ToggleSwitch
-					checked={controlledField.value}
-					onChange={(e) => {
-						controlledField.onChange(e.target.checked);
-						handleUpdate(name, e.target.checked);
-					}}
-				/>
-			}
-		/>
+		<SettingsField key={name} label={label} mobileDirection="row">
+			<ToggleSwitch
+				checked={controlledField.value}
+				onChange={(e) => {
+					controlledField.onChange(e.target.checked);
+					handleUpdate(name, e.target.checked);
+				}}
+			/>
+		</SettingsField>
 	);
 };
 

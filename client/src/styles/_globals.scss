@@ -57,25 +57,25 @@ select:-webkit-autofill:focus {
 	margin: 0 auto;
 	padding: 0 0.7rem;
 
-	@include response(sm) {
+	@include respond-to(sm) {
 		max-width: map.get($breakpoints, 'sm');
 		padding: 0 1rem;
 	}
 
-	@include response(md) {
+	@include respond-to(md) {
 		max-width: map.get($breakpoints, 'md');
 	}
 
-	@include response(lg) {
+	@include respond-to(lg) {
 		max-width: map.get($breakpoints, 'lg');
 		padding: 0 1.25rem;
 	}
 
-	@include response(xl) {
+	@include respond-to(xl) {
 		max-width: map.get($breakpoints, 'xl');
 	}
 
-	@include response(xxl) {
+	@include respond-to(xxl) {
 		max-width: map.get($breakpoints, 'xxl');
 	}
 }
@@ -89,6 +89,16 @@ select:-webkit-autofill:focus {
 	opacity: 0;
 	transform: translateY(20px);
 	animation: fadeIn 0.8s ease-out forwards;
+}
+
+.recharts-wrapper:focus,
+.recharts-wrapper *:focus {
+	outline: none;
+}
+
+.recharts-wrapper:focus-visible,
+.recharts-wrapper *:focus-visible {
+	outline: revert;
 }
 
 @keyframes fadeIn {

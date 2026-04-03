@@ -4,6 +4,10 @@ import { fetcher } from '@/utils';
 interface UpdateSleepResponse {
 	userSleepStatus: ISleepStatus;
 	sleepEntry: ISleepEntry;
+	reward: {
+		rewarded: boolean;
+		amount: number;
+	} | null;
 }
 
 export const getSleepStatus = async () =>

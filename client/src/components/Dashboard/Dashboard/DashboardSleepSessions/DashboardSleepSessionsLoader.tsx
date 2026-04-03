@@ -1,0 +1,26 @@
+import { SkeletonLoader } from '@/components/UI';
+import styles from './DashboardSleepSessions.module.scss';
+
+const borderRadius = 'var(--dashboard-card-border-radius)';
+
+const cards = Array.from({ length: 7 }).map((_, i) => (
+	<SkeletonLoader
+		key={i}
+		borderRadius={borderRadius}
+		height={85}
+		className={styles['sleep-session']}
+	/>
+));
+
+const DashboardSleepSessionsLoader = () => {
+	return (
+		<div className={styles['sleep-sessions']}>
+			<div style={{ padding: '20px 0' }}>
+				<SkeletonLoader width={220} height={28} borderRadius={borderRadius} />
+			</div>
+			<div className={styles['sleep-sessions__list']}>{cards}</div>
+		</div>
+	);
+};
+
+export default DashboardSleepSessionsLoader;

@@ -2,48 +2,57 @@
 
 import { IDashboardDay } from '@/types';
 import {
-	Area,
-	AreaChart,
+	Bar,
+	BarChart,
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from 'recharts';
+import DashboardCard from '../DashboardCard/DashboardCard';
 import styles from './SleepChart.module.scss';
-import { useSleepChart } from './useSleepChart';
+import { useSleepChart } from './useSleepChart.hook';
 
 interface SleepChartProps {
 	data: IDashboardDay[];
 }
 
 const SleepChart = ({ data }: SleepChartProps) => {
-	const { sleepDuration, chartData } = useSleepChart(data);
+	const chartData = useSleepChart(data);
 
 	return (
-		<div className={`${styles['sleep-chart']}`}>
-			<div className={styles['sleep-chart-title-container']}>
-				<p className={styles['sleep-chart-title']}>Sleep duration</p>
-				<p className={styles['sleep-chart-subtitle']}>
-					{sleepDuration.toFixed(1)} hours
-				</p>
-			</div>
-			<div className={styles['chart-wrapper']}>
-				<ResponsiveContainer width="100%" height="100%">
-					<AreaChart
+		<div className={styles['sleep-chart']}>
+			<DashboardCard className={styles['sleep-chart__wrapper']}>
+				<ResponsiveContainer
+					width="100%"
+					height="100%"
+					minWidth={1}
+					minHeight={1}
+					initialDimension={{ width: 100, height: 50 }}
+					className={styles['sleep-chart__container']}
+				>
+					<BarChart
 						width={500}
 						height={400}
 						data={chartData}
 						margin={{
 							top: 10,
-							right: 30,
-							left: -10,
-							bottom: 0,
+							right: 20,
+							left: -20,
+							bottom: -10,
 						}}
 					>
-						<XAxis dataKey="name" strokeOpacity={0} />
+						<XAxis dataKey="day" strokeOpacity={0} />
 						<YAxis strokeOpacity={0} />
 						<Tooltip
-							formatter={(value) => [`${value}h`, null]}
+							formatter={(_value, _name, entry) => [
+								entry.payload.tooltipValue,
+								null,
+							]}
+							cursor={false}
+							labelFormatter={(_label, payload) =>
+								payload?.[0]?.payload?.tooltipLabel ?? ''
+							}
 							contentStyle={{
 								backgroundColor: 'var(--chart-tooltip-bg)',
 								border: '1px solid var(--chart-tooltip-border)',
@@ -52,16 +61,18 @@ const SleepChart = ({ data }: SleepChartProps) => {
 								borderRadius: '4px',
 							}}
 						/>
-						<Area
-							type="monotone"
-							dataKey="time"
-							stroke="var(--chart-stroke)"
-							strokeWidth={5}
-							fill="var(--chart-bg)"
+						<Bar
+							dataKey="chartValue"
+							fill="var(--dashboard-chart-bar-bg)"
+							activeBar={{
+								fill: 'var(--dashboard-chart-bar-bg-hover)',
+								stroke: 'var(--dashboard-chart-bar-border-hover)',
+							}}
+							radius={20}
 						/>
-					</AreaChart>
+					</BarChart>
 				</ResponsiveContainer>
-			</div>
+			</DashboardCard>
 		</div>
 	);
 };

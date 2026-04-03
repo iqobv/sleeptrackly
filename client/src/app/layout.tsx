@@ -1,9 +1,12 @@
+import TermlyCMP from '@/components/TermlyCMP';
+import { PAGES } from '@/config';
 import MainProvider from '@/providers/MainProvider';
 import { IUser } from '@/types';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
-import './globals.scss';
+import { redirect } from 'next/navigation';
+import './index.scss';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -17,6 +20,8 @@ export const metadata: Metadata = {
 	},
 	description: 'Sleep Tracker',
 };
+
+const WEBSITE_UUID = process.env.WEBSITE_UUID;
 
 export default async function RootLayout({
 	children,
@@ -38,6 +43,10 @@ export default async function RootLayout({
 		});
 		const data = (await res.json()) as IUser;
 
+		if (res.status === 401) {
+			return null;
+		}
+
 		if (res.ok && data?.id) return data;
 		return null;
 	};
@@ -47,13 +56,7 @@ export default async function RootLayout({
 		if (res?.id) {
 			user = res;
 		} else {
-			await fetch(`${process.env.API_URL}/v1/auth/logout`, {
-				headers: {
-					'Content-Type': 'application/json',
-					cookie: allCookies,
-				},
-			});
-			user = null;
+			redirect(PAGES.LOGOUT);
 		}
 	}
 
@@ -64,6 +67,7 @@ export default async function RootLayout({
 				content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
 			/>
 			<body className={`${geistSans.variable}`}>
+				{WEBSITE_UUID && <TermlyCMP websiteUUID={WEBSITE_UUID} />}
 				<MainProvider user={user}>{children}</MainProvider>
 			</body>
 		</html>

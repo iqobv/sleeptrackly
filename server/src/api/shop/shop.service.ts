@@ -216,21 +216,10 @@ export class ShopService {
 				items = product.bundle.items.map((bi) => bi.item);
 			}
 
-			const itemsIds = items.map((item) => item.id);
-
-			const alreadyOwnedItems = await this.userInventoryService.getOwnedItemIds(
+			const { alreadyOwnedItems, itemsToAdd } = await this.getItemsToAdd(
+				items,
 				userId,
-				itemsIds,
 				tx,
-			);
-
-			if (alreadyOwnedItems.length >= itemsIds.length) {
-				throw new ConflictException('You already own this product');
-			}
-
-			const itemsToAdd = items.filter(
-				(item) =>
-					!alreadyOwnedItems.find((ownedItem) => ownedItem.itemId === item.id),
 			);
 
 			if (product.bundleId && product.bundle) {
@@ -286,6 +275,31 @@ export class ShopService {
 				inventoryResults,
 			};
 		});
+	}
+
+	async getItemsToAdd(
+		items: Item[],
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	) {
+		const itemsIds = items.map((item) => item.id);
+
+		const alreadyOwnedItems = await this.userInventoryService.getOwnedItemIds(
+			userId,
+			itemsIds,
+			tx,
+		);
+
+		if (alreadyOwnedItems.length >= itemsIds.length) {
+			throw new ConflictException('You already own this product');
+		}
+
+		const itemsToAdd = items.filter(
+			(item) =>
+				!alreadyOwnedItems.find((ownedItem) => ownedItem.itemId === item.id),
+		);
+
+		return { alreadyOwnedItems, itemsToAdd };
 	}
 
 	private calculateFinalPrice(

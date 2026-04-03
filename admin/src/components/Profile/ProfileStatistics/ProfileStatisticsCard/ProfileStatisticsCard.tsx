@@ -1,23 +1,23 @@
 'use client';
 
 import { SectionHeader } from '@/components/UI';
-import { IProfile } from '@/types';
+import { IProfileStatistics } from '@/types';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
 
 interface ProfileStatisticsCardProps {
 	item: ProfileStatisticsList;
-	profile: IProfile;
+	statistics: IProfileStatistics;
 }
 
 const ProfileStatisticsCard = ({
 	item,
-	profile,
+	statistics,
 }: ProfileStatisticsCardProps) => {
 	return (
 		<div className={styles['profile-statistics__card']}>
 			<SectionHeader
-				title={(profile[item.field] as number).toString()}
+				title={(statistics[item.field] as number).toString()}
 				titleComponent="p"
 				titleClassName={styles['profile-statistics__card-title']}
 				description={item.label}

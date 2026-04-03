@@ -148,12 +148,21 @@ export class AuthService {
 	}
 
 	getInfoFromRequest(req: Request) {
+		const cfConnectingIp = req.headers['cf-connecting-ip'];
+		const xForwardedFor = req.headers['x-forwarded-for'];
+
+		let clientIp: string;
+
+		if (typeof cfConnectingIp === 'string') {
+			clientIp = cfConnectingIp;
+		} else if (typeof xForwardedFor === 'string') {
+			clientIp = xForwardedFor.split(',')[0].trim();
+		} else {
+			clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+		}
+
 		return {
-			ip:
-				req.headers['x-forwarded-for'] ||
-				req.headers['x-real-ip'] ||
-				req.ip ||
-				'unknown',
+			ip: clientIp,
 			userAgent: req.headers['user-agent'],
 		};
 	}

@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllShop } from '@/api';
-import { Pagination } from '@/components/UI';
+import { List, Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ShopFilterDto } from '@/dto';
 import { useDebounce, usePagination } from '@/hooks';
@@ -13,6 +13,7 @@ import ShopCard from '../ShopCard/ShopCard';
 import styles from './AllShop.module.scss';
 import AllShopFilter from './AllShopFilter/AllShopFilter';
 import AllShopFilterSearchBar from './AllShopFilterSearchBar/AllShopFilterSearchBar';
+import AllShopLoader from './AllShopLoader';
 import { getShopFiltersParamsFromUrl } from './shopFilterValues';
 import { useSyncUrlWithForm } from './useSyncUrlWithForm.hook';
 
@@ -51,7 +52,7 @@ const AllShop = () => {
 		};
 	}, [debouncedSearch, methods, searchParams]);
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.shop.allProducts(JSON.stringify(apiFilters)),
 		queryFn: () => getAllShop(apiFilters),
 	});
@@ -68,36 +69,41 @@ const AllShop = () => {
 
 	return (
 		<div className={styles['all-shop']}>
-			<FormProvider {...methods}>
-				<form onSubmit={(e) => e.preventDefault()}>
-					<div className={styles['all-shop__content']}>
-						<AllShopFilter />
-						<div className={styles['all-shop__items-container']}>
-							<AllShopFilterSearchBar />
-							<div className={styles['all-shop__items']}>
-								{data?.items && data.items.length > 0 ? (
-									<>
-										<div className={styles['all-shop__items-grid']}>
-											{data.items.map((product) => (
-												<ShopCard key={product.id} product={product} />
-											))}
+			{isLoading && <AllShopLoader />}
+			{data && (
+				<FormProvider {...methods}>
+					<form onSubmit={(e) => e.preventDefault()}>
+						<div className={styles['all-shop__content']}>
+							<AllShopFilter />
+							<div className={styles['all-shop__items-container']}>
+								<AllShopFilterSearchBar />
+								<div className={styles['all-shop__items']}>
+									{data.items.length > 0 ? (
+										<>
+											<List
+												items={data.items}
+												className={styles['all-shop__items-grid']}
+												renderItem={(item) => (
+													<ShopCard key={item.id} product={item} />
+												)}
+											/>
+											<Pagination
+												currentPage={currentPage}
+												totalPages={data.meta.totalPages}
+												onPageChange={setPage}
+											/>
+										</>
+									) : (
+										<div className={styles['all-shop__no-results']}>
+											No products found with current filters
 										</div>
-										<Pagination
-											currentPage={currentPage}
-											totalPages={data.meta.totalPages}
-											onPageChange={setPage}
-										/>
-									</>
-								) : (
-									<div className={styles['all-shop__no-results']}>
-										No products found with current filters
-									</div>
-								)}
+									)}
+								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-			</FormProvider>
+					</form>
+				</FormProvider>
+			)}
 		</div>
 	);
 };

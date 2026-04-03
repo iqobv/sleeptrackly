@@ -1,37 +1,12 @@
-@use '../../../styles/mixins' as *;
-
-.chart-wrapper {
-	width: 100%;
-	height: 400px;
-	outline: none !important;
-}
-
 .sleep-chart {
-	border: 1px solid var(--chart-border);
-	border-radius: 10px;
-	padding: 3px;
-
-	@include response(sm) {
-		padding: 10px;
+	&__wrapper {
+		height: 400px;
+		width: 100%;
+		outline: none !important;
+		padding: 30px 0;
 	}
 
-	@include response(md) {
-		padding: 20px 10px;
-	}
-}
-
-.sleep-chart-title-container {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	padding: 20px 30px 30px 15px;
-
-	.sleep-chart-title {
-		font-size: 16px;
-	}
-
-	.sleep-chart-subtitle {
-		font-size: 20px;
-		font-weight: 600;
+	&__container {
+		outline: none !important;
 	}
 }

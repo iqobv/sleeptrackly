@@ -9,6 +9,7 @@
 	--text-primary: #111827;
 	--text-secondary: #6b7280;
 	--border-color: #e5e7eb;
+	--link-color: #4a90e2;
 
 	/* Loader */
 	--loader-color: #000;
@@ -18,9 +19,9 @@
 	--skeleton-highlight: #f5f5f5;
 
 	/* Navigation */
-	--nav-color-link: #000;
-	--nav-color-link-active: #0353a4;
-	--nav-color-link-hover: #0353a4;
+	--nav-color-link: #808080;
+	--nav-color-link-active: #000000;
+	--nav-color-link-hover: #000000;
 	--nav-bg-menu: #ececec;
 	--nav-button-bg: #000;
 
@@ -222,4 +223,30 @@
 
 	/* Email Confirmation */
 	--email-confirmation-icon-bg: #e1e1e1;
+
+	/* Legal */
+	--legal-title: #000;
+	--legal-link: #1b1bd6;
+	--legal-subtitle: #1d1d1e;
+	--legal-text: #333;
+	--legal-list-marker: #595959;
+	--legal-border: #333;
+
+	/* Footer */
+	--footer-bg: #151515;
+	--footer-color: #fff;
+	--footer-link-color: #797979;
+	--footer-link-color-hover: #fff;
+	--footer-logo-fill: #fff;
+
+	/* Dashboard */
+	--dashboard-card-bg: #eeeeee;
+	--dashboard-sleep-session-date-color: #0f0f0f;
+	--dashboard-sleep-session-times-color: #1f1f1f;
+	--dashboard-chart-bar-bg: #929292;
+	--dashboard-chart-bar-border: #3e3e3e;
+	--dashboard-chart-bar-bg-hover: #5f5f5f;
+	--dashboard-chart-bar-border-hover: #3e3e3e;
+	--dashboard-gap: 16px;
+	--dashboard-card-border-radius: 10px;
 }

@@ -9,7 +9,7 @@
 		width: 100%;
 	}
 
-	@include response(md) {
+	@include respond-to(md) {
 		flex-direction: row;
 
 		.add-friend__btn {

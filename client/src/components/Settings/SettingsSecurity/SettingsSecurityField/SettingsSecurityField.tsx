@@ -18,18 +18,15 @@ const SettingsSecurityField = ({
 	action,
 }: SettingsSecurityFieldProps) => {
 	return (
-		<SettingsField
-			label={label}
-			actionElement={
-				<Button
-					onClick={action}
-					variant={isImportant ? 'danger' : 'outlined'}
-					className={styles['settings-security-field__button']}
-				>
-					{buttonText}
-				</Button>
-			}
-		/>
+		<SettingsField label={label}>
+			<Button
+				onClick={action}
+				variant={isImportant ? 'danger' : 'outlined'}
+				className={styles['settings-security-field__button']}
+			>
+				{buttonText}
+			</Button>
+		</SettingsField>
 	);
 };
 

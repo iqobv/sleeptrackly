@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button, List } from '@/components/UI';
 import { IFeaturedShopSection } from '@/types';
 import ShopCard from '../../ShopCard/ShopCard';
 import styles from './FeaturedShopSections.module.scss';
@@ -37,11 +37,11 @@ const FeaturedShopSections = ({ sections }: FeaturedShopSectionsProps) => {
 								View All
 							</Button>
 						</div>
-						<div className={styles['featured-shop-sections__items']}>
-							{s.items.map((item) => (
-								<ShopCard key={item.id} product={item} />
-							))}
-						</div>
+						<List
+							items={s.items}
+							className={styles['featured-shop-sections__items']}
+							renderItem={(item) => <ShopCard key={item.id} product={item} />}
+						/>
 					</div>
 				);
 			})}

@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .header {
 	width: 100%;
 	height: var(--header-height);
@@ -13,6 +15,16 @@
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
+	width: 100%;
+	padding: 0 20px;
+
+	@include respond-to(md) {
+		padding: 0 40px;
+	}
+
+	@include respond-to(xl) {
+		padding: 0 80px;
+	}
 }
 
 .header__right {

@@ -7,7 +7,7 @@ async function runDataMigration() {
 
 	const usersWithoutTables = await prisma.user.findMany({
 		where: {
-			coins: null,
+			userPrivacySettings: null,
 		},
 		select: {
 			id: true,

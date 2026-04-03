@@ -28,7 +28,7 @@
 		top 0s linear 0.3s,
 		left 0s linear 0.3s;
 
-	@include response('md') {
+	@include respond-to('md') {
 		width: var(--width);
 	}
 
@@ -44,7 +44,7 @@
 			top 0s linear 0s,
 			left 0s linear 0s;
 
-		@include response('md') {
+		@include respond-to('md') {
 			left: var(--left);
 		}
 	}

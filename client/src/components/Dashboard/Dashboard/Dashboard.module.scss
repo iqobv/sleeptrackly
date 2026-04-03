@@ -1,9 +1,26 @@
+@use '../../../styles/mixins' as *;
+
 .dashboard {
 	margin-top: 10px;
-}
+	padding-bottom: 120px;
 
-.dashboard__wrapper {
-	display: flex;
-	flex-direction: column;
-	gap: 20px;
+	&__wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	&__content {
+		display: grid;
+		gap: var(--dashboard-gap);
+		grid-template-columns: 1fr;
+
+		@include respond-to(md) {
+			grid-template-columns: 200px 1fr;
+		}
+
+		@include respond-to(lg) {
+			grid-template-columns: 280px 1fr;
+		}
+	}
 }

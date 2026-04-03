@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { Prisma } from '@prisma/client';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
@@ -25,12 +26,14 @@ export class UserNotificationSettingsService {
 		});
 	}
 
-	async create(userId: string) {
+	async create(userId: string, tx?: Prisma.TransactionClient) {
 		const existingSettings = await this.findByUserId(userId);
 
 		if (existingSettings) return existingSettings;
 
-		const settings = await this.prismaService.userNotificationSettings.create({
+		const settings = await (
+			tx || this.prismaService
+		).userNotificationSettings.create({
 			data: {
 				user: { connect: { id: userId } },
 			},
@@ -96,15 +99,6 @@ export class UserNotificationSettingsService {
 						"Your sleep timer is set. Don't forget to stop it when you wake up!",
 						'/timer',
 					);
-
-					await this.notificationService.create({
-						userId,
-						title: 'Timer Reminder',
-						body: "Your sleep timer is set. Don't forget to stop it when you wake up!",
-						isPush: false,
-						showInApp: false,
-						redirectUrl: '/timer',
-					});
 				}
 			}
 		}

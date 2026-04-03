@@ -4,7 +4,7 @@
 	width: 100%;
 }
 
-@include response(md) {
+@include respond-to(md) {
 	.settings-security-field__button {
 		width: auto;
 	}

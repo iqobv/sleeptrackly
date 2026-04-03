@@ -7,7 +7,7 @@
 	gap: 10px;
 	padding: 10px 0;
 
-	@include response(md) {
+	@include respond-to(md) {
 		align-items: center;
 		flex-direction: row;
 	}
@@ -18,7 +18,7 @@
 	flex-direction: column;
 	gap: 10px;
 
-	@include response(md) {
+	@include respond-to(md) {
 		flex-direction: row;
 	}
 }

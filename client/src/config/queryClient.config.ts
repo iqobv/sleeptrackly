@@ -43,6 +43,7 @@ export const QUERY_KEYS = {
 	},
 	user: {
 		avatar: (userId: string) => ['user', userId] as const,
+		me: ['user', 'me'] as const,
 	},
 	profile: {
 		username: (username: string) => ['profile', username] as const,
@@ -69,5 +70,15 @@ export const QUERY_KEYS = {
 		featured: ['featuredShop'] as const,
 		allProducts: (filters: string) => ['allProducts', filters] as const,
 		makePurchase: (productId: string) => ['makePurchase', productId] as const,
+	},
+	coin: {
+		userCoin: ['userCoin'] as const,
+	},
+	privacy: {
+		get: ['privacy', 'get'] as const,
+		update: ['privacy', 'update'] as const,
+	},
+	promotion: {
+		use: ['promotion', 'use'] as const,
 	},
 } as const;

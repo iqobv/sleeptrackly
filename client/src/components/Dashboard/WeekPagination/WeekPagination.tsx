@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/UI';
 import { IconBaseProps } from 'react-icons';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+import DashboardCard from '../DashboardCard/DashboardCard';
 import styles from './WeekPagination.module.scss';
 
 interface WeekPaginationProps {
@@ -15,9 +16,11 @@ interface WeekPaginationProps {
 }
 
 const iconProps: IconBaseProps = {
-	size: 30,
+	size: 20,
 	suppressHydrationWarning: true,
 };
+
+const weekLabelFormat = 'MMM D';
 
 const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 	const [weekLabel, setWeekLabel] = useState('');
@@ -33,25 +36,24 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 		const lastDay = days[days.length - 1].day;
 
 		setWeekLabel(
-			`${dayjs(firstDay).format('DD.MM.YYYY')} - ${dayjs(lastDay).format(
-				'DD.MM.YYYY'
-			)}`
+			`${dayjs(firstDay).format(weekLabelFormat)} - ${dayjs(lastDay).format(weekLabelFormat)}`,
 		);
 	}, [days]);
 
 	return (
 		<div className={`${styles['week-pagination']}`}>
-			<div className={styles['week-pagination__container']}>
+			<DashboardCard className={styles['week-pagination__container']}>
 				<Button
 					onClick={handlePrevWeek}
 					isIcon
 					variant="text"
+					isRounded
+					size="sm"
 					disabled={totalWeeks > 0 ? week === totalWeeks - 1 : true}
 				>
-					<MdKeyboardArrowLeft size={40} {...iconProps} />
+					<MdKeyboardArrowLeft {...iconProps} />
 				</Button>
 				<div className={styles['week-pagination__label']}>
-					<div className={styles['week-pagination__label-week']}>Week</div>
 					<p>{weekLabel}</p>
 				</div>
 				<Button
@@ -59,10 +61,12 @@ const WeekPagination = ({ totalWeeks, days }: WeekPaginationProps) => {
 					isIcon
 					variant="text"
 					disabled={week === 0}
+					size="sm"
+					isRounded
 				>
 					<MdKeyboardArrowRight {...iconProps} />
 				</Button>
-			</div>
+			</DashboardCard>
 		</div>
 	);
 };

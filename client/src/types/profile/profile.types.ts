@@ -1,5 +1,6 @@
 import { IFriendship } from '../friend/friendship.types';
 import { IEquippedItems } from '../item/equippedItems.types';
+import { IProfileStatistics } from './profileStatistics.types';
 
 export interface IProfile {
 	id: string;
@@ -10,7 +11,6 @@ export interface IProfile {
 	};
 	equippedItems: IEquippedItems[];
 	friendship: IFriendship | null;
-	completedChallenges: number;
-	sleepEntries: number;
+	statistics: IProfileStatistics | null;
 	createdAt: Date;
 }

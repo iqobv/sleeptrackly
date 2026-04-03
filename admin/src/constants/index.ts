@@ -1,3 +1,4 @@
+export * from './friendStatus.constants';
 export * from './itemRarity.constants';
 export * from './itemType.constants';
 export * from './productType.constants';

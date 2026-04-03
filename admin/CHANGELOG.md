@@ -1,5 +1,12 @@
 # Admin changelog
 
+## [0.5.0] - 2026-04-05
+
+### Added
+
+- Added favicon.
+- Added promotion system.
+
 ## [0.4.0] - 2026-02-21
 
 ### Added

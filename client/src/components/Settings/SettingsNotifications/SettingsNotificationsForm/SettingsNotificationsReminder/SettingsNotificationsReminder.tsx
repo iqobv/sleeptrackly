@@ -25,31 +25,22 @@ const SettingsNotificationsReminder = ({
 
 	return (
 		<>
-			<SettingsField
-				label="Reminder Notifications"
-				mobileDirection="row"
-				actionElement={
-					<ToggleSwitch
-						checked={reminderToggleField.value}
-						onChange={(e) => handleToggleChange(e.target.checked)}
-					/>
-				}
-			/>
-			{isEnabled && (
-				<SettingsField
-					label="Reminder Time"
-					actionElement={
-						<>
-							<TextField
-								type="time"
-								value={reminderTimeField.value || '08:00'}
-								onChange={reminderTimeField.onChange}
-								onBlur={handleTimeBlur}
-							/>
-							<input type="hidden" {...userTimeZoneField} />
-						</>
-					}
+			<SettingsField label="Reminder Notifications" mobileDirection="row">
+				<ToggleSwitch
+					checked={reminderToggleField.value}
+					onChange={(e) => handleToggleChange(e.target.checked)}
 				/>
+			</SettingsField>
+			{isEnabled && (
+				<SettingsField label="Reminder Time">
+					<TextField
+						type="time"
+						value={reminderTimeField.value || '08:00'}
+						onChange={reminderTimeField.onChange}
+						onBlur={handleTimeBlur}
+					/>
+					<input type="hidden" {...userTimeZoneField} />
+				</SettingsField>
 			)}
 		</>
 	);

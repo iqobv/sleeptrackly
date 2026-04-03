@@ -1,45 +1,52 @@
 @use '../.././../styles/mixins' as *;
 
-.avatar__container {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-}
+.avatar {
+	&__container {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
 
-.avatar__wrapper {
-	display: flex;
-	border-radius: 50%;
-	width: 250px;
-	height: 250px;
-	margin: 0 auto;
-	outline: none;
-	cursor: pointer;
-	border: none;
-	transition: all 0.2s ease-in-out;
-	user-select: none;
+	&__wrapper {
+		display: flex;
+		border-radius: 50%;
+		width: 250px;
+		height: 250px;
+		margin: 0 auto;
+		outline: none;
+		cursor: pointer;
+		border: none;
+		transition: all 0.2s ease-in-out;
+		user-select: none;
 
-	@include hover {
-		&:hover {
-			opacity: 0.6;
+		@include hover {
+			&:hover {
+				opacity: 0.6;
+			}
+		}
+
+		&:active {
+			opacity: 0.7;
 		}
 	}
 
-	&:active {
-		opacity: 0.7;
+	&__image {
+		border-radius: 50%;
+		border: 1px solid var(--avatar-border);
 	}
-}
 
-.avatar__image {
-	border-radius: 50%;
-	border: 1px solid var(--avatar-border);
-}
+	&__input-container {
+		display: none;
+	}
 
-.avatar__input {
-	display: none;
-}
+	&__input {
+		display: none;
+		padding: 0;
+	}
 
-.upload-modal {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	.upload-modal {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+	}
 }

@@ -6,7 +6,7 @@
 	position: relative;
 	border-radius: 12px;
 
-	@include response('md') {
+	@include respond-to('md') {
 		height: 500px;
 	}
 
@@ -28,7 +28,7 @@
 		background: var(--featured-carousel-bg);
 		background: var(--featured-carousel-gradient);
 
-		@include response('md') {
+		@include respond-to('md') {
 			flex-direction: row;
 			padding: 20px 80px;
 		}
@@ -39,8 +39,10 @@
 		font-size: 2rem;
 		margin-bottom: 20px;
 		text-align: center;
+		word-break: break-all;
+		text-wrap: wrap;
 
-		@include response('md') {
+		@include respond-to('md') {
 			font-size: 2.5rem;
 			text-align: left;
 		}
@@ -75,7 +77,7 @@
 		display: flex;
 		justify-content: center;
 
-		@include response('md') {
+		@include respond-to('md') {
 			justify-content: end;
 			align-items: center;
 		}

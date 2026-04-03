@@ -8,6 +8,7 @@ export const PAGES = {
 	DASHBOARD: '/dashboard',
 	LOGIN: '/login',
 	REGISTER: '/register',
+	LOGOUT: '/logout',
 	SETTINGS: '/settings',
 	SETTINGS_SESSIONS: '/settings/sessions',
 	PROFILE: (username: string) => `/u/${username}`,
@@ -19,4 +20,8 @@ export const PAGES = {
 	INVENTORY: '/inventory',
 	SHOP: '/shop',
 	SHOP_CATALOG: '/shop/catalog',
+	TERMS_AND_CONDITIONS: '/terms-and-conditions',
+	COOKIES: '/cookies',
+	PRIVACY_POLICY: '/privacy-policy',
+	PROMO: '/promo',
 } as const;

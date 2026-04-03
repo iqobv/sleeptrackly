@@ -9,26 +9,22 @@ const SettingsNotificationsPush = () => {
 		useSettingsNotificationsPush();
 
 	return (
-		<SettingsField
-			label="Enable Push Notifications"
-			mobileDirection="row"
-			actionElement={
-				<>
-					{isLoading ? (
-						<Loader
-							disablePadding
-							containerStyle={{ width: 'unset' }}
-							size={24}
-						/>
-					) : (
-						<ToggleSwitch
-							checked={isPushEnabled}
-							onChange={(e) => handleTogglePush(e.target.checked)}
-						/>
-					)}
-				</>
-			}
-		/>
+		<SettingsField label="Enable Push Notifications" mobileDirection="row">
+			<>
+				{isLoading ? (
+					<Loader
+						disablePadding
+						containerStyle={{ width: 'unset' }}
+						size={24}
+					/>
+				) : (
+					<ToggleSwitch
+						checked={isPushEnabled}
+						onChange={(e) => handleTogglePush(e.target.checked)}
+					/>
+				)}
+			</>
+		</SettingsField>
 	);
 };
 

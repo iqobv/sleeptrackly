@@ -9,6 +9,7 @@ html.dark {
 	--text-primary: #f3f4f6;
 	--text-secondary: #c2c2c2;
 	--border-color: #27272a;
+	--link-color: #4a90e2;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -18,9 +19,9 @@ html.dark {
 	--skeleton-highlight: #18191b;
 
 	/* Navigation */
-	--nav-color-link: #ede6e3;
-	--nav-color-link-active: #c6c7c4;
-	--nav-color-link-hover: #71a2b6;
+	--nav-color-link: #a3a3a3;
+	--nav-color-link-active: #ffffff;
+	--nav-color-link-hover: #ffffff;
 	--nav-bg-menu: #161616;
 	--nav-button-bg: #dfdfdf;
 
@@ -223,4 +224,28 @@ html.dark {
 
 	/* Email Confirmation */
 	--email-confirmation-icon-bg: #333;
+
+	/* Legal */
+	--legal-title: #fff;
+	--legal-link: #0f0fa4;
+	--legal-subtitle: #d9d9d9;
+	--legal-text: #d1d1d1;
+	--legal-list-marker: #595959;
+	--legal-border: #707070;
+
+	/* Footer */
+	--footer-bg: #151515;
+	--footer-color: #fff;
+	--footer-link-color: #797979;
+	--footer-link-color-hover: #fff;
+	--footer-logo-fill: #fff;
+
+	/* Dashboard */
+	--dashboard-card-bg: #1c1b1b;
+	--dashboard-sleep-session-date-color: #fff;
+	--dashboard-sleep-session-times-color: #c2c2c2;
+	--dashboard-chart-bar-bg: #aeaeae;
+	--dashboard-chart-bar-border: #ccc;
+	--dashboard-chart-bar-bg-hover: #e0e0e0;
+	--dashboard-chart-bar-border-hover: #bbb;
 }

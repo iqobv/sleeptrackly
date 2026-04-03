@@ -9,7 +9,7 @@
 	padding: 10px;
 	border-radius: 12px;
 
-	@include response(md) {
+	@include respond-to(md) {
 		flex-direction: row;
 	}
 
