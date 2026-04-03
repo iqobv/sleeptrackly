@@ -1,5 +1,30 @@
 # Client changelog
 
+## [0.5.0] - 2026-04-05
+
+### Added
+
+- Added privacy settings.
+- Added favicon.
+- Added footer.
+- Added loaders for shop and catalog pages.
+- Added promotion system.
+- Added refetch balance after any action with them.
+- Added legal pages: "Terms & Conditions", "Privacy Policy" and "Cookie Policy"
+
+### Changed
+
+- Updated dashboard design.
+- Updated header design.
+
+### Fixed
+
+- Fixed popout user menu position on laptops and pc.
+- Fixed bug with saving redirect url in cookies.
+- Fixed terminating session from other device.
+
+### Refactor
+
 ## [0.4.1] - 2026-02-21
 
 ### Added
