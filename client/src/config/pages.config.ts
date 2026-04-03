@@ -23,4 +23,5 @@ export const PAGES = {
 	TERMS_AND_CONDITIONS: '/terms-and-conditions',
 	COOKIES: '/cookies',
 	PRIVACY_POLICY: '/privacy-policy',
+	PROMO: '/promo',
 } as const;

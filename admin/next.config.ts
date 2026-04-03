@@ -19,6 +19,10 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'cdn.sleeptrackly.site',
 			},
+			{
+				protocol: 'https',
+				hostname: 'cdn.sleeptrackly.com',
+			},
 		],
 	},
 };

@@ -1,5 +1,3 @@
-'use client';
-
 import InventoryList from '../InventoryList/InventoryList';
 
 const Inventory = () => {

@@ -78,4 +78,7 @@ export const QUERY_KEYS = {
 		get: ['privacy', 'get'] as const,
 		update: ['privacy', 'update'] as const,
 	},
+	promotion: {
+		use: ['promotion', 'use'] as const,
+	},
 } as const;

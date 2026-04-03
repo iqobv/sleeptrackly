@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, ProfileItemType } from '@prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { pickTranslation } from 'src/libs/mappers';
@@ -135,7 +135,29 @@ export class UserInventoryService {
 						AND: { type: { not: 'BADGE' } },
 					},
 				},
+				include: { item: true },
 			});
+
+		const avatars: ProfileItemType[] = ['ANIMATED_AVATAR', 'AVATAR'];
+
+		if (avatars.includes(userInventoryItem.item.type)) {
+			const equippedItem = await this.prismaService.userInventory.findFirst({
+				where: {
+					userId,
+					isEquipped: true,
+					item: {
+						type: { in: avatars },
+					},
+				},
+			});
+
+			if (!equippedItem) return;
+
+			await this.prismaService.userInventory.update({
+				where: { id: equippedItem.id, userId },
+				data: { isEquipped: false },
+			});
+		}
 
 		if (alreadyEquippedItem) {
 			if (alreadyEquippedItem.id === userInventoryItem.id) {

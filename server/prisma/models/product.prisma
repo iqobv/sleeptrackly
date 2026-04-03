@@ -24,6 +24,7 @@ model Product {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   purchaseHistories PurchaseHistory[]
+  promotionRewards  Promotion[]
 
   item   Item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   bundle Bundle? @relation(fields: [bundleId], references: [id], onDelete: Cascade)

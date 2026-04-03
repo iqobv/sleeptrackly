@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.confirm-modal {
+div.confirm-modal {
 	width: 90%;
 	display: flex;
 	flex-direction: column;
@@ -11,19 +11,19 @@
 	}
 }
 
-.confirm-modal__header {
+div.confirm-modal__header {
 	font-size: 1.5rem;
 	color: var(--main-color);
 	font-weight: 600;
 }
 
-.confirm-modal__body {
+div.confirm-modal__body {
 	font-size: 1.1rem;
 	color: var(--secondary-color);
 	margin-top: 5px;
 }
 
-.confirm-modal__footer {
+div.confirm-modal__footer {
 	display: flex;
 	flex-direction: row;
 	gap: 20px;

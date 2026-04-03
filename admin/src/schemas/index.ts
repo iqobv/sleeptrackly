@@ -5,6 +5,7 @@ export * from './customization/item/updateItem.schema';
 export * from './customization/product/createProduct.schema';
 export * from './customization/product/updateProduct.schema';
 export * from './notification/notification.schema';
+export * from './promotion/index';
 export * from './query/language.schema';
 export * from './query/pagination.schema';
 export * from './query/paginationWithLanguage.schema';

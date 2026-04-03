@@ -12,6 +12,7 @@ export * from './customization/product/productType.types';
 export * from './friend/index';
 export * from './profile/profile.types';
 export * from './profile/profileStatistics.types';
+export * from './promotion/promotion.types';
 export * from './report/report.types';
 export * from './report/reportPaginagedMeta.types';
 export * from './report/reportPaginationQuery.types';

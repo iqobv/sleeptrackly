@@ -61,7 +61,7 @@ copy .env.example .env
 
 ```bash
 cd server
-docker-compose -p sleep_tracker up -d
+docker-compose -f .\docker-compose.local.yml -p sleeptrackly up -d
 npx prisma generate
 npx prisma migrate deploy
 npm run start:dev

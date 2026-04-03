@@ -12,6 +12,7 @@ export * from './friend/friend.api';
 export * from './inventory/inventory.api';
 export * from './notification/notification.api';
 export * from './profile/profile.api';
+export * from './promotion/promotion.api';
 export * from './report/report.api';
 export * from './settings/notifications.api';
 export * from './settings/privacy.api';

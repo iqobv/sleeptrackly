@@ -8,6 +8,7 @@ import { ShopService } from './shop.service';
 @Module({
 	controllers: [ShopController],
 	imports: [CoinTransactionModule, PurchaseHistoryModule, UserInventoryModule],
+	exports: [ShopService],
 	providers: [ShopService],
 })
 export class ShopModule {}
