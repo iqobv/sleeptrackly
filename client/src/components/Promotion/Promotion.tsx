@@ -42,7 +42,7 @@ const Promotion = () => {
 			<div className={styles['promotion__content']}>
 				<SectionHeader
 					title="Redeem Code"
-					description="Enter a your promo code"
+					description="Enter your promo code"
 				/>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
