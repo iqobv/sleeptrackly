@@ -1,7 +1,9 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from 'generated/prisma/client';
+import { Pool } from 'pg';
 
 const connectionString = process.env.POSTGRES_URI;
+const caCert = process.env.DB_CA_CERT;
 
 if (!connectionString) {
 	throw new Error(
@@ -9,7 +11,23 @@ if (!connectionString) {
 	);
 }
 
-const adapter = new PrismaPg({ connectionString });
+if (!caCert) {
+	throw new Error(
+		'Missing required environment variable: DB_CA_CERT. Set it before running data-migration-runner.',
+	);
+}
+
+const cleanConnectionString = connectionString.split('?')[0];
+
+const pool = new Pool({
+	connectionString: cleanConnectionString,
+	ssl: {
+		ca: caCert.replace(/\\n/g, '\n'),
+		rejectUnauthorized: true,
+	},
+});
+
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({
 	adapter: adapter,

@@ -11,7 +11,6 @@ export const firebaseAdminProvider = {
 		const clientEmail = cfg.getOrThrow<string>('FIREBASE_CLIENT_EMAIL');
 		const privateKey = cfg
 			.getOrThrow<string>('FIREBASE_PRIVATE_KEY')
-			.replace(/^["'](.+)["']$/g, '$1')
 			.replace(/\\n/g, '\n');
 
 		if (!admin.apps.length) {
