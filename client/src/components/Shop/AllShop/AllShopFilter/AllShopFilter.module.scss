@@ -10,11 +10,11 @@
 	border-radius: 8px;
 	padding: 16px;
 	height: fit-content;
-	position: sticky;
 	top: calc(var(--header-height) + 16px);
 
 	@include respond-to('lg') {
 		max-width: 300px;
+		position: sticky;
 	}
 
 	&__option {
