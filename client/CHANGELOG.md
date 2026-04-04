@@ -1,6 +1,12 @@
 # Client changelog
 
-## [0.5.0] - 2026-04-05
+## [0.5.1] -
+
+### Fixed
+
+- Fixed TOO_MANY_REDIRECTS error after terminate session from other device.
+
+## [0.5.0] - 2026-04-04
 
 ### Added
 

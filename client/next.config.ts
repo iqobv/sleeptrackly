@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
 			},
 		];
 	},
+	allowedDevOrigins: ['local.domain'],
 	images: {
 		remotePatterns: [
 			{
