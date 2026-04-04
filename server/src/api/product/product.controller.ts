@@ -9,7 +9,7 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { UserRole } from 'generated/prisma/enums';
 import { Auth } from 'src/libs/decorators';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import {

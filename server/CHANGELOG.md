@@ -1,5 +1,11 @@
 # Server changelog
 
+## [1.5.2] - 2026-04-04
+
+### Changed
+
+- Migrated to PrismaORM v7.
+
 ## [1.5.1] - 2026-04-04
 
 ### Changed

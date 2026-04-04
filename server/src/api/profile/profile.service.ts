@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Friendship, User } from '@prisma/client';
+import { Friendship, User } from 'generated/prisma/client';
 import { ChallengeService } from '../challenge/challenge.service';
 import { FriendshipService } from '../friendship/friendship.service';
 import { SleepEntryService } from '../sleep-entry/sleep-entry.service';

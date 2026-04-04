@@ -7,8 +7,9 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
-import { Prisma, UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
+import { Prisma } from 'generated/prisma/client';
+import { UserSanctionType } from 'generated/prisma/enums';
 import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';

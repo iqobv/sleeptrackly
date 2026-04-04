@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prisma, ProductType, ProfileItemType } from '@prisma/client';
 import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { Prisma } from 'generated/prisma/client';
+import { ProductType, ProfileItemType } from 'generated/prisma/enums';
 import { TransformEnum, TransformToArray } from 'src/libs/decorators';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { SHOP_SORT_BY } from '../constats';
-import { SortByType } from '../types';
+import type { SortByType } from '../types';
 
 export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@ApiProperty({

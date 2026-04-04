@@ -4,7 +4,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AcquiredFrom, Item } from '@prisma/client';
+import { AcquiredFrom, Item } from 'generated/prisma/client';
 import { CoinTransactionService } from 'src/api/coin-transaction/coin-transaction.service';
 import { ProductService } from 'src/api/product/product.service';
 import { PurchaseHistoryService } from 'src/api/purchase-history/purchase-history.service';

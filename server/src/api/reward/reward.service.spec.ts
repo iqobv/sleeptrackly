@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CoinTransactionType } from '@prisma/client';
+import { CoinTransactionType } from 'generated/prisma/enums';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { RewardService } from './reward.service';
 

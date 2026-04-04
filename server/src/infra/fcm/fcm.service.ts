@@ -1,6 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
 import { FIREBASE_ADMIN } from './fcm.admin';
+
+type SendNotificationResult =
+	| void
+	| (admin.messaging.BatchResponse & { tokensToRemove: string[] });
 
 @Injectable()
 export class FcmService {
@@ -11,7 +15,7 @@ export class FcmService {
 	async sendNotification(
 		tokens: string[],
 		payload: admin.messaging.MessagingPayload,
-	) {
+	): Promise<SendNotificationResult> {
 		if (tokens.length === 0) return;
 
 		try {

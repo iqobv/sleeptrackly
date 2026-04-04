@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Friendship } from '@prisma/client';
+import { Friendship } from 'generated/prisma/client';
 import { FriendshipDto } from 'src/api/friendship/dto';
 import { CompactUserAvatarDto } from 'src/api/user-avatar/dto';
 import { DefaultFieldsDto } from 'src/libs/dto';

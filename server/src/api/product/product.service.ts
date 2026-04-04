@@ -4,7 +4,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { ProductType, ProfileItemType } from '@prisma/client';
+import { ProductType, ProfileItemType } from 'generated/prisma/enums';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { productInclude } from 'src/libs/prisma';

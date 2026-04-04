@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
-import { User } from '@prisma/client';
 import type { Request } from 'express';
+import type { User } from 'generated/prisma/client';
 import { Auth, Authorized } from 'src/libs/decorators';
 import { QrLoginService } from './qr-login.service';
 

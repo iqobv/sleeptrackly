@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CoinTransactionType } from '@prisma/client';
 import {
 	IsEnum,
 	IsNumber,
@@ -7,6 +6,7 @@ import {
 	IsOptional,
 	IsUUID,
 } from 'class-validator';
+import { CoinTransactionType } from 'generated/prisma/enums';
 
 export class CreateCoinTransactionDto {
 	@ApiProperty({

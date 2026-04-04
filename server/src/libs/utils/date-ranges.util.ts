@@ -1,6 +1,6 @@
-import { ChallengeFrequency } from '@prisma/client';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { ChallengeFrequency } from 'generated/prisma/enums';
 
 dayjs.extend(isSameOrBefore);
 

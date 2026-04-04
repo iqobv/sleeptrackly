@@ -5,8 +5,8 @@ import {
 	Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { User, UserRole } from '@prisma/client';
 import { Request } from 'express';
+import { User, UserRole } from 'generated/prisma/client';
 import { ROLES_KEY } from '../decorators/roles.decortor';
 
 @Injectable()

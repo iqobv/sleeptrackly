@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { CoinTransactionType } from '@prisma/client';
-import { JsonValue } from '@prisma/client/runtime/library';
+import { JsonValue } from '@prisma/client/runtime/client';
+import { CoinTransactionType } from 'generated/prisma/enums';
 
 export class CoinTransactionDto {
 	@ApiProperty({ example: '79d4f5d7-35ef-4a6d-ad3e-e0d8eaa2983a' })

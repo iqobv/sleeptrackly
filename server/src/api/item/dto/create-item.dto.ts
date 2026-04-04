@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ItemRarity, ProfileItemType } from '@prisma/client';
 import { Transform, Type } from 'class-transformer';
 import {
 	IsArray,
@@ -10,6 +9,7 @@ import {
 	Min,
 	ValidateNested,
 } from 'class-validator';
+import { ItemRarity, ProfileItemType } from 'generated/prisma/enums';
 import { TranslationDto } from 'src/libs/dto';
 
 export class CreateItemDto {
