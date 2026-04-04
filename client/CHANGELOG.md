@@ -7,6 +7,7 @@
 - Fixed TOO_MANY_REDIRECTS error after terminate session from other device.
 - Fixed Total Rest view metrics.
 - Fixed filter position while scrolling on mobile layout in shop catalog.
+- Fixed z-index issues with coin image.
 
 ## [0.5.0] - 2026-04-04
 
