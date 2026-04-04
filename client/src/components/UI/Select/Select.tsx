@@ -39,6 +39,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 			error,
 			isClearable = false,
 			containerClassName = '',
+			...props
 		},
 		ref,
 	) => {
@@ -165,6 +166,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 						onKeyDown={onKeyDown}
 						placeholder={selectedOption ? selectedOption.label : placeholder}
 						autoComplete="off"
+						{...props}
 					/>
 
 					<div className={styles.actions} onClick={(e) => e.stopPropagation()}>

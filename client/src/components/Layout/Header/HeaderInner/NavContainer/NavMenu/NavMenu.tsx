@@ -9,6 +9,7 @@ interface NavMenuProps {
 	isClosing: boolean;
 	handleClick: () => void;
 	handleCloseOnOverlay: (e: React.MouseEvent) => void;
+	rowDirectionOnLg?: boolean;
 }
 
 const NavMenu = ({
@@ -16,6 +17,7 @@ const NavMenu = ({
 	isClosing,
 	handleClick,
 	handleCloseOnOverlay,
+	rowDirectionOnLg = false,
 }: NavMenuProps) => {
 	return (
 		<div
@@ -31,7 +33,10 @@ const NavMenu = ({
 					onClick={handleClick}
 				/>
 				<nav className={styles.nav}>
-					<NavLinks closeMenu={handleClick} />
+					<NavLinks
+						closeMenu={handleClick}
+						rowDirectionOnLg={rowDirectionOnLg}
+					/>
 				</nav>
 			</div>
 		</div>

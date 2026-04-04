@@ -58,6 +58,7 @@ const NavContainer = ({
 					isClosing={isClosing}
 					handleClick={handleClick}
 					handleCloseOnOverlay={handleCloseOnOverlay}
+					rowDirectionOnLg={mobileWidth === 'lg'}
 				/>
 			)}
 		</>

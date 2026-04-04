@@ -9,9 +9,15 @@ import styles from './NavLinks.module.scss';
 
 interface NavLinksProps {
 	closeMenu?: () => void;
+	className?: string;
+	rowDirectionOnLg?: boolean;
 }
 
-const NavLinks = ({ closeMenu = () => {} }: NavLinksProps) => {
+const NavLinks = ({
+	closeMenu = () => {},
+	className,
+	rowDirectionOnLg = false,
+}: NavLinksProps) => {
 	const { user } = useAuth();
 	const pathname = usePathname();
 
@@ -19,10 +25,19 @@ const NavLinks = ({ closeMenu = () => {} }: NavLinksProps) => {
 		return null;
 	}
 
+	const listClassNames = [
+		styles['nav-list'],
+		rowDirectionOnLg ? styles['nav-list--lg'] : '',
+		className,
+	]
+		.filter(Boolean)
+		.join(' ')
+		.trim();
+
 	return (
 		<List
 			items={LINKS}
-			className={styles['nav-list']}
+			className={listClassNames}
 			listComponent="ul"
 			gap={20}
 			renderItem={(link) => {

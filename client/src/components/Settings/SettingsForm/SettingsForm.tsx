@@ -88,6 +88,7 @@ const SettingsForm = <T extends FieldValues, R>({
 								type={f.type}
 								placeholder={f.placeholder}
 								error={errors[f.name]?.message as string | undefined}
+								autoComplete={f.autocomplete}
 								{...register(f.name)}
 							/>
 						)}

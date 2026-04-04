@@ -2,26 +2,26 @@ import { fetcher } from '@/utils';
 
 export const sendEmailForResetPassword = async (email: string) =>
 	await fetcher(
-		`/api/v1/auth/password-recovery/email`,
+		`/v1/auth/password-recovery/email`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ email }),
 		},
-		false
+		false,
 	);
 
 export const resetPassword = async (token: string, password: string) =>
 	await fetcher(
-		`/api/v1/auth/password-recovery/reset`,
+		`/v1/auth/password-recovery/reset`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ token, password }),
 		},
-		false
+		false,
 	);
 
 export const needOldPassword = async () =>
-	await fetcher<boolean>('/api/v1/auth/password-recovery/need-old-password');
+	await fetcher<boolean>('/v1/auth/password-recovery/need-old-password');
 
 export const changePassword = async ({
 	oldPassword,
@@ -31,10 +31,10 @@ export const changePassword = async ({
 	newPassword: string;
 }) =>
 	await fetcher(
-		`/api/v1/auth/password-recovery/change`,
+		`/v1/auth/password-recovery/change`,
 		{
 			method: 'POST',
 			body: JSON.stringify({ oldPassword, newPassword }),
 		},
-		false
+		false,
 	);
