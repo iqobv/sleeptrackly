@@ -34,8 +34,6 @@ export default async function RootLayout({
 
 	let user = null;
 
-	console.log('Layout Cookies:', cookieStore);
-
 	const getUser = async () => {
 		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
 			headers: {
@@ -47,10 +45,7 @@ export default async function RootLayout({
 		});
 		const data = (await res.json()) as IUser;
 
-		console.log(data);
-
 		if (res.status === 401) {
-			console.log('401');
 			return null;
 		}
 
