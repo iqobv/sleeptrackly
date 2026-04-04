@@ -5,7 +5,6 @@ import { IUser } from '@/types';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 import './index.scss';
 
 const geistSans = Geist({
@@ -56,10 +55,25 @@ export default async function RootLayout({
 
 	if (hasSession) {
 		user = await getUser();
+
 		if (!user) {
-			redirect(PAGES.LOGOUT);
+			return (
+				<html lang="en" suppressHydrationWarning>
+					<head>
+						<meta httpEquiv="refresh" content={`0; url=${PAGES.LOGOUT}`} />
+					</head>
+					<body>
+						<script
+							dangerouslySetInnerHTML={{
+								__html: `window.location.replace('${PAGES.LOGOUT}');`,
+							}}
+						/>
+					</body>
+				</html>
+			);
 		}
 	}
+
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<meta
