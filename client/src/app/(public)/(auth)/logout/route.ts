@@ -7,6 +7,8 @@ export async function GET(request: Request) {
 	const hasSession = cookieStore.has('session');
 	const cookiesString = cookieStore.toString();
 
+	console.log('Logout Cookies:', cookieStore);
+
 	const response = NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 
 	if (hasSession) {
@@ -17,9 +19,12 @@ export async function GET(request: Request) {
 					'Content-Type': 'application/json',
 					Cookie: cookiesString,
 				},
+				cache: 'no-store',
 			});
 
 			const setCookieHeader = backendRes.headers.get('set-cookie');
+
+			console.log('Set-Cookie Header:', setCookieHeader);
 
 			if (setCookieHeader) {
 				response.headers.append('Set-Cookie', setCookieHeader);
@@ -30,6 +35,7 @@ export async function GET(request: Request) {
 	}
 
 	cookieStore.delete('session');
+	console.log('Deleted session cookie', await cookies(), cookieStore);
 
 	return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
 }

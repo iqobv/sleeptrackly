@@ -12,7 +12,10 @@ import { PrismaService } from 'src/infra/prisma/prisma.service';
 export class SessionRefreshInterceptor implements NestInterceptor {
 	constructor(private readonly prisma: PrismaService) {}
 
-	intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+	async intercept(
+		context: ExecutionContext,
+		next: CallHandler,
+	): Promise<Observable<unknown>> {
 		const request: Request = context.switchToHttp().getRequest();
 		const session = request.session;
 		const sessionId = request.sessionID;
@@ -28,7 +31,7 @@ export class SessionRefreshInterceptor implements NestInterceptor {
 				const newExpiresAt = session.cookie.expires;
 
 				if (newExpiresAt) {
-					this.prisma.session
+					await this.prisma.session
 						.updateMany({
 							where: { sessionId },
 							data: { expiresAt: newExpiresAt },

@@ -66,6 +66,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
 
             docker run --rm \
+              -e POSTGRES_URI="${{ secrets.POSTGRES_URI }}" \
               --env-file .env \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest \
               npx prisma migrate deploy
