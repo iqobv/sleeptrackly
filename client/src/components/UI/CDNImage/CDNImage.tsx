@@ -1,13 +1,9 @@
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
 
 import styles from './CDNImage.module.scss';
 
-interface CDNImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface CDNImageProps extends ImageProps {
 	src: string;
-	width?: number;
-	height?: number;
-	alt?: string;
-	className?: string;
 }
 
 const CDNImage = ({

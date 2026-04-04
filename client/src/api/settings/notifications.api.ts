@@ -4,19 +4,19 @@ import { fetcher } from '@/utils';
 
 export const getUserNotificationSettings = async () =>
 	await fetcher<INotificationSettings>(
-		'/api/v1/settings/notifications/me',
+		'/v1/settings/notifications/me',
 		{ method: 'GET' },
-		true
+		true,
 	);
 
 export const updateUserNotificationSettings = async (
-	dto: UpdateNotificationSettingsDto
+	dto: UpdateNotificationSettingsDto,
 ) =>
 	await fetcher<INotificationSettings>(
-		'/api/v1/settings/notifications',
+		'/v1/settings/notifications',
 		{
 			method: 'PATCH',
 			body: JSON.stringify(dto),
 		},
-		true
+		true,
 	);

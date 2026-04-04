@@ -3,7 +3,7 @@ import { IRegisterResult, IUser } from '@/types';
 import { fetcher } from '@/utils';
 
 export const loginWithPassword = async (data: LoginDto) =>
-	await fetcher<IUser>('/api/v1/auth/login', {
+	await fetcher<IUser>('/v1/auth/login', {
 		method: 'POST',
 		body: JSON.stringify(data),
 	});
@@ -11,16 +11,16 @@ export const loginWithPassword = async (data: LoginDto) =>
 export const registerWithPassword = async (data: RegisterDto) => {
 	const { acceptTerms: _, ...rest } = data;
 
-	return await fetcher<IRegisterResult>('/api/v1/auth/register', {
+	return await fetcher<IRegisterResult>('/v1/auth/register', {
 		method: 'POST',
 		body: JSON.stringify(rest),
 	});
 };
 
 export const logout = async () =>
-	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });
+	await fetcher<boolean>('/v1/auth/logout', { method: 'POST' });
 
-export const getUser = async () => await fetcher<IUser>('/api/v1/auth/me');
+export const getUser = async () => await fetcher<IUser>('/v1/auth/me');
 
 export const deleteAccount = async () =>
-	await fetcher<boolean>('/api/v1/auth/delete', { method: 'DELETE' });
+	await fetcher<boolean>('/v1/auth/delete', { method: 'DELETE' });

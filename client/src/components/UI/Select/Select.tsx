@@ -39,6 +39,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 			error,
 			isClearable = false,
 			containerClassName = '',
+			...props
 		},
 		ref,
 	) => {
@@ -149,6 +150,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 					onClick={() => inputRef.current?.focus()}
 				>
 					<input
+						{...props}
 						ref={(node) => {
 							inputRef.current = node;
 							if (typeof ref === 'function') ref(node);

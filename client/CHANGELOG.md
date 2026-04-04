@@ -1,6 +1,28 @@
 # Client changelog
 
-## [0.5.0] - 2026-04-05
+## [0.5.1] - 2026-04-04
+
+### Added
+
+- Added info about empty inventory in "Inventory" page.
+
+### Changed
+
+- Updated styles for nav links component.
+
+### Removed
+
+- Removed rewrites from config.
+
+### Fixed
+
+- Fixed TOO_MANY_REDIRECTS error after terminate session from other device.
+- Fixed Total Rest view metrics.
+- Fixed filter position while scrolling on mobile layout in shop catalog.
+- Fixed z-index issues with coin image.
+- Fixed sending ip to request.
+
+## [0.5.0] - 2026-04-04
 
 ### Added
 

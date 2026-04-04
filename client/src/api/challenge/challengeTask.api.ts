@@ -8,7 +8,7 @@ export const updateTask = async (
 	data: ChallengeTaskDto,
 ) =>
 	await fetcher<IChallengeTask>(
-		`/api/v1/challenge-tasks/challenge/${challengeId}/task/${taskId}`,
+		`/v1/challenge-tasks/challenge/${challengeId}/task/${taskId}`,
 		{
 			method: 'PATCH',
 			body: JSON.stringify(data),

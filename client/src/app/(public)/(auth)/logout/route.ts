@@ -7,15 +7,23 @@ export async function GET(request: Request) {
 	const hasSession = cookieStore.has('session');
 	const cookiesString = cookieStore.toString();
 
+	const response = NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+
 	if (hasSession) {
 		try {
-			await fetch(`${process.env.API_URL}/v1/auth/logout`, {
+			const backendRes = await fetch(`${process.env.API_URL}/v1/auth/logout`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					Cookie: cookiesString,
 				},
 			});
+
+			const setCookieHeader = backendRes.headers.get('set-cookie');
+
+			if (setCookieHeader) {
+				response.headers.append('Set-Cookie', setCookieHeader);
+			}
 		} catch (error) {
 			console.error('Error occurred while logging out', error);
 		}

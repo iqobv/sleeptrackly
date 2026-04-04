@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client';
 
 export const fetcher = async <T>(
@@ -9,7 +7,7 @@ export const fetcher = async <T>(
 ): Promise<T> => {
 	const isFormData = init?.body instanceof FormData;
 
-	const res = await fetch(url, {
+	const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`, {
 		...init,
 		credentials: withCredentials ? 'include' : 'same-origin',
 		headers: {
@@ -18,7 +16,7 @@ export const fetcher = async <T>(
 		},
 	});
 
-	let data: any = null;
+	let data: unknown = null;
 	const text = await res.text();
 
 	if (text) {
@@ -30,7 +28,11 @@ export const fetcher = async <T>(
 	}
 
 	if (!res.ok) {
-		throw new Error(data?.message || res.statusText || 'Something went wrong');
+		throw new Error(
+			(data as { message?: string })?.message ||
+				res.statusText ||
+				'Something went wrong',
+		);
 	}
 
 	return data as T;

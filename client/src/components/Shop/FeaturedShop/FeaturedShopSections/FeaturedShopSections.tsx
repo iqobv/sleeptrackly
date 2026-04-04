@@ -40,7 +40,9 @@ const FeaturedShopSections = ({ sections }: FeaturedShopSectionsProps) => {
 						<List
 							items={s.items}
 							className={styles['featured-shop-sections__items']}
-							renderItem={(item) => <ShopCard key={item.id} product={item} />}
+							renderItem={(item, index) => (
+								<ShopCard key={item.id} product={item} isPreload={index < 3} />
+							)}
 						/>
 					</div>
 				);

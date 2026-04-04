@@ -41,6 +41,7 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 						alt="avatar frame"
 						className={styles['profile-main-info__avatar-frame']}
 						key={avatarFrame.id}
+						preload
 					/>
 				)}
 			</div>

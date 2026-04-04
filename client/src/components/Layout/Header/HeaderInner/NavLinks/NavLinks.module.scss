@@ -1,6 +1,6 @@
 @use '../../../../../styles/mixins' as *;
 
-ul.nav-list {
+.nav-list {
 	align-items: center;
 
 	.nav-link {
@@ -16,8 +16,6 @@ ul.nav-list {
 	}
 
 	@include respond-to(md) {
-		flex-direction: row;
-
 		.nav-link {
 			font-size: 16px;
 
@@ -40,6 +38,22 @@ ul.nav-list {
 					transform: scaleX(1);
 				}
 			}
+		}
+	}
+
+	&:not(.nav-list--lg) {
+		@include respond-to(md) {
+			flex-direction: row;
+		}
+	}
+
+	&.nav-list--lg {
+		@include respond-to(md) {
+			flex-direction: column;
+		}
+
+		@include respond-to(lg) {
+			flex-direction: row;
 		}
 	}
 }

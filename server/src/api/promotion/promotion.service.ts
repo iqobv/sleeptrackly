@@ -61,8 +61,6 @@ export class PromotionService {
 			}
 		}
 
-		console.log(finalAlias, alias);
-
 		const promotion = await this.prismaService.promotion.create({
 			data: {
 				alias: finalAlias,
