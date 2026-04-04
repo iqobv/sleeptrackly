@@ -4,10 +4,15 @@ import { useRouter } from 'next/navigation';
 
 export const useLoginWindow = (url: string) => {
 	const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+	const apiOrigin = apiUrl ? new URL(apiUrl).origin : null;
 
 	const router = useRouter();
 
 	const handleOpen = () => {
+		if (!apiUrl || !apiOrigin) {
+			return;
+		}
+
 		const width = 600;
 		const height = 800;
 
@@ -21,7 +26,10 @@ export const useLoginWindow = (url: string) => {
 		);
 
 		const messageListener = (event: MessageEvent) => {
-			if (event.origin !== apiUrl && event.origin !== window.location.origin) {
+			if (
+				event.origin !== apiOrigin &&
+				event.origin !== window.location.origin
+			) {
 				return;
 			}
 			if (event.data?.success) {

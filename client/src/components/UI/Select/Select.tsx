@@ -150,6 +150,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 					onClick={() => inputRef.current?.focus()}
 				>
 					<input
+						{...props}
 						ref={(node) => {
 							inputRef.current = node;
 							if (typeof ref === 'function') ref(node);
@@ -166,7 +167,6 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 						onKeyDown={onKeyDown}
 						placeholder={selectedOption ? selectedOption.label : placeholder}
 						autoComplete="off"
-						{...props}
 					/>
 
 					<div className={styles.actions} onClick={(e) => e.stopPropagation()}>

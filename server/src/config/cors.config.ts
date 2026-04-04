@@ -13,7 +13,6 @@ export const getCorsConfig = (configService: ConfigService): CorsOptions => ({
 		'Accept',
 		'X-Requested-With',
 		'X-Forwarded-Client-IP',
-		'X-Internal-Secret',
 	],
 	methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
 });
