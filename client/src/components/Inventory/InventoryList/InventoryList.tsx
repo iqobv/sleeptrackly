@@ -30,7 +30,7 @@ const InventoryList = () => {
 	return (
 		<div className={styles['inventory-list']}>
 			{isLoading && <InventoryListLoader />}
-			{data && data.items.length > 0 && (
+			{data && data.meta.total > 0 && (
 				<>
 					<div className={styles['inventory-items__list']}>
 						{data.items.map((item) => (
@@ -44,7 +44,7 @@ const InventoryList = () => {
 					/>
 				</>
 			)}
-			{data && data.items.length === 0 && <InventoryListEmpty />}
+			{data && data.meta.total === 0 && <InventoryListEmpty />}
 		</div>
 	);
 };
