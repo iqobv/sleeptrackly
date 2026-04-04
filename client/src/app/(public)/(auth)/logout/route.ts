@@ -41,5 +41,5 @@ export async function GET(request: Request) {
 	});
 	console.log('Deleted session cookie', await cookies(), cookieStore);
 
-	return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+	return response;
 }
