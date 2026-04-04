@@ -38,6 +38,7 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:${{ github.sha }}
           build-args: |
             POSTGRES_URI=${{ secrets.POSTGRES_URI }}
+            DATABASE_URL=${{ secrets.POSTGRES_URI }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -59,6 +60,7 @@ jobs:
             NODE_ENV=production
             ${{ secrets.ENV_FILE }}
             POSTGRES_URI=${{ secrets.POSTGRES_URI }}
+            DATABASE_URL=${{ secrets.POSTGRES_URI }}
             EOF
 
             docker pull ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
