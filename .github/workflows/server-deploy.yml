@@ -66,19 +66,19 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
 
             docker run --rm \
-              --env POSTGRES_URI="${{ secrets.POSTGRES_URI }}" \
-              --env DATABASE_URL="${{ secrets.POSTGRES_URI }}" \
+              --env-file .env \
+              -e POSTGRES_URI="${{ secrets.POSTGRES_URI }}" \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest \
-              sh -c "export POSTGRES_URI='${{ secrets.POSTGRES_URI }}' && npx prisma migrate deploy
+              npx prisma migrate deploy
 
             docker run --rm \
               --env-file .env \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest \
-              sh -c "if [ '${{ github.event.inputs.run_migrations }}' = 'true' ]; then \
-                echo 'Running data migration...'; \
-                node dist/src/data-migration-runner.js; \
-              else \
-                echo 'Skipping data migration...'; \
+              sh -c "if [ '${{ github.event.inputs.run_migrations }}' = 'true' ]; then
+                echo 'Running data migration...';
+                node dist/src/data-migration-runner.js;
+              else
+                echo 'Skipping data migration...';
               fi"
 
             docker stop nestjs-server || true
@@ -88,7 +88,6 @@ jobs:
               --name nestjs-server \
               --restart always \
               --env-file .env \
-              -e NODE_ENV=production \
               -p 127.0.0.1:3000:3000 \
               ${{ secrets.DOCKER_USERNAME }}/sleeptrackly-api:latest
 

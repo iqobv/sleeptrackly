@@ -1,4 +1,5 @@
 import { PAGES } from '@/config';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
@@ -7,7 +8,7 @@ export async function GET(request: Request) {
 	const hasSession = cookieStore.has('session');
 	const cookiesString = cookieStore.toString();
 
-	const response = NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+	revalidatePath('/', 'layout');
 
 	if (hasSession) {
 		try {
@@ -20,23 +21,33 @@ export async function GET(request: Request) {
 				cache: 'no-store',
 			});
 
+			const response = NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+
 			const setCookieHeader = backendRes.headers.get('set-cookie');
 
 			if (setCookieHeader) {
-				response.headers.append('Set-Cookie', setCookieHeader);
+				response.headers.set('Set-Cookie', setCookieHeader);
 			}
+
+			response.cookies.set('session', '', {
+				domain: '.sleeptrackly.com',
+				path: '/',
+				maxAge: 0,
+			});
+
+			return response;
 		} catch (error) {
 			console.error('Error occurred while logging out', error);
+
+			const response = NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
+
+			response.cookies.set('session', '', {
+				domain: '.sleeptrackly.com',
+				path: '/',
+				maxAge: 0,
+			});
+
+			return response;
 		}
 	}
-
-	response.headers.set('Refresh', `0; url=${PAGES.LOGIN}`);
-
-	response.cookies.set('session', '', {
-		domain: '.sleeptrackly.com',
-		path: '/',
-		maxAge: 0,
-	});
-
-	return response;
 }
