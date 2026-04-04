@@ -5,7 +5,7 @@ import SocialButton from '../SocialButton/SocialButton';
 import { useLoginWindow } from '../useLoginWindow';
 
 const Google = () => {
-	const { handleOpen } = useLoginWindow(`/api/v1/auth/google`);
+	const { handleOpen } = useLoginWindow(`/v1/auth/google`);
 
 	return (
 		<SocialButton onClick={handleOpen}>

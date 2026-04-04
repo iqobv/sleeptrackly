@@ -36,6 +36,6 @@ export default function Modal({
 				</div>
 			</div>
 		</div>,
-		document.body
+		document.body,
 	);
 }

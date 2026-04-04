@@ -83,8 +83,12 @@ const AllShop = () => {
 											<List
 												items={data.items}
 												className={styles['all-shop__items-grid']}
-												renderItem={(item) => (
-													<ShopCard key={item.id} product={item} />
+												renderItem={(item, index) => (
+													<ShopCard
+														key={item.id}
+														product={item}
+														isPreload={index < 3}
+													/>
 												)}
 											/>
 											<Pagination

@@ -1,7 +1,6 @@
 'use client';
 
 import { IProduct } from '@/types';
-import Image from 'next/image';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -9,6 +8,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import { CDNImage } from '@/components/UI';
 import styles from './FeaturedShopCarousel.module.scss';
 import FeaturedShopCarouselBuyButton from './FeaturedShopCarouselBuyButton/FeaturedShopCarouselBuyButton';
 import FeaturedShopCarouselIncludes from './FeaturedShopCarouselIncludes/FeaturedShopCarouselIncludes';
@@ -72,10 +72,10 @@ const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 								/>
 							</div>
 							<div className={styles['image-wrapper']}>
-								<Image
-									src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.bundle.mediaUrl}`}
+								<CDNImage
+									src={item.bundle.mediaUrl}
 									alt={item.bundle.translation.name || 'Featured Shop Item'}
-									priority
+									preload
 									className={styles['featured-shop-carousel__image']}
 									width={300}
 									height={300}

@@ -1,20 +1,20 @@
 import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
-import { Button } from '@/components/UI';
+import { Button, CDNImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PRODUCT_TYPES } from '@/constants';
 import { IItem, IProduct } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Image from 'next/image';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
 
 interface ShopCardProps {
 	product: IProduct;
+	isPreload: boolean;
 }
 
-const ShopCard = ({ product }: ShopCardProps) => {
+const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
 	const queryClient = useQueryClient();
 
@@ -39,12 +39,12 @@ const ShopCard = ({ product }: ShopCardProps) => {
 		},
 	});
 
-	const url =
+	const url: string =
 		product.type === PRODUCT_TYPES.ITEM
 			? (key as IItem)?.previewUrl
 				? (key as IItem)?.previewUrl
 				: (key as IItem)?.mediaUrl
-			: key?.mediaUrl;
+			: (key?.mediaUrl ?? '');
 
 	return (
 		<div className={styles['shop-card']}>
@@ -60,11 +60,12 @@ const ShopCard = ({ product }: ShopCardProps) => {
 						className={styles['shop-card__video']}
 					/>
 				) : (
-					<Image
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
+					<CDNImage
+						src={url}
 						alt={key?.translation.name || 'Product Image'}
 						width={160}
 						height={160}
+						preload={isPreload}
 					/>
 				)}
 			</div>

@@ -18,7 +18,7 @@ const ShopHeader = () => {
 					<NavLogo />
 				</div>
 				<nav className={styles['shop-header__nav']}>
-					<NavLinks />
+					<NavLinks rowDirectionOnLg />
 				</nav>
 				<div className={styles['shop-header__auth']}>
 					<ShopBalance />

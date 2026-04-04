@@ -7,5 +7,12 @@ export const getCorsConfig = (configService: ConfigService): CorsOptions => ({
 		.split(',')
 		.map((url) => url.trim()),
 	credentials: true,
-	allowedHeaders: '*',
+	allowedHeaders: [
+		'Content-Type',
+		'Authorization',
+		'Accept',
+		'X-Requested-With',
+		'X-Forwarded-Client-IP',
+	],
+	methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
 });
