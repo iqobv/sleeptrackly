@@ -2,6 +2,7 @@ import TermlyCMP from '@/components/TermlyCMP';
 import { PAGES } from '@/config';
 import MainProvider from '@/providers/MainProvider';
 import { IUser } from '@/types';
+import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
@@ -81,6 +82,7 @@ export default async function RootLayout({
 				content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
 			/>
 			<body className={`${geistSans.variable}`}>
+				<Analytics />
 				{WEBSITE_UUID && <TermlyCMP websiteUUID={WEBSITE_UUID} />}
 				<MainProvider user={user}>{children}</MainProvider>
 			</body>

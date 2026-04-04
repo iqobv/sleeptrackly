@@ -5,7 +5,6 @@ export async function proxy(request: NextRequest) {
 	const session = request.cookies.get('session');
 	const hasSession = !!session;
 	const path = request.nextUrl.pathname;
-	const isLogoutSuccess = request.nextUrl.searchParams.has('logout');
 
 	const ip =
 		request.headers.get('cf-connecting-ip') ??
@@ -57,7 +56,7 @@ export async function proxy(request: NextRequest) {
 		return response;
 	}
 
-	if (hasSession && isAuthRoute && !isLogoutSuccess) {
+	if (hasSession && isAuthRoute) {
 		const previousPage = request.cookies.get('previousPage')?.value;
 		const redirectTo =
 			previousPage &&
