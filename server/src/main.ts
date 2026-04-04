@@ -24,9 +24,9 @@ async function bootstrap() {
 	const redisStore: Store = app.get('REDIS_STORE');
 	const prisma = app.get(PrismaService);
 
-	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
-
 	app.set('trust proxy', true);
+	app.enableCors(getCorsConfig(config));
+	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
 
 	app.use(
 		'/docs*splat',
@@ -39,14 +39,13 @@ async function bootstrap() {
 		}),
 	);
 
-	app.enableCors(getCorsConfig(config));
-	app.useGlobalPipes(getValidationPipeConfig());
-	app.enableVersioning(getApiVersioningConfig());
 	app.use(session(getSessionConfig(config, redisStore)));
 
 	app.use(passport.initialize());
 	app.use(passport.session());
 
+	app.useGlobalPipes(getValidationPipeConfig());
+	app.enableVersioning(getApiVersioningConfig());
 	app.useGlobalInterceptors(new SessionRefreshInterceptor(prisma));
 
 	setupSwagger(app);
