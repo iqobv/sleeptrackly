@@ -21,8 +21,6 @@ export async function GET(request: Request) {
 
 			const setCookieHeader = backendRes.headers.get('set-cookie');
 
-			console.log(setCookieHeader);
-
 			if (setCookieHeader) {
 				response.headers.append('Set-Cookie', setCookieHeader);
 			}
