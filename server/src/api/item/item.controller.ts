@@ -18,7 +18,7 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { UserRole } from 'generated/prisma/enums';
 import { Auth } from 'src/libs/decorators';
 import { PaginationQueryDto } from 'src/libs/dto';
 import {
@@ -30,7 +30,7 @@ import {
 	UpdateItemDtoSwaggerDto,
 } from './dto';
 import { ItemService } from './item.service';
-import { CreateItemFiles, UpdateItemFiles } from './types';
+import type { CreateItemFiles, UpdateItemFiles } from './types';
 
 @Controller('items')
 export class ItemController {

@@ -7,7 +7,7 @@ import {
 	Req,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
+import type { Request } from 'express';
 import { ConfirmationDto, ResendEmailDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation.service';
 

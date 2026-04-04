@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from 'generated/prisma/client';
 import sharp from 'sharp';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { R2Service } from 'src/infra/r2/r2.service';

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { AcquiredFrom } from '@prisma/client';
 import { IsBoolean, IsDate, IsEnum, IsOptional, IsUUID } from 'class-validator';
+import { AcquiredFrom } from 'generated/prisma/enums';
 
 export class CreateUserInventoryDto {
 	@ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })

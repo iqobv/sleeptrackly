@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma } from 'generated/prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { pickTranslation } from 'src/libs/mappers';

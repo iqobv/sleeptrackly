@@ -1,8 +1,8 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { Session } from '@prisma/client';
 import { RedisStore } from 'connect-redis';
+import { Session } from 'generated/prisma/client';
 import { UserService } from 'src/api/user/user.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { extractClientIP, normalizeIp } from 'src/libs/utils';

@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, ProfileItemType } from '@prisma/client';
+import { Prisma, ProfileItemType } from 'generated/prisma/client';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { pickTranslation } from 'src/libs/mappers';

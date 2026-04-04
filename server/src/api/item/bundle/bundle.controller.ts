@@ -21,7 +21,7 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { UserRole } from 'generated/prisma/enums';
 import { Auth } from 'src/libs/decorators';
 import { PaginationQueryDto } from 'src/libs/dto';
 import { BundleService } from './bundle.service';

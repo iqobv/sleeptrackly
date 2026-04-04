@@ -5,8 +5,8 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TokenType } from '@prisma/client';
 import type { Request } from 'express';
+import { TokenType } from 'generated/prisma/enums';
 import { TokenService } from 'src/api/token/token.service';
 import { UserService } from 'src/api/user/user.service';
 import { MailService } from 'src/infra/mail/mail.service';
@@ -54,11 +54,11 @@ export class EmailConfirmationService {
 
 		const token = await this.generateVerificationToken(user.id);
 
-		await this.mailService.sendVerificationEmail(user.email, token.token);
+		await this.mailService.sendVerificationEmail(user.email, token);
 	}
 
-	async generateVerificationToken(userId: string) {
-		const token = await this.tokenService.createToken(
+	async generateVerificationToken(userId: string): Promise<string> {
+		const { token } = await this.tokenService.createToken(
 			userId,
 			TokenType.EMAIL_VERIFICATION,
 			60,

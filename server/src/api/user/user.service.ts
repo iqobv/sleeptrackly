@@ -8,8 +8,8 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { UserSanctionType } from '@prisma/client';
 import dayjs from 'dayjs';
+import { UserSanctionType } from 'generated/prisma/enums';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { userSelect } from 'src/libs/prisma';
 import {

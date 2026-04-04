@@ -1,5 +1,5 @@
-import { Prisma } from '@prisma/client';
 import { IsArray, IsNumber, IsUUID, Min } from 'class-validator';
+import { Prisma } from 'generated/prisma/client';
 
 export class CreatePurchaseHistoryDto {
 	@IsUUID('4')
