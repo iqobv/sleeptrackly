@@ -4,7 +4,6 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export async function GET(request: Request) {
 	const cookieStore = await cookies();
@@ -16,29 +15,26 @@ export async function GET(request: Request) {
 	try {
 		await fetch(`${process.env.API_URL}/v1/auth/logout`, {
 			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Cookie: cookiesString },
+			headers: {
+				'Content-Type': 'application/json',
+				Cookie: cookiesString,
+			},
 			cache: 'no-store',
 		});
-	} catch (e) {
-		console.error('Backend logout error', e);
+	} catch (error) {
+		console.error(error);
 	}
 
-	const response = NextResponse.redirect(loginUrl, { status: 303 });
-
-	response.cookies.set('session', '', {
-		domain: '.sleeptrackly.com',
-		path: '/',
-		maxAge: 0,
-		secure: true,
-		sameSite: 'none',
+	const response = new NextResponse(null, {
+		status: 303,
+		headers: {
+			Location: loginUrl,
+			'Set-Cookie':
+				'session=; Domain=.sleeptrackly.com; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None',
+			'Cache-Control':
+				'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+		},
 	});
-
-	response.headers.set('Clear-Site-Data', '"cache", "cookies", "storage"');
-
-	response.headers.set(
-		'Cache-Control',
-		'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-	);
 
 	return response;
 }

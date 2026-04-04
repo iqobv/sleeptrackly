@@ -1,10 +1,9 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { PAGES } from './config';
 
 export async function proxy(request: NextRequest) {
-	const cookiesStore = await cookies();
-	const hasSession = cookiesStore.has('session');
+	const session = request.cookies.get('session');
+	const hasSession = !!session;
 	const path = request.nextUrl.pathname;
 
 	const ip =
@@ -46,6 +45,9 @@ export async function proxy(request: NextRequest) {
 		const loginUrl = new URL(PAGES.LOGIN, request.url);
 		const response = NextResponse.redirect(loginUrl);
 
+		response.headers.set('x-middleware-cache', 'no-cache');
+		response.headers.set('Vary', 'Cookie');
+
 		response.cookies.set('previousPage', path + request.nextUrl.search, {
 			httpOnly: true,
 			path: '/',
@@ -57,8 +59,19 @@ export async function proxy(request: NextRequest) {
 	}
 
 	if (hasSession && isAuthRoute) {
-		const redirectTo = request.cookies.get('previousPage')?.value || PAGES.HOME;
+		const previousPage = request.cookies.get('previousPage')?.value;
+		const redirectTo =
+			previousPage &&
+			!previousPage.startsWith(PAGES.LOGOUT) &&
+			!previousPage.startsWith(PAGES.LOGIN)
+				? previousPage
+				: PAGES.HOME;
+
 		const response = NextResponse.redirect(new URL(redirectTo, request.url));
+
+		response.headers.set('x-middleware-cache', 'no-cache');
+		response.headers.set('Vary', 'Cookie');
+
 		response.cookies.delete('previousPage');
 		return response;
 	}
@@ -76,6 +89,8 @@ export async function proxy(request: NextRequest) {
 			request: { headers: requestHeaders },
 		});
 
+		response.headers.set('Vary', 'Cookie');
+
 		response.cookies.set('previousPage', path + request.nextUrl.search, {
 			httpOnly: true,
 			path: '/',
@@ -86,9 +101,13 @@ export async function proxy(request: NextRequest) {
 		return response;
 	}
 
-	return NextResponse.next({
+	const finalResponse = NextResponse.next({
 		request: { headers: requestHeaders },
 	});
+
+	finalResponse.headers.set('Vary', 'Cookie');
+
+	return finalResponse;
 }
 
 export const config = {
