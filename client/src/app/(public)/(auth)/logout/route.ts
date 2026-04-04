@@ -8,7 +8,9 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
 	const cookieStore = await cookies();
 	const cookiesString = cookieStore.toString();
-	const loginUrl = new URL(PAGES.LOGIN, request.url).toString();
+	const loginUrl = new URL(PAGES.LOGIN, request.url);
+
+	loginUrl.searchParams.set('logout', 'success');
 
 	revalidatePath('/', 'layout');
 
@@ -25,15 +27,22 @@ export async function GET(request: Request) {
 		console.error(error);
 	}
 
-	const response = new NextResponse(null, {
+	const response = NextResponse.redirect(loginUrl, {
 		status: 303,
-		headers: {
-			Location: loginUrl,
-			'Set-Cookie':
-				'session=; Domain=.sleeptrackly.com; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly; Secure; SameSite=None',
-			'Cache-Control':
-				'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-		},
+	});
+
+	response.headers.set(
+		'Cache-Control',
+		'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+	);
+
+	response.cookies.set('session', '', {
+		domain: '.sleeptrackly.com',
+		path: '/',
+		maxAge: 0,
+		httpOnly: true,
+		secure: true,
+		sameSite: 'none',
 	});
 
 	return response;

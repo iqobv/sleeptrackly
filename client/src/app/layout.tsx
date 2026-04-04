@@ -32,36 +32,34 @@ export default async function RootLayout({
 	const hasSession = cookieStore.has('session');
 	const allCookies = cookieStore.toString();
 
-	let user = null;
+	let user: IUser | null = null;
 
-	const getUser = async () => {
-		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
-			headers: {
-				'Content-Type': 'application/json',
-				cookie: allCookies,
-			},
-			cache: 'no-store',
-			next: { revalidate: 0 },
-		});
-		const data = (await res.json()) as IUser;
+	const getUser = async (): Promise<IUser | null> => {
+		try {
+			const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
+				headers: {
+					'Content-Type': 'application/json',
+					cookie: allCookies,
+				},
+				cache: 'no-store',
+				next: { revalidate: 0 },
+			});
 
-		if (res.status === 401) {
+			if (res.status === 401) return null;
+
+			const data = await res.json();
+			return res.ok && data?.id ? data : null;
+		} catch {
 			return null;
 		}
-
-		if (res.ok && data?.id) return data;
-		return null;
 	};
 
 	if (hasSession) {
-		const res = await getUser();
-		if (res?.id) {
-			user = res;
-		} else {
+		user = await getUser();
+		if (!user) {
 			redirect(PAGES.LOGOUT);
 		}
 	}
-
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<meta

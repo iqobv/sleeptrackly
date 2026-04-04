@@ -5,10 +5,11 @@ export async function proxy(request: NextRequest) {
 	const session = request.cookies.get('session');
 	const hasSession = !!session;
 	const path = request.nextUrl.pathname;
+	const isLogoutSuccess = request.nextUrl.searchParams.has('logout');
 
 	const ip =
+		request.headers.get('cf-connecting-ip') ??
 		request.headers.get('x-forwarded-for') ??
-		request.headers.get('x-real-ip') ??
 		'unknown';
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set('x-forwarded-for', ip);
@@ -44,9 +45,7 @@ export async function proxy(request: NextRequest) {
 	if (!hasSession && isProtectedRoute) {
 		const loginUrl = new URL(PAGES.LOGIN, request.url);
 		const response = NextResponse.redirect(loginUrl);
-
 		response.headers.set('x-middleware-cache', 'no-cache');
-		response.headers.set('Vary', 'Cookie');
 
 		response.cookies.set('previousPage', path + request.nextUrl.search, {
 			httpOnly: true,
@@ -58,20 +57,17 @@ export async function proxy(request: NextRequest) {
 		return response;
 	}
 
-	if (hasSession && isAuthRoute) {
+	if (hasSession && isAuthRoute && !isLogoutSuccess) {
 		const previousPage = request.cookies.get('previousPage')?.value;
 		const redirectTo =
 			previousPage &&
 			!previousPage.startsWith(PAGES.LOGOUT) &&
 			!previousPage.startsWith(PAGES.LOGIN)
 				? previousPage
-				: PAGES.HOME;
+				: PAGES.DASHBOARD;
 
 		const response = NextResponse.redirect(new URL(redirectTo, request.url));
-
 		response.headers.set('x-middleware-cache', 'no-cache');
-		response.headers.set('Vary', 'Cookie');
-
 		response.cookies.delete('previousPage');
 		return response;
 	}
