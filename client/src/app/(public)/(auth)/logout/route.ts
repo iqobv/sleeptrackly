@@ -34,7 +34,11 @@ export async function GET(request: Request) {
 		}
 	}
 
-	cookieStore.delete('session');
+	response.cookies.set('session', '', {
+		domain: '.sleeptrackly.com',
+		path: '/',
+		maxAge: 0,
+	});
 	console.log('Deleted session cookie', await cookies(), cookieStore);
 
 	return NextResponse.redirect(new URL(PAGES.LOGIN, request.url));
