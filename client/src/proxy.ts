@@ -6,6 +6,10 @@ export async function proxy(request: NextRequest) {
 	const hasSession = !!session;
 	const path = request.nextUrl.pathname;
 
+	const isPrefetch =
+		request.headers.get('next-router-prefetch') === '1' ||
+		request.headers.get('purpose') === 'prefetch';
+
 	const ip =
 		request.headers.get('cf-connecting-ip') ??
 		request.headers.get('x-forwarded-for') ??
@@ -46,12 +50,14 @@ export async function proxy(request: NextRequest) {
 		const response = NextResponse.redirect(loginUrl);
 		response.headers.set('x-middleware-cache', 'no-cache');
 
-		response.cookies.set('previousPage', path + request.nextUrl.search, {
-			httpOnly: true,
-			path: '/',
-			maxAge: 300,
-			sameSite: 'lax',
-		});
+		if (!isPrefetch) {
+			response.cookies.set('previousPage', path + request.nextUrl.search, {
+				httpOnly: true,
+				path: '/',
+				maxAge: 300,
+				sameSite: 'lax',
+			});
+		}
 
 		return response;
 	}
@@ -86,12 +92,14 @@ export async function proxy(request: NextRequest) {
 
 		response.headers.set('Vary', 'Cookie');
 
-		response.cookies.set('previousPage', path + request.nextUrl.search, {
-			httpOnly: true,
-			path: '/',
-			maxAge: 300,
-			sameSite: 'lax',
-		});
+		if (!isPrefetch) {
+			response.cookies.set('previousPage', path + request.nextUrl.search, {
+				httpOnly: true,
+				path: '/',
+				maxAge: 300,
+				sameSite: 'lax',
+			});
+		}
 
 		return response;
 	}
