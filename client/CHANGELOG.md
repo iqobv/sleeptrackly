@@ -2,6 +2,10 @@
 
 ## [0.5.1] -
 
+### Added
+
+- Added info about empty inventory in "Inventory" page.
+
 ### Fixed
 
 - Fixed TOO_MANY_REDIRECTS error after terminate session from other device.

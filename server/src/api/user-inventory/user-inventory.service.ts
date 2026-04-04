@@ -97,7 +97,8 @@ export class UserInventoryService {
 			});
 
 			return {
-				items: mappedItems,
+				// items: mappedItems,
+				items: [],
 				total,
 			};
 		});

@@ -7,6 +7,7 @@ import { useAuth, usePagination } from '@/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import styles from './InventoryList.module.scss';
+import InventoryListEmpty from './InventoryListEmpty/InventoryListEmpty';
 import InventoryListItem from './InventoryListItem/InventoryListItem';
 import InventoryListLoader from './InventoryListLoader';
 
@@ -29,7 +30,7 @@ const InventoryList = () => {
 	return (
 		<div className={styles['inventory-list']}>
 			{isLoading && <InventoryListLoader />}
-			{data && (
+			{data && data.items.length > 0 && (
 				<>
 					<div className={styles['inventory-items__list']}>
 						{data.items.map((item) => (
@@ -43,6 +44,7 @@ const InventoryList = () => {
 					/>
 				</>
 			)}
+			{data && data.items.length === 0 && <InventoryListEmpty />}
 		</div>
 	);
 };
