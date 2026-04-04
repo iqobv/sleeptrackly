@@ -58,12 +58,12 @@ export class EmailConfirmationService {
 	}
 
 	async generateVerificationToken(userId: string): Promise<string> {
-		const token = await this.tokenService.createToken(
+		const { token } = await this.tokenService.createToken(
 			userId,
 			TokenType.EMAIL_VERIFICATION,
 			60,
 		);
 
-		return (token as { token: string }).token;
+		return token;
 	}
 }

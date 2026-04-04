@@ -3,6 +3,12 @@ import { PrismaClient } from 'generated/prisma/client';
 
 const connectionString = process.env.POSTGRES_URI;
 
+if (!connectionString) {
+	throw new Error(
+		'Missing required environment variable: POSTGRES_URI. Set it before running data-migration-runner.',
+	);
+}
+
 const adapter = new PrismaPg({ connectionString });
 
 const prisma = new PrismaClient({
