@@ -10,8 +10,14 @@ export function useTransformSecondsToHours(seconds: number): string;
 export function useTransformSecondsToHours(
 	seconds?: number,
 ): string | ((seconds: number) => string) {
-	const transform = (value: number) =>
-		dayjs.duration(value, 'seconds').format('H[h] m[m]');
+	const transform = (value: number) => {
+		const dur = dayjs.duration(value, 'seconds');
+
+		const totalHours = Math.floor(dur.asHours());
+		const minutes = dur.minutes();
+
+		return `${totalHours}h ${minutes}m`;
+	};
 
 	if (typeof seconds === 'number') {
 		return transform(seconds);
