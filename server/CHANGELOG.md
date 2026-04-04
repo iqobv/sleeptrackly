@@ -1,5 +1,11 @@
 # Server changelog
 
+## [1.5.3] - 2026-04-04
+
+### Fixed
+
+- Fixed SSL configuration for database connections.
+
 ## [1.5.2] - 2026-04-04
 
 ### Changed
