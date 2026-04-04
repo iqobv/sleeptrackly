@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserSanctionType } from '@prisma/client';
+import { UserSanctionType } from 'generated/prisma/enums';
 import { AdminUserSanctionController } from './admin-user-sanction.controller';
 import { UserSanctionService } from './user-sanction.service';
 

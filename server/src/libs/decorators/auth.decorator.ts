@@ -1,6 +1,6 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
 import { ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { UserRole } from 'generated/prisma/enums';
 import { Roles } from 'src/api/auth/decorators';
 import { AuthenticatedGuard, RolesGuard } from 'src/api/auth/guards';
 

@@ -3,7 +3,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { ReportStatus } from '@prisma/client';
+import { ReportStatus } from 'generated/prisma/enums';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { userSelect } from 'src/libs/prisma';
 import { CreateReportDto, SearchQueryDto, UpdateReportDto } from './dto';

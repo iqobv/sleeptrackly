@@ -20,8 +20,8 @@ import {
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
+import { User } from 'generated/prisma/client';
 import { Auth, Authorized } from 'src/libs/decorators';
 import { CreateUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';

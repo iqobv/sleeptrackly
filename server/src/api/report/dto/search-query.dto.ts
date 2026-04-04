@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prisma, ReportStatus, ReportType } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
+import { Prisma, ReportStatus, ReportType } from 'generated/prisma/client';
 
 export const SORT_BY = ['createdAt', 'updatedAt'] as const;
 export type SortBy = (typeof SORT_BY)[number];

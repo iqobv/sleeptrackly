@@ -1,6 +1,9 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"resolvePackageJsonExports": true,
+		"isolatedModules": true,
 		"declaration": true,
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
@@ -12,20 +15,20 @@
 		"outDir": "./dist",
 		"rootDir": "./",
 		"paths": {
-			"src/*": ["./src/*"]
+			"src/*": ["./src/*"],
+			"generated/prisma/*": ["./generated/prisma/*"]
 		},
 		"incremental": true,
 		"skipLibCheck": true,
 		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictPropertyInitialization": false,
-		"noImplicitAny": false,
-		"strictBindCallApply": false,
-		"noFallthroughCasesInSwitch": false,
+		"noImplicitAny": true,
+		"strictBindCallApply": true,
+		"noFallthroughCasesInSwitch": true,
 		"esModuleInterop": true,
 		"jsx": "react",
-		"types": ["jest", "node", "multer"]
+		"types": ["node", "jest", "multer"]
 	},
-	"exclude": ["node_modules", "dist"],
-	"include": ["src/**/*"]
+	"exclude": ["node_modules", "dist"]
 }

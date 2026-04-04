@@ -4,8 +4,8 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { TokenType } from '@prisma/client';
 import type { Request } from 'express';
+import { TokenType } from 'generated/prisma/enums';
 import { TokenService } from 'src/api/token/token.service';
 import { UserService } from 'src/api/user/user.service';
 import { PrismaService } from 'src/infra/prisma/prisma.service';

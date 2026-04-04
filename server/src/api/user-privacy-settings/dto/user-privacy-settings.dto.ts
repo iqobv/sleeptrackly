@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Visibility } from '@prisma/client';
+import { Visibility } from 'generated/prisma/enums';
 import { DefaultFieldsDto } from 'src/libs/dto';
 
 export class UserPrivacySettingsDto extends DefaultFieldsDto {

@@ -1,6 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from 'generated/prisma/client';
 
-const prisma = new PrismaClient();
+const connectionString = process.env.POSTGRES_URI;
+
+const adapter = new PrismaPg({ connectionString });
+
+const prisma = new PrismaClient({
+	adapter: adapter,
+});
 
 async function runDataMigration() {
 	console.log('Starting data migration');
@@ -24,7 +31,7 @@ async function runDataMigration() {
 	}));
 
 	try {
-		const result = await prisma.userCoin.createMany({
+		const result = await prisma.userPrivacySettings.createMany({
 			data: dataToCreate,
 			skipDuplicates: true,
 		});

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { TokenType, User } from '@prisma/client';
 import crypto, { createHash } from 'crypto';
+import type { User } from 'generated/prisma/client';
+import { TokenType } from 'generated/prisma/enums';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserService } from '../user/user.service';
 

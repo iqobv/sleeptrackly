@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ItemRarity, ProfileItemType } from '@prisma/client';
+import { ItemRarity, ProfileItemType } from 'generated/prisma/enums';
 import { TranslationDto } from 'src/libs/dto';
 
 export class ItemDto {

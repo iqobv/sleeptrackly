@@ -3,14 +3,13 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+
+import { Item, Prisma, UserInventory } from 'generated/prisma/client';
 import {
 	AcquiredFrom,
 	CoinTransactionType,
-	Item,
-	Prisma,
 	ProductType,
-	UserInventory,
-} from '@prisma/client';
+} from 'generated/prisma/enums';
 import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { transformProduct } from 'src/libs/mappers';
 import { productInclude } from 'src/libs/prisma';

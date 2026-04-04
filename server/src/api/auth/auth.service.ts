@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { User } from '@prisma/client';
 import type { Request, Response } from 'express';
+import { User } from 'generated/prisma/client';
 import { getCookieConfig } from 'src/config';
 import { comparePassword, normalizeIp } from 'src/libs/utils';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';

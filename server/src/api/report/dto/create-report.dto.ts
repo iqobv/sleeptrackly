@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ReportType } from '@prisma/client';
 import {
 	IsEnum,
 	IsOptional,
@@ -7,6 +6,7 @@ import {
 	IsUUID,
 	MinLength,
 } from 'class-validator';
+import { ReportType } from 'generated/prisma/enums';
 
 export class CreateReportDto {
 	@ApiProperty({ example: 'Test Report' })
