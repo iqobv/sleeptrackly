@@ -23,6 +23,8 @@ ENV PORT=8080
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
+COPY --from=builder /app/prisma.config.ts ./
+
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
