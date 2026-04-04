@@ -2,6 +2,7 @@ import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from 'generated/prisma/client';
+import { Pool } from 'pg';
 
 @Injectable()
 export class PrismaService
@@ -10,8 +11,19 @@ export class PrismaService
 {
 	constructor(private readonly configService: ConfigService) {
 		const connectionString = configService.getOrThrow<string>('POSTGRES_URI');
+		const caCert = configService.getOrThrow<string>('DB_CA_CERT');
 
-		const adapter = new PrismaPg({ connectionString });
+		const cleanConnectionString = connectionString.split('?')[0];
+
+		const pool = new Pool({
+			connectionString: cleanConnectionString,
+			ssl: {
+				ca: caCert.replace(/\\n/g, '\n'),
+				rejectUnauthorized: true,
+			},
+		});
+
+		const adapter = new PrismaPg(pool);
 
 		super({ adapter });
 	}
