@@ -29,6 +29,5 @@
 		"esModuleInterop": true,
 		"jsx": "react",
 		"types": ["node", "jest", "multer"]
-	},
-	"exclude": ["node_modules", "dist"]
+	}
 }
