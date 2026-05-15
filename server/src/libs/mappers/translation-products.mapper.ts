@@ -1,4 +1,4 @@
-import { pickTranslation } from 'src/libs/mappers';
+import { pickTranslation } from '@libs/mappers';
 import { TransformedProduct } from '../../api/shop/types';
 import { ProductWithInclude } from '../types';
 

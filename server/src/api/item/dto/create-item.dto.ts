@@ -1,3 +1,5 @@
+import { ItemRarity, ProfileItemType } from '@generated/prisma/enums';
+import { TranslationDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
@@ -9,8 +11,6 @@ import {
 	Min,
 	ValidateNested,
 } from 'class-validator';
-import { ItemRarity, ProfileItemType } from 'generated/prisma/enums';
-import { TranslationDto } from 'src/libs/dto';
 
 export class CreateItemDto {
 	@ApiProperty({ example: false, required: false })

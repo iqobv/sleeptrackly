@@ -1,6 +1,6 @@
+import { isDev } from '@libs/utils';
 import { ConfigService } from '@nestjs/config';
 import nodemailer from 'nodemailer';
-import { isDev } from 'src/libs/utils';
 
 export const getMailerConfig = (confgigService: ConfigService) =>
 	nodemailer.createTransport({

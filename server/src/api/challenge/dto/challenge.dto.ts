@@ -1,5 +1,5 @@
+import { ChallengeFrequency } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
-import { ChallengeFrequency } from 'generated/prisma/enums';
 
 export class ChallengeDto {
 	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })

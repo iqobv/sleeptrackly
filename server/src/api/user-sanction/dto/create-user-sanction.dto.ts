@@ -1,6 +1,6 @@
+import { UserSanctionType } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsOptional, IsUUID } from 'class-validator';
-import { UserSanctionType } from 'generated/prisma/enums';
 
 export class CreaeteUserSanctionDto {
 	@ApiProperty({

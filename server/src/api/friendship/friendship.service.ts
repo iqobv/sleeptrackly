@@ -1,12 +1,12 @@
+import { FriendshipStatus, Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { FriendshipStatus, Prisma } from 'generated/prisma/client';
 import ms from 'ms';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { NotificationService } from '../notification/notification.service';
 import { UserService } from '../user/user.service';
 import { UpdateFriendshipDto } from './dto';

@@ -1,12 +1,18 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
-import type { Request } from 'express';
-import type { User } from 'generated/prisma/client';
-import { Auth, Authorized } from 'src/libs/decorators';
+import type { User } from '@generated/prisma/client';
+import { Auth, Authorized, ClientInfo } from '@libs/decorators';
+import { ClientInfoDto } from '@libs/dto';
+import { setAuthCookies } from '@libs/utils';
+import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import type { Response } from 'express';
 import { QrLoginService } from './qr-login.service';
 
 @Controller('auth/qr')
 export class QrLoginController {
-	constructor(private readonly qrLoginService: QrLoginService) {}
+	constructor(
+		private readonly qrLoginService: QrLoginService,
+		private readonly configService: ConfigService,
+	) {}
 
 	@Get('initiate')
 	async initiate() {
@@ -20,7 +26,22 @@ export class QrLoginController {
 	}
 
 	@Get('status')
-	async getStatus(@Query('qrId') qrId: string, @Req() req: Request) {
-		return await this.qrLoginService.finalizeQrLogin(qrId, req);
+	async getStatus(
+		@Query('qrId') qrId: string,
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const { status, accessToken, refreshToken } =
+			await this.qrLoginService.finalizeQrLogin(qrId, clientInfo);
+
+		if (status === 'success') {
+			if (accessToken && refreshToken) {
+				setAuthCookies(res, accessToken, refreshToken, this.configService);
+			}
+
+			return { status: 'success' };
+		}
+
+		return { status };
 	}
 }

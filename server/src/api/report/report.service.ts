@@ -1,11 +1,11 @@
+import { ReportStatus } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { userSelect } from '@libs/prisma';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { ReportStatus } from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { userSelect } from 'src/libs/prisma';
 import { CreateReportDto, SearchQueryDto, UpdateReportDto } from './dto';
 
 @Injectable()

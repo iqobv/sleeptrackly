@@ -1,7 +1,7 @@
+import { FullCoinTransactionDto } from '@api/coin-transaction/dto';
+import { PurchaseHistoryDto } from '@api/purchase-history/dto';
+import { UserInventoryItemDto } from '@api/user-inventory/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { FullCoinTransactionDto } from 'src/api/coin-transaction/dto';
-import { PurchaseHistoryDto } from 'src/api/purchase-history/dto';
-import { UserInventoryItemDto } from 'src/api/user-inventory/dto';
 
 export class PurchaseDto {
 	@ApiProperty({ type: FullCoinTransactionDto })

@@ -1,6 +1,6 @@
+import { ProfileItemType } from '@generated/prisma/enums';
 import { ApiProperty, OmitType, PartialType } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
-import { ProfileItemType } from 'generated/prisma/enums';
 import { CreateProductDto } from './create-product.dto';
 
 export class UpdateProductDto extends OmitType(PartialType(CreateProductDto), [

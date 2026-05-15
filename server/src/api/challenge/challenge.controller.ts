@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -16,7 +17,6 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { ChallengeService } from './challenge.service';
 import {
 	ChallengeDto,

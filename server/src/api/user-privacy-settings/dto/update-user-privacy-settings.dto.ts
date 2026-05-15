@@ -1,6 +1,6 @@
+import { Visibility } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
-import { Visibility } from 'generated/prisma/enums';
 
 export class UpdateUserPrivacySettings {
 	@ApiProperty({ example: true })

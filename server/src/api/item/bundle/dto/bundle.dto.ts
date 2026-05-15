@@ -1,5 +1,5 @@
+import { TranslationDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { TranslationDto } from 'src/libs/dto';
 import { ItemDto } from '../../dto';
 
 export class BundleDto {

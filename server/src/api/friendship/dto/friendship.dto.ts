@@ -1,5 +1,5 @@
+import { FriendshipStatus } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
-import { FriendshipStatus } from 'generated/prisma/enums';
 
 export class FriendshipDto {
 	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })

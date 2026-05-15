@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -13,7 +14,6 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { NotificationDto, NotificationQueryDto } from './dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';

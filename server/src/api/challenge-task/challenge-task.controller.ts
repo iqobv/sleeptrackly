@@ -1,3 +1,4 @@
+import { Authorized } from '@libs/decorators';
 import { Body, Controller, Param, Patch } from '@nestjs/common';
 import {
 	ApiNotFoundResponse,
@@ -5,7 +6,6 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { Authorized } from 'src/libs/decorators';
 import { ChallengeTaskService } from './challenge-task.service';
 import {
 	ChallengeTaskDto,

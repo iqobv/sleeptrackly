@@ -1,9 +1,9 @@
+import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
+import { ProductModule } from '@api/product/product.module';
+import { PurchaseHistoryModule } from '@api/purchase-history/purchase-history.module';
+import { ShopModule } from '@api/shop/shop.module';
+import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
 import { Module } from '@nestjs/common';
-import { CoinTransactionModule } from 'src/api/coin-transaction/coin-transaction.module';
-import { ProductModule } from 'src/api/product/product.module';
-import { PurchaseHistoryModule } from 'src/api/purchase-history/purchase-history.module';
-import { ShopModule } from 'src/api/shop/shop.module';
-import { UserInventoryModule } from 'src/api/user-inventory/user-inventory.module';
 import { PromotionUsageController } from './promotion-usage.controller';
 import { PromotionUsageService } from './promotion-usage.service';
 

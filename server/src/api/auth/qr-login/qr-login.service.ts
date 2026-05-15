@@ -1,16 +1,16 @@
+import { TokenService } from '@api/token/token.service';
+import { UserService } from '@api/user/user.service';
+import { TokenType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
 	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import type { Request } from 'express';
-import { TokenType } from 'generated/prisma/enums';
-import { TokenService } from 'src/api/token/token.service';
-import { UserService } from 'src/api/user/user.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { AuthService } from '../auth.service';
-import { QrLoginStatusResult } from './types/qr-status.types';
+import { QrLoginStatus, QrLoginStatusResult } from './types/qr-status.types';
 
 @Injectable()
 export class QrLoginService {
@@ -23,11 +23,11 @@ export class QrLoginService {
 	) {}
 
 	async initiateQrLogin() {
-		const qrToken = await this.tokenService.createToken(
-			null,
-			TokenType.QR_LOGIN,
-			3,
-		);
+		const qrToken = await this.tokenService.createToken({
+			userId: null,
+			type: TokenType.QR_LOGIN,
+			expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+		});
 
 		return { qrId: qrToken.token };
 	}
@@ -52,13 +52,13 @@ export class QrLoginService {
 
 			if (token.userId) {
 				return {
-					status: 'approved' as const,
+					status: 'approved',
 					userId: token.userId,
 					tokenId: token.id,
 				};
 			}
 
-			return { status: 'pending' as const };
+			return { status: 'pending' };
 		} catch (err) {
 			const errorMessage = err instanceof Error ? err.message : 'Unknown error';
 
@@ -69,16 +69,26 @@ export class QrLoginService {
 		}
 	}
 
-	async finalizeQrLogin(qrId: string, req: Request) {
+	async finalizeQrLogin(
+		qrId: string,
+		clientInfo: ClientInfoDto,
+	): Promise<{
+		status: QrLoginStatus | 'success';
+		accessToken?: string;
+		refreshToken?: string;
+	}> {
 		const result = await this.getQrLoginStatus(qrId);
 
 		if (result.status === 'approved' && result.userId) {
 			const user = await this.userService.findById(result.userId);
 
 			if (user) {
-				await this.authService.login(user, req);
+				const tokens = await this.authService.generateAndSaveTokens(
+					user,
+					clientInfo,
+				);
 				await this.tokenService.deleteToken(result.tokenId);
-				return { status: 'success' };
+				return { status: 'success', ...tokens };
 			}
 		}
 

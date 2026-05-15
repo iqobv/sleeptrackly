@@ -1,6 +1,6 @@
+import { ShopBundleDto } from '@api/item/bundle/dto';
+import { ShopItemDto } from '@api/item/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { ShopBundleDto } from 'src/api/item/bundle/dto';
-import { ShopItemDto } from 'src/api/item/dto';
 import { ProductDto } from './product.dto';
 
 export class FullProductDto extends ProductDto {

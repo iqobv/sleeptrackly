@@ -1,8 +1,8 @@
+import { getMailerConfig } from '@config';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { render } from '@react-email/components';
 import Mail from 'nodemailer/lib/mailer';
-import { getMailerConfig } from 'src/config';
 import { SendEmailDto } from './dto';
 import { ConfirmationTemplate, ResetPasswordTemplate } from './templates';
 

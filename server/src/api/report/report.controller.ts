@@ -1,10 +1,10 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Post } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { CreateReportDto, ReportDto } from './dto';
 import { ReportService } from './report.service';
 

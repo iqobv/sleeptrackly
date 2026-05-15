@@ -1,48 +1,55 @@
+import { TokenService } from '@api/token/token.service';
+import { UserService } from '@api/user/user.service';
+import { Prisma } from '@generated/prisma/client';
+import { TokenType } from '@generated/prisma/enums';
+import { MailService } from '@infra/mail/mail.service';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
 	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import type { Request } from 'express';
-import { TokenType } from 'generated/prisma/enums';
-import { TokenService } from 'src/api/token/token.service';
-import { UserService } from 'src/api/user/user.service';
-import { MailService } from 'src/infra/mail/mail.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { AuthService } from '../auth.service';
 import { ConfirmationDto, ResendEmailDto } from './dto';
 
 @Injectable()
 export class EmailConfirmationService {
 	constructor(
-		private readonly prismaService: PrismaService,
 		private readonly tokenService: TokenService,
 		private readonly userService: UserService,
 		private readonly mailService: MailService,
 		@Inject(forwardRef(() => AuthService))
 		private readonly authService: AuthService,
-		private readonly configService: ConfigService,
+		private readonly prismaService: PrismaService,
 	) {}
 
-	async newVerification(req: Request, dto: ConfirmationDto) {
-		const existsToken = await this.tokenService.findToken(
-			dto.token,
-			TokenType.EMAIL_VERIFICATION,
-		);
+	async newVerification(dto: ConfirmationDto, clientInfo: ClientInfoDto) {
+		return await this.prismaService.$transaction(async (tx) => {
+			const existsToken = await this.tokenService.findToken(
+				dto.token,
+				TokenType.EMAIL_VERIFICATION,
+				tx,
+			);
 
-		if (!existsToken.userId) throw new NotFoundException('Token not found');
+			if (!existsToken.userId) throw new NotFoundException('Token not found');
 
-		await this.userService.update(existsToken.userId, {
-			emailVerified: true,
+			await this.userService.update(
+				existsToken.userId,
+				{
+					emailVerified: true,
+				},
+				true,
+				tx,
+			);
+
+			await this.tokenService.deleteToken(existsToken.id, tx);
+
+			const user = await this.userService.findById(existsToken.userId);
+
+			return await this.authService.generateAndSaveTokens(user, clientInfo, tx);
 		});
-
-		await this.tokenService.deleteToken(existsToken.id);
-
-		const user = await this.userService.findById(existsToken.userId);
-
-		return await this.authService.login(user, req);
 	}
 
 	async sendVerificationEmail(dto: ResendEmailDto) {
@@ -57,11 +64,17 @@ export class EmailConfirmationService {
 		await this.mailService.sendVerificationEmail(user.email, token);
 	}
 
-	async generateVerificationToken(userId: string): Promise<string> {
+	async generateVerificationToken(
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<string> {
 		const { token } = await this.tokenService.createToken(
-			userId,
-			TokenType.EMAIL_VERIFICATION,
-			60,
+			{
+				userId,
+				type: TokenType.EMAIL_VERIFICATION,
+				expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+			},
+			tx,
 		);
 
 		return token;

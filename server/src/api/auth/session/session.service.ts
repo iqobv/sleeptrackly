@@ -1,44 +1,60 @@
+import { Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import {
+	extractClientIP,
+	hashToken,
+	isPrivateIP,
+	normalizeIp,
+	splitToken,
+} from '@libs/utils';
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+	ForbiddenException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { RedisStore } from 'connect-redis';
-import { Session } from 'generated/prisma/client';
-import { UserService } from 'src/api/user/user.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { extractClientIP, normalizeIp } from 'src/libs/utils';
 import { UAParser } from 'ua-parser-js';
-import { CreateSessionDto, IpApiDto } from './dto';
+import {
+	CreateSessionDto,
+	IpApiDto,
+	RotateSessionDto,
+	UserAgentDto,
+} from './dto';
 
 @Injectable()
 export class SessionService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly userService: UserService,
 		private readonly httpService: HttpService,
-		@Inject('REDIS_STORE') private readonly redisStore: RedisStore,
 	) {}
 
-	async createSession(userId: string, dto: CreateSessionDto) {
-		const { sessionId, expiresAt, ipAddress, userAgent } = dto;
+	async createSession(dto: CreateSessionDto, tx?: Prisma.TransactionClient) {
+		const { hashToken, expiresAt, clientInfo, userId } = dto;
 
-		const ipData = ipAddress ? await this.getInfoFromIp(ipAddress) : null;
-		const userAgentData = userAgent
-			? this.getInfoFromUserAgent(userAgent)
+		const prisma = tx ?? this.prismaService;
+
+		const ipData =
+			clientInfo?.ip && !isPrivateIP(clientInfo.ip)
+				? await this.getInfoFromIp(clientInfo.ip)
+				: null;
+		const userAgentData = clientInfo?.userAgent
+			? this.getInfoFromUserAgent(clientInfo.userAgent)
 			: null;
 
-		const session = await this.prismaService.session.create({
+		const session = await prisma.session.create({
 			data: {
-				sessionId,
+				hashToken,
 				expiresAt,
-				ipAddress: ipData?.query ?? ipAddress,
-				userAgent,
+				ipAddress: clientInfo?.ip ?? null,
+				userAgent: clientInfo?.userAgent,
 				...(ipData && {
 					city: ipData.city,
-					country: ipData.country,
 					countryCode: ipData.countryCode,
 					region: ipData.regionName,
 				}),
 				...(userAgentData && {
+					osName: userAgentData.osName,
 					deviceType: userAgentData.deviceType,
 					browserName: userAgentData.browserName,
 					browserVersion: userAgentData.browserVersion,
@@ -50,100 +66,126 @@ export class SessionService {
 		return session;
 	}
 
-	async refreshSession(sessionId: string, newExpiresAt: Date) {
-		await this.prismaService.session.updateMany({
-			where: { sessionId },
-			data: { expiresAt: newExpiresAt },
+	async rotateSession(
+		sessionId: string,
+		dto: RotateSessionDto,
+		tx?: Prisma.TransactionClient,
+	) {
+		const { clientInfo, expiresAt, hashToken, previousToken, userId } = dto;
+		const { ip, userAgent } = clientInfo;
+
+		const prisma = tx ?? this.prismaService;
+
+		const geo: IpApiDto | null = isPrivateIP(ip)
+			? null
+			: await this.getInfoFromIp(ip);
+
+		const parsedUa = this.getInfoFromUserAgent(userAgent);
+
+		return await prisma.session.update({
+			where: { id: sessionId, userId },
+			data: {
+				hashToken,
+				previousToken,
+				ipAddress: ip ?? null,
+				countryCode: geo?.countryCode,
+				city: geo?.city,
+				userAgent,
+				expiresAt,
+				...parsedUa,
+			},
 		});
 	}
 
-	async getAllSessions(userId: string, currentSessionId: string) {
-		const sessions = await this.prismaService.session.findMany({
+	async getUserSessions(userId: string, refreshToken: string) {
+		const allSessions = await this.prismaService.session.findMany({
 			where: { userId },
 			orderBy: { createdAt: 'desc' },
 		});
 
-		const sessionsWithCurrent: (Omit<Session, 'sessionId'> & {
-			current: boolean;
-		})[] = sessions.map(({ sessionId, ...rest }) => ({
-			...rest,
-			current: sessionId === currentSessionId,
-		}));
+		const [sessionId, token] = refreshToken.split('.');
 
-		return sessionsWithCurrent;
+		const currentSession = await this.getSessionByRefreshToken(
+			userId,
+			sessionId,
+			token,
+		);
+
+		const mappedSessions = allSessions.map(
+			({ hashToken: _rt, previousToken: _pt, userAgent: _ua, ...rest }) => rest,
+		);
+
+		return {
+			currentSession,
+			otherSessions: mappedSessions.filter((s) => s.id !== currentSession.id),
+		};
 	}
 
-	async findById(id: string, userId: string, throwError?: boolean) {
+	async findSessionById(sessionId: string) {
 		const session = await this.prismaService.session.findUnique({
-			where: { id, userId },
+			where: { id: sessionId },
 		});
 
-		if (throwError && !session)
-			throw new NotFoundException('Session not found');
+		if (!session) {
+			throw new NotFoundException("Session doesn't exist");
+		}
 
 		return session;
 	}
 
-	async terminateBySessionId(sessionId: string, userId: string) {
+	async findSessionByIdAndToken(sessionId: string, token: string) {
 		const session = await this.prismaService.session.findUnique({
-			where: { sessionId, userId },
+			where: { id: sessionId, hashToken: token },
 		});
 
-		if (!session) return null;
-
-		return await this.terminateSession(session.userId, session.id, false);
-	}
-
-	async terminateSession(
-		userId: string,
-		id: string,
-		throwError: boolean = true,
-	) {
-		const session = await this.findById(id, userId, throwError);
-
-		if (!throwError && !session) return null;
-
-		await this.prismaService.session.delete({
-			where: { id: session?.id, userId },
-		});
-
-		if (session?.sessionId) {
-			await this.destroyRedisSession(session.sessionId);
+		if (!session) {
+			throw new NotFoundException("Session doesn't exist");
 		}
 
-		return true;
+		return session;
 	}
 
-	async terminateAllSessions(userId: string, exceptId: string) {
-		const session = await this.findById(exceptId, userId);
+	async deleteSession(userId: string, sessionId: string) {
+		const session = await this.findSessionById(sessionId);
 
-		const sessions = await this.prismaService.session.findMany({
-			where: { userId, id: { not: session?.id } },
+		if (session.userId !== userId) {
+			throw new ForbiddenException(
+				"You don't have permission to delete this session",
+			);
+		}
+
+		await this.prismaService.session.delete({
+			where: { id: sessionId },
 		});
 
-		await Promise.all(
-			sessions.map(async (s) => {
-				await this.destroyRedisSession(s.sessionId);
-				await this.prismaService.session.delete({ where: { id: s.id } });
-			}),
+		return { message: 'Session deleted successfully' };
+	}
+
+	async deleteAllOtherSessions(userId: string, refreshToken: string) {
+		const { sessionId, rawToken } = splitToken(refreshToken);
+
+		const currentSession = await this.getSessionByRefreshToken(
+			userId,
+			sessionId,
+			rawToken,
 		);
 
-		return true;
+		await this.prismaService.session.deleteMany({
+			where: {
+				userId,
+				id: { not: currentSession.id },
+			},
+		});
+
+		return { message: 'All other sessions deleted successfully' };
 	}
 
 	async terminateExpiredSessions() {
 		const now = new Date();
 
-		const expiredSessions = await this.prismaService.session.findMany({
+		await this.prismaService.session.deleteMany({
 			where: { expiresAt: { lt: now } },
 		});
-
-		await Promise.all(
-			expiredSessions.map(async (session) => {
-				await this.destroyRedisSession(session.sessionId);
-				await this.prismaService.session.delete({ where: { id: session.id } });
-			}),
-		);
 
 		return true;
 	}
@@ -159,7 +201,7 @@ export class SessionService {
 
 		try {
 			const response = await this.httpService.axiosRef.get<IpApiDto>(
-				`http://ip-api.com/json/${clientIp}?fields=status,message,country,countryCode,region,regionName,city,timezone,query`,
+				`http://ip-api.com/json/${clientIp}?fields=countryCode,region,regionName,city,query`,
 			);
 
 			return response.data;
@@ -169,28 +211,40 @@ export class SessionService {
 		}
 	}
 
-	private destroyRedisSession(sessionId: string): Promise<void> {
-		return new Promise((resolve, reject) => {
-			this.redisStore
-				.destroy(sessionId, (err) => {
-					if (err) {
-						reject(err);
-					} else {
-						resolve();
-					}
-				})
-				.catch(reject);
+	private async getSessionByRefreshToken(
+		userId: string,
+		sessionId: string,
+		rawRefreshToken: string,
+	) {
+		const refreshTokenHash = hashToken(rawRefreshToken);
+
+		const session = await this.prismaService.session.findFirst({
+			where: { id: sessionId, userId, hashToken: refreshTokenHash },
 		});
+
+		if (!session) {
+			throw new NotFoundException("Session doesn't exist");
+		}
+
+		const {
+			hashToken: _rt,
+			previousToken: _pt,
+			userAgent: _ua,
+			...rest
+		} = session;
+
+		return rest;
 	}
 
-	private getInfoFromUserAgent(userAgent: string) {
+	private getInfoFromUserAgent(userAgent: string): UserAgentDto {
 		const parser = new UAParser(userAgent);
 		const result = parser.getResult();
 
 		const deviceType = result.device.type || 'desktop';
 		const browserName = result.browser.name;
 		const browserVersion = result.browser.version;
+		const osName = result.os.name;
 
-		return { deviceType, browserName, browserVersion };
+		return { deviceType, browserName, browserVersion, osName };
 	}
 }

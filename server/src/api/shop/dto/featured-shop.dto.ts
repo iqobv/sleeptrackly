@@ -1,5 +1,5 @@
+import { FullProductDto } from '@api/product/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { FullProductDto } from 'src/api/product/dto';
 
 export class FeaturedShopDto {
 	@ApiProperty({ type: [FullProductDto] })

@@ -1,8 +1,8 @@
+import { Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { RewardService } from '../reward/reward.service';
-import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class UserSleepStatusService {

@@ -1,10 +1,10 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	forwardRef,
 	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ChallengeService } from '../challenge/challenge.service';
 import { CreateChallengeTaskDto, UpdateChallengeTaskDto } from './dto';
 

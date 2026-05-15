@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import {
 	BadRequestException,
 	Controller,
@@ -18,7 +19,6 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { UserAvatarDto } from './dto';
 import { UserAvatarService } from './user-avatar.service';
 

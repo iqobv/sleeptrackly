@@ -1,7 +1,7 @@
+import type { User } from '@generated/prisma/client';
+import { Authorized } from '@libs/decorators';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import type { User } from 'generated/prisma/client';
-import { Authorized } from 'src/libs/decorators';
 import { ProfileDto } from './dto';
 import { ProfileService } from './profile.service';
 

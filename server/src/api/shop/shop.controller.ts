@@ -1,7 +1,7 @@
+import { Authorized } from '@libs/decorators';
+import { LanguageQueryDto } from '@libs/dto';
 import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Authorized } from 'src/libs/decorators';
-import { LanguageQueryDto } from 'src/libs/dto';
 import { FullProductDto } from '../product/dto';
 import {
 	AllShopDto,

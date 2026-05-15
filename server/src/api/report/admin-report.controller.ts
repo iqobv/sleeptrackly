@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
 import {
 	ApiBadRequestResponse,
@@ -6,7 +7,6 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import {
 	AllReportsDto,
 	ReportDto,

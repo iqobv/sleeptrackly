@@ -1,4 +1,13 @@
 import {
+	Auth,
+	Authorized,
+	ClientInfo,
+	Cookie,
+	OptionalAuth,
+} from '@libs/decorators';
+import { ClientInfoDto } from '@libs/dto';
+import { clearAuthCookies, setAuthCookies } from '@libs/utils';
+import {
 	Body,
 	Controller,
 	Delete,
@@ -6,28 +15,24 @@ import {
 	HttpCode,
 	HttpStatus,
 	Post,
-	Req,
 	Res,
+	UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import {
 	ApiBody,
 	ApiConflictResponse,
 	ApiCreatedResponse,
-	ApiExcludeEndpoint,
 	ApiOkResponse,
 	ApiOperation,
 	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import type { Request, Response } from 'express';
-import { User } from 'generated/prisma/client';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { CreateUserDto, UserDto } from '../user/dto';
+import type { Response } from 'express';
+import { UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { GoogleAuth, LocalAuth } from './decorators';
-import { LoginDto, RegisterResultDto } from './dto';
+import { LoginDto, RegisterDto, RegisterResultDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -46,16 +51,22 @@ export class AuthController {
 		long: { limit: 5, ttl: 60000 },
 	})
 	@ApiOkResponse({ type: UserDto })
-	@LocalAuth()
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Req() req: Request) {
-		const user = req.user as User;
-		return await this.authService.login(user, req);
+	async login(
+		@Body() dto: LoginDto,
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const { accessToken, refreshToken } = await this.authService.login(
+			dto,
+			clientInfo,
+		);
+		setAuthCookies(res, accessToken, refreshToken, this.configService);
+		return { message: 'Login successful' };
 	}
 
 	@ApiOperation({ summary: 'Register with email and password' })
-	@ApiBody({ type: CreateUserDto })
 	@ApiCreatedResponse({ type: RegisterResultDto })
 	@ApiConflictResponse({ description: 'User already exists' })
 	@Throttle({
@@ -65,39 +76,47 @@ export class AuthController {
 	})
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	async register(@Body() dto: CreateUserDto) {
+	async register(@Body() dto: RegisterDto) {
 		return await this.authService.register(dto);
 	}
 
-	@ApiOperation({ summary: 'Login with Google' })
-	@ApiOkResponse({ type: UserDto })
-	@Get('google')
-	@GoogleAuth()
-	async googleLogin() {}
-
-	@ApiExcludeEndpoint()
-	@Get('google/callback')
-	@GoogleAuth()
-	async googleLoginCallback(
-		@Req() req: Request,
-		@Res({ passthrough: true }) res: Response,
-	) {
-		const user = req.user as User;
-		await this.authService.login(user, req);
-
-		res.send(`
-			<script>
-				window.opener.postMessage({ success: true }, '${process.env.GOOGLE_REDIRECT_ORIGIN}');
-				window.close();
-			</script>`);
-	}
-
+	@OptionalAuth()
 	@ApiOperation({ summary: 'Logout' })
 	@ApiOkResponse()
 	@Post('logout')
 	@HttpCode(HttpStatus.OK)
-	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-		await this.authService.logout(req, res);
+	async logout(
+		@Cookie('refreshToken') rawRefreshToken: string,
+		@Authorized('id') userId: string,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		await this.authService.logout(rawRefreshToken, userId);
+
+		clearAuthCookies(res, this.configService);
+
+		return { message: 'Logout successful' };
+	}
+
+	@ApiOperation({ summary: 'Refresh tokens' })
+	@Post('refresh')
+	async refreshTokens(
+		@Cookie('refreshToken') rawRefreshToken: string,
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		if (!rawRefreshToken)
+			throw new UnauthorizedException('Refresh token is missing');
+
+		try {
+			const { accessToken, refreshToken } =
+				await this.authService.refreshTokens(rawRefreshToken, clientInfo);
+			setAuthCookies(res, accessToken, refreshToken, this.configService);
+		} catch (error) {
+			clearAuthCookies(res, this.configService);
+			throw error;
+		}
+
+		return { message: 'Tokens refreshed successfully' };
 	}
 
 	@ApiOperation({ summary: 'Get profile' })

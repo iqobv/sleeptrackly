@@ -1,7 +1,7 @@
+import { Auth, Authorized } from '@libs/decorators';
+import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import { PaginatedPurchaseHistoryDto } from './dto';
 import { PurchaseHistoryService } from './purchase-history.service';
 

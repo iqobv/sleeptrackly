@@ -1,3 +1,4 @@
+import { Auth } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -8,7 +9,6 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Auth } from 'src/libs/decorators';
 import { CreatePromotionDto, PromotionDto, UpdatePromotionDto } from './dto';
 import { PromotionService } from './promotion.service';
 

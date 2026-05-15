@@ -1,10 +1,10 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
 import {
 	ApiConflictResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { SearchDto, UpdateUserDto, UserDto } from './dto';
 import { UserService } from './user.service';
 

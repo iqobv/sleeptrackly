@@ -1,6 +1,6 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { CoinService } from './coin.service';
 import { CoinDto } from './dto';
 

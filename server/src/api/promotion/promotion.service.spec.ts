@@ -1,13 +1,13 @@
+import { Product, Promotion } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	ConflictException,
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ProductService } from '../product/product.service';
 import { PromotionService } from './promotion.service';
-import { Product, Promotion } from 'generated/prisma/client';
 
 type PrismaMock = {
 	promotion: {

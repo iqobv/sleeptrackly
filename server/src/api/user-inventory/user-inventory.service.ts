@@ -1,9 +1,9 @@
+import { Prisma, ProfileItemType } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { PaginationQueryWithLanguageDto } from '@libs/dto';
+import { pickTranslation } from '@libs/mappers';
+import { paginate } from '@libs/utils';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Prisma, ProfileItemType } from 'generated/prisma/client';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
-import { pickTranslation } from 'src/libs/mappers';
-import { paginate } from 'src/libs/utils';
 import { CreateUserInventoryDto, UpdateUserInvetoryDto } from './dto';
 
 @Injectable()

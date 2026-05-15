@@ -1,14 +1,14 @@
+import { ProductType, ProfileItemType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { PaginationQueryWithLanguageDto } from '@libs/dto';
+import { productInclude } from '@libs/prisma';
+import { paginate } from '@libs/utils';
 import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { ProductType, ProfileItemType } from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
-import { productInclude } from 'src/libs/prisma';
-import { paginate } from 'src/libs/utils';
 import { CreateProductDto, UpdateProductDto } from './dto';
 
 @Injectable()

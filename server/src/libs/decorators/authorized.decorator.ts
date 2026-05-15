@@ -1,11 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { User } from 'generated/prisma/client';
+import { JwtPayload } from '../types';
 
 export const Authorized = createParamDecorator(
-	(data: keyof User, ctx: ExecutionContext) => {
+	(data: keyof JwtPayload | undefined, ctx: ExecutionContext) => {
 		const req: Request = ctx.switchToHttp().getRequest();
-		const user = req.user as User;
+		const user = req.user;
 
 		if (!user) return null;
 

@@ -1,8 +1,8 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { QueryDto, SleepEntryDto } from './dto';
 import { GroupedByWeek } from './interfaces';
 
