@@ -11,7 +11,10 @@ export const PRIVATE_PAGES = {
 	SETTINGS_BASE: '/settings',
 	SETTINGS: {
 		MAIN: '/settings',
-		SESSIONS: '/settings/sessions',
+		SECURITY: '/settings/security',
+		SESSIONS: '/settings/security/sessions',
+		NOTIFICATIONS: '/settings/notifications',
+		PRIVACY: '/settings/privacy',
 	},
 	FRIENDS_BASE: '/friends',
 	FRIENDS: {
