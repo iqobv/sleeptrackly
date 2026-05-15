@@ -1,5 +1,5 @@
 import MainProvider from '@/providers/MainProvider';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
@@ -35,7 +35,7 @@ export default async function RootLayout({
 				cookie: allCookies,
 			},
 		});
-		const data = (await res.json()) as IUser;
+		const data = (await res.json()) as User;
 
 		if (res.ok && data?.id) return data;
 

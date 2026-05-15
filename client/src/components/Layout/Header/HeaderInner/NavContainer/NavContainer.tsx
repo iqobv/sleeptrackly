@@ -1,7 +1,7 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
-import { TBreakpoint } from '@/types';
+import { Breakpoint } from '@/types';
 import MenuButton from '../MenuButton/MenuButton';
 import styles from './NavContainer.module.scss';
 import NavMenu from './NavMenu/NavMenu';
@@ -12,7 +12,7 @@ interface NavContainerProps {
 	withMenu?: boolean;
 	menuButtonClassName?: string;
 	className?: string;
-	mobileWidth?: TBreakpoint;
+	mobileWidth?: Breakpoint;
 	renderLogoInsteadOfMenu?: boolean;
 }
 

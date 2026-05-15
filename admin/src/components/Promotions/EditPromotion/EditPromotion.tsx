@@ -4,7 +4,7 @@ import { getPromotionById, updatePromotion } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { UpdatePromotionDto } from '@/dto';
 import { updatePromotionSchema } from '@/schemas';
-import { IPromotion } from '@/types';
+import { Promotion } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import FormFields from '../PromotionForm/FormFields/FormFields';
@@ -23,7 +23,7 @@ const EditPromotion = () => {
 	return (
 		<div>
 			{data && (
-				<PromotionForm<UpdatePromotionDto, IPromotion>
+				<PromotionForm<UpdatePromotionDto, Promotion>
 					schema={updatePromotionSchema}
 					defaultValues={{
 						coinsReward: data.coinsReward ?? undefined,
@@ -32,7 +32,7 @@ const EditPromotion = () => {
 						expiresAt: data.expiresAt ?? undefined,
 					}}
 					mutationFn={(mutationData) =>
-						updatePromotion(id, mutationData) as Promise<IPromotion>
+						updatePromotion(id, mutationData) as Promise<Promotion>
 					}
 				>
 					<SelectProduct />

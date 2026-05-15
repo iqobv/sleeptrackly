@@ -1,13 +1,13 @@
 'use client';
 
 import { SectionHeader } from '@/components/UI';
-import { IProfileStatistics } from '@/types';
+import { ProfileStatistics } from '@/types';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
 
 interface ProfileStatisticsCardProps {
 	item: ProfileStatisticsList;
-	statistics: IProfileStatistics;
+	statistics: ProfileStatistics;
 }
 
 const ProfileStatisticsCard = ({

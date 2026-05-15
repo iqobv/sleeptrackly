@@ -1,4 +1,4 @@
-export interface ISession {
+export interface Session {
 	id: string;
 	userId: string;
 	isCurrent: boolean;

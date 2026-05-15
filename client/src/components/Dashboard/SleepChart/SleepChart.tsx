@@ -1,6 +1,6 @@
 'use client';
 
-import { IDashboardDay } from '@/types';
+import { DashboardDay } from '@/types';
 import {
 	Bar,
 	BarChart,
@@ -14,7 +14,7 @@ import styles from './SleepChart.module.scss';
 import { useSleepChart } from './useSleepChart.hook';
 
 interface SleepChartProps {
-	data: IDashboardDay[];
+	data: DashboardDay[];
 }
 
 const SleepChart = ({ data }: SleepChartProps) => {

@@ -1,7 +1,7 @@
 'use client';
 
 import { Calendar as UICalendar } from '@/components/UI';
-import { IChallengeFull, TChallengeFrequency } from '@/types';
+import { ChallengeFrequency, ChallengeFull } from '@/types';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import TaskSumary from '../TaskSummary/TaskSummary';
@@ -11,8 +11,8 @@ import { useChallengeTaskCalendar } from './useChallengeTaskCalendar';
 dayjs.extend(isSameOrBefore);
 
 interface CalendarProps {
-	data: IChallengeFull;
-	mode: TChallengeFrequency;
+	data: ChallengeFull;
+	mode: ChallengeFrequency;
 }
 
 const Calendar = ({ data, mode }: CalendarProps) => {

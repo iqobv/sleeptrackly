@@ -4,7 +4,7 @@ import { createPromotion } from '@/api';
 import { PAGES } from '@/config';
 import { CreatePromotionDto } from '@/dto';
 import { basePromotionSchema } from '@/schemas';
-import { IPromotion } from '@/types';
+import { Promotion } from '@/types';
 import { useRouter } from 'next/navigation';
 import FormFields from '../PromotionForm/FormFields/FormFields';
 import PromotionForm from '../PromotionForm/PromotionForm';
@@ -16,7 +16,7 @@ const CreatePromotion = () => {
 
 	return (
 		<div>
-			<PromotionForm<CreatePromotionDto, IPromotion>
+			<PromotionForm<CreatePromotionDto, Promotion>
 				schema={basePromotionSchema}
 				defaultValues={{
 					alias: '',
@@ -26,7 +26,7 @@ const CreatePromotion = () => {
 					expiresAt: undefined,
 				}}
 				onSuccess={(data) => router.push(PAGES.PROMOTION(data.id))}
-				mutationFn={(data) => createPromotion(data) as Promise<IPromotion>}
+				mutationFn={(data) => createPromotion(data) as Promise<Promotion>}
 			>
 				<SelectProduct />
 				<FormFields fields={PROMOTIONS_FIELDS} />

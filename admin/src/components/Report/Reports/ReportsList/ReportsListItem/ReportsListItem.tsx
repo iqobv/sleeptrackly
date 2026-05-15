@@ -1,7 +1,7 @@
 'use client';
 
 import { PAGES } from '@/config';
-import { IReport } from '@/types';
+import { Report } from '@/types';
 import { capitalize } from '@/utils';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { CSSProperties } from 'react';
 import styles from './ReportsListItem.module.scss';
 
 interface ReportsListItemProps {
-	report: IReport;
+	report: Report;
 }
 
 const ReportsListItem = ({ report }: ReportsListItemProps) => {

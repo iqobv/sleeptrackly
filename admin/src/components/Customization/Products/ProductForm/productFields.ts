@@ -1,7 +1,7 @@
-import { IField } from '@/types';
+import { Field } from '@/types';
 import { FieldValues, Path } from 'react-hook-form';
 
-export const getProductsFields = <T extends FieldValues>(): IField<T>[] => [
+export const getProductsFields = <T extends FieldValues>(): Field<T>[] => [
 	{
 		name: 'itemId' as Path<T>,
 		label: 'Item Id',

@@ -1,7 +1,7 @@
 import { ITEM_RARITIES } from '@/constants';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
-export const CREATE_ITEM_RARITY_OPTIONS: IOption<keyof typeof ITEM_RARITIES>[] =
+export const CREATE_ITEM_RARITY_OPTIONS: Option<keyof typeof ITEM_RARITIES>[] =
 	[
 		{
 			value: 'COMMON',

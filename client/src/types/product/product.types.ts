@@ -1,12 +1,12 @@
-import { IBundle } from '../bundle/bundle.types';
-import { IItem } from '../item/item.types';
-import { TItemType } from '../item/itemType.types';
-import { TProductType } from './productType.types';
+import { Bundle } from '../bundle/bundle.types';
+import { Item } from '../item/item.types';
+import { ItemType } from '../item/itemType.types';
+import { ProductType } from './productType.types';
 
-export interface IProduct {
+export interface Product {
 	id: string;
-	type: TProductType;
-	itemType: TItemType | null;
+	type: ProductType;
+	itemType: ItemType | null;
 	bundleId: string | null;
 	itemId: string | null;
 	isNew: boolean;
@@ -21,7 +21,7 @@ export interface IProduct {
 	expiresAt: Date | null;
 	createdAt: Date;
 	updatedAt: Date;
-	bundle: IBundle | null;
-	item: IItem | null;
+	bundle: Bundle | null;
+	item: Item | null;
 	isOwned: boolean;
 }

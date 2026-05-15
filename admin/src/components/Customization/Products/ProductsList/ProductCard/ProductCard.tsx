@@ -1,13 +1,13 @@
 'use client';
 
 import { Button, CDNImage } from '@/components/UI';
-import { IProduct } from '@/types';
+import { Product } from '@/types';
 
 import { PAGES } from '@/config';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {
-	product: IProduct;
+	product: Product;
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {

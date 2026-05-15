@@ -5,7 +5,7 @@ import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPagin
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreatePromotionDto, PaginationWithLanguageDto } from '@/dto';
-import { IProduct } from '@/types';
+import { Product } from '@/types';
 import { useSearchParams } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 import ItemCard from './ItemCard/ItemCard';
@@ -29,7 +29,7 @@ const ProductsList = () => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IProduct>
+		<ItemsListPaginatedWrapper<Product>
 			queryFn={() => getAllProducts(params)}
 			queryKey={() => [...QUERY_KEYS.customization.product.getAll(params)]}
 			itemCard={(product) => (

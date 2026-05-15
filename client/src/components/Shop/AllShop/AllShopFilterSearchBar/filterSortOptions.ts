@@ -1,6 +1,6 @@
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
-export const SHOP_FILTER_OPTIONS: IOption[] = [
+export const SHOP_FILTER_OPTIONS: Option[] = [
 	{
 		label: 'Date Ascending',
 		value: 'DATE_ASC',

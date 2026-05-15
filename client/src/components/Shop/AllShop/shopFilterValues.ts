@@ -1,5 +1,5 @@
 import { ShopFilterDto } from '@/dto';
-import { TItemType, TProductType, TShopSortBy } from '@/types';
+import { ItemType, ProductType, ShopSortBy } from '@/types';
 
 export const DEFAULT_SHOP_FILTER_VALUES: ShopFilterDto = {
 	type: 'ALL',
@@ -12,9 +12,9 @@ export const DEFAULT_SHOP_FILTER_VALUES: ShopFilterDto = {
 export const getShopFiltersParamsFromUrl = (
 	searchParams: URLSearchParams,
 ): ShopFilterDto => ({
-	type: (searchParams.get('type') as 'ALL' | TProductType) || 'ALL',
-	sortBy: (searchParams.get('sortBy') as TShopSortBy) || 'DATE',
+	type: (searchParams.get('type') as 'ALL' | ProductType) || 'ALL',
+	sortBy: (searchParams.get('sortBy') as ShopSortBy) || 'DATE',
 	sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
 	search: searchParams.get('search') || '',
-	itemType: (searchParams.get('itemType')?.split(',') as TItemType[]) || [],
+	itemType: (searchParams.get('itemType')?.split(',') as ItemType[]) || [],
 });

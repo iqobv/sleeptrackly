@@ -1,14 +1,14 @@
 'use client';
 
 import { REPORT_STATUS } from '@/constants';
-import { IReportPaginationQuery } from '@/types';
+import { ReportPaginationQuery } from '@/types';
 import { capitalize } from '@/utils';
 import { Dispatch, SetStateAction } from 'react';
 import styles from './ReportFilter.module.scss';
 
 interface ReportFilterProps {
-	filters: IReportPaginationQuery;
-	setFilters: Dispatch<SetStateAction<IReportPaginationQuery>>;
+	filters: ReportPaginationQuery;
+	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
 }
 
 const selectProps: Partial<React.ComponentProps<'select'>> = {
@@ -18,7 +18,7 @@ const selectProps: Partial<React.ComponentProps<'select'>> = {
 const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 	const onChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
-		key: keyof IReportPaginationQuery,
+		key: keyof ReportPaginationQuery,
 	) => {
 		setFilters({
 			...filters,

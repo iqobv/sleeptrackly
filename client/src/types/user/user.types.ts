@@ -1,6 +1,6 @@
-import { IEquippedItems } from '../item/equippedItems.types';
+import { EquippedItems } from '../item/equippedItems.types';
 
-export interface IUser {
+export interface User {
 	id: string;
 	email: string;
 	username: string;
@@ -14,5 +14,5 @@ export interface IUser {
 	coins: {
 		amount: number;
 	};
-	equippedItems: IEquippedItems[];
+	equippedItems: EquippedItems[];
 }

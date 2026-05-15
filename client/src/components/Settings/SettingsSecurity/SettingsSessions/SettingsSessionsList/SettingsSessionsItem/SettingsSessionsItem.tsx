@@ -1,14 +1,14 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { ISession } from '@/types';
+import { Session } from '@/types';
 import SettingsSessionsDevice from './SettingsSessionsDevice/SettingsSessionsDevice';
 import SettingsSessionsInfo from './SettingsSessionsInfo/SettingsSessionsInfo';
 import styles from './SettingsSessionsItem.module.scss';
 import { useSettingsSessionsItem } from './useSettingsSessionsItem';
 
 interface SettingsSessionsItemProps {
-	session: ISession;
+	session: Session;
 	disableAllButton?: boolean;
 	isActive?: boolean;
 }

@@ -1,11 +1,11 @@
-export interface IPaginatedDataMeta {
+export interface PaginatedDataMeta {
 	page: number;
 	pageSize: number;
 	total: number;
 	totalPages: number;
 }
 
-export interface IPaginatedDataResponse<T> {
+export interface PaginatedDataResponse<T> {
 	items: T[];
-	meta: IPaginatedDataMeta;
+	meta: PaginatedDataMeta;
 }

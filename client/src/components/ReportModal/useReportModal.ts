@@ -3,7 +3,7 @@ import { QUERY_KEYS } from '@/config';
 import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
 import { SendReportDto } from '@/dto';
 import { sendReportSchema } from '@/schemas';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ export const useReportModal = ({
 	reportType,
 	onClose,
 }: ReportModalProps) => {
-	const [selectedTitle, setSelectedTitle] = useState<IOption | null>(null);
+	const [selectedTitle, setSelectedTitle] = useState<Option | null>(null);
 
 	const {
 		register,
@@ -58,7 +58,7 @@ export const useReportModal = ({
 			'title',
 			selectedTitle?.value === REPORT_TITLES.OTHER
 				? ''
-				: selectedTitle?.label || ''
+				: selectedTitle?.label || '',
 		);
 	}, [selectedTitle, setValue]);
 

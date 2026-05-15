@@ -1,7 +1,7 @@
 'use client';
 
 import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 import { Controller } from 'react-hook-form';
 import { Button, Modal, SectionHeader, Select, TextField } from '../UI';
 import styles from './ReportModal.module.scss';
@@ -39,7 +39,7 @@ const ReportModal = ({
 				<SectionHeader title={modalTitle} titleComponent="h2" padding={5} />
 				<input type="hidden" {...register('reportedId')} />
 				<Select
-					options={REPORT_TITLES_OPTIONS as IOption[]}
+					options={REPORT_TITLES_OPTIONS as Option[]}
 					label="Select a report title"
 					placeholder="Select a report title"
 					error={

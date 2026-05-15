@@ -1,6 +1,6 @@
 'use client';
 
-import { IOption } from '@/types';
+import { Option } from '@/types';
 import { useEffect, useId, useRef, useState } from 'react';
 
 export const useCustomSelect = ({
@@ -8,11 +8,11 @@ export const useCustomSelect = ({
 	isSearchable,
 	onChange,
 }: {
-	options: IOption[];
+	options: Option[];
 	isSearchable?: boolean;
-	onChange?: (option: IOption | null) => void;
+	onChange?: (option: Option | null) => void;
 }) => {
-	const [selectedValue, setSelectedValue] = useState<IOption | null>(null);
+	const [selectedValue, setSelectedValue] = useState<Option | null>(null);
 	const [showMenu, setShowMenu] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -34,7 +34,7 @@ export const useCustomSelect = ({
 	const getFilteredOptions = () => {
 		if (!isSearchable || !searchTerm.trim()) return options;
 		return options.filter((opt) =>
-			opt.label.toLowerCase().includes(searchTerm.toLowerCase())
+			opt.label.toLowerCase().includes(searchTerm.toLowerCase()),
 		);
 	};
 
@@ -44,7 +44,7 @@ export const useCustomSelect = ({
 		setShowMenu(true);
 		if (selectedValue) {
 			const currentIndex = filteredOptions.findIndex(
-				(opt) => opt.value === selectedValue.value
+				(opt) => opt.value === selectedValue.value,
 			);
 			setHighlightedIndex(currentIndex > -1 ? currentIndex : 0);
 		} else {
@@ -52,7 +52,7 @@ export const useCustomSelect = ({
 		}
 	};
 
-	const handleSelect = (opt: IOption) => {
+	const handleSelect = (opt: Option) => {
 		setSelectedValue(opt);
 		onChange?.(opt);
 		setShowMenu(false);
@@ -82,14 +82,14 @@ export const useCustomSelect = ({
 				e.preventDefault();
 				if (!showMenu) setShowMenu(true);
 				setHighlightedIndex((prev) =>
-					prev < filteredOptions.length - 1 ? prev + 1 : 0
+					prev < filteredOptions.length - 1 ? prev + 1 : 0,
 				);
 				break;
 			case 'ArrowUp':
 				e.preventDefault();
 				if (!showMenu) setShowMenu(true);
 				setHighlightedIndex((prev) =>
-					prev > 0 ? prev - 1 : filteredOptions.length - 1
+					prev > 0 ? prev - 1 : filteredOptions.length - 1,
 				);
 				break;
 			case 'Escape':

@@ -4,7 +4,7 @@ import { markAllNotificationsAsRead } from '@/api';
 import { Dropdown } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { TNotificationPaginated } from '@/types';
+import { NotificationPaginated } from '@/types';
 import { useMutation, UseQueryResult } from '@tanstack/react-query';
 import styles from './NotificationsList.module.scss';
 import NotificationsListItem from './NotificationsListItem/NotificationsListItem';
@@ -12,7 +12,7 @@ import NotificationsListItem from './NotificationsListItem/NotificationsListItem
 interface NotificationsListProps {
 	buttonRef: React.RefObject<HTMLDivElement> | null;
 	isOpen: boolean;
-	queryNotifications: UseQueryResult<TNotificationPaginated, Error>;
+	queryNotifications: UseQueryResult<NotificationPaginated, Error>;
 	onClose: () => void;
 }
 

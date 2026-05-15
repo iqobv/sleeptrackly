@@ -1,10 +1,10 @@
 'use client';
 
-import { IItemInBundle } from '@/types';
+import { ItemInBundle } from '@/types';
 import styles from './FeaturedShopCarouselIncludes.module.scss';
 
 interface FeaturedShopCarouselIncludesProps {
-	items: IItemInBundle[];
+	items: ItemInBundle[];
 }
 
 const FeaturedShopCarouselIncludes = ({

@@ -1,10 +1,10 @@
 import { Select, ToggleSwitch } from '@/components/UI';
 import { PRIVACY_VISIBILITY } from '@/constants';
 import { SettingsPrivacyDto } from '@/dto';
-import { IOption, SettingsFormFields } from '@/types';
+import { Option, SettingsFormFields } from '@/types';
 import { Controller, Path } from 'react-hook-form';
 
-const OPTIONS: IOption[] = [
+const OPTIONS: Option[] = [
 	{
 		value: PRIVACY_VISIBILITY.PUBLIC,
 		label: 'Public',

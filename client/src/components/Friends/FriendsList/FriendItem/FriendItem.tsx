@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { IFriend } from '@/types';
+import { Friend } from '@/types';
 import { MdOutlineMoreVert } from 'react-icons/md';
 import styles from './FriendItem.module.scss';
 import FriendItemInfo from './FriendItemInfo/FriendItemInfo';
@@ -9,7 +9,7 @@ import FriendItemMenu from './FriendItemMenu/FriendItemMenu';
 import { useFriendItemMenu } from './useFriendItemMenu';
 
 interface FriendItemProps {
-	friend: IFriend;
+	friend: Friend;
 }
 
 const FriendItem = ({ friend }: FriendItemProps) => {

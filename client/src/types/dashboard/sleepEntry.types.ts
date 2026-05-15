@@ -1,4 +1,4 @@
-export interface ISleepEntry {
+export interface SleepEntry {
 	id: string;
 	userId: string;
 	sleepStart: Date;

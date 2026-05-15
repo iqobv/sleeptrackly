@@ -6,7 +6,7 @@ import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPagin
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PaginationDto } from '@/dto';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
@@ -29,7 +29,7 @@ const ProductItemsList = <T extends FieldValues>() => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IItem>
+		<ItemsListPaginatedWrapper<Item>
 			queryFn={() => getAllAvailableItems(params)}
 			queryKey={() => [
 				...QUERY_KEYS.customization.item.getAllAvailable(params),

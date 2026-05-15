@@ -1,7 +1,7 @@
 import TermlyCMP from '@/components/TermlyCMP';
 import { AUTH_PAGES } from '@/config';
 import MainProvider from '@/providers/MainProvider';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
@@ -32,9 +32,9 @@ export default async function RootLayout({
 	const hasSession = cookieStore.has('accessToken');
 	const allCookies = cookieStore.toString();
 
-	let user: IUser | null = null;
+	let user: User | null = null;
 
-	const getUser = async (): Promise<IUser | null> => {
+	const getUser = async (): Promise<User | null> => {
 		try {
 			const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
 				headers: {

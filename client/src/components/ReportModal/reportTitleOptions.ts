@@ -1,11 +1,11 @@
 import { REPORT_TITLES } from '@/constants';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
-interface IReportTitleOption extends IOption {
+interface ReportTitleOption extends Option {
 	value: (typeof REPORT_TITLES)[keyof typeof REPORT_TITLES];
 }
 
-export const REPORT_TITLES_OPTIONS: IReportTitleOption[] = [
+export const REPORT_TITLES_OPTIONS: ReportTitleOption[] = [
 	{
 		value: REPORT_TITLES.AVATAR,
 		label: "User avatar isn't appropriate or offensive",

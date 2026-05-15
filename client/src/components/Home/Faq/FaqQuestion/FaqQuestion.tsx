@@ -1,11 +1,11 @@
 'use client';
 
 import { MdArrowCircleDown } from 'react-icons/md';
-import { IFaqQuestion } from '../faqQuestions';
+import type { FaqQuestion as FaqQuestionType } from '../faqQuestions';
 import styles from './FaqQuestion.module.scss';
 
 interface FaqQuestionProps {
-	item: IFaqQuestion;
+	item: FaqQuestionType;
 	isOpen: boolean;
 	activeIndex: number;
 	index: number;

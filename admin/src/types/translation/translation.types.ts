@@ -1,4 +1,4 @@
-export interface ITranslation {
+export interface Translation {
 	id: string;
 	itemId: string;
 	language: string;

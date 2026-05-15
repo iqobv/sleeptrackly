@@ -1,4 +1,4 @@
-export interface IUserCoin {
+export interface UserCoin {
 	id: string;
 	userId: string;
 	amount: number;

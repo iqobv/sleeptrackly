@@ -1,6 +1,6 @@
 'use client';
 
-import { IChallenge } from '@/types';
+import { Challenge } from '@/types';
 import { useEffect, useState } from 'react';
 
 import { SectionHeader } from '@/components/UI';
@@ -8,11 +8,11 @@ import ChallengesList from '../ChallengesList/ChallengesList';
 import styles from './ActiveChallenges.module.scss';
 
 interface ActiveChallengesProps {
-	data: IChallenge[];
+	data: Challenge[];
 }
 
 const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
-	const [activeChallenges, setActiveChallenges] = useState<IChallenge[]>([]);
+	const [activeChallenges, setActiveChallenges] = useState<Challenge[]>([]);
 
 	useEffect(() => {
 		if (data) setActiveChallenges(data.filter((c) => c.isStarted));

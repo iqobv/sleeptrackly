@@ -3,7 +3,7 @@
 import { updateUser } from '@/api';
 import { SettingsAccountDto } from '@/dto';
 import { useAuth } from '@/hooks';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import SettingsForm from '../SettingsForm/SettingsForm';
 import UploadAvatar from '../UploadAvatar/UploadAvatar';
 import { ACCOUNT_FIELDS } from './settingsAccountFields';
@@ -19,7 +19,7 @@ const SettingsAccount = () => {
 			<UploadAvatar />
 			{isloading && <SettingsAccountLoader />}
 			{!isloading && user && (
-				<SettingsForm<SettingsAccountDto, IUser>
+				<SettingsForm<SettingsAccountDto, User>
 					fields={ACCOUNT_FIELDS}
 					mutationFn={updateUser}
 					defaultValues={{

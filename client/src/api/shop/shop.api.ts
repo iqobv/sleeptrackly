@@ -1,11 +1,11 @@
 import { LanguageDto } from '@/dto';
 import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
-import { IFeaturedShop, IPaginatedDataResponse, IProduct } from '@/types';
+import { FeaturedShop, PaginatedDataResponse, Product } from '@/types';
 import { apiClient } from '../axios';
 
 export const getFeaturedShop = async (dto: LanguageDto) =>
 	(
-		await apiClient.get<IFeaturedShop>(`/v1/shop/featured`, {
+		await apiClient.get<FeaturedShop>(`/v1/shop/featured`, {
 			params: dto,
 		})
 	).data;
@@ -20,7 +20,7 @@ export const getAllShop = async ({
 	};
 
 	return (
-		await apiClient.get<IPaginatedDataResponse<IProduct>>(`/v1/shop/all`, {
+		await apiClient.get<PaginatedDataResponse<Product>>(`/v1/shop/all`, {
 			params,
 		})
 	).data;

@@ -2,13 +2,13 @@
 
 import { Button } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config';
-import { ISleepEntry } from '@/types';
+import { SleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import dayjs from 'dayjs';
 import styles from './TimerEnd.module.scss';
 
 interface TimerEndProps {
-	data: ISleepEntry;
+	data: SleepEntry;
 }
 
 const TimerEnd = ({ data }: TimerEndProps) => {

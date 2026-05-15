@@ -1,8 +1,8 @@
 import { ITEM_TYPES } from '@/constants';
-import { TItemType } from '@/types';
+import { ItemType } from '@/types';
 
 interface FeaturedShopSectionItem {
-	type: TItemType;
+	type: ItemType;
 	title: string;
 }
 

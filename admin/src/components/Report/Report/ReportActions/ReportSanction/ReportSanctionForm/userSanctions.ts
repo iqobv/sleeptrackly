@@ -1,7 +1,7 @@
 import { USER_SANCTIONS } from '@/constants';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
-export interface UserSanctionOption extends IOption {
+export interface UserSanctionOption extends Option {
 	value: (typeof USER_SANCTIONS)[keyof typeof USER_SANCTIONS];
 }
 

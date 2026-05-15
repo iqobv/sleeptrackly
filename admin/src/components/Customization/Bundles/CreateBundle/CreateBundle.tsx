@@ -4,7 +4,7 @@ import { createBundle } from '@/api';
 import { PAGES } from '@/config';
 import { CreateBundleDto } from '@/dto';
 import { createBundleSchema } from '@/schemas';
-import { IBundle } from '@/types';
+import { Bundle } from '@/types';
 import { useRouter } from 'next/navigation';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import BundleForm from '../BundleForm/BundleForm';
@@ -13,7 +13,7 @@ const CreateBundle = () => {
 	const router = useRouter();
 
 	return (
-		<CustomizationForm<CreateBundleDto, IBundle>
+		<CustomizationForm<CreateBundleDto, Bundle>
 			schema={createBundleSchema}
 			mutationFn={createBundle}
 			onSuccess={(data) => {

@@ -1,11 +1,11 @@
 'use client';
 
-import { IChallengeFull } from '@/types';
+import { ChallengeFull } from '@/types';
 import styles from './ChallengeInfo.module.scss';
 import { CHALLENGE_INFO_FIELDS } from './challengeInfoField';
 
 interface ChallengeInfoProps {
-	data: IChallengeFull;
+	data: ChallengeFull;
 }
 
 const ChallengeInfo = ({ data }: ChallengeInfoProps) => {

@@ -4,7 +4,7 @@ import { getBundleById, updateBundle } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { UpdateBundleDto } from '@/dto';
 import { updateBundleSchema } from '@/schemas';
-import { IBundle } from '@/types';
+import { Bundle } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import BundleForm from '../BundleForm/BundleForm';
@@ -27,7 +27,7 @@ const UpdateBundle = ({ id }: UpdateBundleProps) => {
 	}
 
 	return (
-		<CustomizationForm<UpdateBundleDto, IBundle>
+		<CustomizationForm<UpdateBundleDto, Bundle>
 			schema={updateBundleSchema}
 			mutationFn={(dto) => updateBundle(id, dto)}
 			onSuccess={() => {

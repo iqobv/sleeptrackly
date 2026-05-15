@@ -1,4 +1,4 @@
-export interface ISleepStatus {
+export interface SleepStatus {
 	id: string;
 	userId: string;
 	isSleeping: boolean;

@@ -1,7 +1,7 @@
-import { IReport } from './report.types';
-import { IReportPaginatedMeta } from './reportPaginagedMeta.types';
+import { Report } from './report.types';
+import { ReportPaginatedMeta } from './reportPaginagedMeta.types';
 
-export interface IReportsPaginated {
-	items: IReport[];
-	meta: IReportPaginatedMeta;
+export interface ReportsPaginated {
+	items: Report[];
+	meta: ReportPaginatedMeta;
 }

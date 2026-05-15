@@ -1,19 +1,19 @@
 import { USER_SANCTIONS } from '@/constants';
-import { IUser } from './user.types';
+import { User } from './user.types';
 
-export type TUserSanction =
+export type UserSanctionType =
 	(typeof USER_SANCTIONS)[keyof typeof USER_SANCTIONS];
 
-export interface IUserSanction {
+export interface UserSanction {
 	id: string;
 	userId: string;
 	reportId: string;
 	createdById: string;
 	startsAt: Date;
 	endsAt: Date;
-	type: TUserSanction;
-	user: IUser;
-	createdBy: IUser;
+	type: UserSanctionType;
+	user: User;
+	createdBy: User;
 	createdAt: Date;
 	updatedAt: Date;
 }

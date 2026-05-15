@@ -2,14 +2,14 @@
 
 import { Avatar, CDNImage, SectionHeader } from '@/components/UI';
 import { useAuth } from '@/hooks';
-import { IProfile } from '@/types';
+import { Profile } from '@/types';
 import ProfileBadges from '../ProfileBadges/ProfileBadges';
 import ProfileAddToFriendButton from './ProfileAddToFriendButton/ProfileAddToFriendButton';
 import styles from './ProfileMainInfo.module.scss';
 import ProfileReportButton from './ProfileReportButton/ProfileReportButton';
 
 interface ProfileMainInfoProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
 const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {

@@ -1,12 +1,12 @@
-import { TChallengeFrequency } from './challengeFrequncy.types';
-import { IChallengeTask } from './challengeTask.types';
+import { ChallengeFrequency } from './challengeFrequncy.types';
+import { ChallengeTask } from './challengeTask.types';
 
-export interface IChallenge {
+export interface Challenge {
 	id: string;
 	userId: string;
 	title: string;
 	description: string;
-	frequency: TChallengeFrequency;
+	frequency: ChallengeFrequency;
 	isStarted: boolean;
 	isCompleted: boolean;
 	startDate: Date;
@@ -15,6 +15,6 @@ export interface IChallenge {
 	updatedAt: Date;
 }
 
-export interface IChallengeFull extends IChallenge {
-	tasks: IChallengeTask[];
+export interface ChallengeFull extends Challenge {
+	tasks: ChallengeTask[];
 }

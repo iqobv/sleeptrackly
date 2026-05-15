@@ -1,6 +1,6 @@
 'use client';
 
-import { IFriend } from '@/types';
+import { Friend } from '@/types';
 import { FRIEND_ITEM_MENU } from '../friendItemMenu';
 import styles from './FriendItemMenu.module.scss';
 import FriendItemMenuButton from './FriendItemMenuButton';
@@ -8,7 +8,7 @@ import FriendItemMenuButton from './FriendItemMenuButton';
 interface FriendItemMenuProps {
 	menuRef: React.RefObject<HTMLDivElement | null>;
 	menuUp: boolean;
-	friend: IFriend;
+	friend: Friend;
 }
 
 const FriendItemMenu = ({ menuRef, friend, menuUp }: FriendItemMenuProps) => {

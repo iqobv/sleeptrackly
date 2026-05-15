@@ -2,14 +2,14 @@
 
 import { Button, SectionHeader } from '@/components/UI';
 import { REPORT_STATUS } from '@/constants';
-import { IReportFull } from '@/types';
+import { ReportFull } from '@/types';
 import { useState } from 'react';
 import styles from './ReportSanction.module.scss';
 import ReportSanctionForm from './ReportSanctionForm/ReportSanctionForm';
 import ReportUserSanctions from './ReportUserSanctions/ReportUserSanctions';
 
 interface ReportSanctionProps {
-	report: IReportFull;
+	report: ReportFull;
 }
 const ReportSanction = ({ report }: ReportSanctionProps) => {
 	const [sanctions, setSanctions] = useState<number[]>([]);

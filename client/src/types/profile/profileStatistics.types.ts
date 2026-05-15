@@ -1,4 +1,4 @@
-export interface IProfileStatistics {
+export interface ProfileStatistics {
 	countOfCompletedChallenges: number;
 	countOfSleepEntries: number;
 }

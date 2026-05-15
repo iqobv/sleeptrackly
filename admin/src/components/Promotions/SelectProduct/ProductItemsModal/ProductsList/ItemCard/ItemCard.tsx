@@ -1,11 +1,11 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { IItem, IProduct } from '@/types';
+import { Item, Product } from '@/types';
 import styles from './ItemCard.module.scss';
 
 interface ItemCardProps {
-	product: IProduct;
+	product: Product;
 	actions?: React.ReactNode;
 }
 
@@ -22,14 +22,14 @@ const ItemCard = ({ product, actions }: ItemCardProps) => {
 	const isItemImage = product.type === 'ITEM';
 
 	const imageUrl =
-		isItemImage && (finalProduct as IItem).previewUrl !== ''
-			? (finalProduct as IItem).previewUrl
+		isItemImage && (finalProduct as Item).previewUrl !== ''
+			? (finalProduct as Item).previewUrl
 			: finalProduct.mediaUrl;
 
 	return (
 		<div key={finalProduct.id} className={styles['list-item']}>
 			<div className={styles['list-item__media']}>
-				{isItemImage && (finalProduct as IItem).isAnimated ? (
+				{isItemImage && (finalProduct as Item).isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
 						loop
@@ -45,14 +45,14 @@ const ItemCard = ({ product, actions }: ItemCardProps) => {
 			<div>
 				<h3>{translation}</h3>
 				<p>Product Type: {product.type}</p>
-				{(finalProduct as IItem).type && (
+				{(finalProduct as Item).type && (
 					<p>
 						Type:
-						{(finalProduct as IItem).type}
+						{(finalProduct as Item).type}
 					</p>
 				)}
-				{(finalProduct as IItem).rarity && (
-					<p>Rarity: {(finalProduct as IItem).rarity}</p>
+				{(finalProduct as Item).rarity && (
+					<p>Rarity: {(finalProduct as Item).rarity}</p>
 				)}
 			</div>
 			{!!actions && (

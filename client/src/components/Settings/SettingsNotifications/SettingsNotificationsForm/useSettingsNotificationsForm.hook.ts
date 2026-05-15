@@ -5,14 +5,14 @@ import { QUERY_KEYS } from '@/config';
 import { UpdateNotificationSettingsDto } from '@/dto';
 import { useAuth } from '@/hooks';
 import { SettingsNotificationsSchema } from '@/schemas';
-import { INotificationSettings } from '@/types';
+import { NotificationSettings } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface UseSettingsNotificationsFormProps {
-	data: INotificationSettings;
+	data: NotificationSettings;
 }
 
 export const useSettingsNotificationsForm = ({
@@ -30,7 +30,7 @@ export const useSettingsNotificationsForm = ({
 		mutationFn: (dto: UpdateNotificationSettingsDto) =>
 			updateUserNotificationSettings(dto),
 		mutationKey: QUERY_KEYS.notifications.updateSettings(user?.id ?? ''),
-		onSuccess: (updatedSettings: INotificationSettings) => {
+		onSuccess: (updatedSettings: NotificationSettings) => {
 			queryClient.refetchQueries({
 				queryKey: QUERY_KEYS.notifications.settings(user?.id ?? ''),
 			});

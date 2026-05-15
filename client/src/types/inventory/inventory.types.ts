@@ -1,14 +1,14 @@
-import { IItem } from '../item/item.types';
-import { TAcquiredFrom } from './acquiredFrom.types';
+import { Item } from '../item/item.types';
+import { AcquiredFrom } from './acquiredFrom.types';
 
-export interface IInventory {
+export interface Inventory {
 	id: string;
 	userId: string;
 	itemId: string;
 	isEquipped: boolean;
-	acquiredFrom: TAcquiredFrom;
+	acquiredFrom: AcquiredFrom;
 	acquiredAt: Date;
 	createdAt: Date;
 	updatedAt: Date;
-	item: IItem;
+	item: Item;
 }

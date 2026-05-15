@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Divider } from '@/components/UI';
-import { INotification } from '@/types';
+import { Notification } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import styles from './NotificationsListItem.module.scss';
@@ -9,7 +9,7 @@ import styles from './NotificationsListItem.module.scss';
 dayjs.extend(relativeTime);
 
 interface NotificationsListItemProps {
-	notification: INotification;
+	notification: Notification;
 	withDivider?: boolean;
 	onClose?: () => void;
 }

@@ -1,11 +1,11 @@
 'use client';
 
 import { Checkbox, Select, TextField } from '@/components/UI';
-import { IField } from '@/types';
+import { Field } from '@/types';
 import { Controller, FieldValues, useFormContext } from 'react-hook-form';
 
 interface FormFieldsProps<T extends FieldValues> {
-	fields: IField<T>[];
+	fields: Field<T>[];
 }
 
 const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {

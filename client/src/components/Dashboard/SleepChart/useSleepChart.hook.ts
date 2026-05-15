@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransformSecondsToHours } from '@/hooks';
-import { IDashboardDay } from '@/types';
+import { DashboardDay } from '@/types';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
@@ -12,7 +12,7 @@ interface ChartData {
 	tooltipLabel: string;
 }
 
-export const useSleepChart = (data: IDashboardDay[]) => {
+export const useSleepChart = (data: DashboardDay[]) => {
 	const transform = useTransformSecondsToHours();
 
 	const labels = useMemo(

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { USER_ROLES } from './constants';
-import { IUser } from './types';
+import { User } from './types';
 
 export async function proxy(request: NextRequest) {
 	const accessToken = request.cookies.get('accessToken')?.value;
@@ -59,7 +59,7 @@ export async function proxy(request: NextRequest) {
 			});
 
 			if (res.ok) {
-				const data = (await res.json()) as IUser;
+				const data = (await res.json()) as User;
 				if (data?.id && data.role.includes(USER_ROLES.ADMIN)) {
 					haveAccess = true;
 				}

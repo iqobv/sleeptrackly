@@ -3,14 +3,14 @@ import { Coin } from '@/components/Icons';
 import { Button, CDNImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PRODUCT_TYPES } from '@/constants';
-import { IItem, IProduct } from '@/types';
+import { Item, Product } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
 
 interface ShopCardProps {
-	product: IProduct;
+	product: Product;
 	isPreload: boolean;
 }
 
@@ -41,9 +41,9 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 
 	const url: string =
 		product.type === PRODUCT_TYPES.ITEM
-			? (key as IItem)?.previewUrl
-				? (key as IItem)?.previewUrl
-				: (key as IItem)?.mediaUrl
+			? (key as Item)?.previewUrl
+				? (key as Item)?.previewUrl
+				: (key as Item)?.mediaUrl
 			: (key?.mediaUrl ?? '');
 
 	return (

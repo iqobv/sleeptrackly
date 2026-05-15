@@ -1,9 +1,9 @@
-import { IProfileStatistics } from '@/types';
+import { ProfileStatistics } from '@/types';
 
 export interface ProfileStatisticsList {
 	name: string;
 	label: string;
-	field: keyof IProfileStatistics;
+	field: keyof ProfileStatistics;
 }
 
 export const PROFILE_STATISTICS_LIST: ProfileStatisticsList[] = [

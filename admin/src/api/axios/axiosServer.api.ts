@@ -1,6 +1,6 @@
 'use server';
 
-import { IError } from '@/types';
+import { Error } from '@/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -21,14 +21,14 @@ apiServer.interceptors.request.use(
 
 		return config;
 	},
-	(error: AxiosError<IError>) => {
+	(error: AxiosError<Error>) => {
 		return Promise.reject(error);
 	},
 );
 
 apiServer.interceptors.response.use(
 	(response) => response,
-	(error: AxiosError<IError>) => {
+	(error: AxiosError<Error>) => {
 		if (error.response?.status === 401) {
 			redirect(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
 		}

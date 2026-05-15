@@ -3,7 +3,7 @@
 'use client';
 
 import { Button, Select, TextField } from '@/components/UI';
-import { ChallengeField, IOption } from '@/types';
+import { ChallengeField, Option } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
@@ -105,7 +105,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 							control={control}
 							render={({ field }) => (
 								<Select
-									options={f.options as IOption[]}
+									options={f.options as Option[]}
 									{...f}
 									label={typeof f.label === 'string' ? f.label : undefined}
 									isClearable

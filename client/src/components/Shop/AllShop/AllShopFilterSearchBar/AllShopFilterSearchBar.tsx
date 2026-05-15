@@ -4,7 +4,7 @@ import { ShopFilterDto } from '@/dto';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
 import { Select, TextField } from '@/components/UI';
-import { IOption, TShopSortBy } from '@/types';
+import { Option, ShopSortBy } from '@/types';
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import styles from './AllShopFilterSearchBar.module.scss';
@@ -31,7 +31,7 @@ const AllShopFilterSearchBar = () => {
 	useEffect(() => {
 		if (sort) {
 			const [sortBy, sortOrder] = sort.split('_') as [
-				TShopSortBy,
+				ShopSortBy,
 				'ASC' | 'DESC',
 			];
 
@@ -65,7 +65,7 @@ const AllShopFilterSearchBar = () => {
 					control={control}
 					render={({ field }) => (
 						<Select
-							options={SHOP_FILTER_OPTIONS as IOption[]}
+							options={SHOP_FILTER_OPTIONS as Option[]}
 							isClearable={false}
 							placeholder="Select filter type"
 							containerClassName={styles['select']}

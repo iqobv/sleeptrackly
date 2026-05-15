@@ -1,8 +1,8 @@
-import { IDashboardDay } from './dashboardDay.types';
-import { IStatistics } from './statistics.types';
+import { DashboardDay } from './dashboardDay.types';
+import { Statistics } from './statistics.types';
 
-export interface IDashboard {
-	statistics: IStatistics;
-	days: IDashboardDay[];
+export interface Dashboard {
+	statistics: Statistics;
+	days: DashboardDay[];
 	totalWeeks: number;
 }

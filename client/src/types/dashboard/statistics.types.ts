@@ -1,4 +1,4 @@
-export interface IStatistics {
+export interface Statistics {
 	weekNumber: number;
 	totalSleepDuration: number;
 	averageSleepDurationByData: number;

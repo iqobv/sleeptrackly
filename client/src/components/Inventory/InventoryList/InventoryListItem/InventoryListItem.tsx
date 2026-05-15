@@ -3,14 +3,14 @@
 import { equipInventoryItem } from '@/api';
 import { Button } from '@/components/UI';
 import { ITEM_TYPES } from '@/constants';
-import { IInventory } from '@/types';
+import { Inventory } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styles from './InventoryListItem.module.scss';
 
 interface InventoryListItemProps {
-	item: IInventory;
+	item: Inventory;
 	refetch?: () => void;
 }
 

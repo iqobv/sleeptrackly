@@ -1,4 +1,4 @@
-import { IDashboard } from '@/types';
+import { Dashboard } from '@/types';
 
 interface DashboardWeekStatsCard {
 	title: string;
@@ -6,7 +6,7 @@ interface DashboardWeekStatsCard {
 }
 
 export const DASHBOARD_WEEK_STATS_CARDS = (
-	data: IDashboard,
+	data: Dashboard,
 ): DashboardWeekStatsCard[] => {
 	return [
 		{

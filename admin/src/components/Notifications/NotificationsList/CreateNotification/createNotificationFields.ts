@@ -1,7 +1,7 @@
 import { CreateNotificationDto } from '@/dto';
-import { IField } from '@/types';
+import { Field } from '@/types';
 
-export const FIELDS: IField<CreateNotificationDto>[] = [
+export const FIELDS: Field<CreateNotificationDto>[] = [
 	{
 		name: 'title',
 		label: 'Title',

@@ -1,12 +1,12 @@
-import { IUser } from '@/types';
+import { User } from '@/types';
 import { create } from 'zustand';
 
 interface UserState {
-	user: IUser | null;
+	user: User | null;
 }
 
 interface UserActions {
-	setUser: (user: IUser | null) => void;
+	setUser: (user: User | null) => void;
 	logout: () => void;
 }
 

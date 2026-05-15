@@ -1,11 +1,11 @@
 'use client';
 
 import { SectionHeader } from '@/components/UI';
-import { IChallenge } from '@/types';
+import { Challenge } from '@/types';
 import ChallengesList from '../ChallengesList/ChallengesList';
 
 interface AllChallengesProps {
-	data: IChallenge[];
+	data: Challenge[];
 }
 
 const AllChallenges = ({ data }: AllChallengesProps) => {

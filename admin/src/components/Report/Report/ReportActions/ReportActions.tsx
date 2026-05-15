@@ -4,19 +4,19 @@ import { updateReport } from '@/api';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { REPORT_STATUS } from '@/constants';
-import { IReportFull, TReportStatus } from '@/types';
+import { ReportFull, ReportStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import ReportSanction from './ReportSanction/ReportSanction';
 
 interface ReportActionsProps {
-	report: IReportFull;
+	report: ReportFull;
 }
 
 const ReportActions = ({ report }: ReportActionsProps) => {
 	const queryCliet = useQueryClient();
 
 	const { mutate } = useMutation({
-		mutationFn: ({ status }: { status?: TReportStatus }) =>
+		mutationFn: ({ status }: { status?: ReportStatus }) =>
 			updateReport(report.id, { status }),
 		onSuccess: () => {
 			queryCliet.invalidateQueries({

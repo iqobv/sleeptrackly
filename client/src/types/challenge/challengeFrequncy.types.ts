@@ -1,4 +1,4 @@
 import { CHALLENGE_FREQUENCY } from '@/constants';
 
-export type TChallengeFrequency =
+export type ChallengeFrequency =
 	(typeof CHALLENGE_FREQUENCY)[keyof typeof CHALLENGE_FREQUENCY];

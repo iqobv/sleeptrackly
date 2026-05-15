@@ -2,11 +2,11 @@
 
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useUserStore } from '@/store';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import { PropsWithChildren, useEffect } from 'react';
 
 interface MainProviderProps {
-	user: IUser | null;
+	user: User | null;
 }
 
 export default function AuthProvider({

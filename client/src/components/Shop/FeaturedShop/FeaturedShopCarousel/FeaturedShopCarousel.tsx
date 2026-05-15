@@ -1,6 +1,6 @@
 'use client';
 
-import { IProduct } from '@/types';
+import { Product } from '@/types';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,7 +14,7 @@ import FeaturedShopCarouselBuyButton from './FeaturedShopCarouselBuyButton/Featu
 import FeaturedShopCarouselIncludes from './FeaturedShopCarouselIncludes/FeaturedShopCarouselIncludes';
 
 interface FeaturedShopCarouselProps {
-	data: IProduct[];
+	data: Product[];
 }
 
 const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {

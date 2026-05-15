@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { IProfile } from '@/types';
+import { Profile } from '@/types';
 import { useState } from 'react';
 import { MdReportGmailerrorred } from 'react-icons/md';
 import ProfileSanctionsModal from './ProfileSanctionsModal/ProfileSanctionsModal';
 
 interface ProfileSanctionsButtonProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
 const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
