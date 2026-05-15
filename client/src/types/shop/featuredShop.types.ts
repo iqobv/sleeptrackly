@@ -1,7 +1,7 @@
-import { IProduct } from '../product/product.types';
-import { IFeaturedShopSection } from './featuredShopSection.types';
+import { Product } from '../product/product.types';
+import { FeaturedShopSection } from './featuredShopSection.types';
 
-export interface IFeaturedShop {
-	carousel: IProduct[];
-	sections: IFeaturedShopSection[];
+export interface FeaturedShop {
+	carousel: Product[];
+	sections: FeaturedShopSection[];
 }

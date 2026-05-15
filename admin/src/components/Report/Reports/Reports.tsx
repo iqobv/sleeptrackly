@@ -1,7 +1,7 @@
 'use client';
 
 import { SectionHeader } from '@/components/UI';
-import { IReportPaginationQuery, TReportStatus, TReportType } from '@/types';
+import { ReportPaginationQuery, ReportStatus, ReportType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ReportFilter from './ReportFilter/ReportFilter';
@@ -11,14 +11,14 @@ const Reports = () => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
-	const [filters, setFilters] = useState<IReportPaginationQuery>({
+	const [filters, setFilters] = useState<ReportPaginationQuery>({
 		page: Number(searchParams.get('page')) || 1,
 		pageSize: Number(searchParams.get('pageSize')) || 10,
-		reportType: (searchParams.get('reportType') as TReportType) || 'USER',
+		reportType: (searchParams.get('reportType') as ReportType) || 'USER',
 		sortBy:
 			(searchParams.get('sortBy') as 'createdAt' | 'updatedAt') || 'createdAt',
 		sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
-		status: (searchParams.get('status') as TReportStatus) || 'PENDING',
+		status: (searchParams.get('status') as ReportStatus) || 'PENDING',
 	});
 
 	useEffect(() => {

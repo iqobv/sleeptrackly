@@ -1,12 +1,12 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { IBundle } from '@/types';
+import { Bundle } from '@/types';
 
 import styles from '../ItemCard/ItemCard.module.scss';
 
 interface BundleCardProps {
-	bundle: IBundle;
+	bundle: Bundle;
 	actions: React.ReactNode;
 }
 

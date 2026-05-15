@@ -1,14 +1,14 @@
 import { changeRequestStatus, deleteFriend, sendFriendRequest } from '@/api';
 import { FRIEND_STATUS } from '@/constants';
-import { IFriend, IFriendship, TFriendStatus } from '@/types';
+import { Friend, Friendship, FriendStatus } from '@/types';
 
 interface ProfileButton {
 	text: string;
 	onClick?: () => void;
 	mutationFn: (data?: {
 		id: string;
-		status?: TFriendStatus;
-	}) => Promise<IFriend> | void;
+		status?: FriendStatus;
+	}) => Promise<Friend> | void;
 	isShow?: boolean;
 	isDisabled?: boolean;
 	successText?: string;
@@ -18,7 +18,7 @@ export const SUCCESS_TEXT = 'Friend request sent';
 
 export const DEFAULT_BUTTON = (
 	profileUserId: string,
-	userId?: string | null | undefined
+	userId?: string | null | undefined,
 ): ProfileButton => ({
 	text: 'Add to friends',
 	mutationFn: () => sendFriendRequest(profileUserId),
@@ -29,9 +29,9 @@ export const DEFAULT_BUTTON = (
 
 export const PROFILE_FRIENDS_BUTTONS = (
 	profileUserId: string,
-	friendship: IFriendship | null,
-	userId: string | null | undefined
-): Record<TFriendStatus, ProfileButton> => ({
+	friendship: Friendship | null,
+	userId: string | null | undefined,
+): Record<FriendStatus, ProfileButton> => ({
 	[FRIEND_STATUS.ACCEPTED]: {
 		text: 'Unfriend',
 		mutationFn: () => {
@@ -69,7 +69,7 @@ export const PROFILE_FRIENDS_BUTTONS = (
 						return deleteFriend(friendship?.id);
 					},
 					successText: 'Unblocked',
-			  }
+				}
 			: { ...DEFAULT_BUTTON(profileUserId, userId), isDisabled: true }),
 	},
 });

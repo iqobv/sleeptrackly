@@ -4,7 +4,7 @@ import { getProductById, updateProduct } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { UpdateProductDto } from '@/dto';
 import { updateProductSchema } from '@/schemas';
-import { IProduct } from '@/types';
+import { Product } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import ProductForm from '../ProductForm/ProductForm';
@@ -25,7 +25,7 @@ const UpdateProduct = ({ id }: UpdateProductProps) => {
 	}
 
 	return (
-		<CustomizationForm<UpdateProductDto, IProduct>
+		<CustomizationForm<UpdateProductDto, Product>
 			schema={updateProductSchema}
 			mutationFn={(dto) => updateProduct(id, dto)}
 			onSuccess={() => {

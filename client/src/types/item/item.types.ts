@@ -1,17 +1,17 @@
-import { ITranslation } from '../translation/translation.types';
-import { TItemRarity } from './itemRarity.types';
-import { TItemType } from './itemType.types';
+import { Translation } from '../translation/translation.types';
+import { ItemRarity } from './itemRarity.types';
+import { ItemType } from './itemType.types';
 
-export interface IItem {
+export interface Item {
 	id: string;
-	type: TItemType;
+	type: ItemType;
 	isExclusive: boolean;
-	rarity: TItemRarity;
+	rarity: ItemRarity;
 	basePrice: number;
 	mediaUrl: string;
 	previewUrl: string;
 	isAnimated: boolean;
 	createdAt: Date;
 	updatedAt: Date;
-	translation: ITranslation;
+	translation: Translation;
 }

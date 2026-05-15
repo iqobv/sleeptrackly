@@ -1,6 +1,6 @@
 'use client';
 
-import { INotificationSettings } from '@/types';
+import { NotificationSettings } from '@/types';
 import { FormProvider } from 'react-hook-form';
 import styles from './SettingsNotificationsForm.module.scss';
 import SettingsNotificationsFormFields from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';
@@ -8,7 +8,7 @@ import SettingsNotificationsReminder from './SettingsNotificationsReminder/Setti
 import { useSettingsNotificationsForm } from './useSettingsNotificationsForm.hook';
 
 interface SettingsNotificationsFormProps {
-	data: INotificationSettings;
+	data: NotificationSettings;
 }
 
 const SettingsNotificationsForm = ({

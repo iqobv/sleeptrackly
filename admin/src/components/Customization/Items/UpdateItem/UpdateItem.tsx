@@ -4,7 +4,7 @@ import { getItemById, updateItem } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { UpdateItemDto } from '@/dto';
 import { updateItemSchema } from '@/schemas';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import ItemForm from '../ItemForm/ItemForm';
@@ -21,7 +21,7 @@ const UpdateItem = ({ id }: UpdateItemProps) => {
 	});
 
 	return (
-		<CustomizationForm<UpdateItemDto, IItem>
+		<CustomizationForm<UpdateItemDto, Item>
 			schema={updateItemSchema}
 			mutationFn={(data) => updateItem(id, data)}
 			onSuccess={() => {

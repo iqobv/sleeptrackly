@@ -1,6 +1,6 @@
-import { IFriend } from './friend.types';
+import { Friend } from './friend.types';
 
-export interface IFriendsResponse {
-	friends: IFriend[];
+export interface FriendsResponse {
+	friends: Friend[];
 	countOfPendingRequests: number;
 }

@@ -1,12 +1,12 @@
 'use client';
 
 import { List } from '@/components/UI';
-import { IProfileStatistics } from '@/types';
+import type { ProfileStatistics as ProfileStatisticsType } from '@/types';
 import ProfileStatisticsCard from './ProfileStatisticsCard/ProfileStatisticsCard';
 import { PROFILE_STATISTICS_LIST } from './profileStatisticsList';
 
 interface ProfileStatisticsProps {
-	statistics: IProfileStatistics;
+	statistics: ProfileStatisticsType;
 }
 
 const ProfileStatistics = ({ statistics }: ProfileStatisticsProps) => {

@@ -1,13 +1,13 @@
 'use client';
 
 import { Button, List } from '@/components/UI';
-import { IFeaturedShopSection } from '@/types';
+import { FeaturedShopSection } from '@/types';
 import ShopCard from '../../ShopCard/ShopCard';
 import styles from './FeaturedShopSections.module.scss';
 import { FEATURED_SHOP_SECTIONS_ITEMS } from './featuredShopSectionsItems';
 
 interface FeaturedShopSectionsProps {
-	sections: IFeaturedShopSection[];
+	sections: FeaturedShopSection[];
 }
 
 const FeaturedShopSections = ({ sections }: FeaturedShopSectionsProps) => {

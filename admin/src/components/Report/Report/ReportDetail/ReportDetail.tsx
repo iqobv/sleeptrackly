@@ -2,12 +2,12 @@
 
 import { SectionHeader } from '@/components/UI';
 import { PAGES } from '@/config';
-import { IReportFull } from '@/types';
+import { ReportFull } from '@/types';
 import Link from 'next/link';
 import styles from './ReportDetail.module.scss';
 
 interface ReportDetailProps {
-	report: IReportFull;
+	report: ReportFull;
 }
 
 const ReportDetail = ({ report }: ReportDetailProps) => {

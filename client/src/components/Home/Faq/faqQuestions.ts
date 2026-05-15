@@ -1,9 +1,9 @@
-export interface IFaqQuestion {
+export interface FaqQuestion {
 	question: string;
 	answer: string;
 }
 
-export const FAQ_QUESTIONS: IFaqQuestion[] = [
+export const FAQ_QUESTIONS: FaqQuestion[] = [
 	{
 		question: 'Is this app free to use?',
 		answer:

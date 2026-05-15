@@ -1,6 +1,6 @@
 'use client';
 
-import { IUser } from '@/types';
+import { User } from '@/types';
 import { PropsWithChildren } from 'react';
 import AuthProvider from './AuthProvider';
 import { TanstackQueryProvider } from './TanstackQueryProvider';
@@ -8,7 +8,7 @@ import ThemeProvider from './ThemeProvider';
 import ToastProvider from './ToastProvider';
 
 interface MainProviderProps {
-	user: IUser | null;
+	user: User | null;
 }
 
 export default function MainProvider({

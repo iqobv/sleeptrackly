@@ -1,6 +1,6 @@
-import { IEquippedItem } from './equippedItem.types';
+import { EquippedItem } from './equippedItem.types';
 
-export interface IEquippedItems {
+export interface EquippedItems {
 	id: string;
-	item: IEquippedItem;
+	item: EquippedItem;
 }

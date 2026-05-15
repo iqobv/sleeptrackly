@@ -1,7 +1,7 @@
 'use client';
 
 import { useTransformSecondsToHours } from '@/hooks';
-import { IDashboard } from '@/types';
+import { Dashboard } from '@/types';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import DashboardCard from '../DashboardCard/DashboardCard';
@@ -11,7 +11,7 @@ import { DASHBOARD_WEEK_STATS_CARDS } from './dashboardWeekStatsCards';
 dayjs.extend(duration);
 
 interface DashboardWeekStatsProps {
-	data: IDashboard;
+	data: Dashboard;
 }
 
 const DashboardWeekStats = ({ data }: DashboardWeekStatsProps) => {

@@ -2,12 +2,12 @@
 
 import { Avatar } from '@/components/UI';
 import { PAGES } from '@/config';
-import { IFriend } from '@/types';
+import { Friend } from '@/types';
 import Link from 'next/link';
 import styles from './FriendItemInfo.module.scss';
 
 interface FriendItemProps {
-	friend: IFriend;
+	friend: Friend;
 }
 
 const FriendItemInfo = ({ friend }: FriendItemProps) => {
@@ -21,9 +21,7 @@ const FriendItemInfo = ({ friend }: FriendItemProps) => {
 				>
 					{friend.user.username}
 				</Link>
-				<p className={styles['friend-item__status']}>
-					{friend.user.status}
-				</p>
+				<p className={styles['friend-item__status']}>{friend.user.status}</p>
 			</div>
 		</div>
 	);

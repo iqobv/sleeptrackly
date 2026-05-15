@@ -1,9 +1,9 @@
-import { IField } from '@/types';
+import { Field } from '@/types';
 import { FieldValues, Path } from 'react-hook-form';
 import { CREATE_ITEM_OPTIONS } from './CreateItemOptions';
 import { CREATE_ITEM_RARITY_OPTIONS } from './CreateItemOptionsRarityOptions';
 
-export const getItemsFields = <T extends FieldValues>(): IField<T>[] => [
+export const getItemsFields = <T extends FieldValues>(): Field<T>[] => [
 	{
 		name: 'basePrice' as Path<T>,
 		label: 'Base Price',

@@ -1,4 +1,4 @@
-export interface IChallengeTask {
+export interface ChallengeTask {
 	id: string;
 	challengeId: string;
 	description: string;

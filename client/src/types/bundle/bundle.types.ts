@@ -1,7 +1,7 @@
-import { ITranslation } from '../translation/translation.types';
-import { IItemInBundle } from './itemInBundle.types';
+import { Translation } from '../translation/translation.types';
+import { ItemInBundle } from './itemInBundle.types';
 
-export interface IBundle {
+export interface Bundle {
 	id: string;
 	isExclusive: false;
 	basePrice: number;
@@ -9,6 +9,6 @@ export interface IBundle {
 	mediaUrl: string;
 	createdAt: Date;
 	updatedAt: Date;
-	translation: ITranslation;
-	items: IItemInBundle[];
+	translation: Translation;
+	items: ItemInBundle[];
 }

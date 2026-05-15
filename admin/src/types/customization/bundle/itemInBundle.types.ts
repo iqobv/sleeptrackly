@@ -1,7 +1,7 @@
-import { IItem } from '../item/item.types';
+import { Item } from '../item/item.types';
 
-export interface IItemInBundle {
+export interface ItemInBundle {
 	itemId: string;
 	bundleId: string;
-	item: IItem;
+	item: Item;
 }

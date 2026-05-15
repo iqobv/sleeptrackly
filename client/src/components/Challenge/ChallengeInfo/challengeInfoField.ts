@@ -1,4 +1,4 @@
-import { IChallenge } from '@/types';
+import { Challenge } from '@/types';
 import { formatDateTime } from '@/utils';
 
 export interface ChallengeInfoField {
@@ -7,7 +7,7 @@ export interface ChallengeInfoField {
 }
 
 export const CHALLENGE_INFO_FIELDS = (
-	data: IChallenge,
+	data: Challenge,
 ): ChallengeInfoField[] => [
 	{
 		name: 'Start date',

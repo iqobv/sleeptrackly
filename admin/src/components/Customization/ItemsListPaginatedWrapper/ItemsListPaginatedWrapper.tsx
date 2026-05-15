@@ -3,7 +3,7 @@
 import { Pagination } from '@/components/UI';
 import { PaginationDto } from '@/dto';
 import { usePagination } from '@/hooks';
-import { IPaginatedDataResponse } from '@/types';
+import { PaginatedDataResponse } from '@/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
@@ -11,10 +11,10 @@ import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
 import styles from './ItemsListPaginatedWrapper.module.scss';
 
 interface ItemsListPaginatedWrapperProps<T> {
-	queryFn: (query: PaginationDto) => Promise<IPaginatedDataResponse<T>>;
+	queryFn: (query: PaginationDto) => Promise<PaginatedDataResponse<T>>;
 	queryKey: (query: PaginationDto) => unknown[];
 	queryOptions?: Omit<
-		UseQueryOptions<IPaginatedDataResponse<T>, Error>,
+		UseQueryOptions<PaginatedDataResponse<T>, Error>,
 		'queryKey' | 'queryFn'
 	>;
 	itemCard: (item: T) => React.ReactNode;
@@ -34,7 +34,7 @@ const ItemsListPaginatedWrapper = <T,>({
 		limit: 20,
 	};
 
-	const { data } = useQuery<IPaginatedDataResponse<T>, Error>({
+	const { data } = useQuery<PaginatedDataResponse<T>, Error>({
 		queryFn: () => queryFn(params),
 		queryKey: queryKey(params),
 		...queryOptions,

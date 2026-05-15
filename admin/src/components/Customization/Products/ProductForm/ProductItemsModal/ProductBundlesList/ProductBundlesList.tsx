@@ -6,7 +6,7 @@ import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPagin
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PaginationDto } from '@/dto';
-import { IBundle } from '@/types';
+import { Bundle } from '@/types';
 import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
@@ -29,7 +29,7 @@ const ProductBundlesList = <T extends FieldValues>() => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IBundle>
+		<ItemsListPaginatedWrapper<Bundle>
 			queryFn={() => getAllAvailableBundles(params)}
 			queryKey={() => [
 				...QUERY_KEYS.customization.bundle.getAllAvailable(params),

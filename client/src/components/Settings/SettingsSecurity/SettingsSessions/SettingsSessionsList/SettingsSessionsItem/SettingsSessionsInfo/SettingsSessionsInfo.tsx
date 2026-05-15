@@ -1,11 +1,11 @@
 'use client';
 
-import { ISession } from '@/types';
+import { Session } from '@/types';
 import { capitalize } from '@/utils';
 import styles from './SettingsSessionsInfo.module.scss';
 
 interface SettingsSessionsInfoProps {
-	session: ISession;
+	session: Session;
 }
 
 const SettingsSessionsInfo = ({ session }: SettingsSessionsInfoProps) => {

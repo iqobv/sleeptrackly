@@ -1,11 +1,11 @@
 'use client';
 
-import { IUserSanction } from '@/types';
+import { UserSanction } from '@/types';
 import ReportUserSanctionsItem from './ReportUserSanctionsItem/ReportUserSanctionsItem';
 
 interface ReportUserSanctionsProps {
 	reportId: string;
-	sanctions: IUserSanction[];
+	sanctions: UserSanction[];
 }
 
 const ReportUserSanctions = ({

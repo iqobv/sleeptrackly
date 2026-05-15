@@ -5,7 +5,7 @@ import { Button } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { UpdateChallengeDto } from '@/dto';
 import { UpdateSchema } from '@/schemas';
-import { IChallenge } from '@/types';
+import { Challenge } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { IoMdArrowBack } from 'react-icons/io';
 import ChallengeForm from '../ChallengeForm/ChallengeForm';
@@ -32,7 +32,7 @@ const EditChallenge = ({ id }: EditChallengeProps) => {
 				<IoMdArrowBack />
 				Go Back
 			</Button>
-			<ChallengeForm<UpdateChallengeDto, IChallenge>
+			<ChallengeForm<UpdateChallengeDto, Challenge>
 				fields={UPDATE_CHALLENGE_FIELDS}
 				mutationFn={(data) => updateChallenge(id, data)}
 				buttonLabel="Update"

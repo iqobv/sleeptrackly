@@ -1,11 +1,11 @@
 'use client';
 
 import { BREAKPOINTS } from '@/constants';
-import { TBreakpoint } from '@/types';
+import { Breakpoint } from '@/types';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-export const useNavContainer = (breakpoint: TBreakpoint) => {
+export const useNavContainer = (breakpoint: Breakpoint) => {
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => setMounted(true), []);
 

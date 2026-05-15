@@ -3,7 +3,7 @@
 import { removeUserSanction } from '@/api';
 import { Button, ConfirmModal, SectionHeader } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { IUserSanction } from '@/types';
+import { UserSanction } from '@/types';
 import { capitalize } from '@/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
@@ -13,7 +13,7 @@ import { MdOutlineDeleteOutline } from 'react-icons/md';
 import styles from './ReportUserSanctionsItem.module.scss';
 
 interface ReportUserSanctionsItemProps {
-	sanction: IUserSanction;
+	sanction: UserSanction;
 	reportId: string;
 	index: number;
 }

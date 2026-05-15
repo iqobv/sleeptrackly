@@ -1,4 +1,4 @@
-export interface IPromotion {
+export interface Promotion {
 	id: string;
 	alias: string;
 	maxUses: number | null;

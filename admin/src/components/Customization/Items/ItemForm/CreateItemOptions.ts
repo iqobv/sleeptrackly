@@ -1,7 +1,7 @@
 import { ITEM_TYPES } from '@/constants';
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
-export const CREATE_ITEM_OPTIONS: IOption<keyof typeof ITEM_TYPES>[] = [
+export const CREATE_ITEM_OPTIONS: Option<keyof typeof ITEM_TYPES>[] = [
 	{
 		value: 'AVATAR_FRAME',
 		label: 'Avatar Frame',

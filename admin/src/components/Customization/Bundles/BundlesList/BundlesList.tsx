@@ -3,7 +3,7 @@
 import { getAllBundles } from '@/api';
 import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { IBundle } from '@/types';
+import { Bundle } from '@/types';
 import BundleCard from '../../BundleCard/BundleCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 
@@ -11,7 +11,7 @@ const BundlesList = () => {
 	return (
 		<div>
 			<Button href={PAGES.BUNDLE_NEW}>New Bundle</Button>
-			<ItemsListPaginatedWrapper<IBundle>
+			<ItemsListPaginatedWrapper<Bundle>
 				queryFn={getAllBundles}
 				queryKey={(query) => [QUERY_KEYS.customization.bundle.getAll(query)]}
 				itemCard={(bundle) => (

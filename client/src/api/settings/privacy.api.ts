@@ -1,10 +1,10 @@
 import { SettingsPrivacyDto } from '@/dto';
-import { IPrivacySettings } from '@/types';
+import { PrivacySettings } from '@/types';
 import { apiClient } from '../axios';
 
 export const updatePrivacySettings = async (dto: SettingsPrivacyDto) =>
-	(await apiClient.patch<IPrivacySettings>('/v1/user-privacy-settings/me', dto))
+	(await apiClient.patch<PrivacySettings>('/v1/user-privacy-settings/me', dto))
 		.data;
 
 export const getUserPrivacySettings = async () =>
-	(await apiClient.get<IPrivacySettings>('/v1/user-privacy-settings/me')).data;
+	(await apiClient.get<PrivacySettings>('/v1/user-privacy-settings/me')).data;

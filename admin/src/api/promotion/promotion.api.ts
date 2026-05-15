@@ -1,12 +1,12 @@
 import { CreatePromotionDto } from '@/dto';
-import { IPromotion } from '@/types';
+import { Promotion } from '@/types';
 import { apiClient } from '../axios';
 
 export const getAllPromotions = async () =>
-	(await apiClient.get<IPromotion[]>(`/v1/promotions`)).data;
+	(await apiClient.get<Promotion[]>(`/v1/promotions`)).data;
 
 export const getPromotionById = async (id: string) =>
-	(await apiClient.get<IPromotion>(`/v1/promotions/id/${id}`)).data;
+	(await apiClient.get<Promotion>(`/v1/promotions/id/${id}`)).data;
 
 export const createPromotion = async (data: CreatePromotionDto) =>
 	(await apiClient.post(`/v1/promotions`, data)).data;

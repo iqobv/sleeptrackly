@@ -1,5 +1,5 @@
 import { PAGES, PRIVATE_PAGES } from '@/config';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import { IconBaseProps } from 'react-icons';
 import {
 	MdOutlineInventory2,
@@ -19,7 +19,7 @@ const iconProps: IconBaseProps = {
 	size: 22,
 };
 
-export const USER_MAIN_LINKS = (user: IUser): Link[] => [
+export const USER_MAIN_LINKS = (user: User): Link[] => [
 	{
 		name: 'profile',
 		label: 'Profile',

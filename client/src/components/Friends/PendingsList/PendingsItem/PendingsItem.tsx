@@ -5,13 +5,13 @@ import { Avatar, Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { FRIEND_STATUS } from '@/constants';
 import { useAuth } from '@/hooks';
-import { IFriend, TFriendStatus } from '@/types';
+import { Friend, FriendStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import styles from './PendingsItem.module.scss';
 
 interface PendingsItemProps {
-	friend: IFriend;
+	friend: Friend;
 }
 
 const PendingsItem = ({ friend }: PendingsItemProps) => {
@@ -20,7 +20,7 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 	const queryClient = useQueryClient();
 
 	const { mutate } = useMutation({
-		mutationFn: ({ id, status }: { id: string; status: TFriendStatus }) =>
+		mutationFn: ({ id, status }: { id: string; status: FriendStatus }) =>
 			changeRequestStatus(id, status),
 		mutationKey: QUERY_KEYS.friends.pendingsChange(user?.id || ''),
 		onSuccess: () =>
@@ -29,7 +29,7 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 			}),
 	});
 
-	const handleUpdate = (id: string, status: TFriendStatus) => {
+	const handleUpdate = (id: string, status: FriendStatus) => {
 		if (id) mutate({ id, status });
 	};
 

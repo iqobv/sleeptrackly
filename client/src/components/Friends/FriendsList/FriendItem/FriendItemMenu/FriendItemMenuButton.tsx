@@ -5,14 +5,14 @@ import { FriendItemMenu } from '../friendItemMenu';
 
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { IFriend } from '@/types';
+import { Friend } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import styles from './FriendItemMenu.module.scss';
 
 interface FriendItemMenuProps {
 	item: FriendItemMenu;
-	friend: IFriend;
+	friend: Friend;
 }
 
 const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {

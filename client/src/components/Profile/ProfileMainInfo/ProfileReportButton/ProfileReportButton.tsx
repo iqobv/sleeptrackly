@@ -2,12 +2,12 @@
 
 import ReportModal from '@/components/ReportModal/ReportModal';
 import { Button } from '@/components/UI';
-import { IProfile } from '@/types';
+import { Profile } from '@/types';
 import { useState } from 'react';
 import { MdReportGmailerrorred } from 'react-icons/md';
 
 interface ProfileReportButtonProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
 const ProfileReportButton = ({ profile }: ProfileReportButtonProps) => {

@@ -2,7 +2,7 @@
 
 import { deleteBundle } from '@/api';
 import { PAGES } from '@/config';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import { FieldValues } from 'react-hook-form';
 import DeleteButton from '../../DeleteButton/DeleteButton';
 import FileForm from '../../FileForm/FileForm';
@@ -17,7 +17,7 @@ interface BundleFormProps {
 	isAnimated?: boolean;
 	buttonLabel?: string;
 	isEdit?: boolean;
-	initialItems?: IItem[];
+	initialItems?: Item[];
 	id?: string;
 }
 

@@ -1,9 +1,9 @@
-import { IUser } from '../user/user.types';
-import { IUserSanction } from '../user/userSanction.types';
-import { TReportStatus } from './reportStatus.types';
-import { TReportType } from './reportType.types';
+import { User } from '../user/user.types';
+import { UserSanction } from '../user/userSanction.types';
+import { ReportStatus } from './reportStatus.types';
+import { ReportType } from './reportType.types';
 
-export interface IReport {
+export interface Report {
 	id: string;
 	title: string;
 	description: string;
@@ -11,15 +11,15 @@ export interface IReport {
 	targetUserId: string;
 	reviewedById: string | null;
 	response: string | null;
-	reportType: TReportType;
-	status: TReportStatus;
+	reportType: ReportType;
+	status: ReportStatus;
 	createdAt: Date;
 	updatedAt: Date;
 }
 
-export interface IReportFull extends IReport {
-	reporter: IUser;
-	targetUser: IUser | null;
-	reviewedBy: IUser | null;
-	sanctions: IUserSanction[];
+export interface ReportFull extends Report {
+	reporter: User;
+	targetUser: User | null;
+	reviewedBy: User | null;
+	sanctions: UserSanction[];
 }

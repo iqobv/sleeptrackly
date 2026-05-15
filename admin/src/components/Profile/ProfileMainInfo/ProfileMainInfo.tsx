@@ -2,12 +2,12 @@
 
 import { Avatar, SectionHeader } from '@/components/UI';
 import { useAuth } from '@/hooks';
-import { IProfile } from '@/types';
+import { Profile } from '@/types';
 import styles from './ProfileMainInfo.module.scss';
 import ProfileSanctionsButton from './ProfileSanctionsButton/ProfileSanctionsButton';
 
 interface ProfileMainInfoProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
 const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {

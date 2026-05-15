@@ -2,16 +2,16 @@
 
 import { Button } from '@/components/UI';
 import { ButtonSize, ButtonVariant } from '@/components/UI/Button/Button.types';
-import { IReportPaginatedMeta, IReportPaginationQuery } from '@/types';
+import { ReportPaginatedMeta, ReportPaginationQuery } from '@/types';
 import { Dispatch, SetStateAction } from 'react';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import styles from './ReportsPagination.module.scss';
 import { useReportsPagination } from './useReportsPagination';
 
 interface ReportsPaginationProps {
-	filters: IReportPaginationQuery;
-	meta: IReportPaginatedMeta;
-	setFilters: Dispatch<SetStateAction<IReportPaginationQuery>>;
+	filters: ReportPaginationQuery;
+	meta: ReportPaginatedMeta;
+	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
 }
 
 const defaultButtonProps: {

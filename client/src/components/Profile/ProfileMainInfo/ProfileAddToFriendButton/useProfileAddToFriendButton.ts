@@ -2,7 +2,7 @@
 
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { IFriend, IProfile, TFriendStatus } from '@/types';
+import { Friend, FriendStatus, Profile } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import {
@@ -11,18 +11,18 @@ import {
 	SUCCESS_TEXT,
 } from './profileAddToFriendButtons';
 
-export const useProfileAddToFriendButton = (profile: IProfile) => {
+export const useProfileAddToFriendButton = (profile: Profile) => {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
 
 	const buttonConfig = profile?.friendship
 		? PROFILE_FRIENDS_BUTTONS(profile.id, profile?.friendship, user?.id)[
-				profile.friendship.status as TFriendStatus
-		  ]
+				profile.friendship.status as FriendStatus
+			]
 		: DEFAULT_BUTTON(profile.id, user?.id);
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: buttonConfig.mutationFn as () => Promise<IFriend>,
+		mutationFn: buttonConfig.mutationFn as () => Promise<Friend>,
 		onSuccess: () => {
 			queryClient.refetchQueries({
 				queryKey: QUERY_KEYS.profile.username(profile.username),

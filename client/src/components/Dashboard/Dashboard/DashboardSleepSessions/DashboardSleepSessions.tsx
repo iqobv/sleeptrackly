@@ -2,12 +2,12 @@
 
 import { SectionHeader } from '@/components/UI';
 import { useFormatLocaleTime, useTransformSecondsToHours } from '@/hooks';
-import { IDashboardDay } from '@/types';
+import { DashboardDay } from '@/types';
 import DashboardCard from '../../DashboardCard/DashboardCard';
 import styles from './DashboardSleepSessions.module.scss';
 
 interface DashboardSleepSessionsProps {
-	days: IDashboardDay[];
+	days: DashboardDay[];
 }
 
 const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {

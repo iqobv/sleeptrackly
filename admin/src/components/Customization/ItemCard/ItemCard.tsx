@@ -1,11 +1,11 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import styles from './ItemCard.module.scss';
 
 interface ItemCardProps {
-	item: IItem;
+	item: Item;
 	actions?: React.ReactNode;
 }
 

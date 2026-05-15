@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { IProfile } from '@/types';
+import { Profile } from '@/types';
 import { useProfileAddToFriendButton } from './useProfileAddToFriendButton';
 
 interface ProfileAddToFriendButtonProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
 const ProfileAddToFriendButton = ({

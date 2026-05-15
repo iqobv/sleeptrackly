@@ -1,4 +1,4 @@
-import { IPaginatedDataResponse } from '../api/paginatedData.types';
-import { IProduct } from '../product/product.types';
+import { PaginatedDataResponse } from '../api/paginatedData.types';
+import { Product } from '../product/product.types';
 
-export type TAllShop = IPaginatedDataResponse<IProduct>;
+export type AllShop = PaginatedDataResponse<Product>;

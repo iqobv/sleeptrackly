@@ -1,4 +1,4 @@
-export interface IMessageApiResponse {
+export interface MessageApiResponse {
 	success: boolean;
 	messageCode: string;
 	message: string;

@@ -3,12 +3,12 @@
 import { terminateAllSessions, terminateSession } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { ISession } from '@/types';
+import { Session } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 export const useSettingsSessionsItem = (
-	session: ISession,
+	session: Session,
 	disableAllButton?: boolean,
 ) => {
 	const queryClient = useQueryClient();

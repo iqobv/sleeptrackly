@@ -2,7 +2,7 @@
 
 import { AUTH_PAGES } from '@/config';
 import { useUserStore } from '@/store';
-import { IError } from '@/types';
+import { Error } from '@/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -36,7 +36,7 @@ const processQueue = (error: Error | null = null) => {
 
 apiClient.interceptors.response.use(
 	(response) => response,
-	async (error: AxiosError<IError>) => {
+	async (error: AxiosError<Error>) => {
 		const originalRequest = error.config as CustomAxiosRequestConfig;
 		const requestUrl = originalRequest?.url || '';
 

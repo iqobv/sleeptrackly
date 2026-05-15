@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Divider, Dropdown } from '@/components/UI';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import MenuItem from '../MenuItem/MenuItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import UserMenuCoins from '../UserMenuCoins/UserMenuCoins';
@@ -12,7 +12,7 @@ interface UserMenuDropdownProps {
 	isOpen: boolean;
 	onClose: () => void;
 	handleLogout: () => void;
-	user: IUser;
+	user: User;
 	buttonRef: React.RefObject<HTMLDivElement> | null;
 }
 

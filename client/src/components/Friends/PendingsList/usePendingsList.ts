@@ -3,7 +3,7 @@
 import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { TFriendStatus } from '@/types';
+import { FriendStatus } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -20,7 +20,7 @@ export const usePendingsList = () => {
 	});
 
 	const { mutate: mutateMany } = useMutation({
-		mutationFn: ({ status }: { status: TFriendStatus }) =>
+		mutationFn: ({ status }: { status: FriendStatus }) =>
 			updateManyPendingRequests(status),
 		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
 		onSuccess: () => {
@@ -29,7 +29,7 @@ export const usePendingsList = () => {
 		},
 	});
 
-	const handleUpdateMany = (status: TFriendStatus) => {
+	const handleUpdateMany = (status: FriendStatus) => {
 		if (data && data.length > 0) mutateMany({ status });
 	};
 

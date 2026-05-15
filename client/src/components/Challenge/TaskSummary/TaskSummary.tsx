@@ -1,14 +1,14 @@
 'use client';
 
 import { Button, SectionHeader } from '@/components/UI';
-import { IChallengeFull, IChallengeTask } from '@/types';
+import { ChallengeFull, ChallengeTask } from '@/types';
 import Default from './Default/Default';
 import styles from './TaskSummary.module.scss';
 import { useTaskSummary } from './useTaskSummary';
 
 interface TaskSummaryProps {
-	selectedDate: IChallengeTask | null;
-	challenge: IChallengeFull;
+	selectedDate: ChallengeTask | null;
+	challenge: ChallengeFull;
 }
 
 const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {

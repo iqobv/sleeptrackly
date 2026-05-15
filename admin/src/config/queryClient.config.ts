@@ -1,5 +1,5 @@
 import { PaginationDto, PaginationWithLanguageDto } from '@/dto';
-import { IReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
+import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 
 export const QUERY_KEYS = {
 	auth: {
@@ -12,7 +12,7 @@ export const QUERY_KEYS = {
 		username: (username: string) => ['profile', username] as const,
 	},
 	report: {
-		getReports: (filter: IReportPaginationQuery) =>
+		getReports: (filter: ReportPaginationQuery) =>
 			['getReports', filter] as const,
 		getReport: (id: string) => ['getReport', id] as const,
 		send: ['sendReport'] as const,

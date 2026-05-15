@@ -1,13 +1,13 @@
-import { TPrivacyVisibility } from './privacyVisibility.types';
+import { PrivacyVisibility } from './privacyVisibility.types';
 
-export interface IPrivacySettings {
+export interface PrivacySettings {
 	id: string;
 	userId: string;
 	acceptFriendRequests: boolean;
 	showActivity: boolean;
-	profileVisibility: TPrivacyVisibility;
-	achievementsVisibility: TPrivacyVisibility;
-	statisticsVisibility: TPrivacyVisibility;
+	profileVisibility: PrivacyVisibility;
+	achievementsVisibility: PrivacyVisibility;
+	statisticsVisibility: PrivacyVisibility;
 	createdAt: Date;
 	updatedAt: Date;
 }

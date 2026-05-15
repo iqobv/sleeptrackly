@@ -1,12 +1,12 @@
 'use client';
 
-import { IEquippedItems } from '@/types';
+import { EquippedItems } from '@/types';
 
 import { CDNImage } from '@/components/UI';
 import styles from './ProfileBadges.module.scss';
 
 interface ProfileBadgesProps {
-	badges: IEquippedItems[];
+	badges: EquippedItems[];
 }
 
 const ProfileBadges = ({ badges }: ProfileBadgesProps) => {

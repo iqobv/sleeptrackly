@@ -1,8 +1,8 @@
-import { IOption } from '@/types';
+import { Option } from '@/types';
 
 export interface SelectProps {
-	options: IOption[];
-	onChange?: (option: IOption | null) => void;
+	options: Option[];
+	onChange?: (option: Option | null) => void;
 	label?: string;
 	placeholder?: string;
 	error?: string;

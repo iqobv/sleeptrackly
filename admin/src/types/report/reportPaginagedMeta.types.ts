@@ -1,4 +1,4 @@
-export interface IReportPaginatedMeta {
+export interface ReportPaginatedMeta {
 	total: number;
 	page: number;
 	pageSize: number;

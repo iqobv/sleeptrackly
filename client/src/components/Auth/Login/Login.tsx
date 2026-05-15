@@ -4,14 +4,14 @@ import { loginWithPassword } from '@/api';
 import { AUTH_PAGES } from '@/config';
 import { LoginDto } from '@/dto';
 import { LoginSchema } from '@/schemas';
-import { IUser } from '@/types';
+import { User } from '@/types';
 import AuthForm from '../AuthForm/AuthForm';
 import BottomText from '../BottomText/BottomText';
 import { LOGIN_FIELDS } from './loginFields';
 
 const Login = () => {
 	return (
-		<AuthForm<LoginDto, IUser>
+		<AuthForm<LoginDto, User>
 			fields={LOGIN_FIELDS}
 			mutationFn={loginWithPassword}
 			buttonLabel="Login"

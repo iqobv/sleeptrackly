@@ -1,8 +1,8 @@
-import { TItemType } from './itemType.types';
+import { ItemType } from './itemType.types';
 
-export interface IEquippedItem {
+export interface EquippedItem {
 	id: string;
-	type: TItemType;
+	type: ItemType;
 	isAnimated: boolean;
 	mediaUrl: string;
 }

@@ -3,7 +3,7 @@
 import { getSleepStatus, updateSleepStatus } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { ISleepEntry } from '@/types';
+import { SleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +14,7 @@ export const useTimer = () => {
 
 	const [isSleeping, setIsSleeping] = useState(false);
 	const [isFinished, setIsFinished] = useState(false);
-	const [finishedSleep, setFinishedSleep] = useState<ISleepEntry | null>(null);
+	const [finishedSleep, setFinishedSleep] = useState<SleepEntry | null>(null);
 	const [timer, setTimer] = useState(0);
 	const [initialTime, setInitialTime] = useState<Date | null>(null);
 	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));

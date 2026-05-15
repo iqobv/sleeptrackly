@@ -1,15 +1,15 @@
 'use client';
 
 import { Button, Modal } from '@/components/UI';
-import { TProductType } from '@/types';
+import { ProductType } from '@/types';
 import { useState } from 'react';
 import ProductBundlesList from './ProductBundlesList/ProductBundlesList';
 import ProductItemsList from './ProductItemsList/ProductItemsList';
 
-import styles from './ProductItemsModal.module.scss'
+import styles from './ProductItemsModal.module.scss';
 
 const ProductItemModal = () => {
-	const [selectedType, setSelectedType] = useState<TProductType>('ITEM');
+	const [selectedType, setSelectedType] = useState<ProductType>('ITEM');
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => setOpen((prev) => !prev);

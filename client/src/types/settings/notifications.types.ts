@@ -1,4 +1,4 @@
-export interface INotificationSettings {
+export interface NotificationSettings {
 	id: string;
 	userId: string;
 	isEmailNotificationsEnabled: boolean;

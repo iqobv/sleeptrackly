@@ -3,7 +3,7 @@
 import { getAllItems } from '@/api';
 import { Button, Modal } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import { useEffect, useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 import ItemCard from '../../ItemCard/ItemCard';
@@ -11,14 +11,14 @@ import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsList
 import ItemsListWrapper from '../../ItemsListWrapper/ItemsListWrapper';
 
 interface BundleItemsProps {
-	initialItems?: IItem[];
+	initialItems?: Item[];
 }
 
 const BundleItems = <T extends FieldValues>({
 	initialItems,
 }: BundleItemsProps) => {
 	const [open, setOpen] = useState(false);
-	const [selectedItems, setSelectedItems] = useState<IItem[]>([]);
+	const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
 	const name = 'itemsIds' as Path<T>;
 
@@ -34,7 +34,7 @@ const BundleItems = <T extends FieldValues>({
 		}
 	}, [initialItems, setValue, name]);
 
-	const toggleItem = (item: IItem) => {
+	const toggleItem = (item: Item) => {
 		const isSelected = selectedIds.includes(item.id);
 
 		if (isSelected) {

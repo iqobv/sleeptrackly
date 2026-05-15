@@ -1,6 +1,6 @@
 import { FieldValues } from 'react-hook-form';
-import { IField } from '../ui/field.types';
+import { Field } from '../ui/field.types';
 
-export interface AuthField<T extends FieldValues> extends IField<T> {
+export interface AuthField<T extends FieldValues> extends Field<T> {
 	icon?: React.ReactNode;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { IOption } from '@/types';
+import { Option } from '@/types';
 import React, {
 	forwardRef,
 	useEffect,
@@ -18,7 +18,7 @@ interface SelectProps extends Omit<
 	React.InputHTMLAttributes<HTMLInputElement>,
 	'onChange'
 > {
-	options: IOption[];
+	options: Option[];
 	value?: string;
 	onChange?: (value: string) => void;
 	placeholder?: string;
@@ -92,7 +92,7 @@ const Select = forwardRef<HTMLInputElement, SelectProps>(
 				document.removeEventListener('mousedown', handleClickOutside);
 		}, []);
 
-		const handleSelect = (option: IOption) => {
+		const handleSelect = (option: Option) => {
 			onChange?.(option.value);
 			setQuery('');
 			setIsOpen(false);

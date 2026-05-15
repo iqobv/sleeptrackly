@@ -3,7 +3,7 @@
 import { updateTask } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { ChallengeTaskDto } from '@/dto';
-import { IChallengeFull, IChallengeTask } from '@/types';
+import { ChallengeFull, ChallengeTask } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -13,14 +13,14 @@ export const useTaskSummary = ({
 	challenge,
 	selectedDate,
 }: {
-	challenge: IChallengeFull;
-	selectedDate: IChallengeTask | null;
+	challenge: ChallengeFull;
+	selectedDate: ChallengeTask | null;
 }) => {
 	const queryClient = useQueryClient();
 
 	const task = useMemo(
 		() => challenge?.tasks.find((t) => t.id === selectedDate?.id) || null,
-		[challenge, selectedDate]
+		[challenge, selectedDate],
 	);
 
 	const info = useMemo(() => {

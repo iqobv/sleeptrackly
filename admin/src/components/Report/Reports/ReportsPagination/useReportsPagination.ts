@@ -1,12 +1,12 @@
 'use client';
 
-import { IReportPaginatedMeta, IReportPaginationQuery } from '@/types';
+import { ReportPaginatedMeta, ReportPaginationQuery } from '@/types';
 import { Dispatch, SetStateAction } from 'react';
 
 interface useReportsPaginationProps {
-	filters: IReportPaginationQuery;
-	meta: IReportPaginatedMeta;
-	setFilters: Dispatch<SetStateAction<IReportPaginationQuery>>;
+	filters: ReportPaginationQuery;
+	meta: ReportPaginatedMeta;
+	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
 }
 
 const SIBLING_COUNT = 1;
@@ -63,14 +63,14 @@ export const useReportsPagination = ({
 		if (!showLeftDots && showRightDots) {
 			const leftRange = Array.from(
 				{ length: 3 + SIBLING_COUNT },
-				(_, i) => i + 1
+				(_, i) => i + 1,
 			);
 			return [...leftRange, '...', lastPage];
 		}
 		if (showLeftDots && !showRightDots) {
 			const rightRange = Array.from(
 				{ length: 3 + SIBLING_COUNT },
-				(_, i) => totalPages - (3 + SIBLING_COUNT) + 1 + i
+				(_, i) => totalPages - (3 + SIBLING_COUNT) + 1 + i,
 			);
 			return [firstPage, '...', ...rightRange];
 		}

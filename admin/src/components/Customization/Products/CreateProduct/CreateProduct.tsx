@@ -4,7 +4,7 @@ import { createProduct } from '@/api';
 import { PAGES } from '@/config';
 import { CreateProductDto } from '@/dto';
 import { createProductSchema } from '@/schemas';
-import { IProduct } from '@/types';
+import { Product } from '@/types';
 import { useRouter } from 'next/navigation';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import ProductForm from '../ProductForm/ProductForm';
@@ -13,7 +13,7 @@ const CreateProduct = () => {
 	const router = useRouter();
 
 	return (
-		<CustomizationForm<CreateProductDto, IProduct>
+		<CustomizationForm<CreateProductDto, Product>
 			schema={createProductSchema}
 			mutationFn={createProduct}
 			onSuccess={(data) => {

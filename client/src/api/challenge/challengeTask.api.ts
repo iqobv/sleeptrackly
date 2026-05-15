@@ -1,5 +1,5 @@
 import { ChallengeTaskDto } from '@/dto';
-import { IChallengeTask } from '@/types';
+import { ChallengeTask } from '@/types';
 import { apiClient } from '../axios';
 
 export const updateTask = async (
@@ -8,7 +8,7 @@ export const updateTask = async (
 	data: ChallengeTaskDto,
 ) =>
 	(
-		await apiClient.patch<IChallengeTask>(
+		await apiClient.patch<ChallengeTask>(
 			`/v1/challenge-tasks/challenge/${challengeId}/task/${taskId}`,
 			data,
 		)

@@ -3,7 +3,7 @@
 import { getUserPrivacySettings, updatePrivacySettings } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { SettingsPrivacyDto } from '@/dto';
-import { IPrivacySettings } from '@/types';
+import { PrivacySettings } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import SettingsForm from '../SettingsForm/SettingsForm';
 import { SETTINGS_PRIVACY_FIELDS } from './settingsPrivacyFields';
@@ -17,7 +17,7 @@ const SettingsPrivacy = () => {
 	return (
 		<div>
 			{data && (
-				<SettingsForm<SettingsPrivacyDto, IPrivacySettings>
+				<SettingsForm<SettingsPrivacyDto, PrivacySettings>
 					fields={SETTINGS_PRIVACY_FIELDS}
 					mutationFn={(dto) => updatePrivacySettings(dto)}
 					defaultValues={{

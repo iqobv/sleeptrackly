@@ -1,8 +1,8 @@
-import { TFriendStatus } from './friendStatus.types';
+import { FriendStatus } from './friendStatus.types';
 
-export interface IFriendship {
+export interface Friendship {
 	id: string;
 	requesterId: string;
 	addresseeId: string;
-	status: TFriendStatus;
+	status: FriendStatus;
 }

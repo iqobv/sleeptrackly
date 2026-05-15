@@ -1,14 +1,14 @@
 'use client';
 
-import { IOption } from '@/types';
+import { Option } from '@/types';
 import styles from './OptionsMenu.module.scss';
 
 interface OptionsMenuProps {
-	filteredOptions: IOption[];
+	filteredOptions: Option[];
 	highlightedIndex: number;
 	value?: string;
 	dropUp?: boolean;
-	handleSelect: (option: IOption) => void;
+	handleSelect: (option: Option) => void;
 	setHighlightedIndex: (index: number) => void;
 }
 

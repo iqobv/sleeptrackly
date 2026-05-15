@@ -4,7 +4,7 @@ import { createItem } from '@/api';
 import { PAGES } from '@/config';
 import { CreateItemDto } from '@/dto';
 import { createItemSchema } from '@/schemas';
-import { IItem } from '@/types';
+import { Item } from '@/types';
 import { useRouter } from 'next/navigation';
 import CustomizationForm from '../../CustomizationForm/CustomizationForm';
 import ItemForm from '../ItemForm/ItemForm';
@@ -13,7 +13,7 @@ const CreateItem = () => {
 	const router = useRouter();
 
 	return (
-		<CustomizationForm<CreateItemDto, IItem>
+		<CustomizationForm<CreateItemDto, Item>
 			schema={createItemSchema}
 			mutationFn={createItem}
 			onSuccess={(data) => {

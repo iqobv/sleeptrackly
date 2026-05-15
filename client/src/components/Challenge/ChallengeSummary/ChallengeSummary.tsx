@@ -4,7 +4,7 @@ import { deleteChallenge } from '@/api';
 import { Button, ConfirmModal, SectionHeader } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { IChallengeFull } from '@/types';
+import { ChallengeFull } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ import { MdDeleteOutline, MdOutlineModeEdit } from 'react-icons/md';
 import styles from './ChallengeSummary.module.scss';
 
 interface ChallengeSummaryProps {
-	data: IChallengeFull;
+	data: ChallengeFull;
 }
 
 const iconProps: IconBaseProps = {

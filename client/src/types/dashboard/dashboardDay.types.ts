@@ -1,6 +1,6 @@
-import { ISleepEntry } from './sleepEntry.types';
+import { SleepEntry } from './sleepEntry.types';
 
-export interface IDashboardDay {
+export interface DashboardDay {
 	day: string;
-	data: ISleepEntry | null;
+	data: SleepEntry | null;
 }

@@ -1,11 +1,11 @@
 'use client';
 
 import { Button, SectionHeader } from '@/components/UI';
-import { IChallenge } from '@/types';
+import { Challenge } from '@/types';
 import styles from './ChallengeItem.module.scss';
 
 interface ChallengeItemProps {
-	challenge: IChallenge;
+	challenge: Challenge;
 }
 
 const ChallengeItem = ({ challenge }: ChallengeItemProps) => {

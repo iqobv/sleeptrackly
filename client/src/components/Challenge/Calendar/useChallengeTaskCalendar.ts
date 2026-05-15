@@ -1,7 +1,7 @@
 'use client';
 
 import { CHALLENGE_FREQUENCY } from '@/constants';
-import { IChallengeTask, TChallengeFrequency } from '@/types';
+import { ChallengeFrequency, ChallengeTask } from '@/types';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
@@ -9,10 +9,10 @@ export const useChallengeTaskCalendar = ({
 	tasks,
 	mode,
 }: {
-	tasks: IChallengeTask[];
-	mode: TChallengeFrequency;
+	tasks: ChallengeTask[];
+	mode: ChallengeFrequency;
 }) => {
-	const [selectedTask, setSelectedTask] = useState<IChallengeTask | null>(null);
+	const [selectedTask, setSelectedTask] = useState<ChallengeTask | null>(null);
 
 	const createWeekArr = (start: string, end?: string) => {
 		if (!end) return [dayjs(start).toDate()];
@@ -30,7 +30,7 @@ export const useChallengeTaskCalendar = ({
 		.map((t) =>
 			mode === CHALLENGE_FREQUENCY.DAILY
 				? [dayjs(t.startDate).toDate()]
-				: createWeekArr(t.startDate.toString(), t.endDate.toString())
+				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);
 
 	const pendingGroups = tasks
@@ -38,7 +38,7 @@ export const useChallengeTaskCalendar = ({
 		.map((t) =>
 			mode === CHALLENGE_FREQUENCY.DAILY
 				? [dayjs(t.startDate).toDate()]
-				: createWeekArr(t.startDate.toString(), t.endDate.toString())
+				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);
 
 	const unsortedDates = [...completedGroups, ...pendingGroups].flat();
@@ -47,13 +47,13 @@ export const useChallengeTaskCalendar = ({
 
 	const handleClick = (date: Date) => {
 		const matchedGroup = [...completedGroups, ...pendingGroups].find((g) =>
-			g.some((d) => dayjs(d).isSame(date, 'day'))
+			g.some((d) => dayjs(d).isSame(date, 'day')),
 		);
 
 		if (!matchedGroup) return;
 		const formatted = dayjs(matchedGroup[0]).format('YYYY-MM-DD');
 		const task = tasks.find((t) =>
-			t.startDate.toString().startsWith(formatted)
+			t.startDate.toString().startsWith(formatted),
 		);
 		setSelectedTask(task || null);
 	};

@@ -1,5 +1,5 @@
-import { IMessageApiResponse } from '../api/messageApiResponse.types';
+import { MessageApiResponse } from '../api/messageApiResponse.types';
 
-export interface IRegisterResult extends IMessageApiResponse {
+export interface RegisterResult extends MessageApiResponse {
 	email: string;
 }
