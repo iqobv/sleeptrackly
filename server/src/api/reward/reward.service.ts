@@ -1,5 +1,5 @@
+import { CoinTransactionType } from '@generated/prisma/enums';
 import { Injectable } from '@nestjs/common';
-import { CoinTransactionType } from 'generated/prisma/enums';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { SLEEP_TIME } from './constants';
 import { SleepRewardCalculation } from './interfaces';

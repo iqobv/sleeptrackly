@@ -1,3 +1,7 @@
+import { Prisma } from '@generated/prisma/client';
+import { UserSanctionType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { R2Service } from '@infra/r2/r2.service';
 import { HttpService } from '@nestjs/axios';
 import {
 	BadGatewayException,
@@ -8,12 +12,8 @@ import {
 	Injectable,
 } from '@nestjs/common';
 import dayjs from 'dayjs';
-import { Prisma } from 'generated/prisma/client';
-import { UserSanctionType } from 'generated/prisma/enums';
 import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { R2Service } from 'src/infra/r2/r2.service';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';

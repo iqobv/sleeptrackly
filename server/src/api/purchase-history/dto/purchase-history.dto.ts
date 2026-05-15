@@ -1,5 +1,5 @@
+import { TranslationDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { TranslationDto } from 'src/libs/dto';
 
 export class PurchaseHistoryDto {
 	@ApiProperty({ example: 'fb80e572-eb40-4156-acce-59a90429cdf6' })

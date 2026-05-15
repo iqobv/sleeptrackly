@@ -4,17 +4,17 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 
-import { Item, Prisma, UserInventory } from 'generated/prisma/client';
+import { Item, Prisma, UserInventory } from '@generated/prisma/client';
 import {
 	AcquiredFrom,
 	CoinTransactionType,
 	ProductType,
-} from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { transformProduct } from 'src/libs/mappers';
-import { productInclude } from 'src/libs/prisma';
-import { ProductWithInclude } from 'src/libs/types';
-import { paginate } from 'src/libs/utils';
+} from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { transformProduct } from '@libs/mappers';
+import { productInclude } from '@libs/prisma';
+import { ProductWithInclude } from '@libs/types';
+import { paginate } from '@libs/utils';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { PurchaseHistoryService } from '../purchase-history/purchase-history.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';

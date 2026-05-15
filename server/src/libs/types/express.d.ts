@@ -1,7 +1,7 @@
-import { User } from 'generated/prisma/client';
+import { JwtPayload } from './jwt-payload.types';
 
 declare module 'express' {
 	export interface Request {
-		user?: User;
+		user?: JwtPayload;
 	}
 }

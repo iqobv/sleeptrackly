@@ -1,5 +1,5 @@
+import { MessageResultDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { MessageResultDto } from 'src/libs/dto';
 
 export class RegisterResultDto extends MessageResultDto {
 	@ApiProperty({ example: 'REGISTRATION_SUCCESS' })

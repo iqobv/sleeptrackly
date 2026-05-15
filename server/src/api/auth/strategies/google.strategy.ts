@@ -1,15 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
-import { AuthService } from '../auth.service';
+import { OAuthDto } from '../dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-	constructor(
-		private readonly authService: AuthService,
-		private readonly configService: ConfigService,
-	) {
+	constructor(private readonly configService: ConfigService) {
 		super({
 			clientID: configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
 			clientSecret: configService.getOrThrow<string>('GOOGLE_CLIENT_SECRET'),
@@ -19,20 +16,24 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 	}
 
 	async validate(
-		accessToken: string,
-		refreshToken: string,
+		_accessToken: string,
+		_refreshToken: string,
 		profile: Profile,
 		done: VerifyCallback,
 	) {
-		const { id, emails, photos } = profile;
+		const { id, emails, photos, username } = profile;
 
-		const user = await this.authService.validateOAuthLogin({
+		if (!emails || emails.length === 0) {
+			throw new UnauthorizedException('No email associated with this account!');
+		}
+
+		const user: OAuthDto = {
 			provider: 'google',
 			providerId: id,
 			avatarUrl: photos?.[0]?.value,
-			email: emails?.[0]?.value as string,
-			username: emails?.[0]?.value.split('@')[0] as string,
-		});
+			email: emails[0].value,
+			username: username || 'NO_USERNAME',
+		};
 
 		done(null, user);
 	}

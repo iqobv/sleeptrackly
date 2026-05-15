@@ -1,3 +1,5 @@
+import { Auth, Authorized } from '@libs/decorators';
+import { LanguageQueryDto, PaginationQueryWithLanguageDto } from '@libs/dto';
 import {
 	Body,
 	Controller,
@@ -8,8 +10,6 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { LanguageQueryDto, PaginationQueryWithLanguageDto } from 'src/libs/dto';
 import {
 	PaginatedUserInventoryDto,
 	UpdateUserInvetoryDto,

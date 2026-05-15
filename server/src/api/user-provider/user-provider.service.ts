@@ -1,20 +1,33 @@
+import { Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
+import { CreateUserProviderDto } from './dto';
 
 @Injectable()
 export class UserProviderService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async findProvider(provider: string, providerId: string) {
-		return this.prismaService.userProvider.findUnique({
+	async findProvider(
+		provider: string,
+		providerId: string,
+		tx?: Prisma.TransactionClient,
+	) {
+		const prisma = tx ?? this.prismaService;
+
+		return await prisma.userProvider.findUnique({
 			where: { provider_providerId: { provider, providerId } },
 			include: { user: true },
 		});
 	}
 
-	async createProvider(provider: string, providerId: string, userId: string) {
-		return this.prismaService.userProvider.create({
-			data: { provider, providerId, user: { connect: { id: userId } } },
+	async createProvider(
+		dto: CreateUserProviderDto,
+		tx?: Prisma.TransactionClient,
+	) {
+		const prisma = tx ?? this.prismaService;
+
+		return await prisma.userProvider.create({
+			data: dto,
 		});
 	}
 }

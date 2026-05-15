@@ -1,6 +1,6 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { PromotionUsageService } from './promotion-usage.service';
 
 @Controller('promotion-usage')

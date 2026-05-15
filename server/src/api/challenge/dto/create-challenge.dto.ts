@@ -1,3 +1,4 @@
+import { ChallengeFrequency } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsDateString,
@@ -7,7 +8,6 @@ import {
 	IsString,
 	MinLength,
 } from 'class-validator';
-import { ChallengeFrequency } from 'generated/prisma/enums';
 import { TaskOptionsDto } from './task-options.dto';
 
 export class CreateChallengeDto {

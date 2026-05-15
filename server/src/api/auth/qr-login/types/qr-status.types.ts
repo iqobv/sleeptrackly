@@ -1,3 +1,10 @@
+export const QrLoginStatus = {
+	PENDING: 'pending',
+	APPROVED: 'approved',
+	EXPIRED: 'expired',
+} as const;
+export type QrLoginStatus = (typeof QrLoginStatus)[keyof typeof QrLoginStatus];
+
 type QrStatusApproved = {
 	status: 'approved';
 	userId: string;

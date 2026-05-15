@@ -1,12 +1,12 @@
+import { UserSanction } from '@generated/prisma/client';
+import { UserSanctionType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import dayjs from 'dayjs';
-import { UserSanction } from 'generated/prisma/client';
-import { UserSanctionType } from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { NotificationService } from '../notification/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserService } from '../user/user.service';

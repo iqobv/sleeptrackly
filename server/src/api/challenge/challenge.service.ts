@@ -1,3 +1,5 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { getDateRanges } from '@libs/utils';
 import {
 	BadRequestException,
 	forwardRef,
@@ -7,8 +9,6 @@ import {
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import dayjs from 'dayjs';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { getDateRanges } from 'src/libs/utils';
 import { ChallengeTaskService } from '../challenge-task/challenge-task.service';
 import { CreateChallengeTaskDto } from '../challenge-task/dto';
 import { CreateChallengeDto, UpdateChallengeDto } from './dto';

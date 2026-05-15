@@ -1,6 +1,6 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { UserSanctionDto } from './dto';
 import { UserSanctionService } from './user-sanction.service';
 

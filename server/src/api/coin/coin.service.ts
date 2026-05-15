@@ -1,10 +1,10 @@
+import { Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from 'generated/prisma/client';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UpdateCoinDto } from './dto';
 
 @Injectable()

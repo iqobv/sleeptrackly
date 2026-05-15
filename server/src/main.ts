@@ -2,34 +2,33 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
+import { json, urlencoded } from 'express';
 import basicAuth from 'express-basic-auth';
-import session, { Store } from 'express-session';
-import passport from 'passport';
 import { AppModule } from './app.module';
 import {
 	getApiVersioningConfig,
 	getCorsConfig,
-	getSessionConfig,
 	getValidationPipeConfig,
 } from './config';
-import { PrismaService } from './infra/prisma/prisma.service';
 import './instrument';
-import { SessionRefreshInterceptor } from './libs/Interceptors';
 import { setupSwagger } from './libs/utils';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	const config = app.get(ConfigService);
-	const redisStore: Store = app.get('REDIS_STORE');
-	const prisma = app.get(PrismaService);
 
 	app.set('trust proxy', true);
+
 	app.enableCors(getCorsConfig(config));
-	app.use(cookieParser(config.getOrThrow<string>('COOKIE_SECRET')));
+
+	app.use(json({ limit: '1mb' }));
+	app.use(urlencoded({ extended: true, limit: '1mb' }));
+
+	app.use(cookieParser());
 
 	app.use(
-		'/docs*splat',
+		'/docs',
 		basicAuth({
 			challenge: true,
 			users: {
@@ -39,18 +38,15 @@ async function bootstrap() {
 		}),
 	);
 
-	app.use(session(getSessionConfig(config, redisStore)));
-
-	app.use(passport.initialize());
-	app.use(passport.session());
-
 	app.useGlobalPipes(getValidationPipeConfig());
 	app.enableVersioning(getApiVersioningConfig());
-	app.useGlobalInterceptors(new SessionRefreshInterceptor(prisma));
 
 	setupSwagger(app);
 
-	await app.listen(process.env.PORT ?? 5000);
+	await app.listen(process.env.PORT ?? 5000, '0.0.0.0');
 }
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-bootstrap();
+
+bootstrap().catch((err) => {
+	console.error('Failed to bootstrap the application:', err);
+	process.exit(1);
+});

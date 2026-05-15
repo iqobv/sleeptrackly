@@ -15,8 +15,12 @@
 		"outDir": "./dist",
 		"rootDir": "./",
 		"paths": {
-			"src/*": ["./src/*"],
-			"generated/prisma/*": ["./generated/prisma/*"]
+			"@generated/*": ["./generated/*"],
+			"@infra/*": ["./src/infra/*"],
+			"@api/*": ["./src/api/*"],
+			"@libs/*": ["./src/libs/*"],
+			"@config": ["./src/config/index"],
+			"@config/*": ["./src/config/*"]
 		},
 		"incremental": true,
 		"skipLibCheck": true,
@@ -29,5 +33,7 @@
 		"esModuleInterop": true,
 		"jsx": "react",
 		"types": ["node", "jest", "multer"]
-	}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist", "test", "**/*.spec.ts", "**/*.test.ts"]
 }

@@ -1,7 +1,7 @@
+import { FcmService } from '@infra/fcm/fcm.service';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { FcmService } from 'src/infra/fcm/fcm.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import {
 	CreateNotificationDto,
 	NotificationQueryDto,

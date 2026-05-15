@@ -1,6 +1,6 @@
+import { FcmService } from '@infra/fcm/fcm.service';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { FcmService } from 'src/infra/fcm/fcm.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { NotificationService } from './notification.service';
 
 type PrismaMock = {

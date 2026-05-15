@@ -1,5 +1,5 @@
+import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
-import { ProductType, ProfileItemType } from 'generated/prisma/enums';
 
 export class ProductDto {
 	@ApiProperty({ example: '33be67ed-31e1-455d-bd0b-9f171264916e' })

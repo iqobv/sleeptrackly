@@ -1,5 +1,5 @@
+import { AcquiredFrom } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
-import { AcquiredFrom } from 'generated/prisma/enums';
 
 export class UserInventoryItemDto {
 	@ApiProperty({ example: 'a511a531-25ce-45fe-a522-7d044a9d9497' })

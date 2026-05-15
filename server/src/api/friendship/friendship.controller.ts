@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -15,7 +16,6 @@ import {
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { CreateFriendshipDto, FriendshipDto, UpdateFriendshipDto } from './dto';
 import { FriendshipService } from './friendship.service';
 

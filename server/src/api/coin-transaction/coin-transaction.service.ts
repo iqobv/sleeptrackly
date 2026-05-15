@@ -1,7 +1,7 @@
+import { CoinTransactionType, Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { InsufficientCoinsException } from '@libs/exceptions';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CoinTransactionType, Prisma } from 'generated/prisma/client';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { InsufficientCoinsException } from 'src/libs/exceptions';
 import { CreateCoinTransactionDto } from './dto';
 
 @Injectable()

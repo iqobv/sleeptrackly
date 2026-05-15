@@ -1,3 +1,4 @@
+import { Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -8,7 +9,6 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { CreateUserFcmTokenDto } from './dto';
 import { UserFcmTokenService } from './user-fcm-token.service';
 

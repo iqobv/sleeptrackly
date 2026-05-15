@@ -1,6 +1,6 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { QueryDto, SleepDashboardDto } from './dto';
 import { SleepEntryService } from './sleep-entry.service';
 

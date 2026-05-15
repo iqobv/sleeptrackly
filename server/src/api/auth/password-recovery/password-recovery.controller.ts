@@ -1,4 +1,9 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common';
+import { PasswordRecoveryDto } from '@api/user/dto';
+import { Auth, Authorized, ClientInfo } from '@libs/decorators';
+import { ClientInfoDto } from '@libs/dto';
+import { setAuthCookies } from '@libs/utils';
+import { Body, Controller, Get, Post, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
 	ApiConflictResponse,
 	ApiNotFoundResponse,
@@ -6,9 +11,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import type { Request } from 'express';
-import { PasswordRecoveryDto } from 'src/api/user/dto';
-import { Auth, Authorized } from 'src/libs/decorators';
+import type { Response } from 'express';
 import { ResetPasswordDto, SendEmailDto } from './dto';
 import { PasswordRecoveryService } from './password-recovery.service';
 
@@ -17,6 +20,7 @@ import { PasswordRecoveryService } from './password-recovery.service';
 export class PasswordRecoveryController {
 	constructor(
 		private readonly passwordRecoveryService: PasswordRecoveryService,
+		private readonly configService: ConfigService,
 	) {}
 
 	@ApiOperation({ summary: 'Send email for reset password' })
@@ -28,8 +32,17 @@ export class PasswordRecoveryController {
 
 	@ApiOperation({ summary: 'Reset password' })
 	@Post('reset')
-	async resetPassword(@Req() req: Request, @Body() dto: ResetPasswordDto) {
-		return this.passwordRecoveryService.resetPassword(req, dto);
+	async resetPassword(
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Body() dto: ResetPasswordDto,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const { accessToken, refreshToken } =
+			await this.passwordRecoveryService.resetPassword(dto, clientInfo);
+
+		setAuthCookies(res, accessToken, refreshToken, this.configService);
+
+		return { message: 'Password reset successfully' };
 	}
 
 	@ApiOperation({ summary: 'Change password' })

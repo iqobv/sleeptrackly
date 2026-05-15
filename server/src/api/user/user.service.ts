@@ -1,3 +1,12 @@
+import { Prisma } from '@generated/prisma/client';
+import { UserSanctionType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { userSelect } from '@libs/prisma';
+import {
+	comparePassword,
+	generateUsername as generateUsernameUtil,
+	hashPassword,
+} from '@libs/utils';
 import {
 	ConflictException,
 	ForbiddenException,
@@ -9,14 +18,6 @@ import {
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import dayjs from 'dayjs';
-import { UserSanctionType } from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { userSelect } from 'src/libs/prisma';
-import {
-	comparePassword,
-	generateUsername as generateUsernameUtil,
-	hashPassword,
-} from 'src/libs/utils';
 import { CoinService } from '../coin/coin.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
@@ -38,14 +39,14 @@ export class UserService {
 		private readonly userPrivacySettingsService: UserPrivacySettingsService,
 	) {}
 
-	async create(dto: CreateUserDto) {
+	async create(dto: CreateUserDto, tx?: Prisma.TransactionClient) {
 		const { email, username, password, emailVerified = false } = dto;
 
 		await this.alreadyExists({ email, username });
 
 		const hashedPassword = password ? await hashPassword(password) : null;
 
-		return await this.prismaService.$transaction(async (tx) => {
+		const execute = async (tx: Prisma.TransactionClient) => {
 			const user = await tx.user.create({
 				data: {
 					email,
@@ -66,11 +67,17 @@ export class UserService {
 			);
 
 			return user;
-		});
+		};
+
+		if (tx) {
+			return await execute(tx);
+		}
+
+		return await this.prismaService.$transaction(execute);
 	}
 
 	async findByEmail(email: string, full: boolean = false) {
-		return this.prismaService.user.findUnique({
+		return await this.prismaService.user.findUnique({
 			where: { email },
 			select: {
 				...userSelect,
@@ -170,8 +177,15 @@ export class UserService {
 		});
 	}
 
-	async update(id: string, dto: UpdateUserDto, isSystem = false) {
+	async update(
+		id: string,
+		dto: UpdateUserDto,
+		isSystem = false,
+		tx?: Prisma.TransactionClient,
+	) {
 		const { email, username, emailVerified } = dto;
+
+		const prisma = tx ?? this.prismaService;
 
 		const user = await this.findById(id, true);
 
@@ -191,7 +205,7 @@ export class UserService {
 
 		await this.alreadyExists({ email, username });
 
-		const updated = await this.prismaService.user.update({
+		const updated = await prisma.user.update({
 			where: { id: user.id },
 			data: {
 				email,
@@ -279,5 +293,7 @@ export class UserService {
 		});
 
 		if (user) throw new ConflictException('User already exists');
+
+		return false;
 	}
 }

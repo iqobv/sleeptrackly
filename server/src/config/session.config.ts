@@ -10,7 +10,7 @@ export const getSessionConfig = (
 	name: config.getOrThrow<string>('SESSION_NAME'),
 	resave: false,
 	saveUninitialized: false,
-	cookie: getCookieConfig(config),
+	cookie: getCookieConfig(config, '30d'),
 	store,
 	rolling: true,
 });

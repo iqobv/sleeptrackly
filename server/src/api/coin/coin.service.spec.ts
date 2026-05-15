@@ -1,5 +1,5 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { CoinService } from './coin.service';
 
 type PrismaMock = {

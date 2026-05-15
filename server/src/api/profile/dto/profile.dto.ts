@@ -1,8 +1,8 @@
+import { FriendshipDto } from '@api/friendship/dto';
+import { CompactUserAvatarDto } from '@api/user-avatar/dto';
+import { Friendship } from '@generated/prisma/client';
+import { DefaultFieldsDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Friendship } from 'generated/prisma/client';
-import { FriendshipDto } from 'src/api/friendship/dto';
-import { CompactUserAvatarDto } from 'src/api/user-avatar/dto';
-import { DefaultFieldsDto } from 'src/libs/dto';
 import { ProfileStatistics } from './profile-statistics.dto';
 
 export class ProfileDto extends DefaultFieldsDto {

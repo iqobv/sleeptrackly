@@ -1,16 +1,16 @@
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
+import { ProductService } from '@api/product/product.service';
+import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { ShopService } from '@api/shop/shop.service';
+import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
+import { AcquiredFrom, Item } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	ConflictException,
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AcquiredFrom, Item } from 'generated/prisma/client';
-import { CoinTransactionService } from 'src/api/coin-transaction/coin-transaction.service';
-import { ProductService } from 'src/api/product/product.service';
-import { PurchaseHistoryService } from 'src/api/purchase-history/purchase-history.service';
-import { ShopService } from 'src/api/shop/shop.service';
-import { UserInventoryService } from 'src/api/user-inventory/user-inventory.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PromotionUsageService } from './promotion-usage.service';
 
 type PrismaTxMock = {

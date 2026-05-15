@@ -1,5 +1,5 @@
+import { DefaultFieldsDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { DefaultFieldsDto } from 'src/libs/dto';
 
 export class PromotionDto extends DefaultFieldsDto {
 	@ApiProperty({ example: 'alias' })

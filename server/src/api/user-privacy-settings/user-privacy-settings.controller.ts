@@ -1,6 +1,6 @@
+import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
 import { UpdateUserPrivacySettings, UserPrivacySettingsDto } from './dto';
 import { UserPrivacySettingsService } from './user-privacy-settings.service';
 
