@@ -89,8 +89,9 @@ export class AuthService {
 		await this.mailService.sendVerificationEmail(user.email, token);
 
 		return {
+			success: true,
 			message: 'Registration successful. Please check your email to verify.',
-			code: 'REGISTRATION_SUCCESS',
+			messageCode: 'REGISTRATION_SUCCESS',
 			email: user.email,
 		};
 	}
@@ -184,7 +185,7 @@ export class AuthService {
 
 		if (!session || session.expiresAt < new Date()) {
 			if (session) {
-				await this.sessionService.deleteSession(session.id, session.userId);
+				await this.sessionService.deleteSession(session.userId, session.id);
 			}
 
 			throw new UnauthorizedException(

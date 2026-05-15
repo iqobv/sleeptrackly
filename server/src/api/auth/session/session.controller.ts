@@ -1,5 +1,11 @@
 import { Auth, Authorized, Cookie } from '@libs/decorators';
-import { Controller, Delete, Get, Param } from '@nestjs/common';
+import {
+	BadRequestException,
+	Controller,
+	Delete,
+	Get,
+	Param,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { SessionDto } from './dto';
 import { SessionService } from './session.service';
@@ -15,8 +21,11 @@ export class SessionController {
 	@Get('all')
 	async getAllSessions(
 		@Authorized('id') userId: string,
-		@Cookie('refreshToken') refreshToken: string,
+		@Cookie('refreshToken') refreshToken?: string,
 	) {
+		if (!refreshToken) {
+			throw new BadRequestException('Refresh token cookie is missing');
+		}
 		return await this.sessionService.getUserSessions(userId, refreshToken);
 	}
 
@@ -37,8 +46,11 @@ export class SessionController {
 	@Delete('all-other')
 	async terminateAllSessions(
 		@Authorized('id') userId: string,
-		@Cookie('refreshToken') refreshToken: string,
+		@Cookie('refreshToken') refreshToken?: string,
 	) {
+		if (!refreshToken) {
+			throw new BadRequestException('Refresh token cookie is missing');
+		}
 		return await this.sessionService.deleteAllOtherSessions(
 			userId,
 			refreshToken,

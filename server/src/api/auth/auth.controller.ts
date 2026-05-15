@@ -86,10 +86,13 @@ export class AuthController {
 	@Post('logout')
 	@HttpCode(HttpStatus.OK)
 	async logout(
-		@Cookie('refreshToken') rawRefreshToken: string,
+		@Cookie('refreshToken') rawRefreshToken: string | undefined,
 		@Authorized('id') userId: string,
 		@Res({ passthrough: true }) res: Response,
 	) {
+		if (!rawRefreshToken)
+			throw new UnauthorizedException('Refresh token is missing');
+
 		await this.authService.logout(rawRefreshToken, userId);
 
 		clearAuthCookies(res, this.configService);

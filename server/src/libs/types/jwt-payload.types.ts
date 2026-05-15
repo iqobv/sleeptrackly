@@ -5,6 +5,5 @@ export interface JwtPayload {
 	email: string;
 	role: UserRole;
 	sessionId: string;
-
-	createdAt: Date;
+	createdAt: string;
 }

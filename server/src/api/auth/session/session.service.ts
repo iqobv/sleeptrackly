@@ -103,12 +103,12 @@ export class SessionService {
 			orderBy: { createdAt: 'desc' },
 		});
 
-		const [sessionId, token] = refreshToken.split('.');
+		const { sessionId, rawToken } = splitToken(refreshToken);
 
 		const currentSession = await this.getSessionByRefreshToken(
 			userId,
 			sessionId,
-			token,
+			rawToken,
 		);
 
 		const mappedSessions = allSessions.map(
@@ -134,8 +134,8 @@ export class SessionService {
 	}
 
 	async findSessionByIdAndToken(sessionId: string, token: string) {
-		const session = await this.prismaService.session.findUnique({
-			where: { id: sessionId, hashToken: token },
+		const session = await this.prismaService.session.findFirst({
+			where: { AND: [{ id: sessionId }, { hashToken: token }] },
 		});
 
 		if (!session) {
