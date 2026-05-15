@@ -10,10 +10,10 @@ const SettingsTabs = () => {
 	const { activeTab } = useSettingsTabs();
 
 	return (
-		<div className={styles['settings-tabs']}>
+		<div className={styles.tabs}>
 			<List
 				items={SETTINGS_TABS}
-				className={styles['settings-tabs__list']}
+				className={styles.list}
 				isHorizontal
 				renderItem={(tab) => (
 					<SettingsTab

@@ -4,7 +4,7 @@ import styles from './LegalHeader.module.scss';
 
 const LegalHeader = () => {
 	return (
-		<Header containerClassName={styles['legal-header']}>
+		<Header containerClassName={styles.legalHeader}>
 			<NavLogo />
 		</Header>
 	);

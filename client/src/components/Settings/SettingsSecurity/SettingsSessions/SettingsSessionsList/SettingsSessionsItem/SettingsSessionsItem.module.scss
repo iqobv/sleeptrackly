@@ -1,11 +1,16 @@
 @use '../../../../../../styles/mixins' as *;
 
-.settings-sessions-item {
+.item {
 	display: flex;
 	justify-content: space-between;
 	gap: 10px;
 	flex-direction: column;
 	padding: 10px;
+
+	&.active {
+		align-items: unset;
+		flex-direction: column;
+	}
 
 	@include respond-to(md) {
 		flex-direction: row;
@@ -13,7 +18,7 @@
 	}
 }
 
-.settings-sessions-item__terminate {
+.terminate {
 	width: 100%;
 
 	@include respond-to(md) {
@@ -21,12 +26,7 @@
 	}
 }
 
-.settings-sessions-item--active {
-	align-items: unset;
-	flex-direction: column;
-}
-
-.settings-sessions-item__content {
+.content {
 	display: flex;
 	flex-direction: column;
 	align-items: start;
@@ -39,6 +39,6 @@
 	}
 }
 
-button.settings-sessions-item__all-terminate {
+button.allTerminate {
 	color: var(--terminate-all-color);
 }

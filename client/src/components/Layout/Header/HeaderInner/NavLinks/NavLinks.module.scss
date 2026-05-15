@@ -1,9 +1,9 @@
 @use '../../../../../styles/mixins' as *;
 
-.nav-list {
+.list {
 	align-items: center;
 
-	.nav-link {
+	.link {
 		color: var(--nav-color-link);
 		font-size: 18px;
 		font-weight: 600;
@@ -16,7 +16,7 @@
 	}
 
 	@include respond-to(md) {
-		.nav-link {
+		.link {
 			font-size: 16px;
 
 			&::after {
@@ -41,13 +41,13 @@
 		}
 	}
 
-	&:not(.nav-list--lg) {
+	&:not(.lg) {
 		@include respond-to(md) {
 			flex-direction: row;
 		}
 	}
 
-	&.nav-list--lg {
+	&.lg {
 		@include respond-to(md) {
 			flex-direction: column;
 		}

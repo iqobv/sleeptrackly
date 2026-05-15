@@ -29,7 +29,7 @@ const NotificationsButton = () => {
 		: false;
 
 	return (
-		<div className={styles['notifications-button']} ref={buttonRef}>
+		<div className={styles.button} ref={buttonRef}>
 			<Button
 				isIcon
 				size="sm"
@@ -38,7 +38,7 @@ const NotificationsButton = () => {
 			>
 				<MdOutlineNotifications size={24} />
 			</Button>
-			{haveUnread && <span className={styles['notifications-button__badge']} />}
+			{haveUnread && <span className={styles.badge} />}
 			<NotificationsList
 				buttonRef={buttonRef as React.RefObject<HTMLDivElement>}
 				isOpen={isOpen}

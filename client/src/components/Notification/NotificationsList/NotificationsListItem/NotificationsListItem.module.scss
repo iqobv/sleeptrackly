@@ -1,4 +1,4 @@
-.notification-item {
+.item {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -6,31 +6,31 @@
 	padding: 10px 16px;
 	border-radius: 4px;
 
-	&--unread {
+	&.unread {
 		border-left-color: var(--notification-unread-border);
 		background-color: var(--notification-unread-bg);
-	}
 
-	&__content {
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-	}
-
-	&__title {
-		font-size: 16px;
-		font-weight: 600;
-		color: var(--text-secondary);
-
-		.notification-item--unread & {
+		.title {
 			font-weight: 700;
 			font-size: 18px;
 			color: var(--text-primary);
 		}
 	}
+}
 
-	&__date {
-		font-size: 14px;
-		color: var(--secondary-color);
-	}
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.title {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--text-secondary);
+}
+
+.date {
+	font-size: 14px;
+	color: var(--secondary-color);
 }

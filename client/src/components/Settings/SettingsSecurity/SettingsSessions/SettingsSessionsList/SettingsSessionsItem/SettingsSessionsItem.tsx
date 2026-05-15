@@ -23,17 +23,13 @@ const SettingsSessionsItem = ({
 		isTerminatingAll,
 		handleTerminateAll,
 		handleTerminate,
-	} = useSettingsSessionsItem(session, disableAllButton, isActive);
+	} = useSettingsSessionsItem(session, disableAllButton);
 
 	if (!session) return null;
 
 	return (
-		<div
-			className={`${styles['settings-sessions-item']} ${
-				isActive ? styles['settings-sessions-item--active'] : ''
-			}`}
-		>
-			<div className={styles['settings-sessions-item__content']}>
+		<div className={`${styles.item} ${isActive ? styles.active : ''}`}>
+			<div className={styles.content}>
 				<SettingsSessionsDevice deviceType={session?.deviceType || 'desktop'} />
 				<SettingsSessionsInfo session={session} />
 			</div>
@@ -41,7 +37,7 @@ const SettingsSessionsItem = ({
 				<>
 					{!disableAllButton && (
 						<Button
-							className={styles['settings-sessions-item__all-terminate']}
+							className={styles.allTerminate}
 							variant="text"
 							fullWidth
 							onClick={handleTerminateAll}
@@ -56,7 +52,7 @@ const SettingsSessionsItem = ({
 				<Button
 					variant="outlined"
 					onClick={handleTerminate}
-					className={styles['settings-sessions-item__terminate']}
+					className={styles.terminate}
 					disabled={isTerminating || isTerminatingAll}
 					loading={isTerminating}
 				>

@@ -1,4 +1,4 @@
-.section-header {
+.header {
 	--padding: 20px;
 	--gap: 10px;
 
@@ -7,7 +7,7 @@
 	gap: var(--gap);
 	padding: var(--padding) 0;
 
-	.section-header__title {
+	.title {
 		color: var(--page-title-color);
 
 		h1 {
@@ -35,7 +35,7 @@
 		}
 	}
 
-	.section-header__description {
+	.description {
 		color: var(--page-description-color);
 		font-size: clamp(1rem, 2.8vw, 1.1rem);
 	}

@@ -1,15 +1,17 @@
 export interface ISession {
 	id: string;
 	userId: string;
-	expiresAt: Date;
+	isCurrent: boolean;
 	ipAddress: string | null;
-	userAgent: string | null;
 	city: string | null;
 	region: string | null;
-	country: string | null;
 	countryCode: string | null;
+	osName: string | null;
 	deviceType: string | null;
 	browserName: string | null;
 	browserVersion: string | null;
-	current: boolean;
+	createdAt: Date;
+	updatedAt: Date;
+	expiresAt: Date;
+	rotatedAt: Date | null;
 }

@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.settings-field {
+.field {
 	--mobile-direction: column;
 
 	width: 100%;
@@ -13,14 +13,12 @@
 	padding: 10px;
 	font-size: 1.1rem;
 
-	&__label {
-		flex: 1 1 100%;
-	}
-
 	@include respond-to(md) {
-		& {
-			flex-direction: row;
-			align-items: center;
-		}
+		flex-direction: row;
+		align-items: center;
 	}
+}
+
+.label {
+	flex: 1 1 100%;
 }

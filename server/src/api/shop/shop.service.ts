@@ -13,7 +13,6 @@ import {
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { transformProduct } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
-import { ProductWithInclude } from '@libs/types';
 import { paginate } from '@libs/utils';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { PurchaseHistoryService } from '../purchase-history/purchase-history.service';
@@ -49,7 +48,7 @@ export class ShopService {
 				});
 
 				let mappedProducts: TransformedProduct[] = products.map((product) =>
-					transformProduct(product as ProductWithInclude, language),
+					transformProduct(product, language),
 				);
 
 				if (userId) {
@@ -75,7 +74,7 @@ export class ShopService {
 		});
 
 		let mappedBundles: TransformedProduct[] = bundles.map((product) =>
-			transformProduct(product as ProductWithInclude, language),
+			transformProduct(product, language),
 		);
 
 		if (userId) {
@@ -153,7 +152,7 @@ export class ShopService {
 			]);
 
 			let mappedProducts: TransformedProduct[] = products.map((product) =>
-				transformProduct(product as ProductWithInclude, language),
+				transformProduct(product, language),
 			);
 
 			if (userId) {
@@ -177,7 +176,7 @@ export class ShopService {
 
 		if (!product) throw new NotFoundException('Product not found');
 
-		return transformProduct(product as ProductWithInclude, language);
+		return transformProduct(product, language);
 	}
 
 	async purchaseProduct(userId: string, productId: string) {

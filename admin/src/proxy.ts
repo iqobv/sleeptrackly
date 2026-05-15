@@ -1,47 +1,97 @@
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { USER_ROLES } from './constants';
 import { IUser } from './types';
 
-export async function proxy() {
-	const cookiesStore = await cookies();
-	const hasSession = cookiesStore.has('session');
-	const allCookies = cookiesStore.toString();
+export async function proxy(request: NextRequest) {
+	const accessToken = request.cookies.get('accessToken')?.value;
+	const refreshToken = request.cookies.get('refreshToken')?.value;
 
-	let isAuthenticated = false;
-	let user: IUser | null = null;
-	let haveAccess: boolean = false;
+	let isAuthenticated = !!accessToken;
+	let refreshedCookies: string[] = [];
 
-	if (hasSession) {
+	if (!accessToken && refreshToken) {
 		try {
-			const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
-				headers: {
-					'Content-Type': 'application/json',
-					cookie: allCookies,
+			const res = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
+				{
+					method: 'POST',
+					headers: {
+						Cookie: `refreshToken=${refreshToken}`,
+						'Content-Type': 'application/json',
+					},
 				},
-			});
-			const data = (await res.json()) as IUser;
+			);
 
-			if (res.ok && data?.id) {
-				user = data;
+			if (res.ok) {
 				isAuthenticated = true;
-				haveAccess = user.role.includes(USER_ROLES.ADMIN);
+				refreshedCookies = res.headers.getSetCookie();
+
+				refreshedCookies.forEach((cookie) => {
+					const [cookiePair] = cookie.split(';');
+					const [name, ...rest] = cookiePair.split('=');
+					const value = rest.join('=');
+					if (name && value) {
+						request.cookies.set(name.trim(), value.trim());
+					}
+				});
 			} else {
-				cookiesStore.delete('session');
 				isAuthenticated = false;
-				haveAccess = false;
 			}
-		} catch (error) {
-			console.error(error);
+		} catch {
+			isAuthenticated = false;
 		}
 	}
 
-	if (!isAuthenticated || !haveAccess) {
-		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-		return NextResponse.redirect(new URL(siteUrl));
+	let haveAccess = false;
+
+	if (isAuthenticated) {
+		try {
+			const allCookies = request.cookies
+				.getAll()
+				.map((c) => `${c.name}=${c.value}`)
+				.join('; ');
+
+			const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
+				headers: {
+					'Content-Type': 'application/json',
+					Cookie: allCookies,
+				},
+			});
+
+			if (res.ok) {
+				const data = (await res.json()) as IUser;
+				if (data?.id && data.role.includes(USER_ROLES.ADMIN)) {
+					haveAccess = true;
+				}
+			} else {
+				isAuthenticated = false;
+			}
+		} catch {
+			isAuthenticated = false;
+		}
 	}
 
-	return NextResponse.next();
+	let response: NextResponse;
+
+	if (!isAuthenticated || !haveAccess) {
+		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+		response = NextResponse.redirect(new URL(siteUrl));
+
+		if (!isAuthenticated) {
+			response.cookies.delete('accessToken');
+			response.cookies.delete('refreshToken');
+		}
+	} else {
+		response = NextResponse.next();
+	}
+
+	if (refreshedCookies.length > 0) {
+		refreshedCookies.forEach((cookie) => {
+			response.headers.append('Set-Cookie', cookie);
+		});
+	}
+
+	return response;
 }
 
 export const config = {

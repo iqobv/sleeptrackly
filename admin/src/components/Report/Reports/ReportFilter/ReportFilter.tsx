@@ -12,13 +12,13 @@ interface ReportFilterProps {
 }
 
 const selectProps: Partial<React.ComponentProps<'select'>> = {
-	className: styles['report-filter__select'],
+	className: styles.select,
 };
 
 const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 	const onChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
-		key: keyof IReportPaginationQuery
+		key: keyof IReportPaginationQuery,
 	) => {
 		setFilters({
 			...filters,
@@ -28,8 +28,8 @@ const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 	};
 
 	return (
-		<div className={styles['report-filter']}>
-			<div className={styles['report-filter__selects']}>
+		<div>
+			<div className={styles.selects}>
 				<select
 					value={filters.status}
 					onChange={(e) => onChange(e, 'status')}

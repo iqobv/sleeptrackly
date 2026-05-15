@@ -9,11 +9,7 @@ interface EmailConfirmationWrapperProps {
 const EmailConfirmationWrapper = ({
 	children,
 }: EmailConfirmationWrapperProps) => {
-	return (
-		<div className={`${styles['email-confirmation-wrapper']} container`}>
-			{children}
-		</div>
-	);
+	return <div className={`${styles.wrapper} container`}>{children}</div>;
 };
 
 export default EmailConfirmationWrapper;

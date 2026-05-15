@@ -1,5 +1,5 @@
 import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import styles from './Hero.module.scss';
 
 const Hero = () => {
@@ -14,7 +14,7 @@ const Hero = () => {
 					with personalized challenges. Your journey to restful nights starts
 					now.
 				</p>
-				<Button href={PAGES.REGISTER} className={styles['hero__button']}>
+				<Button href={AUTH_PAGES.REGISTER} className={styles['hero__button']}>
 					Join Now
 				</Button>
 			</div>

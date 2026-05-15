@@ -6,7 +6,6 @@ import { QUERY_KEYS } from '@/config';
 import { REPORT_STATUS } from '@/constants';
 import { IReportFull, TReportStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import styles from './ReportActions.module.scss';
 import ReportSanction from './ReportSanction/ReportSanction';
 
 interface ReportActionsProps {
@@ -27,7 +26,7 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 	});
 
 	return (
-		<div className={styles['report-actions']}>
+		<div>
 			{report.status === REPORT_STATUS.PENDING && (
 				<div>
 					<Button

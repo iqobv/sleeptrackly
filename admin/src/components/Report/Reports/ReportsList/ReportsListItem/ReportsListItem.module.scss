@@ -1,4 +1,4 @@
-.reports-list-item {
+.item {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -9,7 +9,7 @@
 	border-radius: 8px;
 }
 
-.reports-list-item__status {
+.status {
 	--bg: var(--bg-report-pending);
 	background-color: var(--bg);
 	padding: 6px;

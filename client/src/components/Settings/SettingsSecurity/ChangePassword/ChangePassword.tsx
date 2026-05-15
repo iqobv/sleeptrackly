@@ -21,7 +21,7 @@ const ChangePassword = () => {
 			<Modal
 				isOpen={open}
 				onClose={handleCLose}
-				containerClassName={styles['change-password-modal']}
+				containerClassName={styles.modal}
 			>
 				<ChangePasswordForm handleCLose={handleCLose} />
 			</Modal>

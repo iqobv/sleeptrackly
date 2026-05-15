@@ -1,13 +1,12 @@
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const initiateQrCode = async () =>
-	await fetcher<{ qrId: string }>('/v1/auth/qr/initiate');
+	(await apiClient.get<{ qrId: string }>('/v1/auth/qr/initiate')).data;
 
 export const approveQrLogin = async (qrId: string) =>
-	await fetcher<{ message: string }>('/v1/auth/qr/approve', {
-		method: 'POST',
-		body: JSON.stringify({ qrId }),
-	});
+	(await apiClient.post<{ message: string }>('/v1/auth/qr/approve', { qrId }))
+		.data;
 
 export const getQrStatus = async (qrId: string) =>
-	await fetcher<{ status: string }>(`/v1/auth/qr/status?qrId=${qrId}`);
+	(await apiClient.get<{ status: string }>(`/v1/auth/qr/status?qrId=${qrId}`))
+		.data;

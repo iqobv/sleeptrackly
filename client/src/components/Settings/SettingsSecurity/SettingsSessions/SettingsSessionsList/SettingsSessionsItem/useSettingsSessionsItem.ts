@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 export const useSettingsSessionsItem = (
 	session: ISession,
 	disableAllButton?: boolean,
-	isActive?: boolean
 ) => {
 	const queryClient = useQueryClient();
 	const { user } = useAuth();
@@ -27,7 +26,7 @@ export const useSettingsSessionsItem = (
 	});
 
 	const { mutate: terminateAll, isPending: isTerminatingAll } = useMutation({
-		mutationFn: () => terminateAllSessions(isActive ? session.id : ''),
+		mutationFn: terminateAllSessions,
 		mutationKey: QUERY_KEYS.auth.terminateAllSession(user?.id || ''),
 		onSuccess: () => {
 			queryClient.invalidateQueries({

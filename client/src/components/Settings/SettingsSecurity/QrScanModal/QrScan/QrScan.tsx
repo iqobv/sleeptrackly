@@ -21,7 +21,7 @@ const QrScan = () => {
 	}, [result, mutate]);
 
 	return (
-		<div className={styles['qr-scan']}>
+		<div className={styles.qrScan}>
 			<SectionHeader
 				title="Point your camera at the QR code"
 				titleComponent="h3"

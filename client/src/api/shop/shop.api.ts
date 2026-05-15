@@ -1,24 +1,31 @@
 import { LanguageDto } from '@/dto';
 import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
 import { IFeaturedShop, IPaginatedDataResponse, IProduct } from '@/types';
-import { createSearchParams, fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getFeaturedShop = async (dto: LanguageDto) =>
-	await fetcher<IFeaturedShop>(`/v1/shop/featured?language=${dto.language}`);
+	(
+		await apiClient.get<IFeaturedShop>(`/v1/shop/featured`, {
+			params: dto,
+		})
+	).data;
 
-export const getAllShop = async (dto: PaginatedShopFilterDto) => {
-	const params = createSearchParams(dto);
+export const getAllShop = async ({
+	itemType,
+	...dto
+}: PaginatedShopFilterDto) => {
+	const params = {
+		...dto,
+		itemType: itemType?.length ? itemType?.join(',') : undefined,
+	};
 
-	return await fetcher<IPaginatedDataResponse<IProduct>>(
-		`/v1/shop/all?${params.toString()}`,
-	);
+	return (
+		await apiClient.get<IPaginatedDataResponse<IProduct>>(`/v1/shop/all`, {
+			params,
+		})
+	).data;
 };
 
 export const makePurchase = async (productId: string) =>
-	await fetcher<{ success: boolean }>(
-		`/v1/shop/purchase/${productId}`,
-		{
-			method: 'POST',
-		},
-		true,
-	);
+	(await apiClient<{ success: boolean }>(`/v1/shop/purchase/${productId}`))
+		.data;

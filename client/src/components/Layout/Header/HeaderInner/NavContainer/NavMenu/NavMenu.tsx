@@ -21,17 +21,14 @@ const NavMenu = ({
 }: NavMenuProps) => {
 	return (
 		<div
-			className={`${styles['nav-overlay']} ${isOpen ? styles['open'] : ''} ${
-				isClosing ? styles['closing'] : ''
+			className={`${styles.overlay} ${isOpen ? styles.open : ''} ${
+				isClosing ? styles.closing : ''
 			}`}
 			onClick={handleCloseOnOverlay}
 			tabIndex={isOpen ? 0 : -1}
 		>
-			<div className={styles['nav-overlay-content']}>
-				<NavLogo
-					className={styles['nav-overlay-content__logo']}
-					onClick={handleClick}
-				/>
+			<div className={styles.content}>
+				<NavLogo className={styles.logo} onClick={handleClick} />
 				<nav className={styles.nav}>
 					<NavLinks
 						closeMenu={handleClick}

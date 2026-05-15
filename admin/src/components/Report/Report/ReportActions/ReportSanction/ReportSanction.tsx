@@ -22,7 +22,7 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 	};
 
 	return (
-		<div className={styles['report-sanction']}>
+		<div className={styles.sanction}>
 			<SectionHeader title="Sanctions" titleComponent="h3" />
 			{report.sanctions.length > 0 && (
 				<ReportUserSanctions

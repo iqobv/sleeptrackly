@@ -1,7 +1,7 @@
 'use client';
 
 import { loginWithPassword } from '@/api';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import { LoginDto } from '@/dto';
 import { LoginSchema } from '@/schemas';
 import { IUser } from '@/types';
@@ -18,7 +18,7 @@ const Login = () => {
 			schema={LoginSchema}
 			defaultValues={{ email: '', password: '' }}
 			bottomText={
-				<BottomText redirectText={'Register'} redirectUrl={PAGES.REGISTER}>
+				<BottomText redirectText={'Register'} redirectUrl={AUTH_PAGES.REGISTER}>
 					Don&apos;t have an account?
 				</BottomText>
 			}

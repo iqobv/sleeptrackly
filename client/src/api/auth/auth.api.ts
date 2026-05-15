@@ -1,26 +1,22 @@
 import { LoginDto, RegisterDto } from '@/dto';
 import { IRegisterResult, IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const loginWithPassword = async (data: LoginDto) =>
-	await fetcher<IUser>('/v1/auth/login', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.post<IUser>('/v1/auth/login', data)).data;
 
 export const registerWithPassword = async (data: RegisterDto) => {
 	const { acceptTerms: _, ...rest } = data;
 
-	return await fetcher<IRegisterResult>('/v1/auth/register', {
-		method: 'POST',
-		body: JSON.stringify(rest),
-	});
+	return (await apiClient.post<IRegisterResult>('/v1/auth/register', rest))
+		.data;
 };
 
 export const logout = async () =>
-	await fetcher<boolean>('/v1/auth/logout', { method: 'POST' });
+	(await apiClient.post<boolean>('/v1/auth/logout')).data;
 
-export const getUser = async () => await fetcher<IUser>('/v1/auth/me');
+export const getUser = async () =>
+	(await apiClient.get<IUser>('/v1/auth/me')).data;
 
 export const deleteAccount = async () =>
-	await fetcher<boolean>('/v1/auth/delete', { method: 'DELETE' });
+	(await apiClient.delete<boolean>('/v1/auth/delete')).data;

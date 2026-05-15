@@ -59,10 +59,7 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 	const onSubmit = (data: ChangePasswordDto) => mutate(data);
 
 	return (
-		<form
-			className={styles['change-password-form']}
-			onSubmit={handleSubmit(onSubmit)}
-		>
+		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			{isLoading && <Loader />}
 			{isFetched && (
 				<>
@@ -82,7 +79,7 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 					})}
 				</>
 			)}
-			<Button type="submit" className={styles['change-password-form__button']}>
+			<Button type="submit" className={styles.button}>
 				Change password
 			</Button>
 		</form>

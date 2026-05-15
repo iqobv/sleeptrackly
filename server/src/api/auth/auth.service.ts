@@ -217,7 +217,7 @@ export class AuthService {
 			email: user.email,
 			role: user.role,
 			sessionId: updatedSession.id,
-			createdAt: user.createdAt,
+			createdAt: new Date(user.createdAt).toISOString(),
 		};
 
 		const accessToken = this.jwtService.sign(payload, {
@@ -259,7 +259,7 @@ export class AuthService {
 			email: user.email,
 			role: user.role,
 			sessionId: session.id,
-			createdAt: user.createdAt,
+			createdAt: new Date(user.createdAt).toISOString(),
 		};
 
 		const accessToken = this.jwtService.sign(payload, {

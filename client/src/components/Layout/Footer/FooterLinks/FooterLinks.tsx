@@ -4,13 +4,9 @@ import { FOOTER_LINKS } from './footerLinksItems';
 
 const FooterLinks = () => {
 	return (
-		<div className={styles['footer__links']}>
+		<div className={styles.links}>
 			{FOOTER_LINKS.map((link) => (
-				<Link
-					key={link.href}
-					href={link.href}
-					className={styles['footer__link']}
-				>
+				<Link key={link.href} href={link.href} className={styles.link}>
 					{link.label}
 				</Link>
 			))}

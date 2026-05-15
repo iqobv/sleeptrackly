@@ -41,8 +41,8 @@ const ReportUserSanctionsItem = ({
 	const handleOpenModal = () => setOpenModal(!openModal);
 
 	return (
-		<div key={sanction.id} className={styles['report-user-sanctions__item']}>
-			<div className={styles['report-user-sanctions__header']}>
+		<div key={sanction.id} className={styles.item}>
+			<div className={styles.header}>
 				<SectionHeader title={`Sanction #${index + 1}`} titleComponent="h3" />
 				<Button isIcon size="sm" variant="text" onClick={handleOpenModal}>
 					<MdOutlineDeleteOutline size={25} />
@@ -56,13 +56,13 @@ const ReportUserSanctionsItem = ({
 					onConfirm={handleClick}
 				/>
 			</div>
-			<div className={styles['report-user-sanctions__user']}>
+			<div className={styles.user}>
 				<p>User: </p>
 				<Link href={PAGES.USER(sanction.user.username)}>
 					{sanction.user.username}
 				</Link>
 			</div>
-			<div className={styles['report-user-sanctions__user']}>
+			<div className={styles.user}>
 				<p>Created by: </p>
 				<Link href={PAGES.USER(sanction.createdBy.username)}>
 					{sanction.createdBy.username} ({sanction.createdBy.role})

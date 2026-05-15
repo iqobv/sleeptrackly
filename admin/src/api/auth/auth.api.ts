@@ -1,7 +1,8 @@
 import { IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const logout = async () =>
-	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });
+	(await apiClient.post<boolean>('/v1/auth/logout')).data;
 
-export const getUser = async () => await fetcher<IUser>('/api/v1/auth/me');
+export const getUser = async () =>
+	(await apiClient.get<IUser>('/v1/auth/me')).data;

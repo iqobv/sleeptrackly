@@ -1,48 +1,48 @@
-.auth-form {
+.form {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
 
-	&__button {
-		margin-top: 20px;
-	}
+.button {
+	margin-top: 20px;
+}
 
-	&__error {
-		width: 100%;
-		background-color: rgba(255, 108, 108, 0.08);
-		border: 1px solid rgb(255, 92, 92);
-		padding: 10px;
-		border-radius: 4px;
-		display: flex;
-		gap: 10px;
-		align-items: center;
-		color: rgb(253, 57, 57);
-	}
+.error {
+	width: 100%;
+	background-color: rgba(255, 108, 108, 0.08);
+	border: 1px solid rgb(255, 92, 92);
+	padding: 10px;
+	border-radius: 4px;
+	display: flex;
+	gap: 10px;
+	align-items: center;
+	color: rgb(253, 57, 57);
+}
 
-	&__link {
-		margin-top: 20px;
-		text-align: center;
-	}
+.link {
+	margin-top: 20px;
+	text-align: center;
+}
 
-	&__bottom-text {
-		margin-top: 20px;
-		text-align: center;
-	}
+.bottomText {
+	margin-top: 20px;
+	text-align: center;
+}
 
-	&__password-icon {
-		margin-right: 2px;
-	}
+.passwordIcon {
+	margin-right: 2px;
+}
 
-	&__field {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-	}
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
 
-	&__checkbox {
-		display: inline-flex;
-		align-items: center;
-		gap: 16px;
-	}
+.checkbox {
+	display: inline-flex;
+	align-items: center;
+	gap: 16px;
 }

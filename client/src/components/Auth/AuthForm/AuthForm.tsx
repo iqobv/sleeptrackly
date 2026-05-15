@@ -3,7 +3,7 @@
 'use client';
 
 import { Button, TextField } from '@/components/UI';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
 import { AuthField, IRegisterResult, IUser } from '@/types';
@@ -61,7 +61,7 @@ const AuthForm = <T extends FieldValues, R>({
 		onSuccess: (data) => {
 			if (isRegister) {
 				toast.success((data as IRegisterResult).message);
-				router.push(PAGES.EMAIL_CONFIRMATION);
+				router.push(AUTH_PAGES.EMAIL_CONFIRMATION);
 				localStorage.setItem(
 					LOCAL_STORAGE_KEYS.auth.registrationEmail,
 					(data as IRegisterResult).email,
@@ -83,9 +83,9 @@ const AuthForm = <T extends FieldValues, R>({
 	const onSubmit = (data: T) => mutate(data);
 
 	return (
-		<form className={styles['auth-form']} onSubmit={handleSubmit(onSubmit)}>
+		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			{errors['root'] && (
-				<div className={styles['auth-form__error']}>
+				<div className={styles.error}>
 					<MdErrorOutline />
 					<p>{errors['root']?.message as string}</p>
 				</div>
@@ -108,7 +108,7 @@ const AuthForm = <T extends FieldValues, R>({
 							error={errors[f.name]?.message as string}
 							leftIcon={f.icon}
 							{...(f.type?.includes('password') && {
-								rightIconClassName: styles['auth-form__password-icon'],
+								rightIconClassName: styles.passwordIcon,
 							})}
 							{...register(f.name)}
 						/>
@@ -119,16 +119,14 @@ const AuthForm = <T extends FieldValues, R>({
 				loading={isPending}
 				fullWidth
 				type="submit"
-				className={styles['auth-form__button']}
+				className={styles.button}
 			>
 				{buttonLabel}
 			</Button>
-			<Link className={styles['auth-form__link']} href={PAGES.RESET_PASSWORD}>
+			<Link className={styles.link} href={AUTH_PAGES.RESET_PASSWORD}>
 				Forgot password?
 			</Link>
-			{!!bottomText && (
-				<div className={styles['auth-form__bottom-text']}>{bottomText}</div>
-			)}
+			{!!bottomText && <div className={styles.bottomText}>{bottomText}</div>}
 		</form>
 	);
 };

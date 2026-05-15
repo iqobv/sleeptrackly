@@ -34,15 +34,8 @@ const ReportModal = ({
 	} = useReportModal({ reportedId, reportType, onClose });
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			containerClassName={styles['report-modal']}
-		>
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className={styles['report-modal__form']}
-			>
+		<Modal isOpen={isOpen} onClose={onClose} containerClassName={styles.modal}>
+			<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 				<SectionHeader title={modalTitle} titleComponent="h2" padding={5} />
 				<input type="hidden" {...register('reportedId')} />
 				<Select

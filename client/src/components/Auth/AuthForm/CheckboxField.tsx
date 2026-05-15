@@ -13,12 +13,12 @@ const CheckboxField = ({ label, error, ...props }: CheckboxFieldProps) => {
 	const id = props.id || generatedId;
 
 	return (
-		<div className={styles['auth-form__field']}>
-			<div className={styles['auth-form__checkbox']}>
+		<div className={styles.field}>
+			<div className={styles.checkbox}>
 				<input type="checkbox" id={id} {...props} />
 				<label htmlFor={id}>{label}</label>
 			</div>
-			{error && <span className={styles['auth-form__error']}>{error}</span>}
+			{error && <span className={styles.error}>{error}</span>}
 		</div>
 	);
 };

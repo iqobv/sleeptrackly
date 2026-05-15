@@ -1,4 +1,4 @@
-import { PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config';
 
 interface Link {
 	name: string;
@@ -12,25 +12,25 @@ export const LINKS: Link[] = [
 	{
 		name: 'timer',
 		label: 'Timer',
-		path: PAGES.TIMER,
+		path: PRIVATE_PAGES.TIMER,
 		isAuth: true,
 	},
 	{
 		name: 'challenges',
 		label: 'Challenges',
-		path: PAGES.CHALLENGES,
+		path: PRIVATE_PAGES.CHALLENGES.ALL,
 		isAuth: true,
 	},
 	{
 		name: 'shop',
 		label: 'Shop',
-		path: PAGES.SHOP,
+		path: PRIVATE_PAGES.SHOP.FEATURED,
 		isAuth: true,
 	},
 	{
 		name: 'dashboard',
 		label: 'Dashboard',
-		path: PAGES.DASHBOARD,
+		path: PRIVATE_PAGES.DASHBOARD,
 		isAuth: true,
 	},
 ];

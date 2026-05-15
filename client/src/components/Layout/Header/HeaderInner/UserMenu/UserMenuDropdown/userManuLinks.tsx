@@ -1,4 +1,4 @@
-import { PAGES } from '@/config';
+import { PAGES, PRIVATE_PAGES } from '@/config';
 import { IUser } from '@/types';
 import { IconBaseProps } from 'react-icons';
 import {
@@ -29,13 +29,13 @@ export const USER_MAIN_LINKS = (user: IUser): Link[] => [
 	{
 		name: 'friends',
 		label: 'Friends',
-		path: PAGES.FRIENDS,
+		path: PRIVATE_PAGES.FRIENDS.ALL,
 		icon: <MdPeopleOutline {...iconProps} />,
 	},
 	{
 		name: 'inventory',
 		label: 'Inventory',
-		path: PAGES.INVENTORY,
+		path: PRIVATE_PAGES.INVENTORY,
 		icon: <MdOutlineInventory2 {...iconProps} />,
 	},
 ];
@@ -44,7 +44,7 @@ export const USER_SYSTEM_LINKS: Link[] = [
 	{
 		name: 'settings',
 		label: 'Settings',
-		path: PAGES.SETTINGS,
+		path: PRIVATE_PAGES.SETTINGS.MAIN,
 		icon: <MdOutlineSettings {...iconProps} />,
 	},
 ];

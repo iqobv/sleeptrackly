@@ -12,27 +12,27 @@ interface ReportDetailProps {
 
 const ReportDetail = ({ report }: ReportDetailProps) => {
 	return (
-		<div className={styles['report-detail']}>
+		<div className={styles.reportDetail}>
 			<SectionHeader
 				title={report.title}
 				description={report.description}
 				titleComponent="h2"
 			/>
-			<div className={styles['report-detail__info']}>
-				<div className={styles['report-detail__user']}>
+			<div className={styles.info}>
+				<div className={styles.user}>
 					<p>Reported By: </p>
 					<Link
-						className={styles['report-detail__username']}
+						className={styles.username}
 						href={PAGES.USER(report.reporter.username)}
 					>
 						{report.reporter.username}
 					</Link>
 				</div>
 				{report.targetUserId && report.targetUser && (
-					<div className={styles['report-detail__user']}>
+					<div className={styles.user}>
 						<p>Target User: </p>
 						<Link
-							className={styles['report-detail__username']}
+							className={styles.username}
 							href={PAGES.USER(report.targetUser.username)}
 						>
 							{report.targetUser.username}

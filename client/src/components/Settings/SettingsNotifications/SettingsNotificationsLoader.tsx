@@ -6,7 +6,7 @@ import SettingsNotificationsFormLoader from './SettingsNotificationsForm/Setting
 
 const SettingsNotificationsLoader = () => {
 	return (
-		<div className={styles['settings-notifications']}>
+		<div className={styles.notifications}>
 			<SkeletonLoader height={46} width="100%" />
 			<SettingsNotificationsFormLoader />
 		</div>

@@ -112,13 +112,13 @@ export class SessionService {
 		);
 
 		const mappedSessions = allSessions.map(
-			({ hashToken: _rt, previousToken: _pt, userAgent: _ua, ...rest }) => rest,
+			({ hashToken: _rt, previousToken: _pt, userAgent: _ua, ...rest }) => ({
+				...rest,
+				isCurrent: rest.id === currentSession.id,
+			}),
 		);
 
-		return {
-			currentSession,
-			otherSessions: mappedSessions.filter((s) => s.id !== currentSession.id),
-		};
+		return mappedSessions;
 	}
 
 	async findSessionById(sessionId: string) {

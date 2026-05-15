@@ -1,7 +1,7 @@
 'use client';
 
 import { validateVerificationToken } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { AUTH_PAGES, PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -34,7 +34,7 @@ const EmailConfirmation = () => {
 				toast.info('Email already confirmed');
 			} else {
 				toast.error(error.message);
-				router.push(PAGES.EMAIL_CONFIRMATION);
+				router.push(AUTH_PAGES.EMAIL_CONFIRMATION);
 			}
 		},
 	});

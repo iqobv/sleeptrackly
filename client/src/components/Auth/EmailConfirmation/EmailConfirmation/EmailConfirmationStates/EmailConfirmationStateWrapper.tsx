@@ -14,13 +14,11 @@ const EmailConfirmationStateWrapper = ({
 	icon: Icon,
 }: EmailConfirmationStateWrapperProps) => {
 	return (
-		<div className={styles['email-confirmation-state-wrapper']}>
-			<div className={styles['email-confirmation-state-wrapper__icon']}>
+		<div className={styles.wrapper}>
+			<div className={styles.icon}>
 				<Icon />
 			</div>
-			<div className={styles['email-confirmation-state-wrapper__children']}>
-				{children}
-			</div>
+			<div className={styles.content}>{children}</div>
 		</div>
 	);
 };

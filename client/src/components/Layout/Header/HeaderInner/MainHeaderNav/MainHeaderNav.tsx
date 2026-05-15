@@ -13,14 +13,14 @@ const MainHeaderNav = () => {
 	return (
 		<NavContainer withMenu renderLogoInsteadOfMenu={!user}>
 			{!!user && (
-				<div className={styles['main-header__logo']}>
+				<div className={styles.logo}>
 					<NavLogo />
 				</div>
 			)}
-			<nav className={styles['main-header__nav']}>
+			<nav className={styles.nav}>
 				<NavLinks />
 			</nav>
-			<div className={styles['main-header__auth-container']}>
+			<div>
 				<AuthButtons />
 			</div>
 		</NavContainer>

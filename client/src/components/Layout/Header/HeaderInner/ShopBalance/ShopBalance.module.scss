@@ -1,4 +1,4 @@
-.shop-balance {
+.balance {
 	align-items: center;
 	padding: 0 15px;
 	border-radius: 8px;
@@ -10,11 +10,11 @@
 	border: 1px solid rgba(var(--balance-border-rgb), 0.08);
 	display: inline-flex;
 
-	&__icon {
+	.icon {
 		flex-shrink: 0;
 	}
 
-	&__amount-wrapper {
+	.amountWrapper {
 		max-width: 0;
 		opacity: 0;
 		overflow: hidden;
@@ -25,7 +25,7 @@
 			opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
 			margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
-		&--visible {
+		&.visible {
 			max-width: 150px;
 			opacity: 1;
 			margin-left: 8px;

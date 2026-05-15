@@ -1,45 +1,40 @@
+import { apiClient } from '@/api/axios';
 import { CreateBundleDto, PaginationDto, UpdateBundleDto } from '@/dto';
 import { IBundle, IPaginatedDataResponse } from '@/types';
-import { fetcher, getFormData, parseSearchParams } from '@/utils';
+import { getFormData } from '@/utils';
 
 export const createBundle = async (dto: CreateBundleDto) => {
 	const formData = getFormData(dto);
 
-	return await fetcher<IBundle>('/api/v1/items/bundles', {
-		method: 'POST',
-		body: formData,
-	});
+	return (await apiClient.post<IBundle>('/v1/items/bundles', formData)).data;
 };
 
 export const updateBundle = async (id: string, dto: UpdateBundleDto) => {
 	const formData = getFormData(dto);
 
-	return await fetcher<IBundle>(`/api/v1/items/bundles/${id}`, {
-		method: 'PATCH',
-		body: formData,
-	});
+	return (await apiClient.patch<IBundle>(`/v1/items/bundles/${id}`, formData))
+		.data;
 };
 
-export const getAllBundles = async (query: PaginationDto) => {
-	const params = parseSearchParams(query);
+export const getAllBundles = async (query: PaginationDto) =>
+	(
+		await apiClient.get<IPaginatedDataResponse<IBundle>>(`/v1/items/bundles`, {
+			params: query,
+		})
+	).data;
 
-	return await fetcher<IPaginatedDataResponse<IBundle>>(
-		`/api/v1/items/bundles?${params.toString()}`,
-	);
-};
-
-export const getAllAvailableBundles = async (query: PaginationDto) => {
-	const params = parseSearchParams(query);
-
-	return await fetcher<IPaginatedDataResponse<IBundle>>(
-		`/api/v1/items/bundles/available?${params.toString()}`,
-	);
-};
+export const getAllAvailableBundles = async (query: PaginationDto) =>
+	(
+		await apiClient.get<IPaginatedDataResponse<IBundle>>(
+			`/v1/items/bundles/available`,
+			{
+				params: query,
+			},
+		)
+	).data;
 
 export const getBundleById = async (id: string) =>
-	await fetcher<IBundle>(`/api/v1/items/bundles/id/${id}`);
+	(await apiClient.get<IBundle>(`/v1/items/bundles/id/${id}`)).data;
 
 export const deleteBundle = async (id: string) =>
-	await fetcher<boolean>(`/api/v1/items/bundles/${id}`, {
-		method: 'DELETE',
-	});
+	(await apiClient.delete<boolean>(`/v1/items/bundles/${id}`)).data;

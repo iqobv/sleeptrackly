@@ -1,4 +1,4 @@
-.reports-pagination {
+.pagination {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
@@ -6,7 +6,7 @@
 	justify-content: center;
 }
 
-.reports-pagination__pages {
+.pages {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
@@ -14,24 +14,24 @@
 	justify-content: center;
 }
 
-.reports-pagination__button {
+.button {
 	&:disabled {
 		opacity: 0.8;
 	}
 
-	&--dots {
+	&.dots {
 		cursor: default;
 		pointer-events: none;
 		user-select: none;
 		opacity: 0.7;
 	}
 
-	&--active {
+	&.active {
 		background-color: #333;
 	}
 }
 
-.reports-pagination__button-text {
+.buttonText {
 	aspect-ratio: 1/1;
 	width: 25px;
 	height: 25px;

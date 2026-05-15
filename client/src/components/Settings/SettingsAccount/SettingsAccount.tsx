@@ -15,7 +15,7 @@ const SettingsAccount = () => {
 	const { user, isloading } = useAuth();
 
 	return (
-		<div className={styles['settings-account']}>
+		<div className={styles.settingsAccount}>
 			<UploadAvatar />
 			{isloading && <SettingsAccountLoader />}
 			{!isloading && user && (

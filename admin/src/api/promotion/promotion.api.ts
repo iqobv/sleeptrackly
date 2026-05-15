@@ -1,26 +1,18 @@
 import { CreatePromotionDto } from '@/dto';
 import { IPromotion } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getAllPromotions = async () =>
-	await fetcher<IPromotion[]>(`/api/v1/promotions`);
+	(await apiClient.get<IPromotion[]>(`/v1/promotions`)).data;
 
 export const getPromotionById = async (id: string) =>
-	await fetcher<IPromotion>(`/api/v1/promotions/id/${id}`);
+	(await apiClient.get<IPromotion>(`/v1/promotions/id/${id}`)).data;
 
 export const createPromotion = async (data: CreatePromotionDto) =>
-	await fetcher(`/api/v1/promotions`, {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.post(`/v1/promotions`, data)).data;
 
 export const updatePromotion = async (id: string, data: CreatePromotionDto) =>
-	await fetcher(`/api/v1/promotions/${id}`, {
-		method: 'PATCH',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.patch(`/v1/promotions/${id}`, data)).data;
 
 export const deletePromotion = async (id: string) =>
-	await fetcher(`/api/v1/promotions/${id}`, {
-		method: 'DELETE',
-	});
+	(await apiClient.delete(`/v1/promotions/${id}`)).data;

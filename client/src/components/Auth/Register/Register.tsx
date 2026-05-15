@@ -1,7 +1,7 @@
 'use client';
 
 import { registerWithPassword } from '@/api';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import { RegisterDto } from '@/dto';
 import { RegisterSchema } from '@/schemas';
 import { IRegisterResult } from '@/types';
@@ -19,7 +19,7 @@ const Register = () => {
 			isRegister
 			defaultValues={{ email: '', password: '', username: '' }}
 			bottomText={
-				<BottomText redirectText={'Login'} redirectUrl={PAGES.LOGIN}>
+				<BottomText redirectText={'Login'} redirectUrl={AUTH_PAGES.LOGIN}>
 					Already have an account?
 				</BottomText>
 			}

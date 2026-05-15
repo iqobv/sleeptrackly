@@ -1,7 +1,7 @@
 'use client';
 
 import { createChallenge } from '@/api';
-import { PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config';
 import { CreateChallengeDto } from '@/dto';
 import { CreateChallengeSchema } from '@/schemas';
 import { IChallenge } from '@/types';
@@ -18,7 +18,7 @@ const CreateChallenge = () => {
 			mutationFn={createChallenge}
 			buttonLabel="Create"
 			schema={CreateChallengeSchema}
-			onSuccess={(data) => router.push(PAGES.CHALLENGE(data.id))}
+			onSuccess={(data) => router.push(PRIVATE_PAGES.CHALLENGES.BY_ID(data.id))}
 		/>
 	);
 };

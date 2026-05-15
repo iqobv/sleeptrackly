@@ -16,10 +16,10 @@ const SettingsField = ({
 }: SettingsFieldProps) => {
 	return (
 		<div
-			className={styles['settings-field']}
+			className={styles.field}
 			style={{ '--mobile-direction': mobileDirection } as React.CSSProperties}
 		>
-			<div className={styles['settings-field__label']}>{label}</div>
+			<div className={styles.label}>{label}</div>
 			{children && <>{children}</>}
 		</div>
 	);

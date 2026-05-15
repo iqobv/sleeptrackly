@@ -14,10 +14,7 @@ interface ReportsListItemProps {
 
 const ReportsListItem = ({ report }: ReportsListItemProps) => {
 	return (
-		<Link
-			href={PAGES.REPORT(report.id)}
-			className={styles['reports-list-item']}
-		>
+		<Link href={PAGES.REPORT(report.id)} className={styles.item}>
 			<div>
 				<p>{report.title}</p>
 				<div>
@@ -25,7 +22,7 @@ const ReportsListItem = ({ report }: ReportsListItemProps) => {
 				</div>
 			</div>
 			<div
-				className={styles['reports-list-item__status']}
+				className={styles.status}
 				style={
 					{
 						'--bg': `var(--bg-report-${report.status

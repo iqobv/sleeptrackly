@@ -1,5 +1,5 @@
 import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config';
 import styles from './FeaturedShopBanner.module.scss';
 
 const FeaturedShopBanner = () => {
@@ -8,7 +8,7 @@ const FeaturedShopBanner = () => {
 			<p className={styles['featured-shop-banner__text']}>
 				Explore all customization items!
 			</p>
-			<Button href={PAGES.SHOP_CATALOG} size="lg">
+			<Button href={PRIVATE_PAGES.SHOP.CATALOG} size="lg">
 				Browse All
 			</Button>
 		</div>

@@ -3,7 +3,7 @@
 import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
 import { Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { AUTH_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -50,7 +50,7 @@ const FeaturedShopCarouselBuyButton = ({
 	const handleClick = () => {
 		if (!isAuthenticated) {
 			toast.info('Please log in to make a purchase.');
-			router.push(PAGES.LOGIN);
+			router.push(AUTH_PAGES.LOGIN);
 			return;
 		}
 

@@ -1,26 +1,22 @@
 @use '../../../../../styles/mixins' as *;
 
-.main-header {
-	&__logo {
-		display: none;
+.logo {
+	display: none;
 
-		&--show {
-			display: flex;
-		}
-	}
-
-	&__nav {
-		display: none;
-		align-items: center;
+	&.show {
+		display: flex;
 	}
 
 	@include respond-to(md) {
-		&__logo {
-			display: flex;
-		}
+		display: flex;
+	}
+}
 
-		&__nav {
-			display: flex;
-		}
+.nav {
+	display: none;
+	align-items: center;
+
+	@include respond-to(md) {
+		display: flex;
 	}
 }

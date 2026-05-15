@@ -42,9 +42,9 @@ const AllShop = () => {
 	const debouncedSearch = useDebounce(watchedSearch, 500);
 
 	const apiFilters = useMemo(() => {
-		const values = methods.getValues();
+		const { sort: _, ...rest } = methods.getValues();
 		return {
-			...values,
+			...rest,
 			search: debouncedSearch,
 			page: Number(searchParams.get('page')) || 1,
 			limit: 20,

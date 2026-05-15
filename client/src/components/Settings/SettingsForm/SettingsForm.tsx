@@ -66,11 +66,8 @@ const SettingsForm = <T extends FieldValues, R>({
 	};
 
 	return (
-		<div className={styles['settings-form']}>
-			<form
-				className={styles['settings-form__form']}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+		<div>
+			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 				{fields.map((f) => (
 					<SettingsField
 						key={f.name}
@@ -99,7 +96,7 @@ const SettingsForm = <T extends FieldValues, R>({
 						type="submit"
 						fullWidth
 						loading={isPending}
-						className={styles['settings-form__save']}
+						className={styles.save}
 					>
 						Save
 					</Button>

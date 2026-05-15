@@ -2,7 +2,7 @@
 
 import { getAllFriends } from '@/api';
 import { Button, List, SectionHeader } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import FriendItem from './FriendItem/FriendItem';
@@ -22,7 +22,7 @@ const FriendsList = () => {
 			<SectionHeader title="My Friends" titleComponent="h3" />
 			{data && user && (
 				<>
-					<Button href={PAGES.FRIENDS_REQUESTS} variant="outlined">
+					<Button href={PRIVATE_PAGES.FRIENDS.REQUESTS} variant="outlined">
 						View Pending Requests
 						{data?.countOfPendingRequests > 0 &&
 							` (${data.countOfPendingRequests})`}

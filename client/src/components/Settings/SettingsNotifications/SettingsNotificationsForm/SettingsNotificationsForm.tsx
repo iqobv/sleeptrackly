@@ -20,7 +20,7 @@ const SettingsNotificationsForm = ({
 
 	return (
 		<FormProvider {...methods}>
-			<form className={styles['notifications-form']}>
+			<form className={styles.form}>
 				<SettingsNotificationsFormFields updateSetting={updateSetting} />
 				<SettingsNotificationsReminder updateSetting={updateSetting} />
 			</form>
