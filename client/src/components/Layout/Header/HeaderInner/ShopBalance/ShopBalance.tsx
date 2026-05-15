@@ -13,13 +13,9 @@ const ShopBalance = () => {
 	});
 
 	return (
-		<div className={styles['shop-balance']}>
-			<Coin className={styles['shop-balance__icon']} width={40} height={40} />
-			<div
-				className={`${styles['shop-balance__amount-wrapper']} ${
-					data ? styles['shop-balance__amount-wrapper--visible'] : ''
-				}`}
-			>
+		<div className={styles.balance}>
+			<Coin className={styles.icon} width={40} height={40} />
+			<div className={`${styles.amountWrapper} ${data ? styles.visible : ''}`}>
 				{data?.amount}
 			</div>
 		</div>

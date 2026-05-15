@@ -1,15 +1,11 @@
 import { ISession } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getAllSessions = async () =>
-	await fetcher<ISession[]>(`/v1/auth/sessions/all`);
+	(await apiClient.get<ISession[]>(`/v1/auth/sessions/all`)).data;
 
 export const terminateSession = async (id: string) =>
-	await fetcher<boolean>(`/v1/auth/sessions/session/${id}`, {
-		method: 'DELETE',
-	});
+	(await apiClient.delete<boolean>(`/v1/auth/sessions/${id}`)).data;
 
-export const terminateAllSessions = async (excludeId: string) =>
-	await fetcher<boolean>(`/v1/auth/sessions/except/${excludeId}`, {
-		method: 'DELETE',
-	});
+export const terminateAllSessions = async () =>
+	(await apiClient.delete<boolean>(`/v1/auth/sessions/all-other`)).data;

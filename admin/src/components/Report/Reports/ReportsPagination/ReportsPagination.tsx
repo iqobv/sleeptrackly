@@ -20,7 +20,7 @@ const defaultButtonProps: {
 	isIcon: boolean;
 	size: ButtonSize;
 } = {
-	className: styles['reports-pagination__button'],
+	className: styles.button,
 	variant: 'text',
 	isIcon: true,
 	size: 'sm',
@@ -46,7 +46,7 @@ const ReportsPagination = ({
 	if (totalPages <= 1) return null;
 
 	return (
-		<div className={styles['reports-pagination']}>
+		<div className={styles.pagination}>
 			<Button
 				disabled={page === 1}
 				onClick={handlePrev}
@@ -54,14 +54,14 @@ const ReportsPagination = ({
 			>
 				<MdKeyboardArrowLeft size={25} />
 			</Button>
-			<div className={styles['reports-pagination__pages']}>
+			<div className={styles.pages}>
 				{paginationRange.map((item, idx) => {
 					const isDots = item === '...';
 					if (isDots) {
 						return (
 							<div
 								key={`dots-${idx}`}
-								className={`${styles['reports-pagination__button']} ${styles['reports-pagination__button--dots']}`}
+								className={`${styles.button} ${styles.dots}`}
 							>
 								...
 							</div>
@@ -74,14 +74,12 @@ const ReportsPagination = ({
 							key={pageNumber}
 							{...defaultButtonProps}
 							className={`${defaultButtonProps.className} ${
-								isActive ? styles['reports-pagination__button--active'] : ''
+								isActive ? styles.active : ''
 							}`}
 							disabled={isActive}
 							onClick={() => handleChangePage(pageNumber)}
 						>
-							<div className={styles['reports-pagination__button-text']}>
-								{pageNumber}
-							</div>
+							<div className={styles.buttonText}>{pageNumber}</div>
 						</Button>
 					);
 				})}

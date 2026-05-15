@@ -3,7 +3,7 @@ import styles from './Footer.module.scss';
 
 const FooterLogo = () => {
 	return (
-		<div className={styles['footer__logo']}>
+		<div className={styles.logo}>
 			<NavLogo logoProps={{ fill: 'var(--footer-logo-fill)' }} />
 		</div>
 	);

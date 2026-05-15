@@ -1,5 +1,5 @@
 import TermlyCMP from '@/components/TermlyCMP';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import MainProvider from '@/providers/MainProvider';
 import { IUser } from '@/types';
 import { Analytics } from '@vercel/analytics/next';
@@ -29,7 +29,7 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const cookieStore = await cookies();
-	const hasSession = cookieStore.has('session');
+	const hasSession = cookieStore.has('accessToken');
 	const allCookies = cookieStore.toString();
 
 	let user: IUser | null = null;
@@ -61,12 +61,12 @@ export default async function RootLayout({
 			return (
 				<html lang="en" suppressHydrationWarning>
 					<head>
-						<meta httpEquiv="refresh" content={`0; url=${PAGES.LOGOUT}`} />
+						<meta httpEquiv="refresh" content={`0; url=${AUTH_PAGES.LOGOUT}`} />
 					</head>
 					<body>
 						<script
 							dangerouslySetInnerHTML={{
-								__html: `window.location.replace('${PAGES.LOGOUT}');`,
+								__html: `window.location.replace('${AUTH_PAGES.LOGOUT}');`,
 							}}
 						/>
 					</body>

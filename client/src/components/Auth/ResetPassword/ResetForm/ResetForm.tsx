@@ -18,7 +18,7 @@ const ResetForm = ({
 	isPending,
 }: ResetFormProps) => {
 	return (
-		<form className={styles['reset-form']} onSubmit={onSubmit}>
+		<form className={styles.resetForm} onSubmit={onSubmit}>
 			{children}
 			<Button fullWidth type="submit" disabled={isPending}>
 				{buttonText}

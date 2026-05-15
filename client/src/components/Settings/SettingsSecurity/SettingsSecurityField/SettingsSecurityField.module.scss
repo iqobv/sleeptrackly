@@ -1,11 +1,9 @@
 @use '../../../../styles/mixins' as *;
 
-.settings-security-field__button {
+.button {
 	width: 100%;
-}
 
-@include respond-to(md) {
-	.settings-security-field__button {
+	@include respond-to(md) {
 		width: auto;
 	}
 }

@@ -9,18 +9,23 @@ interface SettingsSessionsInfoProps {
 }
 
 const SettingsSessionsInfo = ({ session }: SettingsSessionsInfoProps) => {
+	const countryNameInEnglish = new Intl.DisplayNames(['en'], {
+		type: 'region',
+	});
+
 	return (
-		<div className={styles['settings-sessions-info']}>
-			<p className={styles['settings-sessions-info__device-type']}>
+		<div className={styles.info}>
+			<p className={styles.deviceType}>
 				{session.deviceType ? capitalize(session.deviceType) : 'Desktop'}
 			</p>
-			<p className={styles['settings-sessions-info__text']}>
+			<p className={styles.text}>
 				{session.browserName && `${session.browserName}`}
 				{session.browserVersion && `, ${session.browserVersion}`}
 			</p>
-			<div className={styles['settings-sessions-info__text']}>
+			<div className={styles.text}>
 				{session.city && `${session.city}`}
-				{session.country && `, ${session.country}`}
+				{session.countryCode &&
+					`, ${countryNameInEnglish.of(session.countryCode)}`}
 			</div>
 		</div>
 	);

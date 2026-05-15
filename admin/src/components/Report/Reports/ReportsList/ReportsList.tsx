@@ -22,13 +22,13 @@ const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 	});
 
 	return (
-		<div className={styles['reports']}>
+		<div className={styles.reports}>
 			{isLoading && <ReportsListLoader />}
 			{!isLoading && data && (
 				<>
 					{data.items.length > 0 ? (
-						<div className={styles['reports__list-wrapper']}>
-							<div className={styles['reports__list']}>
+						<div className={styles.wrapper}>
+							<div className={styles.list}>
 								{data.items.map((report) => (
 									<ReportsListItem key={report.id} report={report} />
 								))}

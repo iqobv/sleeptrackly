@@ -2,7 +2,7 @@
 
 import { getChallengeById, updateChallenge } from '@/api';
 import { Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { UpdateChallengeDto } from '@/dto';
 import { UpdateSchema } from '@/schemas';
 import { IChallenge } from '@/types';
@@ -28,7 +28,7 @@ const EditChallenge = ({ id }: EditChallengeProps) => {
 
 	return (
 		<div className={styles['edit-challenge']}>
-			<Button href={PAGES.CHALLENGE(id)} variant="text">
+			<Button href={PRIVATE_PAGES.CHALLENGES.BY_ID(id)} variant="text">
 				<IoMdArrowBack />
 				Go Back
 			</Button>

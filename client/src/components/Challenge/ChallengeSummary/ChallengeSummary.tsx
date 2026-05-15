@@ -2,7 +2,7 @@
 
 import { deleteChallenge } from '@/api';
 import { Button, ConfirmModal, SectionHeader } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { IChallengeFull } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -34,7 +34,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 			queryClient.invalidateQueries({
 				queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
 			});
-			router.push(PAGES.CHALLENGES);
+			router.push(PRIVATE_PAGES.CHALLENGES.ALL);
 		},
 	});
 
@@ -58,7 +58,7 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 					Delete Challenge
 				</Button>
 				<Button
-					href={PAGES.EDIT_CHALLENGE(data?.id)}
+					href={PRIVATE_PAGES.CHALLENGES.EDIT(data?.id)}
 					variant="outlined"
 					fullWidth
 				>

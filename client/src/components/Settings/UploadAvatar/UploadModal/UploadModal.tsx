@@ -33,20 +33,18 @@ const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
 		<Modal
 			isOpen={isOpen}
 			onClose={handleClose}
-			containerClassName={styles['upload-modal__container']}
-			bodyClassName={styles['upload-modal']}
+			containerClassName={styles.modalContainer}
+			bodyClassName={styles.modal}
 		>
 			<Image
 				src={URL.createObjectURL(file)}
 				width={250}
 				height={250}
 				alt={file.name}
-				className={styles['upload-modal__image']}
+				className={styles.image}
 			/>
-			<p className={styles['upload-modal__text']}>
-				Are you sure you want to upload this image?
-			</p>
-			<div className={styles['upload-modal__buttons']}>
+			<p className={styles.text}>Are you sure you want to upload this image?</p>
+			<div className={styles.buttons}>
 				<Button variant="outlined" onClick={handleClose}>
 					Cancel
 				</Button>

@@ -7,7 +7,7 @@ import SettingsSessions from './SettingsSessions/SettingsSessions';
 
 const SettingsSecurity = () => {
 	return (
-		<div className={styles['settings-security']}>
+		<div className={styles.settingsSecurity}>
 			<SettingsSessions />
 			<ChangePassword />
 			<SettingsDeleteAccount />

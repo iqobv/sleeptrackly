@@ -65,10 +65,7 @@ const ReportSanctionForm = ({
 	const onSubmit = (data: UserSanctionDto) => mutate(data);
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={styles['report-sanction__form']}
-		>
+		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 			<TextField
 				type="datetime-local"
 				label="Start date"
@@ -98,7 +95,7 @@ const ReportSanctionForm = ({
 					);
 				}}
 			/>
-			<div className={styles['report-sanction__buttons']}>
+			<div className={styles.buttons}>
 				<Button type="submit" loading={isPending}>
 					{isUpdate ? 'Update sanction' : 'Create sanction'}
 				</Button>

@@ -1,6 +1,6 @@
 @use '../../../../../../styles/mixins' as *;
 
-.nav-overlay {
+.overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -15,16 +15,16 @@
 		opacity: 1;
 		pointer-events: auto;
 
-		.nav-overlay-content {
+		.content {
 			animation: openNav 0.3s ease-in-out forwards;
 		}
 	}
 
-	&.closing .nav-overlay-content {
+	&.closing .content {
 		animation: closeNav 0.3s ease-in-out forwards;
 	}
 
-	.nav-overlay-content {
+	.content {
 		background-color: var(--nav-bg-menu);
 		width: 100%;
 		height: 100%;
@@ -38,7 +38,7 @@
 			display: block;
 		}
 
-		&__logo {
+		.logo {
 			height: var(--header-height);
 			justify-content: center;
 			align-items: center;

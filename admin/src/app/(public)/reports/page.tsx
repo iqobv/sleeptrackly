@@ -6,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ReportsPage() {
-	return (
-		<div>
-			<Reports />
-		</div>
-	);
+	return <Reports />;
 }

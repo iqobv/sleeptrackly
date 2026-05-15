@@ -49,9 +49,7 @@ const NavContainer = ({
 					)}
 				</>
 			)}
-			<div className={`${styles['nav-container']} ${className || ''}`}>
-				{children}
-			</div>
+			<div className={`${styles.container} ${className || ''}`}>{children}</div>
 			{withMenu && show && !renderLogoInsteadOfMenu && (
 				<NavMenu
 					isOpen={isOpen}

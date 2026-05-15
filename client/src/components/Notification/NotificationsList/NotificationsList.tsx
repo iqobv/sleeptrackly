@@ -45,7 +45,7 @@ const NotificationsList = ({
 			onClose={handleClose}
 			width={WIDTH}
 		>
-			<div className={styles['notifications__content']}>
+			<div className={styles.content}>
 				{isLoading && <p role="status">Loading...</p>}
 
 				{!isLoading && data?.items.length === 0 && (
@@ -53,18 +53,18 @@ const NotificationsList = ({
 				)}
 
 				{!isLoading && data && data.items.length > 0 && (
-					<div className={styles['notifications__container']}>
-						<div className={styles['notifications__header']}>
-							<h3 className={styles['notifications__title']}>Notifications</h3>
+					<div className={styles.container}>
+						<div className={styles.header}>
+							<h3 className={styles.title}>Notifications</h3>
 							{data.items.filter((n) => !n.isRead).length > 0 && (
-								<p className={styles['notifications__subtitle']}>
+								<p className={styles.subtitle}>
 									You have {data.items.filter((n) => !n.isRead).length} new
 									notifications
 								</p>
 							)}
 						</div>
 
-						<div className={styles['notifications__list']}>
+						<div className={styles.list}>
 							{data.items.map((notification, index) => (
 								<NotificationsListItem
 									key={notification.id}

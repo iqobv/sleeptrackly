@@ -1,49 +1,45 @@
 @use '../../../../styles/mixins' as *;
 
-.shop-header {
-	&__nav-container {
-		@include respond-to(md) {
-			justify-content: flex-end;
-		}
-
-		@include respond-to(lg) {
-			justify-content: space-between;
-		}
-	}
-
-	&__menu-button {
-		@include respond-to(md) {
-			display: inherit;
-		}
-
-		@include respond-to(lg) {
-			display: none;
-		}
-	}
-
-	&__logo {
-		display: none;
-	}
-
-	&__nav {
-		display: none;
-		align-items: center;
-	}
-
-	&__auth {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: 32px;
+.navContainer {
+	@include respond-to(md) {
+		justify-content: flex-end;
 	}
 
 	@include respond-to(lg) {
-		&__logo {
-			display: flex;
-		}
-
-		&__nav {
-			display: flex;
-		}
+		justify-content: space-between;
 	}
+}
+
+.menuButton {
+	@include respond-to(md) {
+		display: inherit;
+	}
+
+	@include respond-to(lg) {
+		display: none;
+	}
+}
+
+.logo {
+	display: none;
+
+	@include respond-to(lg) {
+		display: flex;
+	}
+}
+
+.nav {
+	display: none;
+	align-items: center;
+
+	@include respond-to(lg) {
+		display: flex;
+	}
+}
+
+.auth {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 32px;
 }

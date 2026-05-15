@@ -1,29 +1,24 @@
 import { IFriend, IFriendsResponse, TFriendStatus } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const sendFriendRequest = async (id: string) =>
-	await fetcher<IFriend>(`/v1/friends/send`, {
-		method: 'POST',
-		body: JSON.stringify({ addresseeId: id }),
-	});
+	(await apiClient.post<IFriend>(`/v1/friends/send`, { addresseeId: id })).data;
 
 export const getAllFriends = async () =>
-	await fetcher<IFriendsResponse>(`/v1/friends/all`);
+	(await apiClient.get<IFriendsResponse>(`/v1/friends/all`)).data;
 
 export const getPendingFriendRequests = async () =>
-	await fetcher<IFriend[]>(`/v1/friends/pendings`);
+	(await apiClient.get<IFriend[]>(`/v1/friends/pendings`)).data;
 
 export const changeRequestStatus = async (id: string, status: TFriendStatus) =>
-	await fetcher<IFriend>(`/v1/friends/id/${id}`, {
-		method: 'PATCH',
-		body: JSON.stringify({ status }),
-	});
+	(await apiClient.patch<IFriend>(`/v1/friends/id/${id}`, { status })).data;
 
 export const updateManyPendingRequests = async (status: TFriendStatus) =>
-	await fetcher<IFriend[]>(`/v1/friends/pendings`, {
-		method: 'PATCH',
-		body: JSON.stringify({ status }),
-	});
+	(
+		await apiClient.patch<IFriend[]>(`/v1/friends/pendings`, {
+			status,
+		})
+	).data;
 
 export const deleteFriend = async (id: string) =>
-	await fetcher<IFriend>(`/v1/friends/${id}`, { method: 'DELETE' });
+	(await apiClient.delete<IFriend>(`/v1/friends/${id}`)).data;

@@ -13,9 +13,7 @@ const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
 	return (
 		<Link
 			href={`?tab=${tab.name}`}
-			className={`${styles['settings-tab']} ${
-				isActive ? styles['settings-tab--active'] : ''
-			}`}
+			className={`${styles.tab} ${isActive ? styles.active : ''}`}
 		>
 			{tab.label}
 		</Link>

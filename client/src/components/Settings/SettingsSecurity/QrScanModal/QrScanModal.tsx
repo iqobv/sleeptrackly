@@ -15,9 +15,9 @@ const QrScanModal = () => {
 				<MdOutlineQrCodeScanner size={25} />
 			</Button>
 			<Modal
-				containerClassName={styles['qr-scan-modal']}
+				containerClassName={styles.modal}
 				isOpen={isOpen}
-				bodyClassName={styles['qr-scan-modal__body']}
+				bodyClassName={styles.body}
 				onClose={() => setIsOpen(false)}
 			>
 				<QrScan />

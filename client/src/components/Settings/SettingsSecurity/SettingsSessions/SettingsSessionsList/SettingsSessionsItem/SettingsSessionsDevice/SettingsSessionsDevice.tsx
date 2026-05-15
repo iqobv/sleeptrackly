@@ -17,7 +17,7 @@ const SettingsSessionsDevice = ({
 	deviceType,
 }: SettingsSessionsDeviceProps) => {
 	return (
-		<div className={styles['settings-sessions-device']}>
+		<div className={styles.device}>
 			{deviceType === 'mobile' ? (
 				<MdOutlineSmartphone {...iconProps} />
 			) : (

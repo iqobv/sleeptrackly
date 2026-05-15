@@ -1,11 +1,11 @@
-.auth-header {
+.authHeader {
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding-top: 60px;
+}
 
-	&__logo {
-		font-size: 1.8rem;
-	}
+.logo {
+	font-size: 1.8rem;
 }

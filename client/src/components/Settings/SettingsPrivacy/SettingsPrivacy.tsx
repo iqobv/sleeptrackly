@@ -6,7 +6,6 @@ import { SettingsPrivacyDto } from '@/dto';
 import { IPrivacySettings } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import SettingsForm from '../SettingsForm/SettingsForm';
-import styles from './SettingsPrivacy.module.scss';
 import { SETTINGS_PRIVACY_FIELDS } from './settingsPrivacyFields';
 
 const SettingsPrivacy = () => {
@@ -16,7 +15,7 @@ const SettingsPrivacy = () => {
 	});
 
 	return (
-		<div className={styles['settings-privacy']}>
+		<div>
 			{data && (
 				<SettingsForm<SettingsPrivacyDto, IPrivacySettings>
 					fields={SETTINGS_PRIVACY_FIELDS}

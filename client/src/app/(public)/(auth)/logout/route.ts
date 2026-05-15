@@ -1,4 +1,4 @@
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
 	const cookieStore = await cookies();
 	const cookiesString = cookieStore.toString();
-	const loginUrl = new URL(PAGES.LOGIN, request.url);
+	const loginUrl = new URL(AUTH_PAGES.LOGIN, request.url);
 
 	revalidatePath('/', 'layout');
 

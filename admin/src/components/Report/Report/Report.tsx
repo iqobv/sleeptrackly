@@ -24,7 +24,7 @@ const Report = ({ id }: ReportProps) => {
 	});
 
 	return (
-		<div className={styles['report']}>
+		<div className={styles.report}>
 			<Button variant="text" onClick={() => router.back()}>
 				<MdOutlineArrowBack />
 				Back

@@ -1,27 +1,19 @@
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const sendEmailForResetPassword = async (email: string) =>
-	await fetcher(
-		`/v1/auth/password-recovery/email`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ email }),
-		},
-		false,
-	);
+	(await apiClient.post(`/v1/auth/password-recovery/email`, { email })).data;
 
 export const resetPassword = async (token: string, password: string) =>
-	await fetcher(
-		`/v1/auth/password-recovery/reset`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ token, password }),
-		},
-		false,
-	);
+	(
+		await apiClient.post(`/v1/auth/password-recovery/reset`, {
+			token,
+			password,
+		})
+	).data;
 
 export const needOldPassword = async () =>
-	await fetcher<boolean>('/v1/auth/password-recovery/need-old-password');
+	(await apiClient<boolean>('/v1/auth/password-recovery/need-old-password'))
+		.data;
 
 export const changePassword = async ({
 	oldPassword,
@@ -30,11 +22,9 @@ export const changePassword = async ({
 	oldPassword?: string | null | undefined;
 	newPassword: string;
 }) =>
-	await fetcher(
-		`/v1/auth/password-recovery/change`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ oldPassword, newPassword }),
-		},
-		false,
-	);
+	(
+		await apiClient.post(`/v1/auth/password-recovery/change`, {
+			oldPassword,
+			newPassword,
+		})
+	).data;

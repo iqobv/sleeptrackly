@@ -1,10 +1,10 @@
-.settings-tabs {
+.tabs {
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
+}
 
-	&__list {
-		border-bottom: 1px solid var(--settings-tabs-list-border);
-		overflow-y: auto;
-	}
+.list {
+	border-bottom: 1px solid var(--settings-tabs-list-border);
+	overflow-y: auto;
 }

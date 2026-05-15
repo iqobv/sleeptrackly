@@ -26,8 +26,8 @@ const NavLinks = ({
 	}
 
 	const listClassNames = [
-		styles['nav-list'],
-		rowDirectionOnLg ? styles['nav-list--lg'] : '',
+		styles.list,
+		rowDirectionOnLg ? styles.lg : '',
 		className,
 	]
 		.filter(Boolean)
@@ -44,10 +44,10 @@ const NavLinks = ({
 				if (user?.role !== 'ADMIN' && link.isAdmin) return null;
 
 				return (
-					<li key={link.name} className={styles['nav-item']}>
+					<li key={link.name} className={styles.item}>
 						<Link
 							href={link.path}
-							className={`${styles['nav-link']} ${
+							className={`${styles.link} ${
 								pathname.startsWith(link.path) ? styles.active : ''
 							}`}
 							onClick={closeMenu}

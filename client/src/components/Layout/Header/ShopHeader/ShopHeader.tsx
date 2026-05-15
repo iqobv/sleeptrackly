@@ -11,16 +11,16 @@ const ShopHeader = () => {
 			<NavContainer
 				withMenu
 				mobileWidth="lg"
-				menuButtonClassName={styles['shop-header__menu-button']}
-				className={styles['shop-header__nav-container']}
+				menuButtonClassName={styles.menuButton}
+				className={styles.navContainer}
 			>
-				<div className={styles['shop-header__logo']}>
+				<div className={styles.logo}>
 					<NavLogo />
 				</div>
-				<nav className={styles['shop-header__nav']}>
+				<nav className={styles.nav}>
 					<NavLinks rowDirectionOnLg />
 				</nav>
-				<div className={styles['shop-header__auth']}>
+				<div className={styles.auth}>
 					<ShopBalance />
 					<AuthButtons />
 				</div>

@@ -30,7 +30,7 @@ export default function SectionHeader({
 
 	return (
 		<div
-			className={`${styles['section-header']} ${containerClassName}`}
+			className={`${styles.header} ${containerClassName}`}
 			style={
 				{
 					'--padding': `${padding}px`,
@@ -38,12 +38,10 @@ export default function SectionHeader({
 				} as React.CSSProperties
 			}
 		>
-			<Title className={`${styles['section-header__title']} ${titleClassName}`}>
-				{title}
-			</Title>
+			<Title className={`${styles.title} ${titleClassName}`}>{title}</Title>
 			{!!description && (
 				<Description
-					className={`${styles['section-header__description']} ${descriptionClassName}`}
+					className={`${styles.description} ${descriptionClassName}`}
 				>
 					{description}
 				</Description>

@@ -17,7 +17,7 @@ const MenuButton = ({
 }: MenuButtonProps) => {
 	return (
 		<button
-			className={`${styles['menu-button']} ${isOpen ? styles.open : ''} ${
+			className={`${styles.menuButton} ${isOpen ? styles.open : ''} ${
 				isClosing ? styles.closing : ''
 			} ${className || ''}`.trim()}
 			disabled={isClosing}

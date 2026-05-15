@@ -50,11 +50,11 @@ export class UserFcmTokenController {
 
 	@Auth()
 	@ApiOperation({ summary: 'Remove FCM token for the user' })
-	@Delete('remove-token')
+	@Delete('remove-token/:token')
 	async removeFcmToken(
 		@Authorized('id') userId: string,
-		@Body() dto: CreateUserFcmTokenDto,
+		@Param('token') token: string,
 	) {
-		return await this.userFcmTokenService.removeByToken(userId, dto.token);
+		return await this.userFcmTokenService.removeByToken(userId, token);
 	}
 }

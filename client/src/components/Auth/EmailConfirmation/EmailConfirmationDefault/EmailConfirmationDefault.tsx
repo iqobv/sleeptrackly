@@ -2,7 +2,7 @@
 
 import { resendVerificationEmail } from '@/api';
 import { Button, SectionHeader } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { AUTH_PAGES, QUERY_KEYS } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -54,7 +54,7 @@ const EmailConfirmationDefault = () => {
 
 	return (
 		<EmailConfirmationWrapper>
-			<div className={styles['email-confirmation-default']}>
+			<div className={styles.default}>
 				<SectionHeader
 					title="Your Email is not Verified!"
 					description="Your email is not verified. Please check your inbox for a verification email. If you did not receive the email, you can resend the verification email or change your email address."
@@ -71,7 +71,7 @@ const EmailConfirmationDefault = () => {
 						? `Resend Verification Email (${timer})`
 						: 'Resend Verification Email'}
 				</Button>
-				<Button onClick={handleChangeEmail} href={PAGES.REGISTER}>
+				<Button onClick={handleChangeEmail} href={AUTH_PAGES.REGISTER}>
 					Change Email
 				</Button>
 			</div>

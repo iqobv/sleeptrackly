@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config';
 
 const CreateChellengeButton = () => {
 	return (
 		<div>
-			<Button href={PAGES.NEW_CHALLENGE}>Create Challenge</Button>
+			<Button href={PRIVATE_PAGES.CHALLENGES.NEW}>Create Challenge</Button>
 		</div>
 	);
 };

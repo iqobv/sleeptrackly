@@ -18,11 +18,11 @@ const UploadAvatar = () => {
 	} = useUploadAvatar();
 
 	return (
-		<div className={styles['avatar']}>
+		<div>
 			{isPending || !user ? (
 				<UploadAvatarLoader />
 			) : (
-				<div className={styles['avatar__container']}>
+				<div className={styles.container}>
 					<SectionHeader
 						title="Avatar"
 						description="To change your avatar, click on avatar and select a new one."
@@ -30,18 +30,18 @@ const UploadAvatar = () => {
 					/>
 					<button
 						onClick={() => inputRef.current?.click()}
-						className={styles['avatar__wrapper']}
+						className={styles.wrapper}
 					>
 						<Avatar avatar={user.avatar?.url} size={250} />
 					</button>
-					<div className={styles['avatar__input-container']}>
+					<div className={styles.inputContainer}>
 						<TextField
 							ref={inputRef}
 							type="file"
 							id="avatar"
 							hidden
 							accept={ACCEPTED_IMAGE_TYPES.join(', ')}
-							className={styles['avatar__input']}
+							className={styles.input}
 							onChange={handleUpload}
 						/>
 					</div>

@@ -12,7 +12,7 @@ interface AuthProps {
 
 const Auth = ({ isRegister = false }: AuthProps) => {
 	return (
-		<div className={`container ${styles['auth']}`}>
+		<div className={`container ${styles.auth}`}>
 			<SectionHeader title={isRegister ? 'Register' : 'Login'} />
 			{isRegister ? <Register /> : <Login />}
 			<SocialAuth />

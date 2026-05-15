@@ -1,7 +1,4 @@
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const resendVerificationEmail = async (email: string) =>
-	await fetcher(`/v1/auth/email-confirmation/resend`, {
-		method: 'POST',
-		body: JSON.stringify({ email }),
-	});
+	(await apiClient.post(`/v1/auth/email-confirmation/resend`, { email })).data;

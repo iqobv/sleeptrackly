@@ -22,7 +22,7 @@ const SettingsSecurityField = ({
 			<Button
 				onClick={action}
 				variant={isImportant ? 'danger' : 'outlined'}
-				className={styles['settings-security-field__button']}
+				className={styles.button}
 			>
 				{buttonText}
 			</Button>

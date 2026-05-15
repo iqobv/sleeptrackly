@@ -38,20 +38,17 @@ const Promotion = () => {
 	const onSubmit = (data: UsePromotionDto) => mutate(data);
 
 	return (
-		<div className={styles['promotion']}>
-			<div className={styles['promotion__content']}>
+		<div className={styles.promotion}>
+			<div className={styles.content}>
 				<SectionHeader
 					title="Redeem Code"
 					description="Enter your promo code"
 				/>
-				<form
-					onSubmit={handleSubmit(onSubmit)}
-					className={styles['promotion__form']}
-				>
-					<div className={styles['promotion__field-wrapper']}>
+				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+					<div className={styles.fieldWrapper}>
 						<TextField
 							placeholder="Enter alias"
-							className={styles['promotion__field']}
+							className={styles.field}
 							error={errors.alias?.message && ''}
 							fullWidth
 							{...register('alias')}
@@ -59,14 +56,14 @@ const Promotion = () => {
 						<Button
 							type="submit"
 							disabled={!isDirty}
-							className={styles['promotion__button']}
+							className={styles.button}
 							loading={isPending}
 						>
 							Use
 						</Button>
 					</div>
 					{errors.alias && (
-						<p className={styles['promotion__error']}>{errors.alias.message}</p>
+						<p className={styles.error}>{errors.alias.message}</p>
 					)}
 				</form>
 			</div>

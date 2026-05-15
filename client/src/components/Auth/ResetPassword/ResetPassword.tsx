@@ -11,12 +11,12 @@ const ResetPassword = () => {
 	const token = searchParams.get('token');
 
 	return (
-		<div className={styles['reset-password']}>
+		<div className={styles.resetPassword}>
 			<SectionHeader
 				title="Reset Password"
-				containerClassName={styles['reset-password__header']}
+				containerClassName={styles.header}
 			/>
-			<div className={styles['reset-password__container']}>
+			<div className={styles.container}>
 				{token ? <NewPasswordField token={token} /> : <EmailField />}
 			</div>
 		</div>

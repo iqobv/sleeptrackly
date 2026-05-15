@@ -32,9 +32,9 @@ const EmailField = () => {
 	const onSubmit = (data: EmailDto) => mutate(data);
 
 	return (
-		<div className={styles['email-field']}>
+		<div className={styles.field}>
 			{isSuccess && (
-				<div className={styles['email-field__success']}>
+				<div className={styles.success}>
 					<p>
 						Reset link was sent to your email. Please check your inbox. If you
 						didn&apos;t receive an email, please check your spam folder.

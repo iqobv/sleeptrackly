@@ -14,7 +14,7 @@ export function LegalContent({ html }: LegalContentProps) {
 
 	return (
 		<section
-			className={styles['legal-content']}
+			className={styles.legalContent}
 			suppressHydrationWarning
 			dangerouslySetInnerHTML={{ __html: sanitized }}
 		/>

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import { useAuth } from '@/hooks';
 import UserMenu from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
@@ -11,7 +11,7 @@ const AuthButtons = () => {
 	const { user, isloading } = useAuth();
 
 	return (
-		<div className={styles['auth-buttons']}>
+		<div className={styles.authButtons}>
 			{isloading ? (
 				<AuthButtonsLoader />
 			) : (
@@ -20,10 +20,10 @@ const AuthButtons = () => {
 						<UserMenu />
 					) : (
 						<>
-							<Button href={PAGES.LOGIN} variant="link">
+							<Button href={AUTH_PAGES.LOGIN} variant="link">
 								Login
 							</Button>
-							<Button href={PAGES.REGISTER}>Register</Button>
+							<Button href={AUTH_PAGES.REGISTER}>Register</Button>
 						</>
 					)}
 				</>

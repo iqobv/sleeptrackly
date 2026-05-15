@@ -1,12 +1,9 @@
 import { SettingsAccountDto } from '@/dto';
 import { IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const updateUser = async (data: SettingsAccountDto) =>
-	await fetcher<IUser>('/v1/users/me', {
-		method: 'PATCH',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.patch<IUser>('/v1/users/me', data)).data;
 
 export const searchByUsername = async (username: string) =>
-	await fetcher<IUser[]>(`/v1/users/search?username=${username}`);
+	(await apiClient.get<IUser[]>(`/v1/users/search`, { params: username })).data;

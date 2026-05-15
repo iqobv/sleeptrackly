@@ -1,7 +1,7 @@
 'use client';
 
 import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { TFriendStatus } from '@/types';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -25,7 +25,7 @@ export const usePendingsList = () => {
 		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
 		onSuccess: () => {
 			refetch();
-			router.push(PAGES.FRIENDS);
+			router.push(PRIVATE_PAGES.FRIENDS.ALL);
 		},
 	});
 

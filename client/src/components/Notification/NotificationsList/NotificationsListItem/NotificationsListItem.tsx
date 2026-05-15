@@ -25,18 +25,12 @@ const NotificationsListItem = ({
 		<>
 			<div
 				id={notification.id}
-				className={`${styles['notification-item']} ${
-					isUnread ? styles['notification-item--unread'] : ''
-				}`}
+				className={`${styles.item} ${isUnread ? styles.unread : ''}`}
 			>
-				<div className={styles['notification-item__content']}>
-					<p className={styles['notification-item__title']}>
-						{notification.title}
-					</p>
+				<div className={styles.content}>
+					<p className={styles.title}>{notification.title}</p>
 					{notification.body && (
-						<p className={styles['notification-item__body']}>
-							{notification.body}
-						</p>
+						<p className={styles.body}>{notification.body}</p>
 					)}
 				</div>
 				{notification.redirectUrl && (
@@ -50,7 +44,7 @@ const NotificationsListItem = ({
 						Open
 					</Button>
 				)}
-				<div className={styles['notification-item__date']}>
+				<div className={styles.date}>
 					{dayjs(notification.createdAt).fromNow()}
 				</div>
 			</div>

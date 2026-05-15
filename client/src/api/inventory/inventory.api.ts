@@ -1,13 +1,16 @@
 import { PaginationWithLanguageDto } from '@/dto';
 import { IInventory, IPaginatedDataResponse } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getInventory = async (query: PaginationWithLanguageDto) =>
-	await fetcher<IPaginatedDataResponse<IInventory>>(
-		`/v1/inventory/me?${new URLSearchParams(Object.entries(query).map(([key, value]) => [key, String(value)]))}`,
-	);
+	(
+		await apiClient.get<IPaginatedDataResponse<IInventory>>(
+			`/v1/inventory/me`,
+			{
+				params: query,
+			},
+		)
+	).data;
 
 export const equipInventoryItem = async (itemId: string) =>
-	await fetcher<IInventory>(`/v1/inventory/${itemId}/equip`, {
-		method: 'PATCH',
-	});
+	(await apiClient.patch<IInventory>(`/v1/inventory/${itemId}/equip`)).data;

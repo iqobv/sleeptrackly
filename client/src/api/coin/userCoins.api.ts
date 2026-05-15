@@ -1,4 +1,5 @@
 import { IUserCoin } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
-export const getUserCoins = async () => await fetcher<IUserCoin>(`/v1/coins`);
+export const getUserCoins = async () =>
+	(await apiClient.get<IUserCoin>(`/v1/coins`)).data;

@@ -1,24 +1,18 @@
 import { CreateChallengeDto, UpdateChallengeDto } from '@/dto';
 import { IChallenge, IChallengeFull } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getChellenges = async () =>
-	await fetcher<IChallenge[]>('/v1/challenges/me');
+	(await apiClient.get<IChallenge[]>('/v1/challenges/me')).data;
 
 export const getChallengeById = async (id: string) =>
-	await fetcher<IChallengeFull>(`/v1/challenges/${id}`);
+	(await apiClient.get<IChallengeFull>(`/v1/challenges/${id}`)).data;
 
 export const createChallenge = async (data: CreateChallengeDto) =>
-	await fetcher<IChallenge>('/v1/challenges', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.post<IChallenge>('/v1/challenges', data)).data;
 
 export const updateChallenge = async (id: string, data: UpdateChallengeDto) =>
-	await fetcher<IChallenge>(`/v1/challenges/${id}`, {
-		method: 'PATCH',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.patch<IChallenge>(`/v1/challenges/${id}`, data)).data;
 
 export const deleteChallenge = async (id: string) =>
-	await fetcher<boolean>(`/v1/challenges/${id}`, { method: 'DELETE' });
+	(await apiClient.delete<boolean>(`/v1/challenges/${id}`)).data;

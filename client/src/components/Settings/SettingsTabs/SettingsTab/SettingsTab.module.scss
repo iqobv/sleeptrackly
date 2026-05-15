@@ -1,4 +1,4 @@
-.settings-tab {
+.tab {
 	display: block;
 	padding: 10px 20px;
 	position: relative;
@@ -13,10 +13,10 @@
 		background-color: var(--settings-tabs-item-bg);
 		transition: background-color 0.3s ease;
 	}
-}
 
-.settings-tab--active {
-	&::after {
-		background-color: var(--settings-tabs-item-bg-active);
+	&.active {
+		&::after {
+			background-color: var(--settings-tabs-item-bg-active);
+		}
 	}
 }

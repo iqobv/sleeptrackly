@@ -1,53 +1,80 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PAGES } from './config';
+import { AUTH_PAGES, PRIVATE_PAGES } from './config';
 
 export async function proxy(request: NextRequest) {
-	const session = request.cookies.get('session');
-	const hasSession = !!session;
-	const path = request.nextUrl.pathname;
+	const ip =
+		request.headers.get('cf-connecting-ip') ??
+		request.headers.get('x-forwarded-for') ??
+		'';
+
+	const userAgent = request.headers.get('user-agent') ?? '';
+
+	const accessToken = request.cookies.get('accessToken')?.value;
+	const refreshToken = request.cookies.get('refreshToken')?.value;
+
+	let isAuthenticated = !!accessToken;
+	let refreshedCookies: string[] = [];
+
+	if (!accessToken && refreshToken) {
+		try {
+			const res = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
+				{
+					method: 'POST',
+					headers: {
+						Cookie: `refreshToken=${refreshToken}`,
+						'X-Forwarded-For': ip,
+						'User-Agent': userAgent,
+						'Content-Type': 'application/json',
+					},
+				},
+			);
+
+			if (res.ok) {
+				isAuthenticated = true;
+				refreshedCookies = res.headers.getSetCookie();
+
+				refreshedCookies.forEach((cookie) => {
+					const [cookiePair] = cookie.split(';');
+					const [name, ...rest] = cookiePair.split('=');
+					const value = rest.join('=');
+					if (name && value) {
+						request.cookies.set(name.trim(), value.trim());
+					}
+				});
+			} else {
+				isAuthenticated = false;
+			}
+		} catch {
+			isAuthenticated = false;
+		}
+	}
+
+	const url = request.nextUrl.clone();
+	const path = url.pathname;
 
 	const isPrefetch =
 		request.headers.get('next-router-prefetch') === '1' ||
 		request.headers.get('purpose') === 'prefetch';
 
-	const ip =
-		request.headers.get('cf-connecting-ip') ??
-		request.headers.get('x-forwarded-for') ??
-		'unknown';
-	const requestHeaders = new Headers(request.headers);
-	requestHeaders.set('x-forwarded-for', ip);
+	const protectedRoutes = Object.values(PRIVATE_PAGES).filter(
+		(route) => typeof route === 'string',
+	);
 
-	const protectedRoutes = [
-		PAGES.DASHBOARD,
-		PAGES.TIMER,
-		PAGES.CHALLENGES,
-		PAGES.SETTINGS,
-		PAGES.FRIENDS,
-		PAGES.FRIENDS_REQUESTS,
-		PAGES.SHOP,
-		PAGES.SHOP_CATALOG,
-		PAGES.SETTINGS_SESSIONS,
-		PAGES.INVENTORY,
-		PAGES.CHALLENGE(''),
-		PAGES.EDIT_CHALLENGE(''),
-		PAGES.PROMO,
-	];
-
-	const authRoutes = [
-		PAGES.LOGIN,
-		PAGES.REGISTER,
-		PAGES.RESET_PASSWORD,
-		PAGES.EMAIL_CONFIRMATION,
-	];
+	const authRoutes = Object.values(AUTH_PAGES).filter(
+		(route) => typeof route === 'string',
+	);
 
 	const isProtectedRoute = protectedRoutes.some((route) =>
 		path.startsWith(route),
 	);
 	const isAuthRoute = authRoutes.some((route) => path.startsWith(route));
 
-	if (!hasSession && isProtectedRoute) {
-		const loginUrl = new URL(PAGES.LOGIN, request.url);
-		const response = NextResponse.redirect(loginUrl);
+	let response: NextResponse;
+
+	if (!isAuthenticated && isProtectedRoute) {
+		url.pathname = AUTH_PAGES.LOGIN;
+		response = NextResponse.redirect(url);
 		response.headers.set('x-middleware-cache', 'no-cache');
 
 		if (!isPrefetch) {
@@ -58,41 +85,34 @@ export async function proxy(request: NextRequest) {
 				sameSite: 'lax',
 			});
 		}
-
-		return response;
-	}
-
-	if (hasSession && isAuthRoute) {
+	} else if (isAuthenticated && isAuthRoute) {
 		const previousPage = request.cookies.get('previousPage')?.value;
-		const redirectTo =
-			previousPage &&
-			!previousPage.startsWith(PAGES.LOGOUT) &&
-			!previousPage.startsWith(PAGES.LOGIN)
-				? previousPage
-				: PAGES.DASHBOARD;
+		const isPreviousPageAuth = authRoutes.some((route) =>
+			previousPage?.startsWith(route),
+		);
 
-		const response = NextResponse.redirect(new URL(redirectTo, request.url));
+		const redirectTo =
+			previousPage && !isPreviousPageAuth
+				? previousPage
+				: PRIVATE_PAGES.DASHBOARD;
+
+		response = NextResponse.redirect(new URL(redirectTo, request.url));
 		response.headers.set('x-middleware-cache', 'no-cache');
 		response.cookies.delete('previousPage');
-		return response;
-	}
-
-	const isIgnoredPath =
-		path.startsWith('/api') ||
-		path.startsWith('/_next') ||
-		path.startsWith('/favicon.ico') ||
-		path.includes('.') ||
-		isAuthRoute ||
-		path.startsWith(PAGES.LOGOUT);
-
-	if (!isIgnoredPath) {
-		const response = NextResponse.next({
-			request: { headers: requestHeaders },
-		});
+	} else {
+		response = NextResponse.next();
 
 		response.headers.set('Vary', 'Cookie');
 
-		if (!isPrefetch) {
+		const isIgnoredPath =
+			path.startsWith('/api') ||
+			path.startsWith('/_next') ||
+			path.startsWith('/favicon.ico') ||
+			path.includes('.') ||
+			isAuthRoute ||
+			path.startsWith(AUTH_PAGES.LOGOUT);
+
+		if (!isIgnoredPath && !isPrefetch) {
 			response.cookies.set('previousPage', path + request.nextUrl.search, {
 				httpOnly: true,
 				path: '/',
@@ -100,17 +120,15 @@ export async function proxy(request: NextRequest) {
 				sameSite: 'lax',
 			});
 		}
-
-		return response;
 	}
 
-	const finalResponse = NextResponse.next({
-		request: { headers: requestHeaders },
-	});
+	if (refreshedCookies.length > 0) {
+		refreshedCookies.forEach((cookie) => {
+			response.headers.append('Set-Cookie', cookie);
+		});
+	}
 
-	finalResponse.headers.set('Vary', 'Cookie');
-
-	return finalResponse;
+	return response;
 }
 
 export const config = {

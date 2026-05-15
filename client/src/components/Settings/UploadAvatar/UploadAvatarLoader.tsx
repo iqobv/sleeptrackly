@@ -5,7 +5,7 @@ import styles from './UploadAvatar.module.scss';
 
 const UploadAvatarLoader = () => {
 	return (
-		<div className={styles['avatar__container']}>
+		<div className={styles.container}>
 			<SkeletonLoader height={120} width={'100%'} />
 			<SkeletonLoader
 				height={250}

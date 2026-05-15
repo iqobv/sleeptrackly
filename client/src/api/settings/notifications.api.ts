@@ -1,22 +1,17 @@
 import { UpdateNotificationSettingsDto } from '@/dto';
 import { INotificationSettings } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getUserNotificationSettings = async () =>
-	await fetcher<INotificationSettings>(
-		'/v1/settings/notifications/me',
-		{ method: 'GET' },
-		true,
-	);
+	(await apiClient.get<INotificationSettings>('/v1/settings/notifications/me'))
+		.data;
 
 export const updateUserNotificationSettings = async (
 	dto: UpdateNotificationSettingsDto,
 ) =>
-	await fetcher<INotificationSettings>(
-		'/v1/settings/notifications',
-		{
-			method: 'PATCH',
-			body: JSON.stringify(dto),
-		},
-		true,
-	);
+	(
+		await apiClient.patch<INotificationSettings>(
+			'/v1/settings/notifications',
+			dto,
+		)
+	).data;

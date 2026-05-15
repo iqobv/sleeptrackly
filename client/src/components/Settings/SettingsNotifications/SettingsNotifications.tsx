@@ -19,7 +19,7 @@ const SettingsNotifications = () => {
 	});
 
 	return (
-		<div className={styles['settings-notifications']}>
+		<div className={styles.notifications}>
 			{isLoading && !data && <SettingsNotificationsLoader />}
 			{!isLoading && data && (
 				<>

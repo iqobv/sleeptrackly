@@ -34,12 +34,12 @@ const SettingsSessionsList = () => {
 	}, [error, router]);
 
 	return (
-		<div className={styles['settings-sessions']}>
+		<div className={styles.sessions}>
 			{isLoading && <SettingsSessionsLoader />}
 			{!isLoading && sessions && (
 				<>
 					<div>
-						<div className={styles['settings-sessions__header-actions']}>
+						<div className={styles.actions}>
 							<Button variant="text" onClick={() => router.back()}>
 								<MdOutlineArrowBack size={25} />
 								Back
@@ -50,10 +50,10 @@ const SettingsSessionsList = () => {
 							title="Current Session"
 							description="Your current session"
 							titleComponent="h3"
-							containerClassName={styles['settings-sessions__header']}
+							containerClassName={styles.header}
 						/>
 						<SettingsSessionsItem
-							session={sessions.find((s) => s.current) || sessions[0]}
+							session={sessions.find((s) => s.isCurrent) || sessions[0]}
 							disableAllButton={sessions.length < 2}
 							isActive
 						/>
@@ -70,10 +70,10 @@ const SettingsSessionsList = () => {
 								/>
 								<List
 									items={sessions}
-									className={styles['settings-sessions__list']}
+									className={styles.list}
 									renderItem={(session) => (
 										<React.Fragment key={session.id}>
-											{!session.current && (
+											{!session.isCurrent && (
 												<SettingsSessionsItem
 													key={session.id}
 													session={session}

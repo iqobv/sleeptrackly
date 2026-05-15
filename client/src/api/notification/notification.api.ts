@@ -1,20 +1,8 @@
 import { INotification, TNotificationPaginated } from '@/types';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const getNotifications = async () =>
-	await fetcher<TNotificationPaginated>(
-		'/v1/notifications/me',
-		{
-			method: 'GET',
-		},
-		true,
-	);
+	(await apiClient.get<TNotificationPaginated>('/v1/notifications/me')).data;
 
 export const markAllNotificationsAsRead = async () =>
-	await fetcher<INotification[]>(
-		'/v1/notifications/read-all',
-		{
-			method: 'PATCH',
-		},
-		true,
-	);
+	(await apiClient.patch<INotification[]>('/v1/notifications/read-all')).data;

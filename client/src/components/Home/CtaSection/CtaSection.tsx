@@ -1,5 +1,5 @@
 import { Button, SectionHeader } from '@/components/UI';
-import { PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config';
 import styles from './CtaSection.module.scss';
 
 const CtaSection = () => {
@@ -12,7 +12,7 @@ const CtaSection = () => {
 					description="Sign up now and take control of your sleep."
 					padding={0}
 				/>
-				<Button href={PAGES.REGISTER}>Sign Up For Free</Button>
+				<Button href={AUTH_PAGES.REGISTER}>Sign Up For Free</Button>
 			</div>
 		</div>
 	);

@@ -1,7 +1,6 @@
 'use client';
 
 import { IUserSanction } from '@/types';
-import styles from './ReportUserSanctions.module.scss';
 import ReportUserSanctionsItem from './ReportUserSanctionsItem/ReportUserSanctionsItem';
 
 interface ReportUserSanctionsProps {
@@ -14,7 +13,7 @@ const ReportUserSanctions = ({
 	sanctions,
 }: ReportUserSanctionsProps) => {
 	return (
-		<div className={styles['report-user-sanctions']}>
+		<div>
 			{sanctions.map((sanction, index) => (
 				<ReportUserSanctionsItem
 					key={sanction.id}

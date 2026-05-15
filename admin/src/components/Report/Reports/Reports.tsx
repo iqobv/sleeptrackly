@@ -5,7 +5,6 @@ import { IReportPaginationQuery, TReportStatus, TReportType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import ReportFilter from './ReportFilter/ReportFilter';
-import styles from './Reports.module.scss';
 import ReportsList from './ReportsList/ReportsList';
 
 const Reports = () => {
@@ -23,19 +22,26 @@ const Reports = () => {
 	});
 
 	useEffect(() => {
-		const newSearchParams = new URLSearchParams(searchParams);
+		const currentParams = new URLSearchParams(searchParams.toString());
+		let hasChanges = false;
 
 		Object.entries(filters).forEach(([key, value]) => {
-			if (value) {
-				newSearchParams.set(key, String(value));
+			if (value !== undefined && value !== null) {
+				const stringValue = String(value);
+				if (currentParams.get(key) !== stringValue) {
+					currentParams.set(key, stringValue);
+					hasChanges = true;
+				}
 			}
 		});
 
-		router.push(`?${newSearchParams.toString()}`);
+		if (hasChanges) {
+			router.push(`?${currentParams.toString()}`, { scroll: false });
+		}
 	}, [filters, router, searchParams]);
 
 	return (
-		<div className={styles['reports']}>
+		<div>
 			<SectionHeader title="Reports" />
 			<ReportFilter filters={filters} setFilters={setFilters} />
 			<ReportsList filters={filters} setFilters={setFilters} />

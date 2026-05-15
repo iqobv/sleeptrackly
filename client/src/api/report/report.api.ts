@@ -1,8 +1,5 @@
 import { SendReportDto } from '@/dto';
-import { fetcher } from '@/utils';
+import { apiClient } from '../axios';
 
 export const sendReport = async (dto: SendReportDto) =>
-	await fetcher('/v1/reports/send', {
-		method: 'POST',
-		body: JSON.stringify({ ...dto }),
-	});
+	(await apiClient.post('/v1/reports/send', dto)).data;

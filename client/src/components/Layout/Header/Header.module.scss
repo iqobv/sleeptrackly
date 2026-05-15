@@ -10,7 +10,7 @@
 	border-bottom: 2px solid var(--header-border-color);
 }
 
-.header__container {
+.container {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -25,10 +25,4 @@
 	@include respond-to(xl) {
 		padding: 0 80px;
 	}
-}
-
-.header__right {
-	display: flex;
-	align-items: center;
-	gap: 10px;
 }
