@@ -8,12 +8,12 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import { MdOutlineArrowBack } from 'react-icons/md';
-import QrScanModal from '../../QrScanModal/QrScanModal';
+import QrScanModal from '../SettingsSecurity/QrScanModal/QrScanModal';
+import styles from './SettingsSessions.module.scss';
 import SettingsSessionsItem from './SettingsSessionsItem/SettingsSessionsItem';
-import styles from './SettingsSessionsList.module.scss';
-import SettingsSessionsLoader from './SettingsSessionsLoader/SettingsSessionsLoader';
+import SettingsSessionsLoader from './SettingsSessionsLoader';
 
-const SettingsSessionsList = () => {
+const SettingsSessions = () => {
 	const { user } = useAuth();
 	const router = useRouter();
 
@@ -91,4 +91,4 @@ const SettingsSessionsList = () => {
 	);
 };
 
-export default SettingsSessionsList;
+export default SettingsSessions;

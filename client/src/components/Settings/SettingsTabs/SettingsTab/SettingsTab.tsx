@@ -12,7 +12,7 @@ interface SettingsTabProps {
 const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
 	return (
 		<Link
-			href={`?tab=${tab.name}`}
+			href={tab.href}
 			className={`${styles.tab} ${isActive ? styles.active : ''}`}
 		>
 			{tab.label}

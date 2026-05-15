@@ -1,6 +1,6 @@
 @use '../../../../styles/mixins' as *;
 
-.button {
+button.button {
 	width: 100%;
 
 	@include respond-to(md) {

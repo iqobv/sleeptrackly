@@ -1,33 +1,30 @@
-import SettingsAccount from '../SettingsAccount/SettingsAccount';
-import SettingsNotifications from '../SettingsNotifications/SettingsNotifications';
-import SettingsPrivacy from '../SettingsPrivacy/SettingsPrivacy';
-import SettingsSecurity from '../SettingsSecurity/SettingsSecurity';
+import { PRIVATE_PAGES } from '@/config';
 
 export interface SettingsTab {
-	name: string;
+	id: string;
 	label: string;
-	form: React.ReactNode;
+	href: string;
 }
 
 export const SETTINGS_TABS: SettingsTab[] = [
 	{
-		name: 'account',
+		id: 'account',
 		label: 'Account',
-		form: <SettingsAccount />,
+		href: PRIVATE_PAGES.SETTINGS.MAIN,
 	},
 	{
-		name: 'security',
+		id: 'security',
 		label: 'Security',
-		form: <SettingsSecurity />,
+		href: PRIVATE_PAGES.SETTINGS.SECURITY,
 	},
 	{
-		name: 'notifications',
+		id: 'notifications',
 		label: 'Notifications',
-		form: <SettingsNotifications />,
+		href: PRIVATE_PAGES.SETTINGS.NOTIFICATIONS,
 	},
 	{
-		name: 'privacy',
+		id: 'privacy',
 		label: 'Privacy',
-		form: <SettingsPrivacy />,
+		href: PRIVATE_PAGES.SETTINGS.PRIVACY,
 	},
 ];

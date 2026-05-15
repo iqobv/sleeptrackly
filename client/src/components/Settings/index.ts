@@ -1,2 +1,7 @@
 export { default as Settings } from './Settings';
-export { default as SettingsSessionsList } from './SettingsSecurity/SettingsSessions/SettingsSessionsList/SettingsSessionsList';
+export * from './SettingsAccount/index';
+export * from './SettingsNotifications/index';
+export * from './SettingsPrivacy/index';
+export * from './SettingsSecurity/index';
+export * from './SettingsSessions/index';
+export { default as SettingsTabs } from './SettingsTabs/SettingsTabs';
