@@ -7,7 +7,7 @@ import styles from './Home.module.scss';
 
 const Home = () => {
 	return (
-		<div className={`${styles['home']} fade-in`}>
+		<div className={`${styles.home} fade-in`}>
 			<Hero />
 			<Features />
 			<HowItWorks />

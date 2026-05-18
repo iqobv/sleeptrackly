@@ -12,20 +12,20 @@ const UserMenuCoins = () => {
 	});
 
 	return (
-		<div className={styles['coins']}>
+		<div className={styles.coins}>
 			{isLoading && <UserMenuCoinsLoader />}
 			{userCoins && (
-				<div className={styles['coins__container']}>
+				<div className={styles.container}>
 					<>
-						<p className={styles['coins__label']}>Balance</p>
-						<div className={styles['coins__balance']}>
+						<p className={styles.label}>Balance</p>
+						<div className={styles.balance}>
 							<Coin
-								className={styles['coins__icon']}
+								className={styles.icon}
 								width={40}
 								height={40}
 								fill="var(--color-main-text)"
 							/>
-							<p className={styles['coins__amount']}>
+							<p className={styles.amount}>
 								{userCoins.amount ? userCoins.amount : 0}
 							</p>
 						</div>

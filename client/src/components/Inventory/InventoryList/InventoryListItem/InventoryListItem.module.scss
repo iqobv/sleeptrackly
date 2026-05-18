@@ -1,4 +1,4 @@
-.inventory-item {
+.item {
 	background-color: var(--inventory-item-bg);
 	border: 1px solid var(--inventory-item-border);
 	border-radius: 8px;
@@ -12,7 +12,7 @@
 	}
 }
 
-.inventory-item__image-container {
+.imageContainer {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -22,7 +22,7 @@
 	position: relative;
 }
 
-.inventory-item__equipped-badge {
+.equippedBadge {
 	position: absolute;
 	top: 12px;
 	right: 18px;
@@ -34,11 +34,11 @@
 	font-size: 0.9rem;
 }
 
-.inventory-item__image {
+.image {
 	user-select: none;
 }
 
-.inventory-item__details {
+.details {
 	padding: 12px;
 	display: flex;
 	flex-direction: column;
@@ -47,14 +47,14 @@
 	flex-grow: 1;
 }
 
-.inventory-item__info {
+.info {
 	display: flex;
 	flex-direction: column;
 	gap: 5px;
 	justify-content: space-between;
 }
 
-.inventory-item__name {
+.name {
 	font-weight: 600;
 	font-size: 1.1rem;
 	color: var(--page-title-color);
@@ -66,12 +66,12 @@
 	min-height: 2.6em;
 }
 
-.inventory-item__type {
+.type {
 	font-size: 0.875rem;
 	color: var(--page-description-color);
 }
 
-.inventory-item__actions {
+.actions {
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;

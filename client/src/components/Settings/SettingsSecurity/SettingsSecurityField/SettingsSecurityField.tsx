@@ -21,7 +21,8 @@ const SettingsSecurityField = ({
 		<SettingsField label={label}>
 			<Button
 				onClick={action}
-				variant={isImportant ? 'danger' : 'outlined'}
+				variant="outlined"
+				color={isImportant ? 'danger' : 'primary'}
 				className={styles.button}
 			>
 				{buttonText}

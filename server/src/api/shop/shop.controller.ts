@@ -1,4 +1,4 @@
-import { Authorized } from '@libs/decorators';
+import { Auth, Authorized } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
@@ -11,6 +11,7 @@ import {
 } from './dto';
 import { ShopService } from './shop.service';
 
+@Auth()
 @Controller('shop')
 export class ShopController {
 	constructor(private readonly shopService: ShopService) {}

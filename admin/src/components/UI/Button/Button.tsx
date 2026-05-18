@@ -1,65 +1,73 @@
 'use client';
 
-import Link from 'next/link';
+import { Slot, Slottable } from '@radix-ui/react-slot';
+import React from 'react';
+import Loader from '../Loader/Loader';
 import { buttonVariants } from './butonStyles';
 import { ButtonProps } from './Button.types';
-import ButtonContent from './ButtonContent/ButtonContent';
+import { renderButtonContent } from './ButtonContent/ButtonContent';
+import styles from './styles/Button.module.scss';
 
 export default function Button({
 	children,
 	variant = 'contained',
+	color = 'primary',
 	className = '',
 	disabled = false,
-	href = '',
-	id,
-	onClick = () => {},
-	style,
 	type = 'button',
 	loading = false,
 	size = 'md',
 	fullWidth = false,
 	isIcon = false,
-	contentClassName = '',
-	...rest
+	isRounded = false,
+	ref,
+	asChild = false,
+	onClick,
+	...props
 }: ButtonProps) {
-	const isLink = !!href && !disabled && !loading;
+	const isDisabled = disabled || loading;
+	const Component = asChild ? Slot : 'button';
 
-	const styles = buttonVariants({
+	const classNames = buttonVariants({
 		variant,
+		color,
 		size,
 		fullWidth,
 		isIcon,
-		disabled,
+		disabled: isDisabled,
+		isRounded,
 	});
 
+	const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+		if (isDisabled) {
+			e.preventDefault();
+			return;
+		}
+		onClick?.(e);
+	};
+
 	return (
-		<>
-			{isLink ? (
-				<Link
-					href={href}
-					className={`${styles} ${className}`}
-					style={style}
-					id={id}
-					onClick={onClick}
-					{...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-				>
-					<ButtonContent loading={loading} className={contentClassName}>
-						{children}
-					</ButtonContent>
-				</Link>
-			) : (
-				<button
-					className={`${styles} ${className}`}
-					onClick={onClick}
-					style={style}
-					disabled={disabled || loading}
-					type={type}
-					id={id}
-					{...(rest as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-				>
-					<ButtonContent loading={loading}>{children}</ButtonContent>
-				</button>
+		<Component
+			ref={ref}
+			className={`${classNames} ${className}`}
+			disabled={asChild ? undefined : isDisabled}
+			aria-disabled={isDisabled}
+			data-loading={loading ? '' : undefined}
+			type={asChild ? undefined : type}
+			onClick={handleClick}
+			{...props}
+		>
+			{loading && (
+				<Loader
+					disablePadding
+					size={22}
+					thickness={4}
+					containerClassName={styles.loader}
+				/>
 			)}
-		</>
+			<Slottable>
+				{renderButtonContent({ children, loading, asChild })}
+			</Slottable>
+		</Component>
 	);
 }

@@ -4,25 +4,24 @@ import { getAllBundles } from '@/api';
 import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { Bundle } from '@/types';
+import Link from 'next/link';
 import BundleCard from '../../BundleCard/BundleCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 
 const BundlesList = () => {
 	return (
 		<div>
-			<Button href={PAGES.BUNDLE_NEW}>New Bundle</Button>
+			<Button asChild>
+				<Link href={PAGES.BUNDLE_NEW}>New Bundle</Link>
+			</Button>
 			<ItemsListPaginatedWrapper<Bundle>
 				queryFn={getAllBundles}
 				queryKey={(query) => [QUERY_KEYS.customization.bundle.getAll(query)]}
 				itemCard={(bundle) => (
 					<BundleCard
 						actions={
-							<Button
-								fullWidth
-								variant="secondary"
-								href={PAGES.BUNDLE(bundle.id)}
-							>
-								View
+							<Button fullWidth variant="contained" color="secondary" asChild>
+								<Link href={PAGES.BUNDLE(bundle.id)}>View</Link>
 							</Button>
 						}
 						bundle={bundle}

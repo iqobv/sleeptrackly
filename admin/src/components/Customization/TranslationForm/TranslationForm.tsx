@@ -35,13 +35,13 @@ const TranslationForm = <T extends HasTranslations>() => {
 		| undefined;
 
 	return (
-		<div className={styles['translations']}>
+		<div className={styles.translations}>
 			{fields.map((field, index) => {
 				const error = translationsErrors?.[index];
 
 				return (
-					<div key={field.id} className={styles['translations__item']}>
-						<div className={styles['translations__fields']}>
+					<div key={field.id} className={styles.item}>
+						<div className={styles.fields}>
 							<TextField
 								placeholder="Language"
 								error={error?.language?.message}
@@ -59,7 +59,8 @@ const TranslationForm = <T extends HasTranslations>() => {
 						</div>
 						<Button
 							type="button"
-							variant="danger"
+							variant="contained"
+							color="danger"
 							isIcon
 							size="md"
 							onClick={() => remove(index)}
@@ -71,7 +72,8 @@ const TranslationForm = <T extends HasTranslations>() => {
 			})}
 			<Button
 				type="button"
-				variant="secondary"
+				variant="contained"
+				color="secondary"
 				onClick={() =>
 					append({
 						language: '',

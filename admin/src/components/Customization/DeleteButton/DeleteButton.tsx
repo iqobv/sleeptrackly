@@ -33,7 +33,7 @@ const DeleteButton = ({
 
 	return (
 		<div>
-			<Button onClick={handleClose} variant="danger">
+			<Button onClick={handleClose} variant="contained" color="danger">
 				Delete
 			</Button>
 			<ConfirmModal

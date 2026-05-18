@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from './ProductCard/ProductCard';
 
+import Link from 'next/link';
 import styles from './ProductsList.module.scss';
 
 const ProductsList = () => {
@@ -30,9 +31,11 @@ const ProductsList = () => {
 
 	return (
 		<div>
-			<Button href={PAGES.PRODUCT_NEW}>Add Product</Button>
+			<Button asChild>
+				<Link href={PAGES.PRODUCT_NEW}>Add Product</Link>
+			</Button>
 			{data?.items && data.items.length > 0 ? (
-				<div className={styles['products-list']}>
+				<div className={styles.list}>
 					{data.items.map((product) => (
 						<ProductCard key={product.id} product={product} />
 					))}

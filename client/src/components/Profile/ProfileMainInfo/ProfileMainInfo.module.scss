@@ -1,20 +1,14 @@
-.profile-main-info {
+.info {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.profile-main-info__avatar-wrapper {
+.avatarWrapper {
 	position: relative;
 }
 
-.profile-main-info__avatar-image {
-	border-radius: 50%;
-	border: 1px solid var(--avatar-border);
-	user-select: none;
-}
-
-.profile-main-info__avatar-frame {
+.avatarFrame {
 	position: absolute;
 	pointer-events: none;
 	user-select: none;
@@ -23,11 +17,11 @@
 	transform: scale(1.3);
 }
 
-.profile-main-info__username {
+.username {
 	text-align: center;
 }
 
-.profile-main-info__buttons {
+.buttons {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;

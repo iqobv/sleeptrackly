@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
+import Link from 'next/link';
 import styles from './MenuItem.module.scss';
 
 interface MenuItemProps {
@@ -12,18 +13,25 @@ interface MenuItemProps {
 
 const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
 	return (
-		<div className={styles['menu-item']}>
-			<Button
-				variant="text"
-				onClick={onClick}
-				className={styles['menu-item__link']}
-				fullWidth
-				{...(path && { href: path })}
-			>
-				{icon}
-				{label}
-			</Button>
-		</div>
+		<Button
+			variant="text"
+			onClick={onClick}
+			className={styles.link}
+			fullWidth
+			{...(path && { asChild: true })}
+		>
+			{path ? (
+				<Link href={path}>
+					{icon}
+					{label}
+				</Link>
+			) : (
+				<>
+					{icon}
+					{label}
+				</>
+			)}
+		</Button>
 	);
 };
 

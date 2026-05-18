@@ -5,6 +5,7 @@ import { Button, SectionHeader } from '@/components/UI';
 import { AUTH_PAGES, QUERY_KEYS } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -59,20 +60,18 @@ const EmailConfirmationDefault = () => {
 					title="Your Email is not Verified!"
 					description="Your email is not verified. Please check your inbox for a verification email. If you did not receive the email, you can resend the verification email or change your email address."
 				/>
-				<Button
-					href="https://mail.google.com"
-					target="_blank"
-					variant="outlined"
-				>
-					Gmail <FaExternalLinkAlt size={15} />
+				<Button variant="outlined" asChild>
+					<Link href="https://mail.google.com" target="_blank">
+						Gmail <FaExternalLinkAlt size={15} />
+					</Link>
 				</Button>
 				<Button onClick={handleResendEmail} disabled={timer > 0 || !email}>
 					{timer > 0
 						? `Resend Verification Email (${timer})`
 						: 'Resend Verification Email'}
 				</Button>
-				<Button onClick={handleChangeEmail} href={AUTH_PAGES.REGISTER}>
-					Change Email
+				<Button onClick={handleChangeEmail} asChild>
+					<Link href={AUTH_PAGES.REGISTER}>Change Email</Link>
 				</Button>
 			</div>
 		</EmailConfirmationWrapper>

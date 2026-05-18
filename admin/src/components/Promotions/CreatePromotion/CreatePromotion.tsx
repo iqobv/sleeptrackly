@@ -21,7 +21,7 @@ const CreatePromotion = () => {
 				defaultValues={{
 					alias: '',
 					coinsReward: 0,
-					productIdReward: undefined,
+					productIdReward: null,
 					maxUses: undefined,
 					expiresAt: undefined,
 				}}

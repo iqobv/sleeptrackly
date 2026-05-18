@@ -1,11 +1,21 @@
+import { getServerProfile } from '@/api';
 import { Profile } from '@/components/Profile';
-import { Error } from '@/types';
-import { cookies } from 'next/headers';
+import { QUERY_KEYS } from '@/config';
+import {
+	dehydrate,
+	HydrationBoundary,
+	QueryClient,
+} from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 interface ProfilePageProps {
 	params: Promise<{ username: string }>;
 }
+
+const getCachedProfile = cache(
+	async (username: string) => await getServerProfile(username),
+);
 
 export async function generateMetadata({ params }: ProfilePageProps) {
 	const { username } = await params;
@@ -17,28 +27,27 @@ export async function generateMetadata({ params }: ProfilePageProps) {
 
 export default async function ProfilePage({ params }: ProfilePageProps) {
 	const { username } = await params;
-	const cookieStore = await cookies();
-	const hasSession = !!cookieStore.get('session');
 
 	try {
-		const res = await fetch(`${process.env.API_URL}/v1/profiles/${username}`, {
-			headers: {
-				...(hasSession && { Cookie: cookieStore.toString() }),
-			},
-		});
-		const data = await res.json();
-		if (!res.ok) throw data;
-	} catch (error: unknown) {
-		const err = error as Error;
-		if (err.statusCode === 404) {
-			notFound();
-		}
-		throw err;
-	}
+		const profile = await getCachedProfile(username);
 
-	return (
-		<div className="page">
-			<Profile username={username} />
-		</div>
-	);
+		if (!profile) notFound();
+
+		const queryClient = new QueryClient();
+
+		queryClient.prefetchQuery({
+			queryKey: QUERY_KEYS.profile.username(username),
+			queryFn: () => getCachedProfile(username),
+		});
+
+		return (
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<div className="page">
+					<Profile username={username} />
+				</div>
+			</HydrationBoundary>
+		);
+	} catch {
+		notFound();
+	}
 }

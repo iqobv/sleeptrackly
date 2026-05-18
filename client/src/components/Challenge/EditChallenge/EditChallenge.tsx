@@ -11,6 +11,7 @@ import { IoMdArrowBack } from 'react-icons/io';
 import ChallengeForm from '../ChallengeForm/ChallengeForm';
 import { UPDATE_CHALLENGE_FIELDS } from './editChallengeFields';
 
+import Link from 'next/link';
 import styles from './EditChallenge.module.scss';
 
 interface EditChallengeProps {
@@ -28,9 +29,11 @@ const EditChallenge = ({ id }: EditChallengeProps) => {
 
 	return (
 		<div className={styles['edit-challenge']}>
-			<Button href={PRIVATE_PAGES.CHALLENGES.BY_ID(id)} variant="text">
-				<IoMdArrowBack />
-				Go Back
+			<Button variant="text" asChild>
+				<Link href={PRIVATE_PAGES.CHALLENGES.BY_ID(id)}>
+					<IoMdArrowBack />
+					Go Back
+				</Link>
 			</Button>
 			<ChallengeForm<UpdateChallengeDto, Challenge>
 				fields={UPDATE_CHALLENGE_FIELDS}

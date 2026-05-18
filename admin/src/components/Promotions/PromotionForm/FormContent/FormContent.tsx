@@ -36,7 +36,8 @@ const FormContent = <T extends FieldValues>({
 				{isEdit && isDirty && (
 					<Button
 						type="button"
-						variant="secondary"
+						variant="contained"
+						color="secondary"
 						disabled={!isDirty}
 						onClick={() => reset()}
 						loading={isLoading}

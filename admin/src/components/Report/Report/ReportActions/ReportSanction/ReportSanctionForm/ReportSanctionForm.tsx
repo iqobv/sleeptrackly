@@ -100,7 +100,12 @@ const ReportSanctionForm = ({
 					{isUpdate ? 'Update sanction' : 'Create sanction'}
 				</Button>
 				{showRemoveButton && (
-					<Button onClick={removeSanction} type="button" variant="secondary">
+					<Button
+						onClick={removeSanction}
+						type="button"
+						variant="contained"
+						color="secondary"
+					>
 						{isUpdate ? 'Remove sanction' : 'Cancel'}
 					</Button>
 				)}

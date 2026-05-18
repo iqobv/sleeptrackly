@@ -36,7 +36,8 @@ const ProductItemsList = <T extends FieldValues>() => {
 					item={item}
 					actions={
 						<Button
-							variant={itemId === item.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={itemId === item.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(item.id)}
 						>

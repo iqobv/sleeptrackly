@@ -17,10 +17,10 @@ export default function Avatar({
 	const [loaded, setLoaded] = useState(false);
 
 	return (
-		<div className={`${styles['avatar']} ${containerClassName}`}>
+		<div className={`${styles.avatar} ${containerClassName}`}>
 			{!loaded && (
 				<SkeletonLoader
-					containerClassName={styles['avatar__skeleton']}
+					containerClassName={styles.skeleton}
 					circle
 					width={size}
 					height={size}
@@ -34,14 +34,14 @@ export default function Avatar({
 					muted
 					width={size}
 					height={size}
-					className={`${styles['avatar__image']} ${avatarClassName}`}
+					className={`${styles.image} ${avatarClassName}`}
 					onLoadedData={() => setLoaded(true)}
 				/>
 			) : (
 				<Image
 					src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
 					alt="avatar"
-					className={`${styles['avatar__image']} ${avatarClassName}`}
+					className={`${styles.image} ${avatarClassName}`}
 					width={size}
 					height={size}
 					onLoad={() => setLoaded(true)}

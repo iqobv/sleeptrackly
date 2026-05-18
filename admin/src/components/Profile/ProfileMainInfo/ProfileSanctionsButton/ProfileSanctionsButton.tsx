@@ -20,7 +20,8 @@ const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
 			<Button
 				isIcon
 				size="sm"
-				variant="secondary"
+				variant="contained"
+				color="secondary"
 				onClick={handleOpen}
 				title="Send Report"
 			>

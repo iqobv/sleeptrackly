@@ -7,13 +7,25 @@ import { getFormData } from '@/utils';
 export const createItem = async (dto: CreateItemDto) => {
 	const formData = getFormData(dto);
 
-	return (await apiClient.post<Item>('/v1/items', formData)).data;
+	return (
+		await apiClient.post<Item>('/v1/items', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	).data;
 };
 
 export const updateItem = async (id: string, dto: UpdateItemDto) => {
 	const formData = getFormData(dto);
 
-	return (await apiClient.patch<Item>(`/v1/items/${id}`, formData)).data;
+	return (
+		await apiClient.patch<Item>(`/v1/items/${id}`, formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	).data;
 };
 
 export const getAllItems = async (query: PaginationDto) =>

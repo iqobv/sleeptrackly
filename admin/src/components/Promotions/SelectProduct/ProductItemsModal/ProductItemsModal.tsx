@@ -15,7 +15,7 @@ const ProductItemModal = () => {
 		<div>
 			<Button onClick={handleClose}>Select</Button>
 			<Modal isOpen={open} onClose={handleClose}>
-				<div className={styles['product-items__tabs']}></div>
+				<div className={styles.tabs}></div>
 				<div>
 					<ProductsList />
 				</div>

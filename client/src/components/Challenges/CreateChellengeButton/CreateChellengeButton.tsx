@@ -2,11 +2,14 @@
 
 import { Button } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config';
+import Link from 'next/link';
 
 const CreateChellengeButton = () => {
 	return (
 		<div>
-			<Button href={PRIVATE_PAGES.CHALLENGES.NEW}>Create Challenge</Button>
+			<Button asChild>
+				<Link href={PRIVATE_PAGES.CHALLENGES.NEW}>Create Challenge</Link>
+			</Button>
 		</div>
 	);
 };

@@ -15,7 +15,7 @@
 	backdrop-filter: blur(3px);
 }
 
-.modal__container {
+.container {
 	width: 90%;
 	max-height: 90%;
 	display: flex;
@@ -31,12 +31,12 @@
 	}
 }
 
-.modal__header {
+.header {
 	display: flex;
 	justify-content: end;
 }
 
-.modal__body {
+.body {
 	width: 100%;
 	overflow-y: auto;
 }

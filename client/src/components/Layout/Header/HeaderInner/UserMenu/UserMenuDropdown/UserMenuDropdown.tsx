@@ -32,7 +32,7 @@ const UserMenuDropdown = ({
 			width={WIDTH}
 			onClose={onClose}
 		>
-			<div className={styles['user-menu__dropdown']}>
+			<div className={styles.dropdown}>
 				<UserMenuCoins />
 				{USER_MAIN_LINKS(user).map((link) => (
 					<MenuItem

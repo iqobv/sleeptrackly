@@ -18,14 +18,14 @@ export default function ConfirmModal({
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			containerClassName={styles['confirm-modal']}
+			containerClassName={styles.confirmModal}
 		>
 			<SectionHeader title={title} titleComponent="h2" description={text} />
-			<div className={styles['confirm-modal__footer']}>
+			<div className={styles.footer}>
 				<Button variant="outlined" onClick={onCancel}>
 					Cancel
 				</Button>
-				<Button variant="danger" onClick={onConfirm}>
+				<Button variant="contained" color="danger" onClick={onConfirm}>
 					Confirm
 				</Button>
 			</div>

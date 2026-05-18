@@ -3,6 +3,7 @@
 import { Button } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
 import { useAuth } from '@/hooks';
+import Link from 'next/link';
 import UserMenu from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
 import AuthButtonsLoader from './AuthButtonsLoader';
@@ -20,10 +21,12 @@ const AuthButtons = () => {
 						<UserMenu />
 					) : (
 						<>
-							<Button href={AUTH_PAGES.LOGIN} variant="link">
-								Login
+							<Button variant="link" color="primary" asChild>
+								<Link href={AUTH_PAGES.LOGIN}>Login</Link>
 							</Button>
-							<Button href={AUTH_PAGES.REGISTER}>Register</Button>
+							<Button asChild>
+								<Link href={AUTH_PAGES.REGISTER}>Register</Link>
+							</Button>
 						</>
 					)}
 				</>

@@ -35,7 +35,7 @@
 	}
 }
 
-.hero__container {
+.container {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
@@ -43,7 +43,7 @@
 	z-index: 2;
 }
 
-.hero__title {
+.title {
 	font-size: clamp(2.6rem, 6vw, 4.2rem);
 	text-align: center;
 	color: #f3f7ff;
@@ -51,7 +51,7 @@
 	text-shadow: 12px 8px 8px rgba(0, 0, 0, 0.7);
 }
 
-.hero__description {
+.description {
 	font-size: clamp(1.1rem, 2vw, 1.3rem);
 	text-align: center;
 	color: #f3f7ff;
@@ -59,11 +59,11 @@
 	text-shadow: 12px 8px 8px rgba(0, 0, 0, 0.7);
 }
 
-.hero__button {
+.button {
 	box-shadow: 3px 2px 8px 1px rgba(255, 255, 255, 0.2);
 }
 
-.hero__image-container {
+.image-container {
 	flex: 1 0 50%;
 	display: flex;
 	justify-content: center;
@@ -71,7 +71,7 @@
 	width: 100%;
 }
 
-.hero__image {
+.image {
 	height: auto;
 	max-width: 230px;
 	user-select: none;

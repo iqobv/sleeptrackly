@@ -6,14 +6,25 @@ import { getFormData } from '@/utils';
 export const createBundle = async (dto: CreateBundleDto) => {
 	const formData = getFormData(dto);
 
-	return (await apiClient.post<Bundle>('/v1/items/bundles', formData)).data;
+	return (
+		await apiClient.post<Bundle>('/v1/items/bundles', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	).data;
 };
 
 export const updateBundle = async (id: string, dto: UpdateBundleDto) => {
 	const formData = getFormData(dto);
 
-	return (await apiClient.patch<Bundle>(`/v1/items/bundles/${id}`, formData))
-		.data;
+	return (
+		await apiClient.patch<Bundle>(`/v1/items/bundles/${id}`, formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		})
+	).data;
 };
 
 export const getAllBundles = async (query: PaginationDto) =>

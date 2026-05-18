@@ -1,7 +1,8 @@
 import { ItemRarity, ProfileItemType } from '@generated/prisma/enums';
+import { TransformBoolean, TransformTranslations } from '@libs/decorators';
 import { TranslationDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
@@ -14,8 +15,8 @@ import {
 
 export class CreateItemDto {
 	@ApiProperty({ example: false, required: false })
-	@Type(() => Boolean)
 	@IsOptional()
+	@TransformBoolean()
 	@IsBoolean()
 	isExclusive?: boolean;
 
@@ -37,31 +38,7 @@ export class CreateItemDto {
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => TranslationDto)
-	@Transform(({ value }) => {
-		if (Array.isArray(value)) {
-			return value.map((item) => {
-				if (typeof item === 'string') {
-					try {
-						return JSON.parse(item) as TranslationDto;
-					} catch {
-						return item as unknown as TranslationDto;
-					}
-				}
-				return item as TranslationDto;
-			});
-		}
-
-		if (typeof value === 'string') {
-			try {
-				const parsed = JSON.parse(value) as unknown;
-				return (Array.isArray(parsed) ? parsed : [parsed]) as TranslationDto[];
-			} catch {
-				return [] as TranslationDto[];
-			}
-		}
-
-		return [] as TranslationDto[];
-	})
+	@TransformTranslations()
 	translations: TranslationDto[];
 }
 

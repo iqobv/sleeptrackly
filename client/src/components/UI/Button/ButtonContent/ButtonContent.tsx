@@ -1,31 +1,37 @@
-'use client';
-
-import Loader from '../../Loader/Loader';
+import { ReactElement, ReactNode, cloneElement, isValidElement } from 'react';
 import styles from './ButtonContent.module.scss';
 
-interface ButtonContentProps {
-	children: React.ReactNode;
+interface ButtonContentParams {
+	children: ReactNode;
 	loading: boolean;
+	asChild?: boolean;
 }
 
-const ButtonContent = ({ children, loading }: ButtonContentProps) => {
+export const renderButtonContent = ({
+	children,
+	loading,
+	asChild,
+}: ButtonContentParams): ReactNode => {
+	const contentStyle = {
+		visibility: loading ? 'hidden' : 'visible',
+		opacity: loading ? 0 : 1,
+	} as const;
+
+	if (asChild && isValidElement(children)) {
+		const childElement = children as ReactElement<{ children?: ReactNode }>;
+
+		return cloneElement(
+			childElement,
+			undefined,
+			<span className={styles.content} style={contentStyle}>
+				{childElement.props.children}
+			</span>,
+		);
+	}
+
 	return (
-		<div
-			className={`${styles['button__inner']} ${
-				loading ? styles['button__inner--loading'] : ''
-			}`}
-		>
-			<div className={styles['button__content']}>{children}</div>
-			{loading && (
-				<Loader
-					containerClassName={styles['button__loader']}
-					disablePadding
-					thickness={4}
-					size={22}
-				/>
-			)}
-		</div>
+		<span className={styles.content} style={contentStyle}>
+			{children}
+		</span>
 	);
 };
-
-export default ButtonContent;

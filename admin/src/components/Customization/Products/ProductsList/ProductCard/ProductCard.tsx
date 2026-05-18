@@ -4,6 +4,7 @@ import { Button, CDNImage } from '@/components/UI';
 import { Product } from '@/types';
 
 import { PAGES } from '@/config';
+import Link from 'next/link';
 import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {
@@ -17,8 +18,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 			: product.item?.translations.find((t) => t.language === 'en')?.name;
 
 	return (
-		<div className={styles['product-card']}>
-			<div className={styles['product-card__media']}>
+		<div className={styles.card}>
+			<div className={styles.media}>
 				{product.item?.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${product.item.mediaUrl}`}
@@ -41,9 +42,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
 				<h3>{translation || 'No translation'}</h3>
 				<p>Type: {product.type}</p>
 			</div>
-			<div className={styles['product-card__actions']}>
-				<Button variant="secondary" fullWidth href={PAGES.PRODUCT(product.id)}>
-					View
+			<div className={styles.actions}>
+				<Button variant="contained" color="secondary" fullWidth asChild>
+					<Link href={PAGES.PRODUCT(product.id)}>View</Link>
 				</Button>
 			</div>
 		</div>

@@ -30,9 +30,8 @@ const Pagination = ({
 					key={i}
 					onClick={() => typeof p === 'number' && onPageChange(p)}
 					className={p === '...' ? styles['pagination__ellipsis'] : ''}
-					variant={
-						p === currentPage ? 'contained' : p === '...' ? 'text' : 'secondary'
-					}
+					variant={p === '...' ? 'contained' : 'text'}
+					color={p === currentPage ? 'primary' : 'secondary'}
 				>
 					{p}
 				</Button>

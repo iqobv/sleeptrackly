@@ -1,7 +1,9 @@
 'use client';
 
 import { Button, SectionHeader } from '@/components/UI';
+import { PRIVATE_PAGES } from '@/config';
 import { Challenge } from '@/types';
+import Link from 'next/link';
 import styles from './ChallengeItem.module.scss';
 
 interface ChallengeItemProps {
@@ -12,22 +14,24 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 	if (!challenge) return null;
 
 	return (
-		<li className={styles['challenge']}>
-			<div className={styles['challenge__wrapper']}>
-				<p className={styles['challenge__tag']}>Challenge</p>
-				<div className={styles['challenge__content']}>
+		<li className={styles.challenge}>
+			<div className={styles.wrapper}>
+				<p className={styles.tag}>Challenge</p>
+				<div className={styles.content}>
 					<SectionHeader
 						title={challenge.title}
 						titleComponent="h3"
-						titleClassName={styles['challenge__title']}
+						titleClassName={styles.title}
 						description={challenge.description}
 						gap={3}
 						padding={0}
 					/>
 				</div>
-				<div className={styles['challenge__actions']}>
-					<Button variant="secondary" href={`/challenges/${challenge.id}`}>
-						View Progress
+				<div className={styles.actions}>
+					<Button variant="contained" color="secondary" asChild>
+						<Link href={PRIVATE_PAGES.CHALLENGES.BY_ID(challenge.id)}>
+							View Progress
+						</Link>
 					</Button>
 				</div>
 			</div>

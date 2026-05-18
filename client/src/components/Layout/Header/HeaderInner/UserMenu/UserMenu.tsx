@@ -20,10 +20,10 @@ const UserMenu = () => {
 	if (!user) return null;
 
 	return (
-		<div className={styles['user-menu__controls']}>
+		<div className={styles.controls}>
 			<NotificationsButton />
-			<div className={styles['user-menu__wrapper']} ref={buttonRef}>
-				<button onClick={onClose} className={styles['user-menu__btn']}>
+			<div className={styles.wrapper} ref={buttonRef}>
+				<button onClick={onClose} className={styles.btn}>
 					<Avatar
 						avatar={avatar ? avatar.item.mediaUrl : user.avatar?.url}
 						size={40}

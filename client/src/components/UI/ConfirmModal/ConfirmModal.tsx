@@ -25,7 +25,7 @@ export default function ConfirmModal({
 				<Button variant="outlined" onClick={onCancel}>
 					Cancel
 				</Button>
-				<Button variant="danger" onClick={onConfirm}>
+				<Button variant="contained" color="danger" onClick={onConfirm}>
 					Confirm
 				</Button>
 			</div>

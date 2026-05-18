@@ -40,44 +40,43 @@ const CreateNotification = () => {
 	};
 
 	return (
-		<div className={styles['create-notification']}>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				{FIELDS.map((f) => (
-					<div key={f.name}>
-						{f.type === 'checkbox' ? (
-							<>
-								<input type="checkbox" id={f.name} {...register(f.name)} />
-								<label htmlFor={f.name}>{f.label}</label>
-							</>
-						) : (
-							<TextField
-								label={f.label}
-								placeholder={f.placeholder}
-								type={f.type}
-								error={errors[f.name]?.message as string}
-								{...register(f.name)}
-							/>
-						)}
-					</div>
-				))}
+		<form onSubmit={handleSubmit(onSubmit)}>
+			{FIELDS.map((f) => (
+				<div key={f.name}>
+					{f.type === 'checkbox' ? (
+						<>
+							<input type="checkbox" id={f.name} {...register(f.name)} />
+							<label htmlFor={f.name}>{f.label}</label>
+						</>
+					) : (
+						<TextField
+							label={f.label}
+							placeholder={f.placeholder}
+							type={f.type}
+							error={errors[f.name]?.message as string}
+							{...register(f.name)}
+						/>
+					)}
+				</div>
+			))}
 
-				{isDirty && (
-					<div className={styles['form-actions']}>
-						<Button
-							type="button"
-							variant="secondary"
-							onClick={() => reset()}
-							loading={isPending}
-						>
-							Cancel
-						</Button>
-						<Button type="submit" loading={isPending}>
-							Create Notification
-						</Button>
-					</div>
-				)}
-			</form>
-		</div>
+			{isDirty && (
+				<div className={styles.actions}>
+					<Button
+						type="button"
+						variant="contained"
+						color="secondary"
+						onClick={() => reset()}
+						loading={isPending}
+					>
+						Cancel
+					</Button>
+					<Button type="submit" loading={isPending}>
+						Create Notification
+					</Button>
+				</div>
+			)}
+		</form>
 	);
 };
 

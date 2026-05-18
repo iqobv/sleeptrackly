@@ -19,23 +19,21 @@ export default function Modal({
 	if (!isOpen) return null;
 
 	return createPortal(
-		<div className={styles['modal']}>
+		<div className={styles.modal}>
 			<div
-				className={`${styles['modal__container']} ${containerClassName}`}
+				className={`${styles.container} ${containerClassName}`}
 				ref={modalRef}
 				role="dialog"
 				aria-modal
 			>
-				<div className={styles['modal__header']}>
+				<div className={styles.header}>
 					<Button onClick={onClose} isIcon variant="text">
 						<MdClose size={25} />
 					</Button>
 				</div>
-				<div className={`${styles['modal__body']} ${bodyClassName}`}>
-					{children}
-				</div>
+				<div className={`${styles.body} ${bodyClassName}`}>{children}</div>
 			</div>
 		</div>,
-		document.body
+		document.body,
 	);
 }

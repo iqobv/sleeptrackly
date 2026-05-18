@@ -11,7 +11,7 @@ interface ProfileBadgesProps {
 
 const ProfileBadges = ({ badges }: ProfileBadgesProps) => {
 	return (
-		<div className={styles['profile-badges']}>
+		<div className={styles.badges}>
 			{badges.map((badge) => (
 				<CDNImage
 					key={badge.id}

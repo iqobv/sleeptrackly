@@ -1,17 +1,17 @@
 @use '../../../../../styles/mixins' as *;
 
-.user-menu__controls {
+.controls {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
 }
 
-.user-menu__wrapper {
+.wrapper {
 	position: relative;
 }
 
-.user-menu__btn {
+.btn {
 	border-radius: 50%;
 	background-color: transparent;
 	border: none;
@@ -24,14 +24,14 @@
 	align-items: center;
 }
 
-.user-menu__avatar {
+.avatar {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	border: 1px solid var(--avatar-border);
 }
 
-.user-menu__dropdown {
+.dropdown {
 	position: absolute;
 	right: 0;
 	background-color: var(--nav-bg-menu);

@@ -14,14 +14,14 @@
 		background-color: rgba(0, 0, 0, 0.3);
 		z-index: -1;
 	}
+}
 
-	&__container {
-		display: flex;
-		padding-top: 40px;
-		flex-direction: column;
-		gap: 20px;
-		background-color: var(--bg-body);
-		max-width: 1000px;
-		z-index: 2;
-	}
+.container {
+	display: flex;
+	padding-top: 40px;
+	flex-direction: column;
+	gap: 20px;
+	background-color: var(--bg-body);
+	max-width: 1000px;
+	z-index: 2;
 }

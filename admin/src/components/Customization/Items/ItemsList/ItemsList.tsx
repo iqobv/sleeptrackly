@@ -4,14 +4,17 @@ import { getAllItems } from '@/api';
 import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { Item } from '@/types';
+import Link from 'next/link';
 import ItemCard from '../../ItemCard/ItemCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import styles from './ItemsList.module.scss';
 
 const ItemsList = () => {
 	return (
-		<div className={styles['items']}>
-			<Button href={PAGES.ITEM_NEW}>New Item</Button>
+		<div className={styles.items}>
+			<Button asChild>
+				<Link href={PAGES.ITEM_NEW}>New Item</Link>
+			</Button>
 			<ItemsListPaginatedWrapper<Item>
 				queryFn={getAllItems}
 				queryKey={(params) => [...QUERY_KEYS.customization.item.getAll(params)]}
@@ -19,8 +22,8 @@ const ItemsList = () => {
 					<ItemCard
 						item={item}
 						actions={
-							<Button fullWidth variant="secondary" href={PAGES.ITEM(item.id)}>
-								View
+							<Button fullWidth variant="contained" color="secondary" asChild>
+								<Link href={PAGES.ITEM(item.id)}>View</Link>
 							</Button>
 						}
 					/>

@@ -37,7 +37,8 @@ const ProductsList = () => {
 					product={product}
 					actions={
 						<Button
-							variant={productId === product.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={productId === product.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(product.id)}
 						>

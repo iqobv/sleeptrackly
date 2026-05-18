@@ -18,15 +18,17 @@ const ProductItemModal = () => {
 		<div>
 			<Button onClick={handleClose}>Select</Button>
 			<Modal isOpen={open} onClose={handleClose}>
-				<div className={styles['product-items__tabs']}>
+				<div className={styles.tabs}>
 					<Button
-						variant={selectedType === 'ITEM' ? 'secondary' : 'outlined'}
+						variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
+						color="secondary"
 						onClick={() => setSelectedType('ITEM')}
 					>
 						Items
 					</Button>
 					<Button
-						variant={selectedType === 'BUNDLE' ? 'secondary' : 'outlined'}
+						variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
+						color="secondary"
 						onClick={() => setSelectedType('BUNDLE')}
 					>
 						Bundles

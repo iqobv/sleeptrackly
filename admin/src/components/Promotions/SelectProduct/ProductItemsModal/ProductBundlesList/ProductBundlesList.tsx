@@ -37,7 +37,8 @@ const ProductBundlesList = <T extends FieldValues>() => {
 					bundle={bundle}
 					actions={
 						<Button
-							variant={bundleId === bundle.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={bundleId === bundle.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(bundle.id)}
 						>

@@ -105,19 +105,38 @@
 	--btn-bg-secondary-hover: #ebebeb99;
 	--btn-color-secondary: #171717;
 
+	--btn-bg-outlined: transparent;
 	--btn-bg-outlined-hover: #f5f5f5;
 	--btn-border-outlined: #e5e5e5;
-	--btn-border-outlined-hover: #e5e5e5;
+	--btn-border-outlined-hover: #d4d4d4;
 	--btn-color-outlined: #0d141c;
 
+	--btn-bg-outlined-secondary: transparent;
+	--btn-bg-outlined-hover-secondary: #fafafa;
+	--btn-border-outlined-secondary: #d4d4d4;
+	--btn-border-outlined-hover-secondary: #a3a3a3;
+	--btn-color-outlined-secondary: #525252;
+
+	--btn-bg-text: transparent;
 	--btn-bg-text-hover: #f5f5f5cc;
 	--btn-color-text: #0d141c;
 
+	--btn-bg-text-secondary: transparent;
+	--btn-bg-text-hover-secondary: #fafafacc;
+	--btn-color-text-secondary: #525252;
+
+	--btn-bg-link: transparent;
 	--btn-color-link: #171717;
+
+	--btn-bg-link-secondary: transparent;
+	--btn-color-link-secondary: #525252;
 
 	--btn-danger-bg: #e7000bb3;
 	--btn-danger-bg-hover: #e7000bcc;
 	--btn-danger-color: #ffffff;
+	--btn-danger-bg-subtle: transparent;
+	--btn-danger-bg-subtle-hover: #e7000b1a;
+	--btn-danger-color-text: #e7000b;
 
 	/* Calendar */
 	--calendar-accent: #0d141c;
