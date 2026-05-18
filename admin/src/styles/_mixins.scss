@@ -1,7 +1,7 @@
 @use './variables' as *;
 @use 'sass:map';
 
-@mixin response($size) {
+@mixin respond-to($size) {
 	@media screen and (min-width: map.get($breakpoints, $size)) {
 		@content;
 	}

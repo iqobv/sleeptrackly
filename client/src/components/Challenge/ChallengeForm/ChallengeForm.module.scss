@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.challenge-form {
+.form {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
@@ -8,7 +8,7 @@
 	padding-bottom: 80px;
 }
 
-.submit-button {
+.submit {
 	width: 100%;
 	margin: 0 auto;
 	margin-top: 15px;

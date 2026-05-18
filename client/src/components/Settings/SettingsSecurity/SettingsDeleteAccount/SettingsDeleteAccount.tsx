@@ -14,7 +14,7 @@ const SettingsDeleteAccount = () => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
-	const handleCLose = () => setIsOpen(!isOpen);
+	const handleClose = () => setIsOpen(!isOpen);
 
 	const { mutate } = useMutation({
 		mutationFn: deleteAccount,
@@ -26,22 +26,21 @@ const SettingsDeleteAccount = () => {
 
 	const handleDelete = () => {
 		mutate();
-		handleCLose();
+		handleClose();
 	};
 
 	return (
 		<>
 			<SettingsSecurityField
-				action={handleCLose}
+				action={handleClose}
 				label="Delete account"
 				buttonText="Delete"
 				isImportant
 			/>
 			<ConfirmModal
 				isOpen={isOpen}
-				onClose={handleCLose}
+				onClose={handleClose}
 				onConfirm={handleDelete}
-				onCancel={handleCLose}
 				title="Delete account"
 				text="You sure you want to delete your account? If you delete your
 						account, all of your data will be permanently removed from our

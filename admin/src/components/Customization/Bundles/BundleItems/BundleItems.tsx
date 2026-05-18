@@ -17,7 +17,6 @@ interface BundleItemsProps {
 const BundleItems = <T extends FieldValues>({
 	initialItems,
 }: BundleItemsProps) => {
-	const [open, setOpen] = useState(false);
 	const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
 	const name = 'itemsIds' as Path<T>;
@@ -52,13 +51,42 @@ const BundleItems = <T extends FieldValues>({
 		}
 	};
 
-	const handleToggleModal = () => setOpen((prev) => !prev);
-
 	return (
 		<div>
-			<Button onClick={handleToggleModal} type="button">
-				Add Items
-			</Button>
+			<Modal>
+				<Modal.Trigger asChild>
+					<Button type="button">Add Items</Button>
+				</Modal.Trigger>
+				<Modal.Content>
+					<Modal.Header>Select Items</Modal.Header>
+					<Modal.Body>
+						<ItemsListPaginatedWrapper
+							queryFn={getAllItems}
+							queryKey={(query) => [
+								...QUERY_KEYS.customization.item.getAll(query),
+							]}
+							itemCard={(item) => {
+								const isSelected = selectedIds.includes(item.id);
+								return (
+									<ItemCard
+										key={item.id}
+										item={item}
+										actions={
+											<Button
+												type="button"
+												variant={isSelected ? 'outlined' : 'contained'}
+												onClick={() => toggleItem(item)}
+											>
+												{isSelected ? 'Remove' : 'Add'}
+											</Button>
+										}
+									/>
+								);
+							}}
+						/>
+					</Modal.Body>
+				</Modal.Content>
+			</Modal>
 
 			{selectedItems.length > 0 && (
 				<ItemsListWrapper
@@ -81,31 +109,6 @@ const BundleItems = <T extends FieldValues>({
 					)}
 				/>
 			)}
-
-			<Modal isOpen={open} onClose={handleToggleModal}>
-				<ItemsListPaginatedWrapper
-					queryFn={getAllItems}
-					queryKey={(query) => [...QUERY_KEYS.customization.item.getAll(query)]}
-					itemCard={(item) => {
-						const isSelected = selectedIds.includes(item.id);
-						return (
-							<ItemCard
-								key={item.id}
-								item={item}
-								actions={
-									<Button
-										type="button"
-										variant={isSelected ? 'outlined' : 'contained'}
-										onClick={() => toggleItem(item)}
-									>
-										{isSelected ? 'Remove' : 'Add'}
-									</Button>
-								}
-							/>
-						);
-					}}
-				/>
-			</Modal>
 		</div>
 	);
 };

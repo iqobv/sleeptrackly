@@ -29,17 +29,6 @@ export class SessionController {
 		return await this.sessionService.getUserSessions(userId, refreshToken);
 	}
 
-	@ApiOperation({ summary: 'Terminate session' })
-	@ApiOkResponse({ type: Boolean })
-	@Auth()
-	@Delete(':id')
-	async terminateSession(
-		@Authorized('id') userId: string,
-		@Param('id') sessionId: string,
-	) {
-		return await this.sessionService.deleteSession(userId, sessionId);
-	}
-
 	@ApiOperation({ summary: 'Terminate all sessions' })
 	@ApiOkResponse({ type: Boolean })
 	@Auth()
@@ -51,9 +40,21 @@ export class SessionController {
 		if (!refreshToken) {
 			throw new BadRequestException('Refresh token cookie is missing');
 		}
+
 		return await this.sessionService.deleteAllOtherSessions(
 			userId,
 			refreshToken,
 		);
+	}
+
+	@ApiOperation({ summary: 'Terminate session' })
+	@ApiOkResponse({ type: Boolean })
+	@Auth()
+	@Delete('id/:id')
+	async terminateSession(
+		@Authorized('id') userId: string,
+		@Param('id') sessionId: string,
+	) {
+		return await this.sessionService.deleteSession(userId, sessionId);
 	}
 }

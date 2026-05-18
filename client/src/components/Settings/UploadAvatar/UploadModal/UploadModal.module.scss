@@ -1,8 +1,8 @@
-.modalContainer {
+.content {
 	max-width: 500px;
 }
 
-.modal {
+.body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -13,9 +13,11 @@
 	user-select: none;
 }
 
-.buttons {
+.footer {
 	display: flex;
 	gap: 10px;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 .text {

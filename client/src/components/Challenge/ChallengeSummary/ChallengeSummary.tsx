@@ -47,13 +47,13 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	};
 
 	return (
-		<div className={styles['summary']}>
+		<div className={styles.summary}>
 			<SectionHeader
 				title={data?.title}
 				description={data?.description}
 				titleComponent="h2"
 			/>
-			<div className={styles['summary__buttons']}>
+			<div className={styles.buttons}>
 				<Button
 					onClick={handleClose}
 					variant="outlined"
@@ -75,7 +75,6 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 				text="Are you sure you want to delete this challenge?"
 				isOpen={open}
 				onClose={handleClose}
-				onCancel={handleClose}
 				onConfirm={handleDelete}
 			/>
 		</div>

@@ -52,7 +52,6 @@ const ReportUserSanctionsItem = ({
 					title="Delete sanction"
 					text="Are you sure you want to delete this sanction?"
 					onClose={handleOpenModal}
-					onCancel={handleOpenModal}
 					onConfirm={handleClick}
 				/>
 			</div>

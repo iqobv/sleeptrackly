@@ -28,7 +28,7 @@ const EditChallenge = ({ id }: EditChallengeProps) => {
 	const onSuccess = () => refetch();
 
 	return (
-		<div className={styles['edit-challenge']}>
+		<div className={styles.editChallenge}>
 			<Button variant="text" asChild>
 				<Link href={PRIVATE_PAGES.CHALLENGES.BY_ID(id)}>
 					<IoMdArrowBack />

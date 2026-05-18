@@ -13,13 +13,11 @@ import { toast } from 'react-toastify';
 interface ReportModalProps {
 	reportedId?: string;
 	reportType?: (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
-	onClose: () => void;
 }
 
 export const useReportModal = ({
 	reportedId,
 	reportType,
-	onClose,
 }: ReportModalProps) => {
 	const [selectedTitle, setSelectedTitle] = useState<Option | null>(null);
 
@@ -44,7 +42,6 @@ export const useReportModal = ({
 		mutationKey: QUERY_KEYS.report.send,
 		onSuccess: () => {
 			toast.success('Report sent');
-			onClose();
 		},
 		onError: (error) => {
 			toast.error(error.message);

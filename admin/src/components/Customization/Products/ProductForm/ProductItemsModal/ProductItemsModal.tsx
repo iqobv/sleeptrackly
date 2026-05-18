@@ -10,34 +10,38 @@ import styles from './ProductItemsModal.module.scss';
 
 const ProductItemModal = () => {
 	const [selectedType, setSelectedType] = useState<ProductType>('ITEM');
-	const [open, setOpen] = useState(false);
-
-	const handleClose = () => setOpen((prev) => !prev);
 
 	return (
 		<div>
-			<Button onClick={handleClose}>Select</Button>
-			<Modal isOpen={open} onClose={handleClose}>
-				<div className={styles.tabs}>
-					<Button
-						variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
-						color="secondary"
-						onClick={() => setSelectedType('ITEM')}
-					>
-						Items
-					</Button>
-					<Button
-						variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
-						color="secondary"
-						onClick={() => setSelectedType('BUNDLE')}
-					>
-						Bundles
-					</Button>
-				</div>
-				<div>
-					{selectedType === 'ITEM' && <ProductItemsList />}
-					{selectedType === 'BUNDLE' && <ProductBundlesList />}
-				</div>
+			<Modal>
+				<Modal.Trigger asChild>
+					<Button>Select</Button>
+				</Modal.Trigger>
+				<Modal.Content>
+					<Modal.Header>Select Item</Modal.Header>
+				</Modal.Content>
+				<Modal.Body>
+					<div className={styles.tabs}>
+						<Button
+							variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
+							color="secondary"
+							onClick={() => setSelectedType('ITEM')}
+						>
+							Items
+						</Button>
+						<Button
+							variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
+							color="secondary"
+							onClick={() => setSelectedType('BUNDLE')}
+						>
+							Bundles
+						</Button>
+					</div>
+					<div>
+						{selectedType === 'ITEM' && <ProductItemsList />}
+						{selectedType === 'BUNDLE' && <ProductBundlesList />}
+					</div>
+				</Modal.Body>
 			</Modal>
 		</div>
 	);

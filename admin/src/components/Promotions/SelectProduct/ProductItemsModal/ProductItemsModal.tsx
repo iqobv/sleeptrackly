@@ -1,26 +1,26 @@
 'use client';
 
 import { Button, Modal } from '@/components/UI';
-import { useState } from 'react';
 
 import styles from './ProductItemsModal.module.scss';
 import ProductsList from './ProductsList/ProductsList';
 
 const ProductItemModal = () => {
-	const [open, setOpen] = useState(false);
-
-	const handleClose = () => setOpen((prev) => !prev);
-
 	return (
-		<div>
-			<Button onClick={handleClose}>Select</Button>
-			<Modal isOpen={open} onClose={handleClose}>
-				<div className={styles.tabs}></div>
-				<div>
-					<ProductsList />
-				</div>
-			</Modal>
-		</div>
+		<Modal>
+			<Modal.Trigger asChild>
+				<Button>Select</Button>
+			</Modal.Trigger>
+			<Modal.Content>
+				<Modal.Header>Select Product</Modal.Header>
+				<Modal.Body>
+					<div className={styles.tabs}></div>
+					<div>
+						<ProductsList />
+					</div>
+				</Modal.Body>
+			</Modal.Content>
+		</Modal>
 	);
 };
 

@@ -1,41 +1,34 @@
 'use client';
 
-import { createPortal } from 'react-dom';
-import { MdClose } from 'react-icons/md';
-import Button from '../Button/Button';
-import styles from './Modal.module.scss';
+import * as Dialog from '@radix-ui/react-dialog';
+import { useState } from 'react';
 import { ModalProps } from './Modal.types';
-import { useModal } from './useModal';
+import ModalContent from './ModalContent/ModalContent';
+import { ModalContext } from './ModalContext';
+import { ModalBody, ModalFooter, ModalHeader } from './ModalParts';
 
 export default function Modal({
 	children,
-	isOpen,
-	bodyClassName = '',
-	containerClassName = '',
-	onClose,
+	open,
+	onOpenChange,
+	...props
 }: ModalProps) {
-	const { modalRef } = useModal({ isOpen, onClose });
+	const [internalOpen, setInternalOpen] = useState(false);
+	const isOpen = open !== undefined ? open : internalOpen;
+	const setIsOpen = onOpenChange !== undefined ? onOpenChange : setInternalOpen;
 
-	if (!isOpen) return null;
-
-	return createPortal(
-		<div className={styles['modal']}>
-			<div
-				className={`${styles['modal__container']} ${containerClassName}`}
-				ref={modalRef}
-				role="dialog"
-				aria-modal
-			>
-				<div className={styles['modal__header']}>
-					<Button onClick={onClose} isIcon isRounded variant="text">
-						<MdClose size={25} />
-					</Button>
-				</div>
-				<div className={`${styles['modal__body']} ${bodyClassName}`}>
-					{children}
-				</div>
-			</div>
-		</div>,
-		document.body,
+	return (
+		<ModalContext.Provider value={{ isOpen }}>
+			<Dialog.Root open={isOpen} onOpenChange={setIsOpen} {...props}>
+				{children}
+			</Dialog.Root>
+		</ModalContext.Provider>
 	);
 }
+
+Modal.Trigger = Dialog.Trigger;
+Modal.Close = Dialog.Close;
+Modal.Content = ModalContent;
+Modal.Header = ModalHeader;
+Modal.Body = ModalBody;
+Modal.Footer = ModalFooter;

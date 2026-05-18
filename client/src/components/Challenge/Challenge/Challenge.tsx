@@ -7,7 +7,6 @@ import { useQuery } from '@tanstack/react-query';
 import Calendar from '../Calendar/Calendar';
 import ChallengeInfo from '../ChallengeInfo/ChallengeInfo';
 import ChallengeSummary from '../ChallengeSummary/ChallengeSummary';
-import styles from './Challenge.module.scss';
 
 interface ChallengeProps {
 	id: string;
@@ -21,7 +20,7 @@ const Challenge = ({ id }: ChallengeProps) => {
 	});
 
 	return (
-		<div className={styles['challenge']}>
+		<div>
 			{isLoading && <Loader />}
 			{challenge && (
 				<>

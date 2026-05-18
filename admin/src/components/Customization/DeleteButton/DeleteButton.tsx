@@ -40,7 +40,6 @@ const DeleteButton = ({
 				isOpen={open}
 				onClose={handleClose}
 				onConfirm={mutate}
-				onCancel={handleClose}
 				text="Are you sure you want to delete this item? This action cannot be undone."
 				title="Confirm Deletion"
 			/>

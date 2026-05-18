@@ -62,7 +62,6 @@ const PromotionsList = () => {
 			<ConfirmModal
 				isOpen={promotionIdToDelete !== null}
 				onClose={handleCloseModal}
-				onCancel={handleCloseModal}
 				title="Delete Promotion"
 				text="You are about to delete this promotion."
 				onConfirm={handleConfirmDelete}

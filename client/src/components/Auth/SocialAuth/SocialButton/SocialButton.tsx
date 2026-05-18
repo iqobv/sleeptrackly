@@ -4,7 +4,7 @@ import { Button } from '@/components/UI';
 import { PropsWithChildren } from 'react';
 
 interface SocialButtonProps {
-	onClick: () => void;
+	onClick?: () => void;
 }
 
 const SocialButton = ({

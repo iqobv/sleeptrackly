@@ -1,17 +1,17 @@
 @use '../../../styles/mixins' as *;
 
-div.confirmModal {
+.confirmModal {
 	width: 90%;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 
-	@include response(md) {
+	@include respond-to(md) {
 		width: 500px;
 	}
 }
 
-div.footer {
+.footer {
 	display: flex;
 	flex-direction: row;
 	gap: 20px;

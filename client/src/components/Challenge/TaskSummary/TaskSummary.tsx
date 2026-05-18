@@ -19,25 +19,23 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 		});
 
 	return (
-		<div className={styles['task-summary']}>
+		<div className={styles.summary}>
 			<SectionHeader
 				title="Selected Date Task"
 				titleComponent="h3"
-				containerClassName={styles['task-summary__title']}
+				containerClassName={styles.title}
 				description={info ? `Selected date: ${info}` : ''}
 			/>
 			{selectedDate ? (
 				<>
-					<div className={styles['task-summary__item']}>
-						<div className={styles['task-summary__info']}>
-							<p className={styles['task-summary__name']}>
-								{selectedDate.description}
-							</p>
-							<p className={styles['task-summary__target']}>
+					<div className={styles.item}>
+						<div className={styles.info}>
+							<p className={styles.name}>{selectedDate.description}</p>
+							<p className={styles.target}>
 								Target: {selectedDate.targetValue}
 							</p>
 						</div>
-						<div className={styles['task-summary__status']}>
+						<div className={styles.status}>
 							{canUpdate ? (
 								<Button
 									onClick={handleMarkAsCompleted}

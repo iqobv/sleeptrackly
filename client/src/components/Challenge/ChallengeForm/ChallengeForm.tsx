@@ -81,10 +81,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 		get(errors, f.name)?.message as string;
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={styles['challenge-form']}
-		>
+		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 			{errors.root && <p>{errors.root.message}</p>}
 			{fields.map(({ componentType, ...f }) => (
 				<div key={f.name}>
@@ -117,7 +114,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 					)}
 				</div>
 			))}
-			<Button type="submit" className={styles['submit-button']}>
+			<Button type="submit" className={styles.submit}>
 				{buttonLabel}
 			</Button>
 		</form>

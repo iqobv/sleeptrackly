@@ -15,10 +15,10 @@ import styles from './ChangePasswordForm.module.scss';
 import { CHANGE_PASSWORD_FIELD } from './changePasswordFields';
 
 interface ChangePasswordFormProps {
-	handleCLose: () => void;
+	handleClose: () => void;
 }
 
-const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ handleClose }: ChangePasswordFormProps) => {
 	const { user } = useAuth();
 	const router = useRouter();
 
@@ -49,7 +49,7 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 			reset();
 			toast.success('Password changed');
 			router.refresh();
-			handleCLose();
+			handleClose();
 		},
 		onError(error) {
 			toast.error(error.message);
