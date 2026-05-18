@@ -1,5 +1,10 @@
-.dropdown {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+@use '../../../../../../styles/mixins' as *;
+
+.content {
+	width: 100vw;
+
+	@include respond-to(sm) {
+		width: auto;
+		min-width: 300px;
+	}
 }

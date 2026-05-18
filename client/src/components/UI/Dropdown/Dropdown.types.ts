@@ -1,10 +1,7 @@
-import { type ReactNode } from 'react';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-export interface DropdownProps {
-	children: ReactNode;
-	buttonRef: React.RefObject<HTMLDivElement> | null;
+export type DropdownProps = DropdownMenu.DropdownMenuProps;
+
+export interface DropdownContextType {
 	isOpen: boolean;
-	onClose: () => void;
-	width?: number;
-	className?: string;
 }

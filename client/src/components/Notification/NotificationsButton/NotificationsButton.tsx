@@ -1,21 +1,18 @@
 'use client';
 
-import { getNotifications } from '@/api';
-import { Button } from '@/components/UI';
+import { getNotifications, markAllNotificationsAsRead } from '@/api';
+import { Button, Dropdown } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
 import NotificationsList from '../NotificationsList/NotificationsList';
 import styles from './NotificationsButton.module.scss';
 
 const NotificationsButton = () => {
-	const [isOpen, setIsOpen] = useState(false);
-
-	const buttonRef = useRef<HTMLDivElement | null>(null);
-
 	const { user } = useAuth();
+	const [isOpen, setIsOpen] = useState(false);
 
 	const queryNotifications = useQuery({
 		queryFn: getNotifications,
@@ -24,28 +21,38 @@ const NotificationsButton = () => {
 		staleTime: 1000 * 60 * 5,
 	});
 
+	const { mutate } = useMutation({
+		mutationFn: markAllNotificationsAsRead,
+		mutationKey: QUERY_KEYS.notifications.markAllAsRead(user?.id ?? ''),
+		onSuccess: () => queryNotifications.refetch(),
+	});
+
 	const haveUnread = queryNotifications.data
 		? queryNotifications.data.items.some((n) => !n.isRead)
 		: false;
 
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
+
+		if (!open && haveUnread) {
+			mutate();
+		}
+	};
+
 	return (
-		<div className={styles.button} ref={buttonRef}>
-			<Button
-				isIcon
-				size="sm"
-				variant="outlined"
-				onClick={() => setIsOpen(!isOpen)}
-			>
-				<MdOutlineNotifications size={24} />
-			</Button>
-			{haveUnread && <span className={styles.badge} />}
-			<NotificationsList
-				buttonRef={buttonRef as React.RefObject<HTMLDivElement>}
-				isOpen={isOpen}
-				queryNotifications={queryNotifications}
-				onClose={() => setIsOpen(false)}
-			/>
-		</div>
+		<Dropdown open={isOpen} onOpenChange={handleOpenChange}>
+			<Dropdown.Trigger asChild>
+				<Button
+					isIcon
+					size="sm"
+					variant="outlined"
+					className={`${styles.button} ${haveUnread ? styles.unread : ''}`}
+				>
+					<MdOutlineNotifications size={24} />
+				</Button>
+			</Dropdown.Trigger>
+			<NotificationsList queryNotifications={queryNotifications} />
+		</Dropdown>
 	);
 };
 
