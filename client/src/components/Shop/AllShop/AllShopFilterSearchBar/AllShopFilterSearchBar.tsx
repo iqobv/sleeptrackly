@@ -1,10 +1,10 @@
 'use client';
 
 import { ShopFilterDto } from '@/dto';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
-import { Select, TextField } from '@/components/UI';
-import { Option, ShopSortBy } from '@/types';
+import { Field, FormSelect, Input, Select } from '@/components/UI';
+import { ShopSortBy } from '@/types';
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import styles from './AllShopFilterSearchBar.module.scss';
@@ -44,37 +44,36 @@ const AllShopFilterSearchBar = () => {
 	}, [sort, setValue]);
 
 	return (
-		<div className={styles['search-bar']}>
-			<TextField
-				type="search"
-				placeholder="Search products..."
-				leftIcon={<MdSearch size={20} />}
-				containerClassName={styles['search-input']}
-				{...register('search')}
-			/>
-			<div className={styles['select-container']}>
-				<label
-					htmlFor="sort"
-					className={styles['select-label']}
-					onClick={() => document.getElementById('sort')?.focus()}
-				>
-					Sort by:
-				</label>
-				<Controller
+		<div className={styles.searchBar}>
+			<Field>
+				<Input
+					type="search"
+					placeholder="Search products..."
+					leftSection={<MdSearch size={20} />}
+					className={styles.input}
+					{...register('search')}
+				/>
+			</Field>
+			<Field className={styles.selectContainer} label="Sort by:">
+				<FormSelect
 					name="sort"
 					control={control}
-					render={({ field }) => (
-						<Select
-							options={SHOP_FILTER_OPTIONS as Option[]}
-							isClearable={false}
-							placeholder="Select filter type"
-							containerClassName={styles['select']}
-							id="sort"
-							{...field}
-						/>
-					)}
-				/>
-			</div>
+					displayFormat={(value) => {
+						const option = SHOP_FILTER_OPTIONS.find(
+							(opt) => opt.value === value,
+						);
+						return option ? option.label : '';
+					}}
+					placeholder="Select filter type"
+					className={styles.select}
+				>
+					{SHOP_FILTER_OPTIONS.map((option) => (
+						<Select.Item key={option.value} value={option.value}>
+							{option.label}
+						</Select.Item>
+					))}
+				</FormSelect>
+			</Field>
 		</div>
 	);
 };

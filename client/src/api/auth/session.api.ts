@@ -5,7 +5,7 @@ export const getAllSessions = async () =>
 	(await apiClient.get<Session[]>(`/v1/auth/sessions/all`)).data;
 
 export const terminateSession = async (id: string) =>
-	(await apiClient.delete<boolean>(`/v1/auth/sessions/${id}`)).data;
+	(await apiClient.delete<boolean>(`/v1/auth/sessions/id/${id}`)).data;
 
 export const terminateAllSessions = async () =>
 	(await apiClient.delete<boolean>(`/v1/auth/sessions/all-other`)).data;

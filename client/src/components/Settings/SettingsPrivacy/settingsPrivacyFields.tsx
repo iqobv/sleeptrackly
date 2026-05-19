@@ -1,8 +1,13 @@
-import { Select, ToggleSwitch } from '@/components/UI';
+import { FormSelect, Select, ToggleSwitch } from '@/components/UI';
 import { PRIVACY_VISIBILITY } from '@/constants';
 import { SettingsPrivacyDto } from '@/dto';
 import { Option, SettingsFormFields } from '@/types';
-import { Controller, Path } from 'react-hook-form';
+import { Control, Path } from 'react-hook-form';
+
+interface SettingsPrivacyFieldsProps {
+	name: Path<SettingsPrivacyDto>;
+	control: Control<SettingsPrivacyDto>;
+}
 
 const OPTIONS: Option[] = [
 	{
@@ -18,6 +23,23 @@ const OPTIONS: Option[] = [
 		label: 'Private',
 	},
 ];
+
+const PrivacySelectField = ({ control, name }: SettingsPrivacyFieldsProps) => (
+	<FormSelect
+		name={name}
+		control={control}
+		displayFormat={(value) => {
+			const option = OPTIONS.find((option) => option.value === value);
+			return option ? option.label : '';
+		}}
+	>
+		{OPTIONS.map((option) => (
+			<Select.Item key={option.value} value={option.value}>
+				{option.label}
+			</Select.Item>
+		))}
+	</FormSelect>
+);
 
 export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 	[
@@ -47,18 +69,7 @@ export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 			placeholder: 'Profile Visibility',
 			type: 'text',
 			render: ({ name, methods }) => (
-				<Controller
-					control={methods.control}
-					name={name as Path<SettingsPrivacyDto>}
-					render={({ field: { onChange, value }, fieldState: { error } }) => (
-						<Select
-							options={OPTIONS}
-							value={value as string}
-							onChange={onChange}
-							error={error?.message}
-						/>
-					)}
-				/>
+				<PrivacySelectField name={name} control={methods.control} />
 			),
 		},
 		{
@@ -67,18 +78,7 @@ export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 			placeholder: 'Statistics Visibility',
 			type: 'text',
 			render: ({ name, methods }) => (
-				<Controller
-					control={methods.control}
-					name={name as Path<SettingsPrivacyDto>}
-					render={({ field: { onChange, value }, fieldState: { error } }) => (
-						<Select
-							options={OPTIONS}
-							value={value as string}
-							onChange={onChange}
-							error={error?.message}
-						/>
-					)}
-				/>
+				<PrivacySelectField name={name} control={methods.control} />
 			),
 		},
 	];

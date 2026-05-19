@@ -24,7 +24,7 @@ export const REGISTER_FIELDS: AuthField<RegisterDto>[] = [
 		label: 'Enter your email',
 		type: 'email',
 		placeholder: 'email@example.com',
-		autocomplete: 'username',
+		autoComplete: 'username',
 		icon: <MdOutlineEmail />,
 	},
 	{
@@ -32,7 +32,7 @@ export const REGISTER_FIELDS: AuthField<RegisterDto>[] = [
 		label: 'Create a password',
 		type: 'password',
 		placeholder: 'Password',
-		autocomplete: 'new-password',
+		autoComplete: 'new-password',
 		icon: <MdOutlineVpnKey />,
 	},
 	{
@@ -40,7 +40,7 @@ export const REGISTER_FIELDS: AuthField<RegisterDto>[] = [
 		label: 'Create a username',
 		type: 'text',
 		placeholder: 'Username',
-		autocomplete: 'on',
+		autoComplete: 'on',
 		icon: <MdPersonOutline />,
 	},
 	{
@@ -65,6 +65,6 @@ export const REGISTER_FIELDS: AuthField<RegisterDto>[] = [
 		type: 'checkbox',
 		placeholder:
 			'I agree to the Terms & Conditions and acknowledge the Privacy Policy and Cookie Policy.',
-		autocomplete: 'off',
+		autoComplete: 'off',
 	},
 ];

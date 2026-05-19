@@ -10,6 +10,7 @@ html.dark {
 	--text-secondary: #c2c2c2;
 	--border-color: #27272a;
 	--link-color: #4a90e2;
+	--color-error: #e5363f;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -110,20 +111,38 @@ html.dark {
 	--btn-bg-secondary-hover: #262626cc;
 	--btn-color-secondary: #fafafa;
 
-	--btn-bg-outlined: #ffffff26;
-	--btn-bg-outlined-hover: #28282833;
+	--btn-bg-outlined: #ffffff05;
+	--btn-bg-outlined-hover: #ffffff13;
 	--btn-border-outlined: #ffffff26;
 	--btn-border-outlined-hover: #ffffff66;
-	--btn-color-outlined: #0d141c;
+	--btn-color-outlined: #fdfdfd;
 
+	--btn-bg-outlined-secondary: #ffffff03;
+	--btn-bg-outlined-hover-secondary: #32323243;
+	--btn-border-outlined-secondary: #ffffff12;
+	--btn-border-outlined-hover-secondary: #ffffff33;
+	--btn-color-outlined-secondary: #cfcfcf;
+
+	--btn-bg-text: transparent;
 	--btn-bg-text-hover: #26262699;
 	--btn-color-text: #e8edf2;
 
+	--btn-bg-text-secondary: transparent;
+	--btn-bg-text-hover-secondary: #ffffff12;
+	--btn-color-text-secondary: #bababa;
+
+	--btn-bg-link: transparent;
 	--btn-color-link: #e5e5e5;
+
+	--btn-bg-link-secondary: transparent;
+	--btn-color-link-secondary: #bababa;
 
 	--btn-danger-bg: #ff6467;
 	--btn-danger-bg-hover: #ff6467b3;
 	--btn-danger-color: #ffffff;
+	--btn-danger-bg-subtle: transparent;
+	--btn-danger-bg-subtle-hover: #ff64671a;
+	--btn-danger-color-text: #ff6467;
 
 	/* Switch */
 	--switch-bg: #ffffff26;

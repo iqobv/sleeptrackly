@@ -25,8 +25,8 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const badges = profile.equippedItems.filter((ei) => ei.item.type === 'BADGE');
 
 	return (
-		<div className={styles['profile-main-info']}>
-			<div className={styles['profile-main-info__avatar-wrapper']}>
+		<div className={styles.info}>
+			<div className={styles.avatarWrapper}>
 				<Avatar
 					avatar={avatar ? avatar.item.mediaUrl : profile.avatar?.url}
 					size={300}
@@ -39,7 +39,7 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 						width={300}
 						height={300}
 						alt="avatar frame"
-						className={styles['profile-main-info__avatar-frame']}
+						className={styles.avatarFrame}
 						key={avatarFrame.id}
 						preload
 					/>
@@ -49,11 +49,11 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 				title={profile.username}
 				titleComponent="h2"
 				description={`Joined ${year}`}
-				containerClassName={styles['profile-main-info__username']}
+				containerClassName={styles.username}
 			/>
 			{badges.length > 0 && <ProfileBadges badges={badges} />}
 			{profile && user && user.id !== profile.id && (
-				<div className={styles['profile-main-info__buttons']}>
+				<div className={styles.buttons}>
 					<ProfileAddToFriendButton profile={profile} />
 					<ProfileReportButton profile={profile} />
 				</div>

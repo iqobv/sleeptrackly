@@ -1,17 +1,17 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { Button, Select, TextField } from '@/components/UI';
+import { Button, Field, FormSelect, Input, Select } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './ReportSanctionForm.module.scss';
-import { USER_SANCTIONS_OPTIONS, UserSanctionOption } from './userSanctions';
+import { USER_SANCTIONS_OPTIONS } from './userSanctions';
 
 interface ReportSanctionFormProps {
 	reportId?: string;
@@ -66,41 +66,43 @@ const ReportSanctionForm = ({
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-			<TextField
-				type="datetime-local"
-				label="Start date"
-				error={errors['startsAt']?.message as string}
-				{...register('startsAt')}
-			/>
-			<TextField
-				type="datetime-local"
-				label="End date"
-				error={errors['endsAt']?.message as string}
-				{...register('endsAt')}
-			/>
-			<Controller
-				name="type"
-				control={control}
-				render={({ field }) => {
-					return (
-						<Select
-							options={USER_SANCTIONS_OPTIONS as UserSanctionOption[]}
-							isClearable
-							label="Sanction type"
-							placeholder="Select sanction type"
-							error={errors['type']?.message as string}
-							value={field.value}
-							onChange={(value: string) => field.onChange(value)}
-						/>
-					);
-				}}
-			/>
+			<Field label="Start date" error={errors['startsAt']?.message as string}>
+				<Input type="datetime-local" {...register('startsAt')} />
+			</Field>
+			<Field label="End date" error={errors['endsAt']?.message as string}>
+				<Input type="datetime-local" {...register('endsAt')} />
+			</Field>
+			<Field label="Sanction type" error={errors['type']?.message as string}>
+				<FormSelect
+					name="type"
+					control={control}
+					displayFormat={(value) => {
+						const selectedOption = USER_SANCTIONS_OPTIONS.find(
+							(option) => option.value === value,
+						);
+
+						return selectedOption ? selectedOption.label : '';
+					}}
+					placeholder="Select sanction type"
+				>
+					{USER_SANCTIONS_OPTIONS.map((option) => (
+						<Select.Item key={option.value} value={option.value}>
+							{option.label}
+						</Select.Item>
+					))}
+				</FormSelect>
+			</Field>
 			<div className={styles.buttons}>
 				<Button type="submit" loading={isPending}>
 					{isUpdate ? 'Update sanction' : 'Create sanction'}
 				</Button>
 				{showRemoveButton && (
-					<Button onClick={removeSanction} type="button" variant="secondary">
+					<Button
+						onClick={removeSanction}
+						type="button"
+						variant="contained"
+						color="secondary"
+					>
 						{isUpdate ? 'Remove sanction' : 'Cancel'}
 					</Button>
 				)}

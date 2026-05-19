@@ -10,40 +10,40 @@
 	@include respond-to(md) {
 		flex: 1 0 calc(49% - 20px);
 	}
+}
 
-	.challenge__wrapper {
-		display: flex;
-		flex-direction: column;
-		gap: 3px;
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
 
-		.challenge__tag {
-			color: var(--secondary-color);
-			font-size: 16px;
-		}
+.tag {
+	color: var(--secondary-color);
+	font-size: 16px;
+}
 
-		.challenge__content {
-			display: flex;
-			flex-direction: column;
-			gap: 4px;
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
 
-			.challenge__title {
-				padding-top: 6px;
-			}
+	.title {
+		padding-top: 6px;
+	}
 
-			.challenge__text {
-				font-size: 16px;
-				color: var(--secondary-color);
-			}
-		}
+	.text {
+		font-size: 16px;
+		color: var(--secondary-color);
+	}
+}
 
-		.challenge__actions {
-			padding-top: 10px;
-			display: flex;
-			justify-content: center;
+.actions {
+	padding-top: 10px;
+	display: flex;
+	justify-content: center;
 
-			@include respond-to(md) {
-				justify-content: flex-start;
-			}
-		}
+	@include respond-to(md) {
+		justify-content: flex-start;
 	}
 }

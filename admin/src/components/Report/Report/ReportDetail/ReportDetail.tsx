@@ -39,6 +39,7 @@ const ReportDetail = ({ report }: ReportDetailProps) => {
 						</Link>
 					</div>
 				)}
+				<p>Report Created At: {new Date(report.createdAt).toLocaleString()}</p>
 			</div>
 		</div>
 	);

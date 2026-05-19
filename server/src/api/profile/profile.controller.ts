@@ -1,5 +1,5 @@
 import type { User } from '@generated/prisma/client';
-import { Authorized } from '@libs/decorators';
+import { Authorized, OptionalAuth } from '@libs/decorators';
 import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { ProfileDto } from './dto';
@@ -9,6 +9,7 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
 	constructor(private readonly profileService: ProfileService) {}
 
+	@OptionalAuth()
 	@ApiOperation({ summary: 'Get profile by username' })
 	@ApiOkResponse({ type: ProfileDto })
 	@Get(':username')

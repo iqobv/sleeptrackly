@@ -92,6 +92,7 @@ export class SessionService {
 				city: geo?.city,
 				userAgent,
 				expiresAt,
+				rotatedAt: new Date(),
 				...parsedUa,
 			},
 		});
@@ -218,8 +219,17 @@ export class SessionService {
 	) {
 		const refreshTokenHash = hashToken(rawRefreshToken);
 
+		const rotateGap = new Date(Date.now() - 2 * 60 * 1000);
+
 		const session = await this.prismaService.session.findFirst({
-			where: { id: sessionId, userId, hashToken: refreshTokenHash },
+			where: {
+				id: sessionId,
+				userId,
+				OR: [
+					{ hashToken: refreshTokenHash },
+					{ previousToken: refreshTokenHash, rotatedAt: { gt: rotateGap } },
+				],
+			},
 		});
 
 		if (!session) {

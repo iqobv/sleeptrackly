@@ -6,6 +6,7 @@ export interface Field<T> {
 	label: string;
 	placeholder: string;
 	type?: React.ComponentProps<'input'>['type'] | 'select';
-	autocomplete?: React.ComponentProps<'input'>['autoComplete'];
+	autoComplete?: React.ComponentProps<'input'>['autoComplete'];
 	options?: Option[];
+	required?: boolean;
 }

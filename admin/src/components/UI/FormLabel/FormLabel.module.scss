@@ -1,6 +1,19 @@
-.form-label {
+.label {
 	display: block;
 	width: 100%;
 	padding: 6px;
 	font-size: 1rem;
+
+	&.required {
+		&::after {
+			content: '*';
+			color: var(--input-color-error);
+			margin-left: 4px;
+		}
+	}
+
+	&.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+	}
 }

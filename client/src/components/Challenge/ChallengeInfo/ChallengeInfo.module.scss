@@ -1,12 +1,12 @@
 @use '../../../styles/mixins' as *;
 
-.challenge-info {
+.info {
 	width: 100%;
 	padding-top: 20px;
 	padding-bottom: 80px;
 }
 
-.challenge-info__table {
+.table {
 	width: 100%;
 	display: grid;
 	gap: 10px;
@@ -17,7 +17,7 @@
 	}
 }
 
-.challenge-info__table-row {
+.row {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -30,10 +30,10 @@
 	}
 }
 
-.challenge-info__table-name {
+.name {
 	color: var(--page-description-color);
 }
 
-.challenge-info__table-value {
+.value {
 	color: var(--page-title-color);
 }

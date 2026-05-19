@@ -15,11 +15,11 @@ const ProfileStatisticsCard = ({
 	statistics,
 }: ProfileStatisticsCardProps) => {
 	return (
-		<div className={styles['profile-statistics__card']}>
+		<div className={styles.card}>
 			<SectionHeader
 				title={(statistics[item.field] as number).toString()}
 				titleComponent="p"
-				titleClassName={styles['profile-statistics__card-title']}
+				titleClassName={styles.title}
 				description={item.label}
 			/>
 		</div>

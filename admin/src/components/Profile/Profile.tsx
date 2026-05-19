@@ -21,7 +21,7 @@ const Profile = ({ username }: ProfileProps) => {
 	});
 
 	return (
-		<div className={styles['profile']}>
+		<div className={styles.profile}>
 			{isLoading && <ProfileSkeleton />}
 			{!isLoading && data && (
 				<>

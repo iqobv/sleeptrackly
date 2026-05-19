@@ -5,5 +5,6 @@ export interface Field<T> {
 	label: React.ReactNode;
 	placeholder: string;
 	type?: React.ComponentProps<'input'>['type'];
-	autocomplete?: React.ComponentProps<'input'>['autoComplete'];
+	autoComplete?: React.ComponentProps<'input'>['autoComplete'];
+	required?: boolean;
 }

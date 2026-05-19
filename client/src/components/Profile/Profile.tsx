@@ -26,7 +26,7 @@ const Profile = ({ username }: ProfileProps) => {
 
 	return (
 		<div
-			className={`${styles['profile']} page`}
+			className={`${styles.profile} page`}
 			style={
 				backgroundItem
 					? {
@@ -35,7 +35,7 @@ const Profile = ({ username }: ProfileProps) => {
 					: {}
 			}
 		>
-			<div className={`${styles['profile__container']} container page`}>
+			<div className={`${styles.container} container page`}>
 				{isLoading && <ProfileSkeleton />}
 				{!isLoading && data && (
 					<>

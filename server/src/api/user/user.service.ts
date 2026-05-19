@@ -292,7 +292,13 @@ export class UserService {
 			select: userSelect,
 		});
 
-		if (user) throw new ConflictException('User already exists');
+		if (user) {
+			if (user.username === username) {
+				throw new ConflictException('Username already taken');
+			}
+
+			throw new ConflictException('User already exists');
+		}
 
 		return false;
 	}

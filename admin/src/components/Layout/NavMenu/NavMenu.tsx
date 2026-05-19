@@ -14,11 +14,9 @@ const NavMenu = () => {
 
 	return (
 		<div
-			className={`${slyles['nav-menu']} ${
-				isExpended && isMounted ? slyles['nav-menu--open'] : ''
-			}`}
+			className={`${slyles.nav} ${isExpended && isMounted ? slyles.open : ''}`}
 		>
-			<div className={slyles['nav-menu__links']}>
+			<div className={slyles.links}>
 				{NAV_MENU_LINKS.map((link) => (
 					<NavMenuLink
 						key={link.href}

@@ -1,6 +1,6 @@
 @use '../.././../../../styles/mixins' as *;
 
-.qr-code-modal {
+.qrCodeModal {
 	width: 90%;
 
 	@include respond-to(md) {

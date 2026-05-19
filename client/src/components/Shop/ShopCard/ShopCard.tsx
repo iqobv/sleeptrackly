@@ -88,7 +88,8 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 					onClick={() => mutate()}
 					loading={isPending}
 					disabled={isOwned}
-					variant={isOwned ? 'secondary' : 'contained'}
+					variant="contained"
+					color={isOwned ? 'secondary' : 'primary'}
 					type="button"
 				>
 					{isOwned ? 'Owned' : 'Buy Now'}

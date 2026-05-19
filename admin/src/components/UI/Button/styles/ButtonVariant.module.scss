@@ -13,23 +13,25 @@
 	}
 }
 
-.variant {
-	@each $name, $props in $button-variants {
-		&--#{$name} {
-			background-color: map.get($props, 'bg');
-			border-color: map.get($props, 'border');
-			color: map.get($props, 'color');
-			text-decoration: map.get($props, 'text-decoration');
-			text-underline-offset: map.get($props, 'text-underline-offset');
+@each $variant, $colors in $button-matrix {
+	.#{$variant} {
+		@each $color, $props in $colors {
+			&.#{$color} {
+				background-color: map.get($props, 'bg');
+				border-color: map.get($props, 'border');
+				color: map.get($props, 'color');
+				text-decoration: map.get($props, 'text-decoration');
+				text-underline-offset: map.get($props, 'text-underline-offset');
 
-			&:active,
-			&:focus-visible {
-				@include apply-hover-styles($props);
-			}
-
-			@media (hover: hover) {
-				&:hover {
+				&:active,
+				&:focus-visible {
 					@include apply-hover-styles($props);
+				}
+
+				@media (hover: hover) {
+					&:hover {
+						@include apply-hover-styles($props);
+					}
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 'use client';
 
-import { CDNImage, TextField } from '@/components/UI';
+import { CDNImage, Field, Input } from '@/components/UI';
 import Image from 'next/image';
 import { useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
@@ -77,16 +77,16 @@ const FileForm = <T extends FieldValues>({
 					)}
 				</>
 			)}
-			<TextField
+			<Field
+				label={label}
 				error={
 					typeof errors[fieldPath]?.message === 'string'
 						? (errors[fieldPath]?.message as string)
 						: undefined
 				}
-				type="file"
-				label={label}
-				onChange={onFileChange}
-			/>
+			>
+				<Input type="file" onChange={onFileChange} />
+			</Field>
 		</div>
 	);
 };

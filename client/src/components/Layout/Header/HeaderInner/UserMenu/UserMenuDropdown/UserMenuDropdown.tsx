@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Divider, Dropdown } from '@/components/UI';
+import { Button, Dropdown } from '@/components/UI';
 import { User } from '@/types';
 import MenuItem from '../MenuItem/MenuItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
@@ -9,54 +9,28 @@ import { USER_MAIN_LINKS, USER_SYSTEM_LINKS } from './userManuLinks';
 import styles from './UserMenuDropdown.module.scss';
 
 interface UserMenuDropdownProps {
-	isOpen: boolean;
-	onClose: () => void;
 	handleLogout: () => void;
 	user: User;
-	buttonRef: React.RefObject<HTMLDivElement> | null;
 }
 
-const WIDTH = 300;
-
-const UserMenuDropdown = ({
-	isOpen,
-	buttonRef,
-	handleLogout,
-	onClose,
-	user,
-}: UserMenuDropdownProps) => {
+const UserMenuDropdown = ({ handleLogout, user }: UserMenuDropdownProps) => {
 	return (
-		<Dropdown
-			isOpen={isOpen}
-			buttonRef={buttonRef}
-			width={WIDTH}
-			onClose={onClose}
-		>
-			<div className={styles['user-menu__dropdown']}>
-				<UserMenuCoins />
-				{USER_MAIN_LINKS(user).map((link) => (
-					<MenuItem
-						{...link}
-						key={link.name}
-						onClick={onClose}
-						icon={link.icon || undefined}
-					/>
-				))}
-				{USER_SYSTEM_LINKS.map((link) => (
-					<MenuItem
-						{...link}
-						key={link.name}
-						onClick={onClose}
-						icon={link.icon || undefined}
-					/>
-				))}
-				<Divider />
-				<ThemeSwitcher />
+		<Dropdown.Content align="end" sideOffset={10} className={styles.content}>
+			<UserMenuCoins />
+			{USER_MAIN_LINKS(user).map((link) => (
+				<MenuItem {...link} key={link.name} icon={link.icon || undefined} />
+			))}
+			{USER_SYSTEM_LINKS.map((link) => (
+				<MenuItem {...link} key={link.name} icon={link.icon || undefined} />
+			))}
+			<Dropdown.Separator />
+			<ThemeSwitcher />
+			<Dropdown.Item asChild>
 				<Button onClick={handleLogout} fullWidth>
 					Logout
 				</Button>
-			</div>
-		</Dropdown>
+			</Dropdown.Item>
+		</Dropdown.Content>
 	);
 };
 

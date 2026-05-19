@@ -1,5 +1,5 @@
 .button {
-	border-radius: 0.375rem;
+	border-radius: 10px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -8,8 +8,17 @@
 	transition: all 0.2s ease-in-out;
 	user-select: none;
 	font-size: 1rem;
+	width: fit-content;
 
 	&:focus-visible {
 		outline: none;
 	}
+}
+
+.loader {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
 }

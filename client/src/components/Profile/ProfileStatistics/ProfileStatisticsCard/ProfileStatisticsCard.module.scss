@@ -1,6 +1,6 @@
 @use '../../../../styles/mixins' as *;
 
-.profile-statistics__card {
+.card {
 	background-color: var(--profile-stat-card-bg);
 	border: 1px solid var(--profile-stat-card-border);
 	border-radius: 8px;
@@ -18,7 +18,7 @@
 	}
 }
 
-.profile-statistics__card-title {
+.title {
 	font-size: 1.5rem;
 	font-weight: 600;
 }

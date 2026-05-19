@@ -6,6 +6,7 @@ import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { ChallengeFull } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { IconBaseProps } from 'react-icons';
@@ -46,24 +47,27 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	};
 
 	return (
-		<div className={styles['summary']}>
+		<div className={styles.summary}>
 			<SectionHeader
 				title={data?.title}
 				description={data?.description}
 				titleComponent="h2"
 			/>
-			<div className={styles['summary__buttons']}>
-				<Button onClick={handleClose} variant="outlined" fullWidth>
+			<div className={styles.buttons}>
+				<Button
+					onClick={handleClose}
+					variant="outlined"
+					color="danger"
+					fullWidth
+				>
 					<MdDeleteOutline {...iconProps} />
 					Delete Challenge
 				</Button>
-				<Button
-					href={PRIVATE_PAGES.CHALLENGES.EDIT(data?.id)}
-					variant="outlined"
-					fullWidth
-				>
-					<MdOutlineModeEdit {...iconProps} />
-					Edit Challenge
+				<Button variant="outlined" fullWidth asChild>
+					<Link href={PRIVATE_PAGES.CHALLENGES.EDIT(data?.id)}>
+						<MdOutlineModeEdit {...iconProps} />
+						Edit Challenge
+					</Link>
 				</Button>
 			</div>
 			<ConfirmModal
@@ -71,7 +75,6 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 				text="Are you sure you want to delete this challenge?"
 				isOpen={open}
 				onClose={handleClose}
-				onCancel={handleClose}
 				onConfirm={handleDelete}
 			/>
 		</div>

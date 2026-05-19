@@ -4,11 +4,11 @@
 	position: sticky;
 	top: 0;
 	left: 0;
-	z-index: 1200;
+	z-index: 100;
 	height: var(--header-height);
 }
 
-.header__container {
+.container {
 	padding: 0 20px;
 	display: flex;
 	justify-content: space-between;

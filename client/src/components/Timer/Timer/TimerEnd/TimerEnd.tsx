@@ -5,6 +5,7 @@ import { PRIVATE_PAGES } from '@/config';
 import { SleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import styles from './TimerEnd.module.scss';
 
 interface TimerEndProps {
@@ -19,8 +20,8 @@ const TimerEnd = ({ data }: TimerEndProps) => {
 			<p>Your sleep duration: {formatTime(sleepDuration).join(':')}</p>
 			<p>Started at: {dayjs(sleepStart).format('DD.MM.YYYY HH:mm:ss')}</p>
 			<p>Ended at: {dayjs(sleepEnd).format('DD.MM.YYYY HH:mm:ss')}</p>
-			<Button variant="secondary" href={PRIVATE_PAGES.DASHBOARD}>
-				View Statistics
+			<Button variant="contained" color="secondary" asChild>
+				<Link href={PRIVATE_PAGES.DASHBOARD}>View Statistics</Link>
 			</Button>
 		</div>
 	);

@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.add-friend {
+.addFriend {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -13,6 +13,6 @@
 	}
 }
 
-.add-friend__title-container {
+.titleContainer {
 	padding: 10px 0;
 }

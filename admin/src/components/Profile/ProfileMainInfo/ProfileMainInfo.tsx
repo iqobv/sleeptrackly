@@ -15,16 +15,16 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const { user } = useAuth();
 
 	return (
-		<div className={styles['profile-main-info']}>
+		<div className={styles.info}>
 			<Avatar avatar={profile.avatar?.url} size={300} priority />
 			<SectionHeader
 				title={profile.username}
 				titleComponent="h2"
 				description={`Joined ${year}`}
-				containerClassName={styles['profile-main-info__username']}
+				containerClassName={styles.username}
 			/>
 			{profile && user && user.id !== profile.id && (
-				<div className={styles['profile-main-info__buttons']}>
+				<div className={styles.buttons}>
 					<ProfileSanctionsButton profile={profile} />
 				</div>
 			)}

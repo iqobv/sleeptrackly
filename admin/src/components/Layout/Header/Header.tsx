@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/UI';
 import { useNavMenuStore } from '@/store';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { MdMenu, MdMenuOpen } from 'react-icons/md';
@@ -22,8 +23,8 @@ const Header = () => {
 	const handleClick = () => setIsExpanded(!isExpended);
 
 	return (
-		<header className={styles['header']}>
-			<div className={styles['header__container']}>
+		<header className={styles.header}>
+			<div className={styles.container}>
 				<Button variant="text" isIcon onClick={handleClick}>
 					{isMounted && isExpended ? (
 						<MdMenuOpen {...iconsProps} />
@@ -31,8 +32,8 @@ const Header = () => {
 						<MdMenu {...iconsProps} />
 					)}
 				</Button>
-				<Button variant="outlined" href={process.env.NEXT_PUBLIC_SITE_URL}>
-					Open Site
+				<Button variant="outlined" asChild>
+					<Link href={process.env.NEXT_PUBLIC_SITE_URL!}>Open Site</Link>
 				</Button>
 			</div>
 		</header>

@@ -1,9 +1,10 @@
 'use client';
 
-import { Button, Divider } from '@/components/UI';
+import { Button, Divider, Dropdown } from '@/components/UI';
 import { Notification } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import Link from 'next/link';
 import styles from './NotificationsListItem.module.scss';
 
 dayjs.extend(relativeTime);
@@ -34,15 +35,17 @@ const NotificationsListItem = ({
 					)}
 				</div>
 				{notification.redirectUrl && (
-					<Button
-						fullWidth
-						href={notification.redirectUrl}
-						size="sm"
-						variant="outlined"
-						onClick={() => onClose && onClose()}
-					>
-						Open
-					</Button>
+					<Dropdown.Item asChild>
+						<Button
+							fullWidth
+							size="sm"
+							variant="outlined"
+							onClick={() => onClose && onClose()}
+							asChild
+						>
+							<Link href={notification.redirectUrl}>Open</Link>
+						</Button>
+					</Dropdown.Item>
 				)}
 				<div className={styles.date}>
 					{dayjs(notification.createdAt).fromNow()}

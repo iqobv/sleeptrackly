@@ -12,3 +12,12 @@
 	gap: 12px;
 	overflow-y: auto;
 }
+
+.dropdown {
+	width: 100vw;
+
+	@include respond-to(md) {
+		width: auto;
+		min-width: 500px;
+	}
+}

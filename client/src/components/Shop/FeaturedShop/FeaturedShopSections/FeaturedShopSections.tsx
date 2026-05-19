@@ -1,7 +1,9 @@
 'use client';
 
 import { Button, List } from '@/components/UI';
+import { PRIVATE_PAGES } from '@/config';
 import { FeaturedShopSection } from '@/types';
+import Link from 'next/link';
 import ShopCard from '../../ShopCard/ShopCard';
 import styles from './FeaturedShopSections.module.scss';
 import { FEATURED_SHOP_SECTIONS_ITEMS } from './featuredShopSectionsItems';
@@ -29,12 +31,12 @@ const FeaturedShopSections = ({ sections }: FeaturedShopSectionsProps) => {
 							<h3 className={styles['featured-shop-sections__title']}>
 								{section.title}
 							</h3>
-							<Button
-								variant="link"
-								size="sm"
-								href={`/shop/catalog?itemType=${section.type.toLowerCase()}`}
-							>
-								View All
+							<Button variant="link" size="sm" asChild>
+								<Link
+									href={`${PRIVATE_PAGES.SHOP.CATALOG}?itemType=${section.type.toLowerCase()}`}
+								>
+									View All
+								</Link>
 							</Button>
 						</div>
 						<List

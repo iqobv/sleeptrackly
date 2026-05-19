@@ -1,7 +1,7 @@
 'use client';
 
 import { changePassword, needOldPassword } from '@/api';
-import { Button, Loader, TextField } from '@/components/UI';
+import { Button, Field, Input, Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ChangePasswordDto } from '@/dto';
 import { useAuth } from '@/hooks';
@@ -15,10 +15,10 @@ import styles from './ChangePasswordForm.module.scss';
 import { CHANGE_PASSWORD_FIELD } from './changePasswordFields';
 
 interface ChangePasswordFormProps {
-	handleCLose: () => void;
+	handleClose: () => void;
 }
 
-const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
+const ChangePasswordForm = ({ handleClose }: ChangePasswordFormProps) => {
 	const { user } = useAuth();
 	const router = useRouter();
 
@@ -49,7 +49,7 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 			reset();
 			toast.success('Password changed');
 			router.refresh();
-			handleCLose();
+			handleClose();
 		},
 		onError(error) {
 			toast.error(error.message);
@@ -66,15 +66,18 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 					{CHANGE_PASSWORD_FIELD.map((f) => {
 						if (!data && f.name === 'oldPassword') return null;
 						return (
-							<TextField
+							<Field
 								key={f.name}
-								placeholder={f.placeholder}
-								type={f.type}
+								error={errors[f.name]?.message}
 								label={f.label}
-								autoComplete={f.autocomplete}
-								error={errors[f.name]?.message as string}
-								{...register(f.name)}
-							/>
+							>
+								<Input
+									placeholder={f.placeholder}
+									type={f.type}
+									autoComplete={f.autoComplete}
+									{...register(f.name)}
+								/>
+							</Field>
 						);
 					})}
 				</>

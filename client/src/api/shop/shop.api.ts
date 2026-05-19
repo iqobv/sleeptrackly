@@ -27,5 +27,5 @@ export const getAllShop = async ({
 };
 
 export const makePurchase = async (productId: string) =>
-	(await apiClient<{ success: boolean }>(`/v1/shop/purchase/${productId}`))
+	(await apiClient.post<{ success: boolean }>(`/v1/shop/purchase/${productId}`))
 		.data;

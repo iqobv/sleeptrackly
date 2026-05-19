@@ -33,14 +33,13 @@ const DeleteButton = ({
 
 	return (
 		<div>
-			<Button onClick={handleClose} variant="danger">
+			<Button onClick={handleClose} variant="contained" color="danger">
 				Delete
 			</Button>
 			<ConfirmModal
 				isOpen={open}
 				onClose={handleClose}
 				onConfirm={mutate}
-				onCancel={handleClose}
 				text="Are you sure you want to delete this item? This action cannot be undone."
 				title="Confirm Deletion"
 			/>

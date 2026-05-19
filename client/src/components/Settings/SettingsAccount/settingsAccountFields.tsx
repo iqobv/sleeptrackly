@@ -7,6 +7,6 @@ export const ACCOUNT_FIELDS: SettingsFormFields<SettingsAccountDto>[] = [
 		label: 'Username',
 		type: 'text',
 		placeholder: 'Username',
-		autocomplete: 'username',
+		autoComplete: 'username',
 	},
 ];

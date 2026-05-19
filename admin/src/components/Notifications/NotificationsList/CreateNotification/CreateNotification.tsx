@@ -1,7 +1,7 @@
 'use client';
 
 import { createNotification } from '@/api';
-import { Button, TextField } from '@/components/UI';
+import { Button, Field, Input } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreateNotificationDto } from '@/dto';
 import { createNotificationSchema } from '@/schemas';
@@ -40,44 +40,47 @@ const CreateNotification = () => {
 	};
 
 	return (
-		<div className={styles['create-notification']}>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				{FIELDS.map((f) => (
-					<div key={f.name}>
-						{f.type === 'checkbox' ? (
-							<>
-								<input type="checkbox" id={f.name} {...register(f.name)} />
-								<label htmlFor={f.name}>{f.label}</label>
-							</>
-						) : (
-							<TextField
-								label={f.label}
+		<form onSubmit={handleSubmit(onSubmit)}>
+			{FIELDS.map((f) => (
+				<div key={f.name}>
+					{f.type === 'checkbox' ? (
+						<>
+							<input type="checkbox" id={f.name} {...register(f.name)} />
+							<label htmlFor={f.name}>{f.label}</label>
+						</>
+					) : (
+						<Field
+							label={f.label}
+							error={errors[f.name]?.message as string}
+							required={f.required}
+						>
+							<Input
 								placeholder={f.placeholder}
 								type={f.type}
-								error={errors[f.name]?.message as string}
 								{...register(f.name)}
 							/>
-						)}
-					</div>
-				))}
+						</Field>
+					)}
+				</div>
+			))}
 
-				{isDirty && (
-					<div className={styles['form-actions']}>
-						<Button
-							type="button"
-							variant="secondary"
-							onClick={() => reset()}
-							loading={isPending}
-						>
-							Cancel
-						</Button>
-						<Button type="submit" loading={isPending}>
-							Create Notification
-						</Button>
-					</div>
-				)}
-			</form>
-		</div>
+			{isDirty && (
+				<div className={styles.actions}>
+					<Button
+						type="button"
+						variant="contained"
+						color="secondary"
+						onClick={() => reset()}
+						loading={isPending}
+					>
+						Cancel
+					</Button>
+					<Button type="submit" loading={isPending}>
+						Create Notification
+					</Button>
+				</div>
+			)}
+		</form>
 	);
 };
 

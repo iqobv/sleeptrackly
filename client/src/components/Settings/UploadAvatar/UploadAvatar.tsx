@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, SectionHeader, TextField } from '@/components/UI';
+import { Avatar, Input, SectionHeader } from '@/components/UI';
 import styles from './UploadAvatar.module.scss';
 import UploadAvatarLoader from './UploadAvatarLoader';
 import UploadModal from './UploadModal/UploadModal';
@@ -35,7 +35,7 @@ const UploadAvatar = () => {
 						<Avatar avatar={user.avatar?.url} size={250} />
 					</button>
 					<div className={styles.inputContainer}>
-						<TextField
+						<Input
 							ref={inputRef}
 							type="file"
 							id="avatar"

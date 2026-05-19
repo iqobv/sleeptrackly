@@ -13,7 +13,6 @@ const QrCodeModal = () => {
 	return (
 		<div style={{ textAlign: 'center' }}>
 			<SectionHeader
-				title="Login with QR code"
 				description={
 					<>
 						Click on your avatar in the top right corner &gt;{' '}
@@ -25,7 +24,7 @@ const QrCodeModal = () => {
 					</>
 				}
 			/>
-			<div className={styles['qr-code-container']}>
+			<div className={styles.container}>
 				{isLoading && <QrCodeLoader />}
 				{error && <p>Error: {error.message}</p>}
 				{qrId && (

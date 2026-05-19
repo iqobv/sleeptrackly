@@ -1,12 +1,12 @@
 @use '../../../styles/mixins' as *;
 
-.pendings-list__buttons {
+.buttons {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
 }
 
-.pendings-list__button {
+.button {
 	width: 100%;
 
 	@include respond-to(md) {
@@ -14,13 +14,13 @@
 	}
 }
 
-.pendings-list__list {
+.list {
 	padding-top: 20px;
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 }
 
-.pendings-list__empty {
+.empty {
 	text-align: center;
 }

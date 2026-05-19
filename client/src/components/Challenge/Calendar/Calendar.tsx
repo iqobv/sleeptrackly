@@ -30,8 +30,8 @@ const Calendar = ({ data, mode }: CalendarProps) => {
 	});
 
 	return (
-		<div className={styles['calendar']}>
-			<div className={styles['calendar__container']}>
+		<div className={styles.calendar}>
+			<div className={styles.container}>
 				<UICalendar
 					mode="single"
 					selected={

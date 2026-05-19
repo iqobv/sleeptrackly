@@ -12,16 +12,12 @@ const ChallengeInfo = ({ data }: ChallengeInfoProps) => {
 	if (!data) return null;
 
 	return (
-		<div className={styles['challenge-info']}>
-			<div className={styles['challenge-info__table']}>
+		<div className={styles.info}>
+			<div className={styles.table}>
 				{CHALLENGE_INFO_FIELDS(data).map((el) => (
-					<div key={el.name} className={styles['challenge-info__table-row']}>
-						<div className={styles['challenge-info__table-name']}>
-							{el.name}
-						</div>
-						<div className={styles['challenge-info__table-value']}>
-							{el.value}
-						</div>
+					<div key={el.name} className={styles.row}>
+						<div className={styles.name}>{el.name}</div>
+						<div className={styles.value}>{el.value}</div>
 					</div>
 				))}
 			</div>

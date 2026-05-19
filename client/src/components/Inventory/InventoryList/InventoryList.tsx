@@ -28,11 +28,11 @@ const InventoryList = () => {
 	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
 
 	return (
-		<div className={styles['inventory-list']}>
+		<div className={styles.list}>
 			{isLoading && <InventoryListLoader />}
 			{data && data.meta.total > 0 && (
 				<>
-					<div className={styles['inventory-items__list']}>
+					<div className={styles.list}>
 						{data.items.map((item) => (
 							<InventoryListItem key={item.id} item={item} refetch={refetch} />
 						))}

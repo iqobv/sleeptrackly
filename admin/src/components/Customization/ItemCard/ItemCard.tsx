@@ -18,8 +18,8 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 	const imageUrl = item.previewUrl !== '' ? item.previewUrl : item.mediaUrl;
 
 	return (
-		<div key={item.id} className={styles['list-item']}>
-			<div className={styles['list-item__media']}>
+		<div key={item.id} className={styles.item}>
+			<div className={styles.media}>
 				{item.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
@@ -38,9 +38,7 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 				<p>Type: {item.type}</p>
 				<p>Rarity: {item.rarity}</p>
 			</div>
-			{!!actions && (
-				<div className={styles['list-item__actions']}>{actions}</div>
-			)}
+			{!!actions && <div className={styles.actions}>{actions}</div>}
 		</div>
 	);
 };

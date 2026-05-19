@@ -1,14 +1,14 @@
-.promotions-list {
+.list {
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+}
 
-	&__item {
-		display: inline-flex;
-		align-items: center;
-		justify-content: space-between;
-		border: 1px solid var(--bg-section);
-		padding: 20px;
-		border-radius: 8px;
-	}
+.item {
+	display: inline-flex;
+	align-items: center;
+	justify-content: space-between;
+	border: 1px solid var(--bg-section);
+	padding: 20px;
+	border-radius: 8px;
 }

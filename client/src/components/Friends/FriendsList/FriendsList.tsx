@@ -5,6 +5,7 @@ import { Button, List, SectionHeader } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import FriendItem from './FriendItem/FriendItem';
 import styles from './FriendsList.module.scss';
 
@@ -18,14 +19,16 @@ const FriendsList = () => {
 	});
 
 	return (
-		<div className={styles['friends']}>
+		<div className={styles.friends}>
 			<SectionHeader title="My Friends" titleComponent="h3" />
 			{data && user && (
 				<>
-					<Button href={PRIVATE_PAGES.FRIENDS.REQUESTS} variant="outlined">
-						View Pending Requests
-						{data?.countOfPendingRequests > 0 &&
-							` (${data.countOfPendingRequests})`}
+					<Button variant="outlined" asChild>
+						<Link href={PRIVATE_PAGES.FRIENDS.REQUESTS}>
+							View Pending Requests
+							{data?.countOfPendingRequests > 0 &&
+								` (${data.countOfPendingRequests})`}
+						</Link>
 					</Button>
 					<List
 						items={data.friends}

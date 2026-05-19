@@ -5,47 +5,56 @@ import buttonProperties from './styles/ButtonProperties.module.scss';
 import sizeStyles from './styles/ButtonSize.module.scss';
 import variantStyles from './styles/ButtonVariant.module.scss';
 
-export const buttonVariants = cva(baseStyles['button'], {
+export const buttonVariants = cva(baseStyles.button, {
 	variants: {
 		variant: {
-			contained: variantStyles['variant--contained'],
-			outlined: variantStyles['variant--outlined'],
-			text: variantStyles['variant--text'],
-			link: variantStyles['variant--link'],
-			secondary: variantStyles['variant--secondary'],
-			danger: variantStyles['variant--danger'],
+			contained: variantStyles.contained,
+			outlined: variantStyles.outlined,
+			text: variantStyles.text,
+			link: variantStyles.link,
+		},
+		color: {
+			primary: variantStyles.primary,
+			secondary: variantStyles.secondary,
+			danger: variantStyles.danger,
 		},
 		size: {
-			sm: sizeStyles['size--sm'],
-			md: sizeStyles['size--md'],
-			lg: sizeStyles['size--lg'],
+			sm: sizeStyles.sizeSm,
+			md: sizeStyles.sizeMd,
+			lg: sizeStyles.sizeLg,
 		},
 		fullWidth: {
-			false: buttonProperties['fullWidth--false'],
-			true: buttonProperties['fullWidth--true'],
+			false: null,
+			true: buttonProperties.fullWidth,
 		},
 		isIcon: {
 			false: null,
-			true: buttonProperties['icon'],
+			true: buttonProperties.icon,
 		},
 		disabled: {
 			false: null,
-			true: buttonProperties['disabled--true'],
+			true: buttonProperties.disabled,
+		},
+		isRounded: {
+			false: null,
+			true: buttonProperties.rounded,
 		},
 	},
 	compoundVariants: [
-		{ isIcon: false, size: 'sm', className: sizeStyles['padding-sm'] },
-		{ isIcon: false, size: 'md', className: sizeStyles['padding-md'] },
-		{ isIcon: false, size: 'lg', className: sizeStyles['padding-lg'] },
-		{ isIcon: true, size: 'sm', className: sizeStyles['icon-padding-sm'] },
-		{ isIcon: true, size: 'md', className: sizeStyles['icon-padding-md'] },
-		{ isIcon: true, size: 'lg', className: sizeStyles['icon-padding-lg'] },
+		{ isIcon: false, size: 'sm', className: sizeStyles.paddingSm },
+		{ isIcon: false, size: 'md', className: sizeStyles.paddingMd },
+		{ isIcon: false, size: 'lg', className: sizeStyles.paddingLg },
+		{ isIcon: true, size: 'sm', className: sizeStyles.iconPaddingSm },
+		{ isIcon: true, size: 'md', className: sizeStyles.iconPaddingMd },
+		{ isIcon: true, size: 'lg', className: sizeStyles.iconPaddingLg },
 	],
 	defaultVariants: {
 		variant: 'contained',
+		color: 'primary',
 		size: 'md',
 		fullWidth: false,
 		isIcon: false,
 		disabled: false,
+		isRounded: false,
 	},
 });

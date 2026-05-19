@@ -42,12 +42,12 @@ const PromotionsList = () => {
 	};
 
 	return (
-		<div className={styles['promotions-list']}>
+		<div className={styles.list}>
 			{isLoading && <p>Loading promotions...</p>}
 
 			{data &&
 				data.map((promotion) => (
-					<div key={promotion.id} className={styles['promotions-list__item']}>
+					<div key={promotion.id} className={styles.item}>
 						<Link href={PAGES.PROMOTION(promotion.id)}>{promotion.alias}</Link>
 						<Button
 							isIcon
@@ -62,7 +62,6 @@ const PromotionsList = () => {
 			<ConfirmModal
 				isOpen={promotionIdToDelete !== null}
 				onClose={handleCloseModal}
-				onCancel={handleCloseModal}
 				title="Delete Promotion"
 				text="You are about to delete this promotion."
 				onConfirm={handleConfirmDelete}

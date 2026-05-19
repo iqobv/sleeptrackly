@@ -5,7 +5,7 @@ export const promotionFields = {
 	maxUses: z.number().nullish(),
 	expiresAt: z.coerce.date().nullish(),
 	coinsReward: z.number().nullish(),
-	productIdReward: z.string().uuid().nullish(),
+	productIdReward: z.uuidv4().nullish(),
 };
 
 export const basePromotionSchema = z

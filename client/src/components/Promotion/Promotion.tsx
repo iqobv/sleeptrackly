@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button, SectionHeader, TextField } from '../UI';
+import { Button, Field, Input, SectionHeader } from '../UI';
 import styles from './Promotion.module.scss';
 
 const Promotion = () => {
@@ -43,28 +43,25 @@ const Promotion = () => {
 				<SectionHeader
 					title="Redeem Code"
 					description="Enter your promo code"
+					containerClassName={styles.header}
 				/>
 				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-					<div className={styles.fieldWrapper}>
-						<TextField
+					<Field error={errors.alias?.message} label="Promo Code" required>
+						<Input
 							placeholder="Enter alias"
-							className={styles.field}
-							error={errors.alias?.message && ''}
-							fullWidth
+							rightSection={
+								<Button
+									type="submit"
+									disabled={!isDirty}
+									className={styles.button}
+									loading={isPending}
+								>
+									Use
+								</Button>
+							}
 							{...register('alias')}
 						/>
-						<Button
-							type="submit"
-							disabled={!isDirty}
-							className={styles.button}
-							loading={isPending}
-						>
-							Use
-						</Button>
-					</div>
-					{errors.alias && (
-						<p className={styles.error}>{errors.alias.message}</p>
-					)}
+					</Field>
 				</form>
 			</div>
 		</div>

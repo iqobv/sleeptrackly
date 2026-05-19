@@ -1,4 +1,7 @@
 export interface FormLabelProps {
-	id: string;
+	id?: string;
 	children: React.ReactNode;
+	required?: boolean;
+	className?: string;
+	disabled?: boolean;
 }

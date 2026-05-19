@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, TextField } from '@/components/UI';
-import { MdOutlinePersonAdd } from 'react-icons/md';
+import { Button, Field, Input } from '@/components/UI';
+import { MdOutlineSearch } from 'react-icons/md';
 import styles from './AddFriendSearchContainer.module.scss';
 
 interface AddFriendSearchContainerProps {
@@ -16,19 +16,27 @@ const AddFriendSearchContainer = ({
 	handleSearch,
 }: AddFriendSearchContainerProps) => {
 	return (
-		<div className={styles['add-friend__input-container']}>
-			<TextField
-				type="text"
-				className={styles['add-friend__input']}
-				placeholder="Enter a username"
-				value={search}
-				onChange={onChange}
-				fullWidth
-			/>
-			<Button className={styles['add-friend__btn']} onClick={handleSearch}>
-				<MdOutlinePersonAdd />
-				Search
-			</Button>
+		<div className={styles.container}>
+			<Field label="Search by username">
+				<Input
+					type="text"
+					placeholder="Enter a username"
+					value={search}
+					onChange={onChange}
+					rightSection={
+						<Button
+							className={styles.addButton}
+							onClick={handleSearch}
+							size="sm"
+							isIcon
+							type="button"
+						>
+							<MdOutlineSearch size={18} />
+							<span className={styles.text}>Search</span>
+						</Button>
+					}
+				/>
+			</Field>
 		</div>
 	);
 };

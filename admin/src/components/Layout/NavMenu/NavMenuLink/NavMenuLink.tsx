@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
+import Link from 'next/link';
 import { useState } from 'react';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { NavMenuLinksProps } from '../navMenuLinks';
@@ -26,45 +27,42 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 		<div>
 			<Button
 				key={link.href}
-				href={link.href}
 				variant="text"
-				className={`${styles['menu-link']} ${isOpen ? styles['menu-link--open'] : ''}`}
-				contentClassName={styles['menu-link__button-content']}
+				className={`${styles.link} ${isOpen ? styles.open : ''}`}
+				asChild
 			>
-				<div className={styles['menu-link__content']}>
-					<link.Icon size={25} className={styles['menu-link__icon']} />
-					<p className={styles['menu-link__text']}>{link.label}</p>
-				</div>
-				{isOpen && link.expanded && (
-					<div
-						className={`${styles['menu-link__expand']}`}
-						onClick={handleExpand}
-					>
-						<MdOutlineArrowDropDown
-							className={`${styles['menu-link__expand-icon']} ${isExpanded ? styles['menu-link__expand-icon--expanded'] : ''}`}
-							size={30}
-						/>
+				<Link href={link.href} className={styles.buttonContent}>
+					<div className={styles.content}>
+						<link.Icon size={25} className={styles.icon} />
+						<p className={styles.text}>{link.label}</p>
 					</div>
-				)}
+					{isOpen && link.expanded && (
+						<div className={`${styles.expand}`} onClick={handleExpand}>
+							<MdOutlineArrowDropDown
+								className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}
+								size={30}
+							/>
+						</div>
+					)}
+				</Link>
 			</Button>
 
 			{isOpen &&
 				isExpanded &&
 				link.innerLinks &&
 				link.innerLinks.length > 0 && (
-					<div className={`${styles['menu-link__inner-links']}`}>
+					<div className={`${styles.innerLinks}`}>
 						{link.innerLinks.map((innerLink) => (
 							<Button
 								key={innerLink.href}
-								href={innerLink.href}
 								variant="text"
-								className={`${styles['menu-link']} ${isOpen ? styles['menu-link--open'] : ''}`}
+								className={`${styles.link} ${isOpen ? styles.open : ''}`}
+								asChild
 							>
-								<innerLink.Icon
-									size={25}
-									className={styles['menu-link__icon']}
-								/>
-								<p className={styles['menu-link__text']}>{innerLink.label}</p>
+								<Link href={innerLink.href} className={styles.buttonContent}>
+									<innerLink.Icon size={25} className={styles.icon} />
+									<p className={styles.text}>{innerLink.label}</p>
+								</Link>
 							</Button>
 						))}
 					</div>

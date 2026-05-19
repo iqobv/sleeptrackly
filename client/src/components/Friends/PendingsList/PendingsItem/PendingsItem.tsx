@@ -34,14 +34,14 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 	};
 
 	return (
-		<div key={friend.id} className={styles['pendings-list-item']}>
-			<div className={styles['pendings-list-item__user']}>
+		<div key={friend.id} className={styles.item}>
+			<div className={styles.user}>
 				<Avatar avatar={friend.user?.avatar} size={45} />
 				<Link href={PAGES.PROFILE(friend.user.username)}>
 					{friend.user.username}
 				</Link>
 			</div>
-			<div className={styles['pendings-list-item__actions']}>
+			<div className={styles.actions}>
 				<Button
 					fullWidth
 					onClick={() => handleUpdate(friend.id, FRIEND_STATUS.ACCEPTED)}

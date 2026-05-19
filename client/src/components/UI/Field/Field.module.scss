@@ -1,0 +1,17 @@
+.field {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 8px 0;
+}
+
+.error {
+	color: var(--color-error);
+	font-size: 0.925rem;
+	padding-left: 8px;
+
+	&.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+	}
+}

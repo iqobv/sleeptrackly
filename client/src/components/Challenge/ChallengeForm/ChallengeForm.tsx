@@ -2,17 +2,18 @@
 
 'use client';
 
-import { Button, Select, TextField } from '@/components/UI';
-import { ChallengeField, Option } from '@/types';
+import {
+	Button,
+	Field,
+	FormSelect,
+	Input,
+	Select,
+	Textarea,
+} from '@/components/UI';
+import { ChallengeField } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-	Controller,
-	DefaultValues,
-	FieldValues,
-	get,
-	useForm,
-} from 'react-hook-form';
+import { DefaultValues, FieldValues, get, useForm } from 'react-hook-form';
 import { ZodType } from 'zod';
 
 import { QUERY_KEYS } from '@/config';
@@ -81,43 +82,53 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 		get(errors, f.name)?.message as string;
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={styles['challenge-form']}
-		>
+		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 			{errors.root && <p>{errors.root.message}</p>}
 			{fields.map(({ componentType, ...f }) => (
-				<div key={f.name}>
+				<Field
+					key={f.name}
+					label={f.label}
+					error={errorMessage(f)}
+					required={f.required}
+				>
 					{componentType === 'input' && (
-						<TextField {...f} error={errorMessage(f)} {...register(f.name)} />
+						<Input
+							type={f.type}
+							autoComplete={f.autoComplete}
+							placeholder={f.placeholder}
+							{...register(f.name)}
+						/>
 					)}
 					{componentType === 'textarea' && (
-						<TextField
-							{...f}
-							multiline
-							error={errorMessage(f)}
+						<Textarea
+							autoComplete={f.autoComplete}
+							placeholder={f.placeholder}
+							minRows={1}
+							maxRows={4}
 							{...register(f.name)}
 						/>
 					)}
 					{componentType === 'list' && !!f.options && (
-						<Controller
+						<FormSelect
 							name={f.name}
 							control={control}
-							render={({ field }) => (
-								<Select
-									options={f.options as Option[]}
-									{...f}
-									label={typeof f.label === 'string' ? f.label : undefined}
-									isClearable
-									error={get(errors, f.name)?.message as string}
-									{...field}
-								/>
-							)}
-						/>
+							placeholder={f.placeholder}
+							displayFormat={(value) =>
+								typeof value === 'string'
+									? f.options?.find((opt) => opt.value === value)?.label || ''
+									: ''
+							}
+						>
+							{f.options.map((opt) => (
+								<Select.Item value={opt.value} key={opt.value}>
+									{opt.label}
+								</Select.Item>
+							))}
+						</FormSelect>
 					)}
-				</div>
+				</Field>
 			))}
-			<Button type="submit" className={styles['submit-button']}>
+			<Button type="submit" className={styles.submit}>
 				{buttonLabel}
 			</Button>
 		</form>

@@ -39,10 +39,8 @@ const InventoryListItem = ({ item, refetch }: InventoryListItemProps) => {
 	}, [item]);
 
 	return (
-		<div
-			className={`${styles['inventory-item']} ${isEquipped ? styles['inventory-item--equipped'] : ''}`}
-		>
-			<div className={styles['inventory-item__image-container']}>
+		<div className={`${styles.item} ${isEquipped ? styles.equipped : ''}`}>
+			<div className={styles.imageContainer}>
 				{item.item.type === ITEM_TYPES.ANIMATED_AVATAR ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.item.mediaUrl}`}
@@ -51,7 +49,7 @@ const InventoryListItem = ({ item, refetch }: InventoryListItemProps) => {
 						muted
 						width={150}
 						height={150}
-						className={styles['inventory-item__video']}
+						className={styles.video}
 					/>
 				) : (
 					<Image
@@ -59,29 +57,22 @@ const InventoryListItem = ({ item, refetch }: InventoryListItemProps) => {
 						alt={item.item.translation.name}
 						width={150}
 						height={150}
-						className={styles['inventory-item__image']}
+						className={styles.image}
 					/>
 				)}
-				{isEquipped && (
-					<div className={styles['inventory-item__equipped-badge']}>
-						Equipped
-					</div>
-				)}
+				{isEquipped && <div className={styles.equippedBadge}>Equipped</div>}
 			</div>
-			<div className={styles['inventory-item__details']}>
-				<div className={styles['inventory-item__info']}>
-					<h3 className={styles['inventory-item__name']}>
-						{item.item.translation.name}
-					</h3>
-					<p className={styles['inventory-item__type']}>
-						{item.item.type.replaceAll('_', ' ')}
-					</p>
+			<div className={styles.details}>
+				<div className={styles.info}>
+					<h3 className={styles.name}>{item.item.translation.name}</h3>
+					<p className={styles.type}>{item.item.type.replaceAll('_', ' ')}</p>
 				</div>
-				<div className={styles['inventory-item__actions']}>
+				<div className={styles.actions}>
 					<Button
 						size="sm"
 						fullWidth
-						variant={isEquipped ? 'secondary' : 'contained'}
+						variant="contained"
+						color={isEquipped ? 'secondary' : 'primary'}
 						onClick={() => mutate()}
 					>
 						{isEquipped ? 'Unequip' : 'Equip'}
