@@ -1,18 +1,18 @@
 @use '../../../../styles/mixins' as *;
 
-.add-friend__input-container {
+.container {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 
-	.add-friend__btn {
+	.addButton {
 		width: 100%;
 	}
 
 	@include respond-to(md) {
 		flex-direction: row;
 
-		.add-friend__btn {
+		.addButton {
 			width: unset;
 		}
 	}

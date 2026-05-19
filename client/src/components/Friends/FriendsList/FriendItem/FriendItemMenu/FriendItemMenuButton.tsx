@@ -39,7 +39,7 @@ const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
 		<Button
 			variant="text"
 			fullWidth
-			className={styles['friend-item-menu__item']}
+			className={styles.menuItem}
 			onClick={handleClick}
 			loading={isPending}
 			key={item.label}

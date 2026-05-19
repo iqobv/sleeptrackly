@@ -4,7 +4,7 @@ import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
 import { Option } from '@/types';
 import { Controller } from 'react-hook-form';
 import { MdReportGmailerrorred } from 'react-icons/md';
-import { Button, Modal, Select, TextField } from '../UI';
+import { Button, Field, Modal, Select, Textarea } from '../UI';
 import styles from './ReportModal.module.scss';
 import { REPORT_TITLES_OPTIONS } from './reportTitleOptions';
 import { useReportModal } from './useReportModal';
@@ -43,32 +43,32 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 				<Modal.Body>
 					<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 						<input type="hidden" {...register('reportedId')} />
-						<Select
-							options={REPORT_TITLES_OPTIONS as Option[]}
-							label="Select a report title"
-							placeholder="Select a report title"
+						<Field
+							label="Report Title"
 							error={
 								selectedTitle?.value !== REPORT_TITLES.OTHER
 									? errors.title?.message
 									: ''
 							}
-							value={selectedTitle?.value || ''}
-							onChange={(value) => {
-								setSelectedTitle(
-									REPORT_TITLES_OPTIONS.find(
-										(option) => option.value === value,
-									) || null,
-								);
-							}}
-						/>
-						{selectedTitle?.value === REPORT_TITLES.OTHER ? (
-							<TextField
-								multiline
-								error={errors.title?.message}
-								label="Title"
-								required
-								{...register('title')}
+							required
+						>
+							<Select
+								options={REPORT_TITLES_OPTIONS as Option[]}
+								placeholder="Select a report title"
+								value={selectedTitle?.value || ''}
+								onChange={(value) => {
+									setSelectedTitle(
+										REPORT_TITLES_OPTIONS.find(
+											(option) => option.value === value,
+										) || null,
+									);
+								}}
 							/>
+						</Field>
+						{selectedTitle?.value === REPORT_TITLES.OTHER ? (
+							<Field error={errors.title?.message} label="Title" required>
+								<Textarea placeholder="Enter title" {...register('title')} />
+							</Field>
 						) : (
 							<Controller
 								name="title"
@@ -78,13 +78,13 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 								)}
 							/>
 						)}
-						<TextField
-							multiline
-							label="Explain your report"
-							minRows={3}
-							placeholder="Explain your report. Be as detailed as possible."
-							{...register('description')}
-						/>
+						<Field label="Description" error={errors.description?.message}>
+							<Textarea
+								minRows={3}
+								placeholder="Explain your report. Be as detailed as possible."
+								{...register('description')}
+							/>
+						</Field>
 						<Modal.Close asChild>
 							<Button type="submit">Send</Button>
 						</Modal.Close>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, TextField } from '@/components/UI';
+import { Button, Field, Input } from '@/components/UI';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -81,13 +81,14 @@ const SettingsForm = <T extends FieldValues, R>({
 								error: errors[f.name]?.message as string | undefined,
 							})
 						) : (
-							<TextField
-								type={f.type}
-								placeholder={f.placeholder}
-								error={errors[f.name]?.message as string | undefined}
-								autoComplete={f.autocomplete}
-								{...register(f.name)}
-							/>
+							<Field error={errors[f.name]?.message as string}>
+								<Input
+									type={f.type}
+									placeholder={f.placeholder}
+									autoComplete={f.autoComplete}
+									{...register(f.name)}
+								/>
+							</Field>
 						)}
 					</SettingsField>
 				))}

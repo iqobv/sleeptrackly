@@ -10,28 +10,28 @@ const PendingsList = () => {
 	const { data, handleUpdateMany } = usePendingsList();
 
 	return (
-		<div className={styles['pendings-list']}>
+		<div>
 			<SectionHeader title="Friends Requests" titleComponent="h3" />
-			<div className={styles['pendings-list__buttons']}>
+			<div className={styles.buttons}>
 				<Button
-					className={styles['pendings-list__button']}
+					className={styles.button}
 					onClick={() => handleUpdateMany(FRIEND_STATUS.ACCEPTED)}
 				>
 					Accept All
 				</Button>
 				<Button
-					className={styles['pendings-list__button']}
+					className={styles.button}
 					onClick={() => handleUpdateMany(FRIEND_STATUS.REJECTED)}
 					variant="outlined"
 				>
 					Reject All
 				</Button>
 			</div>
-			<div className={styles['pendings-list__list']}>
+			<div className={styles.list}>
 				{data && data.length === 0 && (
 					<SectionHeader
 						description="You don't have any friends requests"
-						descriptionClassName={styles['pendings-list__empty']}
+						descriptionClassName={styles.empty}
 					/>
 				)}
 				{data && (

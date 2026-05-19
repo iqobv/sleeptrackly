@@ -3,7 +3,7 @@
 import { ShopFilterDto } from '@/dto';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 
-import { Select, TextField } from '@/components/UI';
+import { Field, Input, Select } from '@/components/UI';
 import { Option, ShopSortBy } from '@/types';
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
@@ -44,18 +44,20 @@ const AllShopFilterSearchBar = () => {
 	}, [sort, setValue]);
 
 	return (
-		<div className={styles['search-bar']}>
-			<TextField
-				type="search"
-				placeholder="Search products..."
-				leftIcon={<MdSearch size={20} />}
-				containerClassName={styles['search-input']}
-				{...register('search')}
-			/>
-			<div className={styles['select-container']}>
+		<div className={styles.searchBar}>
+			<Field>
+				<Input
+					type="search"
+					placeholder="Search products..."
+					leftSection={<MdSearch size={20} />}
+					className={styles.input}
+					{...register('search')}
+				/>
+			</Field>
+			<div className={styles.selectContainer}>
 				<label
 					htmlFor="sort"
-					className={styles['select-label']}
+					className={styles.selectLabel}
 					onClick={() => document.getElementById('sort')?.focus()}
 				>
 					Sort by:

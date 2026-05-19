@@ -15,11 +15,7 @@ const FriendItemMenu = ({ menuRef, friend, menuUp }: FriendItemMenuProps) => {
 	return (
 		<div
 			ref={menuRef}
-			className={`${styles['friend-item-menu']} ${
-				menuUp
-					? styles['friend-item-menu--up']
-					: styles['friend-item-menu--down']
-			}`}
+			className={`${styles.menu} ${menuUp ? styles.up : styles.down}`}
 		>
 			{FRIEND_ITEM_MENU.map((item) => (
 				<FriendItemMenuButton key={item.label} item={item} friend={friend} />

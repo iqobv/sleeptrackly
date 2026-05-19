@@ -11,12 +11,11 @@ const AddFriend = () => {
 		useAddFriend();
 
 	return (
-		<div className={styles['add-friend']}>
+		<div className={styles.addFriend}>
 			<SectionHeader
 				title="Add Friend"
 				titleComponent="h3"
-				titleClassName={styles['add-friend__title']}
-				containerClassName={styles['add-friend__title-container']}
+				containerClassName={styles.titleContainer}
 			/>
 			<AddFriendSearchContainer
 				search={search}

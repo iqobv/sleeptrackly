@@ -2,7 +2,7 @@
 
 'use client';
 
-import { Button, Select, TextField } from '@/components/UI';
+import { Button, Field, Input, Select, Textarea } from '@/components/UI';
 import { ChallengeField, Option } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -84,15 +84,26 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 			{errors.root && <p>{errors.root.message}</p>}
 			{fields.map(({ componentType, ...f }) => (
-				<div key={f.name}>
+				<Field
+					key={f.name}
+					label={f.label}
+					error={errorMessage(f)}
+					required={f.required}
+				>
 					{componentType === 'input' && (
-						<TextField {...f} error={errorMessage(f)} {...register(f.name)} />
+						<Input
+							type={f.type}
+							autoComplete={f.autoComplete}
+							placeholder={f.placeholder}
+							{...register(f.name)}
+						/>
 					)}
 					{componentType === 'textarea' && (
-						<TextField
-							{...f}
-							multiline
-							error={errorMessage(f)}
+						<Textarea
+							autoComplete={f.autoComplete}
+							placeholder={f.placeholder}
+							minRows={1}
+							maxRows={4}
 							{...register(f.name)}
 						/>
 					)}
@@ -103,16 +114,14 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 							render={({ field }) => (
 								<Select
 									options={f.options as Option[]}
-									{...f}
-									label={typeof f.label === 'string' ? f.label : undefined}
+									placeholder={f.placeholder}
 									isClearable
-									error={get(errors, f.name)?.message as string}
 									{...field}
 								/>
 							)}
 						/>
 					)}
-				</div>
+				</Field>
 			))}
 			<Button type="submit" className={styles.submit}>
 				{buttonLabel}

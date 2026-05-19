@@ -17,9 +17,9 @@ const FriendItem = ({ friend }: FriendItemProps) => {
 		useFriendItemMenu();
 
 	return (
-		<div className={styles['friend-item']}>
+		<div className={styles.item}>
 			<FriendItemInfo friend={friend} />
-			<div ref={containerRef} className={styles['friend-item__actions']}>
+			<div ref={containerRef} className={styles.actions}>
 				<Button onClick={handleOpenMenu} variant="text" isIcon isRounded>
 					<MdOutlineMoreVert size={24} />
 				</Button>

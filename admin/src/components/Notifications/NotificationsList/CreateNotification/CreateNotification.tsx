@@ -1,7 +1,7 @@
 'use client';
 
 import { createNotification } from '@/api';
-import { Button, TextField } from '@/components/UI';
+import { Button, Field, Input } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreateNotificationDto } from '@/dto';
 import { createNotificationSchema } from '@/schemas';
@@ -49,13 +49,17 @@ const CreateNotification = () => {
 							<label htmlFor={f.name}>{f.label}</label>
 						</>
 					) : (
-						<TextField
+						<Field
 							label={f.label}
-							placeholder={f.placeholder}
-							type={f.type}
 							error={errors[f.name]?.message as string}
-							{...register(f.name)}
-						/>
+							required={f.required}
+						>
+							<Input
+								placeholder={f.placeholder}
+								type={f.type}
+								{...register(f.name)}
+							/>
+						</Field>
 					)}
 				</div>
 			))}

@@ -19,7 +19,7 @@ const FriendsList = () => {
 	});
 
 	return (
-		<div className={styles['friends']}>
+		<div className={styles.friends}>
 			<SectionHeader title="My Friends" titleComponent="h3" />
 			{data && user && (
 				<>

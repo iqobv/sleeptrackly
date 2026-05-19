@@ -1,6 +1,6 @@
 @use '../../../../styles/mixins' as *;
 
-.search-bar {
+.searchBar {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -23,7 +23,7 @@
 	}
 }
 
-.select-container {
+.selectContainer {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
@@ -35,7 +35,7 @@
 	}
 }
 
-.select-label {
+.selectLabel {
 	font-weight: 500;
 	color: var(--color-main-text);
 	white-space: nowrap;

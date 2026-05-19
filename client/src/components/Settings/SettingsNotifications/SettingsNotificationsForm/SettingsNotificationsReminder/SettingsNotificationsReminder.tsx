@@ -1,6 +1,6 @@
 'use client';
 
-import { TextField, ToggleSwitch } from '@/components/UI';
+import { Input, ToggleSwitch } from '@/components/UI';
 import SettingsField from '../../../SettingsField/SettingsField';
 import { UpdateFunction } from '../SettingsNotificationsForm.types';
 import { useSettingsNotificationsReminder } from './useSettingsNotificationsReminder.hook';
@@ -33,11 +33,15 @@ const SettingsNotificationsReminder = ({
 			</SettingsField>
 			{isEnabled && (
 				<SettingsField label="Reminder Time">
-					<TextField
+					<Input
 						type="time"
 						value={reminderTimeField.value || '08:00'}
 						onChange={reminderTimeField.onChange}
 						onBlur={handleTimeBlur}
+						style={{
+							width: 'auto',
+							minWidth: 200,
+						}}
 					/>
 					<input type="hidden" {...userTimeZoneField} />
 				</SettingsField>

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { Button, TextField } from '@/components/UI';
+import { Button, Field, Input } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
@@ -11,6 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
@@ -90,30 +91,25 @@ const AuthForm = <T extends FieldValues, R>({
 					<p>{errors['root']?.message as string}</p>
 				</div>
 			)}
-			{fields.map((f) => (
-				<div key={f.name}>
-					{f.type === 'checkbox' ? (
+			{fields.map(({ name, label, type, icon, ...f }) => (
+				<React.Fragment key={name}>
+					{type === 'checkbox' ? (
 						<CheckboxField
-							label={f.label}
-							error={errors[f.name]?.message as string}
-							{...register(f.name)}
+							label={label}
+							error={errors[name]?.message as string}
+							{...register(name)}
 						/>
 					) : (
-						<TextField
-							placeholder={f.placeholder}
-							autoComplete={f.autocomplete}
-							type={f.type}
-							fullWidth
-							label={f.label}
-							error={errors[f.name]?.message as string}
-							leftIcon={f.icon}
-							{...(f.type?.includes('password') && {
-								rightIconClassName: styles.passwordIcon,
-							})}
-							{...register(f.name)}
-						/>
+						<Field label={label}>
+							<Input
+								type={type}
+								leftSection={icon}
+								{...f}
+								{...register(name)}
+							/>
+						</Field>
 					)}
-				</div>
+				</React.Fragment>
 			))}
 			<Button
 				loading={isPending}

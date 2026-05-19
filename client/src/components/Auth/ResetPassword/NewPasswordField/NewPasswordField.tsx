@@ -1,7 +1,7 @@
 'use client';
 
 import { resetPassword } from '@/api';
-import { TextField } from '@/components/UI';
+import { Field, Input } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PassordDto } from '@/dto';
 import { passwordSchema } from '@/schemas';
@@ -48,16 +48,19 @@ const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 			onSubmit={handleSubmit(onSubmit)}
 			isPending={isPending}
 		>
-			<TextField
-				placeholder="password"
-				autoComplete="new-password"
-				type="password"
-				fullWidth
+			<Field
 				label="Create a password"
 				error={errors.password?.message}
-				leftIcon={<MdOutlineVpnKey />}
-				{...register('password')}
-			/>
+				required
+			>
+				<Input
+					placeholder="password"
+					autoComplete="new-password"
+					type="password"
+					leftSection={<MdOutlineVpnKey />}
+					{...register('password')}
+				/>
+			</Field>
 		</ResetForm>
 	);
 };

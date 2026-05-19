@@ -1,7 +1,7 @@
 'use client';
 
 import { changePassword, needOldPassword } from '@/api';
-import { Button, Loader, TextField } from '@/components/UI';
+import { Button, Field, Input, Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ChangePasswordDto } from '@/dto';
 import { useAuth } from '@/hooks';
@@ -66,15 +66,18 @@ const ChangePasswordForm = ({ handleClose }: ChangePasswordFormProps) => {
 					{CHANGE_PASSWORD_FIELD.map((f) => {
 						if (!data && f.name === 'oldPassword') return null;
 						return (
-							<TextField
+							<Field
 								key={f.name}
-								placeholder={f.placeholder}
-								type={f.type}
+								error={errors[f.name]?.message}
 								label={f.label}
-								autoComplete={f.autocomplete}
-								error={errors[f.name]?.message as string}
-								{...register(f.name)}
-							/>
+							>
+								<Input
+									placeholder={f.placeholder}
+									type={f.type}
+									autoComplete={f.autoComplete}
+									{...register(f.name)}
+								/>
+							</Field>
 						);
 					})}
 				</>

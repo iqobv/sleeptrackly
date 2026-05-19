@@ -1,4 +1,4 @@
-.friend-item-menu {
+.menu {
 	position: absolute;
 	right: 0;
 	background-color: var(--dropdown-bg);
@@ -7,18 +7,18 @@
 	border-radius: 8px;
 	min-width: 150px;
 
-	&--up {
+	&.up {
 		top: auto;
 		bottom: 100%;
 	}
 
-	&--down {
+	&.down {
 		top: 100%;
 		bottom: auto;
 	}
 }
 
-.friend-item-menu__item {
+.menuItem {
 	text-align: start;
 	justify-content: start;
 	padding: 12px 6px;

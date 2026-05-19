@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, TextField } from '@/components/UI';
+import { Button, Field, Input } from '@/components/UI';
 import { TranslationDto } from '@/dto';
 import {
 	ArrayPath,
@@ -42,26 +42,29 @@ const TranslationForm = <T extends HasTranslations>() => {
 				return (
 					<div key={field.id} className={styles.item}>
 						<div className={styles.fields}>
-							<TextField
-								placeholder="Language"
+							<Field
 								error={error?.language?.message}
-								fullWidth
 								label='Language Code (e.g. "en", "fr")'
-								{...register(`translations.${index}.language` as Path<T>)}
-							/>
-							<TextField
-								placeholder="Name"
-								label="Name"
-								fullWidth
-								error={error?.name?.message}
-								{...register(`translations.${index}.name` as Path<T>)}
-							/>
+								required
+							>
+								<Input
+									placeholder="Language"
+									{...register(`translations.${index}.language` as Path<T>)}
+								/>
+							</Field>
+							<Field label="Name" error={error?.name?.message} required>
+								<Input
+									placeholder="Name"
+									{...register(`translations.${index}.name` as Path<T>)}
+								/>
+							</Field>
 						</div>
 						<Button
 							type="button"
-							variant="contained"
+							variant="text"
 							color="danger"
 							isIcon
+							isRounded
 							size="md"
 							onClick={() => remove(index)}
 						>

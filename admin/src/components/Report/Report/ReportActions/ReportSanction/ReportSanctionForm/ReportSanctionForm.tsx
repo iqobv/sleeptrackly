@@ -1,7 +1,7 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { Button, Select, TextField } from '@/components/UI';
+import { Button, Field, Input, Select } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
@@ -66,18 +66,12 @@ const ReportSanctionForm = ({
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-			<TextField
-				type="datetime-local"
-				label="Start date"
-				error={errors['startsAt']?.message as string}
-				{...register('startsAt')}
-			/>
-			<TextField
-				type="datetime-local"
-				label="End date"
-				error={errors['endsAt']?.message as string}
-				{...register('endsAt')}
-			/>
+			<Field label="Start date" error={errors['startsAt']?.message as string}>
+				<Input type="datetime-local" {...register('startsAt')} />
+			</Field>
+			<Field label="End date" error={errors['endsAt']?.message as string}>
+				<Input type="datetime-local" {...register('endsAt')} />
+			</Field>
 			<Controller
 				name="type"
 				control={control}

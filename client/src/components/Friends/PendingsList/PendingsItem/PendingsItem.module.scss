@@ -1,6 +1,6 @@
 @use '../../../../styles/mixins' as *;
 
-.pendings-list-item {
+.item {
 	display: flex;
 	justify-content: space-between;
 	gap: 20px;
@@ -13,13 +13,13 @@
 		flex-direction: row;
 	}
 
-	&__user {
+	.user {
 		display: flex;
 		align-items: center;
 		gap: 10px;
 	}
 
-	&__actions {
+	.actions {
 		display: flex;
 		gap: 10px;
 	}

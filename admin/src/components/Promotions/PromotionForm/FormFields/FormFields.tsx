@@ -1,11 +1,11 @@
 'use client';
 
-import { Checkbox, Select, TextField } from '@/components/UI';
-import { Field } from '@/types';
+import { Checkbox, Field, Input, Select } from '@/components/UI';
+import type { Field as FieldType } from '@/types';
 import { Controller, FieldValues, useFormContext } from 'react-hook-form';
 
 interface FormFieldsProps<T extends FieldValues> {
-	fields: Field<T>[];
+	fields: FieldType<T>[];
 }
 
 const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
@@ -49,18 +49,17 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 				}
 
 				return (
-					<TextField
-						key={key}
-						label={label}
-						placeholder={placeholder}
-						type={type}
-						error={error}
-						{...register(pathName, {
-							...(type === 'number'
-								? { setValueAs: (v) => (v === '' ? undefined : Number(v)) }
-								: { setValueAs: (v) => (v === '' ? undefined : v) }),
-						})}
-					/>
+					<Field key={key} label={label} error={error}>
+						<Input
+							placeholder={placeholder}
+							type={type}
+							{...register(pathName, {
+								...(type === 'number'
+									? { setValueAs: (v) => (v === '' ? undefined : Number(v)) }
+									: { setValueAs: (v) => (v === '' ? undefined : v) }),
+							})}
+						/>
+					</Field>
 				);
 			})}
 		</>
