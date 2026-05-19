@@ -23,12 +23,12 @@
 	}
 }
 
-.selectContainer {
+div.selectContainer {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
 
-	@include respond-to('md') {
+	@include respond-to(md) {
 		align-items: center;
 		gap: 16px;
 		flex-direction: row;
@@ -44,7 +44,7 @@
 .select {
 	width: 100%;
 
-	@include respond-to('md') {
-		max-width: 250px;
+	@include respond-to(md) {
+		max-width: 300px;
 	}
 }

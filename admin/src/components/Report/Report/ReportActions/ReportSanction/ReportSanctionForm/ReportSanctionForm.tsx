@@ -1,17 +1,17 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { Button, Field, Input, Select } from '@/components/UI';
+import { Button, Field, FormSelect, Input, Select } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './ReportSanctionForm.module.scss';
-import { USER_SANCTIONS_OPTIONS, UserSanctionOption } from './userSanctions';
+import { USER_SANCTIONS_OPTIONS } from './userSanctions';
 
 interface ReportSanctionFormProps {
 	reportId?: string;
@@ -72,23 +72,26 @@ const ReportSanctionForm = ({
 			<Field label="End date" error={errors['endsAt']?.message as string}>
 				<Input type="datetime-local" {...register('endsAt')} />
 			</Field>
-			<Controller
-				name="type"
-				control={control}
-				render={({ field }) => {
-					return (
-						<Select
-							options={USER_SANCTIONS_OPTIONS as UserSanctionOption[]}
-							isClearable
-							label="Sanction type"
-							placeholder="Select sanction type"
-							error={errors['type']?.message as string}
-							value={field.value}
-							onChange={(value: string) => field.onChange(value)}
-						/>
-					);
-				}}
-			/>
+			<Field label="Sanction type" error={errors['type']?.message as string}>
+				<FormSelect
+					name="type"
+					control={control}
+					displayFormat={(value) => {
+						const selectedOption = USER_SANCTIONS_OPTIONS.find(
+							(option) => option.value === value,
+						);
+
+						return selectedOption ? selectedOption.label : '';
+					}}
+					placeholder="Select sanction type"
+				>
+					{USER_SANCTIONS_OPTIONS.map((option) => (
+						<Select.Item key={option.value} value={option.value}>
+							{option.label}
+						</Select.Item>
+					))}
+				</FormSelect>
+			</Field>
 			<div className={styles.buttons}>
 				<Button type="submit" loading={isPending}>
 					{isUpdate ? 'Update sanction' : 'Create sanction'}

@@ -7,6 +7,7 @@ export { default as ConfirmModal } from './ConfirmModal/ConfirmModal';
 export { default as Divider } from './Divider/Divider';
 export { default as Field } from './Field/Field';
 export { default as FormLabel } from './FormLabel/FormLabel';
+export { default as FormSelect } from './FormSelect/FormSelect';
 export { default as Input } from './Input/Input';
 export { default as List } from './List/List';
 export { default as Loader } from './Loader/Loader';

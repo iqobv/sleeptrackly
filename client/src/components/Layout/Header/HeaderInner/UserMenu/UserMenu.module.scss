@@ -43,7 +43,7 @@
 	gap: 6px;
 	min-width: unset;
 	width: 100vw;
-	z-index: 1200;
+	z-index: 110;
 
 	@include respond-to('md') {
 		min-width: 300px;

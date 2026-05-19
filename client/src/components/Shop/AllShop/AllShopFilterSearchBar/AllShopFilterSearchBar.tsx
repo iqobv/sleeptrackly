@@ -1,10 +1,10 @@
 'use client';
 
 import { ShopFilterDto } from '@/dto';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
-import { Field, Input, Select } from '@/components/UI';
-import { Option, ShopSortBy } from '@/types';
+import { Field, FormSelect, Input, Select } from '@/components/UI';
+import { ShopSortBy } from '@/types';
 import { useEffect } from 'react';
 import { MdSearch } from 'react-icons/md';
 import styles from './AllShopFilterSearchBar.module.scss';
@@ -54,29 +54,26 @@ const AllShopFilterSearchBar = () => {
 					{...register('search')}
 				/>
 			</Field>
-			<div className={styles.selectContainer}>
-				<label
-					htmlFor="sort"
-					className={styles.selectLabel}
-					onClick={() => document.getElementById('sort')?.focus()}
-				>
-					Sort by:
-				</label>
-				<Controller
+			<Field className={styles.selectContainer} label="Sort by:">
+				<FormSelect
 					name="sort"
 					control={control}
-					render={({ field }) => (
-						<Select
-							options={SHOP_FILTER_OPTIONS as Option[]}
-							isClearable={false}
-							placeholder="Select filter type"
-							containerClassName={styles['select']}
-							id="sort"
-							{...field}
-						/>
-					)}
-				/>
-			</div>
+					displayFormat={(value) => {
+						const option = SHOP_FILTER_OPTIONS.find(
+							(opt) => opt.value === value,
+						);
+						return option ? option.label : '';
+					}}
+					placeholder="Select filter type"
+					className={styles.select}
+				>
+					{SHOP_FILTER_OPTIONS.map((option) => (
+						<Select.Item key={option.value} value={option.value}>
+							{option.label}
+						</Select.Item>
+					))}
+				</FormSelect>
+			</Field>
 		</div>
 	);
 };

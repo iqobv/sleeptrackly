@@ -6,14 +6,15 @@
 	gap: 10px;
 
 	.addButton {
-		width: 100%;
-	}
+		.text {
+			display: none;
+		}
 
-	@include respond-to(md) {
-		flex-direction: row;
-
-		.addButton {
-			width: unset;
+		@include respond-to(md) {
+			.text {
+				display: inline;
+				padding-right: 5px;
+			}
 		}
 	}
 }

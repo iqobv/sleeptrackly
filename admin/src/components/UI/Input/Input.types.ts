@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithRef, HTMLAttributes, Ref } from 'react';
 
 export interface InputProps extends ComponentPropsWithRef<'input'> {
 	leftSection?: React.ReactNode;
@@ -6,4 +6,6 @@ export interface InputProps extends ComponentPropsWithRef<'input'> {
 	error?: boolean;
 	inputClassName?: string;
 	inputStyle?: React.CSSProperties;
+	wrapperRef?: Ref<HTMLDivElement>;
+	wrapperProps?: HTMLAttributes<HTMLDivElement>;
 }

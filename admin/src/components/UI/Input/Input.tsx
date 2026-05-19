@@ -21,6 +21,8 @@ const Input = ({
 	inputClassName = '',
 	style,
 	inputStyle,
+	wrapperRef,
+	wrapperProps,
 	...props
 }: InputProps) => {
 	const field = useField({ id, error, disabled, required });
@@ -70,10 +72,12 @@ const Input = ({
 
 	return (
 		<div
+			ref={wrapperRef}
 			className={classNames}
 			data-has-left={!!leftSection}
 			data-has-right={!!finalRightSection}
 			style={style}
+			{...wrapperProps}
 		>
 			{leftSection && (
 				<div className={styles.section} onClick={handleSectionClick}>

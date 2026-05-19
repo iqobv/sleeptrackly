@@ -2,17 +2,18 @@
 
 'use client';
 
-import { Button, Field, Input, Select, Textarea } from '@/components/UI';
-import { ChallengeField, Option } from '@/types';
+import {
+	Button,
+	Field,
+	FormSelect,
+	Input,
+	Select,
+	Textarea,
+} from '@/components/UI';
+import { ChallengeField } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import {
-	Controller,
-	DefaultValues,
-	FieldValues,
-	get,
-	useForm,
-} from 'react-hook-form';
+import { DefaultValues, FieldValues, get, useForm } from 'react-hook-form';
 import { ZodType } from 'zod';
 
 import { QUERY_KEYS } from '@/config';
@@ -108,18 +109,22 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 						/>
 					)}
 					{componentType === 'list' && !!f.options && (
-						<Controller
+						<FormSelect
 							name={f.name}
 							control={control}
-							render={({ field }) => (
-								<Select
-									options={f.options as Option[]}
-									placeholder={f.placeholder}
-									isClearable
-									{...field}
-								/>
-							)}
-						/>
+							placeholder={f.placeholder}
+							displayFormat={(value) =>
+								typeof value === 'string'
+									? f.options?.find((opt) => opt.value === value)?.label || ''
+									: ''
+							}
+						>
+							{f.options.map((opt) => (
+								<Select.Item value={opt.value} key={opt.value}>
+									{opt.label}
+								</Select.Item>
+							))}
+						</FormSelect>
 					)}
 				</Field>
 			))}

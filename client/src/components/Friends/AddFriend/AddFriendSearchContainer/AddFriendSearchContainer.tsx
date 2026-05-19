@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Field, Input } from '@/components/UI';
-import { MdOutlinePersonAdd } from 'react-icons/md';
+import { MdOutlineSearch } from 'react-icons/md';
 import styles from './AddFriendSearchContainer.module.scss';
 
 interface AddFriendSearchContainerProps {
@@ -23,12 +23,20 @@ const AddFriendSearchContainer = ({
 					placeholder="Enter a username"
 					value={search}
 					onChange={onChange}
+					rightSection={
+						<Button
+							className={styles.addButton}
+							onClick={handleSearch}
+							size="sm"
+							isIcon
+							type="button"
+						>
+							<MdOutlineSearch size={18} />
+							<span className={styles.text}>Search</span>
+						</Button>
+					}
 				/>
 			</Field>
-			<Button className={styles.addButton} onClick={handleSearch}>
-				<MdOutlinePersonAdd />
-				Search
-			</Button>
 		</div>
 	);
 };

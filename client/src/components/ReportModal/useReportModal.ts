@@ -1,13 +1,12 @@
 import { sendReport } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
-import { SendReportDto } from '@/dto';
+import { SendReportDto, SendReportFormValues } from '@/dto';
 import { sendReportSchema } from '@/schemas';
-import { Option } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface ReportModalProps {
@@ -19,51 +18,59 @@ export const useReportModal = ({
 	reportedId,
 	reportType,
 }: ReportModalProps) => {
-	const [selectedTitle, setSelectedTitle] = useState<Option | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const {
 		register,
 		control,
 		handleSubmit,
-		setValue,
+		reset,
 		formState: { errors },
-	} = useForm<SendReportDto>({
+	} = useForm<SendReportFormValues, unknown, SendReportDto>({
 		resolver: zodResolver(sendReportSchema),
 		defaultValues: {
 			reportedId: reportedId || '',
 			title: '',
+			customTitle: '',
 			description: '',
 			reportType: reportType || REPORT_TYPES.USER,
 		},
 	});
+
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
+		if (!open) {
+			reset();
+		}
+	};
+
+	const selectedTitle = useWatch({
+		control,
+		name: 'title',
+	});
+
+	const isOtherTitle = selectedTitle === REPORT_TITLES.OTHER;
 
 	const { mutate } = useMutation({
 		mutationFn: (data: SendReportDto) => sendReport(data),
 		mutationKey: QUERY_KEYS.report.send,
 		onSuccess: () => {
 			toast.success('Report sent');
+			handleOpenChange(false);
 		},
-		onError: (error) => {
+		onError: (error: Error) => {
 			toast.error(error.message);
 		},
 	});
 
 	const onSubmit = (data: SendReportDto) => mutate(data);
 
-	useEffect(() => {
-		setValue(
-			'title',
-			selectedTitle?.value === REPORT_TITLES.OTHER
-				? ''
-				: selectedTitle?.label || '',
-		);
-	}, [selectedTitle, setValue]);
-
 	return {
+		isOpen,
+		handleOpenChange,
 		errors,
-		selectedTitle,
 		control,
-		setSelectedTitle,
+		isOtherTitle,
 		handleSubmit,
 		onSubmit,
 		register,

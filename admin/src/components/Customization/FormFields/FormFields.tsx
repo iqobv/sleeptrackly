@@ -1,8 +1,8 @@
 'use client';
 
-import { Checkbox, Field, Input, Select } from '@/components/UI';
+import { Checkbox, Field, FormSelect, Input, Select } from '@/components/UI';
 import type { Field as FieldType } from '@/types';
-import { Controller, FieldValues, useFormContext } from 'react-hook-form';
+import { FieldValues, useFormContext } from 'react-hook-form';
 
 interface FormFieldsProps<T extends FieldValues> {
 	fields: FieldType<T>[];
@@ -32,19 +32,30 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 
 				if (type === 'select') {
 					return (
-						<Controller
-							key={name}
-							control={control}
-							name={pathName}
-							render={({ field }) => (
-								<Select
-									label={label}
-									options={options || []}
-									{...field}
-									value={String(field.value) || undefined}
-								/>
-							)}
-						/>
+						<Field key={key} label={label} error={error}>
+							<FormSelect
+								name={pathName}
+								control={control}
+								displayFormat={(value) => {
+									if (!value) return '';
+									const selectedOptions = options?.filter((option) =>
+										Array.isArray(value)
+											? value.includes(option.value)
+											: option.value === value,
+									);
+									return (
+										selectedOptions?.map((option) => option.label).join(', ') ||
+										''
+									);
+								}}
+							>
+								{options?.map((option) => (
+									<Select.Item key={option.value} value={option.value}>
+										{option.label}
+									</Select.Item>
+								))}
+							</FormSelect>
+						</Field>
 					);
 				}
 
