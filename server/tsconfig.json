@@ -34,6 +34,6 @@
 		"jsx": "react",
 		"types": ["node", "jest", "multer"]
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "generated/**/*"],
 	"exclude": ["node_modules", "dist", "test", "**/*.spec.ts", "**/*.test.ts"]
 }
