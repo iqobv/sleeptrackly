@@ -1,4 +1,5 @@
-import { Prisma } from '@generated/prisma/client';
+import { WeeklySummaryService } from '@api/weekly-summary/weekly-summary.service';
+import { Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
@@ -9,6 +10,7 @@ export class UserSleepStatusService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly rewardService: RewardService,
+		private readonly weeklySummaryService: WeeklySummaryService,
 	) {}
 
 	async getSleepStatus(userId: string) {
@@ -40,8 +42,11 @@ export class UserSleepStatusService {
 		sleepEnd: Date,
 		sleepDuration: number,
 		dateForChart: string,
+		tx?: Prisma.TransactionClient,
 	) {
-		return this.prismaService.sleepEntry.create({
+		const prisma = tx ?? this.prismaService;
+
+		return await prisma.sleepEntry.create({
 			data: {
 				userId,
 				sleepStart: new Date(sleepStart),
@@ -62,21 +67,24 @@ export class UserSleepStatusService {
 			clickedBy,
 		);
 
-		const sleepEntry = await this.createSleepEntry(
-			userId,
-			sleepStart,
-			clickedBy,
-			sleepDuration,
-			dateForChart,
-		);
+		return await this.prismaService.$transaction(async (tx) => {
+			const sleepEntry = await this.createSleepEntry(
+				userId,
+				sleepStart,
+				clickedBy,
+				sleepDuration,
+				dateForChart,
+				tx,
+			);
 
-		const reward = await this.rewardService.rewardForSleep(
-			userId,
-			sleepEntry.id,
-			Math.floor(sleepDuration / 60),
-		);
-
-		return { sleepEntry, isSleeping: false, sleepStart: null, reward };
+			const reward = await this.rewardService.rewardForSleep(
+				userId,
+				sleepEntry.id,
+				Math.floor(sleepDuration / 60),
+				tx,
+			);
+			return { sleepEntry, isSleeping: false, sleepStart: null, reward };
+		});
 	}
 
 	private handleSleepStart(clickedBy: Date) {
@@ -92,18 +100,22 @@ export class UserSleepStatusService {
 		isSleeping: boolean,
 		sleepStart: Date | null,
 	) {
-		return this.prismaService.userSleepStatus.update({
+		return await this.prismaService.userSleepStatus.update({
 			where: { userId },
 			data: { isSleeping, sleepStart },
 		});
 	}
 
-	async updateSleepStatus(userId: string, clickedBy: Date) {
+	async updateSleepStatus(
+		userId: string,
+		clickedBy: Date,
+		dateForChart?: string,
+	) {
 		let userSleepStatus = await this.getSleepStatus(userId);
 		if (!userSleepStatus) throw new NotFoundException('User not found');
 
 		let { isSleeping, sleepStart } = userSleepStatus;
-		let sleepEntry = {};
+		let sleepEntry: SleepEntry | null;
 		let reward: { rewarded: boolean; amount: number } | null = null;
 
 		if (isSleeping && sleepStart) {
@@ -114,10 +126,9 @@ export class UserSleepStatusService {
 			reward = result.reward;
 		} else {
 			const result = this.handleSleepStart(clickedBy);
-			sleepEntry = result.sleepEntry;
+			sleepEntry = null;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;
-			reward = null;
 		}
 
 		userSleepStatus = await this.updateUserSleepStatus(
@@ -125,6 +136,14 @@ export class UserSleepStatusService {
 			isSleeping,
 			sleepStart,
 		);
+
+		if (sleepEntry && dateForChart) {
+			this.weeklySummaryService
+				.generateSummaryForPreviousWeek(userId, dateForChart)
+				.catch((error) => {
+					console.error('Error generating weekly summary:', error);
+				});
+		}
 
 		return { userSleepStatus, sleepEntry, reward };
 	}

@@ -6,3 +6,4 @@ export * from './fetcher.util';
 export * from './firabase.util';
 export * from './formatDateTime.util';
 export * from './formatTime.util';
+export * from './time.util';

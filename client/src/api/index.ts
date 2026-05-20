@@ -12,3 +12,4 @@ export * from './report/index';
 export * from './settings/index';
 export * from './shop/index';
 export * from './user/index';
+export * from './weeklySummary/index';

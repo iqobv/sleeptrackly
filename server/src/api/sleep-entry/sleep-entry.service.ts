@@ -97,7 +97,6 @@ export class SleepEntryService {
 			const selectedKey = sortedWeeks[week];
 			if (!selectedKey) {
 				const now = dayjs();
-				year = now.year();
 				weekNumber = now.isoWeek();
 				const startOfWeek = now.startOf('isoWeek');
 

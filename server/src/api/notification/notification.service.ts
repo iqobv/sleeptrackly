@@ -1,3 +1,4 @@
+import { Prisma } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -16,16 +17,17 @@ export class NotificationService {
 		private readonly fcmService: FcmService,
 	) {}
 
-	async create(dto: CreateNotificationDto) {
-		const { userId, isPush, scheduledAt, ...rest } = dto;
+	async create(dto: CreateNotificationDto, tx?: Prisma.TransactionClient) {
+		const { isPush, scheduledAt, ...rest } = dto;
 
-		const notification = await this.prismaService.notification.create({
+		const prisma = tx ?? this.prismaService;
+
+		const notification = await prisma.notification.create({
 			data: {
 				isPush,
 				isScheduled: !!scheduledAt,
 				scheduledAt,
 				...rest,
-				...(userId && { user: { connect: { id: userId } } }),
 			},
 		});
 

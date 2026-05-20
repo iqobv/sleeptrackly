@@ -1,7 +1,9 @@
+import { NotificationType } from '@generated/prisma/enums';
 import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsBoolean,
 	IsDate,
+	IsEnum,
 	IsOptional,
 	IsString,
 	IsUUID,
@@ -56,4 +58,13 @@ export class CreateNotificationDto {
 	@IsDate()
 	@IsOptional()
 	scheduledAt?: Date;
+
+	@ApiProperty({ example: NotificationType.OTHER, enum: NotificationType })
+	@IsEnum(NotificationType)
+	type: NotificationType;
+
+	@ApiProperty({ example: '68ffff65-5934-41ef-b351-db066542eb06' })
+	@IsUUID('4')
+	@IsOptional()
+	weeklySleepSummaryId?: string;
 }

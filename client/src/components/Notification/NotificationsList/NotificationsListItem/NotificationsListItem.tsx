@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, Divider, Dropdown } from '@/components/UI';
-import { Notification } from '@/types';
+import { Button, Divider, Dropdown, Modal } from '@/components/UI';
+import { WeeklySummary } from '@/components/WeeklySummary';
+import { Notification, NotificationType } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Link from 'next/link';
@@ -47,6 +48,25 @@ const NotificationsListItem = ({
 						</Button>
 					</Dropdown.Item>
 				)}
+				{notification.type === NotificationType.WEEKLY_SUMMARY &&
+					notification.weeklySleepSummaryId && (
+						<Dropdown.Item asChild>
+							<Modal>
+								<Modal.Trigger asChild>
+									<Button
+										fullWidth
+										size="sm"
+										variant="outlined"
+										onClick={() => onClose && onClose()}
+										asChild
+									>
+										View Summary
+									</Button>
+								</Modal.Trigger>
+								<WeeklySummary id={notification.weeklySleepSummaryId} />
+							</Modal>
+						</Dropdown.Item>
+					)}
 				<div className={styles.date}>
 					{dayjs(notification.createdAt).fromNow()}
 				</div>

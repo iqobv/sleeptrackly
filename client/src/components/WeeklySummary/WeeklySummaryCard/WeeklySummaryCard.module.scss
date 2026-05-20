@@ -1,0 +1,33 @@
+.card {
+	background-color: var(--bg-card);
+	border-radius: var(--border-radius);
+	border: 1px solid var(--border-color);
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.label {
+	color: var(--color-main-text);
+	font-size: 1rem;
+}
+
+.value {
+	color: var(--secondary-color);
+	font-size: 1.25rem;
+	font-weight: bold;
+	display: flex;
+	display: flex;
+	flex-direction: column;
+
+	& span {
+		font-size: 0.915rem;
+	}
+}

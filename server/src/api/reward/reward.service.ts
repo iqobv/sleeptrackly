@@ -1,3 +1,4 @@
+import { Prisma } from '@generated/prisma/client';
 import { CoinTransactionType } from '@generated/prisma/enums';
 import { Injectable } from '@nestjs/common';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
@@ -16,6 +17,7 @@ export class RewardService {
 		userId: string,
 		sleepEntryId: string,
 		durationMinutes: number,
+		tx?: Prisma.TransactionClient,
 	) {
 		const DAILY_MAX = 50;
 		const MIN_GAP_HOURS = 12;
@@ -49,13 +51,16 @@ export class RewardService {
 		);
 
 		if (finalRewardAmount > 0) {
-			await this.coinTransactionService.createTransaction({
-				amount: finalRewardAmount,
-				transactionType: CoinTransactionType.SLEEP_REWARD,
-				userId,
-				referenceId: sleepEntryId,
-				meta: rewardAmount,
-			});
+			await this.coinTransactionService.createTransaction(
+				{
+					amount: finalRewardAmount,
+					transactionType: CoinTransactionType.SLEEP_REWARD,
+					userId,
+					referenceId: sleepEntryId,
+					meta: rewardAmount,
+				},
+				tx,
+			);
 
 			return { rewarded: true, amount: finalRewardAmount };
 		}

@@ -1,0 +1,25 @@
+@use '../../styles/mixins' as *;
+
+.cards {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+
+	@include respond-to(md) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.modal {
+	width: 90%;
+
+	@include respond-to(md) {
+		width: 600px;
+	}
+}
+
+.dateRange {
+	text-align: center;
+	font-size: 1.1rem;
+	padding-bottom: 20px;
+}

@@ -29,6 +29,7 @@ model User {
   purchaseHistories       PurchaseHistory[]
   userPrivacySettings     UserPrivacySettings?
   promotionUsages         PromotionUsage[]
+  weeklySummaries         WeeklySleepSummary[]
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")

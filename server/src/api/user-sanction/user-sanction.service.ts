@@ -1,5 +1,5 @@
 import { UserSanction } from '@generated/prisma/client';
-import { UserSanctionType } from '@generated/prisma/enums';
+import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
@@ -104,6 +104,7 @@ export class UserSanctionService {
 			isPush: false,
 			isGlobal: false,
 			showInApp: true,
+			type: NotificationType.SANCTION,
 		});
 
 		return userSanction;
