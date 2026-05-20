@@ -1,0 +1,36 @@
+model WeeklySleepSummary {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+
+  year          Int
+  weekNumber    Int      @map("week_number")
+  weekStartDate DateTime @map("week_start_date")
+  weekEndDate   DateTime @map("week_end_date")
+
+  totalSleepDuration Int @default(0) @map("total_sleep_duration")
+  avgSleepDuration   Int @default(0) @map("avg_sleep_duration")
+
+  minSleepDuration Int       @default(0) @map("min_sleep_duration")
+  minSleepDate     DateTime? @map("min_sleep_date")
+  maxSleepDuration Int       @default(0) @map("max_sleep_duration")
+  maxSleepDate     DateTime? @map("max_sleep_date")
+
+  avgBedtimeOffset  Int @default(0) @map("avg_bedtime_offset")
+  avgWakeTimeOffset Int @default(0) @map("avg_wake_time_offset")
+  daysTracked       Int @default(0) @map("days_tracked")
+  sleepScoreAvg     Int @default(0) @map("sleep_score_avg")
+
+  coinsEarned          Int @default(0) @map("coins_earned")
+  achievementsUnlocked Int @default(0) @map("achievements_unlocked")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  notifications Notification[]
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, year, weekNumber])
+  @@index([userId, year])
+  @@map("weekly_sleep_summary")
+}

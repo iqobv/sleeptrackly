@@ -127,8 +127,14 @@
 			"^.+\\.(t|j)s$": "ts-jest"
 		},
 		"moduleNameMapper": {
-			"^src/(.*)$": "<rootDir>/src/$1",
-			"^uuid$": "uuid"
+			"^@infra/(.*)$": "<rootDir>/src/infra/$1",
+			"^@generated/(.*)$": "<rootDir>/generated/$1",
+			"^@api/(.*)$": "<rootDir>/src/api/$1",
+			"^@libs/(.*)$": "<rootDir>/src/libs/$1",
+			"^@config$": "<rootDir>/src/config/index",
+			"^@config/(.*)$": "<rootDir>/src/config/$1",
+			"^uuid$": "uuid",
+			"^(\\.{1,2}/.*)\\.js$": "$1"
 		},
 		"collectCoverageFrom": [
 			"**/*.(t|j)s"

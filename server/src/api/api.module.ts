@@ -9,6 +9,7 @@ import { ItemModule } from './item/item.module';
 import { NotificationModule } from './notification/notification.module';
 import { ProductModule } from './product/product.module';
 import { ProfileModule } from './profile/profile.module';
+import { PromotionModule } from './promotion/promotion.module';
 import { PurchaseHistoryModule } from './purchase-history/purchase-history.module';
 import { ReportModule } from './report/report.module';
 import { RewardModule } from './reward/reward.module';
@@ -24,7 +25,7 @@ import { UserProviderModule } from './user-provider/user-provider.module';
 import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
-import { PromotionModule } from './promotion/promotion.module';
+import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 
 @Module({
 	imports: [
@@ -54,6 +55,7 @@ import { PromotionModule } from './promotion/promotion.module';
 		ShopModule,
 		UserPrivacySettingsModule,
 		PromotionModule,
+		WeeklySummaryModule,
 	],
 })
 export class ApiModule {}

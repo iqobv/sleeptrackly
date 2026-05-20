@@ -81,4 +81,7 @@ export const QUERY_KEYS = {
 	promotion: {
 		use: ['promotion', 'use'] as const,
 	},
+	weeklySummary: {
+		one: (id: string) => ['weeklySummary', id],
+	} as const,
 } as const;

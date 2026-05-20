@@ -1,4 +1,8 @@
-import { FriendshipStatus, Prisma } from '@generated/prisma/client';
+import {
+	FriendshipStatus,
+	NotificationType,
+	Prisma,
+} from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
@@ -72,6 +76,7 @@ export class FriendshipService {
 			isPush: false,
 			showInApp: true,
 			redirectUrl: `/friends/pending`,
+			type: NotificationType.FRIEND_REQUEST,
 		});
 
 		return newFriendship;
