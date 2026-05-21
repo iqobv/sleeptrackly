@@ -3,19 +3,46 @@ import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { filter, map, Observable, Subject } from 'rxjs';
 import {
 	CreateNotificationDto,
 	NotificationQueryDto,
 	UpdateNotificationDto,
 } from './dto';
+import { SignalPayload, SseSignalEvent } from './interfaces';
 import { getNotificationsForUserSql } from './sql';
 
 @Injectable()
 export class NotificationService {
+	private readonly signalSubject = new Subject<SignalPayload>();
+
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly fcmService: FcmService,
 	) {}
+
+	subscribeToSignals(userId: string): Observable<SseSignalEvent> {
+		return this.signalSubject.asObservable().pipe(
+			filter(
+				(payload: SignalPayload) =>
+					payload.userId === userId || payload.userId === null,
+			),
+			map((payload: SignalPayload) => ({
+				data: {
+					action: 'FETCH_NOTIFICATIONS',
+					timestamp: payload.timestamp,
+				},
+				type: 'notification_signal',
+			})),
+		);
+	}
+
+	emitSignal(userId: string | null) {
+		this.signalSubject.next({
+			userId,
+			timestamp: Date.now(),
+		});
+	}
 
 	async create(dto: CreateNotificationDto, tx?: Prisma.TransactionClient) {
 		const { isPush, scheduledAt, ...rest } = dto;
@@ -30,6 +57,10 @@ export class NotificationService {
 				...rest,
 			},
 		});
+
+		if (!notification.isScheduled && !notification.isPush) {
+			this.emitSignal(notification.userId);
+		}
 
 		return notification;
 	}

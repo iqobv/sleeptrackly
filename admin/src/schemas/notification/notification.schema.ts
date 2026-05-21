@@ -1,10 +1,12 @@
+import { NotificationType } from '@/types';
 import z from 'zod';
 
 export const createNotificationSchema = z.object({
+	title: z.string().min(5, 'Title must be at least 5 characters long'),
+	body: z.string().min(10, 'Body must be at least 10 characters long'),
+	type: z.enum(NotificationType, { error: 'Invalid notification type' }),
 	isGlobal: z.boolean(),
 	showInApp: z.boolean(),
 	isEmail: z.boolean().optional(),
-	title: z.string().min(5, 'Title is required'),
-	body: z.string().min(10, 'Body is required'),
 	redirectUrl: z.string().optional(),
 });

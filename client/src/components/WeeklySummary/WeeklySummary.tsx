@@ -1,44 +1,19 @@
 'use client';
 
-import { getWeeklySummary } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useQuery } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { Modal } from '../UI';
 import styles from './WeeklySummary.module.scss';
-import WeeklySummaryCard from './WeeklySummaryCard/WeeklySummaryCard';
-import { WEEKLY_SUMMARY_CARDS } from './weeklySummaryCards';
-import WeeklySummaryLoader from './WeeklySummaryLoader';
+import WeeklySummaryBody from './WeeklySummaryBody';
 
 interface WeeklySummaryProps {
 	id: string;
 }
 
 const WeeklySummary = ({ id }: WeeklySummaryProps) => {
-	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.weeklySummary.one(id),
-		queryFn: () => getWeeklySummary(id),
-		enabled: !!id,
-	});
-
 	return (
 		<Modal.Content className={styles.modal}>
 			<Modal.Header>Weekly Summary</Modal.Header>
 			<Modal.Body>
-				{isLoading && <WeeklySummaryLoader />}
-				{data && (
-					<>
-						<p className={styles.dateRange}>
-							{dayjs(data.weekStartDate).format('MMMM D, YYYY')} -{' '}
-							{dayjs(data.weekEndDate).format('MMMM D, YYYY')}
-						</p>
-						<div className={styles.cards}>
-							{WEEKLY_SUMMARY_CARDS(data).map((card) => (
-								<WeeklySummaryCard key={card.label} {...card} />
-							))}
-						</div>
-					</>
-				)}
+				<WeeklySummaryBody id={id} />
 			</Modal.Body>
 		</Modal.Content>
 	);

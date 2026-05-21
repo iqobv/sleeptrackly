@@ -8,6 +8,7 @@ import {
 	Patch,
 	Post,
 	Query,
+	Sse,
 } from '@nestjs/common';
 import {
 	ApiNotFoundResponse,
@@ -39,6 +40,17 @@ export class NotificationController {
 		@Query() query: NotificationQueryDto,
 	) {
 		return await this.notificationService.getAllForUser(userId, query);
+	}
+
+	@Auth()
+	@ApiOperation({
+		summary:
+			'Subscribe to real-time notification signals for the logged-in user',
+	})
+	@ApiOkResponse({ type: [NotificationDto] })
+	@Sse('me/stream')
+	streamSignals(@Authorized('id') userId: string) {
+		return this.notificationService.subscribeToSignals(userId);
 	}
 
 	@Auth()

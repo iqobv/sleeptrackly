@@ -5,13 +5,15 @@ import { NotificationPaginated } from '@/types';
 import { UseQueryResult } from '@tanstack/react-query';
 import styles from './NotificationsList.module.scss';
 import NotificationsListItem from './NotificationsListItem/NotificationsListItem';
+import { useNotificationStream } from './useNotificationListStream.hook';
 
 interface NotificationsListProps {
 	queryNotifications: UseQueryResult<NotificationPaginated, Error>;
 }
 
 const NotificationsList = ({ queryNotifications }: NotificationsListProps) => {
-	const { data, isLoading } = queryNotifications;
+	const { data, isLoading, refetch } = queryNotifications;
+	useNotificationStream(refetch);
 
 	return (
 		<Dropdown.Content align="end" sideOffset={10} className={styles.dropdown}>
