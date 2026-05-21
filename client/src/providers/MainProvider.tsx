@@ -3,6 +3,7 @@
 import { User } from '@/types';
 import { PropsWithChildren } from 'react';
 import AuthProvider from './AuthProvider';
+import NuqsProvider from './NuqsProvider';
 import { TanstackQueryProvider } from './TanstackQueryProvider';
 import ThemeProvider from './ThemeProvider';
 import ToastProvider from './ToastProvider';
@@ -19,7 +20,9 @@ export default function MainProvider({
 		<AuthProvider user={user}>
 			<TanstackQueryProvider>
 				<ThemeProvider>
-					<ToastProvider>{children}</ToastProvider>
+					<ToastProvider>
+						<NuqsProvider>{children}</NuqsProvider>
+					</ToastProvider>
 				</ThemeProvider>
 			</TanstackQueryProvider>
 		</AuthProvider>

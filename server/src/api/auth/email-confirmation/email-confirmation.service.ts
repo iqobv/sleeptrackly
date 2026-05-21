@@ -55,13 +55,18 @@ export class EmailConfirmationService {
 	async sendVerificationEmail(dto: ResendEmailDto) {
 		const { email } = dto;
 
+		const message =
+			'If a user with this email exists, a verification email has been sent';
+
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) return;
+		if (!user) return { message };
 
 		const token = await this.generateVerificationToken(user.id);
 
 		await this.mailService.sendVerificationEmail(user.email, token);
+
+		return { message };
 	}
 
 	async generateVerificationToken(

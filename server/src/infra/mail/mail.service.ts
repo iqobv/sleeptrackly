@@ -4,21 +4,28 @@ import { ConfigService } from '@nestjs/config';
 import { render } from '@react-email/components';
 import Mail from 'nodemailer/lib/mailer';
 import { SendEmailDto } from './dto';
-import { ConfirmationTemplate, ResetPasswordTemplate } from './templates';
+import {
+	ConfirmationTemplate,
+	ResetPasswordTemplate,
+	RestoreAccountTemplate,
+} from './templates';
 
 @Injectable()
 export class MailService {
+	private readonly domain: string;
 	private readonly transport: ReturnType<typeof getMailerConfig>;
 
 	constructor(private readonly configService: ConfigService) {
 		this.transport = getMailerConfig(configService);
+		this.domain = this.configService.getOrThrow<string>('CLIENT_URL');
 	}
 
 	async sendVerificationEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
-		const html = await render(ConfirmationTemplate({ domain, token }));
+		const html = await render(
+			ConfirmationTemplate({ domain: this.domain, token }),
+		);
 
-		return this.sendEmail({
+		return await this.sendEmail({
 			recipients: [email],
 			subject: 'Confirm your email',
 			html,
@@ -26,12 +33,25 @@ export class MailService {
 	}
 
 	async sendResetPasswordEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
-		const html = await render(ResetPasswordTemplate({ domain, token }));
+		const html = await render(
+			ResetPasswordTemplate({ domain: this.domain, token }),
+		);
 
-		return this.sendEmail({
+		return await this.sendEmail({
 			recipients: [email],
 			subject: 'Reset your password',
+			html,
+		});
+	}
+
+	async sendRestoreAccountEmail(email: string, token: string) {
+		const html = await render(
+			RestoreAccountTemplate({ domain: this.domain, token }),
+		);
+
+		return await this.sendEmail({
+			recipients: [email],
+			subject: 'Restore your account',
 			html,
 		});
 	}

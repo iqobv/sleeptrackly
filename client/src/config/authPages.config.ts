@@ -4,4 +4,5 @@ export const AUTH_PAGES = {
 	LOGOUT: '/logout',
 	EMAIL_CONFIRMATION: '/email-confirmation',
 	RESET_PASSWORD: '/reset-password',
+	RESTORE_ACCOUNT: '/restore-account',
 } as const;
