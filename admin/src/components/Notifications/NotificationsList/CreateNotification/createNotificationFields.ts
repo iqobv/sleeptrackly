@@ -19,6 +19,14 @@ export const FIELDS: Field<CreateNotificationDto>[] = [
 		required: true,
 	},
 	{
+		name: 'type',
+		label: 'Notification Type',
+		placeholder: 'Select notification type',
+		autoComplete: 'off',
+		type: 'select',
+		required: true,
+	},
+	{
 		name: 'redirectUrl',
 		label: 'Redirect URL',
 		placeholder: 'Enter redirect URL (optional)',

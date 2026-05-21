@@ -91,7 +91,11 @@ export class UserSanctionService {
 		}
 
 		if (userSanction.type === UserSanctionType.AVATAR_CHANGE_BAN) {
-			await this.userAvatarService.deleteAvatar(targetUserId);
+			const userAvatar = await this.prismaService.userAvatar.findUnique({
+				where: { userId: targetUserId },
+			});
+			if (userAvatar && !userAvatar.isDefault)
+				await this.userAvatarService.deleteAvatar(targetUserId);
 		}
 
 		await this.notificationService.create({
