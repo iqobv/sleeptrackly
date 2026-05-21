@@ -136,9 +136,15 @@ export class AuthController {
 	@Throttle({ long: { limit: 5, ttl: 60000 } })
 	@ApiOkResponse()
 	@Auth()
-	@HttpCode(HttpStatus.NO_CONTENT)
 	@Delete('delete')
-	async deleteAccount(@Authorized('id') userId: string) {
-		await this.userService.remove(userId);
+	async deleteAccount(
+		@Authorized('id') userId: string,
+		@Res({ passthrough: true }) res: Response,
+	) {
+		const result = await this.userService.remove(userId);
+
+		clearAuthCookies(res, this.configService);
+
+		return result;
 	}
 }

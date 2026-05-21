@@ -77,7 +77,7 @@ export class ChallengeService {
 
 	async findById(id: string, userId: string) {
 		const challenge = await this.prismaService.challenge.findUnique({
-			where: { id, userId },
+			where: { id, userId, deletedAt: null },
 			include: { tasks: true },
 		});
 
@@ -87,7 +87,9 @@ export class ChallengeService {
 	}
 
 	async findAll(userId: string) {
-		return this.prismaService.challenge.findMany({ where: { userId } });
+		return await this.prismaService.challenge.findMany({
+			where: { userId, deletedAt: null },
+		});
 	}
 
 	async update(id: string, userId: string, dto: UpdateChallengeDto) {
@@ -95,7 +97,7 @@ export class ChallengeService {
 
 		const challenge = await this.findById(id, userId);
 
-		return this.prismaService.challenge.update({
+		return await this.prismaService.challenge.update({
 			where: { id: challenge.id, userId },
 			data: { title, description, isStarted, isCompleted },
 		});
@@ -143,10 +145,11 @@ export class ChallengeService {
 	async remove(id: string, userId: string) {
 		const challenge = await this.findById(id, userId);
 
-		await this.prismaService.challenge.delete({
+		await this.prismaService.challenge.update({
 			where: { id: challenge.id, userId },
+			data: { deletedAt: new Date() },
 		});
 
-		return true;
+		return { message: 'Challenge removed successfully' };
 	}
 }

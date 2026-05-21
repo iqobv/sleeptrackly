@@ -11,12 +11,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ZodType } from 'zod';
 import styles from './AuthForm.module.scss';
+import AuthFormRestore from './AuthFormRestore';
 import CheckboxField from './CheckboxField';
 
 interface AuthFormProps<T extends FieldValues, R> {
@@ -40,6 +41,8 @@ const AuthForm = <T extends FieldValues, R>({
 	defaultValues,
 	isRegister = false,
 }: AuthFormProps<T, R>) => {
+	const [isDeletedError, setIsDeletedError] = useState(false);
+
 	const { setUser } = useAuth();
 	const router = useRouter();
 
@@ -52,6 +55,7 @@ const AuthForm = <T extends FieldValues, R>({
 		setError,
 		resetField,
 		formState: { errors },
+		watch,
 	} = useForm<T>({
 		resolver,
 		defaultValues,
@@ -76,6 +80,9 @@ const AuthForm = <T extends FieldValues, R>({
 			}
 		},
 		onError: (error) => {
+			if (error.message === 'Account is deleted. You can still restore it.') {
+				setIsDeletedError(true);
+			}
 			setError('root', { message: error.message });
 			resetField('password' as Path<T>);
 		},
@@ -83,12 +90,17 @@ const AuthForm = <T extends FieldValues, R>({
 
 	const onSubmit = (data: T) => mutate(data);
 
+	const email = watch('email' as Path<T>);
+
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			{errors['root'] && (
 				<div className={styles.error}>
-					<MdErrorOutline />
-					<p>{errors['root']?.message as string}</p>
+					<div className={styles.errorContent}>
+						<MdErrorOutline />
+						<p>{errors['root']?.message as string}</p>
+					</div>
+					{isDeletedError && email && <AuthFormRestore email={email} />}
 				</div>
 			)}
 			{fields.map(({ name, label, type, icon, ...f }) => (

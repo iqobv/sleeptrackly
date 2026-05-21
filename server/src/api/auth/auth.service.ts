@@ -68,6 +68,8 @@ export class AuthService {
 		if (!user.emailVerified)
 			throw new UnauthorizedException('Email not verified.');
 
+		this.validateAccountStatus(user);
+
 		return await this.generateAndSaveTokens(user, clientInfo);
 	}
 
@@ -134,6 +136,7 @@ export class AuthService {
 			);
 
 			if (providerUser) {
+				this.validateAccountStatus(providerUser.user);
 				return await this.generateAndSaveTokens(
 					providerUser.user,
 					clientInfo,
@@ -158,6 +161,8 @@ export class AuthService {
 				);
 				if (avatarUrl && user)
 					await this.userAvatarService.uploadProviderAvatar(avatarUrl, user.id);
+			} else {
+				this.validateAccountStatus(user);
 			}
 
 			await this.userProviderService.createProvider(
@@ -231,6 +236,24 @@ export class AuthService {
 		);
 
 		return { accessToken, refreshToken };
+	}
+
+	private validateAccountStatus(user: User): void {
+		if (!user.deletedAt) {
+			return;
+		}
+
+		const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
+		const deletionTime = user.deletedAt.getTime();
+		const isRecoverable = Date.now() - deletionTime < fourteenDaysInMs;
+
+		if (isRecoverable) {
+			throw new ForbiddenException(
+				'Account is deleted. You can still restore it.',
+			);
+		}
+
+		throw new ForbiddenException('Account is deleted.');
 	}
 
 	async generateAndSaveTokens(

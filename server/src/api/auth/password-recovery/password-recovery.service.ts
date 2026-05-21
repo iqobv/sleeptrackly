@@ -27,13 +27,16 @@ export class PasswordRecoveryService {
 	async sendEmailForResetPassword(email: string) {
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) throw new NotFoundException('User not found');
+		const message =
+			'If a user with this email exists, a password reset email has been sent';
+
+		if (!user) return { message };
 
 		const token = await this.generateVerificationToken(user.id);
 
 		await this.mailService.sendResetPasswordEmail(user.email, token);
 
-		return true;
+		return { message };
 	}
 
 	async resetPassword(dto: ResetPasswordDto, clientInfo: ClientInfoDto) {

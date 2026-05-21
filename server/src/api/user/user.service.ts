@@ -88,7 +88,7 @@ export class UserService {
 
 	async findById(id: string, full: boolean = false) {
 		const user = await this.prismaService.user.findUnique({
-			where: { id },
+			where: { id, deletedAt: null },
 			select: {
 				...userSelect,
 				...(full && { password: true }),
@@ -164,6 +164,8 @@ export class UserService {
 			if (newPassword === oldPassword)
 				throw new ConflictException('Same password');
 
+		if (user.deletedAt) throw new ForbiddenException('Account is deleted');
+
 		const newHashedPassword = newPassword
 			? await hashPassword(newPassword)
 			: null;
@@ -230,9 +232,18 @@ export class UserService {
 	async remove(id: string) {
 		const user = await this.findById(id);
 
-		await this.prismaService.user.delete({ where: { id: user.id } });
+		await this.prismaService.user.update({
+			where: { id: user.id },
+			data: {
+				deletedAt: new Date(),
+			},
+		});
 
-		return true;
+		await this.prismaService.session.deleteMany({
+			where: { userId: user.id },
+		});
+
+		return { message: 'User removed successfully' };
 	}
 
 	async removeUnverifiedUsersOlderThan(milliseconds: number) {

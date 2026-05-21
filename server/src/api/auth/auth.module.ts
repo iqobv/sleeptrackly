@@ -11,6 +11,7 @@ import { PasswordRecoveryModule } from './password-recovery/password-recovery.mo
 import { QrLoginModule } from './qr-login/qr-login.module';
 import { SessionModule } from './session/session.module';
 import { GoogleStrategy, JwtStrategy } from './strategies';
+import { RestoreModule } from './restore/restore.module';
 
 @Module({
 	imports: [
@@ -23,6 +24,7 @@ import { GoogleStrategy, JwtStrategy } from './strategies';
 		SessionModule,
 		QrLoginModule,
 		OauthModule,
+		RestoreModule,
 	],
 	exports: [AuthService],
 	controllers: [AuthController],
