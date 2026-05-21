@@ -1,5 +1,6 @@
 export * from './api/index';
 export * from './customization/index';
+export * from './defaultFields.types';
 export * from './friend/index';
 export * from './notification/index';
 export * from './profile/index';
