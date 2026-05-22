@@ -9,6 +9,6 @@ export class SleepDashboardDto {
 	@ApiProperty({ type: SleepDayDto, isArray: true })
 	days: SleepDayDto[];
 
-	@ApiProperty({ example: 1 })
-	totalWeeks: number;
+	@ApiProperty({ example: true })
+	hasMore: boolean;
 }

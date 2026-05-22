@@ -18,18 +18,11 @@ const DashboardWeekStats = ({ data }: DashboardWeekStatsProps) => {
 	const transform = useTransformSecondsToHours();
 
 	return (
-		<div className={styles['dashboard-week-stats']}>
+		<div className={styles.weekStats}>
 			{DASHBOARD_WEEK_STATS_CARDS(data).map((card) => (
-				<DashboardCard
-					key={card.title}
-					className={styles['dashboard-week-stats__card']}
-				>
-					<h3 className={styles['dashboard-week-stats__card-title']}>
-						{card.title}
-					</h3>
-					<p className={styles['dashboard-week-stats__card-value']}>
-						{transform(card.value)}
-					</p>
+				<DashboardCard key={card.title} className={styles.card}>
+					<h3 className={styles.title}>{card.title}</h3>
+					<p className={styles.value}>{transform(card.value)}</p>
 				</DashboardCard>
 			))}
 		</div>

@@ -23,9 +23,9 @@ const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {
 	const hasData = days.some((day) => day.data);
 
 	return (
-		<div className={styles['sleep-sessions']}>
+		<div>
 			<SectionHeader title="Sleep Sessions" titleComponent="h2" />
-			<div className={styles['sleep-sessions__list']}>
+			<div className={styles.list}>
 				{!hasData && <p>No sleep sessions for the selected period.</p>}
 				{days.map((day) => {
 					if (!day.data) return null;
@@ -36,9 +36,9 @@ const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {
 					const rangeLabel = `${startTime} - ${endTime}`;
 
 					return (
-						<DashboardCard key={day.day} className={styles['sleep-session']}>
-							<div className={styles['sleep-session__info']}>
-								<p className={styles['sleep-session__date']}>
+						<DashboardCard key={day.day} className={styles.sleepSession}>
+							<div className={styles.info}>
+								<p className={styles.date}>
 									{dateFormatter.format(new Date(day.day))}
 								</p>
 								<div>{rangeLabel}</div>

@@ -1,34 +1,32 @@
 @use '../../../../styles/mixins' as *;
 
-.sleep-sessions {
-	&__list {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--dashboard-gap);
+.list {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--dashboard-gap);
 
-		@include respond-to(md) {
-			grid-template-columns: repeat(2, 1fr);
+	@include respond-to(md) {
+		grid-template-columns: repeat(2, 1fr);
 
-			& > *:last-child {
-				grid-column: 1 / -1;
-			}
+		& > *:last-child:not(:nth-child(even)) {
+			grid-column: 1 / -1;
 		}
 	}
 }
 
-.sleep-session {
+.sleepSession {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	gap: var(--dashboard-gap);
 
-	&__date {
+	.date {
 		font-size: 1.1rem;
 		font-weight: 600;
 		color: var(--dashboard-sleep-session-date-color);
 	}
 
-	&__info {
+	.info {
 		color: var(--dashboard-sleep-session-times-color);
 		display: flex;
 		flex-direction: column;

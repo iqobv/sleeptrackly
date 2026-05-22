@@ -1,5 +1,6 @@
 export * from './auth/index';
 export * from './challenge/index';
+export * from './dashboard/index';
 export * from './inventory/index';
 export * from './promotion/index';
 export * from './query/index';

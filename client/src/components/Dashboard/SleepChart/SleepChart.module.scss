@@ -1,12 +1,10 @@
-.sleep-chart {
-	&__wrapper {
-		height: 400px;
-		width: 100%;
-		outline: none !important;
-		padding: 30px 0;
-	}
+.wrapper {
+	height: 400px;
+	width: 100%;
+	outline: none !important;
+	padding: 30px 0;
+}
 
-	&__container {
-		outline: none !important;
-	}
+.container {
+	outline: none !important;
 }

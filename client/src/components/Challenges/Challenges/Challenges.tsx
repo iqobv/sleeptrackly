@@ -20,7 +20,7 @@ const Challenges = () => {
 	});
 
 	return (
-		<div className={styles['challenges']}>
+		<div className={styles.challenges}>
 			{isLoading && <Loader />}
 			{!isLoading && challenges && (
 				<>

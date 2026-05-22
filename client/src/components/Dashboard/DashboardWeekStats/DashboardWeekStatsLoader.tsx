@@ -11,7 +11,7 @@ const cards = Array.from({ length: 2 }).map((_, i) => (
 ));
 
 const DashboardWeekStatsLoader = () => {
-	return <div className={styles['dashboard-week-stats']}>{cards}</div>;
+	return <div className={styles.weekStats}>{cards}</div>;
 };
 
 export default DashboardWeekStatsLoader;

@@ -28,8 +28,7 @@ export const QUERY_KEYS = {
 			['markAsCompleted', taskId] as const,
 	},
 	dashboard: {
-		all: (userId: string, selectedWeek: number) =>
-			['dashboard', userId, selectedWeek] as const,
+		all: (userId: string, date: string) => ['dashboard', userId, date] as const,
 	},
 	friends: {
 		all: (userId: string) => ['friends', userId] as const,
