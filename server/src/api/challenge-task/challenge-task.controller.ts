@@ -1,4 +1,4 @@
-import { Authorized } from '@libs/decorators';
+import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Param, Patch } from '@nestjs/common';
 import {
 	ApiNotFoundResponse,
@@ -14,6 +14,7 @@ import {
 } from './dto';
 
 @ApiTags('Challenge Task')
+@Auth()
 @Controller('challenge-tasks')
 export class ChallengeTaskController {
 	constructor(private readonly challengeTaskService: ChallengeTaskService) {}

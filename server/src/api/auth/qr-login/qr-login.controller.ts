@@ -2,7 +2,7 @@ import type { User } from '@generated/prisma/client';
 import { Auth, Authorized, ClientInfo } from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
 import { setAuthCookies } from '@libs/utils';
-import { Body, Controller, Get, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, Sse } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import { QrLoginService } from './qr-login.service';
@@ -17,6 +17,11 @@ export class QrLoginController {
 	@Get('initiate')
 	async initiate() {
 		return await this.qrLoginService.initiateQrLogin();
+	}
+
+	@Sse('stream')
+	streamQrStatus(@Query('qrId') qrId: string) {
+		return this.qrLoginService.subscribeToQrStatus(qrId);
 	}
 
 	@Post('approve')

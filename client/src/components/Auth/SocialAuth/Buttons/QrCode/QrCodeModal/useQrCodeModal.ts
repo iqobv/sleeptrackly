@@ -2,11 +2,14 @@
 
 import { getQrStatus, initiateQrCode } from '@/api';
 import { QUERY_KEYS } from '@/config';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
-const POLLING_INTERVAL_MS = 3000;
+interface QrSseSignalPayload {
+	status: 'expired' | 'approved';
+}
 
 export const useQrCodeModal = () => {
 	const router = useRouter();
@@ -18,30 +21,67 @@ export const useQrCodeModal = () => {
 		gcTime: 0,
 	});
 
+	const { mutate } = useMutation({
+		mutationFn: (qrId: string) => getQrStatus(qrId),
+		onSuccess: (statusData) => {
+			if (statusData.status === 'success') {
+				router.refresh();
+			}
+
+			if (statusData.status === 'expired') {
+				refetch();
+			}
+		},
+		onError: (e) => {
+			toast.error(
+				e.message || 'An error occurred while checking QR code status',
+			);
+		},
+	});
+
 	const qrId = data?.qrId;
+	const expiresAt = data?.expiresAt;
 
 	useEffect(() => {
-		if (!qrId) return;
+		if (!qrId || !expiresAt) return;
 
-		const intervalId = setInterval(async () => {
-			try {
-				const statusData = await getQrStatus(qrId);
+		const timeUntilExpiration = new Date(expiresAt).getTime() - Date.now();
 
-				if (statusData.status === 'success') {
-					clearInterval(intervalId);
-					router.refresh();
-				}
+		const expirationTimer = setTimeout(
+			() => {
+				refetch();
+			},
+			Math.max(0, timeUntilExpiration),
+		);
 
-				if (statusData.status === 'expired') {
+		const eventSource = new EventSource(
+			`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/qr/stream?qrId=${qrId}`,
+		);
+
+		eventSource.addEventListener(
+			'qr_status_signal',
+			(event: MessageEvent<string>) => {
+				const payload = JSON.parse(event.data) as QrSseSignalPayload;
+
+				if (payload.status === 'expired') {
 					refetch();
 				}
-			} catch (e) {
-				console.error('Polling error:', e);
-			}
-		}, POLLING_INTERVAL_MS);
 
-		return () => clearInterval(intervalId);
-	}, [qrId, router, refetch]);
+				if (payload.status === 'approved') {
+					mutate(qrId);
+				}
+			},
+		);
+
+		eventSource.addEventListener('error', () => {
+			eventSource.close();
+		});
+
+		return () => {
+			clearTimeout(expirationTimer);
+			eventSource.close();
+		};
+	}, [qrId, expiresAt, mutate, refetch]);
 
 	return {
 		qrId,
