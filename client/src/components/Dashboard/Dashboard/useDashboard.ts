@@ -2,19 +2,20 @@
 
 import { getStatisticsByWeekForUser } from '@/api';
 import { QUERY_KEYS } from '@/config';
-import { useAuth, useWeekPagination } from '@/hooks';
+import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
+import { useWeekPagination } from '../WeekPagination/useWeekPagination.hook';
 
 export const useDashboard = () => {
 	const [showSkeleton, setShowSkeleton] = useState(true);
 
 	const { isAuthenticated, user } = useAuth();
-	const { selectedWeek } = useWeekPagination();
+	const { date } = useWeekPagination();
 
 	const { data, isLoading, isFetching } = useQuery({
-		queryKey: QUERY_KEYS.dashboard.all(user?.id || '', selectedWeek),
-		queryFn: () => getStatisticsByWeekForUser(selectedWeek),
+		queryKey: QUERY_KEYS.dashboard.all(user?.id || '', date),
+		queryFn: () => getStatisticsByWeekForUser({ date }),
 		enabled: !!isAuthenticated,
 	});
 

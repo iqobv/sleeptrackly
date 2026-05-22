@@ -13,18 +13,15 @@ const Dashboard = () => {
 	const { showSkeleton, data } = useDashboard();
 
 	return (
-		<div className={styles['dashboard']}>
-			<SectionHeader
-				title="Weekly Rest"
-				containerClassName={styles['dashboard__header']}
-			/>
+		<div className={styles.dashboard}>
+			<SectionHeader title="Weekly Rest" containerClassName={styles.header} />
 			{showSkeleton ? (
 				<DashboardLoader />
 			) : (
 				data && (
-					<div className={`${styles['dashboard__wrapper']} fade-in`}>
-						<WeekPagination totalWeeks={data?.totalWeeks} days={data?.days} />
-						<div className={styles['dashboard__content']}>
+					<div className={`${styles.wrapper} fade-in`}>
+						<WeekPagination hasMore={data?.hasMore} days={data?.days} />
+						<div className={styles.content}>
 							<DashboardWeekStats data={data} />
 							<SleepChart data={data.days} />
 						</div>

@@ -6,9 +6,9 @@ import DashboardSleepSessionsLoader from './DashboardSleepSessions/DashboardSlee
 
 const DashboardLoader = () => {
 	return (
-		<div className={styles['dashboard__wrapper']}>
+		<div className={styles.wrapper}>
 			<WeekPaginationLoader />
-			<div className={styles['dashboard__content']}>
+			<div className={styles.content}>
 				<DashboardWeekStatsLoader />
 				<SleepChartLoader />
 			</div>

@@ -4,5 +4,5 @@ import { Statistics } from './statistics.types';
 export interface Dashboard {
 	statistics: Statistics;
 	days: DashboardDay[];
-	totalWeeks: number;
+	hasMore: boolean;
 }

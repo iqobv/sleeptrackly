@@ -5,7 +5,7 @@ import styles from './DashboardLoader.module.scss';
 
 const DashboardLoader = () => {
 	return (
-		<div className={styles['dashboard-loader']}>
+		<div className={styles.dashboardLoader}>
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={500} />

@@ -20,7 +20,7 @@ const ChallengesList = ({ data }: ChallengesListProps) => {
 					)}
 					isHorizontal
 					gap={20}
-					className={styles['challenges-list']}
+					className={styles.list}
 				/>
 			)}
 		</>

@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 
 import { SectionHeader } from '@/components/UI';
 import ChallengesList from '../ChallengesList/ChallengesList';
-import styles from './ActiveChallenges.module.scss';
 
 interface ActiveChallengesProps {
 	data: Challenge[];
@@ -21,7 +20,7 @@ const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
 	if (activeChallenges.length === 0) return null;
 
 	return (
-		<div className={styles['active-challenges']}>
+		<div>
 			<SectionHeader
 				title="Active Challenges"
 				titleComponent="h2"

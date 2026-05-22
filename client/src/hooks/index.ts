@@ -5,4 +5,3 @@ export * from './useFormatLocaleTime.hook';
 export * from './usePagination.hook';
 export * from './useTimeRange.hook';
 export * from './useTransformSecondsToHours.hook';
-export * from './useWeekPagination.hook';

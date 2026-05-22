@@ -1,6 +1,6 @@
 @use '../../../styles/mixins' as *;
 
-.dashboard-week-stats {
+.weekStats {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	gap: var(--dashboard-gap);
@@ -8,27 +8,27 @@
 	@include respond-to(md) {
 		grid-template-columns: 1fr;
 	}
+}
 
-	&__card {
-		display: flex;
-		flex-direction: column;
-		gap: var(--dashboard-gap);
-		min-height: 110px;
+.card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--dashboard-gap);
+	min-height: 110px;
 
-		@include respond-to(md) {
-			gap: 20px;
-		}
+	@include respond-to(md) {
+		gap: 20px;
+	}
 
-		&-title {
-			text-transform: uppercase;
-			font-size: 0.8rem;
-			letter-spacing: 0.1rem;
-			font-weight: 500;
-		}
+	.title {
+		text-transform: uppercase;
+		font-size: 0.8rem;
+		letter-spacing: 0.1rem;
+		font-weight: 500;
+	}
 
-		&-value {
-			font-size: 1.75rem;
-			font-weight: 600;
-		}
+	.value {
+		font-size: 1.75rem;
+		font-weight: 600;
 	}
 }

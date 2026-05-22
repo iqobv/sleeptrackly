@@ -1,13 +1,14 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
 import { QueryDto, SleepEntryDto } from './dto';
-import { GroupedByWeek } from './interfaces';
 
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
+
+const FORMAT = 'YYYY-MM-DD';
 
 @Injectable()
 export class SleepEntryService {
@@ -17,50 +18,18 @@ export class SleepEntryService {
 		return await this.prismaService.sleepEntry.findMany({ where: { userId } });
 	}
 
-	private getGroupedByWeek(sleepEntries: SleepEntryDto[]) {
-		return sleepEntries.reduce((acc, entry) => {
-			const date = dayjs(entry.dateForChart, 'YYYY-MM-DD');
-			const key = `${date.year()}-W${date.isoWeek()}`;
-			if (!acc[key]) acc[key] = [];
-			acc[key].push(entry);
-			return acc;
-		}, {} as GroupedByWeek);
-	}
-
-	private getSortedWeeks(groupedByWeek: GroupedByWeek) {
-		return Object.keys(groupedByWeek).sort((a, b) => {
-			const [yearA, weekA] = a.split('-W').map(Number);
-			const [yearB, weekB] = b.split('-W').map(Number);
-			return (
-				dayjs().isoWeek(weekB).year(yearB).startOf('isoWeek').valueOf() -
-				dayjs().isoWeek(weekA).year(yearA).startOf('isoWeek').valueOf()
-			);
-		});
-	}
-
-	private getCurrentWeekKey() {
-		const now = dayjs();
-		return `${now.year()}-W${now.isoWeek()}`;
-	}
-
 	private buildDaysForWeek(
-		year: number,
-		weekNumber: number,
+		startOfWeek: Dayjs,
 		entries: SleepEntryDto[],
 	): { day: string; data: SleepEntryDto | null }[] {
-		const startOfWeek = dayjs()
-			.year(year)
-			.isoWeek(weekNumber)
-			.startOf('isoWeek');
 		return Array.from({ length: 7 }, (_, i) => {
-			const day = startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD');
+			const day = startOfWeek.add(i, 'day').format(FORMAT);
 			const data = entries.find((entry) => entry.dateForChart === day) || null;
 			return { day, data };
 		});
 	}
 
 	private calculateStatistics(
-		weekNumber: number,
 		days: { day: string; data: SleepEntryDto | null }[],
 	) {
 		const totalSleepDuration = days.reduce(
@@ -70,7 +39,6 @@ export class SleepEntryService {
 		const daysWithData = days.filter((d) => d.data).length;
 
 		return {
-			weekNumber,
 			totalSleepDuration,
 			averageSleepDurationByData: daysWithData
 				? totalSleepDuration / daysWithData
@@ -80,56 +48,39 @@ export class SleepEntryService {
 	}
 
 	async getSleepsEntryForWeek(userId: string, query: QueryDto) {
-		const { week = 0 } = query;
-		const sleepEntries = await this.findByUserId(userId);
+		const { date } = query;
 
-		const groupedByWeek = this.getGroupedByWeek(sleepEntries);
-		const sortedWeeks = this.getSortedWeeks(groupedByWeek);
+		const startOfWeek = dayjs(date, FORMAT).startOf('isoWeek');
+		const endOfWeek = dayjs(date, FORMAT).endOf('isoWeek');
+		const startDate = startOfWeek.format(FORMAT);
+		const endDate = endOfWeek.format(FORMAT);
 
-		let year: number, weekNumber: number, entriesForWeek: SleepEntryDto[];
+		const sleepEntries = await this.prismaService.sleepEntry.findMany({
+			where: {
+				userId,
+				dateForChart: {
+					gte: startDate,
+					lte: endDate,
+				},
+			},
+		});
 
-		if (week === 0) {
-			const now = dayjs();
-			year = now.year();
-			weekNumber = now.isoWeek();
-			entriesForWeek = groupedByWeek[this.getCurrentWeekKey()] || [];
-		} else {
-			const selectedKey = sortedWeeks[week];
-			if (!selectedKey) {
-				const now = dayjs();
-				weekNumber = now.isoWeek();
-				const startOfWeek = now.startOf('isoWeek');
+		const days = this.buildDaysForWeek(startOfWeek, sleepEntries);
+		const statistics = this.calculateStatistics(days);
 
-				const days = Array.from({ length: 7 }, (_, i) => ({
-					day: startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD'),
-					data: null,
-				}));
-
-				return {
-					statistics: {
-						weekNumber,
-						totalSleepDuration: 0,
-						averageSleepDurationByData: 0,
-						averageSleepDurationForWeek: 0,
-					},
-					days,
-					totalWeeks: 1,
-				};
-			}
-
-			const [yearStr, weekStr] = selectedKey.split('-W');
-			year = Number(yearStr);
-			weekNumber = Number(weekStr);
-			entriesForWeek = groupedByWeek[selectedKey];
-		}
-
-		const days = this.buildDaysForWeek(year, weekNumber, entriesForWeek);
-		const statistics = this.calculateStatistics(weekNumber, days);
+		const moreRecord = await this.prismaService.sleepEntry.findFirst({
+			where: {
+				userId,
+				dateForChart: {
+					lt: startDate,
+				},
+			},
+		});
 
 		return {
 			statistics,
 			days,
-			totalWeeks: sortedWeeks.length,
+			hasMore: !!moreRecord,
 		};
 	}
 }
