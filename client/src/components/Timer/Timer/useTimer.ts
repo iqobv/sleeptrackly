@@ -2,10 +2,12 @@
 
 import { getSleepStatus, updateSleepStatus } from '@/api';
 import { QUERY_KEYS } from '@/config';
+import { UserSleepStatusDto } from '@/dto/user';
 import { useAuth } from '@/hooks';
 import { SleepEntry } from '@/types';
 import { formatTime } from '@/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
 export const useTimer = () => {
@@ -28,7 +30,7 @@ export const useTimer = () => {
 	});
 
 	const { mutate: update, isPending } = useMutation({
-		mutationFn: updateSleepStatus,
+		mutationFn: (dto: UserSleepStatusDto) => updateSleepStatus(dto),
 		mutationKey: QUERY_KEYS.timer.update(user?.id || ''),
 		onSuccess: (data) => {
 			if (!!data.sleepEntry) setFinishedSleep(data.sleepEntry);
@@ -36,6 +38,14 @@ export const useTimer = () => {
 				queryClient.refetchQueries({
 					queryKey: QUERY_KEYS.coin.userCoin,
 				});
+		},
+		onError: () => {
+			setIsSleeping(false);
+			setIsFinished(false);
+			setFinishedSleep(null);
+			setTimer(0);
+			setInitialTime(null);
+			if (interval.current) clearInterval(interval.current);
 		},
 	});
 
@@ -54,7 +64,7 @@ export const useTimer = () => {
 		setIsFinished(false);
 		setFormattedTimer(formatTime(0));
 		setInitialTime(new Date());
-		update();
+		update({});
 	};
 
 	useEffect(() => {
@@ -76,10 +86,14 @@ export const useTimer = () => {
 	}, [timer]);
 
 	const stopTimer = () => {
+		const now = new Date();
+
 		setIsSleeping(false);
 		setIsFinished(true);
 		setFinishedSleep(null);
-		update();
+		update({
+			dateForChart: dayjs(now).format('YYYY-MM-DD'),
+		});
 		if (interval.current) clearInterval(interval.current);
 	};
 
