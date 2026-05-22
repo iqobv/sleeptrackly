@@ -22,7 +22,7 @@
 			"@config": ["./src/config/index"],
 			"@config/*": ["./src/config/*"]
 		},
-		"incremental": true,
+		"incremental": false,
 		"skipLibCheck": true,
 		"strictNullChecks": true,
 		"forceConsistentCasingInFileNames": true,
@@ -31,8 +31,16 @@
 		"strictBindCallApply": true,
 		"noFallthroughCasesInSwitch": true,
 		"esModuleInterop": true,
+		"preserveSymlinks": true,
 		"jsx": "react",
 		"types": ["node", "jest", "multer"]
+	},
+	"watchOptions": {
+		"watchFile": "useFsEvents",
+		"watchDirectory": "useFsEvents",
+		"fallbackPolling": "dynamicPriority",
+		"synchronousWatchDirectory": true,
+		"excludeDirectories": ["**/node_modules", "../client", "dist", ".next"]
 	},
 	"include": ["src/**/*", "generated/**/*"],
 	"exclude": ["node_modules", "dist"]

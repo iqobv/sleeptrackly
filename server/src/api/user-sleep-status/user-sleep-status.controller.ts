@@ -31,11 +31,6 @@ export class UserSleepStatusController {
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserSleepStatusDto,
 	) {
-		const { clickedBy } = dto;
-
-		return this.userSleepStatusService.updateSleepStatus(
-			userId,
-			clickedBy ?? new Date(),
-		);
+		return this.userSleepStatusService.updateSleepStatus(userId, dto);
 	}
 }

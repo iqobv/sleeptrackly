@@ -4,6 +4,7 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
 import { RewardService } from '../reward/reward.service';
+import { UpdateUserSleepStatusDto } from './dto';
 
 @Injectable()
 export class UserSleepStatusService {
@@ -60,20 +61,19 @@ export class UserSleepStatusService {
 	private async handleWakeUp(
 		userId: string,
 		sleepStart: Date,
-		clickedBy: Date,
+		clickedAt: Date,
+		dateForChart?: string,
 	) {
-		const { sleepDuration, dateForChart } = this.calculateSleepDuration(
-			sleepStart,
-			clickedBy,
-		);
+		const { sleepDuration, dateForChart: generatedDateForChart } =
+			this.calculateSleepDuration(sleepStart, clickedAt);
 
 		return await this.prismaService.$transaction(async (tx) => {
 			const sleepEntry = await this.createSleepEntry(
 				userId,
 				sleepStart,
-				clickedBy,
+				clickedAt,
 				sleepDuration,
-				dateForChart,
+				dateForChart || generatedDateForChart,
 				tx,
 			);
 
@@ -87,10 +87,10 @@ export class UserSleepStatusService {
 		});
 	}
 
-	private handleSleepStart(clickedBy: Date) {
+	private handleSleepStart(clickedAt: Date) {
 		return {
 			isSleeping: true,
-			sleepStart: new Date(clickedBy),
+			sleepStart: new Date(clickedAt),
 			sleepEntry: {},
 		};
 	}
@@ -106,11 +106,11 @@ export class UserSleepStatusService {
 		});
 	}
 
-	async updateSleepStatus(
-		userId: string,
-		clickedBy: Date,
-		dateForChart?: string,
-	) {
+	async updateSleepStatus(userId: string, dto: UpdateUserSleepStatusDto) {
+		const serverNow = new Date();
+
+		const { dateForChart } = dto;
+
 		let userSleepStatus = await this.getSleepStatus(userId);
 		if (!userSleepStatus) throw new NotFoundException('User not found');
 
@@ -119,13 +119,18 @@ export class UserSleepStatusService {
 		let reward: { rewarded: boolean; amount: number } | null = null;
 
 		if (isSleeping && sleepStart) {
-			const result = await this.handleWakeUp(userId, sleepStart, clickedBy);
+			const result = await this.handleWakeUp(
+				userId,
+				sleepStart,
+				serverNow,
+				dateForChart,
+			);
 			sleepEntry = result.sleepEntry;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;
 			reward = result.reward;
 		} else {
-			const result = this.handleSleepStart(clickedBy);
+			const result = this.handleSleepStart(serverNow);
 			sleepEntry = null;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;

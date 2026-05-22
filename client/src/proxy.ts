@@ -50,6 +50,14 @@ export async function proxy(request: NextRequest) {
 		}
 	}
 
+	const requestHeaders = new Headers(request.headers);
+	const cookieHeader = request.cookies
+		.getAll()
+		.map((cookie) => `${cookie.name}=${cookie.value}`)
+		.join('; ');
+
+	requestHeaders.set('cookie', cookieHeader);
+
 	const url = request.nextUrl.clone();
 	const path = url.pathname;
 
@@ -100,7 +108,11 @@ export async function proxy(request: NextRequest) {
 		response.headers.set('x-middleware-cache', 'no-cache');
 		response.cookies.delete('previousPage');
 	} else {
-		response = NextResponse.next();
+		response = NextResponse.next({
+			request: {
+				headers: requestHeaders,
+			},
+		});
 
 		response.headers.set('Vary', 'Cookie');
 
