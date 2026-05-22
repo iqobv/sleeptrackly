@@ -13,7 +13,7 @@ export default function SettingsLayout({
 				<SectionHeader title="Settings" />
 				<SettingsTabs />
 			</div>
-			<div className={styles.content}>{children}</div>
+			<div>{children}</div>
 		</div>
 	);
 }

@@ -3,17 +3,17 @@ import { UserService } from '@api/user/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ClientInfoDto } from '@libs/dto';
-import {
-	forwardRef,
-	Inject,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Observable, Subject } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
+import { QrSseEvent, QrSsePayload } from './types/qr-sse.types';
 import { QrLoginStatus, QrLoginStatusResult } from './types/qr-status.types';
 
 @Injectable()
 export class QrLoginService {
+	private readonly qrSubject = new Subject<QrSsePayload>();
+
 	constructor(
 		private readonly tokenService: TokenService,
 		@Inject(forwardRef(() => AuthService))
@@ -22,25 +22,62 @@ export class QrLoginService {
 		private readonly prismaService: PrismaService,
 	) {}
 
+	public subscribeToQrStatus(qrId: string): Observable<QrSseEvent> {
+		return this.qrSubject.asObservable().pipe(
+			filter((payload: QrSsePayload) => payload.qrId === qrId),
+			map((payload: QrSsePayload) => ({
+				data: {
+					status: payload.status,
+				},
+				type: 'qr_status_signal',
+			})),
+		);
+	}
+
 	async initiateQrLogin() {
+		const expiresAt = new Date(Date.now() + 3 * 60 * 1000);
+
 		const qrToken = await this.tokenService.createToken({
 			userId: null,
 			type: TokenType.QR_LOGIN,
-			expiresAt: new Date(Date.now() + 5 * 60 * 1000),
+			expiresAt,
 		});
 
-		return { qrId: qrToken.token };
+		return {
+			qrId: qrToken.token,
+			expiresAt: expiresAt.toISOString(),
+		};
 	}
 
 	async approveQrLogin(qrId: string, userId: string) {
-		const token = await this.tokenService.findToken(qrId, TokenType.QR_LOGIN);
-		if (!token) {
-			throw new NotFoundException('QR code not found or expired.');
-		}
+		const token = await this.tokenService
+			.findToken(qrId, TokenType.QR_LOGIN)
+			.catch((e) => {
+				this.qrSubject.next({
+					qrId,
+					status: 'expired',
+				});
+
+				throw e;
+			});
+
+		// if (!token) {
+		// 	this.qrSubject.next({
+		// 		qrId,
+		// 		status: 'expired',
+		// 	});
+
+		// 	throw new NotFoundException('QR code not found or expired.');
+		// }
 
 		await this.prismaService.token.update({
 			where: { id: token.id },
 			data: { user: { connect: { id: userId } } },
+		});
+
+		this.qrSubject.next({
+			qrId,
+			status: 'approved',
 		});
 
 		return { success: true };

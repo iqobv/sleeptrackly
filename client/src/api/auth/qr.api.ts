@@ -8,5 +8,8 @@ export const approveQrLogin = async (qrId: string) =>
 		.data;
 
 export const getQrStatus = async (qrId: string) =>
-	(await apiClient.get<{ status: string }>(`/v1/auth/qr/status?qrId=${qrId}`))
-		.data;
+	(
+		await apiClient.get<{ status: 'success' | 'expired'; expiresAt: Date }>(
+			`/v1/auth/qr/status?qrId=${qrId}`,
+		)
+	).data;
