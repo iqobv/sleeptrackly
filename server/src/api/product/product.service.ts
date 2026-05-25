@@ -43,7 +43,7 @@ export class ProductService {
 		if (alreadyExists) throw new ConflictException('Product already exists');
 
 		let type: ProductType;
-		let itemType: ProfileItemType | null = null;
+		let itemType: ProfileItemType | null;
 		let finalPrice: number;
 
 		const item = itemId

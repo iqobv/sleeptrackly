@@ -77,7 +77,7 @@ export class UserNotificationSettingsService {
 		const nowUTC = dayjs().utc();
 
 		for (const setting of reminderSettings) {
-			const { userId, reminderTime, userTimeZone } = setting;
+			const { reminderTime, userTimeZone } = setting;
 
 			if (!reminderTime || !userTimeZone) continue;
 

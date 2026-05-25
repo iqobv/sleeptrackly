@@ -17,31 +17,33 @@ const ProductItemModal = () => {
 				<Modal.Trigger asChild>
 					<Button>Select</Button>
 				</Modal.Trigger>
-				<Modal.Content>
+				<Modal.Content className={styles.content}>
 					<Modal.Header>Select Item</Modal.Header>
+					<Modal.Body>
+						<div>
+							<div className={styles.tabs}>
+								<Button
+									variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
+									color="secondary"
+									onClick={() => setSelectedType('ITEM')}
+								>
+									Items
+								</Button>
+								<Button
+									variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
+									color="secondary"
+									onClick={() => setSelectedType('BUNDLE')}
+								>
+									Bundles
+								</Button>
+							</div>
+							<div>
+								{selectedType === 'ITEM' && <ProductItemsList />}
+								{selectedType === 'BUNDLE' && <ProductBundlesList />}
+							</div>
+						</div>
+					</Modal.Body>
 				</Modal.Content>
-				<Modal.Body>
-					<div className={styles.tabs}>
-						<Button
-							variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
-							color="secondary"
-							onClick={() => setSelectedType('ITEM')}
-						>
-							Items
-						</Button>
-						<Button
-							variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
-							color="secondary"
-							onClick={() => setSelectedType('BUNDLE')}
-						>
-							Bundles
-						</Button>
-					</div>
-					<div>
-						{selectedType === 'ITEM' && <ProductItemsList />}
-						{selectedType === 'BUNDLE' && <ProductBundlesList />}
-					</div>
-				</Modal.Body>
 			</Modal>
 		</div>
 	);

@@ -32,7 +32,9 @@ const ProductsList = () => {
 	return (
 		<div>
 			<Button asChild>
-				<Link href={PAGES.PRODUCT_NEW}>Add Product</Link>
+				<Link href={PAGES.PRODUCT_NEW} prefetch={false}>
+					Add Product
+				</Link>
 			</Button>
 			{data?.items && data.items.length > 0 ? (
 				<div className={styles.list}>

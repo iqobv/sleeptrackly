@@ -44,7 +44,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
 			</div>
 			<div className={styles.actions}>
 				<Button variant="contained" color="secondary" fullWidth asChild>
-					<Link href={PAGES.PRODUCT(product.id)}>View</Link>
+					<Link href={PAGES.PRODUCT(product.id)} prefetch={false}>
+						View
+					</Link>
 				</Button>
 			</div>
 		</div>

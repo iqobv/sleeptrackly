@@ -4,7 +4,8 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 
-import { Item, Prisma, UserInventory } from '@generated/prisma/client';
+import { AchievementProgressService } from '@api/achievement/services';
+import { Item, Prisma } from '@generated/prisma/client';
 import {
 	AcquiredFrom,
 	CoinTransactionType,
@@ -28,6 +29,7 @@ export class ShopService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
+		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
 	async getFeaturedProducts(language: string, userId?: string) {
@@ -267,6 +269,12 @@ export class ShopService {
 					tx,
 				);
 
+			await this.achievementProgressService.checkProgress(
+				userId,
+				'ITEMS_PURCHASED',
+				tx,
+			);
+
 			return {
 				coinTransaction: coinTransactionResult,
 				purchaseHistory: purchaseHistoryResult,
@@ -303,7 +311,7 @@ export class ShopService {
 	private calculateFinalPrice(
 		items: Item[],
 		initialPrice: number,
-		alreadyOwnedItems: UserInventory[],
+		alreadyOwnedItems: { itemId: string }[],
 	) {
 		let finalPrice = initialPrice;
 
@@ -327,7 +335,7 @@ export class ShopService {
 		return finalPrice;
 	}
 
-	private async getOwnedItems(userId: string) {
+	private async getOwnedItems(userId: string): Promise<{ itemId: string }[]> {
 		const ownedItems = await this.prismaService.userInventory.findMany({
 			where: { userId },
 			select: { itemId: true },

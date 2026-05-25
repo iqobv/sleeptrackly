@@ -31,6 +31,7 @@ model User {
   userPrivacySettings     UserPrivacySettings?
   promotionUsages         PromotionUsage[]
   weeklySummaries         WeeklySleepSummary[]
+  userAchievements        UserAchievement[]
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")

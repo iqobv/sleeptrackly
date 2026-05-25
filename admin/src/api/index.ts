@@ -1,3 +1,4 @@
+export * from './achievement/index';
 export * from './auth/index';
 export * from './axios/index';
 export * from './customization/index';

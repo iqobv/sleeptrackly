@@ -9,6 +9,7 @@ import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 import ItemCard from '../../ItemCard/ItemCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import ItemsListWrapper from '../../ItemsListWrapper/ItemsListWrapper';
+import styles from './BundleItems.module.scss';
 
 interface BundleItemsProps {
 	initialItems?: Item[];
@@ -57,7 +58,7 @@ const BundleItems = <T extends FieldValues>({
 				<Modal.Trigger asChild>
 					<Button type="button">Add Items</Button>
 				</Modal.Trigger>
-				<Modal.Content>
+				<Modal.Content className={styles.content}>
 					<Modal.Header>Select Items</Modal.Header>
 					<Modal.Body>
 						<ItemsListPaginatedWrapper
@@ -65,6 +66,7 @@ const BundleItems = <T extends FieldValues>({
 							queryKey={(query) => [
 								...QUERY_KEYS.customization.item.getAll(query),
 							]}
+							isModal
 							itemCard={(item) => {
 								const isSelected = selectedIds.includes(item.id);
 								return (

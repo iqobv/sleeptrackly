@@ -1,3 +1,5 @@
+import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { getDateRanges } from '@libs/utils';
 import {
@@ -19,6 +21,7 @@ export class ChallengeService {
 		private readonly prismaService: PrismaService,
 		@Inject(forwardRef(() => ChallengeTaskService))
 		private readonly challengeTaskService: ChallengeTaskService,
+		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
 	async create(userId: string, dto: CreateChallengeDto) {
@@ -130,6 +133,11 @@ export class ChallengeService {
 			if (completedTasks.length === challenge.tasks.length) {
 				challenge.isStarted = false;
 				challenge.isCompleted = true;
+
+				await this.achievementProgressService.checkProgress(
+					challenge.userId,
+					AchievementType.CHALLENGES_COMPLETED,
+				);
 			}
 
 			await this.prismaService.challenge.update({

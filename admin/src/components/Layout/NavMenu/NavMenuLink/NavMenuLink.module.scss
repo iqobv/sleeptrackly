@@ -29,6 +29,7 @@
 			transition:
 				opacity 0.3s ease 0.1s,
 				transform 0.3s ease 0.1s;
+			width: auto;
 		}
 	}
 }
@@ -97,6 +98,7 @@
 		transform 0.2s ease;
 	white-space: nowrap;
 	user-select: none;
+	width: 0;
 }
 
 .innerLinks {

@@ -1,3 +1,4 @@
+export * from './achievement/index';
 export * from './api/index';
 export * from './auth/index';
 export * from './bundle/index';

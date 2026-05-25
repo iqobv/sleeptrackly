@@ -1,5 +1,6 @@
+import { AchievementProgressService } from '@api/achievement/services';
 import { WeeklySummaryService } from '@api/weekly-summary/weekly-summary.service';
-import { Prisma, SleepEntry } from '@generated/prisma/client';
+import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
@@ -12,6 +13,7 @@ export class UserSleepStatusService {
 		private readonly prismaService: PrismaService,
 		private readonly rewardService: RewardService,
 		private readonly weeklySummaryService: WeeklySummaryService,
+		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
 	async getSleepStatus(userId: string) {
@@ -83,6 +85,13 @@ export class UserSleepStatusService {
 				Math.floor(sleepDuration / 60),
 				tx,
 			);
+
+			await this.achievementProgressService.checkProgress(
+				userId,
+				AchievementType.SLEEP_COUNT,
+				tx,
+			);
+
 			return { sleepEntry, isSleeping: false, sleepStart: null, reward };
 		});
 	}

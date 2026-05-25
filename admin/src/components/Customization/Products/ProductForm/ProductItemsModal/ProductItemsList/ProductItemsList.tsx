@@ -34,6 +34,7 @@ const ProductItemsList = <T extends FieldValues>() => {
 			queryKey={() => [
 				...QUERY_KEYS.customization.item.getAllAvailable(params),
 			]}
+			isModal
 			itemCard={(item) => (
 				<ItemCard
 					item={item}

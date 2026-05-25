@@ -7,7 +7,9 @@ export default function PromotionsPage() {
 	return (
 		<div>
 			<Button asChild>
-				<Link href={PAGES.PROMOTION_NEW}>Create Promotion</Link>
+				<Link href={PAGES.PROMOTION_NEW} prefetch={false}>
+					Create Promotion
+				</Link>
 			</Button>
 			<PromotionsList />
 		</div>

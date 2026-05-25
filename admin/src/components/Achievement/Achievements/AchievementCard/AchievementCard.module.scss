@@ -1,0 +1,23 @@
+.card {
+	width: 100%;
+	padding: 20px;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.infoWrapper {
+	display: flex;
+	flex-direction: row;
+	gap: var(--gap);
+	align-items: center;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}

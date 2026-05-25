@@ -27,6 +27,7 @@ export async function proxy(request: NextRequest) {
 						'User-Agent': userAgent,
 						'Content-Type': 'application/json',
 					},
+					cache: 'no-store',
 				},
 			);
 

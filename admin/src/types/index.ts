@@ -1,3 +1,4 @@
+export * from './achievement/index';
 export * from './api/index';
 export * from './customization/index';
 export * from './defaultFields.types';

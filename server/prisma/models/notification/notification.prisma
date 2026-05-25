@@ -3,6 +3,7 @@ model Notification {
 
   userId               String? @map("user_id")
   weeklySleepSummaryId String? @map("weekly_sleep_summary_id")
+  achievementId        String? @map("achievement_id")
 
   type NotificationType @default(OTHER)
 
@@ -27,6 +28,7 @@ model Notification {
   user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   weeklySleepSummary WeeklySleepSummary? @relation(fields: [weeklySleepSummaryId], references: [id], onDelete: Cascade)
+  achievement        Achievement?        @relation(fields: [achievementId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("notifications")

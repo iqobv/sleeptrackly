@@ -21,18 +21,12 @@ export class CoinTransactionService {
 
 			if (!userCoin) throw new NotFoundException('User coin not found');
 
-			if (amount < 0 && userCoin.amount + amount < 0) {
+			if (amount < 0 && userCoin.amount + amount < 0)
 				throw new InsufficientCoinsException();
-			}
 
 			const updatedCoin = await client.userCoin.update({
-				where: {
-					id: userCoin.id,
-					userId,
-				},
-				data: {
-					amount: { increment: amount },
-				},
+				where: { id: userCoin.id },
+				data: { amount: { increment: amount } },
 			});
 
 			const createdTransaction = await client.coinTransaction.create({
@@ -41,7 +35,7 @@ export class CoinTransactionService {
 					balanceBefore: userCoin.amount,
 					balanceAfter: updatedCoin.amount,
 					type: transactionType,
-					meta: meta ? JSON.stringify(meta) : undefined,
+					meta: meta ? (meta as Prisma.InputJsonValue) : undefined,
 					user: { connect: { id: userId } },
 					userCoin: { connect: { id: userCoin.id } },
 					referenceId: referenceId || null,
@@ -54,22 +48,14 @@ export class CoinTransactionService {
 			};
 		};
 
-		if (tx) {
-			return execute(tx);
-		}
-
-		return this.prismaService.$transaction(async (newTx) => {
-			return execute(newTx);
-		});
+		return tx ? execute(tx) : this.prismaService.$transaction(execute);
 	}
 
 	async getUserTransactions(userId: string) {
-		const transactions = await this.prismaService.coinTransaction.findMany({
+		return await this.prismaService.coinTransaction.findMany({
 			where: { userId },
 			orderBy: { createdAt: 'desc' },
 		});
-
-		return transactions;
 	}
 
 	async getLastTransactionByType(userId: string, type: CoinTransactionType) {
@@ -86,9 +72,7 @@ export class CoinTransactionService {
 		return await this.prismaService.coinTransaction.findMany({
 			where: {
 				userId,
-				createdAt: {
-					gte: startOfToday,
-				},
+				createdAt: { gte: startOfToday },
 				...(type ? { type } : {}),
 			},
 			orderBy: { createdAt: 'desc' },

@@ -48,7 +48,9 @@ const PromotionsList = () => {
 			{data &&
 				data.map((promotion) => (
 					<div key={promotion.id} className={styles.item}>
-						<Link href={PAGES.PROMOTION(promotion.id)}>{promotion.alias}</Link>
+						<Link href={PAGES.PROMOTION(promotion.id)} prefetch={false}>
+							{promotion.alias}
+						</Link>
 						<Button
 							isIcon
 							variant="text"

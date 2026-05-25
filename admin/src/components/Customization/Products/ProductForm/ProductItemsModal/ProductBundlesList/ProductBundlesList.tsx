@@ -34,6 +34,7 @@ const ProductBundlesList = <T extends FieldValues>() => {
 			queryKey={() => [
 				...QUERY_KEYS.customization.bundle.getAllAvailable(params),
 			]}
+			isModal
 			itemCard={(bundle) => (
 				<BundleCard
 					bundle={bundle}
