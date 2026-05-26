@@ -1,17 +1,17 @@
 .header {
 	display: inline-flex;
 	align-items: center;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .user {
 	display: inline-flex;
-	gap: 3px;
+	gap: 0.1875rem;
 }
 
 .item {
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
-	padding: 10px 0;
+	gap: 0.1875rem;
+	padding: 0.625rem 0;
 }

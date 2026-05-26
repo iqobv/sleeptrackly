@@ -9,7 +9,7 @@ import {
 } from 'react-hook-form';
 import { FormProps } from './Form.types';
 
-const FormProvider = <D extends FieldValues>({
+export const Form = <D extends FieldValues>({
 	children,
 	schema,
 	className,
@@ -40,5 +40,3 @@ const FormProvider = <D extends FieldValues>({
 		</RHFFormProvider>
 	);
 };
-
-export default FormProvider;

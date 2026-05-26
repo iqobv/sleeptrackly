@@ -10,7 +10,7 @@ interface CDNImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
 	className?: string;
 }
 
-const CDNImage = ({
+export const CDNImage = ({
 	src,
 	width = 100,
 	height = 100,
@@ -24,10 +24,8 @@ const CDNImage = ({
 			width={width}
 			height={height}
 			alt={alt}
-			className={`${styles['cdn-image']} ${className}`}
+			className={`${styles.cdnImage} ${className}`}
 			{...props}
 		/>
 	);
 };
-
-export default CDNImage;

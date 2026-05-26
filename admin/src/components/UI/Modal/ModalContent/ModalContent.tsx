@@ -11,7 +11,7 @@ interface ModalContentProps {
 	description?: React.ReactNode;
 }
 
-const ModalContent = ({
+export const ModalContent = ({
 	children,
 	className = '',
 	description = 'Modal content',
@@ -50,5 +50,3 @@ const ModalContent = ({
 		</AnimatePresence>
 	);
 };
-
-export default ModalContent;

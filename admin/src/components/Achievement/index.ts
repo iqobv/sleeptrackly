@@ -1,2 +1,3 @@
-export * from './Achievements/index';
-export * from './CreateAchievement/index';
+export * from './Achievements';
+export * from './CreateAchievement';
+export * from './EditAchievement';

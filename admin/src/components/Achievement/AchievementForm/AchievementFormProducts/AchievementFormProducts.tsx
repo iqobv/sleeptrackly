@@ -1,7 +1,14 @@
 'use client';
 
 import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
-import { Button, Field, Modal } from '@/components/UI';
+import {
+	Button,
+	Field,
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { BaseAchievementDto } from '@/dto';
 import { Product } from '@/types';
 import { useEffect, useState } from 'react';
@@ -41,16 +48,16 @@ const AchievementFormProducts = () => {
 			)}
 			<input type="hidden" {...register('rewardProductId')} />
 			<Modal>
-				<Modal.Trigger asChild>
+				<ModalTrigger asChild>
 					<Button>Select Reward Product</Button>
-				</Modal.Trigger>
-				<Modal.Content className={styles.content}>
-					<Modal.Header>Select Reward Product</Modal.Header>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Reward Product</ModalHeader>
 					<AchievementFormProductsBody
 						selectedProduct={selectedProduct}
 						setSelectedProduct={setSelectedProduct}
 					/>
-				</Modal.Content>
+				</ModalContent>
 			</Modal>
 		</Field>
 	);

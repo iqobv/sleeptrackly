@@ -1,6 +1,13 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { ProductType } from '@/types';
 import { useState } from 'react';
 import ProductBundlesList from './ProductBundlesList/ProductBundlesList';
@@ -14,12 +21,12 @@ const ProductItemModal = () => {
 	return (
 		<div>
 			<Modal>
-				<Modal.Trigger asChild>
+				<ModalTrigger asChild>
 					<Button>Select</Button>
-				</Modal.Trigger>
-				<Modal.Content className={styles.content}>
-					<Modal.Header>Select Item</Modal.Header>
-					<Modal.Body>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Item</ModalHeader>
+					<ModalBody>
 						<div>
 							<div className={styles.tabs}>
 								<Button
@@ -42,8 +49,8 @@ const ProductItemModal = () => {
 								{selectedType === 'BUNDLE' && <ProductBundlesList />}
 							</div>
 						</div>
-					</Modal.Body>
-				</Modal.Content>
+					</ModalBody>
+				</ModalContent>
 			</Modal>
 		</div>
 	);

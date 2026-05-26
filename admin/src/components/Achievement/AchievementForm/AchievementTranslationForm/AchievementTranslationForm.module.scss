@@ -1,20 +1,20 @@
 .translations {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
-	padding: 16px;
+	gap: 1rem;
+	padding: 1rem;
 }
 
 .item {
 	display: flex;
-	gap: 16px;
+	gap: 1rem;
 	flex-direction: row;
 	align-items: center;
 }
 
 .fields {
 	display: flex;
-	gap: 8px;
+	gap: 0.5rem;
 	flex-direction: column;
 	flex: 1;
 }

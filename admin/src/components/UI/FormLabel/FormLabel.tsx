@@ -4,13 +4,13 @@ import { FormLabelProps } from './FormLabel.types';
 
 import styles from './FormLabel.module.scss';
 
-export default function FormLabel({
+export const FormLabel = ({
 	id,
 	children,
 	required,
 	className,
 	disabled,
-}: FormLabelProps) {
+}: FormLabelProps) => {
 	const classNames = [
 		styles.label,
 		required && styles.required,
@@ -25,4 +25,4 @@ export default function FormLabel({
 			{children}
 		</label>
 	);
-}
+};

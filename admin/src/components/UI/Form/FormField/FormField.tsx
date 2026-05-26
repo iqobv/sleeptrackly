@@ -7,7 +7,7 @@ import {
 	useController,
 	useFormContext,
 } from 'react-hook-form';
-import Field from '../../Field/Field';
+import { Field } from '../../Field/Field';
 import { FieldProps } from '../../Field/Field.types';
 
 export interface FormFieldProps<D extends FieldValues> extends Omit<
@@ -18,7 +18,7 @@ export interface FormFieldProps<D extends FieldValues> extends Omit<
 	children: ReactElement;
 }
 
-const FormField = <D extends FieldValues>({
+export const FormField = <D extends FieldValues>({
 	name,
 	children,
 	className,
@@ -79,5 +79,3 @@ const FormField = <D extends FieldValues>({
 		</Field>
 	);
 };
-
-export default FormField;

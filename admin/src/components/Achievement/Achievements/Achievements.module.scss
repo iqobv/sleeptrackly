@@ -3,8 +3,8 @@
 .achievements {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
-	padding: 30px 0;
+	gap: 1rem;
+	padding: 1.875rem 0;
 }
 
 .header {
@@ -25,7 +25,7 @@
 .list {
 	display: grid;
 	grid-template-columns: 1fr;
-	gap: 16px;
+	gap: 1rem;
 
 	@include respond-to(md) {
 		grid-template-columns: repeat(2, 1fr);

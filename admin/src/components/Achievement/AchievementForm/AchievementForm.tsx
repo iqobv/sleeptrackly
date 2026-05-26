@@ -1,23 +1,36 @@
 'use client';
 
 import FileForm from '@/components/Customization/FileForm/FileForm';
-import { Checkbox, Form, FormSelect, Input, Select } from '@/components/UI';
+import {
+	Checkbox,
+	Form,
+	FormActions,
+	FormField,
+	FormReset,
+	FormSelect,
+	FormSubmit,
+	Input,
+	SelectContent,
+	SelectItem,
+} from '@/components/UI';
 import { FormProps } from '@/components/UI/Form/Form.types';
-import { BaseAchievementDto } from '@/dto';
+import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ACHIEVEMENT_FORM_FIELDS } from './achievementFormFields';
 import AchievementFormProducts from './AchievementFormProducts/AchievementFormProducts';
 import AchievementTranslationForm from './AchievementTranslationForm/AchievementTranslationForm';
 
-interface AchievementFormProps<D extends BaseAchievementDto> extends Omit<
+interface AchievementFormProps<D extends FieldValues> extends Omit<
 	FormProps<D>,
 	'children'
 > {
 	isCreate?: boolean;
+	iconUrl?: string;
 }
 
-const AchievementForm = <D extends BaseAchievementDto>({
+export const AchievementForm = <D extends FieldValues>({
 	isCreate,
+	iconUrl = '',
 	...formProps
 }: AchievementFormProps<D>) => {
 	return (
@@ -29,19 +42,19 @@ const AchievementForm = <D extends BaseAchievementDto>({
 
 				return (
 					<>
-						<FileForm pathname="icon" />
+						<FileForm pathname="icon" mediaUrl={iconUrl} />
 						{ACHIEVEMENT_FORM_FIELDS.map((f) => {
 							const renderElement = () => {
 								if (f.type === 'select' && f.options) {
 									return (
 										<FormSelect name={f.name} placeholder={f.placeholder}>
-											<Select.Content>
+											<SelectContent>
 												{f.options.map((option) => (
-													<Select.Item key={option.value} value={option.value}>
+													<SelectItem key={option.value} value={option.value}>
 														{option.label}
-													</Select.Item>
+													</SelectItem>
 												))}
-											</Select.Content>
+											</SelectContent>
 										</FormSelect>
 									);
 								}
@@ -54,27 +67,25 @@ const AchievementForm = <D extends BaseAchievementDto>({
 							};
 
 							return (
-								<Form.Field
+								<FormField
 									name={f.name}
 									label={f.type !== 'checkbox' ? f.label : ''}
 									required={f.required}
 									key={f.name}
 								>
 									{renderElement()}
-								</Form.Field>
+								</FormField>
 							);
 						})}
 						<AchievementFormProducts />
-						<AchievementTranslationForm<D> />
-						<Form.Actions>
-							<Form.Reset>Reset</Form.Reset>
-							<Form.Submit>{isCreate ? 'Create' : 'Update'}</Form.Submit>
-						</Form.Actions>
+						<AchievementTranslationForm />
+						<FormActions>
+							<FormReset>Reset</FormReset>
+							<FormSubmit>{isCreate ? 'Create' : 'Update'}</FormSubmit>
+						</FormActions>
 					</>
 				);
 			}}
 		</Form>
 	);
 };
-
-export default AchievementForm;

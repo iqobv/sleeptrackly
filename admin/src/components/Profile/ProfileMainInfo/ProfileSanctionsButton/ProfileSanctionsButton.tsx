@@ -1,7 +1,14 @@
 'use client';
 
 import ReportSanctionForm from '@/components/Report/Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { Profile } from '@/types';
 import { MdReportGmailerrorred } from 'react-icons/md';
 
@@ -12,7 +19,7 @@ interface ProfileSanctionsButtonProps {
 const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
 	return (
 		<Modal>
-			<Modal.Trigger asChild>
+			<ModalTrigger asChild>
 				<Button
 					isIcon
 					size="sm"
@@ -22,17 +29,17 @@ const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
 				>
 					<MdReportGmailerrorred size={30} />
 				</Button>
-			</Modal.Trigger>
-			<Modal.Content>
-				<Modal.Header>Select Sanction</Modal.Header>
-				<Modal.Body>
+			</ModalTrigger>
+			<ModalContent>
+				<ModalHeader>Select Sanction</ModalHeader>
+				<ModalBody>
 					<ReportSanctionForm
 						defaultValues={{
 							targetUserId: profile.id,
 						}}
 					/>
-				</Modal.Body>
-			</Modal.Content>
+				</ModalBody>
+			</ModalContent>
 		</Modal>
 	);
 };

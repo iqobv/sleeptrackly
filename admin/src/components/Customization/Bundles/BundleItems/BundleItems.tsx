@@ -1,7 +1,14 @@
 'use client';
 
 import { getAllItems } from '@/api';
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { Item } from '@/types';
 import { useEffect, useState } from 'react';
@@ -55,12 +62,12 @@ const BundleItems = <T extends FieldValues>({
 	return (
 		<div>
 			<Modal>
-				<Modal.Trigger asChild>
+				<ModalTrigger asChild>
 					<Button type="button">Add Items</Button>
-				</Modal.Trigger>
-				<Modal.Content className={styles.content}>
-					<Modal.Header>Select Items</Modal.Header>
-					<Modal.Body>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Items</ModalHeader>
+					<ModalBody>
 						<ItemsListPaginatedWrapper
 							queryFn={getAllItems}
 							queryKey={(query) => [
@@ -86,8 +93,8 @@ const BundleItems = <T extends FieldValues>({
 								);
 							}}
 						/>
-					</Modal.Body>
-				</Modal.Content>
+					</ModalBody>
+				</ModalContent>
 			</Modal>
 
 			{selectedItems.length > 0 && (

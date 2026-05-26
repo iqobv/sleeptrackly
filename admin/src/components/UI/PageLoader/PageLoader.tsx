@@ -1,15 +1,15 @@
 'use client';
 
-import Loader from '../Loader/Loader';
+import { Loader } from '../Loader/Loader';
 import styles from './PageLoader.module.scss';
 
-export default function PageLoader() {
+export const PageLoader = () => {
 	return (
 		<Loader
-			containerClassName={styles['page-loader']}
-			loaderClassName={styles['page-loader__loader']}
+			containerClassName={styles.pageLoaderContainer}
+			loaderClassName={styles.pageLoader}
 			size={80}
 			thickness={12}
 		/>
 	);
-}
+};

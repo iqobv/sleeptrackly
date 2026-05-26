@@ -3,7 +3,7 @@
 import { getAllProducts } from '@/api';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
-import { Button, Modal } from '@/components/UI';
+import { Button, ModalBody } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { Product } from '@/types';
 import { Dispatch, SetStateAction } from 'react';
@@ -28,7 +28,7 @@ const AchievementFormProductsBody = ({
 	const productId = selectedProduct?.id;
 
 	return (
-		<Modal.Body>
+		<ModalBody>
 			<ItemsListPaginatedWrapper<Product>
 				queryFn={() => getAllProducts({ limit: 20, page: 1, language: 'en' })}
 				queryKey={() => [
@@ -55,7 +55,7 @@ const AchievementFormProductsBody = ({
 					/>
 				)}
 			/>
-		</Modal.Body>
+		</ModalBody>
 	);
 };
 

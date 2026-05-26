@@ -9,7 +9,7 @@ interface FormActionsProps {
 	justifyContent?: CSSProperties['justifyContent'];
 }
 
-const FormActions = ({
+export const FormActions = ({
 	children,
 	className,
 	justifyContent = 'start',
@@ -23,5 +23,3 @@ const FormActions = ({
 		</div>
 	);
 };
-
-export default FormActions;

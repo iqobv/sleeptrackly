@@ -1,7 +1,7 @@
 @use '../../../../styles/mixins' as *;
 
 .item {
-	padding: 8px 16px;
+	padding: 0.5rem 1rem;
 	cursor: pointer;
 	transition: background-color 0.2s ease;
 	position: relative;

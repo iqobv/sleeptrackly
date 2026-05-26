@@ -1,14 +1,14 @@
 .label {
 	display: block;
 	width: 100%;
-	padding: 6px;
+	padding: 0.375rem;
 	font-size: 1rem;
 
 	&.required {
 		&::after {
 			content: '*';
 			color: var(--input-color-error);
-			margin-left: 4px;
+			margin-left: 0.25rem;
 		}
 	}
 

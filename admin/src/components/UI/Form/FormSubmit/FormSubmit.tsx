@@ -2,7 +2,7 @@
 
 import React, { ComponentPropsWithRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Button from '../../Button/Button';
+import { Button } from '../../Button';
 import { ButtonProps } from '../../Button/Button.types';
 
 export type FormSubmitButtonProps = Omit<ButtonProps, 'type' | 'children'>;
@@ -15,7 +15,7 @@ export interface FormSubmitProps extends Omit<
 	disabledOnEmpty?: boolean;
 }
 
-const FormSubmit = ({
+export const FormSubmit = ({
 	children,
 	buttonProps,
 	disabledOnEmpty = false,
@@ -51,5 +51,3 @@ const FormSubmit = ({
 		</Button>
 	);
 };
-
-export default FormSubmit;

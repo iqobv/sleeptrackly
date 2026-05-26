@@ -7,6 +7,7 @@ import {
 	FileTypeValidator,
 	Get,
 	MaxFileSizeValidator,
+	Param,
 	ParseFilePipe,
 	Patch,
 	Post,
@@ -82,7 +83,7 @@ export class AchievementController {
 	@ApiOkResponse({ type: AchievementDto })
 	@ApiNotFoundResponse({ description: 'Achievement not found' })
 	@Get('id/:id')
-	async getAchievementById(@Query('id') id: string) {
+	async getAchievementById(@Param('id') id: string) {
 		return await this.achievementService.getAchievementById(id);
 	}
 
@@ -95,7 +96,7 @@ export class AchievementController {
 	@ApiBody({ type: UpdateAchievementSwaggerDto })
 	@Patch(':id')
 	async updateAchievement(
-		@Query('id') id: string,
+		@Param('id') id: string,
 		@UploadedFile(parsePipe) icon: Express.Multer.File,
 		@Body() dto: UpdateAchievementDto,
 	) {
@@ -107,7 +108,7 @@ export class AchievementController {
 	@ApiOkResponse({ example: { message: 'Achievement deleted successfully' } })
 	@ApiNotFoundResponse({ description: 'Achievement not found' })
 	@Get(':id')
-	async deleteAchievement(@Query('id') id: string) {
+	async deleteAchievement(@Param('id') id: string) {
 		return await this.achievementService.deleteAchievement(id);
 	}
 }

@@ -1,3 +1,5 @@
+import { EditAchievement } from '@/components/Achievement';
+
 export default function AchievementPage() {
-	return <div></div>;
+	return <EditAchievement />;
 }

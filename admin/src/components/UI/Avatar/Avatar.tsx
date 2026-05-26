@@ -1,26 +1,27 @@
 'use client';
 
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useState } from 'react';
-import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
+import { SkeletonLoader } from '../SkeletonLoader/SkeletonLoader';
 import styles from './Avatar.module.scss';
 import { AvatarProps } from './Avatar.types';
 
-export default function Avatar({
+export const Avatar = ({
 	avatar = 'defaults/default-avatar.png',
 	size = 40,
 	avatarClassName,
 	containerClassName,
 	priority = false,
 	isVideo = false,
-}: AvatarProps) {
+}: AvatarProps) => {
 	const [loaded, setLoaded] = useState(false);
 
 	return (
-		<div className={`${styles['avatar']} ${containerClassName}`}>
+		<div className={clsx(styles.avatar, containerClassName)}>
 			{!loaded && (
 				<SkeletonLoader
-					containerClassName={styles['avatar__skeleton']}
+					containerClassName={styles.skeleton}
 					circle
 					width={size}
 					height={size}
@@ -34,14 +35,14 @@ export default function Avatar({
 					muted
 					width={size}
 					height={size}
-					className={`${styles['avatar__image']} ${avatarClassName}`}
+					className={clsx(styles.image, avatarClassName)}
 					onLoadedData={() => setLoaded(true)}
 				/>
 			) : (
 				<Image
 					src={`${process.env.NEXT_PUBLIC_CDN_URL}/${avatar}`}
 					alt="avatar"
-					className={`${styles['avatar__image']} ${avatarClassName}`}
+					className={clsx(styles.image, avatarClassName)}
 					width={size}
 					height={size}
 					onLoad={() => setLoaded(true)}
@@ -51,4 +52,4 @@ export default function Avatar({
 			)}
 		</div>
 	);
-}
+};

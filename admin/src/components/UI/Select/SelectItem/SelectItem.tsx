@@ -12,7 +12,7 @@ interface SelectItemProps extends Omit<
 	children: React.ReactNode;
 }
 
-const SelectItem = ({
+export const SelectItem = ({
 	value: itemValue,
 	children,
 	onClick,
@@ -54,5 +54,3 @@ const SelectItem = ({
 		</div>
 	);
 };
-
-export default SelectItem;

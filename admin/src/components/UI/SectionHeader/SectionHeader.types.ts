@@ -10,4 +10,6 @@ export interface SectionHeaderProps {
 	descriptionClassName?: string;
 	padding?: number;
 	gap?: number;
+	showBackButton?: boolean;
+	onBackButtonClick?: () => void;
 }

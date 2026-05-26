@@ -2,7 +2,7 @@
 
 import React, { ComponentPropsWithRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import Button from '../../Button/Button';
+import { Button } from '../../Button';
 import { FormSubmitButtonProps } from '../FormSubmit/FormSubmit';
 
 export interface FormResetProps extends Omit<
@@ -13,7 +13,7 @@ export interface FormResetProps extends Omit<
 	disabledOnEmpty?: boolean;
 }
 
-const FormReset = ({
+export const FormReset = ({
 	children,
 	buttonProps,
 	disabledOnEmpty = false,
@@ -51,5 +51,3 @@ const FormReset = ({
 		</Button>
 	);
 };
-
-export default FormReset;
