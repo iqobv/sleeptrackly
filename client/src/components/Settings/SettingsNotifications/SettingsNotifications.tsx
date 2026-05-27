@@ -5,11 +5,11 @@ import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import styles from './SettingsNotifications.module.scss';
-import SettingsNotificationsForm from './SettingsNotificationsForm/SettingsNotificationsForm';
-import SettingsNotificationsLoader from './SettingsNotificationsLoader';
-import SettingsNotificationsPush from './SettingsNotificationsPush/SettingsNotificationsPush';
+import { SettingsNotificationsForm } from './SettingsNotificationsForm/SettingsNotificationsForm';
+import { SettingsNotificationsLoader } from './SettingsNotificationsLoader';
+import { SettingsNotificationsPush } from './SettingsNotificationsPush/SettingsNotificationsPush';
 
-const SettingsNotifications = () => {
+export const SettingsNotifications = () => {
 	const { user, isAuthenticated } = useAuth();
 
 	const { data, isLoading } = useQuery({
@@ -30,5 +30,3 @@ const SettingsNotifications = () => {
 		</div>
 	);
 };
-
-export default SettingsNotifications;

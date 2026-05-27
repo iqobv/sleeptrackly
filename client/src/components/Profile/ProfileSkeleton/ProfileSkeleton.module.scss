@@ -3,7 +3,7 @@
 .profileSkeleton {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 1.25rem;
 	align-items: center;
 }
 
@@ -12,13 +12,13 @@
 	width: 100%;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: 20px;
+	gap: 1.25rem;
 
 	span {
 		flex: 1 0 100%;
 
 		@include respond-to(md) {
-			flex: 1 0 calc(50% - 10px);
+			flex: 1 0 calc(50% - 0.625rem);
 		}
 	}
 }

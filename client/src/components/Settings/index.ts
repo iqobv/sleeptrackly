@@ -1,7 +1,7 @@
-export { default as Settings } from './Settings';
-export * from './SettingsAccount/index';
-export * from './SettingsNotifications/index';
-export * from './SettingsPrivacy/index';
-export * from './SettingsSecurity/index';
-export * from './SettingsSessions/index';
-export { default as SettingsTabs } from './SettingsTabs/SettingsTabs';
+export * from './Settings';
+export * from './SettingsAccount';
+export * from './SettingsNotifications';
+export * from './SettingsPrivacy';
+export * from './SettingsSecurity';
+export * from './SettingsSessions';
+export * from './SettingsTabs/SettingsTabs';

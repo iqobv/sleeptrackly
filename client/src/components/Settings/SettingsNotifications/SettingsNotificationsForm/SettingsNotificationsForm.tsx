@@ -3,15 +3,15 @@
 import { NotificationSettings } from '@/types';
 import { FormProvider } from 'react-hook-form';
 import styles from './SettingsNotificationsForm.module.scss';
-import SettingsNotificationsFormFields from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';
-import SettingsNotificationsReminder from './SettingsNotificationsReminder/SettingsNotificationsReminder';
+import { SettingsNotificationsFormFields } from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';
+import { SettingsNotificationsReminder } from './SettingsNotificationsReminder/SettingsNotificationsReminder';
 import { useSettingsNotificationsForm } from './useSettingsNotificationsForm.hook';
 
 interface SettingsNotificationsFormProps {
 	data: NotificationSettings;
 }
 
-const SettingsNotificationsForm = ({
+export const SettingsNotificationsForm = ({
 	data,
 }: SettingsNotificationsFormProps) => {
 	const { methods, updateSetting } = useSettingsNotificationsForm({
@@ -27,5 +27,3 @@ const SettingsNotificationsForm = ({
 		</FormProvider>
 	);
 };
-
-export default SettingsNotificationsForm;

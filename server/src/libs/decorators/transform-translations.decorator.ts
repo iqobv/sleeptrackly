@@ -1,8 +1,9 @@
-import { TranslationDto } from '@libs/dto';
 import { plainToInstance, Transform } from 'class-transformer';
 
-export function TransformTranslations(): PropertyDecorator {
-	return Transform(({ value }: { value: unknown }): TranslationDto[] => {
+export function TransformTranslations<T>(
+	classConstructor: new () => T,
+): PropertyDecorator {
+	return Transform(({ value }: { value: unknown }): T[] => {
 		if (!value) {
 			return [];
 		}
@@ -30,6 +31,6 @@ export function TransformTranslations(): PropertyDecorator {
 			return item;
 		});
 
-		return plainToInstance(TranslationDto, normalizedArray);
+		return plainToInstance(classConstructor, normalizedArray);
 	});
 }

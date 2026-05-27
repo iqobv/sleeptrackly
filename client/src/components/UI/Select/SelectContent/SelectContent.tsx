@@ -10,7 +10,7 @@ interface SelectContentProps extends Popover.PopoverContentProps {
 	children: React.ReactNode;
 }
 
-const SelectContent = ({
+export const SelectContent = ({
 	children,
 	side = 'bottom',
 	align = 'start',
@@ -114,5 +114,3 @@ const SelectContent = ({
 		</AnimatePresence>
 	);
 };
-
-export default SelectContent;

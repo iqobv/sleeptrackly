@@ -1,12 +1,12 @@
 'use client';
 
 import { FieldValues, useController, useFormContext } from 'react-hook-form';
-import Select from '../Select/Select';
+import { Select, SelectContent, SelectTrigger } from '../Select';
 import { SelectValue } from '../Select/Select.types';
 import { FormSelectProps } from './FormSelect.types';
-import FormSelectInput from './FormSelectInput';
+import { FormSelectInput } from './FormSelectInput';
 
-const FormSelect = <T extends FieldValues>({
+export const FormSelect = <T extends FieldValues>({
 	children,
 	control,
 	name,
@@ -52,7 +52,7 @@ const FormSelect = <T extends FieldValues>({
 			{customTrigger ? (
 				customTrigger
 			) : (
-				<Select.Trigger asChild>
+				<SelectTrigger asChild>
 					{(currentValue, isOpen) => (
 						<FormSelectInput
 							currentValue={currentValue}
@@ -62,11 +62,9 @@ const FormSelect = <T extends FieldValues>({
 							className={className}
 						/>
 					)}
-				</Select.Trigger>
+				</SelectTrigger>
 			)}
-			<Select.Content>{children}</Select.Content>
+			<SelectContent>{children}</SelectContent>
 		</Select>
 	);
 };
-
-export default FormSelect;

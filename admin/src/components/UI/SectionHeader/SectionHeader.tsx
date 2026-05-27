@@ -1,5 +1,7 @@
 'use client';
 
+import clsx from 'clsx';
+import { BackButton } from '../BackButton/BackButton';
 import styles from './SectionHeader.module.scss';
 import { SectionHeaderProps } from './SectionHeader.types';
 
@@ -8,7 +10,7 @@ interface CustomCSSProperties extends React.CSSProperties {
 	'--gap'?: string;
 }
 
-export default function SectionHeader({
+export const SectionHeader = ({
 	title = '',
 	description = '',
 	titleComponent = 'h1',
@@ -18,7 +20,9 @@ export default function SectionHeader({
 	containerClassName = '',
 	padding = 20,
 	gap = 10,
-}: SectionHeaderProps) {
+	showBackButton = false,
+	onBackButtonClick,
+}: SectionHeaderProps) => {
 	const Title = titleComponent;
 	const Description = descriptionComponent;
 
@@ -30,7 +34,7 @@ export default function SectionHeader({
 
 	return (
 		<div
-			className={`${styles.header} ${containerClassName}`}
+			className={clsx(styles.header, containerClassName)}
 			style={
 				{
 					'--padding': `${padding}px`,
@@ -38,14 +42,19 @@ export default function SectionHeader({
 				} as React.CSSProperties
 			}
 		>
-			<Title className={`${styles.title} ${titleClassName}`}>{title}</Title>
-			{!!description && (
-				<Description
-					className={`${styles.description} ${descriptionClassName}`}
-				>
-					{description}
-				</Description>
+			{showBackButton && onBackButtonClick && (
+				<BackButton onBack={onBackButtonClick} />
 			)}
+			<div className={styles.content}>
+				<Title className={clsx(styles.title, titleClassName)}>{title}</Title>
+				{!!description && (
+					<Description
+						className={clsx(styles.description, descriptionClassName)}
+					>
+						{description}
+					</Description>
+				)}
+			</div>
 		</div>
 	);
-}
+};

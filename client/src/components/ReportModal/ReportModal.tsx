@@ -3,9 +3,19 @@
 import { REPORT_TYPES } from '@/constants';
 import { Option } from '@/types';
 import { MdReportGmailerrorred } from 'react-icons/md';
-import { Button, Field, Modal, Textarea } from '../UI';
-import FormSelect from '../UI/FormSelect/FormSelect';
-import Select from '../UI/Select/Select';
+import {
+	Button,
+	Field,
+	FormSelect,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+	SelectContent,
+	SelectItem,
+	Textarea,
+} from '../UI';
 import styles from './ReportModal.module.scss';
 import { REPORT_TITLES_OPTIONS } from './reportTitleOptions';
 import { useReportModal } from './useReportModal';
@@ -29,7 +39,7 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 
 	return (
 		<Modal open={isOpen} onOpenChange={handleOpenChange}>
-			<Modal.Trigger asChild>
+			<ModalTrigger asChild>
 				<Button
 					isIcon
 					size="sm"
@@ -39,10 +49,10 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 				>
 					<MdReportGmailerrorred size={30} />
 				</Button>
-			</Modal.Trigger>
-			<Modal.Content className={styles.modal} description="Report User">
-				<Modal.Header>Report User</Modal.Header>
-				<Modal.Body>
+			</ModalTrigger>
+			<ModalContent className={styles.modal} description="Report User">
+				<ModalHeader>Report User</ModalHeader>
+				<ModalBody>
 					<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 						<input type="hidden" {...register('reportedId')} />
 						<Field
@@ -61,13 +71,13 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 									return option ? option.label : '';
 								}}
 							>
-								<Select.Content>
+								<SelectContent>
 									{REPORT_TITLES_OPTIONS.map((option: Option) => (
-										<Select.Item key={option.value} value={option.value}>
+										<SelectItem key={option.value} value={option.value}>
 											{option.label}
-										</Select.Item>
+										</SelectItem>
 									))}
-								</Select.Content>
+								</SelectContent>
 							</FormSelect>
 						</Field>
 						{isOtherTitle && (
@@ -91,8 +101,8 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 						</Field>
 						<Button type="submit">Send</Button>
 					</form>
-				</Modal.Body>
-			</Modal.Content>
+				</ModalBody>
+			</ModalContent>
 		</Modal>
 	);
 };

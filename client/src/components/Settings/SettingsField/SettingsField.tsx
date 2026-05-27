@@ -9,7 +9,7 @@ interface SettingsFieldProps {
 	mobileDirection?: MobileDirection;
 }
 
-const SettingsField = ({
+export const SettingsField = ({
 	label,
 	children,
 	mobileDirection = 'column',
@@ -24,5 +24,3 @@ const SettingsField = ({
 		</div>
 	);
 };
-
-export default SettingsField;

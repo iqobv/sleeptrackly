@@ -1,0 +1,56 @@
+.item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--gap);
+	padding: 1rem;
+	background-color: var(--bg-card);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	opacity: 0.7;
+
+	&.achieved {
+		opacity: 1;
+
+		.image {
+			filter: unset;
+		}
+	}
+}
+
+.image {
+	width: 50px;
+	height: 50px;
+	filter: grayscale(100%);
+}
+
+.imageWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+.content {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--gap);
+	flex: 1;
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.lockOverlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

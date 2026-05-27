@@ -4,10 +4,10 @@
 	&::after {
 		content: '';
 		position: absolute;
-		top: -3px;
-		right: -3px;
-		width: 12px;
-		height: 12px;
+		top: -0.1875rem;
+		right: -0.1875rem;
+		width: 0.75rem;
+		height: 0.75rem;
 		background-color: red;
 		border-radius: 50%;
 		display: none;

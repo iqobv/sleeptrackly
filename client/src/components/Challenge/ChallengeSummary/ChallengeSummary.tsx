@@ -51,7 +51,9 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 			<SectionHeader
 				title={data?.title}
 				description={data?.description}
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 			/>
 			<div className={styles.buttons}>
 				<Button

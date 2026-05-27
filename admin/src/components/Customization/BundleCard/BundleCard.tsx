@@ -17,8 +17,8 @@ const BundleCard = ({ bundle, actions }: BundleCardProps) => {
 		'No translation';
 
 	return (
-		<div key={bundle.id} className={styles['list-item']}>
-			<div className={styles['list-item__media']}>
+		<div key={bundle.id} className={styles.item}>
+			<div className={styles.media}>
 				<CDNImage
 					src={bundle.mediaUrl}
 					alt={translation}
@@ -29,9 +29,7 @@ const BundleCard = ({ bundle, actions }: BundleCardProps) => {
 			<div>
 				<h3>{translation}</h3>
 			</div>
-			{!!actions && (
-				<div className={styles['list-item__actions']}>{actions}</div>
-			)}
+			{!!actions && <div className={styles.actions}>{actions}</div>}
 		</div>
 	);
 };

@@ -1,9 +1,9 @@
 'use client';
 
-import SettingsNotificationsFormFieldsLoader from './SettingsNotificationsFormFields/SettingsNotificationsFormFieldsLoader';
-import SettingsNotificationsReminderLoader from './SettingsNotificationsReminder/SettingsNotificationsReminderLoader';
+import {SettingsNotificationsFormFieldsLoader} from './SettingsNotificationsFormFields/SettingsNotificationsFormFieldsLoader';
+import {SettingsNotificationsReminderLoader} from './SettingsNotificationsReminder/SettingsNotificationsReminderLoader';
 
-const SettingsNotificationsFormLoader = () => {
+export const SettingsNotificationsFormLoader = () => {
 	return (
 		<>
 			<SettingsNotificationsFormFieldsLoader />
@@ -11,5 +11,3 @@ const SettingsNotificationsFormLoader = () => {
 		</>
 	);
 };
-
-export default SettingsNotificationsFormLoader;

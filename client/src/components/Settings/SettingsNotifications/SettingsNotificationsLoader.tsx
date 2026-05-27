@@ -2,9 +2,9 @@
 
 import { SkeletonLoader } from '@/components/UI';
 import styles from './SettingsNotifications.module.scss';
-import SettingsNotificationsFormLoader from './SettingsNotificationsForm/SettingsNotificationsFormLoader';
+import { SettingsNotificationsFormLoader } from './SettingsNotificationsForm/SettingsNotificationsFormLoader';
 
-const SettingsNotificationsLoader = () => {
+export const SettingsNotificationsLoader = () => {
 	return (
 		<div className={styles.notifications}>
 			<SkeletonLoader height={46} width="100%" />
@@ -12,5 +12,3 @@ const SettingsNotificationsLoader = () => {
 		</div>
 	);
 };
-
-export default SettingsNotificationsLoader;

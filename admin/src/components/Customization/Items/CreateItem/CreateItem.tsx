@@ -1,24 +1,28 @@
 'use client';
 
 import { createItem } from '@/api';
+import { Form } from '@/components/UI';
 import { PAGES } from '@/config';
 import { CreateItemDto } from '@/dto';
 import { createItemSchema } from '@/schemas';
-import { Item } from '@/types';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import CustomizationForm from '../../CustomizationForm/CustomizationForm';
+import { toast } from 'react-toastify';
 import ItemForm from '../ItemForm/ItemForm';
 
 const CreateItem = () => {
 	const router = useRouter();
 
+	const { mutate } = useMutation({
+		mutationFn: (dto: CreateItemDto) => createItem(dto),
+		onSuccess: (data) => router.push(PAGES.ITEM(data.id)),
+		onError: (e) => toast.error(e.message || 'Something went wrong'),
+	});
+
 	return (
-		<CustomizationForm<CreateItemDto, Item>
+		<Form<CreateItemDto>
 			schema={createItemSchema}
-			mutationFn={createItem}
-			onSuccess={(data) => {
-				router.push(PAGES.ITEM(data.id));
-			}}
+			onSubmit={(data) => mutate(data)}
 			defaultValues={{
 				isExclusive: false,
 				type: 'AVATAR_FRAME',
@@ -30,7 +34,7 @@ const CreateItem = () => {
 			}}
 		>
 			<ItemForm<CreateItemDto> />
-		</CustomizationForm>
+		</Form>
 	);
 };
 

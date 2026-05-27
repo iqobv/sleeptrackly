@@ -32,6 +32,7 @@ const ProductsList = () => {
 		<ItemsListPaginatedWrapper<Product>
 			queryFn={() => getAllProducts(params)}
 			queryKey={() => [...QUERY_KEYS.customization.product.getAll(params)]}
+			isModal
 			itemCard={(product) => (
 				<ItemCard
 					product={product}

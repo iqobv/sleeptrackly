@@ -1,6 +1,11 @@
 'use client';
 
-import { Button, Dropdown } from '@/components/UI';
+import {
+	Button,
+	DropdownContent,
+	DropdownItem,
+	DropdownSeparator,
+} from '@/components/UI';
 import { User } from '@/types';
 import MenuItem from '../MenuItem/MenuItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
@@ -15,7 +20,7 @@ interface UserMenuDropdownProps {
 
 const UserMenuDropdown = ({ handleLogout, user }: UserMenuDropdownProps) => {
 	return (
-		<Dropdown.Content align="end" sideOffset={10} className={styles.content}>
+		<DropdownContent align="end" sideOffset={10} className={styles.content}>
 			<UserMenuCoins />
 			{USER_MAIN_LINKS(user).map((link) => (
 				<MenuItem {...link} key={link.name} icon={link.icon || undefined} />
@@ -23,14 +28,14 @@ const UserMenuDropdown = ({ handleLogout, user }: UserMenuDropdownProps) => {
 			{USER_SYSTEM_LINKS.map((link) => (
 				<MenuItem {...link} key={link.name} icon={link.icon || undefined} />
 			))}
-			<Dropdown.Separator />
+			<DropdownSeparator />
 			<ThemeSwitcher />
-			<Dropdown.Item asChild>
+			<DropdownItem asChild>
 				<Button onClick={handleLogout} fullWidth>
 					Logout
 				</Button>
-			</Dropdown.Item>
-		</Dropdown.Content>
+			</DropdownItem>
+		</DropdownContent>
 	);
 };
 

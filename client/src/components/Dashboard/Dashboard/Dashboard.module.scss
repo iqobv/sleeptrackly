@@ -1,14 +1,14 @@
 @use '../../../styles/mixins' as *;
 
 .dashboard {
-	margin-top: 10px;
-	padding-bottom: 120px;
+	margin-top: 0.625rem;
+	padding-bottom: 7.5rem;
 }
 
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 1.25rem;
 }
 
 .content {
@@ -17,10 +17,10 @@
 	grid-template-columns: 1fr;
 
 	@include respond-to(md) {
-		grid-template-columns: 200px 1fr;
+		grid-template-columns: 12.5rem 1fr;
 	}
 
 	@include respond-to(lg) {
-		grid-template-columns: 280px 1fr;
+		grid-template-columns: 17.5rem 1fr;
 	}
 }

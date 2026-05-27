@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/UI';
-import SettingsField from '../../SettingsField/SettingsField';
+import { SettingsField } from '../../SettingsField/SettingsField';
 import styles from './SettingsSecurityField.module.scss';
 
 interface SettingsSecurityFieldProps {
@@ -11,7 +11,7 @@ interface SettingsSecurityFieldProps {
 	action: () => void;
 }
 
-const SettingsSecurityField = ({
+export const SettingsSecurityField = ({
 	label,
 	isImportant,
 	buttonText,
@@ -30,5 +30,3 @@ const SettingsSecurityField = ({
 		</SettingsField>
 	);
 };
-
-export default SettingsSecurityField;

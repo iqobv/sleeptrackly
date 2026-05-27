@@ -1,14 +1,14 @@
 .field {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
-	padding: 8px 0;
+	gap: 0.25rem;
+	padding: 0.5rem 0;
 }
 
 .error {
 	color: var(--color-error);
 	font-size: 0.925rem;
-	padding-left: 8px;
+	padding-left: 0.5rem;
 
 	&.disabled {
 		opacity: 0.6;

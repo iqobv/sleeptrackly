@@ -1,6 +1,6 @@
 'use client';
 
-import { Dropdown } from '@/components/UI';
+import { DropdownContent } from '@/components/UI';
 import { NotificationPaginated } from '@/types';
 import { UseQueryResult } from '@tanstack/react-query';
 import styles from './NotificationsList.module.scss';
@@ -16,7 +16,7 @@ const NotificationsList = ({ queryNotifications }: NotificationsListProps) => {
 	useNotificationStream(refetch);
 
 	return (
-		<Dropdown.Content align="end" sideOffset={10} className={styles.dropdown}>
+		<DropdownContent align="end" sideOffset={10} className={styles.dropdown}>
 			<div className={styles.content}>
 				{isLoading && <p role="status">Loading...</p>}
 
@@ -48,7 +48,7 @@ const NotificationsList = ({ queryNotifications }: NotificationsListProps) => {
 					</div>
 				)}
 			</div>
-		</Dropdown.Content>
+		</DropdownContent>
 	);
 };
 

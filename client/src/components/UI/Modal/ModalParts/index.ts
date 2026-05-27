@@ -1,3 +1,3 @@
-export { default as ModalBody } from './ModalBody';
-export { default as ModalFooter } from './ModalFooter';
-export { default as ModalHeader } from './ModalHeader';
+export * from './ModalBody';
+export * from './ModalFooter';
+export * from './ModalHeader';

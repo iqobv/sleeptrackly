@@ -5,13 +5,21 @@
 	--header-border-color: #e5e8eb;
 	--color-main-text: #0d141c;
 	--secondary-color: #464f58;
-	--header-height: 70px;
+	--header-height: 4.375rem;
 	--text-primary: #111827;
 	--text-secondary: #6b7280;
 	--border-color: #e5e7eb;
 	--link-color: #4a90e2;
 	--border-radius: 10px;
 	--color-error: #e7000b;
+	--gap: 1rem;
+
+	/* Typography Colors */
+	--text-primary: #111827;
+	--text-secondary: #4b5563;
+	--text-success: #16a34a;
+	--text-error: #dc2626;
+	--text-muted: #9ca3af;
 
 	/* Loader */
 	--loader-color: #000;
@@ -268,6 +276,11 @@
 	--dashboard-chart-bar-border: #3e3e3e;
 	--dashboard-chart-bar-bg-hover: #5f5f5f;
 	--dashboard-chart-bar-border-hover: #3e3e3e;
-	--dashboard-gap: 16px;
+	--dashboard-gap: 1rem;
 	--dashboard-card-border-radius: 10px;
+
+	/* Tooltip */
+	--tooltip-bg: #1f2937;
+	--tooltip-text: #ffffff;
+	--tooltip-arrow-bg: #1f2937;
 }

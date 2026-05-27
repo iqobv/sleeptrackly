@@ -18,6 +18,8 @@ interface ItemsListPaginatedWrapperProps<T> {
 		'queryKey' | 'queryFn'
 	>;
 	itemCard: (item: T) => React.ReactNode;
+	className?: string;
+	isModal?: boolean;
 }
 
 const ItemsListPaginatedWrapper = <T,>({
@@ -25,6 +27,8 @@ const ItemsListPaginatedWrapper = <T,>({
 	queryOptions,
 	queryFn,
 	queryKey,
+	className = '',
+	isModal = false,
 }: ItemsListPaginatedWrapperProps<T>) => {
 	const searchParams = useSearchParams();
 	const pageFromUrl = Number(searchParams.get('page')) || 1;
@@ -42,8 +46,12 @@ const ItemsListPaginatedWrapper = <T,>({
 
 	const { currentPage, setPage } = usePagination(data?.meta.totalPages || 1);
 
+	const classNames = [styles.wrapper, isModal && styles.isModal, className]
+		.filter(Boolean)
+		.join(' ');
+
 	return (
-		<div className={styles['items-list-wrapper']}>
+		<div className={classNames}>
 			{data ? (
 				<>
 					<ItemsListWrapper items={data.items} itemCard={itemCard} />

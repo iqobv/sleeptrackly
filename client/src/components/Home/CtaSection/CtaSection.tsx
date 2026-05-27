@@ -9,7 +9,9 @@ const CtaSection = () => {
 			<div className={`${styles.container} container`}>
 				<SectionHeader
 					title="Ready to take control of your sleep?"
-					titleComponent="h2"
+					titleProps={{
+						variant: 'h2',
+					}}
 					description="Sign up now and take control of your sleep."
 					padding={0}
 				/>

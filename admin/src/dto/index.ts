@@ -1,3 +1,4 @@
+export * from './achievement/index';
 export * from './customization/bundle.dto';
 export * from './customization/item.dto';
 export * from './customization/product.dto';

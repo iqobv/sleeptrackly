@@ -5,7 +5,7 @@ import z from 'zod';
 export const createItemSchema = z.object({
 	isExclusive: z.boolean(),
 	type: z.enum(ITEM_TYPES),
-	basePrice: z.number().min(0),
+	basePrice: z.coerce.number().min(0),
 	rarity: z.enum(ITEM_RARITIES),
 	translations: z
 		.array(translationSchema)

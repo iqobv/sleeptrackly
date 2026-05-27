@@ -18,7 +18,9 @@ interface ChangePasswordFormProps {
 	handleClose: () => void;
 }
 
-const ChangePasswordForm = ({ handleClose }: ChangePasswordFormProps) => {
+export const ChangePasswordForm = ({
+	handleClose,
+}: ChangePasswordFormProps) => {
 	const { user } = useAuth();
 	const router = useRouter();
 
@@ -88,5 +90,3 @@ const ChangePasswordForm = ({ handleClose }: ChangePasswordFormProps) => {
 		</form>
 	);
 };
-
-export default ChangePasswordForm;

@@ -1,7 +1,14 @@
 'use client';
 
 import { getAllItems } from '@/api';
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { Item } from '@/types';
 import { useEffect, useState } from 'react';
@@ -9,6 +16,7 @@ import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 import ItemCard from '../../ItemCard/ItemCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import ItemsListWrapper from '../../ItemsListWrapper/ItemsListWrapper';
+import styles from './BundleItems.module.scss';
 
 interface BundleItemsProps {
 	initialItems?: Item[];
@@ -54,17 +62,18 @@ const BundleItems = <T extends FieldValues>({
 	return (
 		<div>
 			<Modal>
-				<Modal.Trigger asChild>
+				<ModalTrigger asChild>
 					<Button type="button">Add Items</Button>
-				</Modal.Trigger>
-				<Modal.Content>
-					<Modal.Header>Select Items</Modal.Header>
-					<Modal.Body>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Items</ModalHeader>
+					<ModalBody>
 						<ItemsListPaginatedWrapper
 							queryFn={getAllItems}
 							queryKey={(query) => [
 								...QUERY_KEYS.customization.item.getAll(query),
 							]}
+							isModal
 							itemCard={(item) => {
 								const isSelected = selectedIds.includes(item.id);
 								return (
@@ -84,8 +93,8 @@ const BundleItems = <T extends FieldValues>({
 								);
 							}}
 						/>
-					</Modal.Body>
-				</Modal.Content>
+					</ModalBody>
+				</ModalContent>
 			</Modal>
 
 			{selectedItems.length > 0 && (

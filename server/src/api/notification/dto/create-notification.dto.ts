@@ -67,4 +67,9 @@ export class CreateNotificationDto {
 	@IsUUID('4')
 	@IsOptional()
 	weeklySleepSummaryId?: string;
+
+	@ApiProperty({ example: '68ffff65-5934-41ef-b351-db066542eb06' })
+	@IsUUID('4')
+	@IsOptional()
+	achievementId?: string;
 }

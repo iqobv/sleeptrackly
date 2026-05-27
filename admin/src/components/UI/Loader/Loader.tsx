@@ -1,23 +1,26 @@
 'use client';
 
+import clsx from 'clsx';
 import styles from './Loader.module.scss';
 import { LoaderProps } from './Loader.types';
 
-export default function Loader({
+export const Loader = ({
 	size = 30,
 	thickness = 6,
 	containerClassName,
 	loaderClassName,
 	disablePadding = false,
-}: LoaderProps) {
+}: LoaderProps) => {
 	return (
 		<div
-			className={`${styles.loader__container} ${
-				disablePadding ? '' : styles.loader__padding
-			} ${containerClassName}`}
+			className={clsx(
+				styles.container,
+				!disablePadding && styles.padding,
+				containerClassName,
+			)}
 		>
 			<div
-				className={`${styles.loader} ${loaderClassName}`}
+				className={clsx(styles.loader, loaderClassName)}
 				style={{
 					width: size,
 					height: size,
@@ -26,4 +29,4 @@ export default function Loader({
 			/>
 		</div>
 	);
-}
+};

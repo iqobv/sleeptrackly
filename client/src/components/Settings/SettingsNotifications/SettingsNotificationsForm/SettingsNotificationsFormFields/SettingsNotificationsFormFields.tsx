@@ -1,14 +1,14 @@
 'use client';
 
 import { UpdateFunction } from '../SettingsNotificationsForm.types';
-import SettingsNotificationsFormField from './SettingsNotificationsFormField/SettingsNotificationsFormField';
+import { SettingsNotificationsFormField } from './SettingsNotificationsFormField/SettingsNotificationsFormField';
 import { SETTINGS_NOTIFICATIONS_FIELDS } from './settingsNotificationsFormFieldsList';
 
 interface SettingsNotificationsFormFieldsProps {
 	updateSetting: UpdateFunction;
 }
 
-const SettingsNotificationsFormFields = ({
+export const SettingsNotificationsFormFields = ({
 	updateSetting,
 }: SettingsNotificationsFormFieldsProps) => {
 	return (
@@ -24,5 +24,3 @@ const SettingsNotificationsFormFields = ({
 		</>
 	);
 };
-
-export default SettingsNotificationsFormFields;

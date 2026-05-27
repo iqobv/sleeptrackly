@@ -1,6 +1,13 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { ProductType } from '@/types';
 import { useState } from 'react';
 import ProductBundlesList from './ProductBundlesList/ProductBundlesList';
@@ -14,34 +21,36 @@ const ProductItemModal = () => {
 	return (
 		<div>
 			<Modal>
-				<Modal.Trigger asChild>
+				<ModalTrigger asChild>
 					<Button>Select</Button>
-				</Modal.Trigger>
-				<Modal.Content>
-					<Modal.Header>Select Item</Modal.Header>
-				</Modal.Content>
-				<Modal.Body>
-					<div className={styles.tabs}>
-						<Button
-							variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
-							color="secondary"
-							onClick={() => setSelectedType('ITEM')}
-						>
-							Items
-						</Button>
-						<Button
-							variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
-							color="secondary"
-							onClick={() => setSelectedType('BUNDLE')}
-						>
-							Bundles
-						</Button>
-					</div>
-					<div>
-						{selectedType === 'ITEM' && <ProductItemsList />}
-						{selectedType === 'BUNDLE' && <ProductBundlesList />}
-					</div>
-				</Modal.Body>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Item</ModalHeader>
+					<ModalBody>
+						<div>
+							<div className={styles.tabs}>
+								<Button
+									variant={selectedType === 'ITEM' ? 'contained' : 'outlined'}
+									color="secondary"
+									onClick={() => setSelectedType('ITEM')}
+								>
+									Items
+								</Button>
+								<Button
+									variant={selectedType === 'BUNDLE' ? 'contained' : 'outlined'}
+									color="secondary"
+									onClick={() => setSelectedType('BUNDLE')}
+								>
+									Bundles
+								</Button>
+							</div>
+							<div>
+								{selectedType === 'ITEM' && <ProductItemsList />}
+								{selectedType === 'BUNDLE' && <ProductBundlesList />}
+							</div>
+						</div>
+					</ModalBody>
+				</ModalContent>
 			</Modal>
 		</div>
 	);

@@ -2,7 +2,7 @@
 	background-color: var(--inventory-item-bg);
 	border: 1px solid var(--inventory-item-border);
 	border-radius: 8px;
-	min-height: 360px;
+	min-height: 22.5rem;
 	display: flex;
 	flex-direction: column;
 
@@ -27,7 +27,7 @@
 	top: 12px;
 	right: 18px;
 	background-color: var(--inventory-equipped-bg);
-	padding: 4px 8px;
+	padding: 0.25rem 0.5rem;
 	user-select: none;
 	border: 1px solid var(--inventory-equipped-border);
 	border-radius: 8px;
@@ -39,18 +39,18 @@
 }
 
 .details {
-	padding: 12px;
+	padding: 0.75rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	gap: 20px;
+	gap: 1.25rem;
 	flex-grow: 1;
 }
 
 .info {
 	display: flex;
 	flex-direction: column;
-	gap: 5px;
+	gap: 0.3125rem;
 	justify-content: space-between;
 }
 
@@ -75,5 +75,5 @@
 	display: flex;
 	justify-content: space-between;
 	flex-direction: row;
-	gap: 8px;
+	gap: 0.5rem;
 }

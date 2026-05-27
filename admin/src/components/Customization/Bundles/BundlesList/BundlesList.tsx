@@ -12,7 +12,9 @@ const BundlesList = () => {
 	return (
 		<div>
 			<Button asChild>
-				<Link href={PAGES.BUNDLE_NEW}>New Bundle</Link>
+				<Link href={PAGES.BUNDLE_NEW} prefetch={false}>
+					New Bundle
+				</Link>
 			</Button>
 			<ItemsListPaginatedWrapper<Bundle>
 				queryFn={getAllBundles}
@@ -21,7 +23,9 @@ const BundlesList = () => {
 					<BundleCard
 						actions={
 							<Button fullWidth variant="contained" color="secondary" asChild>
-								<Link href={PAGES.BUNDLE(bundle.id)}>View</Link>
+								<Link href={PAGES.BUNDLE(bundle.id)} prefetch={false}>
+									View
+								</Link>
 							</Button>
 						}
 						bundle={bundle}

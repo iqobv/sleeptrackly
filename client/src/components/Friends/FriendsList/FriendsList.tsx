@@ -20,7 +20,12 @@ const FriendsList = () => {
 
 	return (
 		<div className={styles.friends}>
-			<SectionHeader title="My Friends" titleComponent="h3" />
+			<SectionHeader
+				title="My Friends"
+				titleProps={{
+					variant: 'h3',
+				}}
+			/>
 			{data && user && (
 				<>
 					<Button variant="outlined" asChild>
@@ -34,7 +39,7 @@ const FriendsList = () => {
 						items={data.friends}
 						renderItem={(item) => <FriendItem key={item.id} friend={item} />}
 						style={{
-							paddingTop: '20px',
+							paddingTop: '1.25rem',
 						}}
 					/>
 				</>

@@ -3,7 +3,7 @@ import styles from './SettingsSecurity.module.scss';
 
 const cards = Array.from({ length: 3 }, (_, i) => i);
 
-const SettingsSecurityLoader = () => {
+export const SettingsSecurityLoader = () => {
 	return (
 		<div className={styles.settingsSecurity}>
 			{cards.map((_, i) => (
@@ -12,5 +12,3 @@ const SettingsSecurityLoader = () => {
 		</div>
 	);
 };
-
-export default SettingsSecurityLoader;

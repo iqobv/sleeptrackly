@@ -1,3 +1,4 @@
+import { AchievementModule } from '@api/achievement/achievement.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { ChallengeTaskModule } from '../challenge-task/challenge-task.module';
 import { ChallengeCleanupService } from './challenge-cleanup.service';
@@ -6,7 +7,7 @@ import { ChallengeService } from './challenge.service';
 
 @Module({
 	controllers: [ChallengeController],
-	imports: [forwardRef(() => ChallengeTaskModule)],
+	imports: [forwardRef(() => ChallengeTaskModule), AchievementModule],
 	exports: [ChallengeService],
 	providers: [ChallengeService, ChallengeCleanupService],
 })

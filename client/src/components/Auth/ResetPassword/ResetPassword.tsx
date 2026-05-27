@@ -15,6 +15,7 @@ const ResetPassword = () => {
 			<SectionHeader
 				title="Reset Password"
 				containerClassName={styles.header}
+				textAlign="center"
 			/>
 			<div className={styles.container}>
 				{token ? <NewPasswordField token={token} /> : <EmailField />}

@@ -1,7 +1,7 @@
 'use client';
 
 import { createNotification } from '@/api';
-import { Button, Field, FormSelect, Input, Select } from '@/components/UI';
+import { Button, Field, FormSelect, Input, SelectItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreateNotificationDto } from '@/dto';
 import { createNotificationSchema } from '@/schemas';
@@ -55,9 +55,9 @@ const CreateNotification = () => {
 						>
 							<FormSelect name={f.name} control={control}>
 								{Object.values(NotificationType).map((option) => (
-									<Select.Item key={option} value={option}>
+									<SelectItem key={option} value={option}>
 										{option}
-									</Select.Item>
+									</SelectItem>
 								))}
 							</FormSelect>
 						</Field>

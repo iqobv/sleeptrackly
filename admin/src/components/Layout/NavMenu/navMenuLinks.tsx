@@ -2,6 +2,7 @@ import { PAGES } from '@/config';
 import { IconType } from 'react-icons';
 import {
 	MdCardGiftcard,
+	MdOutlineEmojiEvents,
 	MdOutlineHome,
 	MdOutlineNotifications,
 	MdOutlinePerson,
@@ -69,6 +70,12 @@ export const NAV_MENU_LINKS: NavMenuLinksProps[] = [
 		label: 'Promotions',
 		href: PAGES.PROMOTIONS,
 		Icon: MdCardGiftcard,
+		expanded: false,
+	},
+	{
+		label: 'Achievements',
+		href: PAGES.ACHIEVEMENTS,
+		Icon: MdOutlineEmojiEvents,
 		expanded: false,
 	},
 ];

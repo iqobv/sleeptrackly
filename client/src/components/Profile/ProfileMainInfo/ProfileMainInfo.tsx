@@ -47,9 +47,11 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 			</div>
 			<SectionHeader
 				title={profile.username}
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 				description={`Joined ${year}`}
-				containerClassName={styles.username}
+				textAlign="center"
 			/>
 			{badges.length > 0 && <ProfileBadges badges={badges} />}
 			{profile && user && user.id !== profile.id && (

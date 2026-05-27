@@ -2,9 +2,9 @@
 
 import { PRIVATE_PAGES } from '@/config';
 import { useRouter } from 'next/navigation';
-import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
+import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
 
-const SettingsSessions = () => {
+export const SettingsSessions = () => {
 	const router = useRouter();
 
 	const handleCLick = () => router.push(PRIVATE_PAGES.SETTINGS.SESSIONS);
@@ -19,5 +19,3 @@ const SettingsSessions = () => {
 		</>
 	);
 };
-
-export default SettingsSessions;

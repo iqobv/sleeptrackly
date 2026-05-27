@@ -1,6 +1,12 @@
 'use client';
 
-import { Checkbox, Field, FormSelect, Input, Select } from '@/components/UI';
+import {
+	Checkbox,
+	Field,
+	FormSelect,
+	Input,
+	SelectItem,
+} from '@/components/UI';
 import type { Field as FieldType } from '@/types';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
@@ -50,9 +56,9 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 								}}
 							>
 								{options?.map((option) => (
-									<Select.Item key={option.value} value={option.value}>
+									<SelectItem key={option.value} value={option.value}>
 										{option.label}
-									</Select.Item>
+									</SelectItem>
 								))}
 							</FormSelect>
 						</Field>

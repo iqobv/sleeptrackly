@@ -1,7 +1,7 @@
 .pagination {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 0.625rem;
 	align-items: center;
 	justify-content: center;
 }
@@ -9,7 +9,7 @@
 .pages {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 0.625rem;
 	align-items: center;
 	justify-content: center;
 }
@@ -33,10 +33,10 @@
 
 .buttonText {
 	aspect-ratio: 1/1;
-	width: 25px;
-	height: 25px;
+	width: 1.5625rem;
+	height: 1.5625rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 13px;
+	font-size: 0.8125rem;
 }

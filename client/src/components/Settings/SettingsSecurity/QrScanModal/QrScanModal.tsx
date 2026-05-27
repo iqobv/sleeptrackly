@@ -1,26 +1,31 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@/components/UI';
 import { MdOutlineQrCodeScanner } from 'react-icons/md';
-import QrScan from './QrScan/QrScan';
+import { QrScan } from './QrScan/QrScan';
 import styles from './QrScanModal.module.scss';
 
-const QrScanModal = () => {
+export const QrScanModal = () => {
 	return (
 		<Modal>
-			<Modal.Trigger asChild>
+			<ModalTrigger asChild>
 				<Button variant="text" isIcon isRounded>
 					<MdOutlineQrCodeScanner size={25} />
 				</Button>
-			</Modal.Trigger>
-			<Modal.Content className={styles.modal}>
-				<Modal.Header>Scan QR code</Modal.Header>
-				<Modal.Body className={styles.body}>
+			</ModalTrigger>
+			<ModalContent className={styles.modal}>
+				<ModalHeader>Scan QR code</ModalHeader>
+				<ModalBody className={styles.body}>
 					<QrScan />
-				</Modal.Body>
-			</Modal.Content>
+				</ModalBody>
+			</ModalContent>
 		</Modal>
 	);
 };
-
-export default QrScanModal;

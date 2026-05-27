@@ -3,7 +3,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import styles from './DropdownItem.module.scss';
 
-const DropdownItem = ({
+export const DropdownItem = ({
 	children,
 	...props
 }: DropdownMenu.DropdownMenuItemProps) => {
@@ -13,5 +13,3 @@ const DropdownItem = ({
 		</DropdownMenu.Item>
 	);
 };
-
-export default DropdownItem;

@@ -6,7 +6,12 @@ import { FEATURES_ITEMS } from './featuresItems';
 const Features = () => {
 	return (
 		<div className="container">
-			<SectionHeader title="Discover Features" titleComponent="h2" />
+			<SectionHeader
+				title="Discover Features"
+				titleProps={{
+					variant: 'h2',
+				}}
+			/>
 			<List
 				items={FEATURES_ITEMS}
 				className={styles['features__list']}

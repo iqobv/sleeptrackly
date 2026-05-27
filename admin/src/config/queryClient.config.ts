@@ -58,4 +58,8 @@ export const QUERY_KEYS = {
 		all: ['getAllPromotions'],
 		byId: (id: string) => ['getPromotionById', id] as const,
 	} as const,
+	achievement: {
+		all: ['getAllAchievements'],
+		byId: (id: string) => ['getAchievementById', id] as const,
+	} as const,
 } as const;

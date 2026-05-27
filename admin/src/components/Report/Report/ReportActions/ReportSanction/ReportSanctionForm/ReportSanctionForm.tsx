@@ -1,7 +1,7 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { Button, Field, FormSelect, Input, Select } from '@/components/UI';
+import { Button, Field, FormSelect, Input, SelectItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
@@ -86,9 +86,9 @@ const ReportSanctionForm = ({
 					placeholder="Select sanction type"
 				>
 					{USER_SANCTIONS_OPTIONS.map((option) => (
-						<Select.Item key={option.value} value={option.value}>
+						<SelectItem key={option.value} value={option.value}>
 							{option.label}
-						</Select.Item>
+						</SelectItem>
 					))}
 				</FormSelect>
 			</Field>

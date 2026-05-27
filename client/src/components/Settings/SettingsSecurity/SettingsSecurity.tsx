@@ -1,11 +1,11 @@
 'use client';
 
-import ChangePassword from './ChangePassword/ChangePassword';
-import SettingsDeleteAccount from './SettingsDeleteAccount/SettingsDeleteAccount';
+import { ChangePassword } from './ChangePassword/ChangePassword';
+import { SettingsDeleteAccount } from './SettingsDeleteAccount/SettingsDeleteAccount';
 import styles from './SettingsSecurity.module.scss';
-import SettingsSessions from './SettingsSessions/SettingsSessions';
+import { SettingsSessions } from './SettingsSessions/SettingsSessions';
 
-const SettingsSecurity = () => {
+export const SettingsSecurity = () => {
 	return (
 		<div className={styles.settingsSecurity}>
 			<SettingsSessions />
@@ -14,5 +14,3 @@ const SettingsSecurity = () => {
 		</div>
 	);
 };
-
-export default SettingsSecurity;

@@ -28,7 +28,7 @@ const InventoryList = () => {
 	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
 
 	return (
-		<div className={styles.list}>
+		<div className={styles.inventory}>
 			{isLoading && <InventoryListLoader />}
 			{data && data.meta.total > 0 && (
 				<>

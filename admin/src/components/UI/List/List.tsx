@@ -1,9 +1,10 @@
 'use client';
 
+import clsx from 'clsx';
 import styles from './List.module.scss';
 import { ListProps } from './List.types';
 
-export default function List<T>({
+export const List = <T,>({
 	items,
 	className = '',
 	isHorizontal = false,
@@ -11,18 +12,16 @@ export default function List<T>({
 	style,
 	listComponent = 'div',
 	renderItem,
-}: ListProps<T>) {
+}: ListProps<T>) => {
 	const Component = listComponent;
-
-	const classNames = [
-		styles['list'],
-		isHorizontal ? styles['list--horizontal'] : '',
-		className,
-	];
 
 	return (
 		<Component
-			className={classNames.join(' ').trim()}
+			className={clsx(
+				styles.list,
+				isHorizontal && styles.horizontal,
+				className,
+			)}
 			style={
 				{
 					'--gap': `${gap}px`,
@@ -33,4 +32,4 @@ export default function List<T>({
 			{items.map(renderItem)}
 		</Component>
 	);
-}
+};

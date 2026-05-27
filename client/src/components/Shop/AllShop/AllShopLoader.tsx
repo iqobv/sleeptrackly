@@ -14,7 +14,7 @@ const AllShopLoader = () => {
 			<div className={styles['all-shop__items-container']}>
 				<AllShopFilterSearchBarLoader />
 				<div className={styles['all-shop__items']}>
-					<div className={styles['all-shop__items-grid']}>{ITEMS}</div>
+					<div className={styles.itemsGrid}>{ITEMS}</div>
 					<div style={{ margin: '0 auto' }}>
 						<SkeletonLoader width={250} height={44} />
 					</div>

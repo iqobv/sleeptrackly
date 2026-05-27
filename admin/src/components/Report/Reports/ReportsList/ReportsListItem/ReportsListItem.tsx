@@ -14,7 +14,11 @@ interface ReportsListItemProps {
 
 const ReportsListItem = ({ report }: ReportsListItemProps) => {
 	return (
-		<Link href={PAGES.REPORT(report.id)} className={styles.item}>
+		<Link
+			href={PAGES.REPORT(report.id)}
+			className={styles.item}
+			prefetch={false}
+		>
 			<div>
 				<p>{report.title}</p>
 				<div>

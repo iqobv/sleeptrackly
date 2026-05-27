@@ -24,6 +24,7 @@ const ReportDetail = ({ report }: ReportDetailProps) => {
 					<Link
 						className={styles.username}
 						href={PAGES.USER(report.reporter.username)}
+						prefetch={false}
 					>
 						{report.reporter.username}
 					</Link>
@@ -34,6 +35,7 @@ const ReportDetail = ({ report }: ReportDetailProps) => {
 						<Link
 							className={styles.username}
 							href={PAGES.USER(report.targetUser.username)}
+							prefetch={false}
 						>
 							{report.targetUser.username}
 						</Link>

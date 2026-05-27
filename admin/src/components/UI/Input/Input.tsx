@@ -3,12 +3,12 @@
 import { MouseEvent, useRef, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 import { mergeRefs } from 'react-merge-refs';
-import Button from '../Button/Button';
+import { Button } from '../Button';
 import { useField } from '../Field/FieldContext';
 import styles from './Input.module.scss';
 import { InputProps } from './Input.types';
 
-const Input = ({
+export const Input = ({
 	className = '',
 	error,
 	disabled,
@@ -23,6 +23,7 @@ const Input = ({
 	inputStyle,
 	wrapperRef,
 	wrapperProps,
+	value,
 	...props
 }: InputProps) => {
 	const field = useField({ id, error, disabled, required });
@@ -92,6 +93,7 @@ const Input = ({
 				required={field.required}
 				id={field.id}
 				style={inputStyle}
+				value={value ?? ''}
 				{...props}
 			/>
 			{finalRightSection && (
@@ -102,5 +104,3 @@ const Input = ({
 		</div>
 	);
 };
-
-export default Input;

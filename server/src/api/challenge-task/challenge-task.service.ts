@@ -1,3 +1,5 @@
+import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	forwardRef,
@@ -14,6 +16,7 @@ export class ChallengeTaskService {
 		private readonly prismaService: PrismaService,
 		@Inject(forwardRef(() => ChallengeService))
 		private readonly challengeService: ChallengeService,
+		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
 	async createMany(
@@ -76,6 +79,11 @@ export class ChallengeTaskService {
 				completedValue,
 			},
 		});
+
+		await this.achievementProgressService.checkProgress(
+			userId,
+			AchievementType.CHALLENGES_TASKS_COMPLETED,
+		);
 
 		return updatedTask;
 	}

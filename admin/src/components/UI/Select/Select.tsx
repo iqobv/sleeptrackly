@@ -3,12 +3,9 @@
 import * as Popover from '@radix-ui/react-popover';
 import { useRef, useState } from 'react';
 import { SelectProps } from './Select.types';
-import SelectContent from './SelectContent/SelectContent';
 import { SelectContext } from './SelectContext';
-import SelectItem from './SelectItem/SelectItem';
-import SelectTrigger from './SelectTrigger/SelectTrigger';
 
-const Select = ({
+export const Select = ({
 	children,
 	value,
 	onChange,
@@ -47,9 +44,3 @@ const Select = ({
 		</SelectContext.Provider>
 	);
 };
-
-Select.Trigger = SelectTrigger;
-Select.Content = SelectContent;
-Select.Item = SelectItem;
-
-export default Select;

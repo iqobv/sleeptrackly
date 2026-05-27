@@ -11,7 +11,13 @@ interface AllChallengesProps {
 const AllChallenges = ({ data }: AllChallengesProps) => {
 	return (
 		<div>
-			<SectionHeader title="All Challenges" titleComponent="h2" padding={5} />
+			<SectionHeader
+				title="All Challenges"
+				titleProps={{
+					variant: 'h2',
+				}}
+				padding={5}
+			/>
 			{data.length > 0 ? <ChallengesList data={data} /> : <p>No challenges</p>}
 		</div>
 	);

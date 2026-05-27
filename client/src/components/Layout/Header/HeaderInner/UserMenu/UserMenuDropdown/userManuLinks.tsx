@@ -2,6 +2,7 @@ import { PAGES, PRIVATE_PAGES } from '@/config';
 import { User } from '@/types';
 import { IconBaseProps } from 'react-icons';
 import {
+	MdOutlineEmojiEvents,
 	MdOutlineInventory2,
 	MdOutlinePerson,
 	MdOutlineSettings,
@@ -37,6 +38,12 @@ export const USER_MAIN_LINKS = (user: User): Link[] => [
 		label: 'Inventory',
 		path: PRIVATE_PAGES.INVENTORY,
 		icon: <MdOutlineInventory2 {...iconProps} />,
+	},
+	{
+		name: 'achievements',
+		label: 'Achievements',
+		path: PRIVATE_PAGES.ACHIEVEMENTS,
+		icon: <MdOutlineEmojiEvents {...iconProps} />,
 	},
 ];
 

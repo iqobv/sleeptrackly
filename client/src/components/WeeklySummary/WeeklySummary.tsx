@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal } from '../UI';
+import { ModalBody, ModalContent, ModalHeader } from '../UI';
 import styles from './WeeklySummary.module.scss';
 import WeeklySummaryBody from './WeeklySummaryBody';
 
@@ -10,12 +10,12 @@ interface WeeklySummaryProps {
 
 const WeeklySummary = ({ id }: WeeklySummaryProps) => {
 	return (
-		<Modal.Content className={styles.modal}>
-			<Modal.Header>Weekly Summary</Modal.Header>
-			<Modal.Body>
+		<ModalContent className={styles.modal}>
+			<ModalHeader>Weekly Summary</ModalHeader>
+			<ModalBody>
 				<WeeklySummaryBody id={id} />
-			</Modal.Body>
-		</Modal.Content>
+			</ModalBody>
+		</ModalContent>
 	);
 };
 

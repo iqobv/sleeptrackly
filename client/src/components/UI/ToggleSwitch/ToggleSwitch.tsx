@@ -4,7 +4,7 @@ import { useId } from 'react';
 import styles from './ToggleSwitch.module.scss';
 import { ToggleSwitchTypes } from './ToggleSwitch.types';
 
-const ToggleSwitch = ({
+export const ToggleSwitch = ({
 	checked,
 	onChange,
 	disabled,
@@ -25,8 +25,8 @@ const ToggleSwitch = ({
 	};
 
 	return (
-		<div className={styles['switch']}>
-			<label htmlFor={elId} className={styles['switch__container']}>
+		<div className={styles.switch}>
+			<label htmlFor={elId} className={styles.container}>
 				<input
 					id={elId}
 					ref={ref}
@@ -34,18 +34,16 @@ const ToggleSwitch = ({
 					checked={checked}
 					onChange={handleToggle}
 					disabled={disabled}
-					className={styles['switch__checkbox']}
+					className={styles.checkbox}
 					{...rest}
 				/>
-				<span className={styles['switch__slider']} />
+				<span className={styles.slider} />
 			</label>
 			{label && (
-				<label htmlFor={elId} className={styles['switch__label']}>
+				<label htmlFor={elId} className={styles.label}>
 					{label}
 				</label>
 			)}
 		</div>
 	);
 };
-
-export default ToggleSwitch;

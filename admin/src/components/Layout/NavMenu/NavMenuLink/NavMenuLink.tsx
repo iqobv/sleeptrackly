@@ -31,7 +31,11 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 				className={`${styles.link} ${isOpen ? styles.open : ''}`}
 				asChild
 			>
-				<Link href={link.href} className={styles.buttonContent}>
+				<Link
+					href={link.href}
+					className={styles.buttonContent}
+					prefetch={false}
+				>
 					<div className={styles.content}>
 						<link.Icon size={25} className={styles.icon} />
 						<p className={styles.text}>{link.label}</p>
@@ -59,7 +63,11 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 								className={`${styles.link} ${isOpen ? styles.open : ''}`}
 								asChild
 							>
-								<Link href={innerLink.href} className={styles.buttonContent}>
+								<Link
+									href={innerLink.href}
+									className={styles.buttonContent}
+									prefetch={false}
+								>
 									<innerLink.Icon size={25} className={styles.icon} />
 									<p className={styles.text}>{innerLink.label}</p>
 								</Link>

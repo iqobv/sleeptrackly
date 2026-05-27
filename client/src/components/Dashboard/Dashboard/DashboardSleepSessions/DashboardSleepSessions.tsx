@@ -24,7 +24,7 @@ const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {
 
 	return (
 		<div>
-			<SectionHeader title="Sleep Sessions" titleComponent="h2" />
+			<SectionHeader title="Sleep Sessions" titleProps={{ variant: 'h2' }} />
 			<div className={styles.list}>
 				{!hasData && <p>No sleep sessions for the selected period.</p>}
 				{days.map((day) => {

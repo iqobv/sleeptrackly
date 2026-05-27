@@ -2,7 +2,7 @@
 
 import { InputHTMLAttributes, KeyboardEvent, Ref } from 'react';
 import { IoMdArrowDropdown } from 'react-icons/io';
-import Input from '../Input/Input';
+import { Input } from '../Input/Input';
 import { SelectValue } from '../Select/Select.types';
 import { useSelectContext } from '../Select/SelectContext';
 import styles from './FormSelect.module.scss';
@@ -19,7 +19,7 @@ interface FormSelectInputProps extends Omit<
 	ref?: Ref<HTMLDivElement>;
 }
 
-const FormSelectInput = ({
+export const FormSelectInput = ({
 	ref,
 	currentValue,
 	isOpen,
@@ -58,5 +58,3 @@ const FormSelectInput = ({
 		/>
 	);
 };
-
-export default FormSelectInput;

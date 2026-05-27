@@ -8,7 +8,7 @@ import inputStyles from '../Input/Input.module.scss';
 import styles from './Textarea.module.scss';
 import { TextareaProps } from './Textarea.types';
 
-const Textarea = ({
+export const Textarea = ({
 	className,
 	error,
 	disabled,
@@ -44,7 +44,11 @@ const Textarea = ({
 	return (
 		<div
 			className={containerClassNames}
-			style={{ height: 'auto', minHeight: 45, padding: '8px 12px' }}
+			style={{
+				height: 'auto',
+				minHeight: '2.8125rem',
+				padding: '0.5rem 0.75rem',
+			}}
 			data-has-left={!!leftSection}
 			data-has-right={!!rightSection}
 		>
@@ -71,5 +75,3 @@ const Textarea = ({
 		</div>
 	);
 };
-
-export default Textarea;

@@ -1,4 +1,4 @@
-import { FormSelect, Select, ToggleSwitch } from '@/components/UI';
+import { FormSelect, SelectItem, ToggleSwitch } from '@/components/UI';
 import { PRIVACY_VISIBILITY } from '@/constants';
 import { SettingsPrivacyDto } from '@/dto';
 import { Option, SettingsFormFields } from '@/types';
@@ -34,9 +34,9 @@ const PrivacySelectField = ({ control, name }: SettingsPrivacyFieldsProps) => (
 		}}
 	>
 		{OPTIONS.map((option) => (
-			<Select.Item key={option.value} value={option.value}>
+			<SelectItem key={option.value} value={option.value}>
 				{option.label}
-			</Select.Item>
+			</SelectItem>
 		))}
 	</FormSelect>
 );

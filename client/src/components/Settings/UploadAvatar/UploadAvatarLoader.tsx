@@ -3,7 +3,7 @@
 import { SkeletonLoader } from '@/components/UI';
 import styles from './UploadAvatar.module.scss';
 
-const UploadAvatarLoader = () => {
+export const UploadAvatarLoader = () => {
 	return (
 		<div className={styles.container}>
 			<SkeletonLoader height={120} width={'100%'} />
@@ -19,5 +19,3 @@ const UploadAvatarLoader = () => {
 		</div>
 	);
 };
-
-export default UploadAvatarLoader;

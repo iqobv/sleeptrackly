@@ -2,18 +2,18 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import SkeletonLoader from '../SkeletonLoader/SkeletonLoader';
+import { SkeletonLoader } from '../SkeletonLoader/SkeletonLoader';
 import styles from './Avatar.module.scss';
 import { AvatarProps } from './Avatar.types';
 
-export default function Avatar({
+export const Avatar = ({
 	avatar = 'defaults/default-avatar.png',
 	size = 40,
 	avatarClassName,
 	containerClassName,
 	priority = false,
 	isVideo = false,
-}: AvatarProps) {
+}: AvatarProps) => {
 	const [loaded, setLoaded] = useState(false);
 
 	return (
@@ -51,4 +51,4 @@ export default function Avatar({
 			)}
 		</div>
 	);
-}
+};

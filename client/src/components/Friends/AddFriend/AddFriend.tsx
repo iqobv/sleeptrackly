@@ -14,8 +14,11 @@ const AddFriend = () => {
 		<div className={styles.addFriend}>
 			<SectionHeader
 				title="Add Friend"
-				titleComponent="h3"
+				titleProps={{
+					variant: 'h3',
+				}}
 				containerClassName={styles.titleContainer}
+				padding={10}
 			/>
 			<AddFriendSearchContainer
 				search={search}

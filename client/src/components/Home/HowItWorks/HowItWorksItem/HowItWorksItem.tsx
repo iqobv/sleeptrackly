@@ -23,7 +23,9 @@ const HowItWorksItem = ({ item, index }: HowItWorksItemProps) => {
 			<div>
 				<SectionHeader
 					title={item.title}
-					titleComponent="h3"
+					titleProps={{
+						variant: 'h3',
+					}}
 					padding={0}
 					description={item.description}
 				/>

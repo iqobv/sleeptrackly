@@ -38,7 +38,7 @@ export class CreateItemDto {
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => TranslationDto)
-	@TransformTranslations()
+	@TransformTranslations(TranslationDto)
 	translations: TranslationDto[];
 }
 

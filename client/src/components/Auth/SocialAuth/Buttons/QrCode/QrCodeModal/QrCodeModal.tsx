@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { Typography } from '@/components/UI';
 import { QRCodeSVG } from 'qrcode.react';
 import { MdOutlineQrCodeScanner, MdOutlineSettings } from 'react-icons/md';
 import QrCodeLoader from './QrCodeLoader';
@@ -12,18 +12,16 @@ const QrCodeModal = () => {
 
 	return (
 		<div style={{ textAlign: 'center' }}>
-			<SectionHeader
-				description={
-					<>
-						Click on your avatar in the top right corner &gt;{' '}
-						<b>
-							<MdOutlineSettings /> Settings
-						</b>{' '}
-						&gt; <b>Security</b> &gt; <b>View sessions</b> &gt;{' '}
-						<MdOutlineQrCodeScanner />
-					</>
-				}
-			/>
+			<Typography variant="body1">
+				<>
+					Click on your avatar in the top right corner &gt;{' '}
+					<b>
+						<MdOutlineSettings /> Settings
+					</b>{' '}
+					&gt; <b>Security</b> &gt; <b>View sessions</b> &gt;{' '}
+					<MdOutlineQrCodeScanner />
+				</>
+			</Typography>
 			<div className={styles.container}>
 				{isLoading && <QrCodeLoader />}
 				{error && <p>Error: {error.message}</p>}

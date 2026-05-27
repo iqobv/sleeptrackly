@@ -3,7 +3,7 @@ import styles from '../SettingsForm/SettingsForm.module.scss';
 
 const cards = Array.from({ length: 4 }, (_, i) => i);
 
-const SettingsPrivacyLoader = () => {
+export const SettingsPrivacyLoader = () => {
 	return (
 		<div className={styles.form}>
 			{cards.map((_, i) => (
@@ -12,5 +12,3 @@ const SettingsPrivacyLoader = () => {
 		</div>
 	);
 };
-
-export default SettingsPrivacyLoader;

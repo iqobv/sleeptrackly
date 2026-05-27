@@ -8,7 +8,9 @@ interface SettingsSessionsInfoProps {
 	session: Session;
 }
 
-const SettingsSessionsInfo = ({ session }: SettingsSessionsInfoProps) => {
+export const SettingsSessionsInfo = ({
+	session,
+}: SettingsSessionsInfoProps) => {
 	const countryNameInEnglish = new Intl.DisplayNames(['en'], {
 		type: 'region',
 	});
@@ -30,5 +32,3 @@ const SettingsSessionsInfo = ({ session }: SettingsSessionsInfoProps) => {
 		</div>
 	);
 };
-
-export default SettingsSessionsInfo;

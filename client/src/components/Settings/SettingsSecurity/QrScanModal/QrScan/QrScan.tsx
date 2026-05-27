@@ -8,7 +8,7 @@ import { Scanner } from '@yudiel/react-qr-scanner';
 import { useEffect, useState } from 'react';
 import styles from './QrScan.module.scss';
 
-const QrScan = () => {
+export const QrScan = () => {
 	const [result, setResult] = useState<string | null>(null);
 
 	const { mutate, isSuccess, error } = useMutation({
@@ -24,7 +24,9 @@ const QrScan = () => {
 		<div className={styles.qrScan}>
 			<SectionHeader
 				title="Point your camera at the QR code"
-				titleComponent="h3"
+				titleProps={{
+					variant: 'h3',
+				}}
 			/>
 			{error && <p>Error: {error.message}</p>}
 			{isSuccess ? (
@@ -50,5 +52,3 @@ const QrScan = () => {
 		</div>
 	);
 };
-
-export default QrScan;

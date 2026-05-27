@@ -1,13 +1,12 @@
 'use client';
 
-import { Button, Field, Input } from '@/components/UI';
+import { Button, FormField, Input } from '@/components/UI';
 import { TranslationDto } from '@/dto';
 import {
 	ArrayPath,
 	FieldArray,
 	FieldErrors,
 	FieldValues,
-	Path,
 	useFieldArray,
 	useFormContext,
 } from 'react-hook-form';
@@ -21,7 +20,6 @@ interface HasTranslations extends FieldValues {
 const TranslationForm = <T extends HasTranslations>() => {
 	const {
 		control,
-		register,
 		formState: { errors },
 	} = useFormContext<T>();
 
@@ -42,22 +40,22 @@ const TranslationForm = <T extends HasTranslations>() => {
 				return (
 					<div key={field.id} className={styles.item}>
 						<div className={styles.fields}>
-							<Field
+							<FormField
+								name={`translations.${index}.language`}
 								error={error?.language?.message}
 								label='Language Code (e.g. "en", "fr")'
 								required
 							>
-								<Input
-									placeholder="Language"
-									{...register(`translations.${index}.language` as Path<T>)}
-								/>
-							</Field>
-							<Field label="Name" error={error?.name?.message} required>
-								<Input
-									placeholder="Name"
-									{...register(`translations.${index}.name` as Path<T>)}
-								/>
-							</Field>
+								<Input placeholder="Language" />
+							</FormField>
+							<FormField
+								name={`translations.${index}.name`}
+								label="Name"
+								error={error?.name?.message}
+								required
+							>
+								<Input placeholder="Name" />
+							</FormField>
 						</div>
 						<Button
 							type="button"

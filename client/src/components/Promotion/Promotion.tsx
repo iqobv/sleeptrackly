@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { Button, Field, Input, SectionHeader } from '../UI';
 import styles from './Promotion.module.scss';
 
-const Promotion = () => {
+export const Promotion = () => {
 	const {
 		register,
 		handleSubmit,
@@ -43,7 +43,7 @@ const Promotion = () => {
 				<SectionHeader
 					title="Redeem Code"
 					description="Enter your promo code"
-					containerClassName={styles.header}
+					textAlign="center"
 				/>
 				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
 					<Field error={errors.alias?.message} label="Promo Code" required>
@@ -67,5 +67,3 @@ const Promotion = () => {
 		</div>
 	);
 };
-
-export default Promotion;

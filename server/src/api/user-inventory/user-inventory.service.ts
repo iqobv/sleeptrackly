@@ -16,37 +16,31 @@ export class UserInventoryService {
 	) {
 		const { userId, itemId, ...rest } = dto;
 
-		const execute = async (client: Prisma.TransactionClient) =>
-			await client.userInventory.create({
+		const execute = async (client: Prisma.TransactionClient) => {
+			return client.userInventory.create({
 				data: {
-					user: { connect: { id: dto.userId } },
-					item: { connect: { id: dto.itemId } },
+					user: { connect: { id: userId } },
+					item: { connect: { id: itemId } },
 					...rest,
 				},
 			});
+		};
 
-		if (tx) return await execute(tx);
-
-		return await this.prismaService.$transaction(async (client) => {
-			return await execute(client);
-		});
+		return tx ? execute(tx) : this.prismaService.$transaction(execute);
 	}
 
 	async bulkAddItemsToInventory(
 		dtos: CreateUserInventoryDto[],
 		tx?: Prisma.TransactionClient,
 	) {
-		const execute = async (client: Prisma.TransactionClient) =>
-			await client.userInventory.createManyAndReturn({
+		const execute = async (client: Prisma.TransactionClient) => {
+			return client.userInventory.createManyAndReturn({
 				data: dtos,
 				skipDuplicates: true,
 			});
+		};
 
-		if (tx) return await execute(tx);
-
-		return await this.prismaService.$transaction(async (client) => {
-			return await execute(client);
-		});
+		return tx ? execute(tx) : this.prismaService.$transaction(execute);
 	}
 
 	async getUserInventory(
@@ -55,15 +49,15 @@ export class UserInventoryService {
 	) {
 		const { language = 'en', page = 1, limit = 20 } = query;
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		return await paginate({ page, limit }, async (take, skip) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.userInventory.count({
 					where: { userId },
 				}),
 				this.prismaService.userInventory.findMany({
 					where: { userId },
-					skip: offset,
-					take: limit,
+					skip,
+					take,
 					orderBy: {
 						createdAt: 'desc',
 					},
@@ -80,11 +74,7 @@ export class UserInventoryService {
 			]);
 
 			const mappedItems = items.map((ui) => {
-				const translation = pickTranslation(
-					ui.item.translations,
-					language ?? 'en',
-				);
-
+				const translation = pickTranslation(ui.item.translations, language);
 				const { translations, ...rest } = ui.item;
 
 				return {
@@ -121,58 +111,53 @@ export class UserInventoryService {
 	}
 
 	async equipItem(userId: string, itemId: string) {
-		const userInventoryItem = await this.findById(itemId, userId);
-
-		let isEquipped = true;
-
-		const alreadyEquippedItem =
-			await this.prismaService.userInventory.findFirst({
-				where: {
-					userId,
-					isEquipped: true,
-					item: {
-						type: userInventoryItem.item.type,
-						AND: { type: { not: 'BADGE' } },
-					},
-				},
+		return await this.prismaService.$transaction(async (tx) => {
+			const userInventoryItem = await tx.userInventory.findFirst({
+				where: { id: itemId, userId },
 				include: { item: true },
 			});
 
-		const avatars: ProfileItemType[] = ['ANIMATED_AVATAR', 'AVATAR'];
+			if (!userInventoryItem)
+				throw new NotFoundException('User inventory item not found');
 
-		if (avatars.includes(userInventoryItem.item.type)) {
-			const equippedItem = await this.prismaService.userInventory.findFirst({
+			const targetType = userInventoryItem.item.type;
+
+			if (targetType === 'BADGE') {
+				return tx.userInventory.update({
+					where: { id: userInventoryItem.id },
+					data: { isEquipped: !userInventoryItem.isEquipped },
+				});
+			}
+
+			const isAvatar =
+				targetType === 'AVATAR' || targetType === 'ANIMATED_AVATAR';
+			const typesToUnequip = isAvatar
+				? ['AVATAR', 'ANIMATED_AVATAR']
+				: [targetType];
+
+			const currentlyEquipped = await tx.userInventory.findMany({
 				where: {
 					userId,
 					isEquipped: true,
-					item: {
-						type: { in: avatars },
-					},
+					item: { type: { in: typesToUnequip as ProfileItemType[] } },
 				},
 			});
 
-			if (!equippedItem) return;
+			const isTogglingOff = currentlyEquipped.some(
+				(item) => item.id === userInventoryItem.id,
+			);
 
-			await this.prismaService.userInventory.update({
-				where: { id: equippedItem.id, userId },
-				data: { isEquipped: false },
-			});
-		}
-
-		if (alreadyEquippedItem) {
-			if (alreadyEquippedItem.id === userInventoryItem.id) {
-				isEquipped = false;
-			} else {
-				await this.prismaService.userInventory.update({
-					where: { id: alreadyEquippedItem.id, userId },
+			if (currentlyEquipped.length > 0) {
+				await tx.userInventory.updateMany({
+					where: { id: { in: currentlyEquipped.map((item) => item.id) } },
 					data: { isEquipped: false },
 				});
 			}
-		}
 
-		return await this.prismaService.userInventory.update({
-			where: { id: userInventoryItem.id, userId },
-			data: { isEquipped },
+			return await tx.userInventory.update({
+				where: { id: userInventoryItem.id },
+				data: { isEquipped: !isTogglingOff },
+			});
 		});
 	}
 
@@ -181,36 +166,30 @@ export class UserInventoryService {
 		userId: string,
 		dto: UpdateUserInvetoryDto,
 	) {
-		const { isEquipped } = dto;
+		return await this.prismaService.$transaction(async (tx) => {
+			const userInventoryItem = await tx.userInventory.findFirst({
+				where: { id, userId },
+				include: { item: true },
+			});
 
-		const userInventoryItem = await this.findById(id, userId);
+			if (!userInventoryItem)
+				throw new NotFoundException('User inventory item not found');
 
-		const alreadyEquippedItem = isEquipped
-			? await this.prismaService.userInventory.findFirst({
+			if (dto.isEquipped && userInventoryItem.item.type !== 'BADGE') {
+				await tx.userInventory.updateMany({
 					where: {
 						userId,
 						isEquipped: true,
-						item: {
-							type: userInventoryItem.item.type,
-							AND: { type: { not: 'BADGE' } },
-						},
+						item: { type: userInventoryItem.item.type },
 					},
-				})
-			: null;
+					data: { isEquipped: false },
+				});
+			}
 
-		if (alreadyEquippedItem) {
-			await this.prismaService.userInventory.update({
-				where: {
-					id: alreadyEquippedItem.id,
-					userId,
-				},
-				data: { isEquipped: false },
+			return await tx.userInventory.update({
+				where: { id: userInventoryItem.id },
+				data: dto,
 			});
-		}
-
-		return await this.prismaService.userInventory.update({
-			where: { id: userInventoryItem.id, userId },
-			data: { ...dto },
 		});
 	}
 
@@ -218,7 +197,7 @@ export class UserInventoryService {
 		const userInventoryItem = await this.findById(id, userId);
 
 		await this.prismaService.userInventory.delete({
-			where: { id: userInventoryItem.id, userId },
+			where: { id: userInventoryItem.id },
 		});
 
 		return true;
@@ -250,23 +229,15 @@ export class UserInventoryService {
 		tx?: Prisma.TransactionClient,
 	) {
 		const execute = async (client: Prisma.TransactionClient) => {
-			const ownedItems = await client.userInventory.findMany({
+			return await client.userInventory.findMany({
 				where: {
 					userId,
 					itemId: { in: itemIds },
 				},
-				include: {
-					item: true,
-				},
+				select: { itemId: true },
 			});
-
-			return ownedItems;
 		};
 
-		if (tx) return await execute(tx);
-
-		return await this.prismaService.$transaction(
-			async (client) => await execute(client),
-		);
+		return tx ? execute(tx) : this.prismaService.$transaction(execute);
 	}
 }

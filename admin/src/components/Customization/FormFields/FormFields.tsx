@@ -1,6 +1,12 @@
 'use client';
 
-import { Checkbox, Field, FormSelect, Input, Select } from '@/components/UI';
+import {
+	Checkbox,
+	FormField,
+	FormSelect,
+	Input,
+	SelectItem,
+} from '@/components/UI';
 import type { Field as FieldType } from '@/types';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
@@ -10,32 +16,29 @@ interface FormFieldsProps<T extends FieldValues> {
 
 const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 	const {
-		register,
-		control,
 		formState: { errors },
 	} = useFormContext<T>();
 
 	return (
 		<>
 			{fields.map(({ name, label, type, options, placeholder }) => {
-				const key = name;
-				const pathName = name;
-				const error = errors[pathName]?.message as string | undefined;
+				const error = errors[name]?.message as string | undefined;
 
-				if (type === 'checkbox') {
-					return <Checkbox key={key} label={label} {...register(pathName)} />;
-				}
-
-				if (type === 'hidden') {
-					return <input key={key} type="hidden" {...register(pathName)} />;
-				}
-
-				if (type === 'select') {
-					return (
-						<Field key={key} label={label} error={error}>
+				return (
+					<FormField
+						key={name}
+						name={name}
+						error={error}
+						label={type !== 'checkbox' ? label : ''}
+						hidden={type === 'hidden'}
+					>
+						{type === 'checkbox' ? (
+							<Checkbox label={label} />
+						) : type === 'hidden' ? (
+							<input type="hidden" />
+						) : type === 'select' ? (
 							<FormSelect
-								name={pathName}
-								control={control}
+								name={name}
 								displayFormat={(value) => {
 									if (!value) return '';
 									const selectedOptions = options?.filter((option) =>
@@ -50,27 +53,15 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 								}}
 							>
 								{options?.map((option) => (
-									<Select.Item key={option.value} value={option.value}>
+									<SelectItem key={option.value} value={option.value}>
 										{option.label}
-									</Select.Item>
+									</SelectItem>
 								))}
 							</FormSelect>
-						</Field>
-					);
-				}
-
-				return (
-					<Field key={key} label={label} error={error}>
-						<Input
-							placeholder={placeholder}
-							type={type}
-							{...register(pathName, {
-								...(type === 'number'
-									? { setValueAs: (v) => (v === '' ? undefined : Number(v)) }
-									: { setValueAs: (v) => (v === '' ? undefined : v) }),
-							})}
-						/>
-					</Field>
+						) : (
+							<Input placeholder={placeholder} type={type} />
+						)}
+					</FormField>
 				);
 			})}
 		</>

@@ -3,4 +3,5 @@ import z from 'zod';
 
 export type CreateProductDto = z.infer<typeof createProductSchema>;
 export type CreateProductFormDto = z.input<typeof createProductSchema>;
-export type UpdateProductDto = z.infer<typeof updateProductSchema>;
+export type FormProductValues = z.input<typeof updateProductSchema>;
+export type UpdateProductDto = z.output<typeof updateProductSchema>;

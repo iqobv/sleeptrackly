@@ -3,7 +3,7 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 
 	.addButton {
 		.text {
@@ -13,7 +13,7 @@
 		@include respond-to(md) {
 			.text {
 				display: inline;
-				padding-right: 5px;
+				padding-right: 0.3125rem;
 			}
 		}
 	}

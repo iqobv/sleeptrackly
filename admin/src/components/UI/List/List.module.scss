@@ -1,12 +1,12 @@
 .list {
-	--gap: 10px;
+	--gap: 0.625rem;
 
 	display: flex;
 	flex-direction: column;
 	gap: var(--gap);
 	width: 100%;
 
-	&--horizontal {
+	&.horizontal {
 		flex-direction: row;
 	}
 }

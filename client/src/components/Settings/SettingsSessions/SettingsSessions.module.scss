@@ -1,24 +1,22 @@
 .sessions {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 	height: 100%;
-	padding-top: 20px;
+	padding-top: 1.25rem;
 }
 
 .header {
-	gap: 3px;
+	gap: 0.1875rem;
 }
 
 .actions {
 	display: flex;
 	justify-content: space-between;
-	gap: 10px;
+	gap: 0.625rem;
 	align-items: center;
 }
 
 .list {
 	flex: 1;
-	max-height: 400px;
-	overflow-y: auto;
 }

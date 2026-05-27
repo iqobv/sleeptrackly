@@ -1,14 +1,14 @@
 .buy-button-container {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .buy-button-content {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 15px;
+	gap: 0.9375rem;
 }
 
 .buy-button {
@@ -29,7 +29,7 @@
 			color: var(--featured-through-price-color);
 			font-size: 0.9rem;
 			position: absolute;
-			bottom: 17px;
+			bottom: 1.0625rem;
 			font-weight: 300;
 		}
 	}

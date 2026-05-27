@@ -1,2 +1,2 @@
-export { default as SettingsNotifications } from './SettingsNotifications';
-export { default as SettingsNotificationsLoader } from './SettingsNotificationsLoader';
+export * from './SettingsNotifications';
+export * from './SettingsNotificationsLoader';

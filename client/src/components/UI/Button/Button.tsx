@@ -1,14 +1,15 @@
 'use client';
 
 import { Slot, Slottable } from '@radix-ui/react-slot';
+import clsx from 'clsx';
 import React from 'react';
-import Loader from '../Loader/Loader';
+import { Loader } from '../Loader/Loader';
 import { buttonVariants } from './butonStyles';
 import { ButtonProps } from './Button.types';
 import { renderButtonContent } from './ButtonContent/ButtonContent';
 import styles from './styles/Button.module.scss';
 
-export default function Button({
+export const Button = ({
 	children,
 	variant = 'contained',
 	color = 'primary',
@@ -24,7 +25,7 @@ export default function Button({
 	asChild = false,
 	onClick,
 	...props
-}: ButtonProps) {
+}: ButtonProps) => {
 	const isDisabled = disabled || loading;
 	const Component = asChild ? Slot : 'button';
 
@@ -49,7 +50,7 @@ export default function Button({
 	return (
 		<Component
 			ref={ref}
-			className={`${classNames} ${className}`}
+			className={clsx(classNames, className)}
 			disabled={asChild ? undefined : isDisabled}
 			aria-disabled={isDisabled}
 			data-loading={loading ? '' : undefined}
@@ -70,4 +71,4 @@ export default function Button({
 			</Slottable>
 		</Component>
 	);
-}
+};

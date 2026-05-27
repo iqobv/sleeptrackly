@@ -1,12 +1,12 @@
 'use client';
 
 import { getItemById, updateItem } from '@/api';
+import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateItemDto } from '@/dto';
 import { updateItemSchema } from '@/schemas';
-import { Item } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import CustomizationForm from '../../CustomizationForm/CustomizationForm';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import ItemForm from '../ItemForm/ItemForm';
 
 interface UpdateItemProps {
@@ -20,15 +20,26 @@ const UpdateItem = ({ id }: UpdateItemProps) => {
 		enabled: !!id,
 	});
 
+	const { mutate } = useMutation({
+		mutationFn: (data: UpdateItemDto) => updateItem(id, data),
+		onSuccess: () => refetch(),
+		onError: (e) => toast.error(e.message || 'Something went wrong'),
+	});
+
 	return (
-		<CustomizationForm<UpdateItemDto, Item>
+		<Form<UpdateItemDto>
 			schema={updateItemSchema}
-			mutationFn={(data) => updateItem(id, data)}
-			onSuccess={() => {
-				refetch();
-			}}
-			id={id}
+			onSubmit={(data) => mutate(data)}
 			defaultValues={{
+				isExclusive: false,
+				type: undefined,
+				basePrice: 0,
+				rarity: undefined,
+				translations: [{ language: 'en', name: '' }],
+				media: null as unknown as File,
+				preview: null as unknown as File,
+			}}
+			values={{
 				...data,
 				translations: data?.translations.map((t) => ({
 					language: t.language,
@@ -46,7 +57,7 @@ const UpdateItem = ({ id }: UpdateItemProps) => {
 				buttonLabel="Update Item"
 				id={id}
 			/>
-		</CustomizationForm>
+		</Form>
 	);
 };
 

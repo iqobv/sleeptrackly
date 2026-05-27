@@ -26,6 +26,8 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
+import { AchievementModule } from './achievement/achievement.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
 	imports: [
@@ -56,6 +58,8 @@ import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 		UserPrivacySettingsModule,
 		PromotionModule,
 		WeeklySummaryModule,
+		AchievementModule,
+		ImageModule,
 	],
 })
 export class ApiModule {}

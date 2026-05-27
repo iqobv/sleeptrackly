@@ -3,12 +3,12 @@
 	display: block;
 	background-color: var(--divider-color);
 
-	&--vertical {
+	&.vertical {
 		width: var(--thickness);
 		height: 100%;
 	}
 
-	&--horizontal {
+	&.horizontal {
 		height: var(--thickness);
 		width: 100%;
 	}

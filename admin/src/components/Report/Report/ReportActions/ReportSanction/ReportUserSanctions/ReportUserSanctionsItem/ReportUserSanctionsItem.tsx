@@ -57,13 +57,13 @@ const ReportUserSanctionsItem = ({
 			</div>
 			<div className={styles.user}>
 				<p>User: </p>
-				<Link href={PAGES.USER(sanction.user.username)}>
+				<Link href={PAGES.USER(sanction.user.username)} prefetch={false}>
 					{sanction.user.username}
 				</Link>
 			</div>
 			<div className={styles.user}>
 				<p>Created by: </p>
-				<Link href={PAGES.USER(sanction.createdBy.username)}>
+				<Link href={PAGES.USER(sanction.createdBy.username)} prefetch={false}>
 					{sanction.createdBy.username} ({sanction.createdBy.role})
 				</Link>
 			</div>

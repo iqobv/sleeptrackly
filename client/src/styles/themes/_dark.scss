@@ -5,13 +5,19 @@ html.dark {
 	--header-border-color: #7a7a7a30;
 	--color-main-text: #ffffff;
 	--secondary-color: #b9bec3;
-	--header-height: 70px;
 	--text-primary: #f3f4f6;
 	--text-secondary: #c2c2c2;
 	--border-color: #27272a;
 	--link-color: #4a90e2;
 	--color-error: #e5363f;
 	--bg-card: #1a1a1a;
+
+	/* Typography Colors */
+	--text-primary: #f3f4f6;
+	--text-secondary: #c2c2c2;
+	--text-success: #16a34a;
+	--text-error: #e5363f;
+	--text-muted: #9ca3af;
 
 	/* Loader */
 	--loader-color: #ffffff;
@@ -268,4 +274,9 @@ html.dark {
 	--dashboard-chart-bar-border: #ccc;
 	--dashboard-chart-bar-bg-hover: #e0e0e0;
 	--dashboard-chart-bar-border-hover: #bbb;
+
+	/* Tooltip */
+	--tooltip-bg: #1f2937;
+	--tooltip-text: #ffffff;
+	--tooltip-arrow-bg: #1f2937;
 }

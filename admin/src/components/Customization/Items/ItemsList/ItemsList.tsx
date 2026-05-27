@@ -13,7 +13,9 @@ const ItemsList = () => {
 	return (
 		<div className={styles.items}>
 			<Button asChild>
-				<Link href={PAGES.ITEM_NEW}>New Item</Link>
+				<Link href={PAGES.ITEM_NEW} prefetch={false}>
+					New Item
+				</Link>
 			</Button>
 			<ItemsListPaginatedWrapper<Item>
 				queryFn={getAllItems}
@@ -23,7 +25,9 @@ const ItemsList = () => {
 						item={item}
 						actions={
 							<Button fullWidth variant="contained" color="secondary" asChild>
-								<Link href={PAGES.ITEM(item.id)}>View</Link>
+								<Link href={PAGES.ITEM(item.id)} prefetch={false}>
+									View
+								</Link>
 							</Button>
 						}
 					/>

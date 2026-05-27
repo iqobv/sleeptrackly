@@ -1,7 +1,7 @@
 .list {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
 }
 
 .item {
@@ -9,6 +9,6 @@
 	align-items: center;
 	justify-content: space-between;
 	border: 1px solid var(--bg-section);
-	padding: 20px;
+	padding: 1.25rem;
 	border-radius: 8px;
 }

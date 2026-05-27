@@ -1,7 +1,7 @@
 'use client';
 
 import { Input, ToggleSwitch } from '@/components/UI';
-import SettingsField from '../../../SettingsField/SettingsField';
+import { SettingsField } from '../../../SettingsField/SettingsField';
 import { UpdateFunction } from '../SettingsNotificationsForm.types';
 import { useSettingsNotificationsReminder } from './useSettingsNotificationsReminder.hook';
 
@@ -9,7 +9,7 @@ interface SettingsNotificationsReminderProps {
 	updateSetting: UpdateFunction;
 }
 
-const SettingsNotificationsReminder = ({
+export const SettingsNotificationsReminder = ({
 	updateSetting,
 }: SettingsNotificationsReminderProps) => {
 	const {
@@ -49,5 +49,3 @@ const SettingsNotificationsReminder = ({
 		</>
 	);
 };
-
-export default SettingsNotificationsReminder;
