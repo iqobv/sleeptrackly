@@ -29,7 +29,12 @@ const FeaturedShop = () => {
 					</div>
 					<FeaturedShopBanner />
 					<div>
-						<SectionHeader title="Shop by Category" titleComponent="h2" />
+						<SectionHeader
+							title="Shop by Category"
+							titleProps={{
+								variant: 'h2',
+							}}
+						/>
 						<FeaturedShopSections sections={data.sections} />
 					</div>
 				</>

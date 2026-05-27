@@ -4,12 +4,12 @@ import { ConfirmModal } from '@/components/UI';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
+import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
 
 import { deleteAccount } from '@/api';
 import { QUERY_KEYS } from '@/config';
 
-const SettingsDeleteAccount = () => {
+export const SettingsDeleteAccount = () => {
 	const router = useRouter();
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -49,5 +49,3 @@ const SettingsDeleteAccount = () => {
 		</>
 	);
 };
-
-export default SettingsDeleteAccount;

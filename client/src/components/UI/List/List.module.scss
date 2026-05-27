@@ -1,4 +1,4 @@
-:where(.list) {
+.list {
 	--gap: 10px;
 	display: flex;
 	flex-direction: column;
@@ -6,6 +6,6 @@
 	width: 100%;
 }
 
-:where(.list--horizontal) {
+.horizontal {
 	flex-direction: row;
 }

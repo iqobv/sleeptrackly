@@ -1,6 +1,14 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalClose,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+} from '@/components/UI';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +20,11 @@ interface UploadModalProps {
 	handleUpdate: () => void;
 }
 
-const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
+export const UploadModal = ({
+	file,
+	handleClear,
+	handleUpdate,
+}: UploadModalProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
@@ -31,9 +43,9 @@ const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
 
 	return (
 		<Modal open={isOpen} onOpenChange={handleClose}>
-			<Modal.Content className={styles.content}>
-				<Modal.Header>Upload Avatar</Modal.Header>
-				<Modal.Body className={styles.body}>
+			<ModalContent className={styles.content}>
+				<ModalHeader>Upload Avatar</ModalHeader>
+				<ModalBody className={styles.body}>
 					<Image
 						src={URL.createObjectURL(file)}
 						width={250}
@@ -44,16 +56,14 @@ const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
 					<p className={styles.text}>
 						Are you sure you want to upload this image?
 					</p>
-				</Modal.Body>
-				<Modal.Footer className={styles.footer}>
-					<Modal.Close asChild>
+				</ModalBody>
+				<ModalFooter className={styles.footer}>
+					<ModalClose asChild>
 						<Button variant="outlined">Cancel</Button>
-					</Modal.Close>
+					</ModalClose>
 					<Button onClick={handleUpload}>Upload</Button>
-				</Modal.Footer>
-			</Modal.Content>
+				</ModalFooter>
+			</ModalContent>
 		</Modal>
 	);
 };
-
-export default UploadModal;

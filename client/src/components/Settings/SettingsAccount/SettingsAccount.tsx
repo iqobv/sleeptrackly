@@ -4,14 +4,13 @@ import { updateUser } from '@/api';
 import { SettingsAccountDto } from '@/dto';
 import { useAuth } from '@/hooks';
 import { User } from '@/types';
-import SettingsForm from '../SettingsForm/SettingsForm';
-import UploadAvatar from '../UploadAvatar/UploadAvatar';
-import { ACCOUNT_FIELDS } from './settingsAccountFields';
-
+import { SettingsForm } from '../SettingsForm/SettingsForm';
+import { UploadAvatar } from '../UploadAvatar';
 import styles from './SettingsAccount.module.scss';
-import SettingsAccountLoader from './SettingsAccountLoader';
+import { ACCOUNT_FIELDS } from './settingsAccountFields';
+import { SettingsAccountLoader } from './SettingsAccountLoader';
 
-const SettingsAccount = () => {
+export const SettingsAccount = () => {
 	const { user, isloading } = useAuth();
 
 	return (
@@ -30,5 +29,3 @@ const SettingsAccount = () => {
 		</div>
 	);
 };
-
-export default SettingsAccount;

@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllShop } from '@/api';
-import { List, Pagination } from '@/components/UI';
+import { Grid, GridItem, Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ShopFilterDto } from '@/dto';
 import { useDebounce, usePagination } from '@/hooks';
@@ -80,17 +80,17 @@ const AllShop = () => {
 								<div className={styles['all-shop__items']}>
 									{data.items.length > 0 ? (
 										<>
-											<List
-												items={data.items}
-												className={styles['all-shop__items-grid']}
-												renderItem={(item, index) => (
-													<ShopCard
-														key={item.id}
-														product={item}
-														isPreload={index < 3}
-													/>
-												)}
-											/>
+											<Grid className={styles.itemsGrid} columns={3}>
+												{data.items.map((item, index) => (
+													<GridItem key={item.id}>
+														<ShopCard
+															key={item.id}
+															product={item}
+															isPreload={index < 3}
+														/>
+													</GridItem>
+												))}
+											</Grid>
 											<Pagination
 												currentPage={currentPage}
 												totalPages={data.meta.totalPages}

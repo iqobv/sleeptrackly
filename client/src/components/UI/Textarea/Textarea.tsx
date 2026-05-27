@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import { MouseEvent, useRef } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -8,7 +9,7 @@ import inputStyles from '../Input/Input.module.scss';
 import styles from './Textarea.module.scss';
 import { TextareaProps } from './Textarea.types';
 
-const Textarea = ({
+export const Textarea = ({
 	className,
 	error,
 	disabled,
@@ -25,14 +26,12 @@ const Textarea = ({
 
 	const internalRef = useRef<HTMLTextAreaElement>(null);
 
-	const containerClassNames = [
+	const containerClassNames = clsx(
 		inputStyles.container,
 		field.error && inputStyles.error,
 		field.disabled && inputStyles.disabled,
 		className,
-	]
-		.filter(Boolean)
-		.join(' ');
+	);
 
 	const handleSectionClick = (event: MouseEvent<HTMLDivElement>) => {
 		const target = event.target as HTMLElement;
@@ -71,5 +70,3 @@ const Textarea = ({
 		</div>
 	);
 };
-
-export default Textarea;

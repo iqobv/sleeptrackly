@@ -1,6 +1,6 @@
 'use client';
 
-import SettingsField from '@/components/Settings/SettingsField/SettingsField';
+import { SettingsField } from '@/components/Settings/SettingsField/SettingsField';
 import { ToggleSwitch } from '@/components/UI';
 import {
 	NotificationFieldName,
@@ -14,7 +14,7 @@ interface SettingsNotificationsFormFieldProps {
 	updateSetting: UpdateFunction;
 }
 
-const SettingsNotificationsFormField = ({
+export const SettingsNotificationsFormField = ({
 	name,
 	label,
 	updateSetting,
@@ -36,5 +36,3 @@ const SettingsNotificationsFormField = ({
 		</SettingsField>
 	);
 };
-
-export default SettingsNotificationsFormField;

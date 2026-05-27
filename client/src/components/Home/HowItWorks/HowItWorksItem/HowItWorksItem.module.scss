@@ -4,11 +4,11 @@
 	margin-top: unset;
 	background-color: var(--how-it-works-bg);
 	width: 100%;
-	padding: 20px;
-	border-radius: 12px;
+	padding: 1.25rem;
+	border-radius: 0.75rem;
 
 	&__step {
-		font-size: 80px;
+		font-size: 5rem;
 		text-align: start;
 		color: var(--how-it-works-step-color);
 		opacity: 0.4;
@@ -16,7 +16,7 @@
 	}
 
 	@include respond-to(md) {
-		max-width: 230px;
-		margin-top: calc(var(--i, 0) * 20px);
+		max-width: 14.375rem;
+		margin-top: calc(var(--i, 0) * 1.25rem);
 	}
 }

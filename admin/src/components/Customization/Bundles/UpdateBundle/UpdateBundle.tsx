@@ -1,12 +1,12 @@
 'use client';
 
 import { getBundleById, updateBundle } from '@/api';
+import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateBundleDto } from '@/dto';
 import { updateBundleSchema } from '@/schemas';
-import { Bundle } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import CustomizationForm from '../../CustomizationForm/CustomizationForm';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import BundleForm from '../BundleForm/BundleForm';
 
 interface UpdateBundleProps {
@@ -22,19 +22,36 @@ const UpdateBundle = ({ id }: UpdateBundleProps) => {
 
 	const initialItems = data?.items.map((bI) => bI.item);
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	const { mutate } = useMutation({
+		mutationFn: (dto: UpdateBundleDto) => updateBundle(id, dto),
+	});
+
+	if (isLoading) return <div>Loading...</div>;
 
 	return (
-		<CustomizationForm<UpdateBundleDto, Bundle>
+		<Form<UpdateBundleDto>
 			schema={updateBundleSchema}
-			mutationFn={(dto) => updateBundle(id, dto)}
-			onSuccess={() => {
-				refetch();
-			}}
+			onSubmit={(data) =>
+				mutate(data, {
+					onSuccess: () => refetch(),
+					onError: (e) => toast.error(e.message || 'Something went wrong'),
+				})
+			}
 			defaultValues={{
-				...data,
+				discountPercentage: undefined,
+				file: undefined,
+				itemsIds: [],
+				isExclusive: false,
+				translations: [
+					{
+						language: 'en',
+						name: '',
+					},
+				],
+			}}
+			values={{
+				discountPercentage: data?.discountPercentage ?? undefined,
+				isExclusive: data?.isExclusive || false,
 				translations: data?.translations.map((t) => ({
 					language: t.language,
 					name: t.name,
@@ -50,7 +67,7 @@ const UpdateBundle = ({ id }: UpdateBundleProps) => {
 				initialItems={initialItems}
 				id={id}
 			/>
-		</CustomizationForm>
+		</Form>
 	);
 };
 

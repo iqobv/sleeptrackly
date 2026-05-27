@@ -3,10 +3,10 @@
 .item {
 	display: flex;
 	justify-content: space-between;
-	gap: 20px;
+	gap: 1.25rem;
 	flex-direction: column;
 	border: 1px solid var(--input-border);
-	padding: 10px;
+	padding: 0.625rem;
 	border-radius: 12px;
 
 	@include respond-to(md) {
@@ -16,11 +16,11 @@
 	.user {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 0.625rem;
 	}
 
 	.actions {
 		display: flex;
-		gap: 10px;
+		gap: 0.625rem;
 	}
 }

@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/UI';
 import { Session } from '@/types';
-import SettingsSessionsDevice from './SettingsSessionsDevice/SettingsSessionsDevice';
-import SettingsSessionsInfo from './SettingsSessionsInfo/SettingsSessionsInfo';
+import { SettingsSessionsDevice } from './SettingsSessionsDevice/SettingsSessionsDevice';
+import { SettingsSessionsInfo } from './SettingsSessionsInfo/SettingsSessionsInfo';
 import styles from './SettingsSessionsItem.module.scss';
 import { useSettingsSessionsItem } from './useSettingsSessionsItem';
 
@@ -13,7 +13,7 @@ interface SettingsSessionsItemProps {
 	isActive?: boolean;
 }
 
-const SettingsSessionsItem = ({
+export const SettingsSessionsItem = ({
 	session,
 	disableAllButton = false,
 	isActive = false,
@@ -62,5 +62,3 @@ const SettingsSessionsItem = ({
 		</div>
 	);
 };
-
-export default SettingsSessionsItem;

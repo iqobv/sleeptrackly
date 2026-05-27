@@ -20,8 +20,9 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 				<div className={styles.content}>
 					<SectionHeader
 						title={challenge.title}
-						titleComponent="h3"
-						titleClassName={styles.title}
+						titleProps={{
+							variant: 'h3',
+						}}
 						description={challenge.description}
 						gap={3}
 						padding={0}

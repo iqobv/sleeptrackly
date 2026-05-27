@@ -23,6 +23,7 @@ export const Input = ({
 	inputStyle,
 	wrapperRef,
 	wrapperProps,
+	value,
 	...props
 }: InputProps) => {
 	const field = useField({ id, error, disabled, required });
@@ -92,6 +93,7 @@ export const Input = ({
 				required={field.required}
 				id={field.id}
 				style={inputStyle}
+				value={value ?? ''}
 				{...props}
 			/>
 			{finalRightSection && (

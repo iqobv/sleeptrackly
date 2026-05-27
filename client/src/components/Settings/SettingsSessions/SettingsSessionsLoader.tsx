@@ -2,7 +2,7 @@
 
 import { Divider, SkeletonLoader } from '@/components/UI';
 
-const SettingsSessionsLoader = () => {
+export const SettingsSessionsLoader = () => {
 	return (
 		<>
 			<SkeletonLoader height={200} />
@@ -11,5 +11,3 @@ const SettingsSessionsLoader = () => {
 		</>
 	);
 };
-
-export default SettingsSessionsLoader;

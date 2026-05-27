@@ -5,6 +5,10 @@ import {
 } from './achievementTranslation.types';
 import { AchievementType } from './achievementType.types';
 
+export interface UserAchievementRewardProduct {
+	name: string;
+}
+
 export interface BaseAchievement extends DefaultFields {
 	type: AchievementType;
 	targetValue: number;
@@ -17,6 +21,7 @@ export interface BaseAchievement extends DefaultFields {
 export interface Achievement extends BaseAchievement {
 	isAchieved: boolean;
 	translation: AchievementTranslation;
+	rewardProduct: UserAchievementRewardProduct | null;
 	achievedAt: Date;
 }
 

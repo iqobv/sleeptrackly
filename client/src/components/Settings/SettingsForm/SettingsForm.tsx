@@ -7,11 +7,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import SettingsField from '../SettingsField/SettingsField';
+import { SettingsField } from '../SettingsField/SettingsField';
 import styles from './SettingsForm.module.scss';
 import { SettingsFormProps } from './SettingsForm.types';
 
-const SettingsForm = <T extends FieldValues, R>({
+export const SettingsForm = <T extends FieldValues, R>({
 	fields,
 	schema,
 	defaultValues,
@@ -106,5 +106,3 @@ const SettingsForm = <T extends FieldValues, R>({
 		</div>
 	);
 };
-
-export default SettingsForm;

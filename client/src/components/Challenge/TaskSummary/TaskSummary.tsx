@@ -22,7 +22,9 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 		<div className={styles.summary}>
 			<SectionHeader
 				title="Selected Date Task"
-				titleComponent="h3"
+				titleProps={{
+					variant: 'h3',
+				}}
 				containerClassName={styles.title}
 				description={info ? `Selected date: ${info}` : ''}
 			/>

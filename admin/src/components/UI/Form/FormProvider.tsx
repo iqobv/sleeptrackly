@@ -9,15 +9,15 @@ import {
 } from 'react-hook-form';
 import { FormProps } from './Form.types';
 
-export const Form = <D extends FieldValues>({
+export const Form = <TIn extends FieldValues, TOut = TIn>({
 	children,
 	schema,
 	className,
 	defaultValues,
 	onSubmit,
 	values,
-}: FormProps<D>) => {
-	const methods = useForm<D>({
+}: FormProps<TIn, TOut>) => {
+	const methods = useForm<TIn, unknown, TOut>({
 		resolver: zodResolver(schema),
 		defaultValues,
 		values,
@@ -29,7 +29,7 @@ export const Form = <D extends FieldValues>({
 				className={className}
 				onSubmit={
 					onSubmit
-						? methods.handleSubmit((data: D, event?: BaseSyntheticEvent) =>
+						? methods.handleSubmit((data: TOut, event?: BaseSyntheticEvent) =>
 								onSubmit(data, event, methods),
 							)
 						: undefined

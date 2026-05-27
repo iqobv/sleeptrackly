@@ -56,7 +56,7 @@ const SleepChart = ({ data }: SleepChartProps) => {
 							backgroundColor: 'var(--chart-tooltip-bg)',
 							border: '1px solid var(--chart-tooltip-border)',
 							textAlign: 'center',
-							minWidth: '70px',
+							minWidth: '4.375rem',
 							borderRadius: '4px',
 						}}
 					/>

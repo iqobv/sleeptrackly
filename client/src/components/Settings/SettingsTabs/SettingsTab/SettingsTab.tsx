@@ -9,7 +9,7 @@ interface SettingsTabProps {
 	isActive?: boolean;
 }
 
-const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
+export const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
 	return (
 		<Link
 			href={tab.href}
@@ -19,5 +19,3 @@ const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
 		</Link>
 	);
 };
-
-export default SettingsTab;

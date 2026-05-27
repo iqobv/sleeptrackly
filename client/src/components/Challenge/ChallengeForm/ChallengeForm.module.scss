@@ -3,17 +3,17 @@
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
 	width: 100%;
-	padding-bottom: 80px;
+	padding-bottom: 5rem;
 }
 
 .submit {
 	width: 100%;
 	margin: 0 auto;
-	margin-top: 15px;
+	margin-top: 0.9375rem;
 
 	@include respond-to(md) {
-		width: 300px;
+		width: 18.75rem;
 	}
 }

@@ -1,6 +1,7 @@
 import { Logo } from '@/components/Icons';
 import { LogoProps } from '@/components/Icons/Logo';
 import { PAGES } from '@/config';
+import clsx from 'clsx';
 import Link from 'next/link';
 import styles from './NavLogo.module.scss';
 
@@ -10,11 +11,11 @@ interface NavLogoProps {
 	logoProps?: LogoProps;
 }
 
-const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
+export const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
 	return (
 		<Link
 			href={PAGES.HOME}
-			className={`${styles['logo-link']} ${className || ''}`}
+			className={clsx(styles.logoLink, className)}
 			onClick={onClick}
 		>
 			<Logo {...logoProps} />
@@ -22,5 +23,3 @@ const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
 		</Link>
 	);
 };
-
-export default NavLogo;

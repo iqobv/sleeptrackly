@@ -1,7 +1,7 @@
 'use client';
 
 import { getNotifications, markAllNotificationsAsRead } from '@/api';
-import { Button, Dropdown } from '@/components/UI';
+import { Button, Dropdown, DropdownTrigger } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -41,7 +41,7 @@ const NotificationsButton = () => {
 
 	return (
 		<Dropdown open={isOpen} onOpenChange={handleOpenChange}>
-			<Dropdown.Trigger asChild>
+			<DropdownTrigger asChild>
 				<Button
 					isIcon
 					size="sm"
@@ -50,7 +50,7 @@ const NotificationsButton = () => {
 				>
 					<MdOutlineNotifications size={24} />
 				</Button>
-			</Dropdown.Trigger>
+			</DropdownTrigger>
 			<NotificationsList queryNotifications={queryNotifications} />
 		</Dropdown>
 	);

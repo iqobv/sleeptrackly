@@ -13,13 +13,13 @@
 	top: 50%;
 	left: 50%;
 	background-color: var(--modal-bg);
-	padding: 20px;
+	padding: 1.25rem;
 	z-index: 210;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
+	border-radius: 0.625rem;
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
+	gap: 1.25rem;
 	max-height: 80vh;
 }
 

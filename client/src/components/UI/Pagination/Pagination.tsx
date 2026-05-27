@@ -1,12 +1,12 @@
 'use client';
 
 import { MdArrowBackIosNew } from 'react-icons/md';
-import Button from '../Button/Button';
+import { Button } from '../Button';
 import styles from './Pagination.module.scss';
 import { PaginationProps } from './Pagination.types';
 import { getPaginationRange } from './utils';
 
-const Pagination = ({
+export const Pagination = ({
 	currentPage,
 	totalPages,
 	onPageChange,
@@ -16,7 +16,7 @@ const Pagination = ({
 	const pages = getPaginationRange(currentPage, totalPages);
 
 	return (
-		<nav className={styles['pagination']}>
+		<nav className={styles.pagination}>
 			<Button
 				onClick={() => onPageChange(currentPage - 1)}
 				disabled={currentPage <= 1}
@@ -29,14 +29,13 @@ const Pagination = ({
 				<Button
 					key={i}
 					onClick={() => typeof p === 'number' && onPageChange(p)}
-					className={p === '...' ? styles['pagination__ellipsis'] : ''}
+					className={p === '...' ? styles.ellipsis : ''}
 					variant={p === '...' ? 'contained' : 'text'}
 					color={p === currentPage ? 'primary' : 'secondary'}
 				>
 					{p}
 				</Button>
 			))}
-
 			<Button
 				onClick={() => onPageChange(currentPage + 1)}
 				disabled={currentPage >= totalPages}
@@ -52,5 +51,3 @@ const Pagination = ({
 		</nav>
 	);
 };
-
-export default Pagination;

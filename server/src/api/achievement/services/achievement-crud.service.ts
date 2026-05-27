@@ -1,5 +1,7 @@
 import { ImageService } from '@api/image/image.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { transformProduct } from '@libs/mappers';
+import { productInclude } from '@libs/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAchievementDto, UpdateAchievementDto } from '../dto';
 
@@ -84,6 +86,9 @@ export class AchievementCrudService {
 						language: true,
 					},
 				},
+				rewardProduct: {
+					include: productInclude(language),
+				},
 			},
 		});
 
@@ -100,10 +105,15 @@ export class AchievementCrudService {
 		);
 
 		const achievementsWithStatus = achievements
-			.map(({ id, translations, isHidden, ...rest }) => {
+			.map(({ id, translations, isHidden, rewardProduct, ...rest }) => {
 				const translation =
 					translations.find((t) => t.language === language) ||
 					translations.find((t) => t.language === 'en');
+				const productTranslation =
+					rewardProduct && transformProduct(rewardProduct, language);
+				const productName =
+					productTranslation?.item?.translation?.name ||
+					productTranslation?.bundle?.translation?.name;
 
 				const isAchieved = achievedMap.has(id);
 
@@ -114,6 +124,7 @@ export class AchievementCrudService {
 					isAchieved,
 					translation,
 					achievedAt: achievedMap.get(id),
+					rewardProduct: productTranslation ? { name: productName } : null,
 					...rest,
 				};
 			})

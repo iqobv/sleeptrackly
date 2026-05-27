@@ -13,7 +13,11 @@ interface SelectTriggerProps extends Omit<
 		| ((value: SelectValue | undefined, isOpen: boolean) => React.ReactNode);
 }
 
-const SelectTrigger = ({ children, asChild, ...props }: SelectTriggerProps) => {
+export const SelectTrigger = ({
+	children,
+	asChild,
+	...props
+}: SelectTriggerProps) => {
 	const { value, isOpen } = useSelectContext();
 
 	const content =
@@ -25,5 +29,3 @@ const SelectTrigger = ({ children, asChild, ...props }: SelectTriggerProps) => {
 		</Popover.Trigger>
 	);
 };
-
-export default SelectTrigger;

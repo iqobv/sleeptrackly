@@ -1,45 +1,41 @@
 @use '../../../../styles/mixins' as *;
 
 .challenge {
-	flex: 1 0 calc(49% - 20px);
-	padding: 15px;
+	flex: 1 0 calc(49% - 1.25rem);
+	padding: 0.9375rem;
 	border: 1px solid var(--challenge-list-item-border);
 	border-radius: 8px;
 	flex: 1 0 100%;
 
 	@include respond-to(md) {
-		flex: 1 0 calc(49% - 20px);
+		flex: 1 0 calc(49% - 1.25rem);
 	}
 }
 
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
+	gap: 0.1875rem;
 }
 
 .tag {
 	color: var(--secondary-color);
-	font-size: 16px;
+	font-size: 1rem;
 }
 
 .content {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
-
-	.title {
-		padding-top: 6px;
-	}
+	gap: 0.25rem;
 
 	.text {
-		font-size: 16px;
+		font-size: 1rem;
 		color: var(--secondary-color);
 	}
 }
 
 .actions {
-	padding-top: 10px;
+	padding-top: 0.625rem;
 	display: flex;
 	justify-content: center;
 

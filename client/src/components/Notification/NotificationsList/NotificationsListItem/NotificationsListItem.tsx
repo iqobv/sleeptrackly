@@ -1,6 +1,12 @@
 'use client';
 
-import { Button, Divider, Dropdown, Modal } from '@/components/UI';
+import {
+	Button,
+	Divider,
+	DropdownItem,
+	Modal,
+	ModalTrigger,
+} from '@/components/UI';
 import { WeeklySummary } from '@/components/WeeklySummary';
 import { Notification, NotificationType } from '@/types';
 import dayjs from 'dayjs';
@@ -36,7 +42,7 @@ const NotificationsListItem = ({
 					)}
 				</div>
 				{notification.redirectUrl && (
-					<Dropdown.Item asChild>
+					<DropdownItem asChild>
 						<Button
 							fullWidth
 							size="sm"
@@ -46,13 +52,13 @@ const NotificationsListItem = ({
 						>
 							<Link href={notification.redirectUrl}>Open</Link>
 						</Button>
-					</Dropdown.Item>
+					</DropdownItem>
 				)}
 				{notification.type === NotificationType.WEEKLY_SUMMARY &&
 					notification.weeklySleepSummaryId && (
-						<Dropdown.Item asChild>
+						<DropdownItem asChild>
 							<Modal>
-								<Modal.Trigger asChild>
+								<ModalTrigger asChild>
 									<Button
 										fullWidth
 										size="sm"
@@ -62,10 +68,10 @@ const NotificationsListItem = ({
 									>
 										View Summary
 									</Button>
-								</Modal.Trigger>
+								</ModalTrigger>
 								<WeeklySummary id={notification.weeklySleepSummaryId} />
 							</Modal>
-						</Dropdown.Item>
+						</DropdownItem>
 					)}
 				<div className={styles.date}>
 					{dayjs(notification.createdAt).fromNow()}

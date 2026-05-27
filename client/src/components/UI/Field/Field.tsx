@@ -1,12 +1,13 @@
 'use client';
 
+import clsx from 'clsx';
 import { useId } from 'react';
-import FormLabel from '../FormLabel/FormLabel';
+import { FormLabel } from '../FormLabel/FormLabel';
 import styles from './Field.module.scss';
 import { FieldProps } from './Field.types';
 import { FieldContext } from './FieldContext';
 
-const Field = ({
+export const Field = ({
 	children,
 	className,
 	error,
@@ -18,13 +19,11 @@ const Field = ({
 	const generatedId = useId();
 	const finalId = id ?? generatedId;
 
-	const classNames = [styles.field, className].filter(Boolean).join(' ');
-
 	return (
 		<FieldContext.Provider
 			value={{ id: finalId, error: !!error, required, disabled }}
 		>
-			<div className={classNames}>
+			<div className={clsx(styles.field, className)}>
 				{label && (
 					<FormLabel required={required} id={finalId} disabled={disabled}>
 						{label}
@@ -32,11 +31,7 @@ const Field = ({
 				)}
 				<div>{children}</div>
 				{error && (
-					<span
-						className={[styles.error, disabled && styles.disabled]
-							.filter(Boolean)
-							.join(' ')}
-					>
+					<span className={clsx(styles.error, disabled && styles.disabled)}>
 						{error}
 					</span>
 				)}
@@ -44,5 +39,3 @@ const Field = ({
 		</FieldContext.Provider>
 	);
 };
-
-export default Field;

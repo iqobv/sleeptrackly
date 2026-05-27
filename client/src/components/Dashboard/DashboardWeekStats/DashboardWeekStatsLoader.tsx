@@ -6,7 +6,7 @@ const cards = Array.from({ length: 2 }).map((_, i) => (
 		key={i}
 		height="100%"
 		borderRadius="var(--dashboard-card-border-radius)"
-		style={{ minHeight: '110px' }}
+		style={{ minHeight: '6.875rem' }}
 	/>
 ));
 

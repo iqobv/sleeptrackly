@@ -5,7 +5,7 @@
 	width: 90%;
 
 	@include respond-to(md) {
-		max-width: 400px;
+		max-width: 25rem;
 	}
 }
 

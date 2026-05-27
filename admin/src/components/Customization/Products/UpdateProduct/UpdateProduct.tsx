@@ -1,12 +1,12 @@
 'use client';
 
 import { getProductById, updateProduct } from '@/api';
+import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { UpdateProductDto } from '@/dto';
+import { FormProductValues, UpdateProductDto } from '@/dto';
 import { updateProductSchema } from '@/schemas';
-import { Product } from '@/types';
-import { useQuery } from '@tanstack/react-query';
-import CustomizationForm from '../../CustomizationForm/CustomizationForm';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import ProductForm from '../ProductForm/ProductForm';
 
 interface UpdateProductProps {
@@ -20,27 +20,43 @@ const UpdateProduct = ({ id }: UpdateProductProps) => {
 		enabled: !!id,
 	});
 
-	if (isLoading) {
-		return <div>Loading...</div>;
-	}
+	const { mutate } = useMutation({
+		mutationFn: (dto: UpdateProductDto) => updateProduct(id, dto),
+		onSuccess: () => refetch(),
+		onError: (e) => toast.error(e.message || 'Failed to update product'),
+	});
+
+	if (isLoading) return <div>Loading...</div>;
 
 	return (
-		<CustomizationForm<UpdateProductDto, Product>
+		<Form<FormProductValues, UpdateProductDto>
 			schema={updateProductSchema}
-			mutationFn={(dto) => updateProduct(id, dto)}
-			onSuccess={() => {
-				refetch();
-			}}
+			onSubmit={(data) => mutate(data)}
 			defaultValues={{
-				...data,
-				itemId: data?.itemId || '',
-				bundleId: data?.bundleId || '',
-				price: data?.price ?? undefined,
+				isExclusive: false,
+				isLimited: false,
+				isShowInStore: true,
+				isNew: false,
+				itemId: '',
+				bundleId: '',
+				price: 0,
+				discountedPrice: undefined,
+				maxStock: undefined,
+				expiresAt: undefined,
+			}}
+			values={{
+				isExclusive: data?.isExclusive || false,
+				isLimited: data?.isLimited || false,
+				isShowInStore: data?.isShowInStore ?? true,
+				isNew: data?.isNew || false,
+				itemId: data?.itemId || undefined,
+				bundleId: data?.bundleId || undefined,
+				price: data?.price,
 				discountedPrice: data?.discountedPrice ?? undefined,
 				maxStock: data?.maxStock ?? undefined,
 				expiresAt: data?.expiresAt
 					? new Date(data.expiresAt).toISOString().slice(0, 16)
-					: '',
+					: undefined,
 			}}
 		>
 			<ProductForm<UpdateProductDto>
@@ -48,7 +64,7 @@ const UpdateProduct = ({ id }: UpdateProductProps) => {
 				isEdit
 				id={id}
 			/>
-		</CustomizationForm>
+		</Form>
 	);
 };
 

@@ -28,13 +28,10 @@ const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	});
 
 	return (
-		<div className={styles['add-friend-item']}>
-			<div className={styles['add-friend-item__info']}>
+		<div className={styles.item}>
+			<div className={styles.info}>
 				<Avatar avatar={user?.avatar?.url} size={50} />
-				<Link
-					href={PAGES.PROFILE(user.username)}
-					className={styles['add-friend-item__username']}
-				>
+				<Link href={PAGES.PROFILE(user.username)} className={styles.username}>
 					{user.username}
 				</Link>
 			</div>

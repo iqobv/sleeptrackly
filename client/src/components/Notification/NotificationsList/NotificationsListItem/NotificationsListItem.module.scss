@@ -1,9 +1,9 @@
 .item {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 	border-left: 4px solid transparent;
-	padding: 10px 16px;
+	padding: 0.625rem 1rem;
 	border-radius: 4px;
 
 	&.unread {
@@ -12,7 +12,7 @@
 
 		.title {
 			font-weight: 700;
-			font-size: 18px;
+			font-size: 1.125rem;
 			color: var(--text-primary);
 		}
 	}
@@ -21,16 +21,16 @@
 .content {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	gap: 0.25rem;
 }
 
 .title {
-	font-size: 16px;
+	font-size: 1rem;
 	font-weight: 600;
 	color: var(--text-secondary);
 }
 
 .date {
-	font-size: 14px;
+	font-size: 0.875rem;
 	color: var(--secondary-color);
 }

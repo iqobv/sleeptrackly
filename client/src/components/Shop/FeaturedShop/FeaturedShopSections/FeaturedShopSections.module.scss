@@ -1,18 +1,18 @@
 .featured-shop-sections {
 	display: flex;
 	flex-direction: column;
-	gap: 32px;
+	gap: 2rem;
 
 	&__header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 16px;
+		margin-bottom: 1rem;
 	}
 
 	&__items {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 16px;
+		grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
+		gap: 1rem;
 	}
 }

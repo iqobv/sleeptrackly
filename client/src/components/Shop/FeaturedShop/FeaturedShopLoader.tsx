@@ -8,11 +8,19 @@ const FeaturedShopLoader = () => {
 	return (
 		<div className={styles['featured-shop']}>
 			<div>
-				<SkeletonLoader height={40} width={250} style={{ margin: '20px 0' }} />
+				<SkeletonLoader
+					height={40}
+					width={250}
+					style={{ margin: '1.25rem 0' }}
+				/>
 				<FeaturedShopCarouselLoader />
 			</div>
 			<FeaturedShopBannerLoader />
-			<SkeletonLoader height={30} width={250} style={{ marginTop: '20px' }} />
+			<SkeletonLoader
+				height={30}
+				width={250}
+				style={{ marginTop: '1.25rem' }}
+			/>
 			<FeaturedShopSectionsLoader />
 		</div>
 	);

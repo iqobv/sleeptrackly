@@ -10,8 +10,8 @@ export default function ChallengesPage() {
 	return (
 		<div className="container">
 			<SectionHeader
-				title={'Challenges'}
-				description={'Track and manage your personal challenges.'}
+				title="Challenges"
+				description="Track and manage your personal challenges."
 			/>
 			<Challenges />
 		</div>

@@ -2,14 +2,14 @@
 
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useDropdownContext } from '../DropdownContent';
+import { useDropdownContext } from '../DropdownContext';
 import styles from './DropdownContent.module.scss';
 
 interface DropdownContentProps extends DropdownMenu.DropdownMenuContentProps {
 	children: React.ReactNode;
 }
 
-const DropdownContent = ({
+export const DropdownContent = ({
 	children,
 	side = 'bottom',
 	align = 'start',
@@ -46,5 +46,3 @@ const DropdownContent = ({
 		</DropdownMenu.Portal>
 	);
 };
-
-export default DropdownContent;

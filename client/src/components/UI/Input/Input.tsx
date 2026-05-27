@@ -1,14 +1,15 @@
 'use client';
 
+import clsx from 'clsx';
 import { MouseEvent, useRef, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
 import { mergeRefs } from 'react-merge-refs';
-import Button from '../Button/Button';
+import { Button } from '../Button';
 import { useField } from '../Field/FieldContext';
 import styles from './Input.module.scss';
 import { InputProps } from './Input.types';
 
-const Input = ({
+export const Input = ({
 	className = '',
 	error,
 	disabled,
@@ -30,14 +31,12 @@ const Input = ({
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const internalRef = useRef<HTMLInputElement>(null);
 
-	const classNames = [
+	const classNames = clsx(
 		styles.container,
 		field.error && styles.error,
 		field.disabled && styles.disabled,
 		className,
-	]
-		.filter(Boolean)
-		.join(' ');
+	);
 
 	const isPasswordType = type === 'password';
 
@@ -88,7 +87,7 @@ const Input = ({
 				ref={mergeRefs([ref, internalRef])}
 				type={actualType}
 				disabled={field.disabled}
-				className={`${styles.input} ${inputClassName}`}
+				className={clsx(styles.input, inputClassName)}
 				required={field.required}
 				id={field.id}
 				style={inputStyle}
@@ -102,5 +101,3 @@ const Input = ({
 		</div>
 	);
 };
-
-export default Input;

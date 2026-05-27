@@ -13,7 +13,7 @@ const iconProps: IconBaseProps = {
 	fill: 'var(--device-color)',
 };
 
-const SettingsSessionsDevice = ({
+export const SettingsSessionsDevice = ({
 	deviceType,
 }: SettingsSessionsDeviceProps) => {
 	return (
@@ -26,5 +26,3 @@ const SettingsSessionsDevice = ({
 		</div>
 	);
 };
-
-export default SettingsSessionsDevice;

@@ -21,7 +21,12 @@ const Faq = () => {
 
 	return (
 		<div className="container">
-			<SectionHeader title="FAQ" titleComponent="h3" />
+			<SectionHeader
+				title="FAQ"
+				titleProps={{
+					variant: 'h3',
+				}}
+			/>
 			<List
 				items={FAQ_QUESTIONS}
 				renderItem={(item, index) => (

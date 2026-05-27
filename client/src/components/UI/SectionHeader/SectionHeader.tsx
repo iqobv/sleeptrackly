@@ -1,51 +1,64 @@
+import { pxToRem } from '@/utils';
+import clsx from 'clsx';
+import { BackButton } from '../BackButton';
+import { Typography } from '../Typography';
 import styles from './SectionHeader.module.scss';
 import { SectionHeaderProps } from './SectionHeader.types';
 
-interface CustomCSSProperties extends React.CSSProperties {
-	'--padding': string;
-	'--gap'?: string;
-}
-
-export default function SectionHeader({
+export const SectionHeader = ({
 	title = '',
 	description = '',
-	titleComponent = 'h1',
-	descriptionComponent = 'p',
-	titleClassName = '',
-	descriptionClassName = '',
 	containerClassName = '',
 	padding = 20,
 	gap = 10,
-}: SectionHeaderProps) {
-	const Title = titleComponent;
-	const Description = descriptionComponent;
+	titleProps,
+	descriptionProps,
+	textAlign = 'start',
+	showBackButton = false,
+	backButtonProps,
+}: SectionHeaderProps) => {
+	const {
+		variant: titleVariant = 'h1',
+		className: titleClassName,
+		...restTitleProps
+	} = titleProps || {};
 
-	const style: CustomCSSProperties = {
-		'--padding': `${padding}px`,
-	};
-
-	if (description) style['--gap'] = `${gap}px`;
+	const {
+		variant: descriptionVariant = 'body1',
+		className: descriptionClassName,
+		...restDescriptionProps
+	} = descriptionProps || {};
 
 	return (
 		<div
-			className={`${styles['section-header']} ${containerClassName}`}
+			className={clsx(styles.header, containerClassName)}
 			style={
 				{
-					'--padding': `${padding}px`,
-					'--gap': `${gap}px`,
+					'--padding': padding ? pxToRem(padding) : undefined,
+					'--gap': gap ? pxToRem(gap) : undefined,
+					'--text-align': textAlign,
 				} as React.CSSProperties
 			}
 		>
-			<Title className={`${styles['section-header__title']} ${titleClassName}`}>
-				{title}
-			</Title>
-			{!!description && (
-				<Description
-					className={`${styles['section-header__description']} ${descriptionClassName}`}
+			{showBackButton && <BackButton {...backButtonProps} />}
+			<div className={styles.content}>
+				<Typography
+					variant={titleVariant}
+					className={titleClassName}
+					{...restTitleProps}
 				>
-					{description}
-				</Description>
-			)}
+					{title}
+				</Typography>
+				{!!description && (
+					<Typography
+						variant={descriptionVariant}
+						className={descriptionClassName}
+						{...restDescriptionProps}
+					>
+						{description}
+					</Typography>
+				)}
+			</div>
 		</div>
 	);
-}
+};

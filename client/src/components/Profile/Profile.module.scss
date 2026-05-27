@@ -18,10 +18,10 @@
 
 .container {
 	display: flex;
-	padding-top: 40px;
+	padding-top: 2.5rem;
 	flex-direction: column;
-	gap: 20px;
+	gap: 1.25rem;
 	background-color: var(--bg-body);
-	max-width: 1000px;
+	max-width: 62.5rem;
 	z-index: 2;
 }

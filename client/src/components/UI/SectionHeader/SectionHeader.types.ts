@@ -1,13 +1,18 @@
-type Component = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p';
+import { CSSProperties } from 'react';
+import { BackButtonProps } from '../BackButton';
+import { TypographyProps } from '../Typography';
+
+type ElementProps = Omit<TypographyProps, 'children'>;
 
 export interface SectionHeaderProps {
-	title?: string | React.ReactNode;
-	description?: string | React.ReactNode;
-	titleComponent?: Component;
-	descriptionComponent?: Component;
+	title: React.ReactNode;
+	description?: React.ReactNode;
 	containerClassName?: string;
-	titleClassName?: string;
-	descriptionClassName?: string;
 	padding?: number;
 	gap?: number;
+	textAlign?: CSSProperties['textAlign'];
+	showBackButton?: boolean;
+	titleProps?: ElementProps;
+	descriptionProps?: ElementProps;
+	backButtonProps?: BackButtonProps;
 }

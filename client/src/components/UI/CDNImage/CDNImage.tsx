@@ -1,12 +1,12 @@
+import clsx from 'clsx';
 import Image, { ImageProps } from 'next/image';
-
 import styles from './CDNImage.module.scss';
 
 interface CDNImageProps extends ImageProps {
 	src: string;
 }
 
-const CDNImage = ({
+export const CDNImage = ({
 	src,
 	width = 100,
 	height = 100,
@@ -20,10 +20,8 @@ const CDNImage = ({
 			width={width}
 			height={height}
 			alt={alt}
-			className={`${styles['cdn-image']} ${className}`}
+			className={clsx(styles.cdnImage, className)}
 			{...props}
 		/>
 	);
 };
-
-export default CDNImage;

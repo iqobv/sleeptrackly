@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Dropdown } from '@/components/UI';
+import { Button, DropdownItem } from '@/components/UI';
 import Link from 'next/link';
 import styles from './MenuItem.module.scss';
 
@@ -13,7 +13,7 @@ interface MenuItemProps {
 
 const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
 	return (
-		<Dropdown.Item asChild>
+		<DropdownItem asChild>
 			<Button
 				variant="text"
 				className={styles.link}
@@ -33,7 +33,7 @@ const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
 					</>
 				)}
 			</Button>
-		</Dropdown.Item>
+		</DropdownItem>
 	);
 };
 

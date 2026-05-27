@@ -6,7 +6,12 @@ import { HOW_IT_WORKS } from './howItWorksSteps';
 const HowItWorks = () => {
 	return (
 		<div className={`${styles['how-it-works']} container`}>
-			<SectionHeader title="How It Works" titleComponent="h2" />
+			<SectionHeader
+				title="How It Works"
+				titleProps={{
+					variant: 'h2',
+				}}
+			/>
 			<List
 				items={HOW_IT_WORKS}
 				className={styles['how-it-works__list']}

@@ -15,7 +15,7 @@ const cards = Array.from({ length: 7 }).map((_, i) => (
 const DashboardSleepSessionsLoader = () => {
 	return (
 		<div className={styles.sleepSessions}>
-			<div style={{ padding: '20px 0' }}>
+			<div style={{ padding: '1.25rem 0' }}>
 				<SkeletonLoader width={220} height={28} borderRadius={borderRadius} />
 			</div>
 			<div className={styles.list}>{cards}</div>

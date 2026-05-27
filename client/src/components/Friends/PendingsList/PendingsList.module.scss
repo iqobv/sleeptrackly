@@ -3,7 +3,7 @@
 .buttons {
 	display: flex;
 	flex-direction: row;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .button {
@@ -15,10 +15,10 @@
 }
 
 .list {
-	padding-top: 20px;
+	padding-top: 1.25rem;
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .empty {

@@ -23,7 +23,9 @@ const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
 		<div>
 			<SectionHeader
 				title="Active Challenges"
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 				description="Track and manage your active challenges."
 				padding={5}
 			/>

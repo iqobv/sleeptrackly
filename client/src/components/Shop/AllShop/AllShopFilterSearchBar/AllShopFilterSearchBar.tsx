@@ -1,11 +1,10 @@
 'use client';
 
+import { Field, FormSelect, Input, SelectItem } from '@/components/UI';
 import { ShopFilterDto } from '@/dto';
-import { useFormContext, useWatch } from 'react-hook-form';
-
-import { Field, FormSelect, Input, Select } from '@/components/UI';
 import { ShopSortBy } from '@/types';
 import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { MdSearch } from 'react-icons/md';
 import styles from './AllShopFilterSearchBar.module.scss';
 import { SHOP_FILTER_OPTIONS } from './filterSortOptions';
@@ -68,9 +67,9 @@ const AllShopFilterSearchBar = () => {
 					className={styles.select}
 				>
 					{SHOP_FILTER_OPTIONS.map((option) => (
-						<Select.Item key={option.value} value={option.value}>
+						<SelectItem key={option.value} value={option.value}>
 							{option.label}
-						</Select.Item>
+						</SelectItem>
 					))}
 				</FormSelect>
 			</Field>

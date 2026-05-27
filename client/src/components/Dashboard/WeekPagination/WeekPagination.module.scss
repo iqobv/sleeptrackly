@@ -16,9 +16,9 @@
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		height: 50px;
-		border-radius: 20px;
-		padding: 0 10px;
+		height: 3.125rem;
+		border-radius: 1.25rem;
+		padding: 0 0.625rem;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 	}
 
@@ -34,7 +34,7 @@
 		margin-top: -65px;
 
 		.container {
-			max-width: 300px;
+			max-width: 18.75rem;
 		}
 	}
 }

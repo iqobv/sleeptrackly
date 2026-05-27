@@ -28,4 +28,5 @@ export const PRIVATE_PAGES = {
 		CATALOG: '/shop/catalog',
 	},
 	PROMO: '/promo',
+	ACHIEVEMENTS: '/achievements',
 } as const;

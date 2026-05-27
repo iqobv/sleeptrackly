@@ -1,28 +1,26 @@
 'use client';
 
+import clsx from 'clsx';
+import styles from './FormLabel.module.scss';
 import { FormLabelProps } from './FormLabel.types';
 
-import styles from './FormLabel.module.scss';
-
-export default function FormLabel({
+export const FormLabel = ({
 	id,
 	children,
 	required,
 	className,
 	disabled,
-}: FormLabelProps) {
-	const classNames = [
+}: FormLabelProps) => {
+	const classNames = clsx(
 		styles.label,
 		required && styles.required,
 		disabled && styles.disabled,
 		className,
-	]
-		.filter(Boolean)
-		.join(' ');
+	);
 
 	return (
 		<label htmlFor={id} className={classNames}>
 			{children}
 		</label>
 	);
-}
+};

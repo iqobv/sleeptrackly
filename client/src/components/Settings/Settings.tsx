@@ -1,9 +1,9 @@
 'use client';
 
 import { SectionHeader } from '../UI';
-import SettingsTabs from './SettingsTabs/SettingsTabs';
+import { SettingsTabs } from './SettingsTabs/SettingsTabs';
 
-const Settings = () => {
+export const Settings = () => {
 	return (
 		<div>
 			<SectionHeader title="Settings" />
@@ -11,5 +11,3 @@ const Settings = () => {
 		</div>
 	);
 };
-
-export default Settings;

@@ -1,12 +1,12 @@
 'use client';
 
-import { Modal } from '@/components/UI';
+import { Modal, ModalContent, ModalHeader } from '@/components/UI';
 import { useState } from 'react';
-import SettingsSecurityField from '../SettingsSecurityField/SettingsSecurityField';
+import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
 import styles from './ChangePassword.module.scss';
-import ChangePasswordForm from './ChangePasswordForm/ChangePasswordForm';
+import { ChangePasswordForm } from './ChangePasswordForm/ChangePasswordForm';
 
-const ChangePassword = () => {
+export const ChangePassword = () => {
 	const [open, setOpen] = useState(false);
 
 	const handleClose = () => setOpen(!open);
@@ -19,13 +19,11 @@ const ChangePassword = () => {
 				buttonText="Change password"
 			/>
 			<Modal open={open} onOpenChange={handleClose}>
-				<Modal.Content className={styles.modal}>
-					<Modal.Header>Change password</Modal.Header>
+				<ModalContent className={styles.modal}>
+					<ModalHeader>Change password</ModalHeader>
 					<ChangePasswordForm handleClose={handleClose} />
-				</Modal.Content>
+				</ModalContent>
 			</Modal>
 		</>
 	);
 };
-
-export default ChangePassword;

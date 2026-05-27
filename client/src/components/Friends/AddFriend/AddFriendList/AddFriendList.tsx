@@ -13,7 +13,7 @@ interface AddFriendListProps {
 
 const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
 	return (
-		<div className={styles['add-friend__list']}>
+		<div className={styles.list}>
 			{isPending && <SkeletonLoader width="100%" height={55} />}
 			{data ? (
 				data.length > 0 ? (
@@ -24,7 +24,7 @@ const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
 						)}
 					/>
 				) : (
-					<p className={styles['add-friend__list-empty']}>No results</p>
+					<p className={styles.empty}>No results</p>
 				)
 			) : null}
 		</div>

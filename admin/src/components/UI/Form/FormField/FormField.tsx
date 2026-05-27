@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import React, { cloneElement, ReactElement } from 'react';
 import {
 	FieldValues,
@@ -9,6 +10,7 @@ import {
 } from 'react-hook-form';
 import { Field } from '../../Field/Field';
 import { FieldProps } from '../../Field/Field.types';
+import styles from './FormField.module.scss';
 
 export interface FormFieldProps<D extends FieldValues> extends Omit<
 	FieldProps,
@@ -16,6 +18,7 @@ export interface FormFieldProps<D extends FieldValues> extends Omit<
 > {
 	name: Path<D>;
 	children: ReactElement;
+	hidden?: boolean;
 }
 
 export const FormField = <D extends FieldValues>({
@@ -26,6 +29,7 @@ export const FormField = <D extends FieldValues>({
 	id,
 	label,
 	required,
+	hidden,
 }: FormFieldProps<D>) => {
 	const { control } = useFormContext<D>();
 	const {
@@ -45,10 +49,14 @@ export const FormField = <D extends FieldValues>({
 		| undefined;
 	const customOnBlur = childProps.onBlur as (() => void) | undefined;
 
+	const isBooleanValue = typeof field.value === 'boolean';
+
 	const controlledChild = cloneElement(
 		children as ReactElement<Record<string, unknown>>,
 		{
 			...field,
+			checked: isBooleanValue ? field.value : undefined,
+			value: isBooleanValue ? undefined : field.value,
 			...childProps,
 			name,
 			onChange: (...args: unknown[]) => {
@@ -73,7 +81,7 @@ export const FormField = <D extends FieldValues>({
 			required={required}
 			disabled={disabled}
 			id={id}
-			className={className}
+			className={clsx(hidden && styles.hidden, className)}
 		>
 			{controlledChild}
 		</Field>

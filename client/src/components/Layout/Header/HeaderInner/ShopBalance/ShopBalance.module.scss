@@ -1,6 +1,6 @@
 .balance {
 	align-items: center;
-	padding: 0 15px;
+	padding: 0 0.9375rem;
 	border-radius: 8px;
 	background: linear-gradient(
 		135deg,
@@ -26,9 +26,9 @@
 			margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 
 		&.visible {
-			max-width: 150px;
+			max-width: 9.375rem;
 			opacity: 1;
-			margin-left: 8px;
+			margin-left: 0.5rem;
 		}
 	}
 }

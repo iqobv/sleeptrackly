@@ -1,10 +1,10 @@
 'use client';
 
 import { Loader, ToggleSwitch } from '@/components/UI';
-import SettingsField from '../../SettingsField/SettingsField';
+import { SettingsField } from '../../SettingsField/SettingsField';
 import { useSettingsNotificationsPush } from './useSettingsNotificationsPush.hook';
 
-const SettingsNotificationsPush = () => {
+export const SettingsNotificationsPush = () => {
 	const { isPushEnabled, isLoading, handleTogglePush } =
 		useSettingsNotificationsPush();
 
@@ -27,5 +27,3 @@ const SettingsNotificationsPush = () => {
 		</SettingsField>
 	);
 };
-
-export default SettingsNotificationsPush;

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, List, SectionHeader } from '@/components/UI';
+import { Button, List, SectionHeader, Typography } from '@/components/UI';
 import { FRIEND_STATUS } from '@/constants';
 import PendingsItem from './PendingsItem/PendingsItem';
 import styles from './PendingsList.module.scss';
@@ -11,7 +11,13 @@ const PendingsList = () => {
 
 	return (
 		<div>
-			<SectionHeader title="Friends Requests" titleComponent="h3" />
+			<SectionHeader
+				title="Friends Requests"
+				titleProps={{
+					variant: 'h3',
+				}}
+				showBackButton
+			/>
 			<div className={styles.buttons}>
 				<Button
 					className={styles.button}
@@ -29,10 +35,7 @@ const PendingsList = () => {
 			</div>
 			<div className={styles.list}>
 				{data && data.length === 0 && (
-					<SectionHeader
-						description="You don't have any friends requests"
-						descriptionClassName={styles.empty}
-					/>
+					<Typography>You don&apos;t have any friends requests</Typography>
 				)}
 				{data && (
 					<List

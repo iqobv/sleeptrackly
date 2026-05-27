@@ -5,10 +5,10 @@ import { QUERY_KEYS } from '@/config';
 import { SettingsPrivacyDto } from '@/dto';
 import { PrivacySettings } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import SettingsForm from '../SettingsForm/SettingsForm';
+import { SettingsForm } from '../SettingsForm/SettingsForm';
 import { SETTINGS_PRIVACY_FIELDS } from './settingsPrivacyFields';
 
-const SettingsPrivacy = () => {
+export const SettingsPrivacy = () => {
 	const { data, refetch } = useQuery({
 		queryKey: QUERY_KEYS.privacy.get,
 		queryFn: getUserPrivacySettings,
@@ -29,5 +29,3 @@ const SettingsPrivacy = () => {
 		</div>
 	);
 };
-
-export default SettingsPrivacy;

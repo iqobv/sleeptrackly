@@ -7,7 +7,7 @@ import {
 	Field,
 	FormSelect,
 	Input,
-	Select,
+	SelectItem,
 	Textarea,
 } from '@/components/UI';
 import { ChallengeField } from '@/types';
@@ -120,9 +120,9 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 							}
 						>
 							{f.options.map((opt) => (
-								<Select.Item value={opt.value} key={opt.value}>
+								<SelectItem value={opt.value} key={opt.value}>
 									{opt.label}
-								</Select.Item>
+								</SelectItem>
 							))}
 						</FormSelect>
 					)}

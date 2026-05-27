@@ -1,19 +1,18 @@
 'use client';
 
 import { getAllSessions } from '@/api';
-import { Button, Divider, List, SectionHeader } from '@/components/UI';
+import { BackButton, Divider, List, SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { MdOutlineArrowBack } from 'react-icons/md';
-import QrScanModal from '../SettingsSecurity/QrScanModal/QrScanModal';
+import { QrScanModal } from '../SettingsSecurity/QrScanModal/QrScanModal';
 import styles from './SettingsSessions.module.scss';
-import SettingsSessionsItem from './SettingsSessionsItem/SettingsSessionsItem';
-import SettingsSessionsLoader from './SettingsSessionsLoader';
+import { SettingsSessionsItem } from './SettingsSessionsItem/SettingsSessionsItem';
+import { SettingsSessionsLoader } from './SettingsSessionsLoader';
 
-const SettingsSessions = () => {
+export const SettingsSessions = () => {
 	const { user } = useAuth();
 	const router = useRouter();
 
@@ -40,17 +39,16 @@ const SettingsSessions = () => {
 				<>
 					<div>
 						<div className={styles.actions}>
-							<Button variant="text" onClick={() => router.back()}>
-								<MdOutlineArrowBack size={25} />
-								Back
-							</Button>
+							<BackButton onBack={() => router.back()} />
 							<QrScanModal />
 						</div>
 						<SectionHeader
 							title="Current Session"
 							description="Your current session"
-							titleComponent="h3"
-							containerClassName={styles.header}
+							titleProps={{
+								variant: 'h2',
+							}}
+							gap={3}
 						/>
 						<SettingsSessionsItem
 							session={sessions.find((s) => s.isCurrent) || sessions[0]}
@@ -65,8 +63,10 @@ const SettingsSessions = () => {
 								<SectionHeader
 									title="Other Sessions"
 									description="Your other sessions"
-									titleComponent="h3"
-									containerClassName={styles['settings-sessions__header']}
+									titleProps={{
+										variant: 'h3',
+									}}
+									gap={3}
 								/>
 								<List
 									items={sessions}
@@ -90,5 +90,3 @@ const SettingsSessions = () => {
 		</div>
 	);
 };
-
-export default SettingsSessions;

@@ -2,11 +2,11 @@
 
 import { List } from '@/components/UI';
 import { usePathname } from 'next/navigation';
-import SettingsTab from './SettingsTab/SettingsTab';
+import { SettingsTab } from './SettingsTab/SettingsTab';
 import styles from './SettingsTabs.module.scss';
 import { SETTINGS_TABS } from './tabs';
 
-const SettingsTabs = () => {
+export const SettingsTabs = () => {
 	const pathname = usePathname();
 
 	return (
@@ -26,5 +26,3 @@ const SettingsTabs = () => {
 		</nav>
 	);
 };
-
-export default SettingsTabs;

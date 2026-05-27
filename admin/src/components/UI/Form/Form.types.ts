@@ -1,17 +1,19 @@
-import { BaseSyntheticEvent } from 'react';
+import { BaseSyntheticEvent, ReactNode } from 'react';
 import { DefaultValues, FieldValues, UseFormReturn } from 'react-hook-form';
 import { ZodType } from 'zod';
 
-export interface FormProps<D extends FieldValues> {
-	children: React.ReactNode | ((methods: UseFormReturn<D>) => React.ReactNode);
+export interface FormProps<TIn extends FieldValues, TOut = TIn> {
+	children:
+		| ReactNode
+		| ((methods: UseFormReturn<TIn, unknown, TOut>) => ReactNode);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	schema: ZodType<D, any, any>;
+	schema: ZodType<TOut, any, any>;
 	onSubmit?: (
-		data: D,
+		data: TOut,
 		event: BaseSyntheticEvent | undefined,
-		methods: UseFormReturn<D>,
+		methods: UseFormReturn<TIn, unknown, TOut>,
 	) => void | Promise<void>;
-	defaultValues?: DefaultValues<D>;
-	values?: D;
+	defaultValues?: DefaultValues<TIn>;
+	values?: TIn;
 	className?: string;
 }

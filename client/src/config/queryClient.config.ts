@@ -83,4 +83,7 @@ export const QUERY_KEYS = {
 	weeklySummary: {
 		one: (id: string) => ['weeklySummary', id],
 	} as const,
+	achievement: {
+		all: ['achievementAll'],
+	} as const,
 } as const;
