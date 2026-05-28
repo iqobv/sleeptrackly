@@ -1,0 +1,17 @@
+model Collection {
+  id String @id @default(uuid())
+
+  slug String @unique
+
+  backgroundImage String @map("background_image")
+
+  showInStore Boolean @default(false) @map("show_in_store")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  items        CollectionItem[]
+  translations CollectionTranslation[]
+
+  @@map("collections")
+}

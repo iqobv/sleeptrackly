@@ -28,6 +28,7 @@ import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 import { AchievementModule } from './achievement/achievement.module';
 import { ImageModule } from './image/image.module';
+import { CollectionModule } from './collection/collection.module';
 
 @Module({
 	imports: [
@@ -60,6 +61,7 @@ import { ImageModule } from './image/image.module';
 		WeeklySummaryModule,
 		AchievementModule,
 		ImageModule,
+		CollectionModule,
 	],
 })
 export class ApiModule {}

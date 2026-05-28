@@ -26,6 +26,7 @@ model Product {
   purchaseHistories PurchaseHistory[]
   promotionRewards  Promotion[]
   achievements      Achievement[]
+  collectionItems   CollectionItem[]
 
   item   Item?   @relation(fields: [itemId], references: [id], onDelete: Cascade)
   bundle Bundle? @relation(fields: [bundleId], references: [id], onDelete: Cascade)

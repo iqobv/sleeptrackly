@@ -1,0 +1,14 @@
+model CollectionItem {
+  id String @id @default(uuid())
+
+  collectionId String @map("collection_id")
+
+  productId String @map("product_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("collection_items")
+}

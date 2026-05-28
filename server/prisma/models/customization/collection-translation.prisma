@@ -1,0 +1,18 @@
+model CollectionTranslation {
+  id String @id @default(uuid())
+
+  collectionId String @map("collection_id")
+
+  language String @map("language")
+
+  name        String
+  description String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  collection Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@unique([collectionId, language])
+  @@map("collection_translations")
+}
