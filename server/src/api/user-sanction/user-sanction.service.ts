@@ -1,6 +1,7 @@
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	Injectable,
@@ -38,7 +39,8 @@ export class UserSanctionService {
 			where: { id },
 		});
 
-		if (!sanction) throw new NotFoundException('Sanction not found');
+		if (!sanction)
+			throw new NotFoundException(ERROR_MESSAGES.SANCTION.NOT_FOUND);
 
 		return sanction;
 	}
@@ -47,10 +49,14 @@ export class UserSanctionService {
 		const { targetUserId, type, endsAt, startsAt, reportId } = dto;
 
 		if (startsAt > endsAt)
-			throw new BadRequestException('Start date must be before end date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.START_DATE_MUST_BE_BEFORE_END_DATE,
+			);
 
 		if (endsAt < new Date())
-			throw new BadRequestException('End date must be in the future');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+			);
 
 		let endDate = dayjs(endsAt).toDate();
 
@@ -118,7 +124,9 @@ export class UserSanctionService {
 		const { endsAt } = dto;
 
 		if (endsAt && endsAt < new Date())
-			throw new BadRequestException('End date must be in the future');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+			);
 
 		const sanction = await this.findById(id);
 

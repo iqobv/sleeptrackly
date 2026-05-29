@@ -1,6 +1,7 @@
 import { Prisma, User } from '@generated/prisma/client';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import { JwtPayload } from '@libs/types';
 import {
@@ -27,6 +28,8 @@ import { SessionService } from './session/session.service';
 
 @Injectable()
 export class AuthService {
+	private readonly JWT_ACCESS_SECRET: string;
+
 	constructor(
 		private readonly userService: UserService,
 		private readonly configService: ConfigService,
@@ -37,7 +40,10 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
-	) {}
+	) {
+		this.JWT_ACCESS_SECRET =
+			this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
+	}
 
 	async validateUser(email: string, password: string) {
 		const user = await this.userService.findByEmail(email, true);
@@ -59,14 +65,15 @@ export class AuthService {
 		const user = await this.userService.findByEmail(email, true);
 
 		if (!user || !user.password)
-			throw new UnauthorizedException('Invalid email or password.');
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
 
 		const isMatch = await comparePassword(password, user.password);
 
-		if (!isMatch) throw new UnauthorizedException('Invalid email or password.');
+		if (!isMatch)
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
 
 		if (!user.emailVerified)
-			throw new UnauthorizedException('Email not verified.');
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.EMAIL_NOT_VERIFIED);
 
 		this.validateAccountStatus(user);
 
@@ -91,10 +98,8 @@ export class AuthService {
 		await this.mailService.sendVerificationEmail(user.email, token);
 
 		return {
-			success: true,
-			message: 'Registration successful. Please check your email to verify.',
-			messageCode: 'REGISTRATION_SUCCESS',
-			email: user.email,
+			...SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS,
+			meta: { email: user.email },
 		};
 	}
 
@@ -109,7 +114,7 @@ export class AuthService {
 		);
 
 		if (userId && session.userId !== userId) {
-			throw new ForbiddenException('Token mismatch.');
+			throw new ForbiddenException(ERROR_MESSAGES.TOKEN.MISMATCH);
 		}
 
 		await this.sessionService.deleteSession(session.userId, session.id);
@@ -194,13 +199,14 @@ export class AuthService {
 			}
 
 			throw new UnauthorizedException(
-				'Invalid or expired refresh token. Please log in again.',
+				ERROR_MESSAGES.AUTH.INVALID_REFRESH_TOKEN,
 			);
 		}
 
 		const user = await this.userService.findById(session.userId);
 
-		if (!user || !user.emailVerified) throw new UnauthorizedException();
+		if (!user || !user.emailVerified)
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.UNAUTHORIZED);
 
 		const newRawRefreshToken = generateRawToken();
 		const newRefreshTokenHash = hashToken(newRawRefreshToken);
@@ -226,7 +232,7 @@ export class AuthService {
 		};
 
 		const accessToken = this.jwtService.sign(payload, {
-			secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+			secret: this.JWT_ACCESS_SECRET,
 			expiresIn: '15m',
 		});
 
@@ -248,12 +254,10 @@ export class AuthService {
 		const isRecoverable = Date.now() - deletionTime < fourteenDaysInMs;
 
 		if (isRecoverable) {
-			throw new ForbiddenException(
-				'Account is deleted. You can still restore it.',
-			);
+			throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_SUSPENDED);
 		}
 
-		throw new ForbiddenException('Account is deleted.');
+		throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_DELETED);
 	}
 
 	async generateAndSaveTokens(
@@ -286,7 +290,7 @@ export class AuthService {
 		};
 
 		const accessToken = this.jwtService.sign(payload, {
-			secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+			secret: this.JWT_ACCESS_SECRET,
 			expiresIn: '15m',
 		});
 

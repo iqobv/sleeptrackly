@@ -1,6 +1,7 @@
 import { AchievementProgressService } from '@api/achievement/services';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	forwardRef,
 	Inject,
@@ -56,7 +57,8 @@ export class ChallengeTaskService {
 			where: { id },
 		});
 
-		if (!task) throw new NotFoundException('Task not found');
+		if (!task)
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE_TASK.NOT_FOUND);
 
 		return task;
 	}

@@ -1,4 +1,5 @@
 import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,7 +30,7 @@ export class ImageService {
 				extension = 'webp';
 			} catch (error) {
 				console.error('Sharp error:', error);
-				throw new BadRequestException('Failed to process image');
+				throw new BadRequestException(ERROR_MESSAGES.IMAGE.PROCESSING_FAILED);
 			}
 		}
 

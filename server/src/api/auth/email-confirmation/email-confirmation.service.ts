@@ -4,6 +4,7 @@ import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
@@ -33,7 +34,8 @@ export class EmailConfirmationService {
 				tx,
 			);
 
-			if (!existsToken.userId) throw new NotFoundException('Token not found');
+			if (!existsToken.userId)
+				throw new NotFoundException(ERROR_MESSAGES.TOKEN.NOT_FOUND);
 
 			await this.userService.update(
 				existsToken.userId,

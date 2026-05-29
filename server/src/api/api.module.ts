@@ -1,10 +1,14 @@
 import { Module } from '@nestjs/common';
+import { AchievementModule } from './achievement/achievement.module';
 import { AuthModule } from './auth/auth.module';
+import { BundleModule } from './bundle/bundle.module';
 import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
 import { ChallengeModule } from './challenge/challenge.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { CoinModule } from './coin/coin.module';
+import { CollectionModule } from './collection/collection.module';
 import { FriendshipModule } from './friendship/friendship.module';
+import { ImageModule } from './image/image.module';
 import { ItemModule } from './item/item.module';
 import { NotificationModule } from './notification/notification.module';
 import { ProductModule } from './product/product.module';
@@ -26,14 +30,12 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
-import { AchievementModule } from './achievement/achievement.module';
-import { ImageModule } from './image/image.module';
-import { CollectionModule } from './collection/collection.module';
 
 @Module({
 	imports: [
 		UserModule,
 		AuthModule,
+		BundleModule,
 		UserProviderModule,
 		SleepEntryModule,
 		UserSleepStatusModule,

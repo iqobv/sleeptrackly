@@ -1,14 +1,23 @@
 import { getSwaggerConfig } from '@config';
 import { INestApplication } from '@nestjs/common';
 import { SwaggerModule } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 export const setupSwagger = (app: INestApplication) => {
 	const config = getSwaggerConfig();
 
-	const documentFactory = () => SwaggerModule.createDocument(app, config);
-	SwaggerModule.setup('/docs', app, documentFactory, {
-		customSiteTitle: 'Sleep Tracker API',
-		jsonDocumentUrl: '/docs/json',
-		yamlDocumentUrl: '/docs/yaml',
-	});
+	const document = SwaggerModule.createDocument(app, config);
+
+	app.use(
+		'/docs',
+		apiReference({
+			spec: {
+				content: document,
+			},
+			title: 'Sleeptrackly API Docs',
+			pageTitle: 'Sleeptrackly API Docs',
+			favicon: 'https://cdn.sleeptrackly.com/Sleeptrackly.png',
+			theme: 'default',
+		}),
+	);
 };

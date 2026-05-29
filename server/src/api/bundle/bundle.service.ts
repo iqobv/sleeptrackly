@@ -1,17 +1,11 @@
+import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
 import { bundleInclude } from '@libs/prisma';
 import { paginate } from '@libs/utils';
-import {
-	BadRequestException,
-	forwardRef,
-	Inject,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
-import { ItemService } from '../item.service';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateBundleDto, UpdateBundleDto } from './dto';
 
 @Injectable()
@@ -20,15 +14,11 @@ export class BundleService {
 
 	constructor(
 		private readonly prismaService: PrismaService,
-		@Inject(forwardRef(() => ItemService))
-		private readonly itemService: ItemService,
-		private readonly r2Service: R2Service,
+		private readonly imageService: ImageService,
 	) {}
 
 	async createBundle(dto: CreateBundleDto, file: Express.Multer.File) {
 		const { translations, itemsIds, ...rest } = dto;
-
-		if (!file) throw new BadRequestException('Bundle image is required');
 
 		const price = await this.prismaService.item.aggregate({
 			where: { id: { in: itemsIds } },
@@ -39,7 +29,12 @@ export class BundleService {
 
 		const finalPrice = Math.round(price._sum.basePrice ?? 0);
 
-		const mediaFile = await this.itemService.uploadImage(file, 'bundles', null);
+		const mediaFile = await this.imageService.uploadImage(
+			file,
+			'bundles',
+			null,
+			this.PLACEHOLDER_IMAGE_URL,
+		);
 
 		const bundle = await this.prismaService.bundle.create({
 			data: {
@@ -115,14 +110,12 @@ export class BundleService {
 	}
 
 	async getById(id: string) {
-		const bundle = await this.prismaService.bundle.findFirst({
-			where: {
-				id,
-			},
+		const bundle = await this.prismaService.bundle.findUnique({
+			where: { id },
 			include: bundleInclude,
 		});
 
-		if (!bundle) throw new NotFoundException('Bundle not found');
+		if (!bundle) throw new NotFoundException(ERROR_MESSAGES.BUNDLE.NOT_FOUND);
 
 		return bundle;
 	}
@@ -134,12 +127,17 @@ export class BundleService {
 	) {
 		const { translations, itemsIds, ...rest } = dto;
 
+		const bundle = await this.getById(id);
+
 		return await this.prismaService.$transaction(
 			async (tx) => {
-				const bundle = await this.getById(id);
-
 				const mediaFile = file
-					? await this.itemService.uploadImage(file, 'bundles', bundle.mediaUrl)
+					? await this.imageService.uploadImage(
+							file,
+							'bundles',
+							bundle.mediaUrl,
+							this.PLACEHOLDER_IMAGE_URL,
+						)
 					: null;
 
 				if (translations && translations.length > 0) {
@@ -201,8 +199,12 @@ export class BundleService {
 	}
 
 	async removeBundle(id: string) {
-		return await this.prismaService.bundle.delete({
-			where: { id },
+		const bundle = await this.getById(id);
+
+		await this.prismaService.bundle.delete({
+			where: { id: bundle.id },
 		});
+
+		return { message: 'Bundle deleted successfully' };
 	}
 }

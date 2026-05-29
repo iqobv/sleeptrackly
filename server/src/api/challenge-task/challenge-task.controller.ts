@@ -1,11 +1,7 @@
-import { Auth, Authorized } from '@libs/decorators';
-import { Body, Controller, Param, Patch } from '@nestjs/common';
-import {
-	ApiNotFoundResponse,
-	ApiOkResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ChallengeTaskService } from './challenge-task.service';
 import {
 	ChallengeTaskDto,
@@ -21,9 +17,10 @@ export class ChallengeTaskController {
 
 	@ApiOperation({ summary: 'Update challenge task' })
 	@ApiOkResponse({ type: ChallengeTaskDto })
-	@ApiNotFoundResponse({
-		description: 'Challenge not found<br/>Task not found',
-	})
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
+		ERROR_MESSAGES.CHALLENGE.NOT_FOUND,
+		ERROR_MESSAGES.CHALLENGE_TASK.NOT_FOUND,
+	])
 	@Patch('challenge/:challengeId/task/:taskId')
 	async update(
 		@Authorized('id') userId: string,

@@ -1,5 +1,6 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
 import { FilesValidationPipe } from '@libs/pipes';
 import {
@@ -7,6 +8,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -21,6 +23,7 @@ import {
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import {
 	CreateItemDto,
@@ -43,6 +46,7 @@ const ALLOWED_TYPES = [
 	'video/webm',
 ];
 
+@ApiTags('Items')
 @Controller('items')
 export class ItemController {
 	constructor(private readonly itemService: ItemService) {}
@@ -55,6 +59,7 @@ export class ItemController {
 			{ name: 'preview', maxCount: 1 },
 		]),
 	)
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, ERROR_MESSAGES.ITEM.IMAGE_REQUIRED)
 	@Auth(UserRole.ADMIN)
 	@ApiBody({ type: CreateItemSwaggerDto })
 	@ApiCreatedResponse({ type: ItemDto })
@@ -90,6 +95,7 @@ export class ItemController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get item by ID' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
 	@ApiOkResponse({ type: ItemDto })
 	@Get('id/:id')
 	async getById(@Param('id') id: string) {
@@ -105,6 +111,7 @@ export class ItemController {
 			{ name: 'preview', maxCount: 1 },
 		]),
 	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
 	@ApiBody({ type: UpdateItemDtoSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@Patch(':id')
@@ -125,6 +132,7 @@ export class ItemController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete an item' })
 	@ApiOkResponse({ type: Boolean })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
 	@Delete(':id')
 	async deleteItem(@Param('id') id: string) {
 		return await this.itemService.deleteItem(id);

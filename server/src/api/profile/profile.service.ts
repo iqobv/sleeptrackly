@@ -1,4 +1,5 @@
 import { Friendship, User } from '@generated/prisma/client';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ChallengeService } from '../challenge/challenge.service';
 import { FriendshipService } from '../friendship/friendship.service';
@@ -28,7 +29,7 @@ export class ProfileService {
 			isRestrictedViewer &&
 			user.userPrivacySettings?.profileVisibility === 'PRIVATE'
 		) {
-			throw new NotFoundException('Profile not found');
+			throw new NotFoundException(ERROR_MESSAGES.PROFILE.NOT_FOUND);
 		}
 
 		let friendship: Friendship | null = null;
@@ -45,7 +46,7 @@ export class ProfileService {
 			user.userPrivacySettings?.profileVisibility === 'FRIENDS' &&
 			!friendship
 		) {
-			throw new NotFoundException('Profile not found');
+			throw new NotFoundException(ERROR_MESSAGES.PROFILE.NOT_FOUND);
 		}
 
 		const canViewStatistics =

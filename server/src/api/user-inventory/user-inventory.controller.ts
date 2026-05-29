@@ -1,15 +1,17 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import { LanguageQueryDto, PaginationQueryWithLanguageDto } from '@libs/dto';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
 	PaginatedUserInventoryDto,
 	UpdateUserInvetoryDto,
@@ -17,9 +19,14 @@ import {
 } from './dto';
 import { UserInventoryService } from './user-inventory.service';
 
+@ApiTags('User Inventory')
 @Controller('inventory')
 export class UserInventoryController {
 	constructor(private readonly userInventoryService: UserInventoryService) {}
+
+	// throw new NotFoundException(
+	// ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+	// );
 
 	@ApiOperation({ summary: 'Get current user inventory' })
 	@Auth()
@@ -34,6 +41,10 @@ export class UserInventoryController {
 
 	@ApiOperation({ summary: 'Get user inventory item by id' })
 	@Auth()
+	@ApiErrorResponse(
+		HttpStatus.NOT_FOUND,
+		ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+	)
 	@ApiOkResponse({ type: UserInventoryItemDto })
 	@Get(':id')
 	async findById(
@@ -50,6 +61,10 @@ export class UserInventoryController {
 
 	@ApiOperation({ summary: 'Equip inventory item' })
 	@Auth()
+	@ApiErrorResponse(
+		HttpStatus.NOT_FOUND,
+		ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+	)
 	@ApiOkResponse({ type: UserInventoryItemDto })
 	@Patch(':id/equip')
 	async equipItem(@Authorized('id') userId: string, @Param('id') id: string) {
@@ -59,6 +74,10 @@ export class UserInventoryController {
 	@ApiOperation({ summary: 'Update user inventory item' })
 	@Auth()
 	@ApiOkResponse({ type: UserInventoryItemDto })
+	@ApiErrorResponse(
+		HttpStatus.NOT_FOUND,
+		ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+	)
 	@Patch(':id')
 	async updateUserInventoryItem(
 		@Param('id') id: string,
@@ -74,6 +93,10 @@ export class UserInventoryController {
 
 	@ApiOperation({ summary: 'Remove item from user inventory' })
 	@ApiOkResponse({ type: Boolean })
+	@ApiErrorResponse(
+		HttpStatus.NOT_FOUND,
+		ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+	)
 	@Auth()
 	@Delete(':id')
 	async removeItem(@Param('id') id: string, @Authorized('id') userId: string) {

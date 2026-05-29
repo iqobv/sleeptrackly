@@ -1,9 +1,11 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { LanguageQueryDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
+import { withField } from '@libs/utils';
 import {
 	BadRequestException,
 	ConflictException,
@@ -72,7 +74,8 @@ export class CollectionService {
 			include: collectionInclude,
 		});
 
-		if (!collection) throw new NotFoundException('Collection not found');
+		if (!collection)
+			throw new NotFoundException(ERROR_MESSAGES.COLLECTION.NOT_FOUND);
 
 		return collection;
 	}
@@ -214,21 +217,18 @@ export class CollectionService {
 		);
 
 		if (invalidProductIds.length > 0) {
-			throw new BadRequestException({
-				message: 'One or more provided product IDs do not exist',
-				code: 'INVALID_PRODUCT_IDS',
-				details: { invalidProductIds },
-			});
+			throw new BadRequestException(
+				ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+			);
 		}
 	}
 
 	private throwSlugConflictException(error: unknown) {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === 'P2002') {
-				throw new ConflictException({
-					message: 'Collection with this slug already exists',
-					code: 'COLLECTION_SLUG_EXISTS',
-				});
+				throw new ConflictException(
+					withField(ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE, 'slug'),
+				);
 			}
 		}
 	}

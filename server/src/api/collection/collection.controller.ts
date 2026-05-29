@@ -1,12 +1,15 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
+import { withField } from '@libs/utils';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -18,7 +21,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
 	ApiBody,
 	ApiConsumes,
-	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
@@ -40,6 +42,15 @@ export class CollectionController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Create a new collection' })
 	@ApiConsumes('multipart/form-data')
+	@ApiErrorResponse(
+		HttpStatus.CONFLICT,
+		withField(ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE, 'slug'),
+	)
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+	)
+	@ApiBody({ type: CreateCollectionSwaggerDto })
 	@UseInterceptors(FileInterceptor('icon'))
 	@ApiBody({ type: CreateCollectionSwaggerDto })
 	@Post()
@@ -68,7 +79,7 @@ export class CollectionController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get a collection by ID' })
-	@ApiNotFoundResponse({ description: 'Collection not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
 	@ApiOkResponse({ type: FullCollectionDto })
 	@Get('id/:id')
 	async getCollectionById(@Param('id') id: string) {
@@ -78,6 +89,15 @@ export class CollectionController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get all collections for store' })
 	@ApiOkResponse({ type: FullCollectionDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.CONFLICT, {
+		...ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE,
+		field: 'slug',
+	})
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+	)
 	@ApiBody({ type: UpdateCollectionSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
@@ -92,6 +112,7 @@ export class CollectionController {
 
 	@Auth(UserRole.ADMIN)
 	@Delete(':id')
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
 	@ApiOperation({ summary: 'Delete a collection' })
 	@ApiOkResponse({ example: { message: 'Collection deleted successfully' } })
 	async deleteCollection(@Param('id') id: string) {

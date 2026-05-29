@@ -1,5 +1,6 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	extractClientIP,
 	hashToken,
@@ -127,9 +128,7 @@ export class SessionService {
 			where: { id: sessionId },
 		});
 
-		if (!session) {
-			throw new NotFoundException("Session doesn't exist");
-		}
+		if (!session) throw new NotFoundException(ERROR_MESSAGES.SESSION.NOT_FOUND);
 
 		return session;
 	}
@@ -139,9 +138,7 @@ export class SessionService {
 			where: { AND: [{ id: sessionId }, { hashToken: token }] },
 		});
 
-		if (!session) {
-			throw new NotFoundException("Session doesn't exist");
-		}
+		if (!session) throw new NotFoundException(ERROR_MESSAGES.SESSION.NOT_FOUND);
 
 		return session;
 	}
@@ -149,11 +146,8 @@ export class SessionService {
 	async deleteSession(userId: string, sessionId: string) {
 		const session = await this.findSessionById(sessionId);
 
-		if (session.userId !== userId) {
-			throw new ForbiddenException(
-				"You don't have permission to delete this session",
-			);
-		}
+		if (session.userId !== userId)
+			throw new ForbiddenException(ERROR_MESSAGES.SESSION.DELETE_FORBIDDEN);
 
 		await this.prismaService.session.delete({
 			where: { id: sessionId },
@@ -232,9 +226,7 @@ export class SessionService {
 			},
 		});
 
-		if (!session) {
-			throw new NotFoundException("Session doesn't exist");
-		}
+		if (!session) throw new NotFoundException(ERROR_MESSAGES.SESSION.NOT_FOUND);
 
 		const {
 			hashToken: _rt,

@@ -2,6 +2,7 @@ import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { HttpService } from '@nestjs/axios';
 import {
 	BadGatewayException,
@@ -11,7 +12,6 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
-import dayjs from 'dayjs';
 import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
 import { Readable } from 'stream';
@@ -64,9 +64,10 @@ export class UserAvatarService {
 			);
 
 			if (activeBan)
-				throw new ForbiddenException(
-					`You are banned from changing avatar${activeBan.endsAt ? ` until ${dayjs(activeBan.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
-				);
+				throw new ForbiddenException({
+					...ERROR_MESSAGES.AVATAR.CHANGE_BANNED,
+					meta: { endsAt: activeBan.endsAt },
+				});
 		}
 
 		const processedBuffer = await sharp(file.buffer)
@@ -87,7 +88,8 @@ export class UserAvatarService {
 
 		const url = metadata.key;
 
-		if (!metadata) throw new BadGatewayException('Error uploading image');
+		if (!metadata)
+			throw new BadGatewayException(ERROR_MESSAGES.AVATAR.UPLOAD_FAILED);
 
 		return this.update(avatar.id, url);
 	}
@@ -124,7 +126,8 @@ export class UserAvatarService {
 			where: { userId },
 		});
 
-		if (existingAvatar) throw new ConflictException('Avatar already exists');
+		if (existingAvatar)
+			throw new ConflictException(ERROR_MESSAGES.AVATAR.ALREADY_EXISTS);
 
 		const newAvatar = await prisma.userAvatar.create({
 			data: {

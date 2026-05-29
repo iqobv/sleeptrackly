@@ -1,10 +1,11 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaginatedPurchaseHistoryDto } from './dto';
 import { PurchaseHistoryService } from './purchase-history.service';
 
+@ApiTags('Purchase Histories')
 @Controller('purchase-histories')
 export class PurchaseHistoryController {
 	constructor(

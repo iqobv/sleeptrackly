@@ -1,6 +1,6 @@
 import { TranslationDto } from '@libs/dto';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { ShopItemDto } from '../../dto';
+import { ShopItemDto } from '../../item/dto';
 import { BundleDto } from './bundle.dto';
 
 export class ShopBundleDto extends OmitType(BundleDto, [

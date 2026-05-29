@@ -1,12 +1,15 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import {
+	BadRequestException,
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -41,6 +44,10 @@ export class BundleController {
 	@ApiOperation({ summary: 'Create a new bundle' })
 	@ApiCreatedResponse({ type: BundleDto })
 	@ApiConsumes('multipart/form-data')
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.ITEM.IMAGE_REQUIRED,
+		ERROR_MESSAGES.IMAGE.PROCESSING_FAILED,
+	])
 	@UseInterceptors(FileInterceptor('file'))
 	@ApiBody({ type: CreateBundleSwaggerDto })
 	@Post()
@@ -48,6 +55,9 @@ export class BundleController {
 		@UploadedFile(ImageValidationPipe()) file: Express.Multer.File,
 		@Body() dto: CreateBundleDto,
 	) {
+		if (!file)
+			throw new BadRequestException(ERROR_MESSAGES.ITEM.IMAGE_REQUIRED);
+
 		return await this.bundleService.createBundle(dto, file);
 	}
 
@@ -69,6 +79,7 @@ export class BundleController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get a bundle by ID' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
 	@ApiOkResponse({ type: FullBundleDto })
 	@Get('id/:id')
 	async getBundleById(@Param('id') id: string) {
@@ -78,6 +89,7 @@ export class BundleController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update a bundle by ID' })
 	@ApiOkResponse({ type: BundleDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('file'))
 	@ApiBody({ type: UpdateBundleSwaggerDto })
@@ -93,6 +105,7 @@ export class BundleController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete a bundle by ID' })
 	@ApiOkResponse({ type: Boolean })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
 	@Delete(':id')
 	async removeBundle(@Param('id') id: string) {
 		return await this.bundleService.removeBundle(id);

@@ -1,4 +1,5 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -20,7 +21,7 @@ export class PromotionService {
 
 		if (!coinsReward && !productIdReward) {
 			throw new BadRequestException(
-				'Either coinsReward or productIdReward must be provided',
+				ERROR_MESSAGES.PROMOTION.PRODUCT_REQUIRED_PAYLOAD_MISSING,
 			);
 		}
 
@@ -36,7 +37,7 @@ export class PromotionService {
 				where: { alias: finalAlias },
 			});
 			if (existingPromotion) {
-				throw new ConflictException('Promotion with this alias already exists');
+				throw new ConflictException(ERROR_MESSAGES.PROMOTION.ALREADY_EXISTS);
 			}
 		} else {
 			let attempts = 0;
@@ -91,7 +92,8 @@ export class PromotionService {
 			where: { alias },
 		});
 
-		if (!promotion) throw new NotFoundException('Promotion not found');
+		if (!promotion)
+			throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
 		return promotion;
 	}
@@ -119,7 +121,8 @@ export class PromotionService {
 			where: { id },
 		});
 
-		if (!promotion) throw new NotFoundException('Promotion not found');
+		if (!promotion)
+			throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
 		return promotion;
 	}

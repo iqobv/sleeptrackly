@@ -1,6 +1,7 @@
 import { AchievementProgressService } from '@api/achievement/services';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { getDateRanges } from '@libs/utils';
 import {
 	BadRequestException,
@@ -31,13 +32,15 @@ export class ChallengeService {
 		const nowDate = dayjs().toDate();
 
 		if (dayjs(startDate).isBefore(nowDate))
-			throw new BadRequestException('Start date cannot be in the past');
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.START_DATE_PAST);
 
 		if (dayjs(endDate).isBefore(nowDate))
-			throw new BadRequestException('End date cannot be in the past');
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.END_DATE_PAST);
 
 		if (dayjs(endDate).isBefore(dayjs(startDate)))
-			throw new BadRequestException('End date cannot be before start date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.INVALID_DATE_RANGE,
+			);
 
 		const challenge = await this.prismaService.challenge.create({
 			data: {
@@ -84,7 +87,8 @@ export class ChallengeService {
 			include: { tasks: true },
 		});
 
-		if (!challenge) throw new NotFoundException('Challenge not found');
+		if (!challenge)
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
 		return challenge;
 	}

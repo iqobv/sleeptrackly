@@ -1,6 +1,7 @@
 import { Prisma } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { filter, map, Observable, Subject } from 'rxjs';
@@ -143,7 +144,7 @@ export class NotificationService {
 			where: { id: notification.id },
 		});
 
-		return true;
+		return { message: 'Notification removed successfully' };
 	}
 
 	async sendPushNotification() {
@@ -207,7 +208,8 @@ export class NotificationService {
 			where: { id },
 		});
 
-		if (!notification) throw new NotFoundException('Notification not found');
+		if (!notification)
+			throw new NotFoundException(ERROR_MESSAGES.NOTIFICATION.NOT_FOUND);
 
 		return notification;
 	}

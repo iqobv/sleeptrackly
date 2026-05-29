@@ -1,12 +1,15 @@
-import { Auth, Authorized } from '@libs/decorators';
-import { Body, Controller, Get, Param, Patch, Query } from '@nestjs/common';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import {
-	ApiBadRequestResponse,
-	ApiNotFoundResponse,
-	ApiOkResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
+	Body,
+	Controller,
+	Get,
+	HttpStatus,
+	Param,
+	Patch,
+	Query,
+} from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
 	AllReportsDto,
 	ReportDto,
@@ -23,7 +26,7 @@ export class AdminReportController {
 	@Auth('ADMIN')
 	@ApiOperation({ summary: 'Get report by id' })
 	@ApiOkResponse({ type: ReportDto })
-	@ApiNotFoundResponse({ description: 'Report not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.REPORT.NOT_FOUND)
 	@Get(':id')
 	async findById(@Param('id') id: string) {
 		return await this.reportService.findById(id);
@@ -40,8 +43,11 @@ export class AdminReportController {
 	@Auth('ADMIN')
 	@ApiOperation({ summary: 'Update report' })
 	@ApiOkResponse({ type: ReportDto })
-	@ApiNotFoundResponse({ description: 'Report not found' })
-	@ApiBadRequestResponse({ description: 'Status is the same' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.REPORT.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.REPORT.STATUS_IS_THE_SAME,
+		ERROR_MESSAGES.REPORT.CANNOT_CHANGE_STATUS_TO_PENDING,
+	])
 	@Patch(':id')
 	async update(
 		@Param('id') id: string,

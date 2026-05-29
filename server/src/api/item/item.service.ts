@@ -1,6 +1,8 @@
+import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
 import { paginate } from '@libs/utils';
 import {
@@ -8,8 +10,6 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import sharp from 'sharp';
-import { v4 as uuidv4 } from 'uuid';
 import { CreateItemDto, UpdateItemDto } from './dto';
 import { CreateItemFiles, UpdateItemFiles } from './types';
 
@@ -20,19 +20,27 @@ export class ItemService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly r2Service: R2Service,
+		private readonly imageService: ImageService,
 	) {}
 
 	async createItem(dto: CreateItemDto, files: CreateItemFiles) {
 		const { translations, ...rest } = dto;
 
-		if (!files.media) throw new BadRequestException('Item image is required');
+		if (!files.media)
+			throw new BadRequestException(ERROR_MESSAGES.ITEM.IMAGE_REQUIRED);
 
-		const mediaFile = await this.uploadImage(files.media[0], 'items', null);
+		const mediaFile = await this.imageService.uploadImage(
+			files.media[0],
+			'items',
+			null,
+			this.PLACEHOLDER_IMAGE_URL,
+		);
 
-		const previewFile = await this.uploadImage(
+		const previewFile = await this.imageService.uploadImage(
 			files.preview[0],
 			'previews',
 			null,
+			this.PLACEHOLDER_IMAGE_URL,
 		);
 
 		const item = await this.prismaService.item.create({
@@ -48,55 +56,6 @@ export class ItemService {
 		});
 
 		return item;
-	}
-
-	async uploadImage(
-		file: Express.Multer.File,
-		folder: string = 'items',
-		oldUrl: string | null = null,
-	) {
-		const isVideo = file.mimetype.startsWith('video/');
-		let processedBuffer: Buffer = file.buffer;
-		let contentType: string = file.mimetype;
-		let extension: string = file.originalname.split('.').pop() || '';
-
-		if (!isVideo) {
-			try {
-				const pipeline = sharp(file.buffer, { animated: true });
-
-				processedBuffer = await pipeline
-					.webp({ quality: 80, effort: 6, lossless: false })
-					.toBuffer();
-				contentType = 'image/webp';
-				extension = 'webp';
-			} catch (error) {
-				console.error('Sharp error:', error);
-				throw new BadRequestException('Failed to process image');
-			}
-		}
-
-		if (oldUrl && oldUrl !== this.PLACEHOLDER_IMAGE_URL) {
-			try {
-				await this.r2Service.delete(oldUrl);
-			} catch (e) {
-				console.error('Delete old file error:', e);
-			}
-		}
-
-		const filename = `${uuidv4()}.${extension}`;
-		const key = `${folder}/${filename}`;
-
-		const uploadResult = await this.r2Service.upload(
-			processedBuffer,
-			key,
-			contentType,
-		);
-
-		return {
-			url: uploadResult.key,
-			isAnimated: isVideo,
-			extension,
-		};
 	}
 
 	async getAllItems(query: PaginationQueryDto) {
@@ -149,16 +108,14 @@ export class ItemService {
 	}
 
 	async getById(id: string) {
-		const item = await this.prismaService.item.findFirst({
-			where: {
-				id,
-			},
+		const item = await this.prismaService.item.findUnique({
+			where: { id },
 			include: {
 				translations: true,
 			},
 		});
 
-		if (!item) throw new NotFoundException('Item not found');
+		if (!item) throw new NotFoundException(ERROR_MESSAGES.ITEM.NOT_FOUND);
 
 		return item;
 	}
@@ -166,25 +123,25 @@ export class ItemService {
 	async updateItem(id: string, dto: UpdateItemDto, files?: UpdateItemFiles) {
 		const { translations, ...rest } = dto;
 
+		const item = await this.getById(id);
+
 		return await this.prismaService.$transaction(
 			async (tx) => {
-				const item = await tx.item.findUnique({
-					where: { id },
-				});
-
-				if (!item) {
-					throw new NotFoundException('Item not found');
-				}
-
 				const mediaFile = files?.media
-					? await this.uploadImage(files.media[0], 'items', item.mediaUrl)
+					? await this.imageService.uploadImage(
+							files.media[0],
+							'items',
+							item.mediaUrl,
+							this.PLACEHOLDER_IMAGE_URL,
+						)
 					: null;
 
 				const previewFile = files?.preview
-					? await this.uploadImage(
+					? await this.imageService.uploadImage(
 							files.preview[0],
 							'previews',
 							item.previewUrl,
+							this.PLACEHOLDER_IMAGE_URL,
 						)
 					: null;
 
@@ -237,8 +194,12 @@ export class ItemService {
 	}
 
 	async deleteItem(id: string) {
-		return await this.prismaService.item.delete({
-			where: { id },
+		const item = await this.getById(id);
+
+		await this.prismaService.item.delete({
+			where: { id: item.id },
 		});
+
+		return { message: 'Item deleted successfully' };
 	}
 }

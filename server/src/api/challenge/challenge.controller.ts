@@ -1,4 +1,5 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -11,9 +12,7 @@ import {
 	Post,
 } from '@nestjs/common';
 import {
-	ApiBadRequestResponse,
 	ApiCreatedResponse,
-	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
@@ -31,11 +30,11 @@ export class ChallengeController {
 
 	@ApiOperation({ summary: 'Create challenge' })
 	@ApiCreatedResponse({ type: ChallengeDto })
-	@ApiBadRequestResponse({
-		description: `Start date cannot be in the past<br/>
-		End date cannot be in the past<br/>
-		End date cannot be before start date`,
-	})
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.CHALLENGE.START_DATE_PAST,
+		ERROR_MESSAGES.CHALLENGE.END_DATE_PAST,
+		ERROR_MESSAGES.CHALLENGE.INVALID_DATE_RANGE,
+	])
 	@Auth()
 	@HttpCode(HttpStatus.CREATED)
 	@Post()
@@ -56,7 +55,7 @@ export class ChallengeController {
 
 	@ApiOperation({ summary: 'Get challenge by id' })
 	@ApiOkResponse({ type: ChallengeFullDto })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Auth()
 	@Get(':id')
 	async findById(@Authorized('id') userId: string, @Param('id') id: string) {
@@ -65,7 +64,7 @@ export class ChallengeController {
 
 	@ApiOperation({ summary: 'Update challenge' })
 	@ApiOkResponse({ type: UpdateChallengeDto })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Auth()
 	@Patch(':id')
 	async update(
@@ -78,7 +77,7 @@ export class ChallengeController {
 
 	@ApiOperation({ summary: 'Delete challenge' })
 	@ApiOkResponse({ type: Boolean, example: true })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Auth()
 	@Delete(':id')
 	async remove(@Authorized('id') userId: string, @Param('id') id: string) {

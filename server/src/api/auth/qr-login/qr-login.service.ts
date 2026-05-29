@@ -61,15 +61,6 @@ export class QrLoginService {
 				throw e;
 			});
 
-		// if (!token) {
-		// 	this.qrSubject.next({
-		// 		qrId,
-		// 		status: 'expired',
-		// 	});
-
-		// 	throw new NotFoundException('QR code not found or expired.');
-		// }
-
 		await this.prismaService.token.update({
 			where: { id: token.id },
 			data: { user: { connect: { id: userId } } },

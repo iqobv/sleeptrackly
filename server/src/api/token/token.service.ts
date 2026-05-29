@@ -1,6 +1,7 @@
 import type { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { userSelect } from '@libs/prisma';
 import { generateRawToken, hashToken } from '@libs/utils';
 import {
@@ -65,16 +66,12 @@ export class TokenService {
 		});
 
 		if (!record || record.type !== type) {
-			throw new BadRequestException(
-				'Invalid token. Please check the token and try again.',
-			);
+			throw new BadRequestException(ERROR_MESSAGES.TOKEN.INVALID);
 		}
 
 		if (record.expiresAt < new Date()) {
 			await prisma.token.delete({ where: { id: record.id } });
-			throw new BadRequestException(
-				'Token has expired. Please request a new token for verification.',
-			);
+			throw new BadRequestException(ERROR_MESSAGES.TOKEN.EXPIRED);
 		}
 
 		try {
@@ -99,15 +96,14 @@ export class TokenService {
 			where: { type, token: hashedToken },
 		});
 
-		if (!existsToken) throw new NotFoundException('Token not found');
+		if (!existsToken)
+			throw new NotFoundException(ERROR_MESSAGES.TOKEN.NOT_FOUND);
 
 		const hasExpired = new Date(existsToken.expiresAt) < new Date();
 
 		if (hasExpired) {
 			await this.deleteToken(existsToken.id, tx);
-			throw new NotFoundException(
-				'Token has expired. Please request a new token for verification.',
-			);
+			throw new NotFoundException(ERROR_MESSAGES.TOKEN.EXPIRED);
 		}
 
 		return existsToken;

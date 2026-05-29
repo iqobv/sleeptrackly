@@ -1,5 +1,6 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	ConflictException,
 	Injectable,
@@ -12,9 +13,8 @@ export class CoinService {
 	constructor(private readonly prismaService: PrismaService) {}
 
 	async create(userId: string, tx?: Prisma.TransactionClient) {
-		if (await this.getUserCoin(userId)) {
-			throw new ConflictException('User coin record already exists');
-		}
+		if (await this.getUserCoin(userId))
+			throw new ConflictException(ERROR_MESSAGES.COIN.DUPLICATE);
 
 		return await (tx || this.prismaService).userCoin.create({
 			data: {
@@ -28,7 +28,7 @@ export class CoinService {
 
 		const userCoin = await this.getUserCoin(userId);
 
-		if (!userCoin) throw new NotFoundException('User coin record not found');
+		if (!userCoin) throw new NotFoundException(ERROR_MESSAGES.COIN.NOT_FOUND);
 
 		return await this.prismaService.userCoin.update({
 			where: { userId, id: userCoin.id },

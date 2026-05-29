@@ -5,6 +5,7 @@ import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -30,21 +31,21 @@ export class PromotionUsageService {
 				include: { usage: { where: { userId } } },
 			});
 
-			if (!promotion) {
-				throw new NotFoundException('Promotion not found');
-			}
+			if (!promotion)
+				throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
-			if (promotion.expiresAt && promotion.expiresAt < new Date()) {
-				throw new BadRequestException('Promotion has expired');
-			}
+			if (promotion.expiresAt && promotion.expiresAt < new Date())
+				throw new BadRequestException(ERROR_MESSAGES.PROMOTION.HAS_EXPIRED);
 
-			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses) {
-				throw new BadRequestException('Promotion has reached its usage limit');
-			}
+			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses)
+				throw new BadRequestException(
+					ERROR_MESSAGES.PROMOTION.HAS_REACHED_ITS_USAGE_LIMIT,
+				);
 
-			if (promotion.usage.length > 0) {
-				throw new ConflictException('You have already used this promotion');
-			}
+			if (promotion.usage.length > 0)
+				throw new ConflictException(
+					ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
+				);
 
 			await tx.promotionUsage.create({
 				data: {

@@ -1,6 +1,7 @@
 import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { userSelect } from '@libs/prisma';
 import {
 	comparePassword,
@@ -16,8 +17,6 @@ import {
 	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import dayjs from 'dayjs';
 import { CoinService } from '../coin/coin.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
@@ -97,7 +96,7 @@ export class UserService {
 			},
 		});
 
-		if (!user) throw new NotFoundException('User not found');
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
 		const equippedItems = await this.userInventoryService.getUserEquippedItems(
 			user.id,
@@ -124,7 +123,7 @@ export class UserService {
 			select: userSelect,
 		});
 
-		if (!user) throw new NotFoundException('User not found');
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
 		return user;
 	}
@@ -158,13 +157,16 @@ export class UserService {
 			(await this.passwordIsMatch(id, oldPassword));
 
 		if (oldPassword && !oldPasswordMatch)
-			throw new ConflictException('Wrong password');
+			throw new ConflictException(ERROR_MESSAGES.USER.OLD_PASSWORD_MISMATCH);
 
 		if (oldPassword)
 			if (newPassword === oldPassword)
-				throw new ConflictException('Same password');
+				throw new ConflictException(
+					ERROR_MESSAGES.USER.NEW_PASSWORD_SAME_AS_OLD,
+				);
 
-		if (user.deletedAt) throw new ForbiddenException('Account is deleted');
+		if (user.deletedAt)
+			throw new ForbiddenException(ERROR_MESSAGES.USER.ACCOUNT_DELETED);
 
 		const newHashedPassword = newPassword
 			? await hashPassword(newPassword)
@@ -200,9 +202,10 @@ export class UserService {
 			);
 
 			if (activeChangeUsernameSanction && username && !isSystem)
-				throw new ForbiddenException(
-					`You are banned from changing username${activeChangeUsernameSanction.endsAt ? ` until ${dayjs(activeChangeUsernameSanction.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
-				);
+				throw new ForbiddenException({
+					...ERROR_MESSAGES.USER.USERNAME_CHANGE_BANNED,
+					meta: { endsAt: activeChangeUsernameSanction.endsAt },
+				});
 		}
 
 		await this.alreadyExists({ email, username });
@@ -243,32 +246,7 @@ export class UserService {
 			where: { userId: user.id },
 		});
 
-		return { message: 'User removed successfully' };
-	}
-
-	async removeUnverifiedUsersOlderThan(milliseconds: number) {
-		const cutoffDate = new Date(Date.now() - milliseconds);
-
-		const usersToRemove = await this.prismaService.user.findMany({
-			where: {
-				emailVerified: false,
-				createdAt: { lt: cutoffDate },
-			},
-			select: { id: true },
-		});
-
-		const userIds = usersToRemove.map((user) => user.id);
-
-		await this.prismaService.user.deleteMany({
-			where: { id: { in: userIds } },
-		});
-
-		return true;
-	}
-
-	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async handleRemoveUnverifiedUsersOlderThan() {
-		return await this.removeUnverifiedUsersOlderThan(24 * 60 * 60 * 1000);
+		return SUCCESS_MESSAGES.AUTH.USER_DELETED;
 	}
 
 	async generateUsername(): Promise<string> {
@@ -304,11 +282,10 @@ export class UserService {
 		});
 
 		if (user) {
-			if (user.username === username) {
-				throw new ConflictException('Username already taken');
-			}
+			if (user.username === username)
+				throw new ConflictException(ERROR_MESSAGES.USER.USERNAME_ALREADY_TAKEN);
 
-			throw new ConflictException('User already exists');
+			throw new ConflictException(ERROR_MESSAGES.USER.ALREADY_EXISTS);
 		}
 
 		return false;

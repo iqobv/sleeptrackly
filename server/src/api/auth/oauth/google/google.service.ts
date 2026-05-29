@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
@@ -34,7 +35,9 @@ export class GoogleService {
 			const payload = ticket.getPayload();
 
 			if (!payload || !payload.email || !payload.sub) {
-				throw new UnauthorizedException('Invalid Google token payload.');
+				throw new UnauthorizedException(
+					ERROR_MESSAGES.AUTH.INVALID_GOOGLE_TOKEN,
+				);
 			}
 
 			return await this.authService.validateOAuthLogin(
@@ -48,9 +51,7 @@ export class GoogleService {
 				clientInfo,
 			);
 		} catch {
-			throw new UnauthorizedException(
-				'Invalid Google token. Please try again.',
-			);
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_GOOGLE_TOKEN);
 		}
 	}
 }

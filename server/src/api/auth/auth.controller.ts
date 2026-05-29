@@ -1,4 +1,7 @@
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
 	Auth,
 	Authorized,
 	ClientInfo,
@@ -21,11 +24,9 @@ import {
 import { ConfigService } from '@nestjs/config';
 import {
 	ApiBody,
-	ApiConflictResponse,
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
-	ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
@@ -44,7 +45,10 @@ export class AuthController {
 
 	@ApiOperation({ summary: 'Login with email and password' })
 	@ApiBody({ type: LoginDto })
-	@ApiUnauthorizedResponse({ description: 'Email or password is incorrect' })
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS,
+	)
 	@Throttle({
 		short: { limit: 2, ttl: 1000 },
 		medium: { limit: 3, ttl: 10000 },
@@ -68,7 +72,11 @@ export class AuthController {
 
 	@ApiOperation({ summary: 'Register with email and password' })
 	@ApiCreatedResponse({ type: RegisterResultDto })
-	@ApiConflictResponse({ description: 'User already exists' })
+	@ApiErrorResponse(HttpStatus.CONFLICT, ERROR_MESSAGES.USER.ALREADY_EXISTS)
+	@ApiSuccessResponse(HttpStatus.CREATED, {
+		...SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS,
+		meta: { email: 'user@example.com' },
+	})
 	@Throttle({
 		short: { limit: 2, ttl: 1000 },
 		medium: { limit: 3, ttl: 10000 },
@@ -82,7 +90,12 @@ export class AuthController {
 
 	@OptionalAuth()
 	@ApiOperation({ summary: 'Logout' })
-	@ApiOkResponse()
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.LOGOUT_SUCCESS)
+	@SkipThrottle()
 	@Post('logout')
 	@HttpCode(HttpStatus.OK)
 	async logout(
@@ -91,16 +104,24 @@ export class AuthController {
 		@Res({ passthrough: true }) res: Response,
 	) {
 		if (!rawRefreshToken)
-			throw new UnauthorizedException('Refresh token is missing');
+			throw new UnauthorizedException(
+				ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+			);
 
 		await this.authService.logout(rawRefreshToken, userId);
 
 		clearAuthCookies(res, this.configService);
 
-		return { message: 'Logout successful' };
+		return SUCCESS_MESSAGES.AUTH.LOGOUT_SUCCESS;
 	}
 
 	@ApiOperation({ summary: 'Refresh tokens' })
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.TOKENS_REFRESHED)
+	@HttpCode(HttpStatus.OK)
 	@Post('refresh')
 	async refreshTokens(
 		@Cookie('refreshToken') rawRefreshToken: string,
@@ -108,7 +129,9 @@ export class AuthController {
 		@Res({ passthrough: true }) res: Response,
 	) {
 		if (!rawRefreshToken)
-			throw new UnauthorizedException('Refresh token is missing');
+			throw new UnauthorizedException(
+				ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+			);
 
 		try {
 			const { accessToken, refreshToken } =
@@ -119,11 +142,12 @@ export class AuthController {
 			throw error;
 		}
 
-		return { message: 'Tokens refreshed successfully' };
+		return SUCCESS_MESSAGES.AUTH.TOKENS_REFRESHED;
 	}
 
 	@ApiOperation({ summary: 'Get profile' })
 	@ApiOkResponse({ type: UserDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
 	@Auth()
 	@SkipThrottle()
 	@HttpCode(HttpStatus.OK)
@@ -134,7 +158,8 @@ export class AuthController {
 
 	@ApiOperation({ summary: 'Delete account' })
 	@Throttle({ long: { limit: 5, ttl: 60000 } })
-	@ApiOkResponse()
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.USER_DELETED)
 	@Auth()
 	@Delete('delete')
 	async deleteAccount(

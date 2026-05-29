@@ -4,6 +4,7 @@ import {
 	Prisma,
 } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -38,13 +39,16 @@ export class FriendshipService {
 	) {}
 
 	async sendFriendshipRequest(requesterId: string, addresseeId: string) {
-		if (requesterId === addresseeId) throw new BadRequestException('Same user');
+		if (requesterId === addresseeId)
+			throw new BadRequestException(
+				ERROR_MESSAGES.FRIENDSHIP.CANNOT_FRIEND_SELF,
+			);
 
 		const addressee = await this.userService.findById(addresseeId);
 
 		if (!addressee.userPrivacySettings?.acceptFriendRequests)
 			throw new BadRequestException(
-				'This user is not accepting friend requests',
+				ERROR_MESSAGES.FRIENDSHIP.REQUESTS_DISABLED,
 			);
 
 		const friendship = await this.alreadyExists(requesterId, addressee.id);
@@ -98,7 +102,7 @@ export class FriendshipService {
 
 				if (ms('1d') > now.getTime() - friendship.updatedAt.getTime()) {
 					throw new BadRequestException(
-						'You can send a new request in 24 hours',
+						ERROR_MESSAGES.FRIENDSHIP.REQUEST_COOLDOWN,
 					);
 				}
 
@@ -108,9 +112,9 @@ export class FriendshipService {
 					friendship?.status === FriendshipStatus.BLOCKED &&
 					friendship.addresseeId === requesterId
 				)
-					throw new BadRequestException('You are blocked');
+					throw new BadRequestException(ERROR_MESSAGES.FRIENDSHIP.USER_BLOCKED);
 
-				throw new ConflictException('Friendship already exists');
+				throw new ConflictException(ERROR_MESSAGES.FRIENDSHIP.ALREADY_EXISTS);
 			}
 		}
 	}
@@ -200,10 +204,11 @@ export class FriendshipService {
 
 		const friendship = await this.findFriendshipById(id, userId);
 
-		if (!friendship) throw new NotFoundException('Friendship not found');
+		if (!friendship)
+			throw new NotFoundException(ERROR_MESSAGES.FRIENDSHIP.NOT_FOUND);
 
 		if (friendship.status === status)
-			throw new BadRequestException('Same status');
+			throw new BadRequestException(ERROR_MESSAGES.FRIENDSHIP.STATUS_DUPLICATE);
 
 		const newFriendship = await this.prismaService.friendship.update({
 			where: {
@@ -227,7 +232,8 @@ export class FriendshipService {
 	async remove(userId: string, id: string) {
 		const friendship = await this.findFriendshipById(id, userId);
 
-		if (!friendship) throw new NotFoundException('Friendship not found');
+		if (!friendship)
+			throw new NotFoundException(ERROR_MESSAGES.FRIENDSHIP.NOT_FOUND);
 
 		await this.prismaService.friendship.delete({
 			where: {

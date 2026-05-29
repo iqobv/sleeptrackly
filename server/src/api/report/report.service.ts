@@ -1,5 +1,6 @@
 import { ReportStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { userSelect } from '@libs/prisma';
 import {
 	BadRequestException,
@@ -45,7 +46,7 @@ export class ReportService {
 			},
 		});
 
-		if (!report) throw new NotFoundException('Report not found');
+		if (!report) throw new NotFoundException(ERROR_MESSAGES.REPORT.NOT_FOUND);
 
 		return report;
 	}
@@ -97,10 +98,12 @@ export class ReportService {
 		const report = await this.findById(id);
 
 		if (status === report.status)
-			throw new BadRequestException('Status is the same');
+			throw new BadRequestException(ERROR_MESSAGES.REPORT.STATUS_IS_THE_SAME);
 
 		if (status === ReportStatus.PENDING)
-			throw new BadRequestException('Cannot change status to pending');
+			throw new BadRequestException(
+				ERROR_MESSAGES.REPORT.CANNOT_CHANGE_STATUS_TO_PENDING,
+			);
 
 		return await this.prismaService.report.update({
 			where: { id: report.id },
@@ -123,9 +126,10 @@ export class ReportService {
 		if (report) {
 			const now = new Date().getTime();
 
-			if (now - report.createdAt.getTime() < 60 * 60 * 1000) {
-				throw new BadRequestException('You can send a report once per hour');
-			}
+			if (now - report.createdAt.getTime() < 60 * 60 * 1000)
+				throw new BadRequestException(
+					ERROR_MESSAGES.REPORT.YOU_CAN_SEND_A_REPORT_ONCE_PER_HOUR,
+				);
 		}
 	}
 }

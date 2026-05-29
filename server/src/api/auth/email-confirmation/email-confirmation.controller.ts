@@ -1,4 +1,5 @@
-import { ClientInfo } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ClientInfo } from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
 import { setAuthCookies } from '@libs/utils';
 import {
@@ -24,6 +25,11 @@ export class EmailConfirmationController {
 	) {}
 
 	@ApiOperation({ summary: 'Email confirmation' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
+		ERROR_MESSAGES.TOKEN.NOT_FOUND,
+		ERROR_MESSAGES.TOKEN.EXPIRED,
+		ERROR_MESSAGES.USER.NOT_FOUND,
+	])
 	@Post()
 	@HttpCode(HttpStatus.OK)
 	async newVerification(

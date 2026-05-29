@@ -2,9 +2,12 @@ import { DocumentBuilder } from '@nestjs/swagger';
 
 export const getSwaggerConfig = () => {
 	return new DocumentBuilder()
-		.setTitle('Sleep Tracker API')
-		.setDescription('Sleep Tracker API description')
-		.setVersion('1.0.0')
-		.addCookieAuth('session')
+		.setTitle('Sleeptrackly API')
+		.setDescription('Sleeptrackly API description')
+		.setVersion('1.5.3')
+		.addCookieAuth('accessToken', {
+			type: 'apiKey',
+			in: 'cookie',
+		})
 		.build();
 };

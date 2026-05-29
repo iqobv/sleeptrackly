@@ -1,11 +1,13 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import {
 	Body,
 	Controller,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -17,7 +19,6 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
 	ApiBody,
 	ApiConsumes,
-	ApiNotFoundResponse,
 	ApiOkResponse,
 	ApiOperation,
 } from '@nestjs/swagger';
@@ -50,8 +51,13 @@ export class AchievementController {
 	}
 
 	@Auth(UserRole.ADMIN)
+	@ApiOperation({ summary: 'Create a new achievement' })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.IMAGE.PROCESSING_FAILED,
+	)
 	@ApiBody({ type: CreateAchievementSwaggerDto })
 	@Post()
 	async createAchievement(
@@ -72,7 +78,7 @@ export class AchievementController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Get achievement by ID' })
 	@ApiOkResponse({ type: AchievementDto })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
 	@Get('id/:id')
 	async getAchievementById(@Param('id') id: string) {
 		return await this.achievementService.getAchievementById(id);
@@ -81,7 +87,7 @@ export class AchievementController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Update achievement' })
 	@ApiOkResponse({ type: AchievementDto })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
 	@ApiBody({ type: UpdateAchievementSwaggerDto })
@@ -97,7 +103,7 @@ export class AchievementController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete achievement' })
 	@ApiOkResponse({ example: { message: 'Achievement deleted successfully' } })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
 	@Get(':id')
 	async deleteAchievement(@Param('id') id: string) {
 		return await this.achievementService.deleteAchievement(id);

@@ -1,6 +1,14 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
-import { Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	HttpStatus,
+	Param,
+	Post,
+	Query,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { FullProductDto } from '../product/dto';
 import {
@@ -41,6 +49,7 @@ export class ShopController {
 
 	@ApiOperation({ summary: 'Get product by ID' })
 	@ApiOkResponse({ type: FullProductDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
 	@Get('product/:id')
 	async getProductById(
 		@Query('id') id: string,
@@ -51,6 +60,18 @@ export class ShopController {
 
 	@ApiOperation({ summary: 'Purchase a product' })
 	@ApiOkResponse({ type: PurchaseDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
+		ERROR_MESSAGES.PRODUCT.NOT_FOUND,
+		ERROR_MESSAGES.COIN.NOT_FOUND,
+	])
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.COIN_TRANSACTION.INSUFFICIENT_FUNDS,
+	)
+	@ApiErrorResponse(
+		HttpStatus.CONFLICT,
+		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
+	)
 	@Post('purchase/:productId')
 	async purchaseProduct(
 		@Authorized('id') userId: string,

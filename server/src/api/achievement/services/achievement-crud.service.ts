@@ -1,5 +1,6 @@
 import { ImageService } from '@api/image/image.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { transformProduct } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -166,7 +167,8 @@ export class AchievementCrudService {
 			},
 		});
 
-		if (!achievement) throw new NotFoundException('Achievement not found');
+		if (!achievement)
+			throw new NotFoundException(ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND);
 
 		return achievement;
 	}

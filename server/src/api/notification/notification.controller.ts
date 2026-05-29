@@ -1,20 +1,18 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
 	Query,
 	Sse,
 } from '@nestjs/common';
-import {
-	ApiNotFoundResponse,
-	ApiOkResponse,
-	ApiOperation,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { NotificationDto, NotificationQueryDto } from './dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
@@ -56,7 +54,7 @@ export class NotificationController {
 	@Auth()
 	@ApiOperation({ summary: 'Update a notification by ID' })
 	@ApiOkResponse({ type: NotificationDto })
-	@ApiNotFoundResponse({ description: 'Notification not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
 	@Patch('id/:id')
 	async update(@Param('id') id: string, @Body() dto: UpdateNotificationDto) {
 		return await this.notificationService.update(id, dto);
@@ -74,7 +72,7 @@ export class NotificationController {
 
 	@ApiOkResponse({ type: Boolean })
 	@ApiOperation({ summary: 'Remove a notification by ID' })
-	@ApiNotFoundResponse({ description: 'Notification not found' })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
 	@Delete(':id')
 	async remove(@Param('id') id: string) {
 		return await this.notificationService.remove(id);

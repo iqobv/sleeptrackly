@@ -5,6 +5,14 @@ export const QrLoginStatus = {
 } as const;
 export type QrLoginStatus = (typeof QrLoginStatus)[keyof typeof QrLoginStatus];
 
+export const QrLoginStatusResponse = {
+	...QrLoginStatus,
+	SUCCESS: 'success',
+} as const;
+
+export type QrLoginStatusResponse =
+	(typeof QrLoginStatusResponse)[keyof typeof QrLoginStatusResponse];
+
 type QrStatusApproved = {
 	status: 'approved';
 	userId: string;

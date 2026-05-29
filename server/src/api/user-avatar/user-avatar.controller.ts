@@ -1,16 +1,17 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
 import { ImageValidationPipe } from '@libs/pipes';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
+	HttpStatus,
 	Post,
 	UploadedFile,
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
-	ApiBadGatewayResponse,
 	ApiBody,
 	ApiConsumes,
 	ApiExcludeEndpoint,
@@ -30,7 +31,12 @@ export class UserAvatarController {
 	@ApiConsumes('multipart/form-data')
 	@ApiBody({ type: UploadUserAvatarDto })
 	@ApiOkResponse({ type: UserAvatarDto })
-	@ApiBadGatewayResponse({ description: 'Error uploading image' })
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, ERROR_MESSAGES.AVATAR.UPLOAD_FAILED)
+	@ApiErrorResponse(HttpStatus.FORBIDDEN, {
+		...ERROR_MESSAGES.AVATAR.CHANGE_BANNED,
+		meta: { endsAt: new Date() },
+	})
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
 	@Auth()
 	@Post('upload')
 	@UseInterceptors(FileInterceptor('avatar'))
@@ -58,6 +64,7 @@ export class UserAvatarController {
 	}
 
 	@Auth('ADMIN')
+	@ApiExcludeEndpoint()
 	@Post('fix-urls')
 	async fixAvatarUrls() {
 		return await this.userAvatarService.fixAvatarUrls();

@@ -1,5 +1,6 @@
 import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { productInclude } from '@libs/prisma';
 import { paginate } from '@libs/utils';
@@ -20,16 +21,18 @@ export class ProductService {
 
 		if (!itemId && !bundleId)
 			throw new BadRequestException(
-				'Either itemId or bundleId must be provided',
+				ERROR_MESSAGES.PRODUCT.REQUIRED_PAYLOAD_MISSING,
 			);
 
 		if (itemId && bundleId)
 			throw new BadRequestException(
-				'Both itemId and bundleId cannot be provided simultaneously',
+				ERROR_MESSAGES.PRODUCT.MUTUALLY_EXCLUSIVE_PAYLOAD,
 			);
 
 		if (expiresAt && new Date(expiresAt).getTime() < Date.now())
-			throw new BadRequestException('expiresAt must be a future date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.PRODUCT.EXPIRES_AT_INVALID_FUTURE,
+			);
 
 		const alreadyExists = await this.prismaService.product.findFirst({
 			where: {
@@ -40,7 +43,8 @@ export class ProductService {
 			},
 		});
 
-		if (alreadyExists) throw new ConflictException('Product already exists');
+		if (alreadyExists)
+			throw new ConflictException(ERROR_MESSAGES.PRODUCT.ALREADY_EXISTS);
 
 		let type: ProductType;
 		let itemType: ProfileItemType | null;
@@ -75,7 +79,7 @@ export class ProductService {
 					);
 		} else {
 			throw new BadRequestException(
-				'Either itemId or bundleId must be provided',
+				ERROR_MESSAGES.PRODUCT.REQUIRED_PAYLOAD_MISSING,
 			);
 		}
 
@@ -118,7 +122,7 @@ export class ProductService {
 			},
 		});
 
-		if (!product) throw new NotFoundException('Product not found');
+		if (!product) throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
 		return product;
 	}
@@ -159,7 +163,7 @@ export class ProductService {
 			where: { id: product.id },
 		});
 
-		return true;
+		return { message: 'Product removed successfully' };
 	}
 
 	private calculateBundlePrice(price: number, percent: number) {

@@ -1,5 +1,6 @@
 import { Prisma, ProfileItemType } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { paginate } from '@libs/utils';
@@ -118,7 +119,9 @@ export class UserInventoryService {
 			});
 
 			if (!userInventoryItem)
-				throw new NotFoundException('User inventory item not found');
+				throw new NotFoundException(
+					ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+				);
 
 			const targetType = userInventoryItem.item.type;
 
@@ -173,7 +176,9 @@ export class UserInventoryService {
 			});
 
 			if (!userInventoryItem)
-				throw new NotFoundException('User inventory item not found');
+				throw new NotFoundException(
+					ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+				);
 
 			if (dto.isEquipped && userInventoryItem.item.type !== 'BADGE') {
 				await tx.userInventory.updateMany({
@@ -218,7 +223,9 @@ export class UserInventoryService {
 		});
 
 		if (!userInventoryItem)
-			throw new NotFoundException('User inventory item not found');
+			throw new NotFoundException(
+				ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
+			);
 
 		return userInventoryItem;
 	}

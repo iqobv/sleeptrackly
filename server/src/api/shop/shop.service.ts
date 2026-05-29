@@ -12,6 +12,7 @@ import {
 	ProductType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { pickTranslation, transformProduct } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
 import { paginate } from '@libs/utils';
@@ -236,7 +237,7 @@ export class ShopService {
 			include: productInclude(language),
 		});
 
-		if (!product) throw new NotFoundException('Product not found');
+		if (!product) throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
 		return transformProduct(product, language);
 	}
@@ -264,7 +265,8 @@ export class ShopService {
 				},
 			});
 
-			if (!product) throw new NotFoundException('Product not found');
+			if (!product)
+				throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
 			let items: Item[] = [];
 			const initialPrice = product.discountedPrice ?? product.price;
@@ -357,7 +359,9 @@ export class ShopService {
 		);
 
 		if (alreadyOwnedItems.length >= itemsIds.length) {
-			throw new ConflictException('You already own this product');
+			throw new ConflictException(
+				ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
+			);
 		}
 
 		const itemsToAdd = items.filter(

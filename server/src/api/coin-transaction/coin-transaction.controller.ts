@@ -1,9 +1,10 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { Controller, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CoinTransactionService } from './coin-transaction.service';
 import { CoinTransactionDto } from './dto';
 
+@ApiTags('Coin Transactions')
 @Controller('coin-transactions')
 export class CoinTransactionController {
 	constructor(

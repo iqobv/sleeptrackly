@@ -1,9 +1,11 @@
-import { Auth, Authorized, Cookie } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized, Cookie } from '@libs/decorators';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -17,29 +19,37 @@ export class SessionController {
 
 	@ApiOperation({ summary: 'Get all sessions' })
 	@ApiOkResponse({ type: [SessionDto] })
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
 	@Auth()
 	@Get('all')
 	async getAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
 	) {
-		if (!refreshToken) {
-			throw new BadRequestException('Refresh token cookie is missing');
-		}
+		if (!refreshToken)
+			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
+
 		return await this.sessionService.getUserSessions(userId, refreshToken);
 	}
 
 	@ApiOperation({ summary: 'Terminate all sessions' })
 	@ApiOkResponse({ type: Boolean })
 	@Auth()
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
 	@Delete('all-other')
 	async terminateAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
 	) {
-		if (!refreshToken) {
-			throw new BadRequestException('Refresh token cookie is missing');
-		}
+		if (!refreshToken)
+			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
 
 		return await this.sessionService.deleteAllOtherSessions(
 			userId,
@@ -50,6 +60,11 @@ export class SessionController {
 	@ApiOperation({ summary: 'Terminate session' })
 	@ApiOkResponse({ type: Boolean })
 	@Auth()
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
+	@ApiErrorResponse(
+		HttpStatus.FORBIDDEN,
+		ERROR_MESSAGES.SESSION.DELETE_FORBIDDEN,
+	)
 	@Delete('id/:id')
 	async terminateSession(
 		@Authorized('id') userId: string,

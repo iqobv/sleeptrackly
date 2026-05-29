@@ -1,6 +1,7 @@
 import { NotificationService } from '@api/notification/notification.service';
 import { NotificationType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -145,7 +146,8 @@ export class WeeklySummaryService {
 			where: { id: summaryId, userId },
 		});
 
-		if (!summary) throw new NotFoundException('Weekly summary not found');
+		if (!summary)
+			throw new NotFoundException(ERROR_MESSAGES.WEEKLY_SUMMARY.NOT_FOUND);
 
 		return summary;
 	}

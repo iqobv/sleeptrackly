@@ -1,4 +1,4 @@
-import { ShopBundleDto } from '@api/item/bundle/dto';
+import { ShopBundleDto } from '@api/bundle/dto';
 import { ShopItemDto } from '@api/item/dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductDto } from './product.dto';

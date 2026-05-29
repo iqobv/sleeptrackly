@@ -1,7 +1,11 @@
 import { CoinTransactionType, Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { InsufficientCoinsException } from '@libs/exceptions';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ERROR_MESSAGES } from '@libs/constants';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { CreateCoinTransactionDto } from './dto';
 
 @Injectable()
@@ -19,10 +23,12 @@ export class CoinTransactionService {
 				where: { userId },
 			});
 
-			if (!userCoin) throw new NotFoundException('User coin not found');
+			if (!userCoin) throw new NotFoundException(ERROR_MESSAGES.COIN.NOT_FOUND);
 
 			if (amount < 0 && userCoin.amount + amount < 0)
-				throw new InsufficientCoinsException();
+				throw new BadRequestException(
+					ERROR_MESSAGES.COIN_TRANSACTION.INSUFFICIENT_FUNDS,
+				);
 
 			const updatedCoin = await client.userCoin.update({
 				where: { id: userCoin.id },
