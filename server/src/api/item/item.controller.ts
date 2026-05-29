@@ -1,6 +1,6 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
 import { FilesValidationPipe } from '@libs/pipes';
 import {
@@ -131,7 +131,7 @@ export class ItemController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete an item' })
-	@ApiOkResponse({ type: Boolean })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.ITEM.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
 	@Delete(':id')
 	async deleteItem(@Param('id') id: string) {

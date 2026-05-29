@@ -1,10 +1,17 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized, Cookie } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+	Cookie,
+} from '@libs/decorators';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
 	HttpStatus,
 	Param,
 } from '@nestjs/common';
@@ -36,13 +43,17 @@ export class SessionController {
 	}
 
 	@ApiOperation({ summary: 'Terminate all sessions' })
-	@ApiOkResponse({ type: Boolean })
 	@Auth()
 	@ApiErrorResponse(
 		HttpStatus.UNAUTHORIZED,
 		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
 	)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED,
+	)
+	@HttpCode(HttpStatus.OK)
 	@Delete('all-other')
 	async terminateAllSessions(
 		@Authorized('id') userId: string,
@@ -58,13 +69,14 @@ export class SessionController {
 	}
 
 	@ApiOperation({ summary: 'Terminate session' })
-	@ApiOkResponse({ type: Boolean })
 	@Auth()
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
 	@ApiErrorResponse(
 		HttpStatus.FORBIDDEN,
 		ERROR_MESSAGES.SESSION.DELETE_FORBIDDEN,
 	)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SESSION.SESSION_DELETED)
+	@HttpCode(HttpStatus.OK)
 	@Delete('id/:id')
 	async terminateSession(
 		@Authorized('id') userId: string,

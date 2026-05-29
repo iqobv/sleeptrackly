@@ -12,4 +12,5 @@ export const AUTH_ERROR_MESSAGES = {
 	INVALID_REFRESH_TOKEN:
 		'Invalid or expired refresh token. Please log in again.',
 	REFRESH_TOKEN_MISSING: 'Refresh token is missing',
+	REFRESH_TOKEN_REQUIRED: 'Refresh token is required',
 } as const;

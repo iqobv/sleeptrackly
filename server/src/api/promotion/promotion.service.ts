@@ -1,5 +1,5 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -134,6 +134,6 @@ export class PromotionService {
 			where: { id: promotion.id },
 		});
 
-		return { code: 'PROMOTION_DELETED' };
+		return SUCCESS_MESSAGES.PROMOTION.DELETED;
 	}
 }

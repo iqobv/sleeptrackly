@@ -1,7 +1,7 @@
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	Injectable,
@@ -147,6 +147,6 @@ export class UserSanctionService {
 
 		await this.prismaService.userSanction.delete({ where: { id } });
 
-		return true;
+		return SUCCESS_MESSAGES.SANCTION.DELETED;
 	}
 }

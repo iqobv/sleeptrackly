@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -101,10 +106,10 @@ export class FriendshipController {
 		);
 	}
 
+	@Auth()
 	@ApiOperation({ summary: 'Remove a friend' })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.FRIENDSHIP.NOT_FOUND)
-	@ApiOkResponse({ type: Boolean })
-	@Auth()
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.FRIENDSHIP.DELETED)
 	@Delete(':id')
 	async remove(@Authorized('id') userId: string, @Param('id') id: string) {
 		return await this.friendshipService.remove(userId, id);

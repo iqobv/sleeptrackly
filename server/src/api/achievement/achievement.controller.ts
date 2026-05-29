@@ -1,6 +1,11 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import {
@@ -102,7 +107,7 @@ export class AchievementController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete achievement' })
-	@ApiOkResponse({ example: { message: 'Achievement deleted successfully' } })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.ACHIEVEMENT.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
 	@Get(':id')
 	async deleteAchievement(@Param('id') id: string) {

@@ -1,5 +1,9 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ClientInfo } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	ClientInfo,
+} from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
 import { setAuthCookies } from '@libs/utils';
 import {
@@ -31,6 +35,10 @@ export class EmailConfirmationController {
 		ERROR_MESSAGES.USER.NOT_FOUND,
 	])
 	@Post()
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.EMAIL_CONFIRMATION.VERIFIED,
+	)
 	@HttpCode(HttpStatus.OK)
 	async newVerification(
 		@Body() dto: ConfirmationDto,
@@ -41,9 +49,16 @@ export class EmailConfirmationController {
 			await this.emailConfirmationService.newVerification(dto, clientInfo);
 
 		setAuthCookies(res, accessToken, refreshToken, this.configService);
+
+		return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.VERIFIED;
 	}
 
 	@ApiOperation({ summary: 'Resend email confirmation' })
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT,
+	)
+	@HttpCode(HttpStatus.OK)
 	@Post('resend')
 	async sendVerificationEmail(@Body() dto: ResendEmailDto) {
 		return await this.emailConfirmationService.sendVerificationEmail(dto);

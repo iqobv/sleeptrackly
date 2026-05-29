@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -15,6 +20,7 @@ import {
 	ApiCreatedResponse,
 	ApiOkResponse,
 	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import { ChallengeService } from './challenge.service';
 import {
@@ -24,6 +30,7 @@ import {
 	UpdateChallengeDto,
 } from './dto';
 
+@ApiTags('Challenge')
 @Controller('challenges')
 export class ChallengeController {
 	constructor(private readonly challengeService: ChallengeService) {}
@@ -76,7 +83,7 @@ export class ChallengeController {
 	}
 
 	@ApiOperation({ summary: 'Delete challenge' })
-	@ApiOkResponse({ type: Boolean, example: true })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Auth()
 	@Delete(':id')

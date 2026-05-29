@@ -1,7 +1,7 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { LanguageQueryDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
@@ -202,7 +202,7 @@ export class CollectionService {
 			where: { id },
 		});
 
-		return { message: 'Collection deleted successfully' };
+		return SUCCESS_MESSAGES.COLLECTION.DELETED;
 	}
 
 	private async validateProductIds(productIds: string[]) {

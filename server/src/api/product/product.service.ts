@@ -1,6 +1,6 @@
 import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { productInclude } from '@libs/prisma';
 import { paginate } from '@libs/utils';
@@ -163,7 +163,7 @@ export class ProductService {
 			where: { id: product.id },
 		});
 
-		return { message: 'Product removed successfully' };
+		return SUCCESS_MESSAGES.PRODUCT.DELETED;
 	}
 
 	private calculateBundlePrice(price: number, percent: number) {

@@ -1,5 +1,5 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -75,8 +75,8 @@ export class PromotionController {
 
 	@ApiOperation({ summary: 'Delete a promotion' })
 	@Auth('ADMIN')
-	@ApiOkResponse({ type: PromotionDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.DELETED)
 	@Delete(':id')
 	async deletePromotion(@Param('id') id: string) {
 		return await this.promotionService.deletePromotion(id);

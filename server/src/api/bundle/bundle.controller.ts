@@ -1,6 +1,6 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import {
@@ -104,7 +104,7 @@ export class BundleController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Delete a bundle by ID' })
-	@ApiOkResponse({ type: Boolean })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.BUNDLE.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
 	@Delete(':id')
 	async removeBundle(@Param('id') id: string) {

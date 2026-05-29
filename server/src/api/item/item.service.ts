@@ -2,7 +2,7 @@ import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { R2Service } from '@infra/r2/r2.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
 import { paginate } from '@libs/utils';
 import {
@@ -200,6 +200,6 @@ export class ItemService {
 			where: { id: item.id },
 		});
 
-		return { message: 'Item deleted successfully' };
+		return SUCCESS_MESSAGES.ITEM.DELETED;
 	}
 }

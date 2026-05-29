@@ -1,6 +1,6 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import {
 	Body,
@@ -71,7 +71,7 @@ export class ProductController {
 
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Remove a product by ID' })
-	@ApiOkResponse({ type: Boolean })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PRODUCT.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
 	@Delete(':id')
 	async removeProduct(@Param('id') id: string) {

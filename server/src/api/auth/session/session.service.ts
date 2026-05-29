@@ -1,6 +1,6 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
 	extractClientIP,
 	hashToken,
@@ -153,7 +153,7 @@ export class SessionService {
 			where: { id: sessionId },
 		});
 
-		return { message: 'Session deleted successfully' };
+		return SUCCESS_MESSAGES.SESSION.SESSION_DELETED;
 	}
 
 	async deleteAllOtherSessions(userId: string, refreshToken: string) {
@@ -172,7 +172,7 @@ export class SessionService {
 			},
 		});
 
-		return { message: 'All other sessions deleted successfully' };
+		return SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED;
 	}
 
 	async terminateExpiredSessions() {

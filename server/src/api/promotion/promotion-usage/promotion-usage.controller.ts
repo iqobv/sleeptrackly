@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PromotionUsageService } from './promotion-usage.service';
@@ -24,6 +29,7 @@ export class PromotionUsageController {
 		ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
 		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
 	])
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.USED)
 	@Auth()
 	@Get(':alias')
 	async usePromotion(

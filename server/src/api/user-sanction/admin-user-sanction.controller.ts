@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -70,7 +75,7 @@ export class AdminUserSanctionController {
 
 	@Auth('ADMIN')
 	@ApiOperation({ summary: 'Remove a sanction by its ID' })
-	@ApiOkResponse({ type: Boolean })
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SANCTION.DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SANCTION.NOT_FOUND)
 	@Delete(':id')
 	async remove(@Param('id') id: string) {

@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import { LanguageQueryDto, PaginationQueryWithLanguageDto } from '@libs/dto';
 import {
 	Body,
@@ -23,10 +28,6 @@ import { UserInventoryService } from './user-inventory.service';
 @Controller('inventory')
 export class UserInventoryController {
 	constructor(private readonly userInventoryService: UserInventoryService) {}
-
-	// throw new NotFoundException(
-	// ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
-	// );
 
 	@ApiOperation({ summary: 'Get current user inventory' })
 	@Auth()
@@ -92,11 +93,11 @@ export class UserInventoryController {
 	}
 
 	@ApiOperation({ summary: 'Remove item from user inventory' })
-	@ApiOkResponse({ type: Boolean })
 	@ApiErrorResponse(
 		HttpStatus.NOT_FOUND,
 		ERROR_MESSAGES.USER_INVENTORY.USER_INVENTORY_ITEM_NOT_FOUND,
 	)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.USER_INVENTORY.DELETED)
 	@Auth()
 	@Delete(':id')
 	async removeItem(@Param('id') id: string, @Authorized('id') userId: string) {

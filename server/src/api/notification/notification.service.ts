@@ -1,7 +1,7 @@
 import { Prisma } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { filter, map, Observable, Subject } from 'rxjs';
@@ -144,7 +144,7 @@ export class NotificationService {
 			where: { id: notification.id },
 		});
 
-		return { message: 'Notification removed successfully' };
+		return SUCCESS_MESSAGES.NOTIFICATION.DELETED;
 	}
 
 	async sendPushNotification() {

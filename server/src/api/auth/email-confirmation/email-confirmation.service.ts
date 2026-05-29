@@ -4,7 +4,7 @@ import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
@@ -57,18 +57,15 @@ export class EmailConfirmationService {
 	async sendVerificationEmail(dto: ResendEmailDto) {
 		const { email } = dto;
 
-		const message =
-			'If a user with this email exists, a verification email has been sent';
-
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) return { message };
+		if (!user) return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT;
 
 		const token = await this.generateVerificationToken(user.id);
 
 		await this.mailService.sendVerificationEmail(user.email, token);
 
-		return { message };
+		return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT;
 	}
 
 	async generateVerificationToken(

@@ -5,7 +5,7 @@ import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -136,10 +136,7 @@ export class PromotionUsageService {
 				);
 			}
 
-			return {
-				code: 'PROMOTION_SUCCESSFULLY_USED',
-				message: 'Promotion used successfully',
-			};
+			return SUCCESS_MESSAGES.PROMOTION.USED;
 		});
 	}
 }

@@ -33,7 +33,6 @@ export class PasswordRecoveryController {
 	) {}
 
 	@ApiOperation({ summary: 'Send email for reset password' })
-	@ApiOkResponse({ type: Boolean })
 	@ApiSuccessResponse(
 		HttpStatus.OK,
 		SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT,

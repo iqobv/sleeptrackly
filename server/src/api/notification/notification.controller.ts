@@ -1,5 +1,10 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import {
 	Body,
 	Controller,
@@ -73,6 +78,7 @@ export class NotificationController {
 	@ApiOkResponse({ type: Boolean })
 	@ApiOperation({ summary: 'Remove a notification by ID' })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.NOTIFICATION.DELETED)
 	@Delete(':id')
 	async remove(@Param('id') id: string) {
 		return await this.notificationService.remove(id);

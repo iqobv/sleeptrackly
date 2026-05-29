@@ -1,6 +1,6 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import { withField } from '@libs/utils';
@@ -111,10 +111,10 @@ export class CollectionController {
 	}
 
 	@Auth(UserRole.ADMIN)
-	@Delete(':id')
-	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
 	@ApiOperation({ summary: 'Delete a collection' })
-	@ApiOkResponse({ example: { message: 'Collection deleted successfully' } })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.COLLECTION.DELETED)
+	@Delete(':id')
 	async deleteCollection(@Param('id') id: string) {
 		return await this.collectionService.deleteCollection(id);
 	}

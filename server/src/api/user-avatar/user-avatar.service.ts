@@ -91,7 +91,7 @@ export class UserAvatarService {
 		if (!metadata)
 			throw new BadGatewayException(ERROR_MESSAGES.AVATAR.UPLOAD_FAILED);
 
-		return this.update(avatar.id, url);
+		return await this.update(avatar.id, url);
 	}
 
 	async uploadProviderAvatar(avatarUrl: string, userId: string) {

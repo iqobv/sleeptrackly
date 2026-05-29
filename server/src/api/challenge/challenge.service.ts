@@ -1,7 +1,7 @@
 import { AchievementProgressService } from '@api/achievement/services';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { getDateRanges } from '@libs/utils';
 import {
 	BadRequestException,
@@ -162,6 +162,6 @@ export class ChallengeService {
 			data: { deletedAt: new Date() },
 		});
 
-		return { message: 'Challenge removed successfully' };
+		return SUCCESS_MESSAGES.CHALLENGE.DELETED;
 	}
 }

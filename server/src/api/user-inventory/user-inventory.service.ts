@@ -1,6 +1,6 @@
 import { Prisma, ProfileItemType } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { paginate } from '@libs/utils';
@@ -205,7 +205,7 @@ export class UserInventoryService {
 			where: { id: userInventoryItem.id },
 		});
 
-		return true;
+		return SUCCESS_MESSAGES.USER_INVENTORY.DELETED;
 	}
 
 	async findById(id: string, userId: string, language: string = 'en') {
