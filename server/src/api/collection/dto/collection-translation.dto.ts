@@ -10,10 +10,6 @@ export class CollectionTranslationDto {
 	@ApiProperty({ example: 'Example Name' })
 	@IsString()
 	name: string;
-
-	@ApiProperty({ example: 'Example Description' })
-	@IsString()
-	description: string;
 }
 
 export class FullCollectionTranslationDto extends IntersectionType(

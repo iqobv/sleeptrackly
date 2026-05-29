@@ -12,7 +12,7 @@ import {
 	ProductType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { transformProduct } from '@libs/mappers';
+import { pickTranslation, transformProduct } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
 import { paginate } from '@libs/utils';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
@@ -33,12 +33,19 @@ export class ShopService {
 	) {}
 
 	async getFeaturedProducts(language: string, userId?: string) {
+		const ownedItems = userId ? await this.getOwnedItems(userId) : [];
+
+		const bundles = await this.prismaService.product.findMany({
+			where: { isShowInStore: true, type: ProductType.BUNDLE, isNew: true },
+			take: 6,
+			orderBy: { createdAt: 'desc' },
+			include: productInclude(language),
+		});
+
 		const itemTypes = await this.prismaService.product.groupBy({
 			by: ['itemType'],
 			where: { isShowInStore: true, itemType: { not: null } },
 		});
-
-		const ownedItems = userId ? await this.getOwnedItems(userId) : [];
 
 		const sections = await Promise.all(
 			itemTypes.map(async (t) => {
@@ -68,23 +75,63 @@ export class ShopService {
 			}),
 		);
 
-		const bundles = await this.prismaService.product.findMany({
-			where: { isShowInStore: true, type: ProductType.BUNDLE, isNew: true },
-			take: 6,
+		const collections = await this.prismaService.collection.findMany({
+			where: { showInStore: true },
 			orderBy: { createdAt: 'desc' },
-			include: productInclude(language),
+			take: 5,
+			include: {
+				translations: {
+					where: {
+						language: {
+							in: [language, 'en'],
+						},
+					},
+					select: { language: true, name: true },
+				},
+				products: {
+					include: {
+						product: {
+							include: productInclude(language),
+						},
+					},
+				},
+			},
 		});
 
 		let mappedBundles: TransformedProduct[] = bundles.map((product) =>
 			transformProduct(product, language),
 		);
 
+		let mappedCollections = collections.map(
+			({ translations, products, ...rest }) => ({
+				...rest,
+				name:
+					pickTranslation(translations, language)?.name ?? 'Unnamed Collection',
+				products: products.map((cp) => ({
+					...cp,
+					product: cp.product
+						? transformProduct(cp.product, language)
+						: undefined,
+				})),
+			}),
+		);
+
 		if (userId) {
 			mappedBundles = this.markOwnedProducts(ownedItems, mappedBundles, userId);
+			mappedCollections = mappedCollections.map((collection) => ({
+				...collection,
+				products: collection.products.map((cp) => ({
+					...cp,
+					product: cp.product
+						? this.markOwnedProducts(ownedItems, [cp.product], userId)[0]
+						: undefined,
+				})),
+			}));
 		}
 
 		return {
 			carousel: mappedBundles,
+			collections: mappedCollections,
 			sections,
 		};
 	}
@@ -99,10 +146,23 @@ export class ShopService {
 			search,
 			sortBy = 'DATE',
 			sortOrder = 'desc',
+			collection,
 		} = query;
 
 		const where: Prisma.ProductWhereInput = {
 			isShowInStore: true,
+			...(collection
+				? {
+						collections: {
+							some: {
+								collection: {
+									showInStore: true,
+									slug: { in: collection },
+								},
+							},
+						},
+					}
+				: undefined),
 			...(type === 'ALL' ? {} : { type }),
 			...(itemType
 				? type === 'BUNDLE'

@@ -17,7 +17,7 @@ interface HasTranslations extends FieldValues {
 	translations: TranslationDto[];
 }
 
-const TranslationForm = <T extends HasTranslations>() => {
+export const TranslationForm = <T extends HasTranslations>() => {
 	const {
 		control,
 		formState: { errors },
@@ -87,5 +87,3 @@ const TranslationForm = <T extends HasTranslations>() => {
 		</div>
 	);
 };
-
-export default TranslationForm;

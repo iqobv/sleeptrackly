@@ -1,15 +1,13 @@
 import { UserRole } from '@generated/prisma/enums';
 import { Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
+import { ImageValidationPipe } from '@libs/pipes';
 import {
 	Body,
 	Controller,
 	Delete,
-	FileTypeValidator,
 	Get,
-	MaxFileSizeValidator,
 	Param,
-	ParseFilePipe,
 	Patch,
 	Post,
 	Query,
@@ -47,15 +45,7 @@ export class BundleController {
 	@ApiBody({ type: CreateBundleSwaggerDto })
 	@Post()
 	async createBundle(
-		@UploadedFile(
-			new ParseFilePipe({
-				validators: [
-					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
-				],
-			}),
-		)
-		file: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe()) file: Express.Multer.File,
 		@Body() dto: CreateBundleDto,
 	) {
 		return await this.bundleService.createBundle(dto, file);
@@ -95,16 +85,7 @@ export class BundleController {
 	async updateBundle(
 		@Param('id') id: string,
 		@Body() dto: UpdateBundleDto,
-		@UploadedFile(
-			new ParseFilePipe({
-				fileIsRequired: false,
-				validators: [
-					new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-					new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
-				],
-			}),
-		)
-		file: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe(5, false)) file: Express.Multer.File,
 	) {
 		return await this.bundleService.updateBundle(id, dto, file);
 	}

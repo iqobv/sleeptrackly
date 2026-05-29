@@ -3,7 +3,7 @@ import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { TransformEnum, TransformToArray } from '@libs/decorators';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
 import { SHOP_SORT_BY } from '../constats';
 import type { SortByType } from '../types';
 
@@ -29,6 +29,17 @@ export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@TransformEnum<ProfileItemType>()
 	@IsEnum(ProfileItemType, { each: true })
 	itemType?: ProfileItemType[];
+
+	@ApiProperty({
+		required: false,
+		description: 'Filter by collection name',
+		example: 'example-collection-1,example-collection-2',
+	})
+	@IsOptional()
+	@TransformToArray<string>()
+	@IsArray()
+	@IsString({ each: true })
+	collection?: string[];
 
 	@ApiProperty({
 		required: false,

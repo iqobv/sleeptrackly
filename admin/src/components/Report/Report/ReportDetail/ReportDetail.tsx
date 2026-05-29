@@ -16,7 +16,9 @@ const ReportDetail = ({ report }: ReportDetailProps) => {
 			<SectionHeader
 				title={report.title}
 				description={report.description}
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 			/>
 			<div className={styles.info}>
 				<div className={styles.user}>

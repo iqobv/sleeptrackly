@@ -19,7 +19,9 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 			<Avatar avatar={profile.avatar?.url} size={300} priority />
 			<SectionHeader
 				title={profile.username}
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 				description={`Joined ${year}`}
 				containerClassName={styles.username}
 			/>

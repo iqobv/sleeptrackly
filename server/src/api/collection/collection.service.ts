@@ -1,7 +1,11 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { LanguageQueryDto } from '@libs/dto';
+import { pickTranslation } from '@libs/mappers';
+import { productInclude } from '@libs/prisma';
 import {
+	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
@@ -10,16 +14,18 @@ import { CreateCollectionDto, UpdateCollectionDto } from './dto';
 
 const collectionInclude: Prisma.CollectionInclude = {
 	translations: true,
-	items: {
+	products: {
 		include: {
-			product: true,
+			product: {
+				include: productInclude('en'),
+			},
 		},
 	},
 };
 
 @Injectable()
 export class CollectionService {
-	private readonly placeholderImageUrl = '/collections/placeholder.png';
+	private readonly placeholderIconUrl = 'collections/placeholder.png';
 
 	constructor(
 		private readonly prismaService: PrismaService,
@@ -29,22 +35,24 @@ export class CollectionService {
 	async createCollection(dto: CreateCollectionDto, file: Express.Multer.File) {
 		const { translations, productIds, ...rest } = dto;
 
-		const backgroundImageUrl = file
+		const iconImage = file
 			? (await this.imageService.uploadImage(file, 'collections')).url
-			: this.placeholderImageUrl;
+			: null;
+
+		await this.validateProductIds(productIds || []);
 
 		try {
 			return await this.prismaService.collection.create({
 				data: {
 					...rest,
-					backgroundImage: backgroundImageUrl,
+					iconUrl: iconImage || this.placeholderIconUrl,
 					translations: {
 						createMany: {
 							data: translations,
 							skipDuplicates: true,
 						},
 					},
-					items: {
+					products: {
 						createMany: {
 							data: productIds.map((id) => ({ productId: id })),
 							skipDuplicates: true,
@@ -53,13 +61,7 @@ export class CollectionService {
 				},
 			});
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === 'P2002') {
-					throw new ConflictException(
-						'Collection with this slug already exists',
-					);
-				}
-			}
+			this.throwSlugConflictException(error);
 			throw error;
 		}
 	}
@@ -79,10 +81,32 @@ export class CollectionService {
 		return await this.prismaService.collection.findMany();
 	}
 
-	async getAllCollectionsForStore() {
-		return await this.prismaService.collection.findMany({
+	async getAllCollectionsForStore(query: LanguageQueryDto) {
+		const { language = 'en' } = query;
+
+		const collections = await this.prismaService.collection.findMany({
 			where: { showInStore: true },
+			select: {
+				slug: true,
+				translations: {
+					where: { language: { in: [language, 'en'] } },
+					select: { name: true, language: true },
+				},
+			},
 		});
+
+		const mappedCollections = collections
+			.map((collection) => {
+				const translation = pickTranslation(collection.translations, language);
+
+				return {
+					slug: collection.slug,
+					name: translation?.name || 'No name',
+				};
+			})
+			.sort((a, b) => a.name.localeCompare(b.name));
+
+		return mappedCollections;
 	}
 
 	async updateCollection(
@@ -94,37 +118,41 @@ export class CollectionService {
 
 		const collection = await this.getCollectionById(id);
 
-		let backgroundImageUrl: string | undefined;
+		let iconUrl: string | undefined;
 		if (file) {
-			backgroundImageUrl = (
+			iconUrl = (
 				await this.imageService.uploadImage(
 					file,
 					'collections',
-					collection.backgroundImage,
-					this.placeholderImageUrl,
+					collection.iconUrl,
+					this.placeholderIconUrl,
 				)
 			).url;
 		}
 
-		const itemsToDeleteIds = productIds
-			? collection.items
-					.filter((item) => !productIds.includes(item.productId))
-					.map((item) => item.id)
+		const productsToDeleteIds = productIds
+			? collection.products
+					.filter((product) => !productIds.includes(product.productId))
+					.map((product) => product.id)
 			: [];
 
-		const itemsToAddIds = productIds
+		const productsToAddIds = productIds
 			? productIds.filter(
 					(productId) =>
-						!collection.items.some((item) => item.productId === productId),
+						!collection.products.some(
+							(product) => product.productId === productId,
+						),
 				)
 			: [];
+
+		await this.validateProductIds(productIds || []);
 
 		try {
 			return await this.prismaService.collection.update({
 				where: { id: collection.id },
 				data: {
 					...rest,
-					...(backgroundImageUrl && { backgroundImage: backgroundImageUrl }),
+					...(iconUrl && { iconUrl }),
 					...(translations && {
 						translations: {
 							deleteMany: { collectionId: id },
@@ -135,15 +163,15 @@ export class CollectionService {
 						},
 					}),
 					...(productIds && {
-						items: {
+						products: {
 							deleteMany:
-								itemsToDeleteIds.length > 0
-									? { id: { in: itemsToDeleteIds } }
+								productsToDeleteIds.length > 0
+									? { id: { in: productsToDeleteIds } }
 									: undefined,
 							createMany:
-								itemsToAddIds.length > 0
+								productsToAddIds.length > 0
 									? {
-											data: itemsToAddIds.map((productId) => ({
+											data: productsToAddIds.map((productId) => ({
 												productId,
 											})),
 											skipDuplicates: true,
@@ -155,13 +183,7 @@ export class CollectionService {
 				include: collectionInclude,
 			});
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError) {
-				if (error.code === 'P2002') {
-					throw new ConflictException(
-						'Collection with this slug already exists',
-					);
-				}
-			}
+			this.throwSlugConflictException(error);
 			throw error;
 		}
 	}
@@ -169,8 +191,8 @@ export class CollectionService {
 	async deleteCollection(id: string) {
 		const collection = await this.getCollectionById(id);
 
-		if (collection.backgroundImage !== this.placeholderImageUrl) {
-			await this.imageService.deleteImage(collection.backgroundImage);
+		if (collection.iconUrl !== this.placeholderIconUrl) {
+			await this.imageService.deleteImage(collection.iconUrl);
 		}
 
 		await this.prismaService.collection.delete({
@@ -178,5 +200,36 @@ export class CollectionService {
 		});
 
 		return { message: 'Collection deleted successfully' };
+	}
+
+	private async validateProductIds(productIds: string[]) {
+		const existingProducts = await this.prismaService.product.findMany({
+			where: { id: { in: productIds } },
+			select: { id: true },
+		});
+
+		const existingProductIds = existingProducts.map((product) => product.id);
+		const invalidProductIds = productIds.filter(
+			(id) => !existingProductIds.includes(id),
+		);
+
+		if (invalidProductIds.length > 0) {
+			throw new BadRequestException({
+				message: 'One or more provided product IDs do not exist',
+				code: 'INVALID_PRODUCT_IDS',
+				details: { invalidProductIds },
+			});
+		}
+	}
+
+	private throwSlugConflictException(error: unknown) {
+		if (error instanceof Prisma.PrismaClientKnownRequestError) {
+			if (error.code === 'P2002') {
+				throw new ConflictException({
+					message: 'Collection with this slug already exists',
+					code: 'COLLECTION_SLUG_EXISTS',
+				});
+			}
+		}
 	}
 }

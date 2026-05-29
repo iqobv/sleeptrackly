@@ -1,6 +1,7 @@
 import { UserRole } from '@generated/prisma/enums';
 import { Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
+import { FilesValidationPipe } from '@libs/pipes';
 import {
 	Body,
 	Controller,
@@ -32,6 +33,16 @@ import {
 import { ItemService } from './item.service';
 import type { CreateItemFiles, UpdateItemFiles } from './types';
 
+const ALLOWED_TYPES = [
+	'image/png',
+	'image/jpeg',
+	'image/jpg',
+	'image/gif',
+	'image/webp',
+	'video/mp4',
+	'video/webm',
+];
+
 @Controller('items')
 export class ItemController {
 	constructor(private readonly itemService: ItemService) {}
@@ -50,7 +61,12 @@ export class ItemController {
 	@Post()
 	async createItem(
 		@Body() dto: CreateItemDto,
-		@UploadedFiles()
+		@UploadedFiles(
+			new FilesValidationPipe<CreateItemFiles>({
+				media: { maxSizeMb: 12, allowedTypes: ALLOWED_TYPES },
+				preview: { maxSizeMb: 12, allowedTypes: ALLOWED_TYPES },
+			}),
+		)
 		files: CreateItemFiles,
 	) {
 		return await this.itemService.createItem(dto, files);
@@ -95,7 +111,12 @@ export class ItemController {
 	async updateItem(
 		@Param('id') id: string,
 		@Body() dto: UpdateItemDto,
-		@UploadedFiles()
+		@UploadedFiles(
+			new FilesValidationPipe<UpdateItemFiles>({
+				media: { maxSizeMb: 12, allowedTypes: ALLOWED_TYPES },
+				preview: { maxSizeMb: 12, allowedTypes: ALLOWED_TYPES },
+			}),
+		)
 		files: UpdateItemFiles,
 	) {
 		return await this.itemService.updateItem(id, dto, files);

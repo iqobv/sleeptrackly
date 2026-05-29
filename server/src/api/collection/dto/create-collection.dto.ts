@@ -8,6 +8,7 @@ import { Type } from 'class-transformer';
 import {
 	IsArray,
 	IsBoolean,
+	IsHexColor,
 	IsString,
 	IsUUID,
 	MinLength,
@@ -38,9 +39,13 @@ export class CreateCollectionDto {
 	@IsArray()
 	@IsUUID('4', { each: true })
 	productIds: string[];
+
+	@ApiProperty({ example: '#ff0000' })
+	@IsHexColor()
+	accentColor: string;
 }
 
 export class CreateCollectionSwaggerDto extends CreateCollectionDto {
 	@ApiProperty({ type: 'string', format: 'binary' })
-	image: Express.Multer.File;
+	icon: Express.Multer.File;
 }

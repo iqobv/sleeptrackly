@@ -1,16 +1,16 @@
 import { UserRole } from '@generated/prisma/enums';
 import { Auth } from '@libs/decorators';
+import { LanguageQueryDto } from '@libs/dto';
+import { ImageValidationPipe } from '@libs/pipes';
 import {
 	Body,
 	Controller,
 	Delete,
-	FileTypeValidator,
 	Get,
-	MaxFileSizeValidator,
 	Param,
-	ParseFilePipe,
 	Patch,
 	Post,
+	Query,
 	UploadedFile,
 	UseInterceptors,
 } from '@nestjs/common';
@@ -28,16 +28,10 @@ import {
 	CreateCollectionDto,
 	CreateCollectionSwaggerDto,
 	FullCollectionDto,
+	StoreCollectionDto,
 	UpdateCollectionDto,
 	UpdateCollectionSwaggerDto,
 } from './dto';
-
-const parsePipe = new ParseFilePipe({
-	validators: [
-		new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-		new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
-	],
-});
 
 @Controller('collections')
 export class CollectionController {
@@ -46,14 +40,14 @@ export class CollectionController {
 	@Auth(UserRole.ADMIN)
 	@ApiOperation({ summary: 'Create a new collection' })
 	@ApiConsumes('multipart/form-data')
-	@UseInterceptors(FileInterceptor('image'))
+	@UseInterceptors(FileInterceptor('icon'))
 	@ApiBody({ type: CreateCollectionSwaggerDto })
 	@Post()
 	async createCollection(
-		@UploadedFile(parsePipe) image: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe()) icon: Express.Multer.File,
 		@Body() dto: CreateCollectionDto,
 	) {
-		return await this.collectionService.createCollection(dto, image);
+		return await this.collectionService.createCollection(dto, icon);
 	}
 
 	@Auth(UserRole.ADMIN)
@@ -62,6 +56,14 @@ export class CollectionController {
 	@Get('all')
 	async getAllCollections() {
 		return await this.collectionService.getAllCollections();
+	}
+
+	@Auth()
+	@ApiOperation({ summary: 'Get all collections for store filter' })
+	@ApiOkResponse({ type: [StoreCollectionDto] })
+	@Get('store')
+	async getAllCollectionsForStore(@Query() query: LanguageQueryDto) {
+		return await this.collectionService.getAllCollectionsForStore(query);
 	}
 
 	@Auth(UserRole.ADMIN)
@@ -78,12 +80,12 @@ export class CollectionController {
 	@ApiOkResponse({ type: FullCollectionDto })
 	@ApiBody({ type: UpdateCollectionSwaggerDto })
 	@ApiConsumes('multipart/form-data')
-	@UseInterceptors(FileInterceptor('image'))
+	@UseInterceptors(FileInterceptor('icon'))
 	@Patch(':id')
 	async updateCollection(
 		@Param('id') id: string,
 		@Body() dto: UpdateCollectionDto,
-		@UploadedFile(parsePipe) file?: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe(5, false)) file?: Express.Multer.File,
 	) {
 		return await this.collectionService.updateCollection(id, dto, file);
 	}

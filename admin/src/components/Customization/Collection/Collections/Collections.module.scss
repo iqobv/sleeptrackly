@@ -1,0 +1,17 @@
+@use '../../../../styles/mixins' as *;
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.text {
+	display: none;
+
+	@include respond-to(md) {
+		display: block;
+	}
+}

@@ -8,6 +8,7 @@ import {
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
+	ModalTrigger,
 } from '../Modal';
 import styles from './ConfirmModal.module.scss';
 import { ConfirmModalProps } from './ConfirmModal.types';
@@ -16,11 +17,13 @@ export const ConfirmModal = ({
 	title,
 	text,
 	isOpen,
+	trigger,
 	onClose,
 	onConfirm,
 }: ConfirmModalProps) => {
 	return (
 		<Modal open={isOpen} onOpenChange={onClose}>
+			{trigger && <ModalTrigger asChild>{trigger}</ModalTrigger>}
 			<ModalContent className={styles.confirmModal}>
 				<ModalHeader>{title}</ModalHeader>
 				<ModalBody>

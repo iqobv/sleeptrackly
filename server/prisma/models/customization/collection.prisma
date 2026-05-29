@@ -3,14 +3,15 @@ model Collection {
 
   slug String @unique
 
-  backgroundImage String @map("background_image")
+  accentColor String @map("accent_color")
+  iconUrl     String @map("icon_url")
 
   showInStore Boolean @default(false) @map("show_in_store")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  items        CollectionItem[]
+  products     CollectionProduct[]
   translations CollectionTranslation[]
 
   @@map("collections")

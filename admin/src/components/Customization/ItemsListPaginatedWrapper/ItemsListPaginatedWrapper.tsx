@@ -5,6 +5,7 @@ import { PaginationDto } from '@/dto';
 import { usePagination } from '@/hooks';
 import { PaginatedDataResponse } from '@/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
@@ -20,6 +21,7 @@ interface ItemsListPaginatedWrapperProps<T> {
 	itemCard: (item: T) => React.ReactNode;
 	className?: string;
 	isModal?: boolean;
+	loader?: React.ReactNode;
 }
 
 const ItemsListPaginatedWrapper = <T,>({
@@ -29,6 +31,7 @@ const ItemsListPaginatedWrapper = <T,>({
 	queryKey,
 	className = '',
 	isModal = false,
+	loader,
 }: ItemsListPaginatedWrapperProps<T>) => {
 	const searchParams = useSearchParams();
 	const pageFromUrl = Number(searchParams.get('page')) || 1;
@@ -38,7 +41,7 @@ const ItemsListPaginatedWrapper = <T,>({
 		limit: 20,
 	};
 
-	const { data } = useQuery<PaginatedDataResponse<T>, Error>({
+	const { data, isLoading } = useQuery<PaginatedDataResponse<T>, Error>({
 		queryFn: () => queryFn(params),
 		queryKey: queryKey(params),
 		...queryOptions,
@@ -46,9 +49,9 @@ const ItemsListPaginatedWrapper = <T,>({
 
 	const { currentPage, setPage } = usePagination(data?.meta.totalPages || 1);
 
-	const classNames = [styles.wrapper, isModal && styles.isModal, className]
-		.filter(Boolean)
-		.join(' ');
+	const classNames = clsx(styles.wrapper, isModal && styles.isModal, className);
+
+	if (isLoading && loader) return loader;
 
 	return (
 		<div className={classNames}>

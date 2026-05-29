@@ -1,14 +1,12 @@
 import { UserRole } from '@generated/prisma/enums';
 import { Auth, Authorized } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
+import { ImageValidationPipe } from '@libs/pipes';
 import {
 	Body,
 	Controller,
-	FileTypeValidator,
 	Get,
-	MaxFileSizeValidator,
 	Param,
-	ParseFilePipe,
 	Patch,
 	Post,
 	Query,
@@ -32,13 +30,6 @@ import {
 	UserAchievementDto,
 } from './dto';
 import { AchievementCrudService } from './services/achievement-crud.service';
-
-const parsePipe = new ParseFilePipe({
-	validators: [
-		new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }),
-		new FileTypeValidator({ fileType: '.(png|jpeg|jpg|gif|webp|webm)' }),
-	],
-});
 
 @Controller('achievements')
 export class AchievementController {
@@ -64,7 +55,7 @@ export class AchievementController {
 	@ApiBody({ type: CreateAchievementSwaggerDto })
 	@Post()
 	async createAchievement(
-		@UploadedFile(parsePipe) icon: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe()) icon: Express.Multer.File,
 		@Body() dto: CreateAchievementDto,
 	) {
 		return await this.achievementService.createAchievement(dto, icon);
@@ -97,7 +88,7 @@ export class AchievementController {
 	@Patch(':id')
 	async updateAchievement(
 		@Param('id') id: string,
-		@UploadedFile(parsePipe) icon: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe(5, false)) icon: Express.Multer.File,
 		@Body() dto: UpdateAchievementDto,
 	) {
 		return await this.achievementService.updateAchievement(id, dto, icon);

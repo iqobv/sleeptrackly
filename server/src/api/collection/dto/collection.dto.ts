@@ -1,6 +1,6 @@
 import { DefaultFieldsDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { CollectionItemWithProductDto } from './collection-item.dto';
+import { FullCollectionProductDto } from './collection-product.dto';
 import { FullCollectionTranslationDto } from './collection-translation.dto';
 
 export class CollectionDto extends DefaultFieldsDto {
@@ -18,6 +18,14 @@ export class FullCollectionDto extends CollectionDto {
 	@ApiProperty({ type: [FullCollectionTranslationDto] })
 	translations: FullCollectionTranslationDto[];
 
-	@ApiProperty({ type: [CollectionItemWithProductDto] })
-	items: CollectionItemWithProductDto[];
+	@ApiProperty({ type: [FullCollectionProductDto] })
+	products: FullCollectionProductDto[];
+}
+
+export class StoreCollectionDto {
+	@ApiProperty({ example: 'Example Collection' })
+	name: string;
+
+	@ApiProperty({ example: 'example-collection' })
+	slug: string;
 }
