@@ -7,7 +7,7 @@ import DeleteButton from '../../DeleteButton/DeleteButton';
 import FileForm from '../../FileForm/FileForm';
 import FormContent from '../../FormContent/FormContent';
 import FormFields from '../../FormFields/FormFields';
-import TranslationForm from '../../TranslationForm/TranslationForm';
+import { TranslationForm } from '../../TranslationForm';
 import { getItemsFields } from './itemFields';
 
 interface ItemFormProps {

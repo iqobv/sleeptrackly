@@ -23,7 +23,12 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 
 	return (
 		<div className={styles.sanction}>
-			<SectionHeader title="Sanctions" titleComponent="h3" />
+			<SectionHeader
+				title="Sanctions"
+				titleProps={{
+					variant: 'h3',
+				}}
+			/>
 			{report.sanctions.length > 0 && (
 				<ReportUserSanctions
 					reportId={report.id}

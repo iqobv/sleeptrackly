@@ -23,4 +23,7 @@ export const PAGES = {
 	ACHIEVEMENTS: '/achievements',
 	ACHIEVEMENT: (id: string) => `/achievements/${id}`,
 	ACHIEVEMENT_NEW: '/achievements/new',
+	COLLECTIONS: '/customization/collections',
+	COLLECTION: (id: string) => `/customization/collections/${id}`,
+	COLLECTION_NEW: '/customization/collections/new',
 } as const;

@@ -1,5 +1,6 @@
+import { TransformArray } from '@libs/decorators';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { Transform, Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsUUID, Max, Min } from 'class-validator';
 import { CreateItemDto } from '../../dto';
 
@@ -26,18 +27,7 @@ export class CreateBundleDto extends OmitType(CreateItemDto, [
 			'550e8400-e29b-41d4-a716-446655440001',
 		],
 	})
-	@Transform(({ value }: { value: unknown }) => {
-		if (typeof value === 'string') {
-			const parsed: unknown = JSON.parse(value);
-
-			if (Array.isArray(parsed)) {
-				return parsed.map((id: string) => id.trim());
-			}
-
-			return [];
-		}
-		return value;
-	})
+	@TransformArray()
 	@IsArray()
 	@IsUUID('4', { each: true })
 	itemsIds: string[];

@@ -1,17 +1,17 @@
 'use client';
 
 import { getAllProducts } from '@/api';
-import { Button, Pagination } from '@/components/UI';
+import { Grid, Pagination } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { usePagination } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import ProductCard from './ProductCard/ProductCard';
-
-import Link from 'next/link';
+import { CustomizationPageHeader } from '../../CustomizationPageHeader';
+import { ProductCard } from './ProductCard';
 import styles from './ProductsList.module.scss';
+import { ProductsListLoader } from './ProductsListLoader';
 
-const ProductsList = () => {
+export const ProductsList = () => {
 	const searchParams = useSearchParams();
 
 	const pageFromUrl = Number(searchParams.get('page')) || 1;
@@ -22,7 +22,7 @@ const ProductsList = () => {
 		language: 'en',
 	};
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryFn: () => getAllProducts(params),
 		queryKey: QUERY_KEYS.customization.product.getAll(params),
 	});
@@ -30,17 +30,23 @@ const ProductsList = () => {
 	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
 
 	return (
-		<div>
-			<Button asChild>
-				<Link href={PAGES.PRODUCT_NEW} prefetch={false}>
-					Add Product
-				</Link>
-			</Button>
-			{data?.items && data.items.length > 0 ? (
+		<>
+			<CustomizationPageHeader
+				title="Products"
+				href={PAGES.PRODUCT_NEW}
+				buttonText="Add New Product"
+			/>
+			{isLoading && <ProductsListLoader />}
+			{!isLoading && data?.items && data.items.length > 0 ? (
 				<div className={styles.list}>
-					{data.items.map((product) => (
-						<ProductCard key={product.id} product={product} />
-					))}
+					<Grid
+						columns="repeat(auto-fill, minmax(15.625rem, 1fr))"
+						oneColumnOnMobile={false}
+					>
+						{data.items.map((product) => (
+							<ProductCard key={product.id} product={product} />
+						))}
+					</Grid>
 					<Pagination
 						currentPage={currentPage}
 						totalPages={data?.meta.totalPages}
@@ -50,8 +56,6 @@ const ProductsList = () => {
 			) : (
 				<div>No products found.</div>
 			)}
-		</div>
+		</>
 	);
 };
-
-export default ProductsList;

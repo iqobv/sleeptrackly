@@ -6,13 +6,11 @@ import { QUERY_KEYS } from '@/config';
 import { UpdateAchievementDto } from '@/dto';
 import { updateAchievementSchema } from '@/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { AchievementForm } from '../AchievementForm';
 
 export const EditAchievement = () => {
-	const { back } = useRouter();
-
 	const { id } = useParams<{ id: string }>();
 
 	const { data, refetch } = useQuery({
@@ -33,11 +31,7 @@ export const EditAchievement = () => {
 
 	return (
 		<div>
-			<SectionHeader
-				title="Edit Achievement"
-				showBackButton
-				onBackButtonClick={back}
-			/>
+			<SectionHeader title="Edit Achievement" showBackButton />
 			<AchievementForm<UpdateAchievementDto>
 				schema={updateAchievementSchema}
 				onSubmit={(data) => mutate(data)}

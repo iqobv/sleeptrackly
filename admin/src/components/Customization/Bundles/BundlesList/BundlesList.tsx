@@ -6,16 +6,17 @@ import { PAGES, QUERY_KEYS } from '@/config';
 import { Bundle } from '@/types';
 import Link from 'next/link';
 import BundleCard from '../../BundleCard/BundleCard';
+import { CustomizationPageHeader } from '../../CustomizationPageHeader';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 
 const BundlesList = () => {
 	return (
 		<div>
-			<Button asChild>
-				<Link href={PAGES.BUNDLE_NEW} prefetch={false}>
-					New Bundle
-				</Link>
-			</Button>
+			<CustomizationPageHeader
+				title="Bundles"
+				href={PAGES.BUNDLE_NEW}
+				buttonText="Add New Bundle"
+			/>
 			<ItemsListPaginatedWrapper<Bundle>
 				queryFn={getAllBundles}
 				queryKey={(query) => [QUERY_KEYS.customization.bundle.getAll(query)]}

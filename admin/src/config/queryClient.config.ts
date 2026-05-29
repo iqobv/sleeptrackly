@@ -53,7 +53,11 @@ export const QUERY_KEYS = {
 			update: (id: string) => ['updateProduct', id] as const,
 			delete: (id: string) => ['deleteProduct', id] as const,
 		},
-	},
+		collection: {
+			all: ['allCollections'],
+			byId: (id: string) => ['collectionById', id],
+		},
+	} as const,
 	promotion: {
 		all: ['getAllPromotions'],
 		byId: (id: string) => ['getPromotionById', id] as const,

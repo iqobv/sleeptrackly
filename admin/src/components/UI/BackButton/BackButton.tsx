@@ -1,18 +1,24 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { MdOutlineArrowBack } from 'react-icons/md';
 import { Button } from '../Button';
-import { ButtonProps } from '../Button/Button.types';
-
-interface BackButtonProps {
-	onBack: () => void;
-	buttonProps?: Omit<ButtonProps, 'onClick' | 'children'>;
-}
+import { BackButtonProps } from './BackButton.types';
 
 export const BackButton = ({ onBack, buttonProps }: BackButtonProps) => {
+	const router = useRouter();
+
+	const handleBack = () => {
+		if (onBack) {
+			onBack();
+		} else {
+			router.back();
+		}
+	};
+
 	return (
 		<Button
-			onClick={() => onBack()}
+			onClick={handleBack}
 			variant={buttonProps?.variant || 'text'}
 			color={buttonProps?.color || 'primary'}
 			size={buttonProps?.size || 'sm'}

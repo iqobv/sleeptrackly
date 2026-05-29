@@ -21,49 +21,65 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 
 	return (
 		<>
-			{fields.map(({ name, label, type, options, placeholder }) => {
-				const error = errors[name]?.message as string | undefined;
+			{fields.map(
+				({
+					name,
+					label,
+					type,
+					options,
+					placeholder,
+					autoComplete,
+					required,
+				}) => {
+					const error = errors[name]?.message as string | undefined;
 
-				return (
-					<FormField
-						key={name}
-						name={name}
-						error={error}
-						label={type !== 'checkbox' ? label : ''}
-						hidden={type === 'hidden'}
-					>
-						{type === 'checkbox' ? (
-							<Checkbox label={label} />
-						) : type === 'hidden' ? (
-							<input type="hidden" />
-						) : type === 'select' ? (
-							<FormSelect
-								name={name}
-								displayFormat={(value) => {
-									if (!value) return '';
-									const selectedOptions = options?.filter((option) =>
-										Array.isArray(value)
-											? value.includes(option.value)
-											: option.value === value,
-									);
-									return (
-										selectedOptions?.map((option) => option.label).join(', ') ||
-										''
-									);
-								}}
-							>
-								{options?.map((option) => (
-									<SelectItem key={option.value} value={option.value}>
-										{option.label}
-									</SelectItem>
-								))}
-							</FormSelect>
-						) : (
-							<Input placeholder={placeholder} type={type} />
-						)}
-					</FormField>
-				);
-			})}
+					return (
+						<FormField
+							key={name}
+							name={name}
+							error={error}
+							label={type !== 'checkbox' ? label : ''}
+							hidden={type === 'hidden'}
+							required={required}
+						>
+							{type === 'checkbox' ? (
+								<Checkbox label={label} />
+							) : type === 'hidden' ? (
+								<input type="hidden" />
+							) : type === 'select' ? (
+								<FormSelect
+									name={name}
+									displayFormat={(value) => {
+										if (!value) return '';
+										const selectedOptions = options?.filter((option) =>
+											Array.isArray(value)
+												? value.includes(option.value)
+												: option.value === value,
+										);
+										return (
+											selectedOptions
+												?.map((option) => option.label)
+												.join(', ') || ''
+										);
+									}}
+								>
+									{options?.map((option) => (
+										<SelectItem key={option.value} value={option.value}>
+											{option.label}
+										</SelectItem>
+									))}
+								</FormSelect>
+							) : (
+								<Input
+									placeholder={placeholder}
+									type={type}
+									autoComplete={autoComplete}
+								/>
+							)}
+						</FormField>
+					);
+				},
+			)}
 		</>
 	);
 };

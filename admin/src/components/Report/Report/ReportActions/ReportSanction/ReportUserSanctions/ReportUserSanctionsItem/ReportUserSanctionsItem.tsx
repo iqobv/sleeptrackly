@@ -43,7 +43,12 @@ const ReportUserSanctionsItem = ({
 	return (
 		<div key={sanction.id} className={styles.item}>
 			<div className={styles.header}>
-				<SectionHeader title={`Sanction #${index + 1}`} titleComponent="h3" />
+				<SectionHeader
+					title={`Sanction #${index + 1}`}
+					titleProps={{
+						variant: 'h3',
+					}}
+				/>
 				<Button isIcon size="sm" variant="text" onClick={handleOpenModal}>
 					<MdOutlineDeleteOutline size={25} />
 				</Button>

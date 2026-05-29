@@ -18,8 +18,11 @@ const ProfileStatisticsCard = ({
 		<div className={styles.card}>
 			<SectionHeader
 				title={(statistics[item.field] as number).toString()}
-				titleComponent="p"
-				titleClassName={styles.title}
+				titleProps={{
+					variant: 'h3',
+					as: 'p',
+					weight: 'semibold',
+				}}
 				description={item.label}
 			/>
 		</div>

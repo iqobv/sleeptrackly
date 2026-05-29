@@ -2,6 +2,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: start;
+	justify-content: space-between;
 	gap: 0.625rem;
 	width: 100%;
 	padding: 0.625rem 0.875rem;
@@ -12,8 +13,12 @@
 		background-color 0.2s ease,
 		justify-content 0.3s ease;
 
+	span {
+		width: 100%;
+	}
+
 	&.open {
-		max-width: 15rem;
+		max-width: var(--sidebar-width);
 		opacity: 1;
 		transition:
 			max-width 0.35s ease-in-out,
@@ -30,6 +35,7 @@
 				opacity 0.3s ease 0.1s,
 				transform 0.3s ease 0.1s;
 			width: auto;
+			visibility: visible;
 		}
 	}
 }
@@ -99,6 +105,7 @@
 	white-space: nowrap;
 	user-select: none;
 	width: 0;
+	visibility: hidden;
 }
 
 .innerLinks {

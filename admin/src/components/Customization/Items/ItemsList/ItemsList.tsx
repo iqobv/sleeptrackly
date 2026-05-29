@@ -5,21 +5,24 @@ import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { Item } from '@/types';
 import Link from 'next/link';
+import { CustomizationPageHeader } from '../../CustomizationPageHeader';
 import ItemCard from '../../ItemCard/ItemCard';
 import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import styles from './ItemsList.module.scss';
+import { ItemsListLoader } from './ItemsListLoader';
 
-const ItemsList = () => {
+export const ItemsList = () => {
 	return (
 		<div className={styles.items}>
-			<Button asChild>
-				<Link href={PAGES.ITEM_NEW} prefetch={false}>
-					New Item
-				</Link>
-			</Button>
+			<CustomizationPageHeader
+				title="Items"
+				href={PAGES.ITEM_NEW}
+				buttonText="Add New Item"
+			/>
 			<ItemsListPaginatedWrapper<Item>
 				queryFn={getAllItems}
 				queryKey={(params) => [...QUERY_KEYS.customization.item.getAll(params)]}
+				loader={<ItemsListLoader />}
 				itemCard={(item) => (
 					<ItemCard
 						item={item}
@@ -36,5 +39,3 @@ const ItemsList = () => {
 		</div>
 	);
 };
-
-export default ItemsList;

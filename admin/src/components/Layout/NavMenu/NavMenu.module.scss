@@ -8,7 +8,7 @@
 	left: 0;
 	position: fixed;
 	border-right: 1px solid var(--header-border-color);
-	padding: 0.625rem 0;
+	padding: 0.625rem;
 	background-color: var(--bg-header);
 	z-index: 100;
 	opacity: 0;
@@ -19,28 +19,16 @@
 
 	@include respond-to(md) {
 		position: sticky;
-		max-width: 60px;
+		max-width: calc(3.75rem + 2 * 0.625rem);
 		opacity: 1;
 	}
 
 	&.open {
-		max-width: 15rem;
+		max-width: var(--sidebar-width);
 		opacity: 1;
 		transition:
 			max-width 0.35s ease-in-out,
 			opacity 0.1s ease-in-out;
-
-		.nav-menu__link {
-			justify-content: flex-start;
-		}
-
-		.nav-menu__link-text {
-			opacity: 1;
-			transform: translateX(0);
-			transition:
-				opacity 0.3s ease 0.1s,
-				transform 0.3s ease 0.1s;
-		}
 	}
 }
 

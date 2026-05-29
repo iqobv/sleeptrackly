@@ -1,10 +1,9 @@
 import { Auth, Authorized } from '@libs/decorators';
+import { ImageValidationPipe } from '@libs/pipes';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
-	HttpStatus,
-	ParseFilePipeBuilder,
 	Post,
 	UploadedFile,
 	UseInterceptors,
@@ -19,7 +18,7 @@ import {
 	ApiOperation,
 	ApiTags,
 } from '@nestjs/swagger';
-import { UserAvatarDto } from './dto';
+import { UploadUserAvatarDto, UserAvatarDto } from './dto';
 import { UserAvatarService } from './user-avatar.service';
 
 @ApiTags('User Avatar')
@@ -28,39 +27,15 @@ export class UserAvatarController {
 	constructor(private readonly userAvatarService: UserAvatarService) {}
 
 	@ApiOperation({ summary: 'Upload user avatar' })
-	@ApiBody({ type: 'file' })
 	@ApiConsumes('multipart/form-data')
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				avatar: {
-					type: 'file',
-					items: {
-						type: 'string',
-						format: 'binary',
-					},
-				},
-			},
-		},
-	})
+	@ApiBody({ type: UploadUserAvatarDto })
 	@ApiOkResponse({ type: UserAvatarDto })
 	@ApiBadGatewayResponse({ description: 'Error uploading image' })
 	@Auth()
 	@Post('upload')
 	@UseInterceptors(FileInterceptor('avatar'))
 	async upload(
-		@UploadedFile(
-			new ParseFilePipeBuilder()
-				.addFileTypeValidator({
-					fileType: /(jpg|jpeg|png|webp)$/,
-				})
-				.build({
-					errorHttpStatusCode: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-					fileIsRequired: true,
-				}),
-		)
-		file: Express.Multer.File,
+		@UploadedFile(ImageValidationPipe()) file: Express.Multer.File,
 		@Authorized('id') userId: string,
 	) {
 		if (!file) throw new BadRequestException('File not provided');

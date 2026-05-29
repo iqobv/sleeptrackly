@@ -1,58 +1,62 @@
-'use client';
-
+import { pxToRem } from '@/utils';
 import clsx from 'clsx';
-import { BackButton } from '../BackButton/BackButton';
+import { BackButton } from '../BackButton';
+import { Typography } from '../Typography';
 import styles from './SectionHeader.module.scss';
 import { SectionHeaderProps } from './SectionHeader.types';
-
-interface CustomCSSProperties extends React.CSSProperties {
-	'--padding': string;
-	'--gap'?: string;
-}
 
 export const SectionHeader = ({
 	title = '',
 	description = '',
-	titleComponent = 'h1',
-	descriptionComponent = 'p',
-	titleClassName = '',
-	descriptionClassName = '',
 	containerClassName = '',
 	padding = 20,
 	gap = 10,
+	titleProps,
+	descriptionProps,
+	textAlign = 'start',
 	showBackButton = false,
-	onBackButtonClick,
+	backButtonProps,
 }: SectionHeaderProps) => {
-	const Title = titleComponent;
-	const Description = descriptionComponent;
+	const {
+		variant: titleVariant = 'h1',
+		className: titleClassName,
+		...restTitleProps
+	} = titleProps || {};
 
-	const style: CustomCSSProperties = {
-		'--padding': `${padding}px`,
-	};
-
-	if (description) style['--gap'] = `${gap}px`;
+	const {
+		variant: descriptionVariant = 'body1',
+		className: descriptionClassName,
+		...restDescriptionProps
+	} = descriptionProps || {};
 
 	return (
 		<div
 			className={clsx(styles.header, containerClassName)}
 			style={
 				{
-					'--padding': `${padding}px`,
-					'--gap': `${gap}px`,
+					'--padding': padding !== undefined ? pxToRem(padding) : undefined,
+					'--gap': gap !== undefined ? pxToRem(gap) : undefined,
+					'--text-align': textAlign,
 				} as React.CSSProperties
 			}
 		>
-			{showBackButton && onBackButtonClick && (
-				<BackButton onBack={onBackButtonClick} />
-			)}
+			{showBackButton && <BackButton {...backButtonProps} />}
 			<div className={styles.content}>
-				<Title className={clsx(styles.title, titleClassName)}>{title}</Title>
+				<Typography
+					variant={titleVariant}
+					className={titleClassName}
+					{...restTitleProps}
+				>
+					{title}
+				</Typography>
 				{!!description && (
-					<Description
-						className={clsx(styles.description, descriptionClassName)}
+					<Typography
+						variant={descriptionVariant}
+						className={descriptionClassName}
+						{...restDescriptionProps}
 					>
 						{description}
-					</Description>
+					</Typography>
 				)}
 			</div>
 		</div>

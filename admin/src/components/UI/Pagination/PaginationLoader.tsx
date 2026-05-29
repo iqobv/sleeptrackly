@@ -1,7 +1,7 @@
 import { SkeletonLoader } from '../SkeletonLoader/SkeletonLoader';
 import styles from './Pagination.module.scss';
 
-const PaginationLoader = () => {
+export const PaginationLoader = () => {
 	return (
 		<div className={styles.pagination}>
 			{Array.from({ length: 7 }).map((_, index) => (
@@ -10,5 +10,3 @@ const PaginationLoader = () => {
 		</div>
 	);
 };
-
-export default PaginationLoader;

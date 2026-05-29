@@ -9,9 +9,10 @@ import styles from './ProductCard.module.scss';
 
 interface ProductCardProps {
 	product: Product;
+	children?: (product: Product) => React.ReactNode;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, children }: ProductCardProps) => {
 	const translation =
 		product.type === 'BUNDLE'
 			? product.bundle?.translations.find((t) => t.language === 'en')?.name
@@ -41,16 +42,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
 			<div>
 				<h3>{translation || 'No translation'}</h3>
 				<p>Type: {product.type}</p>
+				{product.type === 'ITEM' && <p>Item Type: {product.item?.type}</p>}
 			</div>
 			<div className={styles.actions}>
-				<Button variant="contained" color="secondary" fullWidth asChild>
-					<Link href={PAGES.PRODUCT(product.id)} prefetch={false}>
-						View
-					</Link>
-				</Button>
+				{children ? (
+					children(product)
+				) : (
+					<Button variant="contained" color="secondary" fullWidth asChild>
+						<Link href={PAGES.PRODUCT(product.id)} prefetch={false}>
+							View
+						</Link>
+					</Button>
+				)}
 			</div>
 		</div>
 	);
 };
-
-export default ProductCard;

@@ -1,0 +1,18 @@
+model Collection {
+  id String @id @default(uuid())
+
+  slug String @unique
+
+  accentColor String @map("accent_color")
+  iconUrl     String @map("icon_url")
+
+  showInStore Boolean @default(false) @map("show_in_store")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  products     CollectionProduct[]
+  translations CollectionTranslation[]
+
+  @@map("collections")
+}

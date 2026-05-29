@@ -64,6 +64,11 @@ export const NAV_MENU_LINKS: NavMenuLinksProps[] = [
 				href: PAGES.PRODUCTS,
 				Icon: MdOutlineShoppingBag,
 			},
+			{
+				label: 'Collections',
+				href: PAGES.COLLECTIONS,
+				Icon: MdOutlineShoppingBag,
+			},
 		],
 	},
 	{

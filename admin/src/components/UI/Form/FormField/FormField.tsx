@@ -56,20 +56,16 @@ export const FormField = <D extends FieldValues>({
 		{
 			...field,
 			checked: isBooleanValue ? field.value : undefined,
-			value: isBooleanValue ? undefined : field.value,
+			value: isBooleanValue ? undefined : (field.value ?? ''),
 			...childProps,
 			name,
 			onChange: (...args: unknown[]) => {
 				field.onChange(...args);
-				if (customOnChange) {
-					customOnChange(...args);
-				}
+				if (customOnChange) customOnChange(...args);
 			},
 			onBlur: () => {
 				field.onBlur();
-				if (customOnBlur) {
-					customOnBlur();
-				}
+				if (customOnBlur) customOnBlur();
 			},
 		} as Record<string, unknown>,
 	);
