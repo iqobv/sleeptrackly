@@ -161,7 +161,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.findUnique).toHaveBeenCalled();
 			expect(prisma.promotion.create).toHaveBeenCalledWith({
 				data: {
-					alias: expect.any(String),
+					alias: 'TEST_1234567890',
 					coinsReward: 150,
 					expiresAt: dto.expiresAt,
 					maxUses: 10,
@@ -181,7 +181,7 @@ describe('PromotionService', () => {
 
 			expect(prisma.promotion.findMany).toHaveBeenCalledWith({
 				where: {
-					OR: [{ expiresAt: { gt: expect.any(Date) } }, { expiresAt: null }],
+					OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
 				},
 				orderBy: { createdAt: 'desc' },
 			});

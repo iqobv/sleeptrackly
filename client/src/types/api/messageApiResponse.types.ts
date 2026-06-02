@@ -1,5 +1,7 @@
 export interface MessageApiResponse {
-	success: boolean;
-	messageCode: string;
+	statusCode: number;
+	code: string;
 	message: string;
+	field?: string;
+	meta?: Record<string, unknown>;
 }

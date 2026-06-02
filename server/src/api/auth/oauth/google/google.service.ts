@@ -1,3 +1,4 @@
+import { TokensDto } from '@api/auth/dto';
 import { ERROR_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import {
@@ -25,7 +26,10 @@ export class GoogleService {
 		this.googleClient = new OAuth2Client(this.googleClientId);
 	}
 
-	async verifyOneTapToken(credential: string, clientInfo: ClientInfoDto) {
+	public async verifyOneTapToken(
+		credential: string,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		try {
 			const ticket = await this.googleClient.verifyIdToken({
 				idToken: credential,

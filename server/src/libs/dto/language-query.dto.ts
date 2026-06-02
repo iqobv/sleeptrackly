@@ -1,12 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class LanguageQueryDto {
-	@ApiProperty({
-		required: false,
-		description: 'Language code for localization',
-		example: 'en',
-	})
+	/**
+	 * Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided.
+	 *
+	 * @example en
+	 */
 	@IsOptional()
 	@IsString()
 	language?: string = 'en';

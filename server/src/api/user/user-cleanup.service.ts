@@ -9,7 +9,7 @@ export class UserCleanupService {
 	constructor(private readonly prismaService: PrismaService) {}
 
 	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async cleanup() {
+	private async cleanup(): Promise<void> {
 		const thirtyDaysAgo = new Date();
 		thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -29,7 +29,9 @@ export class UserCleanupService {
 		}
 	}
 
-	async removeUnverifiedUsersOlderThan(milliseconds: number) {
+	private async removeUnverifiedUsersOlderThan(
+		milliseconds: number,
+	): Promise<boolean> {
 		const cutoffDate = new Date(Date.now() - milliseconds);
 
 		const usersToRemove = await this.prismaService.user.findMany({
@@ -50,7 +52,7 @@ export class UserCleanupService {
 	}
 
 	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async handleRemoveUnverifiedUsersOlderThan() {
-		return await this.removeUnverifiedUsersOlderThan(24 * 60 * 60 * 1000);
+	private async handleRemoveUnverifiedUsersOlderThan(): Promise<void> {
+		await this.removeUnverifiedUsersOlderThan(24 * 60 * 60 * 1000);
 	}
 }

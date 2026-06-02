@@ -32,11 +32,11 @@ export class PrismaService
 		super({ adapter });
 	}
 
-	async onModuleInit() {
+	public async onModuleInit(): Promise<void> {
 		await this.$connect();
 	}
 
-	async onModuleDestroy() {
+	public async onModuleDestroy(): Promise<void> {
 		await this.$disconnect();
 	}
 }

@@ -1,18 +1,15 @@
 import { DefaultFieldsDto } from '@libs/dto';
-import { ApiProperty, IntersectionType } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IntersectionType } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
-export class CollectionTranslationDto {
-	@ApiProperty({ example: 'en' })
-	@IsString()
-	language: string;
-
-	@ApiProperty({ example: 'Example Name' })
-	@IsString()
-	name: string;
+export class CollectionTranslationEntityDto {
+	@Expose() language: string;
+	@Expose() name: string;
 }
 
+export class CollectionTranslationDto extends CollectionTranslationEntityDto {}
+
 export class FullCollectionTranslationDto extends IntersectionType(
-	CollectionTranslationDto,
+	CollectionTranslationEntityDto,
 	DefaultFieldsDto,
 ) {}

@@ -1,9 +1,10 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { UpdateUserPrivacySettings, UserPrivacySettingsDto } from './dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { BaseUserPrivacySettingsDto, UpdateUserPrivacySettings } from './dto';
 import { UserPrivacySettingsService } from './user-privacy-settings.service';
 
+@Auth()
 @ApiTags('User Privacy Settings')
 @Controller('user-privacy-settings')
 export class UserPrivacySettingsController {
@@ -11,26 +12,22 @@ export class UserPrivacySettingsController {
 		private readonly userPrivacySettingsService: UserPrivacySettingsService,
 	) {}
 
-	@Auth()
+	/** Get user privacy settings */
 	@Get('me')
-	@ApiOperation({
-		summary: 'Get user privacy settings',
-	})
-	@ApiOkResponse({ type: UserPrivacySettingsDto })
-	async getUserPrivacySettings(@Authorized('id') userId: string) {
+	@ApiOkResponse({ type: BaseUserPrivacySettingsDto })
+	public async getUserPrivacySettings(
+		@Authorized('id') userId: string,
+	): Promise<BaseUserPrivacySettingsDto> {
 		return await this.userPrivacySettingsService.getUserPrivacySettings(userId);
 	}
 
-	@Auth()
+	/** Update user privacy settings */
 	@Patch('me')
-	@ApiOperation({
-		summary: 'Update user privacy settings',
-	})
-	@ApiOkResponse({ type: UserPrivacySettingsDto })
-	async updateUserPrivacySettings(
+	@ApiOkResponse({ type: BaseUserPrivacySettingsDto })
+	public async updateUserPrivacySettings(
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserPrivacySettings,
-	) {
+	): Promise<BaseUserPrivacySettingsDto> {
 		return await this.userPrivacySettingsService.updateUserPrivacySettings(
 			userId,
 			dto,

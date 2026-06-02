@@ -1,8 +1,9 @@
 import { PaginatedDataDto } from '@libs/dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { PurchaseHistoryDto } from './purchase-history.dto';
 
 export class PaginatedPurchaseHistoryDto extends PaginatedDataDto<PurchaseHistoryDto> {
-	@ApiProperty({ type: [PurchaseHistoryDto] })
+	@Expose()
+	@Type(() => PurchaseHistoryDto)
 	declare items: PurchaseHistoryDto[];
 }

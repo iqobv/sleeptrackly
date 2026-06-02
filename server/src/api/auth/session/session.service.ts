@@ -1,6 +1,7 @@
-import { Prisma } from '@generated/prisma/client';
+import { Prisma, Session } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import {
 	extractClientIP,
 	hashToken,
@@ -20,6 +21,7 @@ import {
 	CreateSessionDto,
 	IpApiDto,
 	RotateSessionDto,
+	SessionDto,
 	UserAgentDto,
 } from './dto';
 
@@ -30,7 +32,10 @@ export class SessionService {
 		private readonly httpService: HttpService,
 	) {}
 
-	async createSession(dto: CreateSessionDto, tx?: Prisma.TransactionClient) {
+	public async createSession(
+		dto: CreateSessionDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<Session> {
 		const { hashToken, expiresAt, clientInfo, userId } = dto;
 
 		const prisma = tx ?? this.prismaService;
@@ -67,11 +72,11 @@ export class SessionService {
 		return session;
 	}
 
-	async rotateSession(
+	public async rotateSession(
 		sessionId: string,
 		dto: RotateSessionDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<Session> {
 		const { clientInfo, expiresAt, hashToken, previousToken, userId } = dto;
 		const { ip, userAgent } = clientInfo;
 
@@ -99,7 +104,10 @@ export class SessionService {
 		});
 	}
 
-	async getUserSessions(userId: string, refreshToken: string) {
+	public async getUserSessions(
+		userId: string,
+		refreshToken: string,
+	): Promise<SessionDto[]> {
 		const allSessions = await this.prismaService.session.findMany({
 			where: { userId },
 			orderBy: { createdAt: 'desc' },
@@ -123,7 +131,7 @@ export class SessionService {
 		return mappedSessions;
 	}
 
-	async findSessionById(sessionId: string) {
+	public async findSessionById(sessionId: string): Promise<Session> {
 		const session = await this.prismaService.session.findUnique({
 			where: { id: sessionId },
 		});
@@ -133,7 +141,10 @@ export class SessionService {
 		return session;
 	}
 
-	async findSessionByIdAndToken(sessionId: string, token: string) {
+	public async findSessionByIdAndToken(
+		sessionId: string,
+		token: string,
+	): Promise<Session> {
 		const session = await this.prismaService.session.findFirst({
 			where: { AND: [{ id: sessionId }, { hashToken: token }] },
 		});
@@ -143,7 +154,10 @@ export class SessionService {
 		return session;
 	}
 
-	async deleteSession(userId: string, sessionId: string) {
+	public async deleteSession(
+		userId: string,
+		sessionId: string,
+	): Promise<MessageResponse> {
 		const session = await this.findSessionById(sessionId);
 
 		if (session.userId !== userId)
@@ -156,7 +170,10 @@ export class SessionService {
 		return SUCCESS_MESSAGES.SESSION.SESSION_DELETED;
 	}
 
-	async deleteAllOtherSessions(userId: string, refreshToken: string) {
+	public async deleteAllOtherSessions(
+		userId: string,
+		refreshToken: string,
+	): Promise<MessageResponse> {
 		const { sessionId, rawToken } = splitToken(refreshToken);
 
 		const currentSession = await this.getSessionByRefreshToken(
@@ -175,7 +192,7 @@ export class SessionService {
 		return SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED;
 	}
 
-	async terminateExpiredSessions() {
+	private async terminateExpiredSessions(): Promise<boolean> {
 		const now = new Date();
 
 		await this.prismaService.session.deleteMany({
@@ -186,11 +203,11 @@ export class SessionService {
 	}
 
 	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async handleTerminateExpiredSessions() {
-		return await this.terminateExpiredSessions();
+	private async handleTerminateExpiredSessions(): Promise<void> {
+		await this.terminateExpiredSessions();
 	}
 
-	private async getInfoFromIp(ip: string) {
+	private async getInfoFromIp(ip: string): Promise<IpApiDto | null> {
 		const normalizedIp = normalizeIp(ip);
 		const clientIp = extractClientIP(normalizedIp);
 
@@ -210,7 +227,7 @@ export class SessionService {
 		userId: string,
 		sessionId: string,
 		rawRefreshToken: string,
-	) {
+	): Promise<SessionDto> {
 		const refreshTokenHash = hashToken(rawRefreshToken);
 
 		const rotateGap = new Date(Date.now() - 2 * 60 * 1000);
@@ -235,7 +252,7 @@ export class SessionService {
 			...rest
 		} = session;
 
-		return rest;
+		return { ...rest, isCurrent: true };
 	}
 
 	private getInfoFromUserAgent(userAgent: string): UserAgentDto {

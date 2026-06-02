@@ -10,7 +10,7 @@ const errorResponse = ApiErrorResponse(
 	ERROR_MESSAGES.AUTH.UNAUTHORIZED,
 );
 
-export function Auth(...roles: UserRole[]) {
+export function Auth(...roles: UserRole[]): ReturnType<typeof applyDecorators> {
 	if (roles.length > 0) {
 		return applyDecorators(
 			Roles(...roles),

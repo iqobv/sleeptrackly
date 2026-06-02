@@ -1,17 +1,20 @@
+import { ShopItemDto } from '@api/item/dto/shop-item.dto';
 import { TranslationDto } from '@libs/dto';
-import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { ShopItemDto } from '../../item/dto';
-import { BundleDto } from './bundle.dto';
+import { Expose, Type } from 'class-transformer';
+import { BundleEntityDto, BundleItemEntityDto } from './bundle.entity.dto';
 
-export class ShopBundleDto extends OmitType(BundleDto, [
-	'translations',
-] as const) {
-	@ApiProperty({
-		type: TranslationDto,
-		example: { name: 'Cool Bundle', language: 'en' },
-	})
+export class ShopBundleItemDto extends BundleItemEntityDto {
+	@Expose()
+	@Type(() => ShopItemDto)
+	item: ShopItemDto;
+}
+
+export class ShopBundleDto extends BundleEntityDto {
+	@Expose()
+	@Type(() => TranslationDto)
 	translation: TranslationDto;
 
-	@ApiProperty({ type: [ShopItemDto] })
-	items: ShopItemDto[];
+	@Expose()
+	@Type(() => ShopBundleItemDto)
+	items: ShopBundleItemDto[];
 }

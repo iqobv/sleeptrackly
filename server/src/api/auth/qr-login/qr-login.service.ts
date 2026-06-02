@@ -2,11 +2,14 @@ import { TokenService } from '@api/token/token.service';
 import { UserService } from '@api/user/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
+import { QrIdDto } from './dto';
 import { QrSseEvent, QrSsePayload } from './types/qr-sse.types';
 import { QrLoginStatus, QrLoginStatusResult } from './types/qr-status.types';
 
@@ -34,7 +37,7 @@ export class QrLoginService {
 		);
 	}
 
-	async initiateQrLogin() {
+	public async initiateQrLogin(): Promise<QrIdDto> {
 		const expiresAt = new Date(Date.now() + 3 * 60 * 1000);
 
 		const qrToken = await this.tokenService.createToken({
@@ -45,11 +48,14 @@ export class QrLoginService {
 
 		return {
 			qrId: qrToken.token,
-			expiresAt: expiresAt.toISOString(),
+			expiresAt: expiresAt,
 		};
 	}
 
-	async approveQrLogin(qrId: string, userId: string) {
+	public async approveQrLogin(
+		qrId: string,
+		userId: string,
+	): Promise<MessageResponse> {
 		const token = await this.tokenService
 			.findToken(qrId, TokenType.QR_LOGIN)
 			.catch((e) => {
@@ -71,7 +77,7 @@ export class QrLoginService {
 			status: 'approved',
 		});
 
-		return { success: true };
+		return SUCCESS_MESSAGES.AUTH.QR_LOGIN_APPROVED;
 	}
 
 	private async getQrLoginStatus(qrId: string): Promise<QrLoginStatusResult> {
@@ -97,7 +103,7 @@ export class QrLoginService {
 		}
 	}
 
-	async finalizeQrLogin(
+	public async finalizeQrLogin(
 		qrId: string,
 		clientInfo: ClientInfoDto,
 	): Promise<{

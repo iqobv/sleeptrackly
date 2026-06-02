@@ -2,6 +2,7 @@ import { AchievementProgressService } from '@api/achievement/services';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import { getDateRanges } from '@libs/utils';
 import {
 	BadRequestException,
@@ -14,7 +15,12 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import dayjs from 'dayjs';
 import { ChallengeTaskService } from '../challenge-task/challenge-task.service';
 import { CreateChallengeTaskDto } from '../challenge-task/dto';
-import { CreateChallengeDto, UpdateChallengeDto } from './dto';
+import {
+	ChallengeDto,
+	ChallengeFullDto,
+	CreateChallengeDto,
+	UpdateChallengeDto,
+} from './dto';
 
 @Injectable()
 export class ChallengeService {
@@ -25,9 +31,11 @@ export class ChallengeService {
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
-	async create(userId: string, dto: CreateChallengeDto) {
-		const { endDate, description, title, frequency, startDate, tasksOptions } =
-			dto;
+	public async create(
+		userId: string,
+		dto: CreateChallengeDto,
+	): Promise<ChallengeDto> {
+		const { endDate, frequency, startDate, tasksOptions, ...rest } = dto;
 
 		const nowDate = dayjs().toDate();
 
@@ -44,8 +52,7 @@ export class ChallengeService {
 
 		const challenge = await this.prismaService.challenge.create({
 			data: {
-				title,
-				description,
+				...rest,
 				frequency,
 				startDate,
 				endDate,
@@ -81,7 +88,7 @@ export class ChallengeService {
 		return challenge;
 	}
 
-	async findById(id: string, userId: string) {
+	public async findById(id: string, userId: string): Promise<ChallengeFullDto> {
 		const challenge = await this.prismaService.challenge.findUnique({
 			where: { id, userId, deletedAt: null },
 			include: { tasks: true },
@@ -93,25 +100,27 @@ export class ChallengeService {
 		return challenge;
 	}
 
-	async findAll(userId: string) {
+	public async findAll(userId: string): Promise<ChallengeDto[]> {
 		return await this.prismaService.challenge.findMany({
 			where: { userId, deletedAt: null },
 		});
 	}
 
-	async update(id: string, userId: string, dto: UpdateChallengeDto) {
-		const { title, description, isStarted, isCompleted } = dto;
-
+	public async update(
+		id: string,
+		userId: string,
+		dto: UpdateChallengeDto,
+	): Promise<ChallengeDto> {
 		const challenge = await this.findById(id, userId);
 
 		return await this.prismaService.challenge.update({
 			where: { id: challenge.id, userId },
-			data: { title, description, isStarted, isCompleted },
+			data: dto,
 		});
 	}
 
 	@Cron(CronExpression.EVERY_5_MINUTES)
-	async updateChallengeStatuses() {
+	private async updateChallengeStatuses(): Promise<void> {
 		const nowDate = dayjs().toDate();
 
 		const challenges = await this.prismaService.challenge.findMany({
@@ -154,7 +163,7 @@ export class ChallengeService {
 		}
 	}
 
-	async remove(id: string, userId: string) {
+	public async remove(id: string, userId: string): Promise<MessageResponse> {
 		const challenge = await this.findById(id, userId);
 
 		await this.prismaService.challenge.update({

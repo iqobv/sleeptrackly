@@ -1,10 +1,11 @@
 import { Prisma } from '@generated/prisma/client';
+import { Sql } from '@prisma/client/runtime/client';
 
 export const getNotificationsForUserSql = (
 	userId: string,
 	limit: number,
 	offset: number,
-) => Prisma.sql`
+): Sql => Prisma.sql`
 	SELECT
 		n.id,
 		n.user_id                 AS "userId",

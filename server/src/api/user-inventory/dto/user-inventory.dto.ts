@@ -1,28 +1,32 @@
-import { AcquiredFrom } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { FullItemDto } from '@api/item/dto';
+import { ItemEntityDto } from '@api/item/dto/item.entity.dto';
+import { TranslationDto } from '@libs/dto';
+import { PickType } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
+import { UserInventoryEntityDto } from './user-inventory.entity.dto';
 
-export class UserInventoryItemDto {
-	@ApiProperty({ example: 'a511a531-25ce-45fe-a522-7d044a9d9497' })
-	id: string;
+export class UserInventoryDto extends UserInventoryEntityDto {}
 
-	@ApiProperty({ example: 'a511a531-25ce-45fe-a522-7d044a9d9497' })
-	userId: string;
+export class InventoryItemDetailsDto extends PickType(ItemEntityDto, [
+	'id',
+	'type',
+	'mediaUrl',
+	'isAnimated',
+	'rarity',
+] as const) {
+	@Expose()
+	@Type(() => TranslationDto)
+	translation: TranslationDto;
+}
 
-	@ApiProperty({ example: 'a511a531-25ce-45fe-a522-7d044a9d9497' })
-	itemId: string;
+export class UserInventoryItemDto extends UserInventoryEntityDto {
+	@Expose()
+	@Type(() => InventoryItemDetailsDto)
+	item: InventoryItemDetailsDto;
+}
 
-	@ApiProperty({ example: true })
-	isEquipped: boolean;
-
-	@ApiProperty({ example: AcquiredFrom.PURCHASE, enum: AcquiredFrom })
-	acquiredFrom: AcquiredFrom;
-
-	@ApiProperty({ example: new Date() })
-	acquiredAt: Date;
-
-	@ApiProperty({ example: new Date() })
-	createdAt: Date;
-
-	@ApiProperty({ example: new Date() })
-	updatedAt: Date;
+export class FullUserInventoryItemDto extends UserInventoryEntityDto {
+	@Expose()
+	@Type(() => FullItemDto)
+	item: FullItemDto;
 }

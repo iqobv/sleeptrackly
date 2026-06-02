@@ -9,7 +9,11 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { ChallengeService } from '../challenge/challenge.service';
-import { CreateChallengeTaskDto, UpdateChallengeTaskDto } from './dto';
+import {
+	ChallengeTaskDto,
+	CreateChallengeTaskDto,
+	UpdateChallengeTaskDto,
+} from './dto';
 
 @Injectable()
 export class ChallengeTaskService {
@@ -20,14 +24,14 @@ export class ChallengeTaskService {
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
-	async createMany(
+	public async createMany(
 		challengeId: string,
 		userId: string,
 		tasks: CreateChallengeTaskDto[],
-	) {
+	): Promise<ChallengeTaskDto[]> {
 		const challenge = await this.challengeService.findById(challengeId, userId);
 
-		return await this.prismaService.challengeTask.createMany({
+		return await this.prismaService.challengeTask.createManyAndReturn({
 			data: tasks.map((task) => ({
 				...task,
 				isCompleted: false,
@@ -36,14 +40,14 @@ export class ChallengeTaskService {
 		});
 	}
 
-	async create(
+	public async create(
 		challengeId: string,
 		userId: string,
 		task: CreateChallengeTaskDto,
-	) {
+	): Promise<ChallengeTaskDto> {
 		const challenge = await this.challengeService.findById(challengeId, userId);
 
-		return this.prismaService.challengeTask.create({
+		return await this.prismaService.challengeTask.create({
 			data: {
 				...task,
 				isCompleted: false,
@@ -52,7 +56,7 @@ export class ChallengeTaskService {
 		});
 	}
 
-	async findById(id: string) {
+	public async findById(id: string): Promise<ChallengeTaskDto> {
 		const task = await this.prismaService.challengeTask.findUnique({
 			where: { id },
 		});
@@ -63,12 +67,12 @@ export class ChallengeTaskService {
 		return task;
 	}
 
-	async update(
+	public async update(
 		challengeId: string,
 		taskId: string,
 		userId: string,
 		data: UpdateChallengeTaskDto,
-	) {
+	): Promise<ChallengeTaskDto> {
 		const { isCompleted, completedValue } = data;
 
 		const task = await this.findById(taskId);

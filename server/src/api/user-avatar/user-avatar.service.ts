@@ -12,11 +12,13 @@ import {
 	Inject,
 	Injectable,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { firstValueFrom } from 'rxjs';
 import sharp from 'sharp';
 import { Readable } from 'stream';
 import { v4 as uuidv4 } from 'uuid';
 import { UserService } from '../user/user.service';
+import { UserAvatarDto } from './dto';
 
 @Injectable()
 export class UserAvatarService {
@@ -30,32 +32,15 @@ export class UserAvatarService {
 		private readonly userService: UserService,
 	) {}
 
-	async createForAllUsers() {
-		const allUsers = await this.prismaService.user.findMany({
-			select: { id: true },
-		});
-
-		const userWithAvatar = await this.prismaService.userAvatar.findMany({
-			select: { userId: true },
-		});
-
-		const usersWithoutAvatar = allUsers.filter(
-			({ id }) => !userWithAvatar.find(({ userId }) => userId === id),
-		);
-
-		await this.prismaService.userAvatar.createMany({
-			data: usersWithoutAvatar.map(({ id }) => ({ userId: id })),
-		});
-
-		return true;
-	}
-
-	async upload(file: Express.Multer.File, userId: string) {
+	public async upload(
+		file: Express.Multer.File,
+		userId: string,
+	): Promise<UserAvatarDto> {
 		const avatar = await this.findByUserId(userId);
 
 		const user = await this.userService.findById(userId, true);
 
-		if (user.sanctions.length > 0) {
+		if (user.sanctions && user.sanctions.length > 0) {
 			const activeBan = user.sanctions.find(
 				({ endsAt, type }) =>
 					endsAt &&
@@ -94,7 +79,7 @@ export class UserAvatarService {
 		return await this.update(avatar.id, url);
 	}
 
-	async uploadProviderAvatar(avatarUrl: string, userId: string) {
+	public async uploadProviderAvatar(avatarUrl: string, userId: string): Promise<void> {
 		const response = await firstValueFrom(
 			this.httpService.get<ArrayBuffer>(avatarUrl, {
 				responseType: 'arraybuffer',
@@ -119,7 +104,10 @@ export class UserAvatarService {
 		await this.upload(file, userId);
 	}
 
-	async create(userId: string, tx?: Prisma.TransactionClient) {
+	public async create(
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserAvatarDto> {
 		const prisma = tx || this.prismaService;
 
 		const existingAvatar = await prisma.userAvatar.findUnique({
@@ -139,7 +127,7 @@ export class UserAvatarService {
 		return newAvatar;
 	}
 
-	private async findByUserId(userId: string) {
+	private async findByUserId(userId: string): Promise<UserAvatarDto> {
 		let avatar = await this.prismaService.userAvatar.findUnique({
 			where: { userId },
 		});
@@ -150,40 +138,26 @@ export class UserAvatarService {
 			});
 		}
 
-		return avatar;
+		return plainToInstance(UserAvatarDto, avatar);
 	}
 
-	private async update(id: string, url: string) {
-		return await this.prismaService.userAvatar.update({
+	private async update(id: string, url: string): Promise<UserAvatarDto> {
+		const avatar = await this.prismaService.userAvatar.update({
 			where: { id },
 			data: { url, isDefault: !!url.includes(this.DEFAULT_AVATAR_PATH) },
 		});
+
+		return plainToInstance(UserAvatarDto, avatar);
 	}
 
-	async deleteAvatar(userId: string) {
+	public async deleteAvatar(userId: string): Promise<UserAvatarDto> {
 		const avatar = await this.findByUserId(userId);
 
-		if (avatar) await this.r2Service.delete(avatar.url);
+		if (avatar) {
+			if (!avatar.isDefault || !avatar.url.includes(this.DEFAULT_AVATAR_PATH))
+				await this.r2Service.delete(avatar.url);
+		}
 
 		return await this.update(avatar?.id, this.DEFAULT_AVATAR_PATH);
-	}
-
-	async fixAvatarUrls() {
-		const avatars = await this.prismaService.userAvatar.findMany({
-			where: {
-				isDefault: false,
-				url: { not: { startsWith: 'avatars/' } },
-			},
-		});
-
-		for (const avatar of avatars) {
-			const url = avatar.url;
-			if (!url.startsWith('avatars/')) {
-				await this.prismaService.userAvatar.update({
-					where: { id: avatar.id },
-					data: { url: `avatars/${url}` },
-				});
-			}
-		}
 	}
 }

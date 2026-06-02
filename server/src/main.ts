@@ -1,6 +1,7 @@
 import { CustomExceptionFilter } from '@libs/filters';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import cookieParser from 'cookie-parser';
 import { json, urlencoded } from 'express';
@@ -15,7 +16,7 @@ import {
 import './instrument';
 import { isDev, setupSwagger } from './libs/utils';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	const config = app.get(ConfigService);
@@ -37,6 +38,8 @@ async function bootstrap() {
 						"'self'",
 						"'unsafe-inline'",
 						'https://fonts.googleapis.com',
+						'https://cdn.jsdelivr.net',
+						'data:',
 					],
 					'font-src': ["'self'", 'https://fonts.gstatic.com'],
 					'img-src': [
@@ -45,6 +48,11 @@ async function bootstrap() {
 						'https://cdn.jsdelivr.net',
 						'https://cdn.sleeptrackly.com',
 						'https://www.sleeptrackly.com',
+					],
+					'connect-src': [
+						"'self'",
+						'https://api.scalar.com',
+						'https://cdn.jsdelivr.net',
 					],
 					'upgrade-insecure-requests': isProd ? [] : null,
 				},
@@ -63,26 +71,34 @@ async function bootstrap() {
 
 	app.useGlobalFilters(new CustomExceptionFilter());
 
-	app.use(
-		'/docs',
-		basicAuth({
-			challenge: true,
-			users: {
-				[config.getOrThrow<string>('SWAGGER_USER')]:
-					config.getOrThrow<string>('SWAGGER_PASSWORD'),
-			},
-		}),
-	);
+	if (isProd) {
+		app.use(
+			'/docs*',
+			basicAuth({
+				challenge: true,
+				users: {
+					[config.getOrThrow<string>('SWAGGER_USER')]:
+						config.getOrThrow<string>('SWAGGER_PASSWORD'),
+				},
+			}),
+		);
+	}
 
 	app.useGlobalPipes(getValidationPipeConfig());
 	app.enableVersioning(getApiVersioningConfig());
+
+	app.useGlobalInterceptors(
+		new ClassSerializerInterceptor(app.get(Reflector), {
+			strategy: 'excludeAll',
+		}),
+	);
 
 	setupSwagger(app);
 
 	await app.listen(process.env.PORT ?? 5000, '0.0.0.0');
 }
 
-bootstrap().catch((err) => {
+bootstrap().catch((err): void => {
 	console.error('Failed to bootstrap the application:', err);
 	process.exit(1);
 });

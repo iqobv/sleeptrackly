@@ -6,6 +6,7 @@ import { UserInventoryService } from '@api/user-inventory/user-inventory.service
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -24,7 +25,10 @@ export class PromotionUsageService {
 		private readonly productService: ProductService,
 	) {}
 
-	async usePromotion(alias: string, userId: string) {
+	public async usePromotion(
+		alias: string,
+		userId: string,
+	): Promise<MessageResponse> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const promotion = await tx.promotion.findUnique({
 				where: { alias },
@@ -83,7 +87,7 @@ export class PromotionUsageService {
 				if (product.itemId && product.item) {
 					items = [product.item];
 				} else if (product.bundleId && product.bundle) {
-					items = product.bundle.items.map((bi) => bi.item);
+					items = product.bundle.items.map((itemInBundle) => itemInBundle.item);
 				}
 
 				const { itemsToAdd } = await this.shopService.getItemsToAdd(

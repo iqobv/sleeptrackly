@@ -7,7 +7,7 @@ export const createBundle = async (dto: CreateBundleDto) => {
 	const formData = getFormData(dto);
 
 	return (
-		await apiClient.post<Bundle>('/v1/items/bundles', formData, {
+		await apiClient.post<Bundle>('/v1/bundles', formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -19,7 +19,7 @@ export const updateBundle = async (id: string, dto: UpdateBundleDto) => {
 	const formData = getFormData(dto);
 
 	return (
-		await apiClient.patch<Bundle>(`/v1/items/bundles/${id}`, formData, {
+		await apiClient.patch<Bundle>(`/v1/bundles/${id}`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
@@ -29,7 +29,7 @@ export const updateBundle = async (id: string, dto: UpdateBundleDto) => {
 
 export const getAllBundles = async (query: PaginationDto) =>
 	(
-		await apiClient.get<PaginatedDataResponse<Bundle>>(`/v1/items/bundles`, {
+		await apiClient.get<PaginatedDataResponse<Bundle>>(`/v1/bundles`, {
 			params: query,
 		})
 	).data;
@@ -37,7 +37,7 @@ export const getAllBundles = async (query: PaginationDto) =>
 export const getAllAvailableBundles = async (query: PaginationDto) =>
 	(
 		await apiClient.get<PaginatedDataResponse<Bundle>>(
-			`/v1/items/bundles/available`,
+			`/v1/bundles/available`,
 			{
 				params: query,
 			},
@@ -45,7 +45,7 @@ export const getAllAvailableBundles = async (query: PaginationDto) =>
 	).data;
 
 export const getBundleById = async (id: string) =>
-	(await apiClient.get<Bundle>(`/v1/items/bundles/id/${id}`)).data;
+	(await apiClient.get<Bundle>(`/v1/bundles/id/${id}`)).data;
 
 export const deleteBundle = async (id: string) =>
-	(await apiClient.delete<boolean>(`/v1/items/bundles/${id}`)).data;
+	(await apiClient.delete<boolean>(`/v1/bundles/${id}`)).data;

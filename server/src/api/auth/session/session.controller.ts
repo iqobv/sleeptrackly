@@ -6,6 +6,7 @@ import {
 	Authorized,
 	Cookie,
 } from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	Controller,
@@ -15,50 +16,49 @@ import {
 	HttpStatus,
 	Param,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SessionDto } from './dto';
 import { SessionService } from './session.service';
 
+@Auth()
 @ApiTags('Session')
 @Controller('auth/sessions')
 export class SessionController {
 	constructor(private readonly sessionService: SessionService) {}
 
-	@ApiOperation({ summary: 'Get all sessions' })
+	/** Get all sessions */
+	@Get('all')
 	@ApiOkResponse({ type: [SessionDto] })
 	@ApiErrorResponse(
 		HttpStatus.UNAUTHORIZED,
 		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
 	)
-	@Auth()
-	@Get('all')
-	async getAllSessions(
+	public async getAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
-	) {
+	): Promise<SessionDto[]> {
 		if (!refreshToken)
 			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
 
 		return await this.sessionService.getUserSessions(userId, refreshToken);
 	}
 
-	@ApiOperation({ summary: 'Terminate all sessions' })
-	@Auth()
+	/** Terminate all sessions */
+	@Delete('all-other')
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED,
+	)
 	@ApiErrorResponse(
 		HttpStatus.UNAUTHORIZED,
 		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
 	)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
-	@ApiSuccessResponse(
-		HttpStatus.OK,
-		SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED,
-	)
 	@HttpCode(HttpStatus.OK)
-	@Delete('all-other')
-	async terminateAllSessions(
+	public async terminateAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
-	) {
+	): Promise<MessageResponse> {
 		if (!refreshToken)
 			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
 
@@ -68,20 +68,19 @@ export class SessionController {
 		);
 	}
 
-	@ApiOperation({ summary: 'Terminate session' })
-	@Auth()
+	/** Terminate session by id */
+	@Delete('id/:id')
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SESSION.SESSION_DELETED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
 	@ApiErrorResponse(
 		HttpStatus.FORBIDDEN,
 		ERROR_MESSAGES.SESSION.DELETE_FORBIDDEN,
 	)
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SESSION.SESSION_DELETED)
 	@HttpCode(HttpStatus.OK)
-	@Delete('id/:id')
-	async terminateSession(
+	public async terminateSession(
 		@Authorized('id') userId: string,
 		@Param('id') sessionId: string,
-	) {
+	): Promise<MessageResponse> {
 		return await this.sessionService.deleteSession(userId, sessionId);
 	}
 }

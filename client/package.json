@@ -6,7 +6,8 @@
 		"dev": "next dev --turbopack",
 		"build": "next build --turbopack",
 		"start": "next start",
-		"lint": "eslint"
+		"lint": "eslint",
+		"generate": "npx openapi-typescript http://localhost:5000/docs-json -o src/types/schema.d.ts"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^5.2.1",
@@ -51,6 +52,7 @@
 		"@types/react-dom": "^19",
 		"eslint": "^9",
 		"eslint-config-next": "15.5.2",
+		"openapi-typescript": "^7.13.0",
 		"typescript": "^5"
 	},
 	"overrides": {

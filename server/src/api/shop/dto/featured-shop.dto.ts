@@ -1,10 +1,50 @@
-import { FullProductDto } from '@api/product/dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { CollectionEntityDto } from '@api/collection/dto/collection.entity.dto';
+import { ProfileItemType } from '@generated/prisma/enums';
+import { PickType } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
+import { ShopProductDto } from './shop-product.dto';
+
+export class ShopSectionDto {
+	@Expose() itemType: ProfileItemType;
+
+	@Expose()
+	@Type(() => ShopProductDto)
+	items: ShopProductDto[];
+}
+
+export class ShopCollectionProductDto {
+	@Expose() collectionId: string;
+	@Expose() productId: string;
+
+	@Expose()
+	@Type(() => ShopProductDto)
+	product: ShopProductDto;
+}
+
+export class ShopFeaturedCollectionDto extends PickType(CollectionEntityDto, [
+	'id',
+	'slug',
+	'accentColor',
+	'iconUrl',
+	'showInStore',
+] as const) {
+	@Expose() name: string;
+
+	@Expose()
+	@Type(() => ShopCollectionProductDto)
+	products: ShopCollectionProductDto[];
+}
 
 export class FeaturedShopDto {
-	@ApiProperty({ type: [FullProductDto] })
-	items: FullProductDto[];
+	@Expose()
+	@Type(() => ShopProductDto)
+	carousel: ShopProductDto[];
 
-	@ApiProperty({ type: [FullProductDto] })
-	bundles: FullProductDto[];
+	@Expose()
+	@Type(() => ShopFeaturedCollectionDto)
+	collections: ShopFeaturedCollectionDto[];
+
+	@Expose()
+	@Type(() => ShopSectionDto)
+	sections: ShopSectionDto[];
 }

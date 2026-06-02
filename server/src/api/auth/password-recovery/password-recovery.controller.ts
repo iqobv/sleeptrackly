@@ -8,6 +8,7 @@ import {
 	ClientInfo,
 } from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { setAuthCookies } from '@libs/utils';
 import {
 	Body,
@@ -19,7 +20,7 @@ import {
 	Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { ResetPasswordDto, SendEmailDto } from './dto';
 import { PasswordRecoveryService } from './password-recovery.service';
@@ -32,20 +33,27 @@ export class PasswordRecoveryController {
 		private readonly configService: ConfigService,
 	) {}
 
-	@ApiOperation({ summary: 'Send email for reset password' })
+	/** Send email for reset password */
+	@Post('email')
 	@ApiSuccessResponse(
 		HttpStatus.OK,
 		SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT,
 	)
 	@HttpCode(HttpStatus.OK)
-	@Post('email')
-	async sendEmailForResetPassword(@Body() dto: SendEmailDto) {
+	public async sendEmailForResetPassword(
+		@Body() dto: SendEmailDto,
+	): Promise<MessageResponse> {
 		return await this.passwordRecoveryService.sendEmailForResetPassword(
 			dto.email,
 		);
 	}
 
-	@ApiOperation({ summary: 'Reset password' })
+	/** Reset password */
+	@Post('reset')
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.PASSWORD_RECOVERY.RESET_SUCCESS,
+	)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
 		ERROR_MESSAGES.USER.NOT_FOUND,
 		ERROR_MESSAGES.TOKEN.NOT_FOUND,
@@ -56,17 +64,12 @@ export class PasswordRecoveryController {
 		ERROR_MESSAGES.USER.NEW_PASSWORD_SAME_AS_OLD,
 	])
 	@ApiErrorResponse(HttpStatus.FORBIDDEN, ERROR_MESSAGES.USER.ACCOUNT_DELETED)
-	@ApiSuccessResponse(
-		HttpStatus.OK,
-		SUCCESS_MESSAGES.PASSWORD_RECOVERY.RESET_SUCCESS,
-	)
 	@HttpCode(HttpStatus.OK)
-	@Post('reset')
-	async resetPassword(
+	public async resetPassword(
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Body() dto: ResetPasswordDto,
 		@Res({ passthrough: true }) res: Response,
-	) {
+	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
 			await this.passwordRecoveryService.resetPassword(dto, clientInfo);
 
@@ -75,7 +78,9 @@ export class PasswordRecoveryController {
 		return SUCCESS_MESSAGES.PASSWORD_RECOVERY.RESET_SUCCESS;
 	}
 
-	@ApiOperation({ summary: 'Change password' })
+	/** Change password */
+	@Post('change')
+	@Auth()
 	@ApiSuccessResponse(
 		HttpStatus.OK,
 		SUCCESS_MESSAGES.PASSWORD_RECOVERY.PASSWORD_CHANGED,
@@ -87,21 +92,21 @@ export class PasswordRecoveryController {
 	])
 	@ApiErrorResponse(HttpStatus.FORBIDDEN, ERROR_MESSAGES.USER.ACCOUNT_DELETED)
 	@HttpCode(HttpStatus.OK)
-	@Auth()
-	@Post('change')
-	async changePassword(
+	public async changePassword(
 		@Authorized('id') userId: string,
 		@Body() dto: PasswordRecoveryDto,
-	) {
+	): Promise<MessageResponse> {
 		return this.passwordRecoveryService.changePassword(userId, dto);
 	}
 
-	@ApiOperation({ summary: 'Need old password' })
+	/** Check if old password is needed for password change */
+	@Get('need-old-password')
+	@Auth()
 	@ApiOkResponse({ type: Boolean })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
-	@Auth()
-	@Get('need-old-password')
-	async needOldPassword(@Authorized('id') userId: string) {
+	public async needOldPassword(
+		@Authorized('id') userId: string,
+	): Promise<boolean> {
 		return this.passwordRecoveryService.needOldPassword(userId);
 	}
 }

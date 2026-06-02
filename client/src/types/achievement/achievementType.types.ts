@@ -1,4 +1,8 @@
-export const AchievementType = {
+import { components } from '../schema';
+
+type SwaggerType = components['schemas']['AchievementDto']['type'];
+
+export const AchievementType: Record<SwaggerType, SwaggerType> = {
 	SLEEP_COUNT: 'SLEEP_COUNT',
 	ITEMS_PURCHASED: 'ITEMS_PURCHASED',
 	FRIENDS_COUNT: 'FRIENDS_COUNT',

@@ -1,5 +1,3 @@
-import { MessageApiResponse } from '../api/messageApiResponse.types';
+import { components } from '../schema';
 
-export interface RegisterResult extends MessageApiResponse {
-	email: string;
-}
+export type RegisterApiResponse = components['schemas']['MessageResponseDto'];

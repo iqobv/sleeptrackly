@@ -1,18 +1,25 @@
 import { getSwaggerConfig } from '@config';
 import { INestApplication } from '@nestjs/common';
-import { SwaggerModule } from '@nestjs/swagger';
+import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';
 
-export const setupSwagger = (app: INestApplication) => {
+export const setupSwagger = (app: INestApplication): void => {
 	const config = getSwaggerConfig();
 
-	const document = SwaggerModule.createDocument(app, config);
+	const documentFactory = (): OpenAPIObject =>
+		SwaggerModule.createDocument(app, config);
+
+	SwaggerModule.setup('docs-raw', app, documentFactory(), {
+		jsonDocumentUrl: '/docs-json',
+		yamlDocumentUrl: '/docs-yaml',
+		ui: false,
+	});
 
 	app.use(
 		'/docs',
 		apiReference({
 			spec: {
-				content: document,
+				content: documentFactory(),
 			},
 			title: 'Sleeptrackly API Docs',
 			pageTitle: 'Sleeptrackly API Docs',

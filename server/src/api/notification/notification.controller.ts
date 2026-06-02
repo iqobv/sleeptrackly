@@ -1,3 +1,4 @@
+import { UserRole } from '@generated/prisma/enums';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import {
 	ApiErrorResponse,
@@ -5,6 +6,8 @@ import {
 	Auth,
 	Authorized,
 } from '@libs/decorators';
+import { PaginationQueryDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
@@ -17,70 +20,74 @@ import {
 	Query,
 	Sse,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { NotificationDto, NotificationQueryDto } from './dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
+import { NotificationDto, PaginatedNotificationDto } from './dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { SseSignalEvent } from './interfaces';
 import { NotificationService } from './notification.service';
 
+@ApiTags('Notification')
 @Controller('notifications')
 export class NotificationController {
 	constructor(private readonly notificationService: NotificationService) {}
 
-	@ApiOperation({ summary: 'Create a new notification' })
-	@ApiOkResponse({ type: NotificationDto })
+	/** Create a new notification */
 	@Post()
-	async create(@Body() dto: CreateNotificationDto) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: NotificationDto })
+	public async create(
+		@Body() dto: CreateNotificationDto,
+	): Promise<NotificationDto> {
 		return await this.notificationService.create(dto);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get all notifications for the logged-in user' })
-	@ApiOkResponse({ type: [NotificationDto] })
+	/** Get all notifications for the logged-in user */
 	@Get('me')
-	async getAllForUser(
+	@Auth()
+	@ApiOkResponse({ type: [PaginatedNotificationDto] })
+	public async getAllForUser(
 		@Authorized('id') userId: string,
-		@Query() query: NotificationQueryDto,
-	) {
+		@Query() query: PaginationQueryDto,
+	): Promise<PaginatedNotificationDto> {
 		return await this.notificationService.getAllForUser(userId, query);
 	}
 
-	@Auth()
-	@ApiOperation({
-		summary:
-			'Subscribe to real-time notification signals for the logged-in user',
-	})
-	@ApiOkResponse({ type: [NotificationDto] })
+	/** Subscribe to real-time notification signals */
 	@Sse('me/stream')
-	streamSignals(@Authorized('id') userId: string) {
+	@Auth()
+	public streamSignals(
+		@Authorized('id') userId: string,
+	): Observable<SseSignalEvent> {
 		return this.notificationService.subscribeToSignals(userId);
 	}
 
+	/** Update a notification by ID */
+	@Patch('id/:id')
 	@Auth()
-	@ApiOperation({ summary: 'Update a notification by ID' })
 	@ApiOkResponse({ type: NotificationDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
-	@Patch('id/:id')
-	async update(@Param('id') id: string, @Body() dto: UpdateNotificationDto) {
+	public async update(
+		@Param('id') id: string,
+		@Body() dto: UpdateNotificationDto,
+	): Promise<NotificationDto> {
 		return await this.notificationService.update(id, dto);
 	}
 
-	@Auth()
-	@ApiOperation({
-		summary: 'Mark all notifications as read for the logged-in user',
-	})
-	@ApiOkResponse({ type: NotificationDto })
+	/** Mark all notifications as read */
 	@Patch('read-all')
-	async markAllAsRead(@Authorized('id') userId: string) {
+	@Auth()
+	public async markAllAsRead(@Authorized('id') userId: string): Promise<void> {
 		return await this.notificationService.markAllAsRead(userId);
 	}
 
-	@ApiOkResponse({ type: Boolean })
-	@ApiOperation({ summary: 'Remove a notification by ID' })
-	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.NOTIFICATION.DELETED)
+	/** Delete a notification */
 	@Delete(':id')
-	async remove(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.NOTIFICATION.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.NOTIFICATION.NOT_FOUND)
+	public async remove(@Param('id') id: string): Promise<MessageResponse> {
 		return await this.notificationService.remove(id);
 	}
 }

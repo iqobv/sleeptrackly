@@ -4,9 +4,18 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
 import { bundleInclude } from '@libs/prisma';
+import { MessageResponse } from '@libs/types';
 import { paginate } from '@libs/utils';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateBundleDto, UpdateBundleDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	BaseBundleDto,
+	CreateBundleDto,
+	FullBundleDto,
+	PaginatedAvailableBundlesDto,
+	PaginatedFullBundlesDto,
+	UpdateBundleDto,
+} from './dto';
 
 @Injectable()
 export class BundleService {
@@ -17,7 +26,10 @@ export class BundleService {
 		private readonly imageService: ImageService,
 	) {}
 
-	async createBundle(dto: CreateBundleDto, file: Express.Multer.File) {
+	public async createBundle(
+		dto: CreateBundleDto,
+		file: Express.Multer.File,
+	): Promise<BaseBundleDto> {
 		const { translations, itemsIds, ...rest } = dto;
 
 		const price = await this.prismaService.item.aggregate({
@@ -50,19 +62,17 @@ export class BundleService {
 					})),
 				},
 			},
-			include: {
-				items: true,
-				translations: true,
-			},
 		});
 
-		return bundle;
+		return plainToInstance(BaseBundleDto, bundle);
 	}
 
-	async getAllBundles(query: PaginationQueryDto) {
+	public async getAllBundles(
+		query: PaginationQueryDto,
+	): Promise<PaginatedFullBundlesDto> {
 		const { page = 1, limit = 20 } = query;
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, bundles] = await this.prismaService.$transaction([
 				this.prismaService.bundle.count(),
 				this.prismaService.bundle.findMany({
@@ -80,16 +90,20 @@ export class BundleService {
 				total,
 			};
 		});
+
+		return plainToInstance(PaginatedFullBundlesDto, result);
 	}
 
-	async getAllAvailableItems(query: PaginationQueryDto) {
+	public async getAllAvailableItems(
+		query: PaginationQueryDto,
+	): Promise<PaginatedAvailableBundlesDto> {
 		const { page = 1, limit = 20 } = query;
 
 		const where: Prisma.BundleWhereInput = {
 			products: { is: null },
 		};
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.bundle.count({ where }),
 				this.prismaService.bundle.findMany({
@@ -107,9 +121,11 @@ export class BundleService {
 
 			return { items, total };
 		});
+
+		return plainToInstance(PaginatedAvailableBundlesDto, result);
 	}
 
-	async getById(id: string) {
+	public async getById(id: string): Promise<FullBundleDto> {
 		const bundle = await this.prismaService.bundle.findUnique({
 			where: { id },
 			include: bundleInclude,
@@ -117,29 +133,29 @@ export class BundleService {
 
 		if (!bundle) throw new NotFoundException(ERROR_MESSAGES.BUNDLE.NOT_FOUND);
 
-		return bundle;
+		return plainToInstance(FullBundleDto, bundle);
 	}
 
-	async updateBundle(
+	public async updateBundle(
 		id: string,
 		dto: UpdateBundleDto,
 		file?: Express.Multer.File,
-	) {
+	): Promise<FullBundleDto> {
 		const { translations, itemsIds, ...rest } = dto;
 
 		const bundle = await this.getById(id);
 
+		const mediaFile = file
+			? await this.imageService.uploadImage(
+					file,
+					'bundles',
+					bundle.mediaUrl,
+					this.PLACEHOLDER_IMAGE_URL,
+				)
+			: null;
+
 		return await this.prismaService.$transaction(
 			async (tx) => {
-				const mediaFile = file
-					? await this.imageService.uploadImage(
-							file,
-							'bundles',
-							bundle.mediaUrl,
-							this.PLACEHOLDER_IMAGE_URL,
-						)
-					: null;
-
 				if (translations && translations.length > 0) {
 					const translationPromises = translations.map((translation) =>
 						tx.bundleTranslation.upsert({
@@ -168,7 +184,7 @@ export class BundleService {
 					});
 				}
 
-				await tx.bundle.update({
+				const updated = await tx.bundle.update({
 					where: { id: bundle.id },
 					data: {
 						...rest,
@@ -181,15 +197,10 @@ export class BundleService {
 								}
 							: undefined,
 					},
+					include: bundleInclude,
 				});
 
-				return await tx.bundle.findUnique({
-					where: { id: bundle.id },
-					include: {
-						items: true,
-						translations: true,
-					},
-				});
+				return plainToInstance(FullBundleDto, updated);
 			},
 			{
 				maxWait: 5000,
@@ -198,7 +209,7 @@ export class BundleService {
 		);
 	}
 
-	async removeBundle(id: string) {
+	public async removeBundle(id: string): Promise<MessageResponse> {
 		const bundle = await this.getById(id);
 
 		await this.prismaService.bundle.delete({

@@ -1,9 +1,9 @@
-import { Prisma, User } from '@generated/prisma/client';
+import { Prisma } from '@generated/prisma/client';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
-import { JwtPayload } from '@libs/types';
+import { JwtPayload, MessageResponse } from '@libs/types';
 import {
 	comparePassword,
 	createRefreshToken,
@@ -20,9 +20,9 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserProviderService } from '../user-provider/user-provider.service';
-import { CreateUserDto } from '../user/dto';
+import { BaseUserDto, CreateUserDto, UserWithPasswordDto } from '../user/dto';
 import { UserService } from '../user/user.service';
-import { LoginDto, OAuthDto } from './dto';
+import { LoginDto, OAuthDto, TokensDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 import { SessionService } from './session/session.service';
 
@@ -45,7 +45,10 @@ export class AuthService {
 			this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
 	}
 
-	async validateUser(email: string, password: string) {
+	public async validateUser(
+		email: string,
+		password: string,
+	): Promise<UserWithPasswordDto | null> {
 		const user = await this.userService.findByEmail(email, true);
 		if (!user) return null;
 
@@ -59,7 +62,10 @@ export class AuthService {
 		return user;
 	}
 
-	async login(dto: LoginDto, clientInfo: ClientInfoDto) {
+	public async login(
+		dto: LoginDto,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const { email, password } = dto;
 
 		const user = await this.userService.findByEmail(email, true);
@@ -80,7 +86,7 @@ export class AuthService {
 		return await this.generateAndSaveTokens(user, clientInfo);
 	}
 
-	async register(dto: CreateUserDto) {
+	public async register(dto: CreateUserDto): Promise<MessageResponse> {
 		const { user, token } = await this.prismaService.$transaction(
 			async (tx) => {
 				const user = await this.userService.create(dto, tx);
@@ -103,7 +109,7 @@ export class AuthService {
 		};
 	}
 
-	async logout(rawRefreshToken: string, userId?: string) {
+	public async logout(rawRefreshToken: string, userId?: string): Promise<void> {
 		const { rawToken, sessionId } = splitToken(rawRefreshToken);
 
 		const hashedToken = hashToken(rawToken);
@@ -120,11 +126,14 @@ export class AuthService {
 		await this.sessionService.deleteSession(session.userId, session.id);
 	}
 
-	async deleteAccount(id: string) {
+	public async deleteAccount(id: string): Promise<void> {
 		await this.userService.remove(id);
 	}
 
-	async validateOAuthLogin(dto: OAuthDto, clientInfo: ClientInfoDto) {
+	public async validateOAuthLogin(
+		dto: OAuthDto,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const {
 			provider,
 			providerId,
@@ -154,7 +163,7 @@ export class AuthService {
 					? await this.userService.generateUsername()
 					: oAuthUsername;
 
-			let user = await this.userService.findByEmail(email, true);
+			let user = await this.userService.findByEmail(email);
 			if (!user) {
 				user = await this.userService.create(
 					{
@@ -183,7 +192,10 @@ export class AuthService {
 		});
 	}
 
-	async refreshTokens(rawRefreshToken: string, clientInfo: ClientInfoDto) {
+	public async refreshTokens(
+		rawRefreshToken: string,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const { rawToken, sessionId } = splitToken(rawRefreshToken);
 
 		const hashedToken = hashToken(rawToken);
@@ -244,10 +256,8 @@ export class AuthService {
 		return { accessToken, refreshToken };
 	}
 
-	private validateAccountStatus(user: User): void {
-		if (!user.deletedAt) {
-			return;
-		}
+	private validateAccountStatus(user: BaseUserDto): void {
+		if (!user.deletedAt) return;
 
 		const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
 		const deletionTime = user.deletedAt.getTime();
@@ -260,11 +270,11 @@ export class AuthService {
 		throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_DELETED);
 	}
 
-	async generateAndSaveTokens(
-		user: User,
+	public async generateAndSaveTokens(
+		user: BaseUserDto,
 		clientInfo: ClientInfoDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<TokensDto> {
 		const rawRefreshToken = generateRawToken();
 		const refreshTokenHash = hashToken(rawRefreshToken);
 

@@ -1,22 +1,25 @@
-import { Prisma } from '@generated/prisma/client';
+import { Prisma, PurchaseHistory } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { PaginationQueryWithLanguageDto } from '@libs/dto';
+import { PaginationQueryWithLanguageDto, TranslationDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { paginate } from '@libs/utils';
 import { Injectable } from '@nestjs/common';
-import { CreatePurchaseHistoryDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import { CreatePurchaseHistoryDto, PaginatedPurchaseHistoryDto } from './dto';
 
 @Injectable()
 export class PurchaseHistoryService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createPurchaseHistory(
+	public async createPurchaseHistory(
 		dto: CreatePurchaseHistoryDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<PurchaseHistory> {
 		const { userId, productId, transactionId, ...rest } = dto;
 
-		const execute = async (client: Prisma.TransactionClient) => {
+		const execute = async (
+			client: Prisma.TransactionClient,
+		): Promise<PurchaseHistory> => {
 			const purchaseHistory = await client.purchaseHistory.create({
 				data: {
 					user: { connect: { id: userId } },
@@ -38,13 +41,13 @@ export class PurchaseHistoryService {
 		});
 	}
 
-	async getUserPurchaseHistories(
+	public async getUserPurchaseHistories(
 		userId: string,
 		query: PaginationQueryWithLanguageDto,
-	) {
+	): Promise<PaginatedPurchaseHistoryDto> {
 		const { language = 'en', limit, page } = query;
 
-		return await paginate({ limit, page }, async (limit, offset) => {
+		const result = await paginate({ limit, page }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.purchaseHistory.count({ where: { userId } }),
 				this.prismaService.purchaseHistory.findMany({
@@ -56,19 +59,20 @@ export class PurchaseHistoryService {
 			]);
 
 			const mappedItems = items.map((item) => {
-				const translations = (item.nameSnapshot || []) as unknown as {
-					language: string;
-					name: string;
-				}[];
+				const translations = (item.nameSnapshot ||
+					[]) as unknown as TranslationDto[];
 
 				const translation = pickTranslation(translations, language);
+
 				return {
 					...item,
-					nameSnapshot: translation,
+					nameSnapshot: translation ?? { language, name: 'Unknown Product' },
 				};
 			});
 
 			return { total, items: mappedItems };
 		});
+
+		return plainToInstance(PaginatedPurchaseHistoryDto, result);
 	}
 }

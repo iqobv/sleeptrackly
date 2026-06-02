@@ -3,8 +3,16 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { transformProduct } from '@libs/mappers';
 import { productInclude } from '@libs/prisma';
+import { MessageResponse } from '@libs/types';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateAchievementDto, UpdateAchievementDto } from '../dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	AchievementDto,
+	CreateAchievementDto,
+	FullAchievementDto,
+	UpdateAchievementDto,
+	UserAchievementDto,
+} from '../dto';
 
 @Injectable()
 export class AchievementCrudService {
@@ -15,10 +23,10 @@ export class AchievementCrudService {
 		private readonly imageService: ImageService,
 	) {}
 
-	async createAchievement(
+	public async createAchievement(
 		dto: CreateAchievementDto,
 		icon?: Express.Multer.File,
-	) {
+	): Promise<AchievementDto> {
 		const { translations, ...rest } = dto;
 
 		let iconUrl = this.defaultIconUrl;
@@ -45,35 +53,28 @@ export class AchievementCrudService {
 					},
 				},
 			},
-		});
-
-		return achievement;
-	}
-
-	async getUserAchievements(userId: string) {
-		const userAchievements = await this.prismaService.userAchievement.findMany({
-			where: { userId },
-			include: {
-				achievement: {
-					include: {
-						translations: true,
-					},
-				},
-			},
-		});
-
-		return userAchievements;
-	}
-
-	async getAllAchievementsForAdmin() {
-		return await this.prismaService.achievement.findMany({
 			include: {
 				translations: true,
 			},
 		});
+
+		return plainToInstance(AchievementDto, achievement);
 	}
 
-	async getAllAchievements(userId: string, language: string = 'en') {
+	public async getAllAchievementsForAdmin(): Promise<AchievementDto[]> {
+		const achievements = await this.prismaService.achievement.findMany({
+			include: {
+				translations: true,
+			},
+		});
+
+		return plainToInstance(AchievementDto, achievements);
+	}
+
+	public async getAllAchievements(
+		userId: string,
+		language: string = 'en',
+	): Promise<UserAchievementDto[]> {
 		const achievements = await this.prismaService.achievement.findMany({
 			where: {
 				isActive: true,
@@ -105,31 +106,35 @@ export class AchievementCrudService {
 			userAchievements.map((ua) => [ua.achievementId, ua.achievedAt]),
 		);
 
-		const achievementsWithStatus = achievements
-			.map(({ id, translations, isHidden, rewardProduct, ...rest }) => {
-				const translation =
-					translations.find((t) => t.language === language) ||
-					translations.find((t) => t.language === 'en');
+		const achievementsWithStatus = achievements.flatMap(
+			({ id, translations, isHidden, rewardProduct, ...rest }) => {
+				const translation = translations.find((t) => t.language === language) ||
+					translations.find((t) => t.language === 'en') || {
+						language: 'en',
+						title: 'No translation available',
+						description: 'Description not available',
+					};
 				const productTranslation =
 					rewardProduct && transformProduct(rewardProduct, language);
 				const productName =
 					productTranslation?.item?.translation?.name ||
-					productTranslation?.bundle?.translation?.name;
+					productTranslation?.bundle?.translation?.name ||
+					'Unknown Product';
 
 				const isAchieved = achievedMap.has(id);
 
-				if (isHidden && !isAchieved) return;
+				if (isHidden && !isAchieved) return [];
 
 				return {
 					id,
 					isAchieved,
 					translation,
-					achievedAt: achievedMap.get(id),
+					achievedAt: achievedMap.get(id) || null,
 					rewardProduct: productTranslation ? { name: productName } : null,
 					...rest,
 				};
-			})
-			.filter(Boolean);
+			},
+		);
 
 		const sortedAchievements = achievementsWithStatus.sort((a, b) => {
 			if (!a || !b) return 0;
@@ -156,10 +161,10 @@ export class AchievementCrudService {
 			return 0;
 		});
 
-		return sortedAchievements;
+		return plainToInstance(UserAchievementDto, sortedAchievements);
 	}
 
-	async getAchievementById(id: string) {
+	public async getAchievementById(id: string): Promise<FullAchievementDto> {
 		const achievement = await this.prismaService.achievement.findUnique({
 			where: { id },
 			include: {
@@ -170,14 +175,14 @@ export class AchievementCrudService {
 		if (!achievement)
 			throw new NotFoundException(ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND);
 
-		return achievement;
+		return plainToInstance(FullAchievementDto, achievement);
 	}
 
-	async updateAchievement(
+	public async updateAchievement(
 		id: string,
 		dto: UpdateAchievementDto,
 		icon?: Express.Multer.File,
-	) {
+	): Promise<FullAchievementDto> {
 		const achievement = await this.getAchievementById(id);
 
 		let iconUrl = achievement.iconUrl;
@@ -233,12 +238,15 @@ export class AchievementCrudService {
 					})),
 				},
 			},
+			include: {
+				translations: true,
+			},
 		});
 
-		return updatedAchievement;
+		return plainToInstance(FullAchievementDto, updatedAchievement);
 	}
 
-	async deleteAchievement(id: string) {
+	public async deleteAchievement(id: string): Promise<MessageResponse> {
 		const achievement = await this.getAchievementById(id);
 
 		if (achievement.iconUrl && achievement.iconUrl !== this.defaultIconUrl) {

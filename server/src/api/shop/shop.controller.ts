@@ -9,56 +9,58 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { FullProductDto } from '../product/dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
-	AllShopDto,
 	FeaturedShopDto,
 	FilterQueryDto,
+	PaginatedShopProductsDto,
 	PurchaseDto,
+	ShopProductDto,
 } from './dto';
 import { ShopService } from './shop.service';
 
 @Auth()
+@ApiTags('Shop')
 @Controller('shop')
 export class ShopController {
 	constructor(private readonly shopService: ShopService) {}
 
-	@ApiOperation({ summary: 'Get featured products' })
-	@ApiOkResponse({ type: FeaturedShopDto })
+	/** Get featured products for the shop */
 	@Get('featured')
-	async getFeaturedProducts(
+	@ApiOkResponse({ type: FeaturedShopDto })
+	public async getFeaturedProducts(
 		@Query() query: LanguageQueryDto,
 		@Authorized('id') userId?: string,
-	) {
+	): Promise<FeaturedShopDto> {
 		return await this.shopService.getFeaturedProducts(
 			query.language ?? 'en',
 			userId,
 		);
 	}
 
-	@ApiOperation({ summary: 'Get all products with optional filters' })
-	@ApiOkResponse({ type: AllShopDto })
+	/** Get all products with optional filters */
 	@Get('all')
-	async getAllProducts(
+	@ApiOkResponse({ type: PaginatedShopProductsDto })
+	public async getAllProducts(
 		@Query() query: FilterQueryDto,
 		@Authorized('id') userId?: string,
-	) {
+	): Promise<PaginatedShopProductsDto> {
 		return await this.shopService.getAllProducts(query, userId);
 	}
 
-	@ApiOperation({ summary: 'Get product by ID' })
-	@ApiOkResponse({ type: FullProductDto })
-	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
+	/** Get a product by its ID */
 	@Get('product/:id')
-	async getProductById(
+	@ApiOkResponse({ type: ShopProductDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
+	public async getProductById(
 		@Query('id') id: string,
 		@Query() query: LanguageQueryDto,
-	) {
+	): Promise<ShopProductDto> {
 		return await this.shopService.getProductById(id, query.language ?? 'en');
 	}
 
-	@ApiOperation({ summary: 'Purchase a product' })
+	/** Purchase a product */
+	@Post('purchase/:productId')
 	@ApiOkResponse({ type: PurchaseDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
 		ERROR_MESSAGES.PRODUCT.NOT_FOUND,
@@ -72,11 +74,10 @@ export class ShopController {
 		HttpStatus.CONFLICT,
 		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
 	)
-	@Post('purchase/:productId')
-	async purchaseProduct(
+	public async purchaseProduct(
 		@Authorized('id') userId: string,
 		@Param('productId') productId: string,
-	) {
+	): Promise<PurchaseDto> {
 		return await this.shopService.purchaseProduct(userId, productId);
 	}
 }

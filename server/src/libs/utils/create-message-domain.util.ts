@@ -1,3 +1,4 @@
+import { MessageResponseDto } from '@libs/dto/message-response.dto';
 import { MessageDomain } from '@libs/types';
 
 export const createMessageDomain = <
@@ -14,10 +15,10 @@ export const createMessageDomain = <
 		if (Object.prototype.hasOwnProperty.call(messages, key)) {
 			const generatedCode = hasPrefix ? `${prefix}_${key}` : key;
 
-			domain[key] = {
+			domain[key] = new MessageResponseDto({
 				code: generatedCode,
 				message: messages[key],
-			} satisfies Record<string, unknown>;
+			});
 		}
 	}
 

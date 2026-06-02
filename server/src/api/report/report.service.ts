@@ -1,19 +1,29 @@
+import { Prisma } from '@generated/prisma/client';
 import { ReportStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants';
 import { userSelect } from '@libs/prisma';
+import { paginate } from '@libs/utils';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { CreateReportDto, SearchQueryDto, UpdateReportDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	AllReportsDto,
+	CreateReportDto,
+	FullReportDto,
+	ReportDto,
+	SearchQueryDto,
+	UpdateReportDto,
+} from './dto';
 
 @Injectable()
 export class ReportService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async create(userId: string, dto: CreateReportDto) {
+	public async create(userId: string, dto: CreateReportDto): Promise<ReportDto> {
 		const { reportType, title, description, reportedId } = dto;
 
 		if (reportedId) await this.findSendReports(userId, reportedId);
@@ -28,10 +38,10 @@ export class ReportService {
 			},
 		});
 
-		return report;
+		return plainToInstance(ReportDto, report);
 	}
 
-	async findById(id: string) {
+	public async findById(id: string): Promise<FullReportDto> {
 		const report = await this.prismaService.report.findUnique({
 			where: { id },
 			include: {
@@ -48,51 +58,55 @@ export class ReportService {
 
 		if (!report) throw new NotFoundException(ERROR_MESSAGES.REPORT.NOT_FOUND);
 
-		return report;
+		return plainToInstance(FullReportDto, report);
 	}
 
-	async findAll(dto: SearchQueryDto) {
+	public async findAll(dto: SearchQueryDto): Promise<AllReportsDto> {
 		const {
 			page = 1,
-			pageSize = 10,
+			limit = 20,
 			sortBy = 'createdAt',
 			sortOrder = 'desc',
 			reportType,
 			status,
 		} = dto;
 
-		const safePage = Math.max(Number(page) || 1, 1);
-		const safeSize = Math.max(Number(pageSize) || 10, 1);
-		const skip = (safePage - 1) * safeSize;
-
-		const orderBy = sortBy
+		const orderBy: Prisma.ReportOrderByWithRelationInput = sortBy
 			? { [sortBy]: sortOrder }
-			: { createdAt: 'desc' as const };
+			: { createdAt: 'desc' };
 
-		const [items, total] = await this.prismaService.$transaction([
-			this.prismaService.report.findMany({
-				where: { reportType, status },
-				orderBy,
-				skip,
-				take: safeSize,
-			}),
-			this.prismaService.report.count({
-				where: { reportType, status },
-			}),
-		]);
+		const where = {
+			reportType,
+			status,
+		} satisfies Prisma.ReportWhereInput;
 
-		return {
-			items,
-			meta: {
-				total,
-				page: safePage,
-				pageSize: safeSize,
-				totalPages: Math.max(Math.ceil(total / safeSize), 1),
+		const result = await paginate(
+			{ limit, page },
+			async (safePage, safeSize) => {
+				const [total, items] = await this.prismaService.$transaction([
+					this.prismaService.report.count({
+						where,
+					}),
+					this.prismaService.report.findMany({
+						where,
+						orderBy,
+						skip: (safePage - 1) * safeSize,
+						take: safeSize,
+					}),
+				]);
+
+				return { items, total };
 			},
-		};
+		);
+
+		return plainToInstance(AllReportsDto, result);
 	}
 
-	async update(id: string, userId: string, dto: UpdateReportDto) {
+	public async update(
+		id: string,
+		userId: string,
+		dto: UpdateReportDto,
+	): Promise<ReportDto> {
 		const { response, status } = dto;
 
 		const report = await this.findById(id);
@@ -105,7 +119,7 @@ export class ReportService {
 				ERROR_MESSAGES.REPORT.CANNOT_CHANGE_STATUS_TO_PENDING,
 			);
 
-		return await this.prismaService.report.update({
+		const updated = await this.prismaService.report.update({
 			where: { id: report.id },
 			data: {
 				response,
@@ -115,9 +129,14 @@ export class ReportService {
 				}),
 			},
 		});
+
+		return plainToInstance(ReportDto, updated);
 	}
 
-	private async findSendReports(userId: string, reportedId: string) {
+	private async findSendReports(
+		userId: string,
+		reportedId: string,
+	): Promise<void> {
 		const report = await this.prismaService.report.findFirst({
 			where: { reporterId: userId, targetUserId: reportedId },
 			orderBy: { createdAt: 'desc' },

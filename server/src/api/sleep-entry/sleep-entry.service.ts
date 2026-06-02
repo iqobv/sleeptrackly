@@ -1,9 +1,16 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import { QueryDto, SleepEntryDto } from './dto';
+import {
+	QueryDto,
+	SleepDashboardDto,
+	SleepEntryDto,
+	SleepStatisticsDto,
+} from './dto';
+import { SleepDayDto } from './dto/sleep-day.dto';
 
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
@@ -14,14 +21,18 @@ const FORMAT = 'YYYY-MM-DD';
 export class SleepEntryService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async findByUserId(userId: string) {
-		return await this.prismaService.sleepEntry.findMany({ where: { userId } });
+	public async findByUserId(userId: string): Promise<SleepEntryDto[]> {
+		const sleepEntries = await this.prismaService.sleepEntry.findMany({
+			where: { userId },
+		});
+
+		return plainToInstance(SleepEntryDto, sleepEntries);
 	}
 
 	private buildDaysForWeek(
 		startOfWeek: Dayjs,
 		entries: SleepEntryDto[],
-	): { day: string; data: SleepEntryDto | null }[] {
+	): SleepDayDto[] {
 		return Array.from({ length: 7 }, (_, i) => {
 			const day = startOfWeek.add(i, 'day').format(FORMAT);
 			const data = entries.find((entry) => entry.dateForChart === day) || null;
@@ -29,9 +40,7 @@ export class SleepEntryService {
 		});
 	}
 
-	private calculateStatistics(
-		days: { day: string; data: SleepEntryDto | null }[],
-	) {
+	private calculateStatistics(days: SleepDayDto[]): SleepStatisticsDto {
 		const totalSleepDuration = days.reduce(
 			(acc, d) => acc + (d.data?.sleepDuration || 0),
 			0,
@@ -40,14 +49,16 @@ export class SleepEntryService {
 
 		return {
 			totalSleepDuration,
-			averageSleepDurationByData: daysWithData
+			averageSleepDuration: daysWithData
 				? totalSleepDuration / daysWithData
 				: 0,
-			averageSleepDurationForWeek: totalSleepDuration / 7,
 		};
 	}
 
-	async getSleepsEntryForWeek(userId: string, query: QueryDto) {
+	public async getSleepsEntryForWeek(
+		userId: string,
+		query: QueryDto,
+	): Promise<SleepDashboardDto> {
 		const { date } = query;
 
 		const startOfWeek = dayjs(date, FORMAT).startOf('isoWeek');
@@ -77,10 +88,12 @@ export class SleepEntryService {
 			},
 		});
 
-		return {
+		const result = {
 			statistics,
 			days,
 			hasMore: !!moreRecord,
 		};
+
+		return plainToInstance(SleepDashboardDto, result);
 	}
 }

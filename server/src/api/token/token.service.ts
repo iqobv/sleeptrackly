@@ -1,4 +1,5 @@
-import type { Prisma } from '@generated/prisma/client';
+import { UserDto } from '@api/user/dto';
+import type { Prisma, Token } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants';
@@ -9,13 +10,17 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { CreateTokenDto } from './dto';
 
 @Injectable()
 export class TokenService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createToken(dto: CreateTokenDto, tx?: Prisma.TransactionClient) {
+	public async createToken(
+		dto: CreateTokenDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<Token> {
 		const { userId, type, expiresAt } = dto;
 
 		const prisma = tx ?? this.prismaService;
@@ -45,17 +50,20 @@ export class TokenService {
 		};
 	}
 
-	async deleteToken(tokenId: string, tx?: Prisma.TransactionClient) {
+	public async deleteToken(
+		tokenId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<Token> {
 		const prisma = tx ?? this.prismaService;
 
 		return await prisma.token.delete({ where: { id: tokenId } });
 	}
 
-	async verifyAndConsumeToken(
+	public async verifyAndConsumeToken(
 		token: string,
 		type: TokenType,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<UserDto> {
 		const prisma = tx ?? this.prismaService;
 
 		const hashedToken = hashToken(token);
@@ -80,14 +88,14 @@ export class TokenService {
 			console.log(error);
 		}
 
-		return { ...record.user };
+		return plainToInstance(UserDto, record.user);
 	}
 
-	async findToken(
+	public async findToken(
 		token: string,
 		type: TokenType,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<Token> {
 		const hashedToken = hashToken(token);
 
 		const prisma = tx ?? this.prismaService;

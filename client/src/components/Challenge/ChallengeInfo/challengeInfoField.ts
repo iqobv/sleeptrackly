@@ -11,11 +11,11 @@ export const CHALLENGE_INFO_FIELDS = (
 ): ChallengeInfoField[] => [
 	{
 		name: 'Start date',
-		value: formatDateTime(data.startDate),
+		value: formatDateTime(new Date(data.startDate)),
 	},
 	{
 		name: 'End date',
-		value: formatDateTime(data.endDate),
+		value: formatDateTime(new Date(data.endDate)),
 	},
 	{
 		name: 'Frequency',

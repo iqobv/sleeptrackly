@@ -2,10 +2,19 @@ import { AchievementProgressService } from '@api/achievement/services';
 import { WeeklySummaryService } from '@api/weekly-summary/weekly-summary.service';
 import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import { RewardService } from '../reward/reward.service';
-import { UpdateUserSleepStatusDto } from './dto';
+import {
+	UpdatedSleepRewardDto,
+	UpdatedSleepStatusDto,
+	UpdateUserSleepStatusDto,
+	UserSleepStatusDto,
+} from './dto';
+import { CalculatedSleepDuration, SleepStart } from './interfaces';
+import { SleepEnd } from './interfaces/sleep-end.interface';
 
 @Injectable()
 export class UserSleepStatusService {
@@ -16,26 +25,39 @@ export class UserSleepStatusService {
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
-	async getSleepStatus(userId: string) {
+	public async getSleepStatus(
+		userId: string,
+	): Promise<UserSleepStatusDto | null> {
 		const userSleepStatus = await this.prismaService.userSleepStatus.findUnique(
 			{ where: { userId } },
 		);
 
-		return userSleepStatus;
+		return userSleepStatus
+			? plainToInstance(UserSleepStatusDto, userSleepStatus)
+			: null;
 	}
 
-	async createSleepStatus(userId: string, tx: Prisma.TransactionClient) {
-		return await (tx || this.prismaService).userSleepStatus.create({
+	public async createSleepStatus(
+		userId: string,
+		tx: Prisma.TransactionClient,
+	): Promise<UserSleepStatusDto> {
+		const prisma = tx ?? this.prismaService;
+
+		return await prisma.userSleepStatus.create({
 			data: { userId },
 		});
 	}
 
-	private calculateSleepDuration(start: Date, end: Date) {
+	private calculateSleepDuration(
+		start: Date,
+		end: Date,
+	): CalculatedSleepDuration {
 		const sleepEndDate = dayjs(end).toDate();
 		const sleepDuration = dayjs(sleepEndDate).diff(start, 'second');
 		const dateForChart = dayjs(sleepEndDate)
 			.startOf('day')
 			.format('YYYY-MM-DD');
+
 		return { sleepDuration, dateForChart };
 	}
 
@@ -46,7 +68,7 @@ export class UserSleepStatusService {
 		sleepDuration: number,
 		dateForChart: string,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<SleepEntry> {
 		const prisma = tx ?? this.prismaService;
 
 		return await prisma.sleepEntry.create({
@@ -65,7 +87,7 @@ export class UserSleepStatusService {
 		sleepStart: Date,
 		clickedAt: Date,
 		dateForChart?: string,
-	) {
+	): Promise<SleepEnd> {
 		const { sleepDuration, dateForChart: generatedDateForChart } =
 			this.calculateSleepDuration(sleepStart, clickedAt);
 
@@ -96,11 +118,11 @@ export class UserSleepStatusService {
 		});
 	}
 
-	private handleSleepStart(clickedAt: Date) {
+	private handleSleepStart(clickedAt: Date): SleepStart {
 		return {
 			isSleeping: true,
 			sleepStart: new Date(clickedAt),
-			sleepEntry: {},
+			sleepEntry: null,
 		};
 	}
 
@@ -108,24 +130,30 @@ export class UserSleepStatusService {
 		userId: string,
 		isSleeping: boolean,
 		sleepStart: Date | null,
-	) {
-		return await this.prismaService.userSleepStatus.update({
+	): Promise<UserSleepStatusDto> {
+		const updated = await this.prismaService.userSleepStatus.update({
 			where: { userId },
 			data: { isSleeping, sleepStart },
 		});
+
+		return plainToInstance(UserSleepStatusDto, updated);
 	}
 
-	async updateSleepStatus(userId: string, dto: UpdateUserSleepStatusDto) {
+	public async updateSleepStatus(
+		userId: string,
+		dto: UpdateUserSleepStatusDto,
+	): Promise<UpdatedSleepStatusDto> {
 		const serverNow = new Date();
 
 		const { dateForChart } = dto;
 
 		let userSleepStatus = await this.getSleepStatus(userId);
-		if (!userSleepStatus) throw new NotFoundException('User not found');
+		if (!userSleepStatus)
+			throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
 		let { isSleeping, sleepStart } = userSleepStatus;
 		let sleepEntry: SleepEntry | null;
-		let reward: { rewarded: boolean; amount: number } | null = null;
+		let reward: UpdatedSleepRewardDto | null = null;
 
 		if (isSleeping && sleepStart) {
 			const result = await this.handleWakeUp(
@@ -159,6 +187,8 @@ export class UserSleepStatusService {
 				});
 		}
 
-		return { userSleepStatus, sleepEntry, reward };
+		const result = { userSleepStatus, sleepEntry, reward };
+
+		return plainToInstance(UpdatedSleepStatusDto, result);
 	}
 }

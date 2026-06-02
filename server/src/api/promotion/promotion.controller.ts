@@ -1,5 +1,7 @@
+import { UserRole } from '@generated/prisma/enums';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
@@ -10,17 +12,19 @@ import {
 	Patch,
 	Post,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePromotionDto, PromotionDto, UpdatePromotionDto } from './dto';
 import { PromotionService } from './promotion.service';
 
+@Auth(UserRole.ADMIN)
 @ApiTags('Promotion')
 @Controller('promotions')
 export class PromotionController {
 	constructor(private readonly promotionService: PromotionService) {}
 
-	@ApiOperation({ summary: 'Create a new promotion' })
-	@Auth('ADMIN')
+	/** Create a new promotion */
+	@Post()
+	@ApiOkResponse({ type: PromotionDto })
 	@ApiErrorResponse(
 		HttpStatus.BAD_REQUEST,
 		ERROR_MESSAGES.PROMOTION.PRODUCT_REQUIRED_PAYLOAD_MISSING,
@@ -29,56 +33,57 @@ export class PromotionController {
 		HttpStatus.CONFLICT,
 		ERROR_MESSAGES.PROMOTION.ALREADY_EXISTS,
 	)
-	@ApiOkResponse({ type: PromotionDto })
-	@Post()
-	async createPromotion(@Body() dto: CreatePromotionDto) {
+	public async createPromotion(
+		@Body() dto: CreatePromotionDto,
+	): Promise<PromotionDto> {
 		return await this.promotionService.createPromotion(dto);
 	}
 
-	@ApiOperation({ summary: 'Get all active promotions' })
-	@Auth('ADMIN')
-	@ApiOkResponse({ type: PromotionDto })
+	/** Get all active promotions */
 	@Get()
-	async getAllActivePromotions() {
+	@ApiOkResponse({ type: PromotionDto })
+	public async getAllActivePromotions(): Promise<PromotionDto[]> {
 		return await this.promotionService.getAllActivePromotions();
 	}
 
-	@ApiOperation({ summary: 'Get all active promotions' })
-	@Auth('ADMIN')
+	/** Get a promotion by its alias */
+	@Get('alias/:alias')
 	@ApiOkResponse({ type: PromotionDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
-	@Get('alias/:alias')
-	async getPromotionByAlias(@Param('alias') alias: string) {
+	public async getPromotionByAlias(
+		@Param('alias') alias: string,
+	): Promise<PromotionDto> {
 		return await this.promotionService.getPromotionByAlias(alias);
 	}
 
-	@ApiOperation({ summary: 'Get all active promotions' })
-	@Auth('ADMIN')
+	/** Get a promotion by its ID */
+	@Get('id/:id')
 	@ApiOkResponse({ type: PromotionDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
-	@Get('id/:id')
-	async getPromotionById(@Param('id') id: string) {
+	public async getPromotionById(
+		@Param('id') id: string,
+	): Promise<PromotionDto> {
 		return await this.promotionService.getPromotionById(id);
 	}
 
-	@ApiOperation({ summary: 'Update an existing promotion' })
-	@Auth('ADMIN')
+	/** Update a promotion */
+	@Patch(':id')
 	@ApiOkResponse({ type: PromotionDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
-	@Patch(':id')
-	async updatePromotion(
+	public async updatePromotion(
 		@Param('id') id: string,
 		@Body() dto: UpdatePromotionDto,
-	) {
+	): Promise<PromotionDto> {
 		return await this.promotionService.updatePromotion(id, dto);
 	}
 
-	@ApiOperation({ summary: 'Delete a promotion' })
-	@Auth('ADMIN')
-	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.DELETED)
+	/** Delete a promotion */
 	@Delete(':id')
-	async deletePromotion(@Param('id') id: string) {
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PROMOTION.NOT_FOUND)
+	public async deletePromotion(
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
 		return await this.promotionService.deletePromotion(id);
 	}
 }

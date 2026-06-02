@@ -1,12 +1,13 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
 	UpdateUserNotificationSettingsDto,
 	UserNotificationSettingsDto,
 } from './dto';
-import { UserNotificationSettingsService } from './user-notification-settings.service';
+import { UserNotificationSettingsService } from './services';
 
+@Auth()
 @ApiTags('User Notification Settings')
 @Controller('settings/notifications')
 export class UserNotificationSettingsController {
@@ -14,26 +15,22 @@ export class UserNotificationSettingsController {
 		private readonly userNotificationSettingsService: UserNotificationSettingsService,
 	) {}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get current user notification settings' })
-	@ApiOkResponse({
-		type: UserNotificationSettingsDto,
-	})
+	/** Get current user notification settings */
 	@Get('me')
-	async getUserNotificationSettings(@Authorized('id') userId: string) {
-		return this.userNotificationSettingsService.findByUserId(userId);
+	@ApiOkResponse({ type: UserNotificationSettingsDto })
+	public async getUserNotificationSettings(
+		@Authorized('id') userId: string,
+	): Promise<UserNotificationSettingsDto> {
+		return await this.userNotificationSettingsService.findOrCreate(userId);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Update current user notification settings' })
-	@ApiOkResponse({
-		type: UserNotificationSettingsDto,
-	})
+	/** Update current user notification settings */
 	@Patch()
-	async update(
+	@ApiOkResponse({ type: UserNotificationSettingsDto })
+	public async update(
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserNotificationSettingsDto,
-	) {
+	): Promise<UserNotificationSettingsDto> {
 		return await this.userNotificationSettingsService.update(userId, dto);
 	}
 }

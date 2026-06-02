@@ -11,7 +11,7 @@ export class FilesValidationPipe<T extends object> implements PipeTransform {
 		private readonly config: Record<keyof T, FileValidationOptions>,
 	) {}
 
-	transform(files: T | undefined): T | undefined {
+	public transform(files: T | undefined): T | undefined {
 		if (!files) return files;
 
 		const configKeys = Object.keys(this.config) as Array<keyof T>;

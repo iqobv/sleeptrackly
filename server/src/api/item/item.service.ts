@@ -4,13 +4,21 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { R2Service } from '@infra/r2/r2.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { paginate } from '@libs/utils';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { CreateItemDto, UpdateItemDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	CreateItemDto,
+	FullItemDto,
+	FullPaginatedItemsDto,
+	ItemDto,
+	UpdateItemDto,
+} from './dto';
 import { CreateItemFiles, UpdateItemFiles } from './types';
 
 @Injectable()
@@ -23,7 +31,10 @@ export class ItemService {
 		private readonly imageService: ImageService,
 	) {}
 
-	async createItem(dto: CreateItemDto, files: CreateItemFiles) {
+	public async createItem(
+		dto: CreateItemDto,
+		files: CreateItemFiles,
+	): Promise<ItemDto> {
 		const { translations, ...rest } = dto;
 
 		if (!files.media)
@@ -55,13 +66,15 @@ export class ItemService {
 			},
 		});
 
-		return item;
+		return plainToInstance(ItemDto, item);
 	}
 
-	async getAllItems(query: PaginationQueryDto) {
+	public async getAllItems(
+		query: PaginationQueryDto,
+	): Promise<FullPaginatedItemsDto> {
 		const { page = 1, limit = 20 } = query;
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.item.count(),
 				this.prismaService.item.findMany({
@@ -78,16 +91,20 @@ export class ItemService {
 
 			return { items, total };
 		});
+
+		return plainToInstance(FullPaginatedItemsDto, result);
 	}
 
-	async getAllAvailableItems(query: PaginationQueryDto) {
+	public async getAllAvailableItems(
+		query: PaginationQueryDto,
+	): Promise<FullPaginatedItemsDto> {
 		const { page = 1, limit = 20 } = query;
 
 		const where: Prisma.ItemWhereInput = {
 			products: { is: null },
 		};
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.item.count({ where }),
 				this.prismaService.item.findMany({
@@ -105,9 +122,11 @@ export class ItemService {
 
 			return { items, total };
 		});
+
+		return plainToInstance(FullPaginatedItemsDto, result);
 	}
 
-	async getById(id: string) {
+	public async getById(id: string): Promise<FullItemDto> {
 		const item = await this.prismaService.item.findUnique({
 			where: { id },
 			include: {
@@ -117,34 +136,38 @@ export class ItemService {
 
 		if (!item) throw new NotFoundException(ERROR_MESSAGES.ITEM.NOT_FOUND);
 
-		return item;
+		return plainToInstance(FullItemDto, item);
 	}
 
-	async updateItem(id: string, dto: UpdateItemDto, files?: UpdateItemFiles) {
+	public async updateItem(
+		id: string,
+		dto: UpdateItemDto,
+		files?: UpdateItemFiles,
+	): Promise<FullItemDto> {
 		const { translations, ...rest } = dto;
 
 		const item = await this.getById(id);
 
+		const mediaFile = files?.media
+			? await this.imageService.uploadImage(
+					files.media[0],
+					'items',
+					item.mediaUrl,
+					this.PLACEHOLDER_IMAGE_URL,
+				)
+			: null;
+
+		const previewFile = files?.preview
+			? await this.imageService.uploadImage(
+					files.preview[0],
+					'previews',
+					item.previewUrl,
+					this.PLACEHOLDER_IMAGE_URL,
+				)
+			: null;
+
 		return await this.prismaService.$transaction(
 			async (tx) => {
-				const mediaFile = files?.media
-					? await this.imageService.uploadImage(
-							files.media[0],
-							'items',
-							item.mediaUrl,
-							this.PLACEHOLDER_IMAGE_URL,
-						)
-					: null;
-
-				const previewFile = files?.preview
-					? await this.imageService.uploadImage(
-							files.preview[0],
-							'previews',
-							item.previewUrl,
-							this.PLACEHOLDER_IMAGE_URL,
-						)
-					: null;
-
 				if (translations && translations.length > 0) {
 					const translationPromises = translations.map((translation) =>
 						tx.itemTranslation.upsert({
@@ -167,7 +190,7 @@ export class ItemService {
 					await Promise.all(translationPromises);
 				}
 
-				await tx.item.update({
+				const updated = await tx.item.update({
 					where: { id },
 					data: {
 						...rest,
@@ -179,12 +202,7 @@ export class ItemService {
 					},
 				});
 
-				return await tx.item.findUnique({
-					where: { id },
-					include: {
-						translations: true,
-					},
-				});
+				return plainToInstance(FullItemDto, updated);
 			},
 			{
 				maxWait: 5000,
@@ -193,7 +211,7 @@ export class ItemService {
 		);
 	}
 
-	async deleteItem(id: string) {
+	public async deleteItem(id: string): Promise<MessageResponse> {
 		const item = await this.getById(id);
 
 		await this.prismaService.item.delete({

@@ -28,11 +28,11 @@ const cleanConnectionString = connectionString.split('?')[0];
 
 const pool = new Pool({
 	connectionString: cleanConnectionString,
-	ssl: false,
-	// ssl: {
-	// 	ca: caCert.replace(/\\n/g, '\n'),
-	// 	rejectUnauthorized: true,
-	// },
+	// ssl: false,
+	ssl: {
+		ca: caCert.replace(/\\n/g, '\n'),
+		rejectUnauthorized: true,
+	},
 });
 
 const adapter = new PrismaPg(pool);
@@ -69,7 +69,7 @@ const calculateAvgWakeTimeOffset = (dates: Date[]): number => {
 	return Math.round(totalMinutes / dates.length);
 };
 
-async function runDataMigration() {
+async function runDataMigration(): Promise<void> {
 	console.log('Starting data migration');
 
 	const users = await prisma.sleepEntry.findMany({

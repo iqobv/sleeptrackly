@@ -15,7 +15,7 @@ export const DASHBOARD_WEEK_STATS_CARDS = (
 		},
 		{
 			title: 'Daily Average',
-			value: data.statistics.averageSleepDurationByData,
+			value: data.statistics.averageSleepDuration,
 		},
 	];
 };

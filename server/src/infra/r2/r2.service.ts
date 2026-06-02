@@ -1,5 +1,6 @@
 import {
 	DeleteObjectCommand,
+	DeleteObjectCommandOutput,
 	PutObjectCommand,
 	S3Client,
 } from '@aws-sdk/client-s3';
@@ -28,7 +29,11 @@ export class R2Service {
 		this.bucketName = configService.getOrThrow<string>('R2_BUCKET_NAME');
 	}
 
-	async upload(fileBuffer: Buffer, key: string, mimetype: string) {
+	public async upload(
+		fileBuffer: Buffer,
+		key: string,
+		mimetype: string,
+	): Promise<{ key: string; extension: string }> {
 		const extension = path.extname(key);
 
 		const command = new PutObjectCommand({
@@ -47,7 +52,7 @@ export class R2Service {
 		};
 	}
 
-	async delete(key: string) {
+	public async delete(key: string): Promise<DeleteObjectCommandOutput> {
 		const command = new DeleteObjectCommand({
 			Bucket: this.bucketName,
 			Key: key,

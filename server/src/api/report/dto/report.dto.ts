@@ -1,28 +1,39 @@
+import { UserDto } from '@api/user/dto';
 import { ReportStatus, ReportType } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { DefaultFieldsDto } from '@libs/dto';
+import { Expose, Type } from 'class-transformer';
 
-export class ReportDto {
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	id: string;
+export class ReportDto extends DefaultFieldsDto {
+	@Expose() title: string;
+	@Expose() description: string | null;
+	@Expose() reporterId: string;
+	@Expose() targetUserId: string | null;
+	@Expose() reviewedById: string | null;
+	@Expose() response: string | null;
+	@Expose() status: ReportStatus;
+	@Expose() reportType: ReportType;
+}
 
-	@ApiProperty({ example: 'Test Report' })
-	title: string;
+export class ReportSanctionsDto {
+	@Expose()
+	@Type(() => UserDto)
+	user: UserDto | null;
 
-	@ApiProperty({ example: 'Test Report Description' })
-	description: string;
+	@Expose()
+	@Type(() => UserDto)
+	createdBy: UserDto | null;
+}
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	reporterId: string;
+export class FullReportDto extends ReportDto {
+	@Expose()
+	@Type(() => UserDto)
+	reporter: UserDto | null;
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	targetUserId?: string;
+	@Expose()
+	@Type(() => UserDto)
+	targetUser: UserDto | null;
 
-	@ApiProperty({ example: 'Test Report Response' })
-	response?: string;
-
-	@ApiProperty({ example: ReportStatus.IN_PROGRESS, enum: ReportStatus })
-	status: ReportStatus;
-
-	@ApiProperty({ example: ReportType.USER, enum: ReportType })
-	reportType: ReportType;
+	@Expose()
+	@Type(() => ReportSanctionsDto)
+	sanctions: ReportSanctionsDto[];
 }

@@ -1,12 +1,14 @@
-import { Friendship, User } from '@generated/prisma/client';
+import { BaseFriendshipDto } from '@api/friendship/dto';
+import { User } from '@generated/prisma/client';
 import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { ChallengeService } from '../challenge/challenge.service';
 import { FriendshipService } from '../friendship/friendship.service';
 import { SleepEntryService } from '../sleep-entry/sleep-entry.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
 import { UserService } from '../user/user.service';
-import { ProfileStatistics } from './dto';
+import { ProfileDto, ProfileStatisticsDto } from './dto';
 
 @Injectable()
 export class ProfileService {
@@ -18,7 +20,10 @@ export class ProfileService {
 		private readonly userInventoryService: UserInventoryService,
 	) {}
 
-	async getProfileByUsername(username: string, authUser: User | null) {
+	public async getProfileByUsername(
+		username: string,
+		authUser: User | null,
+	): Promise<ProfileDto> {
 		const user = await this.userService.findByUsername(username);
 
 		const isSameUser = user.id === authUser?.id;
@@ -32,7 +37,7 @@ export class ProfileService {
 			throw new NotFoundException(ERROR_MESSAGES.PROFILE.NOT_FOUND);
 		}
 
-		let friendship: Friendship | null = null;
+		let friendship: BaseFriendshipDto | null = null;
 
 		if (authUser?.id && !isSameUser) {
 			friendship = await this.friendshipService.getFriendshipByUsersIds(
@@ -65,7 +70,7 @@ export class ProfileService {
 				: Promise.resolve(null),
 		]);
 
-		let statistics: ProfileStatistics | null = null;
+		let statistics: ProfileStatisticsDto | null = null;
 
 		if (statisticsData) {
 			const [sleepEntries, challenges] = statisticsData;
@@ -76,13 +81,13 @@ export class ProfileService {
 			};
 		}
 
-		const { email, role, userPrivacySettings, ...result } = user;
+		// const { email: _e, role: _r, userPrivacySettings: _ups, ...result } = user;
 
-		return {
-			...result,
+		return plainToInstance(ProfileDto, {
+			...user,
 			friendship,
 			statistics,
 			equippedItems,
-		};
+		});
 	}
 }

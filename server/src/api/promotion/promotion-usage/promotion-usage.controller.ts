@@ -5,8 +5,9 @@ import {
 	Auth,
 	Authorized,
 } from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { PromotionUsageService } from './promotion-usage.service';
 
 @ApiTags('Promotion Usage')
@@ -14,7 +15,10 @@ import { PromotionUsageService } from './promotion-usage.service';
 export class PromotionUsageController {
 	constructor(private readonly promotionUsageService: PromotionUsageService) {}
 
-	@ApiOperation({ summary: 'Use a promotion' })
+	/** Use a promotion */
+	@Get(':alias')
+	@Auth()
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.USED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
 		ERROR_MESSAGES.PROMOTION.NOT_FOUND,
 		ERROR_MESSAGES.PRODUCT.NOT_FOUND,
@@ -29,13 +33,10 @@ export class PromotionUsageController {
 		ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
 		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
 	])
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.USED)
-	@Auth()
-	@Get(':alias')
-	async usePromotion(
+	public async usePromotion(
 		@Param('alias') alias: string,
 		@Authorized('id') userId: string,
-	) {
+	): Promise<MessageResponse> {
 		return await this.promotionUsageService.usePromotion(alias, userId);
 	}
 }

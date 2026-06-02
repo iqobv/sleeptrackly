@@ -1,23 +1,18 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose, Type } from 'class-transformer';
 
+@Exclude()
 class PaginatedMetaDto {
-	@ApiProperty({ example: 100 })
-	total: number;
-
-	@ApiProperty({ example: 1 })
-	page: number;
-
-	@ApiProperty({ example: 20 })
-	pageSize: number;
-
-	@ApiProperty({ example: 5 })
-	totalPages: number;
+	@Expose() total: number;
+	@Expose() page: number;
+	@Expose() pageSize: number;
+	@Expose() totalPages: number;
 }
 
+@Exclude()
 export class PaginatedDataDto<T> {
-	@ApiProperty({ type: 'array' })
 	items: T[];
 
-	@ApiProperty({ type: PaginatedMetaDto })
+	@Expose()
+	@Type(() => PaginatedMetaDto)
 	meta: PaginatedMetaDto;
 }

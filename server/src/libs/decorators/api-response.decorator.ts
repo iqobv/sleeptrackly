@@ -22,7 +22,7 @@ type MessageExample = {
 function createMessageDecorator(
 	statusInput: StatusInput,
 	messages: MessageDetail | MessageDetail[],
-) {
+): MethodDecorator {
 	const statusCode =
 		typeof statusInput === 'number' ? statusInput : HttpStatus[statusInput];
 
@@ -82,13 +82,13 @@ function createMessageDecorator(
 export function ApiSuccessResponse(
 	statusCode: StatusInput,
 	success: MessageDetail | MessageDetail[],
-) {
+): MethodDecorator {
 	return createMessageDecorator(statusCode, success);
 }
 
 export function ApiErrorResponse(
 	statusCode: StatusInput,
 	errors: MessageDetail | MessageDetail[],
-) {
+): MethodDecorator {
 	return createMessageDecorator(statusCode, errors);
 }

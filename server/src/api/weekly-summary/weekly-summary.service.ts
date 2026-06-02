@@ -3,9 +3,11 @@ import { NotificationType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
+import { WeeklySummaryDto } from './dto';
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);
@@ -17,10 +19,10 @@ export class WeeklySummaryService {
 		private readonly notificationService: NotificationService,
 	) {}
 
-	async generateSummaryForPreviousWeek(
+	public async generateSummaryForPreviousWeek(
 		userId: string,
 		currentDateForChart: string,
-	) {
+	): Promise<WeeklySummaryDto | null> {
 		const previousWeek = dayjs(currentDateForChart, 'YYYY-MM-DD').subtract(
 			1,
 			'week',
@@ -137,11 +139,14 @@ export class WeeklySummaryService {
 				tx,
 			);
 
-			return summary;
+			return plainToInstance(WeeklySummaryDto, summary);
 		});
 	}
 
-	async getSummaryById(userId: string, summaryId: string) {
+	public async getSummaryById(
+		userId: string,
+		summaryId: string,
+	): Promise<WeeklySummaryDto> {
 		const summary = await this.prismaService.weeklySleepSummary.findFirst({
 			where: { id: summaryId, userId },
 		});
@@ -149,10 +154,10 @@ export class WeeklySummaryService {
 		if (!summary)
 			throw new NotFoundException(ERROR_MESSAGES.WEEKLY_SUMMARY.NOT_FOUND);
 
-		return summary;
+		return plainToInstance(WeeklySummaryDto, summary);
 	}
 
-	private calculateAvgBedtimeOffset(dates: Date[]) {
+	private calculateAvgBedtimeOffset(dates: Date[]): number {
 		if (dates.length === 0) return 0;
 
 		const totalMinutes = dates.reduce((sum, date) => {

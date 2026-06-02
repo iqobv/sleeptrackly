@@ -1,10 +1,11 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PaginatedPurchaseHistoryDto } from './dto';
 import { PurchaseHistoryService } from './purchase-history.service';
 
+@Auth()
 @ApiTags('Purchase Histories')
 @Controller('purchase-histories')
 export class PurchaseHistoryController {
@@ -12,14 +13,13 @@ export class PurchaseHistoryController {
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 	) {}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get purchase histories of the authenticated user' })
-	@ApiOkResponse({ type: PaginatedPurchaseHistoryDto })
+	/** Get purchase histories of the authenticated user */
 	@Get('me')
-	async getUserPurchaseHistories(
+	@ApiOkResponse({ type: PaginatedPurchaseHistoryDto })
+	public async getUserPurchaseHistories(
 		@Authorized('id') userId: string,
 		@Query() query: PaginationQueryWithLanguageDto,
-	) {
+	): Promise<PaginatedPurchaseHistoryDto> {
 		return await this.purchaseHistoryService.getUserPurchaseHistories(
 			userId,
 			query,

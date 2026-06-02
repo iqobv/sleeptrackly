@@ -1,20 +1,22 @@
-import { FriendshipDto } from '@api/friendship/dto';
-import { CompactUserAvatarDto } from '@api/user-avatar/dto';
-import { Friendship } from '@generated/prisma/client';
-import { DefaultFieldsDto } from '@libs/dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { ProfileStatistics } from './profile-statistics.dto';
+import { BaseFriendshipDto } from '@api/friendship/dto';
+import { UserEntityDto } from '@api/user/dto/user.entity.dto';
+import { PickType } from '@nestjs/swagger';
+import { Exclude, Expose, Type } from 'class-transformer';
+import { ProfileStatisticsDto } from './profile-statistics.dto';
 
-export class ProfileDto extends DefaultFieldsDto {
-	@ApiProperty({ example: 'username' })
-	username: string;
+@Exclude()
+export class ProfileDto extends PickType(UserEntityDto, [
+	'username',
+	'createdAt',
+	'avatar',
+	'coins',
+	'equippedItems',
+] as const) {
+	@Expose()
+	@Type(() => BaseFriendshipDto)
+	friendship: BaseFriendshipDto | null;
 
-	@ApiProperty({ type: FriendshipDto })
-	friendship: Friendship | null;
-
-	@ApiProperty({ type: ProfileStatistics })
-	statistics: ProfileStatistics | null;
-
-	@ApiProperty({ type: CompactUserAvatarDto })
-	avatar: CompactUserAvatarDto;
+	@Expose()
+	@Type(() => ProfileStatisticsDto)
+	statistics: ProfileStatisticsDto | null;
 }

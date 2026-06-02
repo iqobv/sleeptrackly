@@ -1,13 +1,14 @@
 import { Auth, Authorized } from '@libs/decorators';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
-	SleepStatusDto,
 	UpdatedSleepStatusDto,
 	UpdateUserSleepStatusDto,
+	UserSleepStatusDto,
 } from './dto';
 import { UserSleepStatusService } from './user-sleep-status.service';
 
+@Auth()
 @ApiTags('User Sleep Status')
 @Controller('sleep')
 export class UserSleepStatusController {
@@ -15,22 +16,22 @@ export class UserSleepStatusController {
 		private readonly userSleepStatusService: UserSleepStatusService,
 	) {}
 
-	@ApiOperation({ summary: 'Get sleep status' })
-	@ApiOkResponse({ type: SleepStatusDto })
-	@Auth()
+	/** Get current user sleep status */
 	@Get('me')
-	async getSleepStatus(@Authorized('id') userId: string) {
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	public async getSleepStatus(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto | null> {
 		return this.userSleepStatusService.getSleepStatus(userId);
 	}
 
-	@ApiOperation({ summary: 'Update sleep status' })
-	@ApiOkResponse({ type: UpdatedSleepStatusDto })
-	@Auth()
+	/** Update user sleep status (start/stop sleep) */
 	@Patch('me')
-	async updateSleepStatus(
+	@ApiOkResponse({ type: UpdatedSleepStatusDto })
+	public async updateSleepStatus(
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserSleepStatusDto,
-	) {
+	): Promise<UpdatedSleepStatusDto> {
 		return this.userSleepStatusService.updateSleepStatus(userId, dto);
 	}
 }

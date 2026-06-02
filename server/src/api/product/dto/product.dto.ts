@@ -1,55 +1,16 @@
-import { ProductType, ProfileItemType } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { FullBundleDto } from '@api/bundle/dto';
+import { ItemDto } from '@api/item/dto';
+import { Expose, Type } from 'class-transformer';
+import { ProductEntityDto } from './product.entity.dto';
 
-export class ProductDto {
-	@ApiProperty({ example: '33be67ed-31e1-455d-bd0b-9f171264916e' })
-	id: string;
+export class ProductDto extends ProductEntityDto {}
 
-	@ApiProperty({ example: ProductType.ITEM, enum: ProductType })
-	type: ProductType;
+export class FullProductDto extends ProductEntityDto {
+	@Expose()
+	@Type(() => ItemDto)
+	item: ItemDto | null;
 
-	@ApiProperty({ example: ProfileItemType.AVATAR_FRAME, enum: ProfileItemType })
-	itemType: ProfileItemType | null;
-
-	@ApiProperty({ example: null })
-	bundleId: string | null;
-
-	@ApiProperty({ example: '33be67ed-31e1-455d-bd0b-9f171264916e' })
-	itemId: string | null;
-
-	@ApiProperty({ example: true })
-	isNew: boolean;
-
-	@ApiProperty({ example: true })
-	isPopular: boolean;
-
-	@ApiProperty({ example: false })
-	isExclusive: boolean;
-
-	@ApiProperty({ example: true })
-	isShowInStore: boolean;
-
-	@ApiProperty({ example: true })
-	isLimited: boolean;
-
-	@ApiProperty({ example: 1000 })
-	price: number;
-
-	@ApiProperty({ example: null })
-	discountedPrice: number | null;
-
-	@ApiProperty({ example: 200 })
-	maxStock: number | null;
-
-	@ApiProperty({ example: 180 })
-	soldCount: number;
-
-	@ApiProperty({ example: new Date() })
-	expiresAt: Date | null;
-
-	@ApiProperty({ example: new Date() })
-	createdAt: Date;
-
-	@ApiProperty({ example: new Date() })
-	updatedAt: Date;
+	@Expose()
+	@Type(() => FullBundleDto)
+	bundle: FullBundleDto | null;
 }

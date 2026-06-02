@@ -3,7 +3,7 @@ import { CoinTransactionType } from '@generated/prisma/enums';
 import { Injectable } from '@nestjs/common';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
 import { SLEEP_TIME } from './constants';
-import { SleepRewardCalculation } from './interfaces';
+import { SleepReward, SleepRewardCalculation } from './interfaces';
 
 @Injectable()
 export class RewardService {
@@ -13,12 +13,12 @@ export class RewardService {
 		private readonly coinTransactionService: CoinTransactionService,
 	) {}
 
-	async rewardForSleep(
+	public async rewardForSleep(
 		userId: string,
 		sleepEntryId: string,
 		durationMinutes: number,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<SleepReward> {
 		const DAILY_MAX = 50;
 		const MIN_GAP_HOURS = 12;
 

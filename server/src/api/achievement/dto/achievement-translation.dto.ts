@@ -1,18 +1,25 @@
 import { DefaultFieldsDto } from '@libs/dto';
-import { ApiProperty, IntersectionType } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IntersectionType } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
+import { IsString, MinLength } from 'class-validator';
 
 export class AchievementTranslationDto {
-	@ApiProperty({ example: 'en' })
+	/**
+	 * ISO 639-1 language code (e.g., 'en', 'es', 'fr').
+	 * @example en
+	 */
+	@Expose()
 	@IsString()
 	language: string;
 
-	@ApiProperty({ example: 'Achievement Title' })
+	@Expose()
 	@IsString()
+	@MinLength(2)
 	title: string;
 
-	@ApiProperty({ example: 'Achievement Description' })
+	@Expose()
 	@IsString()
+	@MinLength(2)
 	description: string;
 }
 
@@ -20,6 +27,5 @@ export class FullAchievementTranslationDto extends IntersectionType(
 	DefaultFieldsDto,
 	AchievementTranslationDto,
 ) {
-	@ApiProperty({ example: '00478b8d-b42d-4570-82c8-6f0828e7ec21' })
-	achievementId: string;
+	@Expose() achievementId: string;
 }

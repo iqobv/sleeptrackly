@@ -1,18 +1,13 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { BaseMessage } from '@libs/types';
+import { Expose } from 'class-transformer';
 
-export class MessageResponseDto {
-	@ApiProperty({ example: 404 })
-	statusCode: number;
+export class MessageResponseDto implements BaseMessage {
+	@Expose() code: string;
+	@Expose() message: string;
+	@Expose() field?: string;
+	@Expose() meta?: Record<string, unknown>;
 
-	@ApiProperty({ example: 'Operation message' })
-	message: string;
-
-	@ApiProperty({ example: 'CODE' })
-	code: string;
-
-	@ApiPropertyOptional({ example: 'fieldName' })
-	field?: string;
-
-	@ApiPropertyOptional({ type: 'object', additionalProperties: true })
-	meta?: Record<string, unknown>;
+	constructor(partial: Partial<MessageResponseDto>) {
+		Object.assign(this, partial);
+	}
 }

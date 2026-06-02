@@ -1,31 +1,22 @@
+import { ChallengeTaskDto } from '@api/challenge-task/dto';
 import { ChallengeFrequency } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { DefaultFieldsDto } from '@libs/dto';
+import { Expose, Type } from 'class-transformer';
 
-export class ChallengeDto {
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	id: string;
+export class ChallengeDto extends DefaultFieldsDto {
+	@Expose() userId: string;
+	@Expose() title: string;
+	@Expose() description: string;
+	@Expose() frequency: ChallengeFrequency;
+	@Expose() isStarted: boolean;
+	@Expose() isCompleted: boolean;
+	@Expose() startDate: Date;
+	@Expose() endDate: Date;
+	@Expose() deletedAt: Date | null;
+}
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	userId: string;
-
-	@ApiProperty({ example: 'Test Challenge' })
-	title: string;
-
-	@ApiProperty({ example: 'Test Challenge Description' })
-	description: string;
-
-	@ApiProperty({ example: 'WEEKLY', enum: ChallengeFrequency })
-	frequency: ChallengeFrequency;
-
-	@ApiProperty({ example: false })
-	isStarted: boolean;
-
-	@ApiProperty({ example: false })
-	isCompleted: boolean;
-
-	@ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
-	startDate: Date;
-
-	@ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
-	endDate: Date;
+export class ChallengeFullDto extends ChallengeDto {
+	@Expose()
+	@Type(() => ChallengeTaskDto)
+	tasks: ChallengeTaskDto[];
 }

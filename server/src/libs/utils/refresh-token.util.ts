@@ -1,4 +1,6 @@
-export const splitToken = (token: string) => {
+export const splitToken = (
+	token: string,
+): { sessionId: string; rawToken: string } => {
 	const [sessionId, rawToken] = token.split('.');
 
 	if (!sessionId || !rawToken) {
@@ -8,5 +10,7 @@ export const splitToken = (token: string) => {
 	return { sessionId, rawToken };
 };
 
-export const createRefreshToken = (sessionId: string, rawToken: string) =>
-	`${sessionId}.${rawToken}`;
+export const createRefreshToken = (
+	sessionId: string,
+	rawToken: string,
+): string => `${sessionId}.${rawToken}`;

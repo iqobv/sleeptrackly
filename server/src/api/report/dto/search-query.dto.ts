@@ -1,56 +1,23 @@
 import { Prisma, ReportStatus, ReportType } from '@generated/prisma/client';
-import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
+import { PaginationQueryDto } from '@libs/dto';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export const SORT_BY = ['createdAt', 'updatedAt'] as const;
 export type SortBy = (typeof SORT_BY)[number];
 
-export class SearchQueryDto {
-	@ApiProperty({ example: 1 })
-	@Type(() => Number)
-	@IsNumber({ allowNaN: false, allowInfinity: false })
-	@Min(1)
-	page: number = 1;
-
-	@ApiProperty({ example: 10 })
-	@Type(() => Number)
-	@IsNumber({ allowNaN: false, allowInfinity: false })
-	@Min(1)
-	pageSize: number = 10;
-
-	@ApiProperty({
-		example: Prisma.SortOrder.asc,
-		required: false,
-		enum: Prisma.SortOrder,
-	})
+export class SearchQueryDto extends PaginationQueryDto {
 	@IsEnum(Prisma.SortOrder, { message: 'Sort order is invalid' })
 	@IsOptional()
 	sortOrder?: Prisma.SortOrder;
 
-	@ApiProperty({
-		example: 'createdAt',
-		required: false,
-		enum: SORT_BY,
-	})
 	@IsEnum(SORT_BY, { message: 'Sort by is invalid' })
 	@IsOptional()
 	sortBy?: SortBy;
 
-	@ApiProperty({
-		example: ReportStatus.PENDING,
-		enum: ReportStatus,
-		required: false,
-	})
 	@IsEnum(ReportStatus, { message: 'Status is invalid' })
 	@IsOptional()
 	status?: ReportStatus;
 
-	@ApiProperty({
-		example: ReportType.USER,
-		enum: ReportType,
-		required: false,
-	})
 	@IsEnum(ReportType, { message: 'Report type is invalid' })
 	@IsOptional()
 	reportType?: ReportType;

@@ -1,14 +1,15 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { SleepDayDto } from './sleep-day.dto';
 import { SleepStatisticsDto } from './statistics.dto';
 
 export class SleepDashboardDto {
-	@ApiProperty({ type: SleepStatisticsDto })
+	@Expose()
+	@Type(() => SleepStatisticsDto)
 	statistics: SleepStatisticsDto;
 
-	@ApiProperty({ type: SleepDayDto, isArray: true })
+	@Expose()
+	@Type(() => SleepDayDto)
 	days: SleepDayDto[];
 
-	@ApiProperty({ example: true })
-	hasMore: boolean;
+	@Expose() hasMore: boolean;
 }

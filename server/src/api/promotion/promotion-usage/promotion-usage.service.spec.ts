@@ -24,7 +24,10 @@ type PrismaTxMock = {
 };
 
 type PrismaMock = {
-	$transaction: jest.Mock;
+	$transaction: jest.Mock<
+		Promise<unknown>,
+		[cb: (tx: PrismaTxMock) => unknown]
+	>;
 };
 
 type CoinTransactionMock = {
@@ -108,7 +111,10 @@ describe('PromotionUsageService', () => {
 		};
 
 		prismaService = {
-			$transaction: jest.fn().mockImplementation(async (cb) => cb(prismaTx)),
+			$transaction: jest.fn(
+				async (cb: (tx: PrismaTxMock) => unknown): Promise<unknown> =>
+					await cb(prismaTx),
+			),
 		};
 
 		coinTransactionService = {
@@ -231,6 +237,9 @@ describe('PromotionUsageService', () => {
 		});
 
 		it('should successfully apply a product item reward', async () => {
+			const mockDate = new Date('2026-06-01T12:00:00Z');
+			jest.setSystemTime(mockDate);
+
 			prismaTx.promotion.findUnique.mockResolvedValue({
 				...defaultPromotion,
 				productIdReward: 'prod_1',
@@ -279,7 +288,7 @@ describe('PromotionUsageService', () => {
 					{
 						userId: 'user_1',
 						itemId: 'item_1',
-						acquiredAt: expect.any(Date),
+						acquiredAt: mockDate,
 						acquiredFrom: AcquiredFrom.PROMOTION,
 						isEquipped: false,
 					},

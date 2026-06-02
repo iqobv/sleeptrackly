@@ -1,5 +1,6 @@
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ApiErrorResponse, ApiSuccessResponse } from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	Body,
@@ -8,7 +9,7 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { SendRestoreEmailDto } from './dto';
 import { RestoreService } from './restore.service';
 
@@ -17,22 +18,26 @@ import { RestoreService } from './restore.service';
 export class RestoreController {
 	constructor(private readonly restoreService: RestoreService) {}
 
-	@ApiOperation({ summary: 'Send restore account email' })
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.RESTORE.EMAIL_SENT)
+	/** Send restore account email */
 	@Post('send-email')
-	async generateRestoreToken(@Body() dto: SendRestoreEmailDto) {
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.RESTORE.EMAIL_SENT)
+	public async generateRestoreToken(
+		@Body() dto: SendRestoreEmailDto,
+	): Promise<MessageResponse> {
 		return await this.restoreService.generateRestoreToken(dto);
 	}
 
-	@ApiOperation({ summary: 'Restore account using token' })
+	/** Restore account using token */
+	@Post('restore')
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.RESTORE.RESTORE_SUCCESS)
 	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
 		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_REQUIRED,
 		ERROR_MESSAGES.TOKEN.INVALID,
 		ERROR_MESSAGES.TOKEN.EXPIRED,
 	])
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.RESTORE.RESTORE_SUCCESS)
-	@Post('restore')
-	async restoreAccount(@Query('token') token: string) {
+	public async restoreAccount(
+		@Query('token') token: string,
+	): Promise<MessageResponse> {
 		if (!token)
 			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_REQUIRED);
 

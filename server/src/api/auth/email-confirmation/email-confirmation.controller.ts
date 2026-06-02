@@ -5,6 +5,7 @@ import {
 	ClientInfo,
 } from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { setAuthCookies } from '@libs/utils';
 import {
 	Body,
@@ -15,7 +16,7 @@ import {
 	Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { ConfirmationDto, ResendEmailDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation.service';
@@ -28,39 +29,41 @@ export class EmailConfirmationController {
 		private readonly configService: ConfigService,
 	) {}
 
-	@ApiOperation({ summary: 'Email confirmation' })
-	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
-		ERROR_MESSAGES.TOKEN.NOT_FOUND,
-		ERROR_MESSAGES.TOKEN.EXPIRED,
-		ERROR_MESSAGES.USER.NOT_FOUND,
-	])
+	/** Verify Email */
 	@Post()
 	@ApiSuccessResponse(
 		HttpStatus.OK,
 		SUCCESS_MESSAGES.EMAIL_CONFIRMATION.VERIFIED,
 	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
+		ERROR_MESSAGES.TOKEN.NOT_FOUND,
+		ERROR_MESSAGES.TOKEN.EXPIRED,
+		ERROR_MESSAGES.USER.NOT_FOUND,
+	])
 	@HttpCode(HttpStatus.OK)
-	async newVerification(
+	public async verifyEmail(
 		@Body() dto: ConfirmationDto,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
-	) {
+	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
-			await this.emailConfirmationService.newVerification(dto, clientInfo);
+			await this.emailConfirmationService.verifyEmail(dto, clientInfo);
 
 		setAuthCookies(res, accessToken, refreshToken, this.configService);
 
 		return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.VERIFIED;
 	}
 
-	@ApiOperation({ summary: 'Resend email confirmation' })
+	/** Resend Confirmation Email */
+	@Post('resend')
 	@ApiSuccessResponse(
 		HttpStatus.OK,
 		SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT,
 	)
 	@HttpCode(HttpStatus.OK)
-	@Post('resend')
-	async sendVerificationEmail(@Body() dto: ResendEmailDto) {
+	public async sendVerificationEmail(
+		@Body() dto: ResendEmailDto,
+	): Promise<MessageResponse> {
 		return await this.emailConfirmationService.sendVerificationEmail(dto);
 	}
 }

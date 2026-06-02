@@ -6,7 +6,7 @@ import { Button, Field, Input } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
-import { AuthField, RegisterResult, User } from '@/types';
+import { AuthField, RegisterApiResponse, User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -65,12 +65,15 @@ const AuthForm = <T extends FieldValues, R>({
 		mutationFn,
 		onSuccess: (data) => {
 			if (isRegister) {
-				toast.success((data as RegisterResult).message);
+				toast.success((data as RegisterApiResponse).message);
 				router.push(AUTH_PAGES.EMAIL_CONFIRMATION);
-				localStorage.setItem(
-					LOCAL_STORAGE_KEYS.auth.registrationEmail,
-					(data as RegisterResult).email,
-				);
+				const meta = (data as RegisterApiResponse)?.meta;
+				if (meta?.email) {
+					localStorage.setItem(
+						LOCAL_STORAGE_KEYS.auth.registrationEmail,
+						meta.email,
+					);
+				}
 				onSuccess?.(data);
 			} else {
 				reset();

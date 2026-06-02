@@ -1,20 +1,5 @@
-import { ChallengeFrequency } from './challengeFrequncy.types';
-import { ChallengeTask } from './challengeTask.types';
+import { components } from '../schema';
 
-export interface Challenge {
-	id: string;
-	userId: string;
-	title: string;
-	description: string;
-	frequency: ChallengeFrequency;
-	isStarted: boolean;
-	isCompleted: boolean;
-	startDate: Date;
-	endDate: Date;
-	createdAt: Date;
-	updatedAt: Date;
-}
-
-export interface ChallengeFull extends Challenge {
-	tasks: ChallengeTask[];
-}
+export type Challenge = components['schemas']['ChallengeDto'];
+export type ChallengeFull = components['schemas']['ChallengeFullDto'];
+export type ChallengeTask = components['schemas']['ChallengeTaskDto'];

@@ -9,7 +9,7 @@ export class ChallengeCleanupService {
 	constructor(private readonly prismaService: PrismaService) {}
 
 	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async cleanup() {
+	private async cleanup(): Promise<void> {
 		const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
 		try {

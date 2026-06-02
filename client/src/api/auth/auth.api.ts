@@ -1,5 +1,5 @@
 import { LoginDto, RegisterDto } from '@/dto';
-import { RegisterResult, User } from '@/types';
+import { RegisterApiResponse, User } from '@/types';
 import { apiClient } from '../axios';
 
 export const loginWithPassword = async (data: LoginDto) =>
@@ -8,7 +8,8 @@ export const loginWithPassword = async (data: LoginDto) =>
 export const registerWithPassword = async (data: RegisterDto) => {
 	const { acceptTerms: _, ...rest } = data;
 
-	return (await apiClient.post<RegisterResult>('/v1/auth/register', rest)).data;
+	return (await apiClient.post<RegisterApiResponse>('/v1/auth/register', rest))
+		.data;
 };
 
 export const logout = async () =>

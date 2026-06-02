@@ -1,14 +1,27 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { IntersectionType } from '@nestjs/swagger';
+import { Exclude, Expose } from 'class-transformer';
 import { IsNotEmpty, IsString } from 'class-validator';
+import { DefaultFieldsDto } from './default-fields.dto';
 
+@Exclude()
 export class TranslationDto {
-	@ApiProperty({ example: 'en' })
+	/**
+	 * ISO 639-1 language code (e.g., 'en', 'es', 'fr')
+	 *
+	 * @example en
+	 */
+	@Expose()
 	@IsString()
 	@IsNotEmpty()
 	language: string;
 
-	@ApiProperty({ example: 'Example Name' })
+	@Expose()
 	@IsString()
 	@IsNotEmpty()
 	name: string;
 }
+
+export class FullTranslationDto extends IntersectionType(
+	TranslationDto,
+	DefaultFieldsDto,
+) {}

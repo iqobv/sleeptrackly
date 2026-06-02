@@ -1,13 +1,6 @@
-import { FriendStatus } from './friendStatus.types';
+import { components } from '../schema';
 
-export interface Friend {
-	id: string;
-	status: FriendStatus;
-	createdAt: Date;
-	user: {
-		id: string;
-		username: string;
-		avatar: string;
-		status: string;
-	};
-}
+export type Friend = components['schemas']['FriendDto'];
+export type FriendUser = components['schemas']['FullFriendDto'];
+export type FriendRequest = components['schemas']['FriendRequestDto'];
+export type FriendRequestUser = components['schemas']['FriendUserDto'];

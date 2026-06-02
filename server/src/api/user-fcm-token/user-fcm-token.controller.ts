@@ -8,22 +8,23 @@ import {
 	Param,
 	Post,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { CreateUserFcmTokenDto } from './dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateUserFcmTokenDto, FcmTokenDto } from './dto';
 import { UserFcmTokenService } from './user-fcm-token.service';
 
+@Auth()
+@ApiTags('User FCM Token')
 @Controller('fcm')
 export class UserFcmTokenController {
 	constructor(private readonly userFcmTokenService: UserFcmTokenService) {}
 
-	@Auth()
-	@ApiOperation({ summary: 'Save FCM token for the user' })
+	/** Save FCM token for the user */
 	@Post('save-token')
-	async saveFcmToken(
+	public async saveFcmToken(
 		@Authorized('id') userId: string,
 		@Body() dto: CreateUserFcmTokenDto,
 		@Headers('user-agent') userAgent?: string,
-	) {
+	): Promise<FcmTokenDto> {
 		return await this.userFcmTokenService.create(
 			userId,
 			dto,
@@ -31,30 +32,29 @@ export class UserFcmTokenController {
 		);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get FCM tokens for the user' })
+	/** Get all FCM tokens for the user */
 	@Get('tokens')
-	async getUserFcmTokens(@Authorized('id') userId: string) {
+	public async getUserFcmTokens(
+		@Authorized('id') userId: string,
+	): Promise<FcmTokenDto[]> {
 		return await this.userFcmTokenService.getTokensByUserId(userId);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Check if FCM token exists for the user' })
+	/** Check if FCM token exists for the user */
 	@Get('exists/:token')
-	async checkTokenExists(
+	public async checkTokenExists(
 		@Authorized('id') userId: string,
 		@Param('token') token: string,
-	) {
+	): Promise<boolean> {
 		return await this.userFcmTokenService.checkTokenExists(userId, token);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Remove FCM token for the user' })
+	/** Remove FCM token for the user */
 	@Delete('remove-token/:token')
-	async removeFcmToken(
+	public async removeFcmToken(
 		@Authorized('id') userId: string,
 		@Param('token') token: string,
-	) {
+	): Promise<boolean> {
 		return await this.userFcmTokenService.removeByToken(userId, token);
 	}
 }

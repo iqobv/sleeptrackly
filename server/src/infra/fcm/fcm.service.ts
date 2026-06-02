@@ -12,7 +12,7 @@ export class FcmService {
 		@Inject(FIREBASE_ADMIN) private readonly firebase: admin.app.App,
 	) {}
 
-	async sendNotification(
+	public async sendNotification(
 		tokens: string[],
 		payload: admin.messaging.MessagingPayload,
 	): Promise<SendNotificationResult> {

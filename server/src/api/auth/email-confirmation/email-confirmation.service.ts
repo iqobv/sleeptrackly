@@ -6,6 +6,7 @@ import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import {
 	forwardRef,
 	Inject,
@@ -13,6 +14,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
+import { TokensDto } from '../dto';
 import { ConfirmationDto, ResendEmailDto } from './dto';
 
 @Injectable()
@@ -26,7 +28,10 @@ export class EmailConfirmationService {
 		private readonly prismaService: PrismaService,
 	) {}
 
-	async newVerification(dto: ConfirmationDto, clientInfo: ClientInfoDto) {
+	public async verifyEmail(
+		dto: ConfirmationDto,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const existsToken = await this.tokenService.findToken(
 				dto.token,
@@ -54,7 +59,9 @@ export class EmailConfirmationService {
 		});
 	}
 
-	async sendVerificationEmail(dto: ResendEmailDto) {
+	public async sendVerificationEmail(
+		dto: ResendEmailDto,
+	): Promise<MessageResponse> {
 		const { email } = dto;
 
 		const user = await this.userService.findByEmail(email);
@@ -68,7 +75,7 @@ export class EmailConfirmationService {
 		return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT;
 	}
 
-	async generateVerificationToken(
+	public async generateVerificationToken(
 		userId: string,
 		tx?: Prisma.TransactionClient,
 	): Promise<string> {

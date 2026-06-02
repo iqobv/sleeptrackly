@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 		});
 	}
 
-	async validate(payload: JwtPayload) {
+	public async validate(payload: JwtPayload): Promise<JwtPayload> {
 		const session = await this.prismaService.session.findUnique({
 			where: { id: payload.sessionId },
 		});

@@ -17,7 +17,7 @@ export class WeeklySummaryCronService {
 	) {}
 
 	@Cron('5 3 * * 3')
-	async generateWeeklySummariesForAllUsers() {
+	private async generateWeeklySummariesForAllUsers(): Promise<void> {
 		const todayString = dayjs().format('YYYY-MM-DD');
 		const previousWeek = dayjs().subtract(1, 'week');
 		const prevYear = previousWeek.isoWeekYear();

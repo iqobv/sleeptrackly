@@ -1,15 +1,18 @@
 import { FullCoinTransactionDto } from '@api/coin-transaction/dto';
 import { PurchaseHistoryDto } from '@api/purchase-history/dto';
-import { UserInventoryItemDto } from '@api/user-inventory/dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { UserInventoryDto } from '@api/user-inventory/dto';
+import { Expose, Type } from 'class-transformer';
 
 export class PurchaseDto {
-	@ApiProperty({ type: FullCoinTransactionDto })
+	@Expose()
+	@Type(() => FullCoinTransactionDto)
 	coinTransaction: FullCoinTransactionDto;
 
-	@ApiProperty({ type: PurchaseHistoryDto })
+	@Expose()
+	@Type(() => PurchaseHistoryDto)
 	purchaseHistory: PurchaseHistoryDto;
 
-	@ApiProperty({ type: UserInventoryItemDto })
-	inventoryResults: UserInventoryItemDto;
+	@Expose()
+	@Type(() => UserInventoryDto)
+	inventoryResults: UserInventoryDto[];
 }

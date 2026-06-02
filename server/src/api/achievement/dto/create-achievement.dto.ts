@@ -15,36 +15,38 @@ import {
 import { AchievementTranslationDto } from './achievement-translation.dto';
 
 export class CreateAchievementDto {
-	@ApiProperty({ example: AchievementType.SLEEP_COUNT, enum: AchievementType })
+	/**
+	 * Type of the achievement, which determines the criteria for unlocking it.
+	 * @example SLEEP_COUNT
+	 */
 	@IsEnum(AchievementType)
 	type: AchievementType;
 
-	@ApiProperty({ example: 10 })
 	@Type(() => Number)
 	@IsNumber()
 	@Min(0)
 	targetValue: number;
 
-	@ApiProperty({ example: false, required: false })
 	@IsOptional()
 	@TransformBoolean()
 	@IsBoolean()
 	isActive?: boolean;
 
-	@ApiProperty({ example: false, required: false })
 	@IsOptional()
 	@TransformBoolean()
 	@IsBoolean()
 	isHidden?: boolean;
 
-	@ApiProperty({ example: 100, required: false })
 	@Type(() => Number)
 	@IsOptional()
 	@IsNumber()
 	@Min(0)
 	rewardCoins?: number;
 
-	@ApiProperty({ example: 'uuid', required: false })
+	/**
+	 * Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
+	 * @example 123e4567-e89b-12d3-a456-426614174000
+	 */
 	@IsOptional()
 	@IsUUID('4')
 	@Transform(({ value }: { value: string | undefined }) =>
@@ -52,7 +54,6 @@ export class CreateAchievementDto {
 	)
 	rewardProductId?: string;
 
-	@ApiProperty({ type: [AchievementTranslationDto] })
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => AchievementTranslationDto)

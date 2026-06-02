@@ -17,30 +17,25 @@ import {
 import { CollectionTranslationDto } from './collection-translation.dto';
 
 export class CreateCollectionDto {
-	@ApiProperty({ example: 'example-collection' })
 	@IsString()
 	@MinLength(4)
 	slug: string;
 
-	@ApiProperty({ example: true })
 	@TransformBoolean()
 	@IsBoolean()
 	showInStore: boolean;
 
-	@ApiProperty({ type: [CollectionTranslationDto] })
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => CollectionTranslationDto)
 	@TransformTranslations(CollectionTranslationDto)
 	translations: CollectionTranslationDto[];
 
-	@ApiProperty({ example: ['item-uuid-1', 'item-uuid-2'] })
 	@TransformArray()
 	@IsArray()
 	@IsUUID('4', { each: true })
 	productIds: string[];
 
-	@ApiProperty({ example: '#ff0000' })
 	@IsHexColor()
 	accentColor: string;
 }
