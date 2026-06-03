@@ -46,7 +46,7 @@ export class NotificationController {
 	/** Get all notifications for the logged-in user */
 	@Get('me')
 	@Auth()
-	@ApiOkResponse({ type: [PaginatedNotificationDto] })
+	@ApiOkResponse({ type: PaginatedNotificationDto })
 	public async getAllForUser(
 		@Authorized('id') userId: string,
 		@Query() query: PaginationQueryDto,
@@ -78,8 +78,16 @@ export class NotificationController {
 	/** Mark all notifications as read */
 	@Patch('read-all')
 	@Auth()
-	public async markAllAsRead(@Authorized('id') userId: string): Promise<void> {
-		return await this.notificationService.markAllAsRead(userId);
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.NOTIFICATION.MARKED_ALL_AS_READ,
+	)
+	public async markAllAsRead(
+		@Authorized('id') userId: string,
+	): Promise<MessageResponse> {
+		await this.notificationService.markAllAsRead(userId);
+
+		return SUCCESS_MESSAGES.NOTIFICATION.MARKED_ALL_AS_READ;
 	}
 
 	/** Delete a notification */

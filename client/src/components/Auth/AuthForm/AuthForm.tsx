@@ -2,11 +2,12 @@
 
 'use client';
 
+import { registerWithPassword } from '@/api';
 import { Button, Field, Input } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
-import { AuthField, RegisterApiResponse, User } from '@/types';
+import { AuthField, User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -19,6 +20,8 @@ import { ZodType } from 'zod';
 import styles from './AuthForm.module.scss';
 import AuthFormRestore from './AuthFormRestore';
 import CheckboxField from './CheckboxField';
+
+type RegisterApiResponse = Awaited<ReturnType<typeof registerWithPassword>>;
 
 interface AuthFormProps<T extends FieldValues, R> {
 	fields: AuthField<T>[];
@@ -46,7 +49,7 @@ const AuthForm = <T extends FieldValues, R>({
 	const { setUser } = useAuth();
 	const router = useRouter();
 
-	const resolver = !!schema ? zodResolver(schema) : undefined;
+	const resolver = schema ? zodResolver(schema) : undefined;
 
 	const {
 		register,

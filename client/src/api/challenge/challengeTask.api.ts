@@ -1,6 +1,9 @@
 import { ChallengeTaskDto } from '@/dto';
-import { ChallengeTask } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
+
+type UpdateChallengeTaskResponse =
+	paths['/v1/challenge-tasks/challenge/{challengeId}/task/{taskId}']['patch']['responses']['200']['content']['application/json'];
 
 export const updateTask = async (
 	challengeId: string,
@@ -8,7 +11,7 @@ export const updateTask = async (
 	data: ChallengeTaskDto,
 ) =>
 	(
-		await apiClient.patch<ChallengeTask>(
+		await apiClient.patch<UpdateChallengeTaskResponse>(
 			`/v1/challenge-tasks/challenge/${challengeId}/task/${taskId}`,
 			data,
 		)

@@ -2,7 +2,7 @@
 
 import { List, SkeletonLoader } from '@/components/UI';
 import { User } from '@/types';
-import AddFriendItem from './AddFriendItem/AddFriendItem';
+import { AddFriendItem } from './AddFriendItem/AddFriendItem';
 import styles from './AddFriendList.module.scss';
 
 interface AddFriendListProps {
@@ -11,7 +11,11 @@ interface AddFriendListProps {
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
+export const AddFriendList = ({
+	data,
+	isPending,
+	setSearch,
+}: AddFriendListProps) => {
 	return (
 		<div className={styles.list}>
 			{isPending && <SkeletonLoader width="100%" height={55} />}
@@ -30,5 +34,3 @@ const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
 		</div>
 	);
 };
-
-export default AddFriendList;

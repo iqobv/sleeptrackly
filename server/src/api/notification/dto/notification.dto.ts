@@ -1,11 +1,16 @@
 import { NotificationType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
 export class NotificationDto extends DefaultFieldsDto {
 	@Expose() userId?: string | null;
 	@Expose() weeklySleepSummaryId?: string | null;
-	@Expose() type: NotificationType;
+
+	@Expose()
+	@ApiProperty({ enum: NotificationType, enumName: 'NotificationType' })
+	type: NotificationType;
+
 	@Expose() isGlobal: boolean;
 	@Expose() isRead: boolean;
 	@Expose() isPush: boolean;

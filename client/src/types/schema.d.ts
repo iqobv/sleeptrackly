@@ -1601,10 +1601,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Use a promotion */
-        get: operations["PromotionUsageController_usePromotion_v1"];
+        get?: never;
         put?: never;
-        post?: never;
+        /** Use a promotion */
+        post: operations["PromotionUsageController_usePromotion_v1"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1712,6 +1712,8 @@ export interface components {
             email?: string;
             username?: string;
         };
+        /** @enum {string} */
+        UserRole: "USER" | "ADMIN";
         BaseUserAvatarDto: {
             url: string;
             isDefault: boolean;
@@ -1730,6 +1732,7 @@ export interface components {
             statisticsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
         };
         UserDto: {
+            role: components["schemas"]["UserRole"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -1739,8 +1742,6 @@ export interface components {
             email: string;
             username: string;
             emailVerified: boolean;
-            /** @enum {string} */
-            role: "USER" | "ADMIN";
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
@@ -1796,11 +1797,12 @@ export interface components {
             sleepEntry: components["schemas"]["SleepEntryDto"] | null;
             reward: components["schemas"]["UpdatedSleepRewardDto"] | null;
         };
+        /** @enum {string} */
+        CoinTransactionType: "EARN" | "SLEEP_REWARD" | "SLEEP_STREAK" | "ACHIEVEMENT" | "DEPOSIT" | "SPEND" | "REFUND" | "ADMIN_ADJUSTMENT" | "PROMOTION";
         CoinTransactionDto: {
+            type: components["schemas"]["CoinTransactionType"];
             userId: string;
             userCoinId: string;
-            /** @enum {string} */
-            type: "PROMOTION" | "EARN" | "SLEEP_REWARD" | "SLEEP_STREAK" | "ACHIEVEMENT" | "DEPOSIT" | "SPEND" | "REFUND" | "ADMIN_ADJUSTMENT";
             amount: number;
             balanceAfter: number;
             balanceBefore: number;
@@ -1840,7 +1842,10 @@ export interface components {
             coinsEarned: number;
             achievementsUnlocked: number;
         };
+        /** @enum {string} */
+        NotificationType: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "OTHER";
         CreateNotificationDto: {
+            type: components["schemas"]["NotificationType"];
             /** Format: uuid */
             userId?: string;
             isGlobal?: boolean;
@@ -1853,18 +1858,15 @@ export interface components {
             redirectUrl?: string;
             /** Format: date-time */
             scheduledAt?: string;
-            /** @enum {string} */
-            type: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "OTHER";
             /** Format: uuid */
             weeklySleepSummaryId?: string;
             /** Format: uuid */
             achievementId?: string;
         };
         NotificationDto: {
+            type: components["schemas"]["NotificationType"];
             userId?: string | null;
             weeklySleepSummaryId?: string | null;
-            /** @enum {string} */
-            type: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "OTHER";
             isGlobal: boolean;
             isRead: boolean;
             isPush: boolean;
@@ -1896,6 +1898,8 @@ export interface components {
         UpdateNotificationDto: {
             isRead?: boolean;
         };
+        /** @enum {string} */
+        AchievementType: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
         AchievementTranslationDto: {
             /**
              * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
@@ -1909,14 +1913,13 @@ export interface components {
             name: string;
         };
         UserAchievementDto: {
+            type: components["schemas"]["AchievementType"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-            /** @enum {string} */
-            type: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
             targetValue: number;
             iconUrl: string;
             isActive: boolean;
@@ -1929,14 +1932,13 @@ export interface components {
             rewardProduct: components["schemas"]["UserAchievementRewardProductDto"] | null;
         };
         CreateAchievementSwaggerDto: {
-            /** Format: binary */
-            icon?: string;
             /**
              * @description Type of the achievement, which determines the criteria for unlocking it.
              * @example SLEEP_COUNT
-             * @enum {string}
              */
-            type: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
+            type: components["schemas"]["AchievementType"];
+            /** Format: binary */
+            icon?: string;
             targetValue: number;
             isActive?: boolean;
             isHidden?: boolean;
@@ -1950,8 +1952,7 @@ export interface components {
             translations: components["schemas"]["AchievementTranslationDto"][];
         };
         AchievementDto: {
-            /** @enum {string} */
-            type: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
+            type: components["schemas"]["AchievementType"];
             targetValue: number;
             iconUrl: string;
             isActive: boolean;
@@ -1982,8 +1983,7 @@ export interface components {
             description: string;
         };
         FullAchievementDto: {
-            /** @enum {string} */
-            type: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
+            type: components["schemas"]["AchievementType"];
             targetValue: number;
             iconUrl: string;
             isActive: boolean;
@@ -1999,14 +1999,13 @@ export interface components {
             translations: components["schemas"]["FullAchievementTranslationDto"][];
         };
         UpdateAchievementSwaggerDto: {
-            /** Format: binary */
-            icon?: string;
             /**
              * @description Type of the achievement, which determines the criteria for unlocking it.
              * @example SLEEP_COUNT
-             * @enum {string}
              */
-            type?: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
+            type?: components["schemas"]["AchievementType"];
+            /** Format: binary */
+            icon?: string;
             targetValue?: number;
             isActive?: boolean;
             isHidden?: boolean;
@@ -2019,6 +2018,10 @@ export interface components {
             rewardProductId?: string;
             translations?: components["schemas"]["AchievementTranslationDto"][];
         };
+        /** @enum {string} */
+        AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
+        /** @enum {string} */
+        ProfileItemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
         TranslationDto: {
             /**
              * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
@@ -2028,10 +2031,9 @@ export interface components {
             name: string;
         };
         InventoryItemDetailsDto: {
+            type: components["schemas"]["ProfileItemType"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
-            /** @enum {string} */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             mediaUrl: string;
             isAnimated: boolean;
             /** @enum {string} */
@@ -2039,12 +2041,11 @@ export interface components {
             translation: components["schemas"]["TranslationDto"];
         };
         UserInventoryItemDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
             item: components["schemas"]["InventoryItemDetailsDto"];
             userId: string;
             itemId: string;
             isEquipped: boolean;
-            /** @enum {string} */
-            acquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
             /** Format: date-time */
             acquiredAt: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2073,9 +2074,8 @@ export interface components {
             updatedAt: string;
         };
         FullItemDto: {
+            type: components["schemas"]["ProfileItemType"];
             translations: components["schemas"]["FullTranslationDto"][];
-            /** @enum {string} */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
@@ -2091,12 +2091,11 @@ export interface components {
             updatedAt: string;
         };
         FullUserInventoryItemDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
             item: components["schemas"]["FullItemDto"];
             userId: string;
             itemId: string;
             isEquipped: boolean;
-            /** @enum {string} */
-            acquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
             /** Format: date-time */
             acquiredAt: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2107,7 +2106,6 @@ export interface components {
             updatedAt: string;
         };
         UpdateUserInvetoryDto: {
-            /** @example true */
             isEquipped?: boolean;
         };
         UploadUserAvatarDto: {
@@ -2179,24 +2177,15 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
+        /** @enum {string} */
+        Visibility: "PUBLIC" | "PRIVATE" | "FRIENDS";
         UpdateUserPrivacySettings: {
+            /** @example PUBLIC */
+            profileVisibility?: components["schemas"]["Visibility"];
+            achievementsVisibility?: components["schemas"]["Visibility"];
+            statisticsVisibility?: components["schemas"]["Visibility"];
             acceptFriendRequests?: boolean;
             showActivity?: boolean;
-            /**
-             * @example PUBLIC
-             * @enum {string}
-             */
-            profileVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
-            /**
-             * @example PUBLIC
-             * @enum {string}
-             */
-            achievementsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
-            /**
-             * @example PUBLIC
-             * @enum {string}
-             */
-            statisticsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
         };
         LoginDto: {
             /** Format: email */
@@ -2210,10 +2199,9 @@ export interface components {
             password?: string;
         };
         EquippedItemDetailsDto: {
+            type: components["schemas"]["ProfileItemType"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
-            /** @enum {string} */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             mediaUrl: string;
             isAnimated: boolean;
         };
@@ -2239,6 +2227,7 @@ export interface components {
             updatedAt: string;
         };
         FullUserDto: {
+            role: components["schemas"]["UserRole"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2248,14 +2237,12 @@ export interface components {
             email: string;
             username: string;
             emailVerified: boolean;
-            /** @enum {string} */
-            role: "USER" | "ADMIN";
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
             coins: components["schemas"]["UserCoinDto"] | null;
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
-            equippedItems: components["schemas"]["UserEquippedItemDto"][] | null;
+            equippedItems: components["schemas"]["UserEquippedItemDto"][];
             sanctions: components["schemas"]["UserSanctionDto"][] | null;
         };
         ConfirmationDto: {
@@ -2411,19 +2398,18 @@ export interface components {
             days: components["schemas"]["SleepDayDto"][];
             hasMore: boolean;
         };
+        /** @enum {string} */
+        ChallengeFrequency: "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
         TaskOptionsDto: {
             increment: number;
             value: number;
             description: string;
         };
         CreateChallengeDto: {
+            /** @example DAILY */
+            frequency: components["schemas"]["ChallengeFrequency"];
             title: string;
             description: string;
-            /**
-             * @example DAILY
-             * @enum {string}
-             */
-            frequency: "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
             /** Format: date-time */
             startDate: string;
             /** Format: date-time */
@@ -2431,11 +2417,10 @@ export interface components {
             tasksOptions: components["schemas"]["TaskOptionsDto"];
         };
         ChallengeDto: {
+            frequency: components["schemas"]["ChallengeFrequency"];
             userId: string;
             title: string;
             description: string;
-            /** @enum {string} */
-            frequency: "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
             isStarted: boolean;
             isCompleted: boolean;
             /** Format: date-time */
@@ -2469,11 +2454,10 @@ export interface components {
             updatedAt: string;
         };
         ChallengeFullDto: {
+            frequency: components["schemas"]["ChallengeFrequency"];
             userId: string;
             title: string;
             description: string;
-            /** @enum {string} */
-            frequency: "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
             isStarted: boolean;
             isCompleted: boolean;
             /** Format: date-time */
@@ -2500,11 +2484,12 @@ export interface components {
             isCompleted?: boolean;
             completedValue?: number;
         };
+        /** @enum {string} */
+        FriendshipStatus: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
         BaseFriendshipDto: {
+            status: components["schemas"]["FriendshipStatus"];
             requesterId: string;
             addresseeId: string;
-            /** @enum {string} */
-            status: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2517,14 +2502,16 @@ export interface components {
             countOfSleepEntries: number;
         };
         ProfileDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
             username: string;
             /** Format: date-time */
             createdAt: string;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
             coins: components["schemas"]["UserCoinDto"] | null;
-            equippedItems: components["schemas"]["UserEquippedItemDto"][] | null;
+            equippedItems: components["schemas"]["UserEquippedItemDto"][];
             friendship: components["schemas"]["BaseFriendshipDto"] | null;
-            statistics: components["schemas"]["ProfileStatisticsDto"] | null;
+            statistics: components["schemas"]["ProfileStatisticsDto"];
         };
         CreateFriendshipDto: {
             /** Format: uuid */
@@ -2542,11 +2529,10 @@ export interface components {
             sleepStatus: components["schemas"]["FriendshipUserSleepStatusDto"] | null;
         };
         FriendshipDto: {
+            status: components["schemas"]["FriendshipStatus"];
             requester: components["schemas"]["FriendshipUserDto"];
             requesterId: string;
             addresseeId: string;
-            /** @enum {string} */
-            status: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2564,8 +2550,7 @@ export interface components {
         FriendDto: {
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
-            /** @enum {string} */
-            status: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
+            status: components["schemas"]["FriendshipStatus"];
             user: components["schemas"]["FullFriendDto"];
         };
         UserFriendsDto: {
@@ -2583,35 +2568,36 @@ export interface components {
             id: string;
             /** Format: date-time */
             createdAt: string;
+            status: components["schemas"]["FriendshipStatus"];
             user: components["schemas"]["FriendUserDto"];
-            /** @enum {string} */
-            status: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
         };
         UserFriendRequestsDto: {
             friends: components["schemas"]["FriendRequestDto"][];
             countOfPendingRequests: number;
         };
         UpdateFriendshipDto: {
-            /** @enum {string} */
-            status: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
+            status: components["schemas"]["FriendshipStatus"];
         };
+        /** @enum {string} */
+        ReportType: "USER";
         CreateReportDto: {
+            reportType: components["schemas"]["ReportType"];
             title: string;
             description?: string;
-            reportType: string;
             /** Format: uuid */
             reportedId?: string;
         };
+        /** @enum {string} */
+        ReportStatus: "PENDING" | "IN_PROGRESS" | "APPROVED" | "REJECTED";
         ReportDto: {
+            status: components["schemas"]["ReportStatus"];
+            reportType: components["schemas"]["ReportType"];
             title: string;
             description: string | null;
             reporterId: string;
             targetUserId: string | null;
             reviewedById: string | null;
             response: string | null;
-            /** @enum {string} */
-            status: "PENDING" | "REJECTED" | "IN_PROGRESS" | "APPROVED";
-            reportType: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2624,15 +2610,14 @@ export interface components {
             createdBy: components["schemas"]["UserDto"] | null;
         };
         FullReportDto: {
+            status: components["schemas"]["ReportStatus"];
+            reportType: components["schemas"]["ReportType"];
             title: string;
             description: string | null;
             reporterId: string;
             targetUserId: string | null;
             reviewedById: string | null;
             response: string | null;
-            /** @enum {string} */
-            status: "PENDING" | "REJECTED" | "IN_PROGRESS" | "APPROVED";
-            reportType: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2648,11 +2633,13 @@ export interface components {
             meta: components["schemas"]["PaginatedMetaDto"];
         };
         UpdateReportDto: {
-            /** @enum {string} */
-            status?: "PENDING" | "REJECTED" | "IN_PROGRESS" | "APPROVED";
+            status?: components["schemas"]["ReportStatus"];
             response?: string;
         };
+        /** @enum {string} */
+        UserSanctionType: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
         CreaeteUserSanctionDto: {
+            type: components["schemas"]["UserSanctionType"];
             /** Format: uuid */
             reportId?: string;
             /** Format: uuid */
@@ -2661,8 +2648,6 @@ export interface components {
             startsAt: string;
             /** Format: date-time */
             endsAt: string;
-            /** @enum {string} */
-            type: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
         };
         UpdateUserSanctionDto: {
             /** Format: date-time */
@@ -2684,16 +2669,13 @@ export interface components {
             updatedAt: string;
         };
         CreateItemSwaggerDto: {
+            /** @example AVATAR_FRAME */
+            type: components["schemas"]["ProfileItemType"];
             /** Format: binary */
             media: string;
             /** Format: binary */
             preview: string;
             isExclusive?: boolean;
-            /**
-             * @example AVATAR_FRAME
-             * @enum {string}
-             */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             basePrice: number;
             /**
              * @example COMMON
@@ -2703,9 +2685,8 @@ export interface components {
             translations: components["schemas"]["TranslationDto"][];
         };
         ItemDto: {
+            type: components["schemas"]["ProfileItemType"];
             translations: components["schemas"]["TranslationDto"][];
-            /** @enum {string} */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
@@ -2729,16 +2710,13 @@ export interface components {
             meta: components["schemas"]["PaginatedMetaDto"];
         };
         UpdateItemDtoSwaggerDto: {
+            /** @example AVATAR_FRAME */
+            type?: components["schemas"]["ProfileItemType"];
             /** Format: binary */
             media?: string;
             /** Format: binary */
             preview?: string;
             isExclusive?: boolean;
-            /**
-             * @example AVATAR_FRAME
-             * @enum {string}
-             */
-            type?: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             basePrice?: number;
             /**
              * @example COMMON
@@ -2762,11 +2740,11 @@ export interface components {
             /** Format: date-time */
             expiresAt?: string;
         };
+        /** @enum {string} */
+        ProductType: "ITEM" | "BUNDLE";
         ProductDto: {
-            /** @enum {string} */
-            type: "BUNDLE" | "ITEM";
-            /** @enum {string|null} */
-            itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE" | null;
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2788,12 +2766,10 @@ export interface components {
             updatedAt: string;
         };
         FullProductDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
             item: components["schemas"]["ItemDto"] | null;
             bundle: components["schemas"]["FullBundleDto"] | null;
-            /** @enum {string} */
-            type: "BUNDLE" | "ITEM";
-            /** @enum {string|null} */
-            itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE" | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2828,9 +2804,8 @@ export interface components {
             maxStock?: number;
             /** Format: date-time */
             expiresAt?: string;
+            itemType?: components["schemas"]["ProfileItemType"];
             isPopular?: boolean;
-            /** @enum {string} */
-            itemType?: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
         };
         PurchaseHistoryDto: {
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2849,14 +2824,13 @@ export interface components {
             meta: components["schemas"]["PaginatedMetaDto"];
         };
         ShopItemDto: {
+            type: components["schemas"]["ProfileItemType"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-            /** @enum {string} */
-            type: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
@@ -2886,13 +2860,11 @@ export interface components {
             updatedAt: string;
         };
         ShopProductDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
             isOwned: boolean;
             item: components["schemas"]["ShopItemDto"] | null;
             bundle: components["schemas"]["ShopBundleDto"] | null;
-            /** @enum {string} */
-            type: "BUNDLE" | "ITEM";
-            /** @enum {string|null} */
-            itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE" | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2929,8 +2901,7 @@ export interface components {
             products: components["schemas"]["ShopCollectionProductDto"][];
         };
         ShopSectionDto: {
-            /** @enum {string} */
-            itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
+            itemType: components["schemas"]["ProfileItemType"];
             items: components["schemas"]["ShopProductDto"][];
         };
         FeaturedShopDto: {
@@ -2947,11 +2918,10 @@ export interface components {
             transaction: components["schemas"]["CoinTransactionDto"];
         };
         UserInventoryDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
             userId: string;
             itemId: string;
             isEquipped: boolean;
-            /** @enum {string} */
-            acquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
             /** Format: date-time */
             acquiredAt: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2973,7 +2943,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-03T21:37:27.668Z
+             * @example 2026-06-04T19:02:57.710Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3004,7 +2974,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-03T21:37:27.668Z
+             * @example 2026-06-04T19:02:57.710Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3055,10 +3025,8 @@ export interface components {
             updatedAt: string;
         };
         ProductDetailsDto: {
-            /** @enum {string} */
-            type: "BUNDLE" | "ITEM";
-            /** @enum {string|null} */
-            itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE" | null;
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -3428,7 +3396,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaginatedNotificationDto"][];
+                    "application/json": components["schemas"]["PaginatedNotificationDto"];
                 };
             };
             /** @description Unauthorized */
@@ -3542,11 +3510,19 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description All notifications marked as read successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
             };
             /** @description Unauthorized */
             401: {
@@ -4441,18 +4417,12 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Login successful */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
+                    "application/json": components["schemas"]["UserDto"];
                 };
             };
             /** @description Invalid email or password */
@@ -5921,7 +5891,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UpdateChallengeDto"];
+                    "application/json": components["schemas"]["ChallengeDto"];
                 };
             };
             /** @description Unauthorized */

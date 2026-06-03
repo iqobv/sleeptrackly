@@ -1,5 +1,5 @@
 export interface AvatarProps {
-	avatar: string | null;
+	avatar?: string | null;
 	size?: number;
 	containerClassName?: string;
 	avatarClassName?: string;

@@ -1,14 +1,5 @@
-import { Item } from '../item/item.types';
-import { AcquiredFrom } from './acquiredFrom.types';
+import { getInventory } from '@/api';
 
-export interface Inventory {
-	id: string;
-	userId: string;
-	itemId: string;
-	isEquipped: boolean;
-	acquiredFrom: AcquiredFrom;
-	acquiredAt: Date;
-	createdAt: Date;
-	updatedAt: Date;
-	item: Item;
-}
+export type InventoryItem = Awaited<
+	ReturnType<typeof getInventory>
+>['items'][number];

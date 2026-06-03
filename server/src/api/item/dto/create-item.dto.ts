@@ -20,6 +20,7 @@ export class CreateItemDto {
 	isExclusive?: boolean;
 
 	/** @example AVATAR_FRAME */
+	@ApiProperty({ enum: ProfileItemType, enumName: 'ProfileItemType' })
 	@IsEnum(ProfileItemType)
 	type: ProfileItemType;
 

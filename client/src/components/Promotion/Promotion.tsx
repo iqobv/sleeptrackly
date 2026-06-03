@@ -1,6 +1,6 @@
 'use client';
 
-import { apiUsePromotion } from '@/api';
+import { usePromotion } from '@/api';
 import { QUERY_KEYS } from '@/config';
 import { UsePromotionDto } from '@/dto';
 import { usePromotionSchema } from '@/schemas';
@@ -23,7 +23,7 @@ export const Promotion = () => {
 	});
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: (data: UsePromotionDto) => apiUsePromotion(data),
+		mutationFn: (data: UsePromotionDto) => usePromotion(data),
 		mutationKey: QUERY_KEYS.promotion.use,
 		onSuccess: () => {
 			toast.success('Promo code applied successfully!');

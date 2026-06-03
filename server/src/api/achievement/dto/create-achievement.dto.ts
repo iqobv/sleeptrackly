@@ -19,6 +19,7 @@ export class CreateAchievementDto {
 	 * Type of the achievement, which determines the criteria for unlocking it.
 	 * @example SLEEP_COUNT
 	 */
+	@ApiProperty({ enum: AchievementType, enumName: 'AchievementType' })
 	@IsEnum(AchievementType)
 	type: AchievementType;
 

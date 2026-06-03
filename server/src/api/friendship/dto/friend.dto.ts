@@ -1,14 +1,16 @@
 import { UserEntityDto } from '@api/user/dto/user.entity.dto';
 import { FriendshipStatus } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
-import { OmitType, PickType } from '@nestjs/swagger';
+import { ApiProperty, OmitType, PickType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 class BaseFriendDto extends PickType(DefaultFieldsDto, [
 	'id',
 	'createdAt',
 ] as const) {
-	@Expose() status: FriendshipStatus;
+	@Expose()
+	@ApiProperty({ enum: FriendshipStatus, enumName: 'FriendshipStatus' })
+	status: FriendshipStatus;
 }
 
 export class FriendUserDto extends PickType(UserEntityDto, [

@@ -1,5 +1,0 @@
-export const PRIVACY_VISIBILITY = {
-	PUBLIC: 'PUBLIC',
-	PRIVATE: 'PRIVATE',
-	FRIENDS: 'FRIENDS',
-} as const;

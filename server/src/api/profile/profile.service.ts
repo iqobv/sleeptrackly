@@ -70,18 +70,19 @@ export class ProfileService {
 				: Promise.resolve(null),
 		]);
 
-		let statistics: ProfileStatisticsDto | null = null;
+		const statistics: ProfileStatisticsDto = {
+			countOfSleepEntries: 0,
+			countOfCompletedChallenges: 0,
+		};
 
 		if (statisticsData) {
 			const [sleepEntries, challenges] = statisticsData;
-			statistics = {
-				countOfSleepEntries: sleepEntries.length,
-				countOfCompletedChallenges: challenges.filter((c) => c.isCompleted)
-					.length,
-			};
-		}
 
-		// const { email: _e, role: _r, userPrivacySettings: _ups, ...result } = user;
+			statistics.countOfSleepEntries = sleepEntries.length;
+			statistics.countOfCompletedChallenges = challenges.filter(
+				(c) => c.isCompleted,
+			).length;
+		}
 
 		return plainToInstance(ProfileDto, {
 			...user,

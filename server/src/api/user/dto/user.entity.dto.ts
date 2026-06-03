@@ -5,6 +5,7 @@ import { UserPrivacySettingsDto } from '@api/user-privacy-settings/dto';
 import { UserSanctionDto } from '@api/user-sanction/dto';
 import { UserRole } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
 export class UserEntityDto extends DefaultFieldsDto {
@@ -12,7 +13,11 @@ export class UserEntityDto extends DefaultFieldsDto {
 	@Expose() username: string;
 	@Expose() emailVerified: boolean;
 	@Expose() password: string | null;
-	@Expose() role: UserRole;
+
+	@Expose()
+	@ApiProperty({ enum: UserRole, enumName: 'UserRole' })
+	role: UserRole;
+
 	@Expose() deletedAt: Date | null;
 
 	@Expose()
@@ -29,7 +34,7 @@ export class UserEntityDto extends DefaultFieldsDto {
 
 	@Expose()
 	@Type(() => UserEquippedItemDto)
-	equippedItems: UserEquippedItemDto[] | null;
+	equippedItems: UserEquippedItemDto[];
 
 	@Expose()
 	@Type(() => UserSanctionDto)

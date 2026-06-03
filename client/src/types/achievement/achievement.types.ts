@@ -1,3 +1,5 @@
-import { components } from '../schema';
+import { getAllAchievements } from '@/api';
 
-export type Achievement = components['schemas']['UserAchievementDto'];
+export type Achievement = Awaited<
+	ReturnType<typeof getAllAchievements>
+>[number];

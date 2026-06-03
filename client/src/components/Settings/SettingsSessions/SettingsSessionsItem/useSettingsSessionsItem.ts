@@ -19,20 +19,18 @@ export const useSettingsSessionsItem = (
 	const { mutate: terminate, isPending: isTerminating } = useMutation({
 		mutationFn: () => terminateSession(session.id),
 		mutationKey: QUERY_KEYS.auth.terminateSession(user?.id || '', session.id),
-		onSuccess() {
+		onSuccess: (data) => {
 			queryClient.invalidateQueries({ queryKey });
-			toast.success('Session terminated');
+			toast.success(data.message || 'Session terminated');
 		},
 	});
 
 	const { mutate: terminateAll, isPending: isTerminatingAll } = useMutation({
 		mutationFn: terminateAllSessions,
 		mutationKey: QUERY_KEYS.auth.terminateAllSession(user?.id || ''),
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey,
-			});
-			toast.success('All other sessions terminated');
+		onSuccess: (data) => {
+			queryClient.invalidateQueries({ queryKey });
+			toast.success(data.message || 'All other sessions terminated');
 		},
 	});
 

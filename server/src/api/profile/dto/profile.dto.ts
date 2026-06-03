@@ -6,6 +6,7 @@ import { ProfileStatisticsDto } from './profile-statistics.dto';
 
 @Exclude()
 export class ProfileDto extends PickType(UserEntityDto, [
+	'id',
 	'username',
 	'createdAt',
 	'avatar',
@@ -18,5 +19,5 @@ export class ProfileDto extends PickType(UserEntityDto, [
 
 	@Expose()
 	@Type(() => ProfileStatisticsDto)
-	statistics: ProfileStatisticsDto | null;
+	statistics: ProfileStatisticsDto;
 }

@@ -26,7 +26,7 @@ import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
-import { FullUserDto } from '../user/dto';
+import { FullUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto';
@@ -46,7 +46,7 @@ export class AuthController {
 		medium: { limit: 3, ttl: 10000 },
 		long: { limit: 5, ttl: 60000 },
 	})
-	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.LOGIN_SUCCESS)
+	@ApiOkResponse({ type: UserDto })
 	@ApiErrorResponse(
 		HttpStatus.UNAUTHORIZED,
 		ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS,
@@ -57,14 +57,14 @@ export class AuthController {
 		@Body() dto: LoginDto,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
-	): Promise<MessageResponse> {
-		const { accessToken, refreshToken } = await this.authService.login(
+	): Promise<UserDto> {
+		const { user, accessToken, refreshToken } = await this.authService.login(
 			dto,
 			clientInfo,
 		);
 		setAuthCookies(res, accessToken, refreshToken, this.configService);
 
-		return SUCCESS_MESSAGES.AUTH.LOGIN_SUCCESS;
+		return user;
 	}
 
 	/** Register a new user */

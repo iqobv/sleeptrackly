@@ -1,8 +1,8 @@
 import { PaginationLoader } from '@/components/UI';
 import styles from './InventoryList.module.scss';
-import InventoryListItemLoader from './InventoryListItem/InventoryListItemLoader';
+import { InventoryListItemLoader } from './InventoryListItem';
 
-const InventoryListLoader = () => {
+export const InventoryListLoader = () => {
 	return (
 		<div className={styles.inventory}>
 			<div className={styles.list}>
@@ -14,5 +14,3 @@ const InventoryListLoader = () => {
 		</div>
 	);
 };
-
-export default InventoryListLoader;

@@ -14,7 +14,7 @@ interface AddFriendItemProps {
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
+export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	const { mutate } = useMutation({
 		mutationFn: () => sendFriendRequest(user.id),
 		mutationKey: QUERY_KEYS.friends.sendFriendRequest(user.id),
@@ -39,5 +39,3 @@ const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 		</div>
 	);
 };
-
-export default AddFriendItem;

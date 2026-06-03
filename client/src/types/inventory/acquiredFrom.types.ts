@@ -1,3 +1,13 @@
-import { ACQUIRED_FROM } from '@/constants';
+import { components } from '../schema';
 
-export type AcquiredFrom = (typeof ACQUIRED_FROM)[keyof typeof ACQUIRED_FROM];
+type SwaggerAcquiredFrom = components['schemas']['AcquiredFrom'];
+
+export const AcquiredFrom = {
+	REWARD: 'REWARD',
+	ADMIN_GRANT: 'ADMIN_GRANT',
+	BUNDLE: 'BUNDLE',
+	PROMOTION: 'PROMOTION',
+	PURCHASE: 'PURCHASE',
+} as const satisfies Record<SwaggerAcquiredFrom, SwaggerAcquiredFrom>;
+
+export type AcquiredFrom = (typeof AcquiredFrom)[keyof typeof AcquiredFrom];

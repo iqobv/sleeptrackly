@@ -18,11 +18,17 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { plainToInstance } from 'class-transformer';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserProviderService } from '../user-provider/user-provider.service';
-import { BaseUserDto, CreateUserDto, UserWithPasswordDto } from '../user/dto';
+import {
+	BaseUserDto,
+	CreateUserDto,
+	UserDto,
+	UserWithPasswordDto,
+} from '../user/dto';
 import { UserService } from '../user/user.service';
-import { LoginDto, OAuthDto, TokensDto } from './dto';
+import { LoginDto, LoginServiceResponseDto, OAuthDto, TokensDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 import { SessionService } from './session/session.service';
 
@@ -65,7 +71,7 @@ export class AuthService {
 	public async login(
 		dto: LoginDto,
 		clientInfo: ClientInfoDto,
-	): Promise<TokensDto> {
+	): Promise<LoginServiceResponseDto> {
 		const { email, password } = dto;
 
 		const user = await this.userService.findByEmail(email, true);
@@ -83,7 +89,11 @@ export class AuthService {
 
 		this.validateAccountStatus(user);
 
-		return await this.generateAndSaveTokens(user, clientInfo);
+		const finalUser = plainToInstance(UserDto, user);
+
+		const tokens = await this.generateAndSaveTokens(user, clientInfo);
+
+		return { user: finalUser, ...tokens };
 	}
 
 	public async register(dto: CreateUserDto): Promise<MessageResponse> {

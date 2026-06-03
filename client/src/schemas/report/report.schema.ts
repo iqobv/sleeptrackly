@@ -1,5 +1,6 @@
 import { REPORT_TITLES_OPTIONS } from '@/components/ReportModal/reportTitleOptions';
-import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
+import { REPORT_TITLES } from '@/constants';
+import { ReportType } from '@/types';
 import z from 'zod';
 
 export const sendReportSchema = z
@@ -7,7 +8,7 @@ export const sendReportSchema = z
 		title: z.string().min(1, { message: 'Title is required' }),
 		customTitle: z.string().optional(),
 		description: z.string().optional(),
-		reportType: z.enum(REPORT_TYPES, { error: 'Report type is required' }),
+		reportType: z.enum(ReportType, { error: 'Report type is required' }),
 		reportedId: z.string().min(1, { message: 'Reported ID is required' }),
 	})
 	.superRefine((data, ctx) => {

@@ -1,12 +1,17 @@
 import { CoinTransactionType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { JsonValue } from '@prisma/client/runtime/client';
 import { Expose } from 'class-transformer';
 
 export class CoinTransactionDto extends DefaultFieldsDto {
 	@Expose() userId: string;
 	@Expose() userCoinId: string;
-	@Expose() type: CoinTransactionType;
+
+	@Expose()
+	@ApiProperty({ enum: CoinTransactionType, enumName: 'CoinTransactionType' })
+	type: CoinTransactionType;
+
 	@Expose() amount: number;
 	@Expose() balanceAfter: number;
 	@Expose() balanceBefore: number;

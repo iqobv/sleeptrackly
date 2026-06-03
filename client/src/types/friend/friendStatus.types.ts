@@ -1,6 +1,12 @@
-import { FRIEND_STATUS } from '@/constants';
 import { components } from '../schema';
 
-type SwaggerFriendStatus = components['schemas']['FullFriendDto']['status'];
+type SwaggerFriendStatus = components['schemas']['FriendshipDto']['status'];
 
-export type FriendStatus = (typeof FRIEND_STATUS)[keyof typeof FRIEND_STATUS];
+export const FriendStatus = {
+	ACCEPTED: 'ACCEPTED',
+	PENDING: 'PENDING',
+	REJECTED: 'REJECTED',
+	BLOCKED: 'BLOCKED',
+} as const satisfies Record<SwaggerFriendStatus, SwaggerFriendStatus>;
+
+export type FriendStatus = (typeof FriendStatus)[keyof typeof FriendStatus];

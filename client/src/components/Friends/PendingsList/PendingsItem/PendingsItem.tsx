@@ -3,18 +3,17 @@
 import { changeRequestStatus } from '@/api';
 import { Avatar, Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { FRIEND_STATUS } from '@/constants';
 import { useAuth } from '@/hooks';
-import { Friend, FriendStatus } from '@/types';
+import { FriendRequest, FriendStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import styles from './PendingsItem.module.scss';
 
 interface PendingsItemProps {
-	friend: Friend;
+	friend: FriendRequest;
 }
 
-const PendingsItem = ({ friend }: PendingsItemProps) => {
+export const PendingsItem = ({ friend }: PendingsItemProps) => {
 	const { user } = useAuth();
 
 	const queryClient = useQueryClient();
@@ -44,14 +43,14 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 			<div className={styles.actions}>
 				<Button
 					fullWidth
-					onClick={() => handleUpdate(friend.id, FRIEND_STATUS.ACCEPTED)}
+					onClick={() => handleUpdate(friend.id, FriendStatus.ACCEPTED)}
 				>
 					Accept
 				</Button>
 				<Button
 					variant="outlined"
 					fullWidth
-					onClick={() => handleUpdate(friend.id, FRIEND_STATUS.REJECTED)}
+					onClick={() => handleUpdate(friend.id, FriendStatus.REJECTED)}
 				>
 					Reject
 				</Button>
@@ -59,5 +58,3 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 		</div>
 	);
 };
-
-export default PendingsItem;

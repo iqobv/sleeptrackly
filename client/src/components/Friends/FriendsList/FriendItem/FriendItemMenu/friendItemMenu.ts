@@ -1,5 +1,5 @@
 import { changeRequestStatus, deleteFriend } from '@/api';
-import { FRIEND_STATUS } from '@/constants';
+import { FriendStatus } from '@/types';
 import { MutationFunction } from '@tanstack/react-query';
 
 export interface FriendItemMenu {
@@ -18,6 +18,6 @@ export const FRIEND_ITEM_MENU: FriendItemMenu[] = [
 		label: 'Block',
 		successText: "You've blocked this user",
 		mutationFn: (userId: string) =>
-			changeRequestStatus(userId, FRIEND_STATUS.BLOCKED),
+			changeRequestStatus(userId, FriendStatus.BLOCKED),
 	},
 ];

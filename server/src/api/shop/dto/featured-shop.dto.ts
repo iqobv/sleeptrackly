@@ -1,11 +1,13 @@
 import { CollectionEntityDto } from '@api/collection/dto/collection.entity.dto';
 import { ProfileItemType } from '@generated/prisma/enums';
-import { PickType } from '@nestjs/swagger';
+import { ApiProperty, PickType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ShopProductDto } from './shop-product.dto';
 
 export class ShopSectionDto {
-	@Expose() itemType: ProfileItemType;
+	@Expose()
+	@ApiProperty({ enum: ProfileItemType, enumName: 'ProfileItemType' })
+	itemType: ProfileItemType;
 
 	@Expose()
 	@Type(() => ShopProductDto)

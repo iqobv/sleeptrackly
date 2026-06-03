@@ -1,4 +1,5 @@
 import { CoinTransactionType } from '@generated/prisma/enums';
+import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsEnum,
 	IsNumber,
@@ -15,6 +16,7 @@ export class CreateCoinTransactionDto {
 	amount: number;
 
 	/** @example SLEEP_REWARD */
+	@ApiProperty({ enum: CoinTransactionType, enumName: 'CoinTransactionType' })
 	@IsEnum(CoinTransactionType)
 	transactionType: CoinTransactionType;
 

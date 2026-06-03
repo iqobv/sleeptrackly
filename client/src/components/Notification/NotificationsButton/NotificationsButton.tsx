@@ -7,10 +7,10 @@ import { useAuth } from '@/hooks';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
-import NotificationsList from '../NotificationsList/NotificationsList';
+import { NotificationsList } from '../NotificationsList';
 import styles from './NotificationsButton.module.scss';
 
-const NotificationsButton = () => {
+export const NotificationsButton = () => {
 	const { user } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -55,5 +55,3 @@ const NotificationsButton = () => {
 		</Dropdown>
 	);
 };
-
-export default NotificationsButton;

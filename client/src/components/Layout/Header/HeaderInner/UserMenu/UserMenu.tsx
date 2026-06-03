@@ -1,6 +1,6 @@
 'use client';
 
-import NotificationsButton from '@/components/Notification/NotificationsButton/NotificationsButton';
+import { NotificationsButton } from '@/components/Notification';
 import { Avatar, Dropdown, DropdownTrigger } from '@/components/UI';
 import styles from './UserMenu.module.scss';
 import UserMenuDropdown from './UserMenuDropdown/UserMenuDropdown';

@@ -1,4 +1,5 @@
 import { Visibility } from '@generated/prisma/enums';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsBoolean, IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateUserPrivacySettings {
@@ -10,23 +11,18 @@ export class UpdateUserPrivacySettings {
 	@IsBoolean()
 	showActivity?: boolean;
 
-	/**
-	 * @example PUBLIC
-	 */
+	/** @example PUBLIC */
+	@ApiProperty({ enum: Visibility, enumName: 'Visibility' })
 	@IsOptional()
 	@IsEnum(Visibility)
 	profileVisibility?: Visibility;
 
-	/**
-	 * @example PUBLIC
-	 */
+	@ApiProperty({ enum: Visibility, enumName: 'Visibility' })
 	@IsOptional()
 	@IsEnum(Visibility)
 	achievementsVisibility?: Visibility;
 
-	/**
-	 * @example PUBLIC
-	 */
+	@ApiProperty({ enum: Visibility, enumName: 'Visibility' })
 	@IsOptional()
 	@IsEnum(Visibility)
 	statisticsVisibility?: Visibility;

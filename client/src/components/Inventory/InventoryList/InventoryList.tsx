@@ -7,11 +7,11 @@ import { useAuth, usePagination } from '@/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import styles from './InventoryList.module.scss';
-import InventoryListEmpty from './InventoryListEmpty/InventoryListEmpty';
-import InventoryListItem from './InventoryListItem/InventoryListItem';
-import InventoryListLoader from './InventoryListLoader';
+import { InventoryListEmpty } from './InventoryListEmpty/InventoryListEmpty';
+import { InventoryListItem } from './InventoryListItem';
+import { InventoryListLoader } from './InventoryListLoader';
 
-const InventoryList = () => {
+export const InventoryList = () => {
 	const searchParams = useSearchParams();
 	const pageFromUrl = Number(searchParams.get('page')) || 1;
 
@@ -48,5 +48,3 @@ const InventoryList = () => {
 		</div>
 	);
 };
-
-export default InventoryList;

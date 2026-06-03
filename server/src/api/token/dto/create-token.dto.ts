@@ -1,4 +1,5 @@
 import { TokenType } from '@generated/prisma/enums';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsEnum, IsOptional, IsUUID } from 'class-validator';
 
 export class CreateTokenDto {
@@ -6,6 +7,7 @@ export class CreateTokenDto {
 	@IsOptional()
 	userId: string | null;
 
+	@ApiProperty({ enum: TokenType, enumName: 'TokenType' })
 	@IsEnum(TokenType)
 	type: TokenType;
 

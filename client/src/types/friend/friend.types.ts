@@ -1,6 +1,13 @@
-import { components } from '../schema';
+import {
+	getAllFriends,
+	getPendingFriendRequests,
+	sendFriendRequest,
+} from '@/api';
 
-export type Friend = components['schemas']['FriendDto'];
-export type FriendUser = components['schemas']['FullFriendDto'];
-export type FriendRequest = components['schemas']['FriendRequestDto'];
-export type FriendRequestUser = components['schemas']['FriendUserDto'];
+export type Friendship = Awaited<ReturnType<typeof sendFriendRequest>>;
+export type Friend = Awaited<
+	ReturnType<typeof getAllFriends>
+>['friends'][number];
+export type FriendRequest = Awaited<
+	ReturnType<typeof getPendingFriendRequests>
+>['friends'][number];

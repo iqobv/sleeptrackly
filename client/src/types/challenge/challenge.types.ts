@@ -1,5 +1,5 @@
-import { components } from '../schema';
+import { getChallengeById, getChellenges } from '@/api';
 
-export type Challenge = components['schemas']['ChallengeDto'];
-export type ChallengeFull = components['schemas']['ChallengeFullDto'];
-export type ChallengeTask = components['schemas']['ChallengeTaskDto'];
+export type Challenge = Awaited<ReturnType<typeof getChellenges>>[number];
+export type ChallengeFull = Awaited<ReturnType<typeof getChallengeById>>;
+export type ChallengeTask = ChallengeFull['tasks'][number];

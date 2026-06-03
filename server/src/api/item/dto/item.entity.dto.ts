@@ -1,9 +1,13 @@
 import { ItemRarity, ProfileItemType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
 export class ItemEntityDto extends DefaultFieldsDto {
-	@Expose() type: ProfileItemType;
+	@Expose()
+	@ApiProperty({ enum: ProfileItemType, enumName: 'ProfileItemType' })
+	type: ProfileItemType;
+
 	@Expose() isExclusive: boolean;
 	@Expose() isAnimated: boolean;
 	@Expose() basePrice: number;

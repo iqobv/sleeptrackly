@@ -1,4 +1,5 @@
 import { ReportType } from '@generated/prisma/enums';
+import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsEnum,
 	IsOptional,
@@ -16,6 +17,7 @@ export class CreateReportDto {
 	@IsOptional()
 	description?: string;
 
+	@ApiProperty({ enum: ReportType, enumName: 'ReportType' })
 	@IsEnum(ReportType, {
 		message: `Report type is invalid. Allowed values: ${Object.values(ReportType).join(', ')}`,
 	})

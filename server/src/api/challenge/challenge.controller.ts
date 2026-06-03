@@ -72,7 +72,7 @@ export class ChallengeController {
 
 	/** Update challenge */
 	@Auth()
-	@ApiOkResponse({ type: UpdateChallengeDto })
+	@ApiOkResponse({ type: ChallengeDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Patch(':id')
 	public async update(

@@ -10,7 +10,7 @@ interface AddFriendSearchContainerProps {
 	handleSearch: () => void;
 }
 
-const AddFriendSearchContainer = ({
+export const AddFriendSearchContainer = ({
 	search,
 	onChange,
 	handleSearch,
@@ -40,5 +40,3 @@ const AddFriendSearchContainer = ({
 		</div>
 	);
 };
-
-export default AddFriendSearchContainer;

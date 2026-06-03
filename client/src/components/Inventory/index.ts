@@ -1,2 +1,2 @@
-export { default as Inventory } from './Inventory/Inventory';
-export { default as InventoryList } from './InventoryList/InventoryList';
+export * from './Inventory/Inventory';
+export * from './InventoryList';

@@ -3,18 +3,21 @@
 import { equipInventoryItem } from '@/api';
 import { Button } from '@/components/UI';
 import { ITEM_TYPES } from '@/constants';
-import { Inventory } from '@/types';
+import { InventoryItem } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import styles from './InventoryListItem.module.scss';
 
 interface InventoryListItemProps {
-	item: Inventory;
+	item: InventoryItem;
 	refetch?: () => void;
 }
 
-const InventoryListItem = ({ item, refetch }: InventoryListItemProps) => {
+export const InventoryListItem = ({
+	item,
+	refetch,
+}: InventoryListItemProps) => {
 	const [isEquipped, setIsEquipped] = useState(item.isEquipped);
 
 	const { mutate } = useMutation({
@@ -82,5 +85,3 @@ const InventoryListItem = ({ item, refetch }: InventoryListItemProps) => {
 		</div>
 	);
 };
-
-export default InventoryListItem;

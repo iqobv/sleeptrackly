@@ -7,8 +7,6 @@ interface ProfileReportButtonProps {
 	profile: Profile;
 }
 
-const ProfileReportButton = ({ profile }: ProfileReportButtonProps) => {
+export const ProfileReportButton = ({ profile }: ProfileReportButtonProps) => {
 	return <ReportModal reportedId={profile.id} />;
 };
-
-export default ProfileReportButton;

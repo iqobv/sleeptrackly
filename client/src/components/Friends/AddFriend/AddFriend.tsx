@@ -2,11 +2,11 @@
 
 import { SectionHeader } from '@/components/UI';
 import styles from './AddFriend.module.scss';
-import AddFriendList from './AddFriendList/AddFriendList';
-import AddFriendSearchContainer from './AddFriendSearchContainer/AddFriendSearchContainer';
+import { AddFriendList } from './AddFriendList';
+import { AddFriendSearchContainer } from './AddFriendSearchContainer/AddFriendSearchContainer';
 import { useAddFriend } from './useAddFriend';
 
-const AddFriend = () => {
+export const AddFriend = () => {
 	const { search, setSearch, onChange, handleSearch, data, isPending } =
 		useAddFriend();
 
@@ -29,5 +29,3 @@ const AddFriend = () => {
 		</div>
 	);
 };
-
-export default AddFriend;

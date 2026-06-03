@@ -1,4 +1,5 @@
 import { ChallengeFrequency } from '@generated/prisma/enums';
+import { ApiProperty } from '@nestjs/swagger';
 import {
 	IsDateString,
 	IsEnum,
@@ -21,6 +22,7 @@ export class CreateChallengeDto {
 	description: string;
 
 	/** @example DAILY */
+	@ApiProperty({ enum: ChallengeFrequency, enumName: 'ChallengeFrequency' })
 	@IsString()
 	@IsEnum(ChallengeFrequency, { message: 'Frequency is invalid' })
 	frequency: ChallengeFrequency;

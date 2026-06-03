@@ -10,7 +10,7 @@ interface ProfileStatisticsCardProps {
 	statistics: ProfileStatistics;
 }
 
-const ProfileStatisticsCard = ({
+export const ProfileStatisticsCard = ({
 	item,
 	statistics,
 }: ProfileStatisticsCardProps) => {
@@ -29,5 +29,3 @@ const ProfileStatisticsCard = ({
 		</div>
 	);
 };
-
-export default ProfileStatisticsCard;

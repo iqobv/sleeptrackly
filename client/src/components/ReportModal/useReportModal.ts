@@ -1,8 +1,9 @@
 import { sendReport } from '@/api';
 import { QUERY_KEYS } from '@/config';
-import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
+import { REPORT_TITLES } from '@/constants';
 import { SendReportDto, SendReportFormValues } from '@/dto';
 import { sendReportSchema } from '@/schemas';
+import { ReportType } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -11,7 +12,7 @@ import { toast } from 'react-toastify';
 
 interface ReportModalProps {
 	reportedId?: string;
-	reportType?: (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
+	reportType?: ReportType;
 }
 
 export const useReportModal = ({
@@ -33,7 +34,7 @@ export const useReportModal = ({
 			title: '',
 			customTitle: '',
 			description: '',
-			reportType: reportType || REPORT_TYPES.USER,
+			reportType: reportType || ReportType.USER,
 		},
 	});
 
@@ -58,7 +59,7 @@ export const useReportModal = ({
 			toast.success('Report sent');
 			handleOpenChange(false);
 		},
-		onError: (error: Error) => {
+		onError: (error) => {
 			toast.error(error.message);
 		},
 	});

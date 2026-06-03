@@ -20,7 +20,7 @@ const Dashboard = () => {
 			) : (
 				data && (
 					<div className={`${styles.wrapper} fade-in`}>
-						<WeekPagination hasMore={data?.hasMore} days={data?.days} />
+						<WeekPagination hasMore={data.hasMore} days={data.days} />
 						<div className={styles.content}>
 							<DashboardWeekStats data={data} />
 							<SleepChart data={data.days} />

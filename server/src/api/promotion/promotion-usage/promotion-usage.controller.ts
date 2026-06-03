@@ -6,7 +6,7 @@ import {
 	Authorized,
 } from '@libs/decorators';
 import { MessageResponse } from '@libs/types';
-import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PromotionUsageService } from './promotion-usage.service';
 
@@ -16,7 +16,7 @@ export class PromotionUsageController {
 	constructor(private readonly promotionUsageService: PromotionUsageService) {}
 
 	/** Use a promotion */
-	@Get(':alias')
+	@Post(':alias')
 	@Auth()
 	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.USED)
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
@@ -33,6 +33,7 @@ export class PromotionUsageController {
 		ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
 		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
 	])
+	@HttpCode(HttpStatus.OK)
 	public async usePromotion(
 		@Param('alias') alias: string,
 		@Authorized('id') userId: string,
