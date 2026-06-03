@@ -9,9 +9,13 @@ export const firebaseAdminProvider = {
 	useFactory: (cfg: ConfigService) => {
 		const projectId = cfg.getOrThrow<string>('FIREBASE_PROJECT_ID');
 		const clientEmail = cfg.getOrThrow<string>('FIREBASE_CLIENT_EMAIL');
-		const privateKey = cfg
-			.getOrThrow<string>('FIREBASE_PRIVATE_KEY')
-			.replace(/\\n/g, '\n');
+		const encodedPrivateKey = cfg.getOrThrow<string>(
+			'FIREBASE_PRIVATE_KEY_BASE64',
+		);
+
+		const privateKey = Buffer.from(encodedPrivateKey, 'base64').toString(
+			'utf-8',
+		);
 
 		if (!admin.apps.length) {
 			admin.initializeApp({

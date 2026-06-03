@@ -12,16 +12,18 @@ export class PrismaService
 {
 	constructor(private readonly configService: ConfigService) {
 		const connectionString = configService.getOrThrow<string>('POSTGRES_URI');
-		const caCert = configService.getOrThrow<string>('DB_CA_CERT');
+		const encodedCaCert = configService.getOrThrow<string>('DB_CA_CERT_BASE64');
 		const isProd = !isDev(configService);
 
 		const cleanConnectionString = connectionString.split('?')[0];
+
+		const cert = Buffer.from(encodedCaCert, 'base64').toString('utf-8');
 
 		const pool = new Pool({
 			connectionString: cleanConnectionString,
 			ssl: isProd
 				? {
-						ca: caCert.replace(/\\n/g, '\n'),
+						ca: cert,
 						rejectUnauthorized: true,
 					}
 				: undefined,
