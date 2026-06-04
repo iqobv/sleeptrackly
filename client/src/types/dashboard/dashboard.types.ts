@@ -1,8 +1,7 @@
-import { DashboardDay } from './dashboardDay.types';
-import { Statistics } from './statistics.types';
+import { getStatisticsByWeekForUser } from '@/api';
+import { components } from '../schema';
 
-export interface Dashboard {
-	statistics: Statistics;
-	days: DashboardDay[];
-	hasMore: boolean;
-}
+export type Dashboard = Awaited<ReturnType<typeof getStatisticsByWeekForUser>>;
+export type DashboardDay = Dashboard['days'][number];
+export type SleepEntry = components['schemas']['SleepEntryDto'];
+export type Statistics = Dashboard['statistics'];

@@ -1,7 +1,9 @@
 import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
 import { productInclude } from '@libs/prisma';
+import { MessageResponse } from '@libs/types';
 import { paginate } from '@libs/utils';
 import {
 	BadRequestException,
@@ -9,27 +11,36 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { CreateProductDto, UpdateProductDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	CreateProductDto,
+	FullProductDto,
+	PaginatedFullProductDto,
+	ProductDto,
+	UpdateProductDto,
+} from './dto';
 
 @Injectable()
 export class ProductService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createProduct(dto: CreateProductDto) {
+	public async createProduct(dto: CreateProductDto): Promise<ProductDto> {
 		const { itemId, bundleId, price, expiresAt, ...rest } = dto;
 
 		if (!itemId && !bundleId)
 			throw new BadRequestException(
-				'Either itemId or bundleId must be provided',
+				ERROR_MESSAGES.PRODUCT.REQUIRED_PAYLOAD_MISSING,
 			);
 
 		if (itemId && bundleId)
 			throw new BadRequestException(
-				'Both itemId and bundleId cannot be provided simultaneously',
+				ERROR_MESSAGES.PRODUCT.MUTUALLY_EXCLUSIVE_PAYLOAD,
 			);
 
 		if (expiresAt && new Date(expiresAt).getTime() < Date.now())
-			throw new BadRequestException('expiresAt must be a future date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.PRODUCT.EXPIRES_AT_INVALID_FUTURE,
+			);
 
 		const alreadyExists = await this.prismaService.product.findFirst({
 			where: {
@@ -40,7 +51,8 @@ export class ProductService {
 			},
 		});
 
-		if (alreadyExists) throw new ConflictException('Product already exists');
+		if (alreadyExists)
+			throw new ConflictException(ERROR_MESSAGES.PRODUCT.ALREADY_EXISTS);
 
 		let type: ProductType;
 		let itemType: ProfileItemType | null;
@@ -75,7 +87,7 @@ export class ProductService {
 					);
 		} else {
 			throw new BadRequestException(
-				'Either itemId or bundleId must be provided',
+				ERROR_MESSAGES.PRODUCT.REQUIRED_PAYLOAD_MISSING,
 			);
 		}
 
@@ -91,42 +103,26 @@ export class ProductService {
 			},
 		});
 
-		return product;
+		return plainToInstance(ProductDto, product);
 	}
 
-	async getProductById(id: string) {
+	public async getProductById(id: string): Promise<FullProductDto> {
 		const product = await this.prismaService.product.findUnique({
 			where: { id },
-			include: {
-				item: {
-					include: { translations: true },
-				},
-				bundle: {
-					include: {
-						translations: true,
-						items: {
-							include: {
-								item: {
-									include: {
-										translations: true,
-									},
-								},
-							},
-						},
-					},
-				},
-			},
+			include: productInclude(),
 		});
 
-		if (!product) throw new NotFoundException('Product not found');
+		if (!product) throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
-		return product;
+		return plainToInstance(FullProductDto, product);
 	}
 
-	async getAllProducts(query: PaginationQueryWithLanguageDto) {
+	public async getAllProducts(
+		query: PaginationQueryWithLanguageDto,
+	): Promise<PaginatedFullProductDto> {
 		const { language = 'en', limit = 20, page = 1 } = query;
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			return await this.prismaService.$transaction(async (tx) => {
 				const total = await tx.product.count();
 				const products = await tx.product.findMany({
@@ -141,30 +137,38 @@ export class ProductService {
 				return { total, items: products };
 			});
 		});
+
+		return plainToInstance(PaginatedFullProductDto, result);
 	}
 
-	async updateProduct(id: string, dto: UpdateProductDto) {
+	public async updateProduct(
+		id: string,
+		dto: UpdateProductDto,
+	): Promise<ProductDto> {
 		const product = await this.getProductById(id);
 
-		return await this.prismaService.product.update({
+		const updated = await this.prismaService.product.update({
 			where: { id: product.id },
 			data: { ...dto },
 		});
+
+		return plainToInstance(ProductDto, updated);
 	}
 
-	async removeProduct(id: string) {
+	public async removeProduct(id: string): Promise<MessageResponse> {
 		const product = await this.getProductById(id);
 
 		await this.prismaService.product.delete({
 			where: { id: product.id },
 		});
 
-		return true;
+		return SUCCESS_MESSAGES.PRODUCT.DELETED;
 	}
 
-	private calculateBundlePrice(price: number, percent: number) {
+	private calculateBundlePrice(price: number, percent: number): number {
 		const multiplier = 1 - percent / 100;
 		const result = price * multiplier;
+
 		return result;
 	}
 }

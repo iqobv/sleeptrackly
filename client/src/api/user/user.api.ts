@@ -1,10 +1,18 @@
 import { SettingsAccountDto } from '@/dto';
-import { User } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
+type UpdateUserResponse =
+	paths['/v1/users/me']['patch']['responses']['200']['content']['application/json'];
+type SearchByUsernameResponse =
+	paths['/v1/users/search']['get']['responses']['200']['content']['application/json'];
+
 export const updateUser = async (data: SettingsAccountDto) =>
-	(await apiClient.patch<User>('/v1/users/me', data)).data;
+	(await apiClient.patch<UpdateUserResponse>('/v1/users/me', data)).data;
 
 export const searchByUsername = async (username: string) =>
-	(await apiClient.get<User[]>(`/v1/users/search`, { params: { username } }))
-		.data;
+	(
+		await apiClient.get<SearchByUsernameResponse>(`/v1/users/search`, {
+			params: { username },
+		})
+	).data;

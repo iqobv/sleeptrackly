@@ -1,2 +1,2 @@
 export * from './acquiredFrom.types';
-export * from './inventory.types';
+export type * from './inventory.types';

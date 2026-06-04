@@ -1,7 +1,5 @@
-import InventoryList from '../InventoryList/InventoryList';
+import { InventoryList } from '../InventoryList';
 
-const Inventory = () => {
+export const Inventory = () => {
 	return <InventoryList />;
 };
-
-export default Inventory;

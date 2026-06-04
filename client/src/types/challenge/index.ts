@@ -1,4 +1,3 @@
-export * from './challenge.types';
-export * from './challengeField.types';
+export type * from './challenge.types';
+export type * from './challengeField.types';
 export * from './challengeFrequncy.types';
-export * from './challengeTask.types';

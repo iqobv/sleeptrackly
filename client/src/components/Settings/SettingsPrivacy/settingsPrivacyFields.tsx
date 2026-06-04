@@ -1,7 +1,6 @@
 import { FormSelect, SelectItem, ToggleSwitch } from '@/components/UI';
-import { PRIVACY_VISIBILITY } from '@/constants';
 import { SettingsPrivacyDto } from '@/dto';
-import { Option, SettingsFormFields } from '@/types';
+import { Option, PrivacyVisibility, SettingsFormFields } from '@/types';
 import { Control, Path } from 'react-hook-form';
 
 interface SettingsPrivacyFieldsProps {
@@ -11,15 +10,15 @@ interface SettingsPrivacyFieldsProps {
 
 const OPTIONS: Option[] = [
 	{
-		value: PRIVACY_VISIBILITY.PUBLIC,
+		value: PrivacyVisibility.PUBLIC,
 		label: 'Public',
 	},
 	{
-		value: PRIVACY_VISIBILITY.FRIENDS,
+		value: PrivacyVisibility.FRIENDS,
 		label: 'Friends',
 	},
 	{
-		value: PRIVACY_VISIBILITY.PRIVATE,
+		value: PrivacyVisibility.PRIVATE,
 		label: 'Private',
 	},
 ];

@@ -1,6 +1,6 @@
 'use client';
 
-import { getChellenges } from '@/api';
+import { getChallenges } from '@/api';
 import { Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
@@ -15,7 +15,7 @@ const Challenges = () => {
 
 	const { data: challenges, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
-		queryFn: getChellenges,
+		queryFn: getChallenges,
 		enabled: !!user?.id,
 	});
 

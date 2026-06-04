@@ -1,18 +1,4 @@
-import { EquippedItems } from '../item/equippedItems.types';
+import { getUser, searchByUsername } from '@/api';
 
-export interface User {
-	id: string;
-	email: string;
-	username: string;
-	role: 'USER' | 'ADMIN';
-	emailVerified: boolean;
-	createdAt: Date;
-	avatar: {
-		url: string;
-		isDefault: boolean;
-	};
-	coins: {
-		amount: number;
-	};
-	equippedItems: EquippedItems[];
-}
+export type User = Awaited<ReturnType<typeof getUser>>;
+export type SearchUser = Awaited<ReturnType<typeof searchByUsername>>[number];

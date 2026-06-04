@@ -22,7 +22,7 @@ interface NotificationsListItemProps {
 	onClose?: () => void;
 }
 
-const NotificationsListItem = ({
+export const NotificationsListItem = ({
 	notification,
 	withDivider,
 	onClose,
@@ -81,5 +81,3 @@ const NotificationsListItem = ({
 		</>
 	);
 };
-
-export default NotificationsListItem;

@@ -1,7 +1,3 @@
-import { ItemType } from '../item/itemType.types';
-import { Product } from '../product/product.types';
+import { FeaturedShop } from './featuredShop.types';
 
-export interface FeaturedShopSection {
-	itemType: ItemType;
-	items: Product[];
-}
+export type FeaturedShopSection = FeaturedShop['sections'][number];

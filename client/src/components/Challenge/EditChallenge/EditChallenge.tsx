@@ -5,14 +5,14 @@ import { Button } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { UpdateChallengeDto } from '@/dto';
 import { UpdateSchema } from '@/schemas';
-import { Challenge } from '@/types';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { IoMdArrowBack } from 'react-icons/io';
 import ChallengeForm from '../ChallengeForm/ChallengeForm';
+import styles from './EditChallenge.module.scss';
 import { UPDATE_CHALLENGE_FIELDS } from './editChallengeFields';
 
-import Link from 'next/link';
-import styles from './EditChallenge.module.scss';
+type EditChallengeResponse = Awaited<ReturnType<typeof updateChallenge>>;
 
 interface EditChallengeProps {
 	id: string;
@@ -35,7 +35,7 @@ const EditChallenge = ({ id }: EditChallengeProps) => {
 					Go Back
 				</Link>
 			</Button>
-			<ChallengeForm<UpdateChallengeDto, Challenge>
+			<ChallengeForm<UpdateChallengeDto, EditChallengeResponse>
 				fields={UPDATE_CHALLENGE_FIELDS}
 				mutationFn={(data) => updateChallenge(id, data)}
 				buttonLabel="Update"

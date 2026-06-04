@@ -7,7 +7,9 @@ type MulterFileList = Express.Multer.File[];
 export class MultiImageValidationPipe implements PipeTransform {
 	constructor(private readonly maxSizeMb: number = 5) {}
 
-	transform(files: MulterFileFields | MulterFileList | undefined) {
+	public transform(
+		files: MulterFileFields | MulterFileList | undefined,
+	): MulterFileFields | MulterFileList | undefined {
 		if (!files) return files;
 
 		const maxSizeBytes = this.maxSizeMb * 1024 * 1024;
@@ -19,7 +21,7 @@ export class MultiImageValidationPipe implements PipeTransform {
 			'image/webp',
 		];
 
-		const validateFile = (file: Express.Multer.File) => {
+		const validateFile = (file: Express.Multer.File): void => {
 			if (file.size > maxSizeBytes) {
 				throw new BadRequestException(
 					`File ${file.originalname} exceeds the maximum size of ${this.maxSizeMb} MB`,

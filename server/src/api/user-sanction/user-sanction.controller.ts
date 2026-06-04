@@ -4,15 +4,18 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserSanctionDto } from './dto';
 import { UserSanctionService } from './user-sanction.service';
 
+@Auth()
 @ApiTags('User Sanction')
 @Controller('user-sanctions')
 export class UserSanctionController {
 	constructor(private readonly userSanctionService: UserSanctionService) {}
 
-	@Auth()
-	@ApiOkResponse({ type: [UserSanctionDto] })
+	/** Get all sanctions for the authenticated user */
 	@Get('me')
-	async getUserSanctions(@Authorized('id') userId: string) {
+	@ApiOkResponse({ type: [UserSanctionDto] })
+	public async getUserSanctions(
+		@Authorized('id') userId: string,
+	): Promise<UserSanctionDto[]> {
 		return await this.userSanctionService.findByUserId(userId);
 	}
 }

@@ -1,0 +1,9 @@
+{
+	"rules": {
+		"no-async-await": "off",
+		"no-rest-spread-properties": "off",
+		"new-cap": "off",
+		"@typescript-eslint/parameter-properties": "off",
+		"@typescript-eslint/no-extraneous-class": "off"
+	}
+}

@@ -14,9 +14,9 @@ import { Product } from '@/types';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './AchievementFormProducts.module.scss';
-import AchievementFormProductsBody from './AchievementFormProductsBody';
+import { AchievementFormProductsBody } from './AchievementFormProductsBody';
 
-const AchievementFormProducts = () => {
+export const AchievementFormProducts = () => {
 	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
 	const { register, setValue } = useFormContext<BaseAchievementDto>();
@@ -62,5 +62,3 @@ const AchievementFormProducts = () => {
 		</Field>
 	);
 };
-
-export default AchievementFormProducts;

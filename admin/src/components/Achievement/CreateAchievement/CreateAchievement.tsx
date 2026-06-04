@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { AchievementForm } from '../AchievementForm';
 
-const CreateAchievement = () => {
+export const CreateAchievement = () => {
 	const { push } = useRouter();
 
 	const { mutate } = useMutation({
@@ -45,5 +45,3 @@ const CreateAchievement = () => {
 		/>
 	);
 };
-
-export default CreateAchievement;

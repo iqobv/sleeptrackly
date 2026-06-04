@@ -1,11 +1,20 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
+	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -17,89 +26,109 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
 	ApiBody,
 	ApiConsumes,
-	ApiNotFoundResponse,
+	ApiCreatedResponse,
 	ApiOkResponse,
-	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import {
 	AchievementDto,
 	CreateAchievementDto,
 	CreateAchievementSwaggerDto,
+	FullAchievementDto,
 	UpdateAchievementDto,
 	UpdateAchievementSwaggerDto,
 	UserAchievementDto,
 } from './dto';
 import { AchievementCrudService } from './services/achievement-crud.service';
 
+@ApiTags('Achievements')
 @Controller('achievements')
 export class AchievementController {
 	constructor(private readonly achievementService: AchievementCrudService) {}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get all achievements for the authenticated user' })
-	@ApiOkResponse({ type: [UserAchievementDto] })
+	/**
+	 * Get user's achievements
+	 *
+	 * @remarks Get all achievements for the authenticated user, with optional language parameter for localization.
+	 */
 	@Get('me')
-	async getAchievements(
+	@Auth()
+	@ApiOkResponse({ type: [UserAchievementDto] })
+	public async getAchievements(
 		@Authorized('id') userId: string,
 		@Query() query: LanguageQueryDto,
-	) {
+	): Promise<UserAchievementDto[]> {
 		return await this.achievementService.getAllAchievements(
 			userId,
 			query.language,
 		);
 	}
 
+	/** Create a new achievement */
+	@Post()
 	@Auth(UserRole.ADMIN)
+	@ApiBody({ type: CreateAchievementSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
-	@ApiBody({ type: CreateAchievementSwaggerDto })
-	@Post()
-	async createAchievement(
+	@ApiCreatedResponse({ type: AchievementDto })
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.IMAGE.PROCESSING_FAILED,
+	)
+	public async createAchievement(
 		@UploadedFile(ImageValidationPipe()) icon: Express.Multer.File,
 		@Body() dto: CreateAchievementDto,
-	) {
+	): Promise<AchievementDto> {
 		return await this.achievementService.createAchievement(dto, icon);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get all achievements for admin view' })
-	@ApiOkResponse({ type: [AchievementDto] })
+	/**
+	 * Get all achievements (admin only)
+	 *
+	 * @remarks Get all achievements without user-specific data. Admin only.
+	 */
 	@Get('all')
-	async getAllAchievementsForAdmin() {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: [AchievementDto] })
+	public async getAllAchievementsForAdmin(): Promise<AchievementDto[]> {
 		return await this.achievementService.getAllAchievementsForAdmin();
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get achievement by ID' })
-	@ApiOkResponse({ type: AchievementDto })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
+	/** Get achievement by ID */
 	@Get('id/:id')
-	async getAchievementById(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: FullAchievementDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
+	public async getAchievementById(
+		@Param('id') id: string,
+	): Promise<FullAchievementDto> {
 		return await this.achievementService.getAchievementById(id);
 	}
 
+	/** Update an achievement */
+	@Patch(':id')
 	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Update achievement' })
-	@ApiOkResponse({ type: AchievementDto })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
+	@ApiBody({ type: UpdateAchievementSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
-	@ApiBody({ type: UpdateAchievementSwaggerDto })
-	@Patch(':id')
-	async updateAchievement(
+	@ApiOkResponse({ type: FullAchievementDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
+	public async updateAchievement(
 		@Param('id') id: string,
 		@UploadedFile(ImageValidationPipe(5, false)) icon: Express.Multer.File,
 		@Body() dto: UpdateAchievementDto,
-	) {
+	): Promise<FullAchievementDto> {
 		return await this.achievementService.updateAchievement(id, dto, icon);
 	}
 
+	/** Delete an achievement */
+	@Delete(':id')
 	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Delete achievement' })
-	@ApiOkResponse({ example: { message: 'Achievement deleted successfully' } })
-	@ApiNotFoundResponse({ description: 'Achievement not found' })
-	@Get(':id')
-	async deleteAchievement(@Param('id') id: string) {
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.ACHIEVEMENT.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ACHIEVEMENT.NOT_FOUND)
+	public async deleteAchievement(
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
 		return await this.achievementService.deleteAchievement(id);
 	}
 }

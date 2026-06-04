@@ -1,7 +1,7 @@
 'use server';
 
 import { AUTH_PAGES } from '@/config';
-import { Error } from '@/types';
+import { MessageApiResponse } from '@/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -22,14 +22,14 @@ apiServer.interceptors.request.use(
 
 		return config;
 	},
-	(error: AxiosError<Error>) => {
+	(error: AxiosError<MessageApiResponse>) => {
 		return Promise.reject(error);
 	},
 );
 
 apiServer.interceptors.response.use(
 	(response) => response,
-	(error: AxiosError<Error>) => {
+	(error: AxiosError<MessageApiResponse>) => {
 		const requestUrl = error.config?.url || '';
 
 		const isAuthEndpoint = Object.values(AUTH_PAGES).some((path) =>
@@ -42,6 +42,7 @@ apiServer.interceptors.response.use(
 
 		if (error.response?.data?.message) {
 			error.message = error.response.data.message;
+			error.code = error.response.data.code;
 		}
 
 		return Promise.reject(error);

@@ -7,16 +7,11 @@ export class UpdateProductDto extends OmitType(PartialType(CreateProductDto), [
 	'bundleId',
 	'itemId',
 ] as const) {
-	@ApiProperty({ example: true, required: false })
 	@IsBoolean()
 	@IsOptional()
 	isPopular?: boolean;
 
-	@ApiProperty({
-		example: ProfileItemType.BACKGROUND_IMAGE,
-		required: false,
-		enum: ProfileItemType,
-	})
+	@ApiProperty({ enum: ProfileItemType, enumName: 'ProfileItemType' })
 	@IsEnum(ProfileItemType)
 	@IsOptional()
 	itemType?: ProfileItemType;

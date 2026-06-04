@@ -1,4 +1,4 @@
-import { Prisma } from '@generated/prisma/client';
+import { Prisma, UserProvider } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateUserProviderDto } from './dto';
@@ -7,11 +7,13 @@ import { CreateUserProviderDto } from './dto';
 export class UserProviderService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async findProvider(
+	public async findProvider(
 		provider: string,
 		providerId: string,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<Prisma.UserProviderGetPayload<{
+		include: { user: true };
+	}> | null> {
 		const prisma = tx ?? this.prismaService;
 
 		return await prisma.userProvider.findUnique({
@@ -20,10 +22,10 @@ export class UserProviderService {
 		});
 	}
 
-	async createProvider(
+	public async createProvider(
 		dto: CreateUserProviderDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<UserProvider> {
 		const prisma = tx ?? this.prismaService;
 
 		return await prisma.userProvider.create({

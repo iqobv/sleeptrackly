@@ -7,8 +7,8 @@ import {
 export const ImageValidationPipe = (
 	maxSizeMb: number = 5,
 	fileIsRequired: boolean = true,
-) => {
-	return new ParseFilePipe({
+): ParseFilePipe =>
+	new ParseFilePipe({
 		fileIsRequired,
 		validators: [
 			new MaxFileSizeValidator({
@@ -20,4 +20,3 @@ export const ImageValidationPipe = (
 			}),
 		],
 	});
-};

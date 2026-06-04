@@ -1,1 +1,1 @@
-export { default as WeeklySummary } from './WeeklySummary';
+export * from './WeeklySummary';

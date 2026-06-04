@@ -1,18 +1,14 @@
 import { UserSleepStatusDto } from '@/dto';
-import { SleepEntry, SleepStatus } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
-interface UpdateSleepResponse {
-	userSleepStatus: SleepStatus;
-	sleepEntry: SleepEntry;
-	reward: {
-		rewarded: boolean;
-		amount: number;
-	} | null;
-}
+type GetSleepStatusResponse =
+	paths['/v1/sleep/me']['get']['responses']['200']['content']['application/json'];
+type UpdateSleepStatusResponse =
+	paths['/v1/sleep/me']['patch']['responses']['200']['content']['application/json'];
 
 export const getSleepStatus = async () =>
-	(await apiClient.get<SleepStatus>('/v1/sleep/me')).data;
+	(await apiClient.get<GetSleepStatusResponse>('/v1/sleep/me')).data;
 
 export const updateSleepStatus = async (dto: UserSleepStatusDto) =>
-	(await apiClient.patch<UpdateSleepResponse>('/v1/sleep/me', dto)).data;
+	(await apiClient.patch<UpdateSleepStatusResponse>('/v1/sleep/me', dto)).data;

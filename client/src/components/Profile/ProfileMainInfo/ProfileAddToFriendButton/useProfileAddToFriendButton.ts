@@ -2,7 +2,7 @@
 
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
-import { Friend, FriendStatus, Profile } from '@/types';
+import { FriendStatus, Profile } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import {
@@ -16,13 +16,19 @@ export const useProfileAddToFriendButton = (profile: Profile) => {
 	const queryClient = useQueryClient();
 
 	const buttonConfig = profile?.friendship
-		? PROFILE_FRIENDS_BUTTONS(profile.id, profile?.friendship, user?.id)[
-				profile.friendship.status as FriendStatus
-			]
+		? PROFILE_FRIENDS_BUTTONS(
+				profile.id,
+				profile.friendship as unknown as Parameters<
+					typeof PROFILE_FRIENDS_BUTTONS
+				>[1],
+				user?.id,
+			)[profile.friendship.status as FriendStatus]
 		: DEFAULT_BUTTON(profile.id, user?.id);
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: buttonConfig.mutationFn as () => Promise<Friend>,
+		mutationFn: async () => {
+			return await buttonConfig.mutationFn();
+		},
 		onSuccess: () => {
 			queryClient.refetchQueries({
 				queryKey: QUERY_KEYS.profile.username(profile.username),
@@ -30,7 +36,7 @@ export const useProfileAddToFriendButton = (profile: Profile) => {
 			toast.success(buttonConfig.successText || SUCCESS_TEXT);
 		},
 		onError: (error) => {
-			toast.error((error as Error).message);
+			toast.error(error.message);
 		},
 	});
 

@@ -1,21 +1,27 @@
-import { Auth, Authorized } from '@libs/decorators';
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiNotFoundResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ERROR_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { WeeklySummaryDto } from './dto';
 import { WeeklySummaryService } from './weekly-summary.service';
 
+@ApiTags('Weekly Summaries')
 @Controller('weekly-summaries')
 export class WeeklySummaryController {
 	constructor(private readonly weeklySummaryService: WeeklySummaryService) {}
 
-	@Auth()
+	/** Get weekly summary by ID */
 	@Get(':id')
-	@ApiNotFoundResponse({ description: 'Weekly summary not found' })
+	@Auth()
 	@ApiOkResponse({ type: WeeklySummaryDto })
-	async getSummaryById(
+	@ApiErrorResponse(
+		HttpStatus.NOT_FOUND,
+		ERROR_MESSAGES.WEEKLY_SUMMARY.NOT_FOUND,
+	)
+	public async getSummaryById(
 		@Param('id') summaryId: string,
 		@Authorized('id') userId: string,
-	) {
+	): Promise<WeeklySummaryDto> {
 		return await this.weeklySummaryService.getSummaryById(userId, summaryId);
 	}
 }

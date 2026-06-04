@@ -23,7 +23,17 @@ export const useSettingsNotificationsForm = ({
 
 	const methods = useForm({
 		resolver: zodResolver(SettingsNotificationsSchema),
-		defaultValues: data,
+		defaultValues: {
+			isAchievementUnlockedEnabled: true,
+			isEmailNotificationsEnabled: true,
+			isFriendRequestsEnabled: true,
+			isInAppNotificationsEnabled: true,
+			isReminderEnabled: false,
+			isUpdatesEnabled: true,
+			reminderTime: undefined,
+			userTimeZone: undefined,
+		},
+		values: data,
 	});
 
 	const { mutate } = useMutation({
@@ -31,7 +41,7 @@ export const useSettingsNotificationsForm = ({
 			updateUserNotificationSettings(dto),
 		mutationKey: QUERY_KEYS.notifications.updateSettings(user?.id ?? ''),
 		onSuccess: (updatedSettings: NotificationSettings) => {
-			queryClient.refetchQueries({
+			queryClient.invalidateQueries({
 				queryKey: QUERY_KEYS.notifications.settings(user?.id ?? ''),
 			});
 			methods.reset(updatedSettings);

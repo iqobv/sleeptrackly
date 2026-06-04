@@ -1,19 +1,23 @@
-import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { AchievementTranslationDto } from './achievement-translation.dto';
 import { AchievementDto } from './achievement.dto';
 
 class UserAchievementRewardProductDto {
-	@ApiProperty({ example: 'Product Name' })
-	name: string;
+	@Expose() name: string;
 }
 
 export class UserAchievementDto extends OmitType(AchievementDto, [
-	'translations',
 	'isHidden',
 ] as const) {
-	@ApiProperty({ type: AchievementTranslationDto })
+	@Expose() isAchieved: boolean;
+	@Expose() achievedAt: Date | null;
+
+	@Expose()
+	@Type(() => AchievementTranslationDto)
 	translation: AchievementTranslationDto;
 
-	@ApiProperty({ type: UserAchievementRewardProductDto, nullable: true })
+	@Expose()
+	@Type(() => UserAchievementRewardProductDto)
 	rewardProduct: UserAchievementRewardProductDto | null;
 }

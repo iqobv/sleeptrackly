@@ -1,18 +1,20 @@
 import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
+import { UploadImage } from './interfaces';
 
 @Injectable()
 export class ImageService {
 	constructor(private readonly r2Service: R2Service) {}
 
-	async uploadImage(
+	public async uploadImage(
 		file: Express.Multer.File,
 		folder: string,
 		oldUrl?: string | null,
 		placeholderUrl?: string,
-	) {
+	): Promise<UploadImage> {
 		const isVideo = file.mimetype.startsWith('video/');
 		let processedBuffer: Buffer = file.buffer;
 		let contentType: string = file.mimetype;
@@ -29,7 +31,7 @@ export class ImageService {
 				extension = 'webp';
 			} catch (error) {
 				console.error('Sharp error:', error);
-				throw new BadRequestException('Failed to process image');
+				throw new BadRequestException(ERROR_MESSAGES.IMAGE.PROCESSING_FAILED);
 			}
 		}
 
@@ -53,7 +55,7 @@ export class ImageService {
 		};
 	}
 
-	async deleteImage(url: string) {
+	public async deleteImage(url: string): Promise<void> {
 		try {
 			await this.r2Service.delete(url);
 		} catch (e) {

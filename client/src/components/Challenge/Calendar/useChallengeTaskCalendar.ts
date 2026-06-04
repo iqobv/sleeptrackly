@@ -1,6 +1,5 @@
 'use client';
 
-import { CHALLENGE_FREQUENCY } from '@/constants';
 import { ChallengeFrequency, ChallengeTask } from '@/types';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -28,7 +27,7 @@ export const useChallengeTaskCalendar = ({
 	const completedGroups = tasks
 		.filter((t) => t.isCompleted)
 		.map((t) =>
-			mode === CHALLENGE_FREQUENCY.DAILY
+			mode === ChallengeFrequency.DAILY
 				? [dayjs(t.startDate).toDate()]
 				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);
@@ -36,7 +35,7 @@ export const useChallengeTaskCalendar = ({
 	const pendingGroups = tasks
 		.filter((t) => !t.isCompleted)
 		.map((t) =>
-			mode === CHALLENGE_FREQUENCY.DAILY
+			mode === ChallengeFrequency.DAILY
 				? [dayjs(t.startDate).toDate()]
 				: createWeekArr(t.startDate.toString(), t.endDate.toString()),
 		);

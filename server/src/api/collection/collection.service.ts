@@ -1,27 +1,26 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { LanguageQueryDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
-import { productInclude } from '@libs/prisma';
+import { collectionInclude } from '@libs/prisma';
+import { MessageResponse } from '@libs/types';
+import { withField } from '@libs/utils';
 import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { CreateCollectionDto, UpdateCollectionDto } from './dto';
-
-const collectionInclude: Prisma.CollectionInclude = {
-	translations: true,
-	products: {
-		include: {
-			product: {
-				include: productInclude('en'),
-			},
-		},
-	},
-};
+import { plainToInstance } from 'class-transformer';
+import {
+	CollectionDto,
+	CreateCollectionDto,
+	FullCollectionDto,
+	StoreCollectionDto,
+	UpdateCollectionDto,
+} from './dto';
 
 @Injectable()
 export class CollectionService {
@@ -32,7 +31,10 @@ export class CollectionService {
 		private readonly imageService: ImageService,
 	) {}
 
-	async createCollection(dto: CreateCollectionDto, file: Express.Multer.File) {
+	public async createCollection(
+		dto: CreateCollectionDto,
+		file: Express.Multer.File,
+	): Promise<CollectionDto> {
 		const { translations, productIds, ...rest } = dto;
 
 		const iconImage = file
@@ -42,7 +44,7 @@ export class CollectionService {
 		await this.validateProductIds(productIds || []);
 
 		try {
-			return await this.prismaService.collection.create({
+			const result = await this.prismaService.collection.create({
 				data: {
 					...rest,
 					iconUrl: iconImage || this.placeholderIconUrl,
@@ -60,28 +62,35 @@ export class CollectionService {
 					},
 				},
 			});
+
+			return plainToInstance(CollectionDto, result);
 		} catch (error) {
 			this.throwSlugConflictException(error);
 			throw error;
 		}
 	}
 
-	async getCollectionById(id: string) {
+	public async getCollectionById(id: string): Promise<FullCollectionDto> {
 		const collection = await this.prismaService.collection.findUnique({
 			where: { id },
-			include: collectionInclude,
+			include: collectionInclude(),
 		});
 
-		if (!collection) throw new NotFoundException('Collection not found');
+		if (!collection)
+			throw new NotFoundException(ERROR_MESSAGES.COLLECTION.NOT_FOUND);
 
-		return collection;
+		return plainToInstance(FullCollectionDto, collection);
 	}
 
-	async getAllCollections() {
-		return await this.prismaService.collection.findMany();
+	public async getAllCollections(): Promise<CollectionDto[]> {
+		const collections = await this.prismaService.collection.findMany();
+
+		return plainToInstance(CollectionDto, collections);
 	}
 
-	async getAllCollectionsForStore(query: LanguageQueryDto) {
+	public async getAllCollectionsForStore(
+		query: LanguageQueryDto,
+	): Promise<StoreCollectionDto[]> {
 		const { language = 'en' } = query;
 
 		const collections = await this.prismaService.collection.findMany({
@@ -106,14 +115,14 @@ export class CollectionService {
 			})
 			.sort((a, b) => a.name.localeCompare(b.name));
 
-		return mappedCollections;
+		return plainToInstance(StoreCollectionDto, mappedCollections);
 	}
 
-	async updateCollection(
+	public async updateCollection(
 		id: string,
 		dto: UpdateCollectionDto,
 		file?: Express.Multer.File,
-	) {
+	): Promise<FullCollectionDto> {
 		const { translations, productIds, ...rest } = dto;
 
 		const collection = await this.getCollectionById(id);
@@ -148,7 +157,7 @@ export class CollectionService {
 		await this.validateProductIds(productIds || []);
 
 		try {
-			return await this.prismaService.collection.update({
+			const updated = await this.prismaService.collection.update({
 				where: { id: collection.id },
 				data: {
 					...rest,
@@ -180,15 +189,17 @@ export class CollectionService {
 						},
 					}),
 				},
-				include: collectionInclude,
+				include: collectionInclude(),
 			});
+
+			return plainToInstance(FullCollectionDto, updated);
 		} catch (error) {
 			this.throwSlugConflictException(error);
 			throw error;
 		}
 	}
 
-	async deleteCollection(id: string) {
+	public async deleteCollection(id: string): Promise<MessageResponse> {
 		const collection = await this.getCollectionById(id);
 
 		if (collection.iconUrl !== this.placeholderIconUrl) {
@@ -199,10 +210,10 @@ export class CollectionService {
 			where: { id },
 		});
 
-		return { message: 'Collection deleted successfully' };
+		return SUCCESS_MESSAGES.COLLECTION.DELETED;
 	}
 
-	private async validateProductIds(productIds: string[]) {
+	private async validateProductIds(productIds: string[]): Promise<void> {
 		const existingProducts = await this.prismaService.product.findMany({
 			where: { id: { in: productIds } },
 			select: { id: true },
@@ -214,21 +225,18 @@ export class CollectionService {
 		);
 
 		if (invalidProductIds.length > 0) {
-			throw new BadRequestException({
-				message: 'One or more provided product IDs do not exist',
-				code: 'INVALID_PRODUCT_IDS',
-				details: { invalidProductIds },
-			});
+			throw new BadRequestException(
+				ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+			);
 		}
 	}
 
-	private throwSlugConflictException(error: unknown) {
+	private throwSlugConflictException(error: unknown): void {
 		if (error instanceof Prisma.PrismaClientKnownRequestError) {
 			if (error.code === 'P2002') {
-				throw new ConflictException({
-					message: 'Collection with this slug already exists',
-					code: 'COLLECTION_SLUG_EXISTS',
-				});
+				throw new ConflictException(
+					withField(ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE, 'slug'),
+				);
 			}
 		}
 	}

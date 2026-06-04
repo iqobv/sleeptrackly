@@ -2,8 +2,7 @@ import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
 import { Button, CDNImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { PRODUCT_TYPES } from '@/constants';
-import { Item, Product } from '@/types';
+import { Item, Product, ProductType } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -18,8 +17,7 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
 	const queryClient = useQueryClient();
 
-	const key =
-		product.type === PRODUCT_TYPES.ITEM ? product.item : product.bundle;
+	const key = product.type === ProductType.ITEM ? product.item : product.bundle;
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => makePurchase(product.id),
@@ -40,7 +38,7 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 	});
 
 	const url: string =
-		product.type === PRODUCT_TYPES.ITEM
+		product.type === ProductType.ITEM
 			? (key as Item)?.previewUrl
 				? (key as Item)?.previewUrl
 				: (key as Item)?.mediaUrl

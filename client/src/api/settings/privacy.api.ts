@@ -1,10 +1,23 @@
 import { SettingsPrivacyDto } from '@/dto';
-import { PrivacySettings } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
+type GetUserPrivacySettingsResponse =
+	paths['/v1/user-privacy-settings/me']['get']['responses']['200']['content']['application/json'];
+type UpdateUserPrivacySettingsResponse =
+	paths['/v1/user-privacy-settings/me']['patch']['responses']['200']['content']['application/json'];
+
 export const updatePrivacySettings = async (dto: SettingsPrivacyDto) =>
-	(await apiClient.patch<PrivacySettings>('/v1/user-privacy-settings/me', dto))
-		.data;
+	(
+		await apiClient.patch<GetUserPrivacySettingsResponse>(
+			'/v1/user-privacy-settings/me',
+			dto,
+		)
+	).data;
 
 export const getUserPrivacySettings = async () =>
-	(await apiClient.get<PrivacySettings>('/v1/user-privacy-settings/me')).data;
+	(
+		await apiClient.get<UpdateUserPrivacySettingsResponse>(
+			'/v1/user-privacy-settings/me',
+		)
+	).data;

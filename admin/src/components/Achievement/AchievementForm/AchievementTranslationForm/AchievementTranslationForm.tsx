@@ -18,7 +18,7 @@ interface HasTranslations extends FieldValues {
 	translations: AchievementTranslationDto[];
 }
 
-const AchievementTranslationForm = <D extends HasTranslations>() => {
+export const AchievementTranslationForm = <D extends HasTranslations>() => {
 	const {
 		control,
 		register,
@@ -100,4 +100,3 @@ const AchievementTranslationForm = <D extends HasTranslations>() => {
 	);
 };
 
-export default AchievementTranslationForm;

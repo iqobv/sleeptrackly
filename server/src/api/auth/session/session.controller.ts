@@ -1,45 +1,66 @@
-import { Auth, Authorized, Cookie } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+	Cookie,
+} from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
+	HttpStatus,
 	Param,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SessionDto } from './dto';
 import { SessionService } from './session.service';
 
+@Auth()
 @ApiTags('Session')
 @Controller('auth/sessions')
 export class SessionController {
 	constructor(private readonly sessionService: SessionService) {}
 
-	@ApiOperation({ summary: 'Get all sessions' })
-	@ApiOkResponse({ type: [SessionDto] })
-	@Auth()
+	/** Get all sessions */
 	@Get('all')
-	async getAllSessions(
+	@ApiOkResponse({ type: [SessionDto] })
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
+	public async getAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
-	) {
-		if (!refreshToken) {
-			throw new BadRequestException('Refresh token cookie is missing');
-		}
+	): Promise<SessionDto[]> {
+		if (!refreshToken)
+			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
+
 		return await this.sessionService.getUserSessions(userId, refreshToken);
 	}
 
-	@ApiOperation({ summary: 'Terminate all sessions' })
-	@ApiOkResponse({ type: Boolean })
-	@Auth()
+	/** Terminate all sessions */
 	@Delete('all-other')
-	async terminateAllSessions(
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED,
+	)
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
+	@HttpCode(HttpStatus.OK)
+	public async terminateAllSessions(
 		@Authorized('id') userId: string,
 		@Cookie('refreshToken') refreshToken?: string,
-	) {
-		if (!refreshToken) {
-			throw new BadRequestException('Refresh token cookie is missing');
-		}
+	): Promise<MessageResponse> {
+		if (!refreshToken)
+			throw new BadRequestException(ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING);
 
 		return await this.sessionService.deleteAllOtherSessions(
 			userId,
@@ -47,14 +68,19 @@ export class SessionController {
 		);
 	}
 
-	@ApiOperation({ summary: 'Terminate session' })
-	@ApiOkResponse({ type: Boolean })
-	@Auth()
+	/** Terminate session by id */
 	@Delete('id/:id')
-	async terminateSession(
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SESSION.SESSION_DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SESSION.NOT_FOUND)
+	@ApiErrorResponse(
+		HttpStatus.FORBIDDEN,
+		ERROR_MESSAGES.SESSION.DELETE_FORBIDDEN,
+	)
+	@HttpCode(HttpStatus.OK)
+	public async terminateSession(
 		@Authorized('id') userId: string,
 		@Param('id') sessionId: string,
-	) {
+	): Promise<MessageResponse> {
 		return await this.sessionService.deleteSession(userId, sessionId);
 	}
 }

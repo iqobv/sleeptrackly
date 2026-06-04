@@ -1,5 +1,9 @@
 import { apiClient } from '@/api/axios';
-import { FullCollection } from '@/types';
+import { paths } from '@/types/schema';
+
+type GetCollectionByIdResponse =
+	paths['/v1/collections/id/{id}']['get']['responses']['200']['content']['application/json'];
 
 export const getCollectionById = async (id: string) =>
-	(await apiClient.get<FullCollection>(`/v1/collections/id/${id}`)).data;
+	(await apiClient.get<GetCollectionByIdResponse>(`/v1/collections/id/${id}`))
+		.data;

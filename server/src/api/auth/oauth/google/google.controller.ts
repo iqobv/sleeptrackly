@@ -1,5 +1,7 @@
-import { ClientInfo } from '@libs/decorators';
+import { SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiSuccessResponse, ClientInfo } from '@libs/decorators';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { setAuthCookies } from '@libs/utils';
 import {
 	Body,
@@ -14,6 +16,7 @@ import {
 	Res,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from '../../auth.service';
 import { GoogleAuth } from '../../decorators';
@@ -21,6 +24,7 @@ import { OAuthDto } from '../../dto';
 import { GoogleOneTapDto } from './dto';
 import { GoogleService } from './google.service';
 
+@ApiTags('Google OAuth')
 @Controller('oauth/google')
 export class GoogleController {
 	private readonly targetOrigin: string;
@@ -36,17 +40,19 @@ export class GoogleController {
 		);
 	}
 
+	/** Initiate Google OAuth flow */
+	@Get()
 	@GoogleAuth()
-	@Get('')
-	async googleAuth() {}
+	public async googleAuth(): Promise<void> {}
 
+	/** Handle Google OAuth callback */
 	@Get('callback')
 	@GoogleAuth()
-	async googleAuthCallback(
+	public async googleAuthCallback(
 		@Req() req: Request,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
-	) {
+	): Promise<void> {
 		const user = req.user as unknown as OAuthDto;
 
 		const { accessToken, refreshToken } =
@@ -61,18 +67,23 @@ export class GoogleController {
 			</script>`);
 	}
 
+	/** Handle Google One Tap login */
 	@Post('one-tap')
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.AUTH.GOOGLE_ONE_TAP_LOGIN_SUCCESS,
+	)
 	@HttpCode(HttpStatus.OK)
-	async googleOneTapLogin(
+	public async googleOneTapLogin(
 		@Body() dto: GoogleOneTapDto,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
-	) {
+	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
 			await this.googleService.verifyOneTapToken(dto.credential, clientInfo);
 
 		setAuthCookies(res, accessToken, refreshToken, this.configService);
 
-		return { message: 'Google One Tap login successful' };
+		return SUCCESS_MESSAGES.AUTH.GOOGLE_ONE_TAP_LOGIN_SUCCESS;
 	}
 }

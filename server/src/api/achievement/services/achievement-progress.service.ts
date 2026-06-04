@@ -10,6 +10,7 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { AchievementDto } from '../dto';
 
 @Injectable()
 export class AchievementProgressService {
@@ -20,11 +21,11 @@ export class AchievementProgressService {
 		private readonly notificationService: NotificationService,
 	) {}
 
-	async checkProgress(
+	public async checkProgress(
 		userId: string,
 		type: AchievementType,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<void> {
 		const prisma = tx ?? this.prismaService;
 
 		const userAchievements = await prisma.userAchievement.findMany({
@@ -54,7 +55,10 @@ export class AchievementProgressService {
 		}
 	}
 
-	private async getCurrentValue(userId: string, type: AchievementType) {
+	private async getCurrentValue(
+		userId: string,
+		type: AchievementType,
+	): Promise<number> {
 		switch (type) {
 			case AchievementType.SLEEP_COUNT:
 				return await this.prismaService.sleepEntry.count({
@@ -88,13 +92,15 @@ export class AchievementProgressService {
 		userId: string,
 		achievementId: string,
 		tx?: Prisma.TransactionClient,
-	) {
-		const execute = async (tx: Prisma.TransactionClient) => {
+	): Promise<AchievementDto | null> {
+		const execute = async (
+			tx: Prisma.TransactionClient,
+		): Promise<AchievementDto | null> => {
 			const achievement = await tx.achievement.findUnique({
 				where: { id: achievementId },
 			});
 
-			if (!achievement) return;
+			if (!achievement) return null;
 
 			await tx.userAchievement.create({
 				data: {

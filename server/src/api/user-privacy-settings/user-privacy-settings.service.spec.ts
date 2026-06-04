@@ -6,7 +6,7 @@ type PrismaMock = {
 	userPrivacySettings: {
 		create: jest.Mock;
 		findUnique: jest.Mock;
-		update: jest.Mock;
+		upsert: jest.Mock;
 	};
 };
 
@@ -31,7 +31,7 @@ describe('UserPrivacySettingsService', () => {
 			userPrivacySettings: {
 				create: jest.fn(),
 				findUnique: jest.fn(),
-				update: jest.fn(),
+				upsert: jest.fn(),
 			},
 		};
 
@@ -56,7 +56,7 @@ describe('UserPrivacySettingsService', () => {
 			prisma.userPrivacySettings.findUnique.mockResolvedValue(
 				userPrivacySettings,
 			);
-			prisma.userPrivacySettings.update.mockResolvedValue(userPrivacySettings);
+			prisma.userPrivacySettings.upsert.mockResolvedValue(userPrivacySettings);
 
 			const dto = {
 				acceptFriendRequests: false,
@@ -65,9 +65,15 @@ describe('UserPrivacySettingsService', () => {
 
 			const result = await service.updateUserPrivacySettings('user_1', dto);
 
-			expect(prisma.userPrivacySettings.update).toHaveBeenCalledWith({
+			expect(prisma.userPrivacySettings.upsert).toHaveBeenCalledWith({
 				where: { id: 'id_1', userId: 'user_1' },
-				data: dto,
+				create: {
+					...dto,
+					user: { connect: { id: 'user_1' } },
+				},
+				update: {
+					...dto,
+				},
 			});
 			expect(result).toEqual(userPrivacySettings);
 		});

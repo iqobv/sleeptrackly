@@ -9,7 +9,7 @@ interface ProfileBadgesProps {
 	badges: EquippedItems[];
 }
 
-const ProfileBadges = ({ badges }: ProfileBadgesProps) => {
+export const ProfileBadges = ({ badges }: ProfileBadgesProps) => {
 	return (
 		<div className={styles.badges}>
 			{badges.map((badge) => (
@@ -24,5 +24,3 @@ const ProfileBadges = ({ badges }: ProfileBadgesProps) => {
 		</div>
 	);
 };
-
-export default ProfileBadges;

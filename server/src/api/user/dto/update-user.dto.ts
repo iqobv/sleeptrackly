@@ -3,7 +3,11 @@ import { IsBoolean, IsOptional } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateUserDto extends PartialType(
-	OmitType(CreateUserDto, ['password']),
+	OmitType(CreateUserDto, ['password', 'emailVerified']),
+) {}
+
+export class InternalUpdateUserDto extends PartialType(
+	OmitType(CreateUserDto, ['password', 'emailVerified']),
 ) {
 	@IsBoolean()
 	@IsOptional()

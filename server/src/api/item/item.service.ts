@@ -1,16 +1,24 @@
+import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { R2Service } from '@infra/r2/r2.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { PaginationQueryDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import { paginate } from '@libs/utils';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import sharp from 'sharp';
-import { v4 as uuidv4 } from 'uuid';
-import { CreateItemDto, UpdateItemDto } from './dto';
+import { plainToInstance } from 'class-transformer';
+import {
+	CreateItemDto,
+	FullItemDto,
+	FullPaginatedItemsDto,
+	ItemDto,
+	UpdateItemDto,
+} from './dto';
 import { CreateItemFiles, UpdateItemFiles } from './types';
 
 @Injectable()
@@ -20,19 +28,30 @@ export class ItemService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly r2Service: R2Service,
+		private readonly imageService: ImageService,
 	) {}
 
-	async createItem(dto: CreateItemDto, files: CreateItemFiles) {
+	public async createItem(
+		dto: CreateItemDto,
+		files: CreateItemFiles,
+	): Promise<ItemDto> {
 		const { translations, ...rest } = dto;
 
-		if (!files.media) throw new BadRequestException('Item image is required');
+		if (!files.media)
+			throw new BadRequestException(ERROR_MESSAGES.ITEM.IMAGE_REQUIRED);
 
-		const mediaFile = await this.uploadImage(files.media[0], 'items', null);
+		const mediaFile = await this.imageService.uploadImage(
+			files.media[0],
+			'items',
+			null,
+			this.PLACEHOLDER_IMAGE_URL,
+		);
 
-		const previewFile = await this.uploadImage(
+		const previewFile = await this.imageService.uploadImage(
 			files.preview[0],
 			'previews',
 			null,
+			this.PLACEHOLDER_IMAGE_URL,
 		);
 
 		const item = await this.prismaService.item.create({
@@ -47,62 +66,15 @@ export class ItemService {
 			},
 		});
 
-		return item;
+		return plainToInstance(ItemDto, item);
 	}
 
-	async uploadImage(
-		file: Express.Multer.File,
-		folder: string = 'items',
-		oldUrl: string | null = null,
-	) {
-		const isVideo = file.mimetype.startsWith('video/');
-		let processedBuffer: Buffer = file.buffer;
-		let contentType: string = file.mimetype;
-		let extension: string = file.originalname.split('.').pop() || '';
-
-		if (!isVideo) {
-			try {
-				const pipeline = sharp(file.buffer, { animated: true });
-
-				processedBuffer = await pipeline
-					.webp({ quality: 80, effort: 6, lossless: false })
-					.toBuffer();
-				contentType = 'image/webp';
-				extension = 'webp';
-			} catch (error) {
-				console.error('Sharp error:', error);
-				throw new BadRequestException('Failed to process image');
-			}
-		}
-
-		if (oldUrl && oldUrl !== this.PLACEHOLDER_IMAGE_URL) {
-			try {
-				await this.r2Service.delete(oldUrl);
-			} catch (e) {
-				console.error('Delete old file error:', e);
-			}
-		}
-
-		const filename = `${uuidv4()}.${extension}`;
-		const key = `${folder}/${filename}`;
-
-		const uploadResult = await this.r2Service.upload(
-			processedBuffer,
-			key,
-			contentType,
-		);
-
-		return {
-			url: uploadResult.key,
-			isAnimated: isVideo,
-			extension,
-		};
-	}
-
-	async getAllItems(query: PaginationQueryDto) {
+	public async getAllItems(
+		query: PaginationQueryDto,
+	): Promise<FullPaginatedItemsDto> {
 		const { page = 1, limit = 20 } = query;
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.item.count(),
 				this.prismaService.item.findMany({
@@ -119,16 +91,20 @@ export class ItemService {
 
 			return { items, total };
 		});
+
+		return plainToInstance(FullPaginatedItemsDto, result);
 	}
 
-	async getAllAvailableItems(query: PaginationQueryDto) {
+	public async getAllAvailableItems(
+		query: PaginationQueryDto,
+	): Promise<FullPaginatedItemsDto> {
 		const { page = 1, limit = 20 } = query;
 
 		const where: Prisma.ItemWhereInput = {
 			products: { is: null },
 		};
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, items] = await this.prismaService.$transaction([
 				this.prismaService.item.count({ where }),
 				this.prismaService.item.findMany({
@@ -146,48 +122,52 @@ export class ItemService {
 
 			return { items, total };
 		});
+
+		return plainToInstance(FullPaginatedItemsDto, result);
 	}
 
-	async getById(id: string) {
-		const item = await this.prismaService.item.findFirst({
-			where: {
-				id,
-			},
+	public async getById(id: string): Promise<FullItemDto> {
+		const item = await this.prismaService.item.findUnique({
+			where: { id },
 			include: {
 				translations: true,
 			},
 		});
 
-		if (!item) throw new NotFoundException('Item not found');
+		if (!item) throw new NotFoundException(ERROR_MESSAGES.ITEM.NOT_FOUND);
 
-		return item;
+		return plainToInstance(FullItemDto, item);
 	}
 
-	async updateItem(id: string, dto: UpdateItemDto, files?: UpdateItemFiles) {
+	public async updateItem(
+		id: string,
+		dto: UpdateItemDto,
+		files?: UpdateItemFiles,
+	): Promise<FullItemDto> {
 		const { translations, ...rest } = dto;
+
+		const item = await this.getById(id);
+
+		const mediaFile = files?.media
+			? await this.imageService.uploadImage(
+					files.media[0],
+					'items',
+					item.mediaUrl,
+					this.PLACEHOLDER_IMAGE_URL,
+				)
+			: null;
+
+		const previewFile = files?.preview
+			? await this.imageService.uploadImage(
+					files.preview[0],
+					'previews',
+					item.previewUrl,
+					this.PLACEHOLDER_IMAGE_URL,
+				)
+			: null;
 
 		return await this.prismaService.$transaction(
 			async (tx) => {
-				const item = await tx.item.findUnique({
-					where: { id },
-				});
-
-				if (!item) {
-					throw new NotFoundException('Item not found');
-				}
-
-				const mediaFile = files?.media
-					? await this.uploadImage(files.media[0], 'items', item.mediaUrl)
-					: null;
-
-				const previewFile = files?.preview
-					? await this.uploadImage(
-							files.preview[0],
-							'previews',
-							item.previewUrl,
-						)
-					: null;
-
 				if (translations && translations.length > 0) {
 					const translationPromises = translations.map((translation) =>
 						tx.itemTranslation.upsert({
@@ -210,7 +190,7 @@ export class ItemService {
 					await Promise.all(translationPromises);
 				}
 
-				await tx.item.update({
+				const updated = await tx.item.update({
 					where: { id },
 					data: {
 						...rest,
@@ -222,12 +202,7 @@ export class ItemService {
 					},
 				});
 
-				return await tx.item.findUnique({
-					where: { id },
-					include: {
-						translations: true,
-					},
-				});
+				return plainToInstance(FullItemDto, updated);
 			},
 			{
 				maxWait: 5000,
@@ -236,9 +211,13 @@ export class ItemService {
 		);
 	}
 
-	async deleteItem(id: string) {
-		return await this.prismaService.item.delete({
-			where: { id },
+	public async deleteItem(id: string): Promise<MessageResponse> {
+		const item = await this.getById(id);
+
+		await this.prismaService.item.delete({
+			where: { id: item.id },
 		});
+
+		return SUCCESS_MESSAGES.ITEM.DELETED;
 	}
 }

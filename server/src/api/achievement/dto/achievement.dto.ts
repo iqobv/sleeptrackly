@@ -1,30 +1,25 @@
 import { AchievementType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { FullAchievementTranslationDto } from './achievement-translation.dto';
 
+@Exclude()
 export class AchievementDto extends DefaultFieldsDto {
-	@ApiProperty({ example: AchievementType.SLEEP_COUNT, enum: AchievementType })
+	@Expose()
+	@ApiProperty({ enum: AchievementType, enumName: 'AchievementType' })
 	type: AchievementType;
 
-	@ApiProperty({ example: 10 })
-	targetValue: number;
+	@Expose() targetValue: number;
+	@Expose() iconUrl: string;
+	@Expose() isActive: boolean;
+	@Expose() isHidden: boolean;
+	@Expose() rewardCoins: number;
+	@Expose() rewardProductId: string | null;
+}
 
-	@ApiProperty({ example: 'placeholders/achievement.png' })
-	iconUrl: string;
-
-	@ApiProperty({ example: true })
-	isActive: boolean;
-
-	@ApiProperty({ example: false })
-	isHidden: boolean;
-
-	@ApiProperty({ example: 0 })
-	rewardCoins: number;
-
-	@ApiProperty({ example: 'uuid' })
-	rewardProductId: string | null;
-
-	@ApiProperty({ type: [FullAchievementTranslationDto] })
+export class FullAchievementDto extends AchievementDto {
+	@Expose()
+	@Type(() => FullAchievementTranslationDto)
 	translations: FullAchievementTranslationDto[];
 }

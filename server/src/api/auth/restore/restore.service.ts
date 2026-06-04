@@ -3,6 +3,8 @@ import { UserService } from '@api/user/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import { Injectable } from '@nestjs/common';
 import { SendRestoreEmailDto } from './dto';
 
@@ -15,15 +17,14 @@ export class RestoreService {
 		private readonly mailService: MailService,
 	) {}
 
-	async generateRestoreToken(dto: SendRestoreEmailDto) {
+	public async generateRestoreToken(
+		dto: SendRestoreEmailDto,
+	): Promise<MessageResponse> {
 		const { email } = dto;
-
-		const message =
-			'If a user with this email exists, a restore email will be sent';
 
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) return { message };
+		if (!user) return SUCCESS_MESSAGES.RESTORE.EMAIL_SENT;
 
 		const { token } = await this.tokenService.createToken({
 			type: TokenType.RESTORE_ACCOUNT,
@@ -33,10 +34,10 @@ export class RestoreService {
 
 		await this.mailService.sendRestoreAccountEmail(user.email, token);
 
-		return { message };
+		return SUCCESS_MESSAGES.RESTORE.EMAIL_SENT;
 	}
 
-	async restoreAccount(token: string) {
+	public async restoreAccount(token: string): Promise<MessageResponse> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const foundToken = await this.tokenService.verifyAndConsumeToken(
 				token,
@@ -49,7 +50,7 @@ export class RestoreService {
 				data: { deletedAt: null },
 			});
 
-			return { message: 'Account restored successfully' };
+			return SUCCESS_MESSAGES.RESTORE.RESTORE_SUCCESS;
 		});
 	}
 }

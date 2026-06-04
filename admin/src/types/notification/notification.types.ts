@@ -1,6 +1,3 @@
-import { PaginatedDataResponse } from '../api/paginatedData.types';
-import { DefaultFields } from '../defaultFields.types';
-
 export const NotificationType = {
 	FRIEND_REQUEST: 'FRIEND_REQUEST',
 	SANCTION: 'SANCTION',
@@ -15,21 +12,3 @@ export const NotificationType = {
 
 export type NotificationType =
 	(typeof NotificationType)[keyof typeof NotificationType];
-
-export interface Notification extends DefaultFields {
-	userId: string | null;
-	weeklySleepSummaryId: string | null;
-	type: NotificationType;
-	isGlobal: boolean;
-	isRead: boolean;
-	isPush: boolean;
-	showInApp: boolean;
-	isScheduled: boolean;
-	isEmail: boolean;
-	title: string;
-	body: string;
-	redirectUrl: string;
-	scheduledAt: Date;
-}
-
-export type NotificationPaginated = PaginatedDataResponse<Notification>;

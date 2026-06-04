@@ -1,11 +1,11 @@
 'use client';
 
-import { ReportPaginatedMeta, ReportPaginationQuery } from '@/types';
+import { PaginatedMetaData, ReportPaginationQuery } from '@/types';
 import { Dispatch, SetStateAction } from 'react';
 
 interface useReportsPaginationProps {
 	filters: ReportPaginationQuery;
-	meta: ReportPaginatedMeta;
+	meta: PaginatedMetaData;
 	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
 }
 

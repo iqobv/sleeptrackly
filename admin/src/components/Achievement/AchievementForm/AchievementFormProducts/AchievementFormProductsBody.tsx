@@ -13,7 +13,7 @@ interface AchievementFormProductsBodyProps {
 	setSelectedProduct: Dispatch<SetStateAction<Product | null>>;
 }
 
-const AchievementFormProductsBody = ({
+export const AchievementFormProductsBody = ({
 	selectedProduct,
 	setSelectedProduct,
 }: AchievementFormProductsBodyProps) => {
@@ -58,5 +58,3 @@ const AchievementFormProductsBody = ({
 		</ModalBody>
 	);
 };
-
-export default AchievementFormProductsBody;

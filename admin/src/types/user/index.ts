@@ -1,3 +1,3 @@
-export * from './user.types';
+export type * from './user.types';
 export * from './userRole.types';
 export * from './userSanction.types';

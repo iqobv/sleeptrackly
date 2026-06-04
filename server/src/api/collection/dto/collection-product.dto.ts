@@ -1,16 +1,21 @@
-import { FullProductDto } from '@api/product/dto';
-import { DefaultFieldsDto } from '@libs/dto';
-import { ApiProperty } from '@nestjs/swagger';
+import { BundleDto } from '@api/bundle/dto';
+import { ItemDto } from '@api/item/dto';
+import { ProductDto } from '@api/product/dto';
+import { Expose, Type } from 'class-transformer';
+import { CollectionProductEntityDto } from './collection.entity.dto';
 
-export class CollectionProductDto extends DefaultFieldsDto {
-	@ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
-	collectionId: string;
+export class ProductDetailsDto extends ProductDto {
+	@Expose()
+	@Type(() => ItemDto)
+	item: ItemDto | null;
 
-	@ApiProperty({ example: '123e4567-e89b-12d3-a456-426614174000' })
-	productId: string;
+	@Expose()
+	@Type(() => BundleDto)
+	bundle: BundleDto | null;
 }
 
-export class FullCollectionProductDto extends CollectionProductDto {
-	@ApiProperty({ type: FullProductDto })
-	product: FullProductDto;
+export class CollectionProductDto extends CollectionProductEntityDto {
+	@Expose()
+	@Type(() => ProductDetailsDto)
+	product: ProductDetailsDto;
 }

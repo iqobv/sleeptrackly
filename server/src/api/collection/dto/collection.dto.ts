@@ -1,31 +1,21 @@
-import { DefaultFieldsDto } from '@libs/dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { FullCollectionProductDto } from './collection-product.dto';
+import { Expose, Type } from 'class-transformer';
+import { CollectionProductDto } from './collection-product.dto';
 import { FullCollectionTranslationDto } from './collection-translation.dto';
+import { CollectionEntityDto } from './collection.entity.dto';
 
-export class CollectionDto extends DefaultFieldsDto {
-	@ApiProperty({ example: 'example-collection' })
-	slug: string;
+export class CollectionDto extends CollectionEntityDto {}
 
-	@ApiProperty({ example: '/collections/placeholder-image.jpg' })
-	backgroundImage: string;
-
-	@ApiProperty({ example: true })
-	showInStore: boolean;
-}
-
-export class FullCollectionDto extends CollectionDto {
-	@ApiProperty({ type: [FullCollectionTranslationDto] })
+export class FullCollectionDto extends CollectionEntityDto {
+	@Expose()
+	@Type(() => FullCollectionTranslationDto)
 	translations: FullCollectionTranslationDto[];
 
-	@ApiProperty({ type: [FullCollectionProductDto] })
-	products: FullCollectionProductDto[];
+	@Expose()
+	@Type(() => CollectionProductDto)
+	products: CollectionProductDto[];
 }
 
 export class StoreCollectionDto {
-	@ApiProperty({ example: 'Example Collection' })
-	name: string;
-
-	@ApiProperty({ example: 'example-collection' })
-	slug: string;
+	@Expose() name: string;
+	@Expose() slug: string;
 }

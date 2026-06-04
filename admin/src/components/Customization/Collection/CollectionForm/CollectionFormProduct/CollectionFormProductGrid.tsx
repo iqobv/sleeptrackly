@@ -3,11 +3,12 @@
 import { ProductCard } from '@/components/Customization/Products';
 import { Button, Grid } from '@/components/UI';
 import { Product } from '@/types';
+import { SelectedProduct } from './CollectionFormProduct';
 import styles from './CollectionFormProduct.module.scss';
 
 interface CollectionFormProductGridProps {
 	products: Product[];
-	selectedProducts: Product[];
+	selectedProducts: SelectedProduct[];
 	onToggleProduct: (product: Product) => void;
 }
 

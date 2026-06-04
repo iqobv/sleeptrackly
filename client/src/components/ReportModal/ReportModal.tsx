@@ -1,7 +1,6 @@
 'use client';
 
-import { REPORT_TYPES } from '@/constants';
-import { Option } from '@/types';
+import { Option, ReportType } from '@/types';
 import { MdReportGmailerrorred } from 'react-icons/md';
 import {
 	Button,
@@ -22,7 +21,7 @@ import { useReportModal } from './useReportModal';
 
 interface ReportModalProps {
 	reportedId?: string;
-	reportType?: (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
+	reportType?: ReportType;
 }
 
 const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {

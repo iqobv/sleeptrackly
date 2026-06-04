@@ -1,5 +1,9 @@
-import { FullAchievement } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
+type GetAllAchievementsResponse =
+	paths['/v1/achievements/all']['get']['responses']['200']['content']['application/json'];
+
 export const getAllAchievements = async () =>
-	(await apiClient.get<FullAchievement[]>('/v1/achievements/all')).data;
+	(await apiClient.get<GetAllAchievementsResponse>('/v1/achievements/all'))
+		.data;

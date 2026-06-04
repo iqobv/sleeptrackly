@@ -14,27 +14,26 @@ import {
 } from 'class-validator';
 
 export class CreateItemDto {
-	@ApiProperty({ example: false, required: false })
 	@IsOptional()
 	@TransformBoolean()
 	@IsBoolean()
 	isExclusive?: boolean;
 
-	@ApiProperty({ example: ProfileItemType.AVATAR_FRAME })
+	/** @example AVATAR_FRAME */
+	@ApiProperty({ enum: ProfileItemType, enumName: 'ProfileItemType' })
 	@IsEnum(ProfileItemType)
 	type: ProfileItemType;
 
-	@ApiProperty({ example: 1200 })
 	@Type(() => Number)
 	@IsNumber()
 	@Min(0)
 	basePrice: number;
 
-	@ApiProperty({ example: ItemRarity.COMMON, enum: ItemRarity })
+	/** @example COMMON */
+	@ApiProperty({ enum: ItemRarity, enumName: 'ItemRarity' })
 	@IsEnum(ItemRarity)
 	rarity: ItemRarity;
 
-	@ApiProperty({ type: [TranslationDto] })
 	@IsArray()
 	@ValidateNested({ each: true })
 	@Type(() => TranslationDto)

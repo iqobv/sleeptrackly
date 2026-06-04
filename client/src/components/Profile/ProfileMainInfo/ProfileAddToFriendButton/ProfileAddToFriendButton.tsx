@@ -8,7 +8,7 @@ interface ProfileAddToFriendButtonProps {
 	profile: Profile;
 }
 
-const ProfileAddToFriendButton = ({
+export const ProfileAddToFriendButton = ({
 	profile,
 }: ProfileAddToFriendButtonProps) => {
 	const { buttonConfig, isPending, mutate } =
@@ -24,5 +24,3 @@ const ProfileAddToFriendButton = ({
 		</Button>
 	);
 };
-
-export default ProfileAddToFriendButton;

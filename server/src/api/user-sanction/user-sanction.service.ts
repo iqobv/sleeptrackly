@@ -1,16 +1,23 @@
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import { NotificationService } from '../notification/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserService } from '../user/user.service';
-import { CreaeteUserSanctionDto, UpdateUserSanctionDto } from './dto';
+import {
+	CreaeteUserSanctionDto,
+	UpdateUserSanctionDto,
+	UserSanctionDto,
+} from './dto';
 
 @Injectable()
 export class UserSanctionService {
@@ -21,36 +28,51 @@ export class UserSanctionService {
 		private readonly notificationService: NotificationService,
 	) {}
 
-	async findByUserId(userId: string) {
-		return await this.prismaService.userSanction.findMany({
+	public async findByUserId(userId: string): Promise<UserSanctionDto[]> {
+		const sanctions = await this.prismaService.userSanction.findMany({
 			where: { userId },
 		});
+
+		return plainToInstance(UserSanctionDto, sanctions);
 	}
 
-	private async findByTypeAndUserId(type: UserSanctionType, userId: string) {
-		return await this.prismaService.userSanction.findUnique({
+	private async findByTypeAndUserId(
+		type: UserSanctionType,
+		userId: string,
+	): Promise<UserSanctionDto | null> {
+		const sanction = await this.prismaService.userSanction.findUnique({
 			where: { userId_type: { type, userId } },
 		});
+
+		return sanction ? plainToInstance(UserSanctionDto, sanction) : null;
 	}
 
-	async findById(id: string) {
+	public async findById(id: string): Promise<UserSanctionDto> {
 		const sanction = await this.prismaService.userSanction.findUnique({
 			where: { id },
 		});
 
-		if (!sanction) throw new NotFoundException('Sanction not found');
+		if (!sanction)
+			throw new NotFoundException(ERROR_MESSAGES.SANCTION.NOT_FOUND);
 
-		return sanction;
+		return plainToInstance(UserSanctionDto, sanction);
 	}
 
-	async create(userId: string, dto: CreaeteUserSanctionDto) {
+	public async create(
+		userId: string,
+		dto: CreaeteUserSanctionDto,
+	): Promise<UserSanctionDto> {
 		const { targetUserId, type, endsAt, startsAt, reportId } = dto;
 
 		if (startsAt > endsAt)
-			throw new BadRequestException('Start date must be before end date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.START_DATE_MUST_BE_BEFORE_END_DATE,
+			);
 
 		if (endsAt < new Date())
-			throw new BadRequestException('End date must be in the future');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+			);
 
 		let endDate = dayjs(endsAt).toDate();
 
@@ -111,14 +133,19 @@ export class UserSanctionService {
 			type: NotificationType.SANCTION,
 		});
 
-		return userSanction;
+		return plainToInstance(UserSanctionDto, userSanction);
 	}
 
-	async update(id: string, dto: UpdateUserSanctionDto) {
+	public async update(
+		id: string,
+		dto: UpdateUserSanctionDto,
+	): Promise<UserSanctionDto> {
 		const { endsAt } = dto;
 
 		if (endsAt && endsAt < new Date())
-			throw new BadRequestException('End date must be in the future');
+			throw new BadRequestException(
+				ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+			);
 
 		const sanction = await this.findById(id);
 
@@ -131,14 +158,14 @@ export class UserSanctionService {
 			},
 		});
 
-		return userSanction;
+		return plainToInstance(UserSanctionDto, userSanction);
 	}
 
-	async remove(id: string) {
+	public async remove(id: string): Promise<MessageResponse> {
 		await this.findById(id);
 
 		await this.prismaService.userSanction.delete({ where: { id } });
 
-		return true;
+		return SUCCESS_MESSAGES.SANCTION.DELETED;
 	}
 }

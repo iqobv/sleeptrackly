@@ -6,10 +6,10 @@ import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import FriendItem from './FriendItem/FriendItem';
+import { FriendItem } from './FriendItem';
 import styles from './FriendsList.module.scss';
 
-const FriendsList = () => {
+export const FriendsList = () => {
 	const { user } = useAuth();
 
 	const { data } = useQuery({
@@ -47,5 +47,3 @@ const FriendsList = () => {
 		</div>
 	);
 };
-
-export default FriendsList;

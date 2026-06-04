@@ -41,7 +41,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 	const queryClient = useQueryClient();
 	const { user } = useAuth();
 
-	const resolver = !!schema ? zodResolver(schema) : undefined;
+	const resolver = schema ? zodResolver(schema) : undefined;
 
 	const {
 		register,

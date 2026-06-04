@@ -30,7 +30,7 @@ export const usePendingsList = () => {
 	});
 
 	const handleUpdateMany = (status: FriendStatus) => {
-		if (data && data.length > 0) mutateMany({ status });
+		if (data && data.countOfPendingRequests > 0) mutateMany({ status });
 	};
 
 	return {

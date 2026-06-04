@@ -1,16 +1,33 @@
-import { FriendshipStatus } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { UserEntityDto } from '@api/user/dto/user.entity.dto';
+import { PickType } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
+import { FriendshipEntityDto } from './friendship.entity.dto';
 
-export class FriendshipDto {
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	id: string;
+export class BaseFriendshipDto extends FriendshipEntityDto {}
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	requesterId: string;
+export class FriendshipUserSleepStatusDto {
+	@Expose() isSleeping: boolean;
+}
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	addresseeId: string;
+export class FriendshipUserDto extends PickType(UserEntityDto, [
+	'id',
+	'username',
+	'avatar',
+	'userPrivacySettings',
+] as const) {
+	@Expose()
+	@Type(() => FriendshipUserSleepStatusDto)
+	sleepStatus: FriendshipUserSleepStatusDto | null;
+}
 
-	@ApiProperty({ example: FriendshipStatus.PENDING, enum: FriendshipStatus })
-	status: FriendshipStatus;
+export class FriendshipDto extends FriendshipEntityDto {
+	@Expose()
+	@Type(() => FriendshipUserDto)
+	requester: FriendshipUserDto;
+}
+
+export class FullFriendshipDto extends FriendshipDto {
+	@Expose()
+	@Type(() => FriendshipUserDto)
+	addressee: FriendshipUserDto;
 }

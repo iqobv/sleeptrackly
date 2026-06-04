@@ -3,16 +3,16 @@
 import { Avatar, CDNImage, SectionHeader } from '@/components/UI';
 import { useAuth } from '@/hooks';
 import { Profile } from '@/types';
-import ProfileBadges from '../ProfileBadges/ProfileBadges';
-import ProfileAddToFriendButton from './ProfileAddToFriendButton/ProfileAddToFriendButton';
+import { ProfileBadges } from '../ProfileBadges/ProfileBadges';
+import { ProfileAddToFriendButton } from './ProfileAddToFriendButton/ProfileAddToFriendButton';
 import styles from './ProfileMainInfo.module.scss';
-import ProfileReportButton from './ProfileReportButton/ProfileReportButton';
+import { ProfileReportButton } from './ProfileReportButton/ProfileReportButton';
 
 interface ProfileMainInfoProps {
 	profile: Profile;
 }
 
-const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
+export const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const year = new Date(profile.createdAt).getFullYear().toString();
 	const { user } = useAuth();
 
@@ -63,5 +63,3 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 		</div>
 	);
 };
-
-export default ProfileMainInfo;

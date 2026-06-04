@@ -1,8 +1,9 @@
-import { Prisma, User } from '@generated/prisma/client';
+import { Prisma } from '@generated/prisma/client';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
-import { JwtPayload } from '@libs/types';
+import { JwtPayload, MessageResponse } from '@libs/types';
 import {
 	comparePassword,
 	createRefreshToken,
@@ -17,16 +18,24 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { plainToInstance } from 'class-transformer';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserProviderService } from '../user-provider/user-provider.service';
-import { CreateUserDto } from '../user/dto';
+import {
+	BaseUserDto,
+	CreateUserDto,
+	UserDto,
+	UserWithPasswordDto,
+} from '../user/dto';
 import { UserService } from '../user/user.service';
-import { LoginDto, OAuthDto } from './dto';
+import { LoginDto, LoginServiceResponseDto, OAuthDto, TokensDto } from './dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 import { SessionService } from './session/session.service';
 
 @Injectable()
 export class AuthService {
+	private readonly JWT_ACCESS_SECRET: string;
+
 	constructor(
 		private readonly userService: UserService,
 		private readonly configService: ConfigService,
@@ -37,9 +46,15 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
-	) {}
+	) {
+		this.JWT_ACCESS_SECRET =
+			this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
+	}
 
-	async validateUser(email: string, password: string) {
+	public async validateUser(
+		email: string,
+		password: string,
+	): Promise<UserWithPasswordDto | null> {
 		const user = await this.userService.findByEmail(email, true);
 		if (!user) return null;
 
@@ -53,27 +68,35 @@ export class AuthService {
 		return user;
 	}
 
-	async login(dto: LoginDto, clientInfo: ClientInfoDto) {
+	public async login(
+		dto: LoginDto,
+		clientInfo: ClientInfoDto,
+	): Promise<LoginServiceResponseDto> {
 		const { email, password } = dto;
 
 		const user = await this.userService.findByEmail(email, true);
 
 		if (!user || !user.password)
-			throw new UnauthorizedException('Invalid email or password.');
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
 
 		const isMatch = await comparePassword(password, user.password);
 
-		if (!isMatch) throw new UnauthorizedException('Invalid email or password.');
+		if (!isMatch)
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS);
 
 		if (!user.emailVerified)
-			throw new UnauthorizedException('Email not verified.');
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.EMAIL_NOT_VERIFIED);
 
 		this.validateAccountStatus(user);
 
-		return await this.generateAndSaveTokens(user, clientInfo);
+		const finalUser = plainToInstance(UserDto, user);
+
+		const tokens = await this.generateAndSaveTokens(user, clientInfo);
+
+		return { user: finalUser, ...tokens };
 	}
 
-	async register(dto: CreateUserDto) {
+	public async register(dto: CreateUserDto): Promise<MessageResponse> {
 		const { user, token } = await this.prismaService.$transaction(
 			async (tx) => {
 				const user = await this.userService.create(dto, tx);
@@ -91,14 +114,12 @@ export class AuthService {
 		await this.mailService.sendVerificationEmail(user.email, token);
 
 		return {
-			success: true,
-			message: 'Registration successful. Please check your email to verify.',
-			messageCode: 'REGISTRATION_SUCCESS',
-			email: user.email,
+			...SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS,
+			meta: { email: user.email },
 		};
 	}
 
-	async logout(rawRefreshToken: string, userId?: string) {
+	public async logout(rawRefreshToken: string, userId?: string): Promise<void> {
 		const { rawToken, sessionId } = splitToken(rawRefreshToken);
 
 		const hashedToken = hashToken(rawToken);
@@ -109,17 +130,20 @@ export class AuthService {
 		);
 
 		if (userId && session.userId !== userId) {
-			throw new ForbiddenException('Token mismatch.');
+			throw new ForbiddenException(ERROR_MESSAGES.TOKEN.MISMATCH);
 		}
 
 		await this.sessionService.deleteSession(session.userId, session.id);
 	}
 
-	async deleteAccount(id: string) {
+	public async deleteAccount(id: string): Promise<void> {
 		await this.userService.remove(id);
 	}
 
-	async validateOAuthLogin(dto: OAuthDto, clientInfo: ClientInfoDto) {
+	public async validateOAuthLogin(
+		dto: OAuthDto,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const {
 			provider,
 			providerId,
@@ -149,7 +173,7 @@ export class AuthService {
 					? await this.userService.generateUsername()
 					: oAuthUsername;
 
-			let user = await this.userService.findByEmail(email, true);
+			let user = await this.userService.findByEmail(email);
 			if (!user) {
 				user = await this.userService.create(
 					{
@@ -178,7 +202,10 @@ export class AuthService {
 		});
 	}
 
-	async refreshTokens(rawRefreshToken: string, clientInfo: ClientInfoDto) {
+	public async refreshTokens(
+		rawRefreshToken: string,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const { rawToken, sessionId } = splitToken(rawRefreshToken);
 
 		const hashedToken = hashToken(rawToken);
@@ -194,13 +221,14 @@ export class AuthService {
 			}
 
 			throw new UnauthorizedException(
-				'Invalid or expired refresh token. Please log in again.',
+				ERROR_MESSAGES.AUTH.INVALID_REFRESH_TOKEN,
 			);
 		}
 
 		const user = await this.userService.findById(session.userId);
 
-		if (!user || !user.emailVerified) throw new UnauthorizedException();
+		if (!user || !user.emailVerified)
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.UNAUTHORIZED);
 
 		const newRawRefreshToken = generateRawToken();
 		const newRefreshTokenHash = hashToken(newRawRefreshToken);
@@ -226,7 +254,7 @@ export class AuthService {
 		};
 
 		const accessToken = this.jwtService.sign(payload, {
-			secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+			secret: this.JWT_ACCESS_SECRET,
 			expiresIn: '15m',
 		});
 
@@ -238,29 +266,25 @@ export class AuthService {
 		return { accessToken, refreshToken };
 	}
 
-	private validateAccountStatus(user: User): void {
-		if (!user.deletedAt) {
-			return;
-		}
+	private validateAccountStatus(user: BaseUserDto): void {
+		if (!user.deletedAt) return;
 
 		const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
 		const deletionTime = user.deletedAt.getTime();
 		const isRecoverable = Date.now() - deletionTime < fourteenDaysInMs;
 
 		if (isRecoverable) {
-			throw new ForbiddenException(
-				'Account is deleted. You can still restore it.',
-			);
+			throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_SUSPENDED);
 		}
 
-		throw new ForbiddenException('Account is deleted.');
+		throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_DELETED);
 	}
 
-	async generateAndSaveTokens(
-		user: User,
+	public async generateAndSaveTokens(
+		user: BaseUserDto,
 		clientInfo: ClientInfoDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<TokensDto> {
 		const rawRefreshToken = generateRawToken();
 		const refreshTokenHash = hashToken(rawRefreshToken);
 
@@ -286,7 +310,7 @@ export class AuthService {
 		};
 
 		const accessToken = this.jwtService.sign(payload, {
-			secret: this.configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+			secret: this.JWT_ACCESS_SECRET,
 			expiresIn: '15m',
 		});
 

@@ -1,17 +1,21 @@
 'use client';
 
+import { getNotifications } from '@/api';
 import { DropdownContent } from '@/components/UI';
-import { NotificationPaginated } from '@/types';
 import { UseQueryResult } from '@tanstack/react-query';
 import styles from './NotificationsList.module.scss';
-import NotificationsListItem from './NotificationsListItem/NotificationsListItem';
+import { NotificationsListItem } from './NotificationsListItem/NotificationsListItem';
 import { useNotificationStream } from './useNotificationListStream.hook';
 
+type NotificationsList = Awaited<ReturnType<typeof getNotifications>>;
+
 interface NotificationsListProps {
-	queryNotifications: UseQueryResult<NotificationPaginated, Error>;
+	queryNotifications: UseQueryResult<NotificationsList, Error>;
 }
 
-const NotificationsList = ({ queryNotifications }: NotificationsListProps) => {
+export const NotificationsList = ({
+	queryNotifications,
+}: NotificationsListProps) => {
 	const { data, isLoading, refetch } = queryNotifications;
 	useNotificationStream(refetch);
 
@@ -51,5 +55,3 @@ const NotificationsList = ({ queryNotifications }: NotificationsListProps) => {
 		</DropdownContent>
 	);
 };
-
-export default NotificationsList;

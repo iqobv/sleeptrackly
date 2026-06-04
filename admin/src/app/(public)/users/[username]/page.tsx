@@ -1,5 +1,5 @@
 import { Profile } from '@/components/Profile';
-import { Error } from '@/types';
+import { MessageApiResponse } from '@/types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -28,7 +28,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 		const data = await res.json();
 		if (!res.ok) throw data;
 	} catch (error: unknown) {
-		const err = error as Error;
+		const err = error as MessageApiResponse;
 		if (err.statusCode === 404) {
 			notFound();
 		}

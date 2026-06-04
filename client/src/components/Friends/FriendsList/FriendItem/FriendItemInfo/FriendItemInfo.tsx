@@ -10,7 +10,7 @@ interface FriendItemProps {
 	friend: Friend;
 }
 
-const FriendItemInfo = ({ friend }: FriendItemProps) => {
+export const FriendItemInfo = ({ friend }: FriendItemProps) => {
 	return (
 		<div className={styles.info}>
 			<Avatar avatar={friend.user?.avatar} size={45} />
@@ -26,5 +26,3 @@ const FriendItemInfo = ({ friend }: FriendItemProps) => {
 		</div>
 	);
 };
-
-export default FriendItemInfo;

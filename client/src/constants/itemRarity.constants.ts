@@ -1,8 +1,0 @@
-export const ITEM_RARITIES = {
-	COMMON: 'COMMON',
-	UNCOMMON: 'UNCOMMON',
-	RARE: 'RARE',
-	EPIC: 'EPIC',
-	LEGENDARY: 'LEGENDARY',
-	MYTHIC: 'MYTHIC',
-} as const;

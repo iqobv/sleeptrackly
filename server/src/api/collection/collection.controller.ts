@@ -1,12 +1,16 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { LanguageQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
+import { MessageResponse } from '@libs/types';
+import { withField } from '@libs/utils';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -18,9 +22,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
 	ApiBody,
 	ApiConsumes,
-	ApiNotFoundResponse,
+	ApiCreatedResponse,
 	ApiOkResponse,
-	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import { CollectionService } from './collection.service';
 import {
@@ -33,68 +37,94 @@ import {
 	UpdateCollectionSwaggerDto,
 } from './dto';
 
+@ApiTags('Collection')
 @Controller('collections')
 export class CollectionController {
 	constructor(private readonly collectionService: CollectionService) {}
 
+	/** Create new collection */
+	@Post()
 	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Create a new collection' })
+	@ApiBody({ type: CreateCollectionSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
-	@ApiBody({ type: CreateCollectionSwaggerDto })
-	@Post()
-	async createCollection(
+	@ApiCreatedResponse({ type: CollectionDto })
+	@ApiErrorResponse(
+		HttpStatus.CONFLICT,
+		withField(ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE, 'slug'),
+	)
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+	)
+	public async createCollection(
 		@UploadedFile(ImageValidationPipe()) icon: Express.Multer.File,
 		@Body() dto: CreateCollectionDto,
-	) {
+	): Promise<CollectionDto> {
 		return await this.collectionService.createCollection(dto, icon);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get all collections' })
-	@ApiOkResponse({ type: [CollectionDto] })
+	/** Get all collections */
 	@Get('all')
-	async getAllCollections() {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: [CollectionDto] })
+	public async getAllCollections(): Promise<CollectionDto[]> {
 		return await this.collectionService.getAllCollections();
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get all collections for store filter' })
-	@ApiOkResponse({ type: [StoreCollectionDto] })
+	/** Get all collections for store filter */
 	@Get('store')
-	async getAllCollectionsForStore(@Query() query: LanguageQueryDto) {
+	@Auth()
+	@ApiOkResponse({ type: [StoreCollectionDto] })
+	public async getAllCollectionsForStore(
+		@Query() query: LanguageQueryDto,
+	): Promise<StoreCollectionDto[]> {
 		return await this.collectionService.getAllCollectionsForStore(query);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get a collection by ID' })
-	@ApiNotFoundResponse({ description: 'Collection not found' })
-	@ApiOkResponse({ type: FullCollectionDto })
+	/** Get a collection by ID */
 	@Get('id/:id')
-	async getCollectionById(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: FullCollectionDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
+	public async getCollectionById(
+		@Param('id') id: string,
+	): Promise<FullCollectionDto> {
 		return await this.collectionService.getCollectionById(id);
 	}
 
+	/** Update collection */
+	@Patch(':id')
 	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get all collections for store' })
-	@ApiOkResponse({ type: FullCollectionDto })
 	@ApiBody({ type: UpdateCollectionSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('icon'))
-	@Patch(':id')
-	async updateCollection(
+	@ApiOkResponse({ type: FullCollectionDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.CONFLICT, {
+		...ERROR_MESSAGES.COLLECTION.SLUG_DUPLICATE,
+		field: 'slug',
+	})
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.COLLECTION.PRODUCTS_NOT_FOUND,
+	)
+	public async updateCollection(
 		@Param('id') id: string,
 		@Body() dto: UpdateCollectionDto,
 		@UploadedFile(ImageValidationPipe(5, false)) file?: Express.Multer.File,
-	) {
+	): Promise<FullCollectionDto> {
 		return await this.collectionService.updateCollection(id, dto, file);
 	}
 
-	@Auth(UserRole.ADMIN)
+	/** Delete a collection by ID */
 	@Delete(':id')
-	@ApiOperation({ summary: 'Delete a collection' })
-	@ApiOkResponse({ example: { message: 'Collection deleted successfully' } })
-	async deleteCollection(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.COLLECTION.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.COLLECTION.NOT_FOUND)
+	public async deleteCollection(
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
 		return await this.collectionService.deleteCollection(id);
 	}
 }

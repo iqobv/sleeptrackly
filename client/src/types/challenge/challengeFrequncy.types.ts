@@ -1,4 +1,13 @@
-import { CHALLENGE_FREQUENCY } from '@/constants';
+import { components } from '../schema';
+
+type SwaggerFrequency = components['schemas']['ChallengeFrequency'];
+
+export const ChallengeFrequency = {
+	DAILY: 'DAILY',
+	WEEKLY: 'WEEKLY',
+	MONTHLY: 'MONTHLY',
+	ONCE: 'ONCE',
+} as const satisfies Record<SwaggerFrequency, SwaggerFrequency>;
 
 export type ChallengeFrequency =
-	(typeof CHALLENGE_FREQUENCY)[keyof typeof CHALLENGE_FREQUENCY];
+	(typeof ChallengeFrequency)[keyof typeof ChallengeFrequency];

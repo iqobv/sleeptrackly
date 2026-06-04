@@ -1,3 +1,10 @@
-import { PRODUCT_TYPES } from '@/constants';
+import { components } from '../schema';
 
-export type ProductType = (typeof PRODUCT_TYPES)[keyof typeof PRODUCT_TYPES];
+type SwaggerProductType = components['schemas']['ProductType'];
+
+export const ProductType = {
+	ITEM: 'ITEM',
+	BUNDLE: 'BUNDLE',
+} as const satisfies Record<SwaggerProductType, SwaggerProductType>;
+
+export type ProductType = (typeof ProductType)[keyof typeof ProductType];

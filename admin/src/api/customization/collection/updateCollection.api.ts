@@ -1,7 +1,10 @@
 import { apiClient } from '@/api/axios';
 import { UpdateCollectionDto } from '@/dto';
-import { FullCollection } from '@/types';
+import { paths } from '@/types/schema';
 import { getFormData } from '@/utils';
+
+type UpdateCollectionResponse =
+	paths['/v1/collections/{id}']['patch']['responses']['200']['content']['application/json'];
 
 export const updateCollection = async (
 	id: string,
@@ -10,10 +13,14 @@ export const updateCollection = async (
 	const formData = getFormData(dto);
 
 	return (
-		await apiClient.patch<FullCollection>(`/v1/collections/${id}`, formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
+		await apiClient.patch<UpdateCollectionResponse>(
+			`/v1/collections/${id}`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			},
-		})
+		)
 	).data;
 };

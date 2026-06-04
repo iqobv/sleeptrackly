@@ -1,17 +1,17 @@
 'use client';
 
 import { Button, SectionHeader } from '@/components/UI';
-import { REPORT_STATUS } from '@/constants';
-import { ReportFull } from '@/types';
+import { FullReport, ReportStatus } from '@/types';
 import { useState } from 'react';
 import styles from './ReportSanction.module.scss';
-import ReportSanctionForm from './ReportSanctionForm/ReportSanctionForm';
-import ReportUserSanctions from './ReportUserSanctions/ReportUserSanctions';
+import { ReportSanctionForm } from './ReportSanctionForm/ReportSanctionForm';
+import { ReportUserSanctions } from './ReportUserSanctions/ReportUserSanctions';
 
 interface ReportSanctionProps {
-	report: ReportFull;
+	report: FullReport;
 }
-const ReportSanction = ({ report }: ReportSanctionProps) => {
+
+export const ReportSanction = ({ report }: ReportSanctionProps) => {
 	const [sanctions, setSanctions] = useState<number[]>([]);
 
 	const handleAddSanction = () =>
@@ -35,7 +35,7 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 					sanctions={report.sanctions}
 				/>
 			)}
-			{report.status === REPORT_STATUS.IN_PROGRESS && (
+			{report.status === ReportStatus.IN_PROGRESS && (
 				<>
 					{sanctions.map((el) => (
 						<div key={el}>
@@ -44,7 +44,7 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 								removeSanction={() => removeSanction(el)}
 								defaultValues={{
 									reportId: report.id,
-									targetUserId: report.targetUserId,
+									targetUserId: report.targetUserId ?? undefined,
 								}}
 							/>
 						</div>
@@ -57,5 +57,3 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 		</div>
 	);
 };
-
-export default ReportSanction;

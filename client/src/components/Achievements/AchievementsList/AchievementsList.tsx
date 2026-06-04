@@ -8,7 +8,7 @@ import { AchievementItem } from './AchievementItem/AchievementItem';
 import styles from './AchievementsList.module.scss';
 
 export const AchievementsList = () => {
-	const { data, isLoading } = useQuery({
+	const { data } = useQuery({
 		queryKey: QUERY_KEYS.achievement.all,
 		queryFn: getAllAchievements,
 	});

@@ -1,12 +1,15 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { ProductService } from '../product/product.service';
-import { CreatePromotionDto, UpdatePromotionDto } from './dto';
+import { CreatePromotionDto, PromotionDto, UpdatePromotionDto } from './dto';
 
 @Injectable()
 export class PromotionService {
@@ -15,12 +18,12 @@ export class PromotionService {
 		private readonly productService: ProductService,
 	) {}
 
-	async createPromotion(dto: CreatePromotionDto) {
+	public async createPromotion(dto: CreatePromotionDto): Promise<PromotionDto> {
 		const { alias, coinsReward, expiresAt, maxUses, productIdReward } = dto;
 
 		if (!coinsReward && !productIdReward) {
 			throw new BadRequestException(
-				'Either coinsReward or productIdReward must be provided',
+				ERROR_MESSAGES.PROMOTION.PRODUCT_REQUIRED_PAYLOAD_MISSING,
 			);
 		}
 
@@ -36,7 +39,7 @@ export class PromotionService {
 				where: { alias: finalAlias },
 			});
 			if (existingPromotion) {
-				throw new ConflictException('Promotion with this alias already exists');
+				throw new ConflictException(ERROR_MESSAGES.PROMOTION.ALREADY_EXISTS);
 			}
 		} else {
 			let attempts = 0;
@@ -72,10 +75,10 @@ export class PromotionService {
 			},
 		});
 
-		return promotion;
+		return plainToInstance(PromotionDto, promotion);
 	}
 
-	async getAllActivePromotions() {
+	public async getAllActivePromotions(): Promise<PromotionDto[]> {
 		const promotions = await this.prismaService.promotion.findMany({
 			where: {
 				OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
@@ -83,20 +86,24 @@ export class PromotionService {
 			orderBy: { createdAt: 'desc' },
 		});
 
-		return promotions;
+		return plainToInstance(PromotionDto, promotions);
 	}
 
-	async getPromotionByAlias(alias: string) {
+	public async getPromotionByAlias(alias: string): Promise<PromotionDto> {
 		const promotion = await this.prismaService.promotion.findFirst({
 			where: { alias },
 		});
 
-		if (!promotion) throw new NotFoundException('Promotion not found');
+		if (!promotion)
+			throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
-		return promotion;
+		return plainToInstance(PromotionDto, promotion);
 	}
 
-	async updatePromotion(id: string, dto: UpdatePromotionDto) {
+	public async updatePromotion(
+		id: string,
+		dto: UpdatePromotionDto,
+	): Promise<PromotionDto> {
 		const { coinsReward, expiresAt, maxUses, productIdReward } = dto;
 
 		const promotion = await this.getPromotionById(id);
@@ -111,26 +118,27 @@ export class PromotionService {
 			},
 		});
 
-		return updatedPromotion;
+		return plainToInstance(PromotionDto, updatedPromotion);
 	}
 
-	async getPromotionById(id: string) {
+	public async getPromotionById(id: string): Promise<PromotionDto> {
 		const promotion = await this.prismaService.promotion.findUnique({
 			where: { id },
 		});
 
-		if (!promotion) throw new NotFoundException('Promotion not found');
+		if (!promotion)
+			throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
-		return promotion;
+		return plainToInstance(PromotionDto, promotion);
 	}
 
-	async deletePromotion(id: string) {
+	public async deletePromotion(id: string): Promise<MessageResponse> {
 		const promotion = await this.getPromotionById(id);
 
 		await this.prismaService.promotion.delete({
 			where: { id: promotion.id },
 		});
 
-		return { code: 'PROMOTION_DELETED' };
+		return SUCCESS_MESSAGES.PROMOTION.DELETED;
 	}
 }

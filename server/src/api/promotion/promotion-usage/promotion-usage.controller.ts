@@ -1,19 +1,43 @@
-import { Auth, Authorized } from '@libs/decorators';
-import { Controller, Get, Param } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
+import { Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { PromotionUsageService } from './promotion-usage.service';
 
+@ApiTags('Promotion Usage')
 @Controller('promotion-usage')
 export class PromotionUsageController {
 	constructor(private readonly promotionUsageService: PromotionUsageService) {}
 
-	@ApiOperation({ summary: 'Use a promotion' })
+	/** Use a promotion */
+	@Post(':alias')
 	@Auth()
-	@Get(':alias')
-	async usePromotion(
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PROMOTION.USED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, [
+		ERROR_MESSAGES.PROMOTION.NOT_FOUND,
+		ERROR_MESSAGES.PRODUCT.NOT_FOUND,
+		ERROR_MESSAGES.COIN.NOT_FOUND,
+	])
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.PROMOTION.HAS_EXPIRED,
+		ERROR_MESSAGES.PROMOTION.HAS_REACHED_ITS_USAGE_LIMIT,
+		ERROR_MESSAGES.COIN_TRANSACTION.INSUFFICIENT_FUNDS,
+	])
+	@ApiErrorResponse(HttpStatus.CONFLICT, [
+		ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
+		ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
+	])
+	@HttpCode(HttpStatus.OK)
+	public async usePromotion(
 		@Param('alias') alias: string,
 		@Authorized('id') userId: string,
-	) {
+	): Promise<MessageResponse> {
 		return await this.promotionUsageService.usePromotion(alias, userId);
 	}
 }

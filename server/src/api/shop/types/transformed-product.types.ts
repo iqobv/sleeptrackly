@@ -1,4 +1,4 @@
-import { Prisma } from '@generated/prisma/client';
+import { BundleTranslation, ItemTranslation } from '@generated/prisma/client';
 import { ProductWithInclude } from '../../../libs/types/product-with-include.types';
 import {
 	BundleItemWithInclude,
@@ -7,18 +7,18 @@ import {
 } from './items-with-translations.types';
 
 export type TransformedProduct = Omit<ProductWithInclude, 'item' | 'bundle'> & {
-	isOwned?: boolean;
+	isOwned: boolean;
 	item:
 		| (Omit<ItemWithTranslations, 'translations'> & {
-				translation: Prisma.ItemTranslationSelect | null;
+				translation: ItemTranslation;
 		  })
 		| null;
 	bundle:
 		| (Omit<BundleWithTranslations, 'translations' | 'items'> & {
-				translation: Prisma.BundleTranslationSelect | null;
+				translation: BundleTranslation;
 				items: (Omit<BundleItemWithInclude, 'item'> & {
 					item: Omit<ItemWithTranslations, 'translations'> & {
-						translation: Prisma.ItemTranslationSelect | null;
+						translation: ItemTranslation;
 					};
 				})[];
 		  })

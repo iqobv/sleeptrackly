@@ -1,6 +1,6 @@
 'use client';
 
-import ReportSanctionForm from '@/components/Report/Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
+import { ReportSanctionForm } from '@/components/Report';
 import {
 	Button,
 	Modal,

@@ -5,6 +5,8 @@ import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -23,28 +25,31 @@ export class PromotionUsageService {
 		private readonly productService: ProductService,
 	) {}
 
-	async usePromotion(alias: string, userId: string) {
+	public async usePromotion(
+		alias: string,
+		userId: string,
+	): Promise<MessageResponse> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const promotion = await tx.promotion.findUnique({
 				where: { alias },
 				include: { usage: { where: { userId } } },
 			});
 
-			if (!promotion) {
-				throw new NotFoundException('Promotion not found');
-			}
+			if (!promotion)
+				throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
-			if (promotion.expiresAt && promotion.expiresAt < new Date()) {
-				throw new BadRequestException('Promotion has expired');
-			}
+			if (promotion.expiresAt && promotion.expiresAt < new Date())
+				throw new BadRequestException(ERROR_MESSAGES.PROMOTION.HAS_EXPIRED);
 
-			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses) {
-				throw new BadRequestException('Promotion has reached its usage limit');
-			}
+			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses)
+				throw new BadRequestException(
+					ERROR_MESSAGES.PROMOTION.HAS_REACHED_ITS_USAGE_LIMIT,
+				);
 
-			if (promotion.usage.length > 0) {
-				throw new ConflictException('You have already used this promotion');
-			}
+			if (promotion.usage.length > 0)
+				throw new ConflictException(
+					ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
+				);
 
 			await tx.promotionUsage.create({
 				data: {
@@ -82,7 +87,7 @@ export class PromotionUsageService {
 				if (product.itemId && product.item) {
 					items = [product.item];
 				} else if (product.bundleId && product.bundle) {
-					items = product.bundle.items.map((bi) => bi.item);
+					items = product.bundle.items.map((itemInBundle) => itemInBundle.item);
 				}
 
 				const { itemsToAdd } = await this.shopService.getItemsToAdd(
@@ -135,10 +140,7 @@ export class PromotionUsageService {
 				);
 			}
 
-			return {
-				code: 'PROMOTION_SUCCESSFULLY_USED',
-				message: 'Promotion used successfully',
-			};
+			return SUCCESS_MESSAGES.PROMOTION.USED;
 		});
 	}
 }

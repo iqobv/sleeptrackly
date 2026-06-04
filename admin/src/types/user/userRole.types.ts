@@ -1,3 +1,10 @@
-import { USER_ROLES } from '@/constants';
+import { components } from '../schema';
 
-export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
+type SwaggerUserRole = components['schemas']['UserRole'];
+
+export const UserRole = {
+	USER: 'USER',
+	ADMIN: 'ADMIN',
+} as const satisfies Record<SwaggerUserRole, SwaggerUserRole>;
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];

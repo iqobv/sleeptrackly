@@ -4,16 +4,16 @@ import { SectionHeader } from '@/components/UI';
 import { ReportPaginationQuery, ReportStatus, ReportType } from '@/types';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import ReportFilter from './ReportFilter/ReportFilter';
-import ReportsList from './ReportsList/ReportsList';
+import { ReportFilter } from './ReportFilter/ReportFilter';
+import { ReportsList } from './ReportsList/ReportsList';
 
-const Reports = () => {
+export const Reports = () => {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 
 	const [filters, setFilters] = useState<ReportPaginationQuery>({
 		page: Number(searchParams.get('page')) || 1,
-		pageSize: Number(searchParams.get('pageSize')) || 10,
+		limit: Number(searchParams.get('limit')) || 10,
 		reportType: (searchParams.get('reportType') as ReportType) || 'USER',
 		sortBy:
 			(searchParams.get('sortBy') as 'createdAt' | 'updatedAt') || 'createdAt',
@@ -48,5 +48,3 @@ const Reports = () => {
 		</div>
 	);
 };
-
-export default Reports;

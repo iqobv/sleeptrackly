@@ -1,6 +1,8 @@
 import { AchievementProgressService } from '@api/achievement/services';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { MessageResponse } from '@libs/types';
 import { getDateRanges } from '@libs/utils';
 import {
 	BadRequestException,
@@ -10,10 +12,16 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import { ChallengeTaskService } from '../challenge-task/challenge-task.service';
 import { CreateChallengeTaskDto } from '../challenge-task/dto';
-import { CreateChallengeDto, UpdateChallengeDto } from './dto';
+import {
+	ChallengeDto,
+	ChallengeFullDto,
+	CreateChallengeDto,
+	UpdateChallengeDto,
+} from './dto';
 
 @Injectable()
 export class ChallengeService {
@@ -24,25 +32,28 @@ export class ChallengeService {
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
-	async create(userId: string, dto: CreateChallengeDto) {
-		const { endDate, description, title, frequency, startDate, tasksOptions } =
-			dto;
+	public async create(
+		userId: string,
+		dto: CreateChallengeDto,
+	): Promise<ChallengeDto> {
+		const { endDate, frequency, startDate, tasksOptions, ...rest } = dto;
 
 		const nowDate = dayjs().toDate();
 
 		if (dayjs(startDate).isBefore(nowDate))
-			throw new BadRequestException('Start date cannot be in the past');
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.START_DATE_PAST);
 
 		if (dayjs(endDate).isBefore(nowDate))
-			throw new BadRequestException('End date cannot be in the past');
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.END_DATE_PAST);
 
 		if (dayjs(endDate).isBefore(dayjs(startDate)))
-			throw new BadRequestException('End date cannot be before start date');
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.INVALID_DATE_RANGE,
+			);
 
 		const challenge = await this.prismaService.challenge.create({
 			data: {
-				title,
-				description,
+				...rest,
 				frequency,
 				startDate,
 				endDate,
@@ -75,39 +86,46 @@ export class ChallengeService {
 
 		await this.challengeTaskService.createMany(challenge.id, userId, tasks);
 
-		return challenge;
+		return plainToInstance(ChallengeDto, challenge);
 	}
 
-	async findById(id: string, userId: string) {
+	public async findById(id: string, userId: string): Promise<ChallengeFullDto> {
 		const challenge = await this.prismaService.challenge.findUnique({
 			where: { id, userId, deletedAt: null },
 			include: { tasks: true },
 		});
 
-		if (!challenge) throw new NotFoundException('Challenge not found');
+		if (!challenge)
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		return challenge;
+		return plainToInstance(ChallengeFullDto, challenge);
 	}
 
-	async findAll(userId: string) {
-		return await this.prismaService.challenge.findMany({
+	public async findAll(userId: string): Promise<ChallengeDto[]> {
+		const challenges = await this.prismaService.challenge.findMany({
 			where: { userId, deletedAt: null },
 		});
+
+		return plainToInstance(ChallengeDto, challenges);
 	}
 
-	async update(id: string, userId: string, dto: UpdateChallengeDto) {
-		const { title, description, isStarted, isCompleted } = dto;
-
+	public async update(
+		id: string,
+		userId: string,
+		dto: UpdateChallengeDto,
+	): Promise<ChallengeDto> {
 		const challenge = await this.findById(id, userId);
 
-		return await this.prismaService.challenge.update({
+		const updated = await this.prismaService.challenge.update({
 			where: { id: challenge.id, userId },
-			data: { title, description, isStarted, isCompleted },
+			data: dto,
 		});
+
+		return plainToInstance(ChallengeDto, updated);
 	}
 
 	@Cron(CronExpression.EVERY_5_MINUTES)
-	async updateChallengeStatuses() {
+	private async updateChallengeStatuses(): Promise<void> {
 		const nowDate = dayjs().toDate();
 
 		const challenges = await this.prismaService.challenge.findMany({
@@ -150,7 +168,7 @@ export class ChallengeService {
 		}
 	}
 
-	async remove(id: string, userId: string) {
+	public async remove(id: string, userId: string): Promise<MessageResponse> {
 		const challenge = await this.findById(id, userId);
 
 		await this.prismaService.challenge.update({
@@ -158,6 +176,6 @@ export class ChallengeService {
 			data: { deletedAt: new Date() },
 		});
 
-		return { message: 'Challenge removed successfully' };
+		return SUCCESS_MESSAGES.CHALLENGE.DELETED;
 	}
 }

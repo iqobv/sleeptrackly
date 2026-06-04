@@ -4,14 +4,19 @@ import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 dayjs.extend(isSameOrBefore);
 
+type DateRange = {
+	startDate: string;
+	endDate: string;
+};
+
 export const getDateRanges = (
 	startDateStr: string,
 	endDateStr: string,
 	frequency: ChallengeFrequency,
-) => {
+): DateRange[] => {
 	const startDate = dayjs(startDateStr);
 	const endDate = dayjs(endDateStr);
-	const ranges: { startDate: string; endDate: string }[] = [];
+	const ranges: DateRange[] = [];
 
 	if (frequency === 'ONCE') {
 		return [

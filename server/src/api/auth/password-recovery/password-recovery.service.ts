@@ -4,7 +4,9 @@ import { UserService } from '@api/user/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import {
 	forwardRef,
 	Inject,
@@ -12,6 +14,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
+import { TokensDto } from '../dto';
 import { ResetPasswordDto } from './dto';
 
 @Injectable()
@@ -24,28 +27,31 @@ export class PasswordRecoveryService {
 		private readonly authService: AuthService,
 	) {}
 
-	async sendEmailForResetPassword(email: string) {
+	public async sendEmailForResetPassword(
+		email: string,
+	): Promise<MessageResponse> {
 		const user = await this.userService.findByEmail(email);
 
-		const message =
-			'If a user with this email exists, a password reset email has been sent';
-
-		if (!user) return { message };
+		if (!user) return SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT;
 
 		const token = await this.generateVerificationToken(user.id);
 
 		await this.mailService.sendResetPasswordEmail(user.email, token);
 
-		return { message };
+		return SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT;
 	}
 
-	async resetPassword(dto: ResetPasswordDto, clientInfo: ClientInfoDto) {
+	public async resetPassword(
+		dto: ResetPasswordDto,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		const existsToken = await this.tokenService.findToken(
 			dto.token,
 			TokenType.PASSWORD_RESET,
 		);
 
-		if (!existsToken.userId) throw new NotFoundException('Token not found');
+		if (!existsToken.userId)
+			throw new NotFoundException(ERROR_MESSAGES.TOKEN.NOT_FOUND);
 
 		const user = await this.userService.findById(existsToken.userId);
 
@@ -58,7 +64,10 @@ export class PasswordRecoveryService {
 		return await this.authService.generateAndSaveTokens(user, clientInfo);
 	}
 
-	async changePassword(id: string, dto: PasswordRecoveryDto) {
+	public async changePassword(
+		id: string,
+		dto: PasswordRecoveryDto,
+	): Promise<MessageResponse> {
 		const { newPassword, oldPassword } = dto;
 
 		const user = await this.userService.findById(id);
@@ -68,10 +77,10 @@ export class PasswordRecoveryService {
 			newPassword,
 		});
 
-		return true;
+		return SUCCESS_MESSAGES.PASSWORD_RECOVERY.PASSWORD_CHANGED;
 	}
 
-	async needOldPassword(id: string) {
+	public async needOldPassword(id: string): Promise<boolean> {
 		const user = await this.userService.findById(id, true);
 
 		return !!user.password;
@@ -80,7 +89,7 @@ export class PasswordRecoveryService {
 	private async generateVerificationToken(
 		userId: string,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<string> {
 		const { token } = await this.tokenService.createToken(
 			{
 				userId,

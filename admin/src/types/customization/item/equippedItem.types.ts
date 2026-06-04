@@ -1,8 +1,4 @@
-import { ItemType } from './itemType.types';
+import { Profile } from '@/types/profile';
 
-export interface EquippedItem {
-	id: string;
-	type: ItemType;
-	isAnimated: boolean;
-	mediaUrl: string;
-}
+export type EquippedItems = Profile['equippedItems'][number];
+export type EquippedItem = EquippedItems['item'];

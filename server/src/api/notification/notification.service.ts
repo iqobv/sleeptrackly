@@ -1,12 +1,18 @@
 import { Prisma } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { PaginationQueryDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
+import { paginate } from '@libs/utils';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { plainToInstance } from 'class-transformer';
 import { filter, map, Observable, Subject } from 'rxjs';
 import {
 	CreateNotificationDto,
-	NotificationQueryDto,
+	NotificationDto,
+	PaginatedNotificationDto,
 	UpdateNotificationDto,
 } from './dto';
 import { SignalPayload, SseSignalEvent } from './interfaces';
@@ -21,7 +27,7 @@ export class NotificationService {
 		private readonly fcmService: FcmService,
 	) {}
 
-	subscribeToSignals(userId: string): Observable<SseSignalEvent> {
+	public subscribeToSignals(userId: string): Observable<SseSignalEvent> {
 		return this.signalSubject.asObservable().pipe(
 			filter(
 				(payload: SignalPayload) =>
@@ -37,14 +43,17 @@ export class NotificationService {
 		);
 	}
 
-	emitSignal(userId: string | null) {
+	private emitSignal(userId: string | null): void {
 		this.signalSubject.next({
 			userId,
 			timestamp: Date.now(),
 		});
 	}
 
-	async create(dto: CreateNotificationDto, tx?: Prisma.TransactionClient) {
+	public async create(
+		dto: CreateNotificationDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<NotificationDto> {
 		const { isPush, scheduledAt, ...rest } = dto;
 
 		const prisma = tx ?? this.prismaService;
@@ -62,53 +71,57 @@ export class NotificationService {
 			this.emitSignal(notification.userId);
 		}
 
-		return notification;
+		return plainToInstance(NotificationDto, notification);
 	}
 
-	async getAllForUser(userId: string, query: NotificationQueryDto) {
+	public async getAllForUser(
+		userId: string,
+		query: PaginationQueryDto,
+	): Promise<PaginatedNotificationDto> {
 		const { page = 1, limit = 10 } = query;
 
-		const safePage = Math.max(Number(page) || 1, 1);
-		const safeSize = Math.max(Number(limit) || 10, 1);
-		const offset = (safePage - 1) * safeSize;
+		const result = await paginate<NotificationDto>(
+			{ page, limit },
+			async (limit, offset) => {
+				const [total, items] = await this.prismaService.$transaction([
+					this.prismaService.notification.count({
+						where: {
+							showInApp: true,
+							isPush: false,
+							isScheduled: false,
+							isEmail: false,
+							OR: [{ isGlobal: false, userId }, { isGlobal: true }],
+						},
+					}),
+					this.prismaService.$queryRaw<NotificationDto[]>(
+						getNotificationsForUserSql(userId, limit, offset),
+					),
+				]);
 
-		const items = await this.prismaService.$queryRaw(
-			getNotificationsForUserSql(userId, safeSize, offset),
+				return { items, total };
+			},
 		);
 
-		const total = await this.prismaService.notification.count({
-			where: {
-				showInApp: true,
-				isPush: false,
-				isScheduled: false,
-				isEmail: false,
-				OR: [{ isGlobal: false, userId }, { isGlobal: true }],
-			},
-		});
-
-		return {
-			items,
-			meta: {
-				total,
-				page: safePage,
-				pageSize: safeSize,
-				totalPages: Math.ceil(total / safeSize),
-			},
-		};
+		return plainToInstance(PaginatedNotificationDto, result);
 	}
 
-	async update(id: string, dto: UpdateNotificationDto) {
+	public async update(
+		id: string,
+		dto: UpdateNotificationDto,
+	): Promise<NotificationDto> {
 		const { isRead } = dto;
 
 		const notification = await this.findById(id);
 
-		return await this.prismaService.notification.update({
+		const updated = await this.prismaService.notification.update({
 			where: { id: notification.id },
 			data: { isRead },
 		});
+
+		return plainToInstance(NotificationDto, updated);
 	}
 
-	async markAllAsRead(userId: string) {
+	public async markAllAsRead(userId: string): Promise<void> {
 		await this.prismaService.notification.updateMany({
 			where: {
 				userId,
@@ -136,17 +149,17 @@ export class NotificationService {
 		});
 	}
 
-	async remove(id: string) {
+	public async remove(id: string): Promise<MessageResponse> {
 		const notification = await this.findById(id);
 
 		await this.prismaService.notification.delete({
 			where: { id: notification.id },
 		});
 
-		return true;
+		return SUCCESS_MESSAGES.NOTIFICATION.DELETED;
 	}
 
-	async sendPushNotification() {
+	public async sendPushNotification(): Promise<void> {
 		const notifications = await this.prismaService.notification.findMany({
 			where: {
 				isPush: true,
@@ -181,16 +194,16 @@ export class NotificationService {
 	}
 
 	@Cron(CronExpression.EVERY_MINUTE)
-	async handleScheduledNotifications() {
+	private async handleScheduledNotifications(): Promise<void> {
 		await this.sendPushNotification();
 	}
 
-	async sendDirectPush(
+	public async sendDirectPush(
 		tokens: string[],
 		title: string,
 		body: string,
 		redirectUrl: string,
-	) {
+	): Promise<void> {
 		if (tokens.length === 0) return;
 
 		await this.fcmService.sendNotification(tokens, {
@@ -202,13 +215,14 @@ export class NotificationService {
 		});
 	}
 
-	private async findById(id: string) {
+	private async findById(id: string): Promise<NotificationDto> {
 		const notification = await this.prismaService.notification.findUnique({
 			where: { id },
 		});
 
-		if (!notification) throw new NotFoundException('Notification not found');
+		if (!notification)
+			throw new NotFoundException(ERROR_MESSAGES.NOTIFICATION.NOT_FOUND);
 
-		return notification;
+		return plainToInstance(NotificationDto, notification);
 	}
 }

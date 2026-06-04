@@ -1,11 +1,3 @@
-export interface Promotion {
-	id: string;
-	alias: string;
-	maxUses: number | null;
-	usedCount: number;
-	coinsReward: number | null;
-	productIdReward: string | null;
-	expiresAt: Date;
-	createdAt: Date;
-	updatedAt: Date;
-}
+import { getPromotionById } from '@/api';
+
+export type Promotion = Awaited<ReturnType<typeof getPromotionById>>;

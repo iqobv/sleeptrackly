@@ -1,12 +1,12 @@
-import { ITEM_RARITIES, ITEM_TYPES } from '@/constants';
 import { translationSchema } from '@/schemas/translation/translation.schema';
+import { ItemRarity, ItemType } from '@/types';
 import z from 'zod';
 
 export const createItemSchema = z.object({
 	isExclusive: z.boolean(),
-	type: z.enum(ITEM_TYPES),
+	type: z.enum(ItemType),
 	basePrice: z.coerce.number().min(0),
-	rarity: z.enum(ITEM_RARITIES),
+	rarity: z.enum(ItemRarity),
 	translations: z
 		.array(translationSchema)
 		.min(1, { message: 'At least one translation is required' }),

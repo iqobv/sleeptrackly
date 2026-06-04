@@ -1,15 +1,14 @@
-import { CHALLENGE_FREQUENCY } from '@/constants';
 import { CreateChallengeDto } from '@/dto';
-import { ChallengeField, Option } from '@/types';
+import { ChallengeField, ChallengeFrequency, Option } from '@/types';
 
 const options: Option[] = [
 	{
 		label: 'Daily',
-		value: CHALLENGE_FREQUENCY.DAILY,
+		value: ChallengeFrequency.DAILY,
 	},
 	{
 		label: 'Weekly',
-		value: CHALLENGE_FREQUENCY.WEEKLY,
+		value: ChallengeFrequency.WEEKLY,
 	},
 ];
 

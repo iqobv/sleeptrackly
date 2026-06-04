@@ -1,5 +1,6 @@
 export * from './client-info.util';
 export * from './cookie.util';
+export * from './create-message-domain.util';
 export * from './date-ranges.util';
 export * from './extract-client-ip.util';
 export * from './generate-username.util';
@@ -12,3 +13,4 @@ export * from './password.util';
 export * from './refresh-token.util';
 export * from './swagger.util';
 export * from './token.util';
+export * from './with-field.util';

@@ -1,4 +1,3 @@
-import { PaginatedDataResponse } from '../api/paginatedData.types';
-import { Product } from '../product/product.types';
+import { getAllShop } from '@/api';
 
-export type AllShop = PaginatedDataResponse<Product>;
+export type AllShop = Awaited<ReturnType<typeof getAllShop>>;

@@ -1,7 +1,9 @@
 import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { userSelect } from '@libs/prisma';
+import { MessageResponse } from '@libs/types';
 import {
 	comparePassword,
 	generateUsername as generateUsernameUtil,
@@ -16,15 +18,23 @@ import {
 	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
-import dayjs from 'dayjs';
+import { plainToInstance } from 'class-transformer';
 import { CoinService } from '../coin/coin.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
-import { UserNotificationSettingsService } from '../user-notification-settings/user-notification-settings.service';
+import { UserNotificationSettingsService } from '../user-notification-settings/services/user-notification-settings.service';
 import { UserPrivacySettingsService } from '../user-privacy-settings/user-privacy-settings.service';
 import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
-import { CreateUserDto, PasswordRecoveryDto, UpdateUserDto } from './dto';
+import {
+	CreateUserDto,
+	FullUserDto,
+	FullUserWithPasswordDto,
+	InternalUpdateUserDto,
+	PasswordRecoveryDto,
+	UserDto,
+	UsersSearchResultDto,
+	UserWithPasswordDto,
+} from './dto';
 
 @Injectable()
 export class UserService {
@@ -39,14 +49,17 @@ export class UserService {
 		private readonly userPrivacySettingsService: UserPrivacySettingsService,
 	) {}
 
-	async create(dto: CreateUserDto, tx?: Prisma.TransactionClient) {
+	public async create(
+		dto: CreateUserDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserDto> {
 		const { email, username, password, emailVerified = false } = dto;
 
 		await this.alreadyExists({ email, username });
 
 		const hashedPassword = password ? await hashPassword(password) : null;
 
-		const execute = async (tx: Prisma.TransactionClient) => {
+		const execute = async (tx: Prisma.TransactionClient): Promise<UserDto> => {
 			const user = await tx.user.create({
 				data: {
 					email,
@@ -59,14 +72,19 @@ export class UserService {
 
 			await this.userSleepStatusService.createSleepStatus(user.id, tx);
 			await this.userAvatarService.create(user.id, tx);
-			await this.userNotificationSettingsService.create(user.id, tx);
+			await this.userNotificationSettingsService.findOrCreate(user.id, tx);
 			await this.coinService.create(user.id, tx);
 			await this.userPrivacySettingsService.createUserPrivacySettings(
 				user.id,
 				tx,
 			);
 
-			return user;
+			const finalUser = await tx.user.findUniqueOrThrow({
+				where: { id: user.id },
+				select: userSelect,
+			});
+
+			return plainToInstance(UserDto, finalUser);
 		};
 
 		if (tx) {
@@ -76,37 +94,70 @@ export class UserService {
 		return await this.prismaService.$transaction(execute);
 	}
 
-	async findByEmail(email: string, full: boolean = false) {
-		return await this.prismaService.user.findUnique({
+	public async findByEmail(
+		email: string,
+		full: true,
+	): Promise<UserWithPasswordDto | null>;
+	public async findByEmail(
+		email: string,
+		full?: false,
+	): Promise<UserDto | null>;
+	public async findByEmail(
+		email: string,
+		full: boolean,
+	): Promise<UserDto | UserWithPasswordDto | null>;
+	public async findByEmail(
+		email: string,
+		full: boolean = false,
+	): Promise<unknown> {
+		const user = await this.prismaService.user.findUnique({
 			where: { email },
 			select: {
 				...userSelect,
 				...(full && { password: true }),
 			},
 		});
+
+		if (!user) return null;
+
+		return plainToInstance(full ? UserWithPasswordDto : UserDto, user);
 	}
 
-	async findById(id: string, full: boolean = false) {
+	public async findById(
+		id: string,
+		full: true,
+	): Promise<FullUserWithPasswordDto>;
+	public async findById(id: string, full?: false): Promise<FullUserDto>;
+	public async findById(
+		id: string,
+		full: boolean,
+	): Promise<FullUserDto | FullUserWithPasswordDto>;
+	public async findById(id: string, full: boolean = false): Promise<unknown> {
 		const user = await this.prismaService.user.findUnique({
 			where: { id, deletedAt: null },
 			select: {
 				...userSelect,
 				...(full && { password: true }),
 				sanctions: true,
-				coins: { select: { amount: true } },
 			},
 		});
 
-		if (!user) throw new NotFoundException('User not found');
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
 		const equippedItems = await this.userInventoryService.getUserEquippedItems(
 			user.id,
 		);
 
-		return { ...user, equippedItems };
+		return plainToInstance(full ? FullUserWithPasswordDto : FullUserDto, {
+			...user,
+			equippedItems,
+		});
 	}
 
-	async getById(id: string, full: boolean = false) {
+	public async getById(
+		id: string,
+		full: boolean = false,
+	): Promise<UserDto | UserWithPasswordDto | null> {
 		const user = await this.prismaService.user.findUnique({
 			where: { id },
 			select: {
@@ -115,25 +166,29 @@ export class UserService {
 			},
 		});
 
-		return user;
+		if (!user) return null;
+
+		return plainToInstance(full ? UserWithPasswordDto : UserDto, user);
 	}
 
-	async findByUsername(username: string) {
+	public async findByUsername(username: string): Promise<UserDto> {
 		const user = await this.prismaService.user.findUnique({
 			where: { username },
 			select: userSelect,
 		});
 
-		if (!user) throw new NotFoundException('User not found');
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
-		return user;
+		return plainToInstance(UserDto, user);
 	}
 
-	async findManyByUsername(username: string, userId: string) {
-		const user = await this.getById(userId);
-
+	public async findManyByUsername(
+		username: string,
+		userId: string,
+	): Promise<UsersSearchResultDto[]> {
 		const users = await this.prismaService.user.findMany({
 			where: {
+				id: { not: userId },
 				username: { contains: username, mode: 'insensitive' },
 				userPrivacySettings: { acceptFriendRequests: true },
 			},
@@ -144,10 +199,13 @@ export class UserService {
 			},
 		});
 
-		return users.filter(({ id }) => id !== user?.id);
+		return plainToInstance(UsersSearchResultDto, users);
 	}
 
-	async changePassword(id: string, dto: PasswordRecoveryDto) {
+	public async changePassword(
+		id: string,
+		dto: PasswordRecoveryDto,
+	): Promise<UserDto> {
 		const { newPassword, oldPassword } = dto;
 
 		const user = await this.findById(id, true);
@@ -158,40 +216,45 @@ export class UserService {
 			(await this.passwordIsMatch(id, oldPassword));
 
 		if (oldPassword && !oldPasswordMatch)
-			throw new ConflictException('Wrong password');
+			throw new ConflictException(ERROR_MESSAGES.USER.OLD_PASSWORD_MISMATCH);
 
 		if (oldPassword)
 			if (newPassword === oldPassword)
-				throw new ConflictException('Same password');
+				throw new ConflictException(
+					ERROR_MESSAGES.USER.NEW_PASSWORD_SAME_AS_OLD,
+				);
 
-		if (user.deletedAt) throw new ForbiddenException('Account is deleted');
+		if (user.deletedAt)
+			throw new ForbiddenException(ERROR_MESSAGES.USER.ACCOUNT_DELETED);
 
 		const newHashedPassword = newPassword
 			? await hashPassword(newPassword)
 			: null;
 
-		return await this.prismaService.user.update({
+		const updated = await this.prismaService.user.update({
 			where: { id: user.id },
 			data: {
 				password: newHashedPassword,
 			},
 			select: userSelect,
 		});
+
+		return plainToInstance(UserDto, updated);
 	}
 
-	async update(
+	public async update(
 		id: string,
-		dto: UpdateUserDto,
+		dto: InternalUpdateUserDto,
 		isSystem = false,
 		tx?: Prisma.TransactionClient,
-	) {
-		const { email, username, emailVerified } = dto;
+	): Promise<UserDto> {
+		const { email, username, ...rest } = dto;
 
 		const prisma = tx ?? this.prismaService;
 
 		const user = await this.findById(id, true);
 
-		if (user.sanctions.length > 0) {
+		if (user.sanctions && user.sanctions.length > 0) {
 			const activeChangeUsernameSanction = user.sanctions.find(
 				({ endsAt, type }) =>
 					endsAt &&
@@ -200,36 +263,39 @@ export class UserService {
 			);
 
 			if (activeChangeUsernameSanction && username && !isSystem)
-				throw new ForbiddenException(
-					`You are banned from changing username${activeChangeUsernameSanction.endsAt ? ` until ${dayjs(activeChangeUsernameSanction.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
-				);
+				throw new ForbiddenException({
+					...ERROR_MESSAGES.USER.USERNAME_CHANGE_BANNED,
+					meta: { endsAt: activeChangeUsernameSanction.endsAt },
+				});
 		}
 
-		await this.alreadyExists({ email, username });
+		if (email || username) {
+			await this.alreadyExists({ email, username });
+		}
 
 		const updated = await prisma.user.update({
 			where: { id: user.id },
 			data: {
 				email,
 				username,
-				emailVerified,
+				...rest,
 			},
 			select: userSelect,
 		});
 
-		return updated;
+		return plainToInstance(UserDto, updated);
 	}
 
-	async passwordIsMatch(id: string, password: string) {
+	public async passwordIsMatch(id: string, password: string): Promise<boolean> {
 		const user = await this.findById(id, true);
 
 		const isMatch =
 			user.password && (await comparePassword(password, user.password));
 
-		return isMatch;
+		return !!isMatch;
 	}
 
-	async remove(id: string) {
+	public async remove(id: string): Promise<MessageResponse> {
 		const user = await this.findById(id);
 
 		await this.prismaService.user.update({
@@ -243,35 +309,10 @@ export class UserService {
 			where: { userId: user.id },
 		});
 
-		return { message: 'User removed successfully' };
+		return SUCCESS_MESSAGES.AUTH.USER_DELETED;
 	}
 
-	async removeUnverifiedUsersOlderThan(milliseconds: number) {
-		const cutoffDate = new Date(Date.now() - milliseconds);
-
-		const usersToRemove = await this.prismaService.user.findMany({
-			where: {
-				emailVerified: false,
-				createdAt: { lt: cutoffDate },
-			},
-			select: { id: true },
-		});
-
-		const userIds = usersToRemove.map((user) => user.id);
-
-		await this.prismaService.user.deleteMany({
-			where: { id: { in: userIds } },
-		});
-
-		return true;
-	}
-
-	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	async handleRemoveUnverifiedUsersOlderThan() {
-		return await this.removeUnverifiedUsersOlderThan(24 * 60 * 60 * 1000);
-	}
-
-	async generateUsername(): Promise<string> {
+	public async generateUsername(): Promise<string> {
 		let attempts = 0;
 
 		while (attempts < 100) {
@@ -297,18 +338,17 @@ export class UserService {
 	}: {
 		email?: string;
 		username?: string;
-	}) {
+	}): Promise<boolean> {
 		const user = await this.prismaService.user.findFirst({
 			where: { OR: [{ email }, { username }] },
 			select: userSelect,
 		});
 
 		if (user) {
-			if (user.username === username) {
-				throw new ConflictException('Username already taken');
-			}
+			if (user.username === username)
+				throw new ConflictException(ERROR_MESSAGES.USER.USERNAME_ALREADY_TAKEN);
 
-			throw new ConflictException('User already exists');
+			throw new ConflictException(ERROR_MESSAGES.USER.ALREADY_EXISTS);
 		}
 
 		return false;

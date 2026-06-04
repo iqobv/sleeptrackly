@@ -1,5 +1,6 @@
 'use client';
 
+import { getCollectionById } from '@/api';
 import {
 	Button,
 	Modal,
@@ -9,21 +10,27 @@ import {
 	SectionHeader,
 } from '@/components/UI';
 import { BaseCollectionDto } from '@/dto';
-import { FullCollectionProduct, Product } from '@/types';
+import { CollectionProduct } from '@/types';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './CollectionFormProduct.module.scss';
 import CollectionFormProductBody from './CollectionFormProductBody';
 import CollectionFormProductGrid from './CollectionFormProductGrid';
 
+export type SelectedProduct = NonNullable<
+	Awaited<ReturnType<typeof getCollectionById>>['products'][number]['product']
+>;
+
 interface CollectionFormProductProps {
-	initialData?: FullCollectionProduct[];
+	initialData?: CollectionProduct[];
 }
 
 export const CollectionFormProduct = ({
 	initialData,
 }: CollectionFormProductProps) => {
-	const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+	const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
+		[],
+	);
 
 	const { setValue, watch } = useFormContext<BaseCollectionDto>();
 
@@ -42,7 +49,7 @@ export const CollectionFormProduct = ({
 
 	const selectedProductIds = watch('productIds') || [];
 
-	const handleSelect = (product: Product) => {
+	const handleSelect = (product: SelectedProduct) => {
 		const isSelected = selectedProductIds.includes(product.id);
 
 		if (isSelected) {

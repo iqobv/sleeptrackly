@@ -2,15 +2,15 @@
 
 import { SectionHeader } from '@/components/UI';
 import { PAGES } from '@/config';
-import { ReportFull } from '@/types';
+import { FullReport } from '@/types';
 import Link from 'next/link';
 import styles from './ReportDetail.module.scss';
 
 interface ReportDetailProps {
-	report: ReportFull;
+	report: FullReport;
 }
 
-const ReportDetail = ({ report }: ReportDetailProps) => {
+export const ReportDetail = ({ report }: ReportDetailProps) => {
 	return (
 		<div className={styles.reportDetail}>
 			<SectionHeader
@@ -48,5 +48,3 @@ const ReportDetail = ({ report }: ReportDetailProps) => {
 		</div>
 	);
 };
-
-export default ReportDetail;

@@ -21,7 +21,7 @@ interface ReportSanctionFormProps {
 	defaultValues?: Partial<UserSanctionDto>;
 }
 
-const ReportSanctionForm = ({
+export const ReportSanctionForm = ({
 	reportId,
 	isUpdate = false,
 	showRemoveButton = false,
@@ -110,5 +110,3 @@ const ReportSanctionForm = ({
 		</form>
 	);
 };
-
-export default ReportSanctionForm;

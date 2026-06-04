@@ -1,11 +1,14 @@
-import { Friendship, User } from '@generated/prisma/client';
+import { BaseFriendshipDto } from '@api/friendship/dto';
+import { User } from '@generated/prisma/client';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { ChallengeService } from '../challenge/challenge.service';
 import { FriendshipService } from '../friendship/friendship.service';
 import { SleepEntryService } from '../sleep-entry/sleep-entry.service';
 import { UserInventoryService } from '../user-inventory/user-inventory.service';
 import { UserService } from '../user/user.service';
-import { ProfileStatistics } from './dto';
+import { ProfileDto, ProfileStatisticsDto } from './dto';
 
 @Injectable()
 export class ProfileService {
@@ -17,7 +20,10 @@ export class ProfileService {
 		private readonly userInventoryService: UserInventoryService,
 	) {}
 
-	async getProfileByUsername(username: string, authUser: User | null) {
+	public async getProfileByUsername(
+		username: string,
+		authUser: User | null,
+	): Promise<ProfileDto> {
 		const user = await this.userService.findByUsername(username);
 
 		const isSameUser = user.id === authUser?.id;
@@ -28,10 +34,10 @@ export class ProfileService {
 			isRestrictedViewer &&
 			user.userPrivacySettings?.profileVisibility === 'PRIVATE'
 		) {
-			throw new NotFoundException('Profile not found');
+			throw new NotFoundException(ERROR_MESSAGES.PROFILE.NOT_FOUND);
 		}
 
-		let friendship: Friendship | null = null;
+		let friendship: BaseFriendshipDto | null = null;
 
 		if (authUser?.id && !isSameUser) {
 			friendship = await this.friendshipService.getFriendshipByUsersIds(
@@ -45,7 +51,7 @@ export class ProfileService {
 			user.userPrivacySettings?.profileVisibility === 'FRIENDS' &&
 			!friendship
 		) {
-			throw new NotFoundException('Profile not found');
+			throw new NotFoundException(ERROR_MESSAGES.PROFILE.NOT_FOUND);
 		}
 
 		const canViewStatistics =
@@ -64,24 +70,25 @@ export class ProfileService {
 				: Promise.resolve(null),
 		]);
 
-		let statistics: ProfileStatistics | null = null;
+		const statistics: ProfileStatisticsDto = {
+			countOfSleepEntries: 0,
+			countOfCompletedChallenges: 0,
+		};
 
 		if (statisticsData) {
 			const [sleepEntries, challenges] = statisticsData;
-			statistics = {
-				countOfSleepEntries: sleepEntries.length,
-				countOfCompletedChallenges: challenges.filter((c) => c.isCompleted)
-					.length,
-			};
+
+			statistics.countOfSleepEntries = sleepEntries.length;
+			statistics.countOfCompletedChallenges = challenges.filter(
+				(c) => c.isCompleted,
+			).length;
 		}
 
-		const { email, role, userPrivacySettings, ...result } = user;
-
-		return {
-			...result,
+		return plainToInstance(ProfileDto, {
+			...user,
 			friendship,
 			statistics,
 			equippedItems,
-		};
+		});
 	}
 }

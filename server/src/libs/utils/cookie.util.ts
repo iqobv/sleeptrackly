@@ -7,7 +7,7 @@ export const setAuthCookies = (
 	accessToken: string,
 	refreshToken: string,
 	config: ConfigService,
-) => {
+): void => {
 	const accessTokenOptions = getCookieConfig(config, '15m');
 	const refreshTokenOptions = getCookieConfig(config, '30d');
 
@@ -15,7 +15,10 @@ export const setAuthCookies = (
 	res.cookie('refreshToken', refreshToken, refreshTokenOptions);
 };
 
-export const clearAuthCookies = (res: Response, config: ConfigService) => {
+export const clearAuthCookies = (
+	res: Response,
+	config: ConfigService,
+): void => {
 	const clearOptions = getCookieConfig(config, 0);
 
 	res.cookie('accessToken', '', clearOptions);

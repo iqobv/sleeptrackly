@@ -1,2 +1,3 @@
-export { default as Report } from './Report/Report';
-export { default as Reports } from './Reports/Reports';
+export * from './Report/Report';
+export * from './Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
+export * from './Reports/Reports';

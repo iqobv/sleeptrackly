@@ -2,16 +2,16 @@
 
 import { Button, CDNImage } from '@/components/UI';
 import { PAGES } from '@/config';
-import { FullAchievement } from '@/types';
+import { Achievement } from '@/types';
 import Link from 'next/link';
 import { MdEdit } from 'react-icons/md';
 import styles from './AchievementCard.module.scss';
 
 interface AchievementCardProps {
-	achievement: FullAchievement;
+	achievement: Achievement;
 }
 
-const AchievementCard = ({ achievement }: AchievementCardProps) => {
+export const AchievementCard = ({ achievement }: AchievementCardProps) => {
 	const tags = [
 		!achievement.isActive && 'Inactive',
 		achievement.isHidden && 'Hidden',
@@ -37,5 +37,3 @@ const AchievementCard = ({ achievement }: AchievementCardProps) => {
 		</div>
 	);
 };
-
-export default AchievementCard;

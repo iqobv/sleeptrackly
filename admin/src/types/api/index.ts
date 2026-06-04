@@ -1,2 +1,2 @@
-export * from './error.types';
-export * from './paginatedData.types';
+export type * from './messageApiResponse.types';
+export type * from './paginatedData.types';

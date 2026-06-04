@@ -1,12 +1,15 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { PaginationQueryDto } from '@libs/dto';
 import { FilesValidationPipe } from '@libs/pipes';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
@@ -20,11 +23,13 @@ import {
 	ApiConsumes,
 	ApiCreatedResponse,
 	ApiOkResponse,
-	ApiOperation,
+	ApiTags,
 } from '@nestjs/swagger';
 import {
 	CreateItemDto,
 	CreateItemSwaggerDto,
+	FullItemDto,
+	FullPaginatedItemsDto,
 	ItemDto,
 	PaginatedItemsDto,
 	UpdateItemDto,
@@ -43,11 +48,15 @@ const ALLOWED_TYPES = [
 	'video/webm',
 ];
 
+@ApiTags('Item')
 @Controller('items')
 export class ItemController {
 	constructor(private readonly itemService: ItemService) {}
 
-	@ApiOperation({ summary: 'Create a new item' })
+	/** Create a new item */
+	@Post()
+	@Auth(UserRole.ADMIN)
+	@ApiBody({ type: CreateItemSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(
 		FileFieldsInterceptor([
@@ -55,11 +64,9 @@ export class ItemController {
 			{ name: 'preview', maxCount: 1 },
 		]),
 	)
-	@Auth(UserRole.ADMIN)
-	@ApiBody({ type: CreateItemSwaggerDto })
 	@ApiCreatedResponse({ type: ItemDto })
-	@Post()
-	async createItem(
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, ERROR_MESSAGES.ITEM.IMAGE_REQUIRED)
+	public async createItem(
 		@Body() dto: CreateItemDto,
 		@UploadedFiles(
 			new FilesValidationPipe<CreateItemFiles>({
@@ -68,47 +75,57 @@ export class ItemController {
 			}),
 		)
 		files: CreateItemFiles,
-	) {
+	): Promise<ItemDto> {
 		return await this.itemService.createItem(dto, files);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get all items with pagination' })
-	@ApiOkResponse({ type: PaginatedItemsDto })
+	/** Get all items */
 	@Get()
-	async getAllItems(@Query() query: PaginationQueryDto) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: PaginatedItemsDto })
+	public async getAllItems(
+		@Query() query: PaginationQueryDto,
+	): Promise<PaginatedItemsDto> {
 		return await this.itemService.getAllItems(query);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get all available items with pagination' })
-	@ApiOkResponse({ type: PaginatedItemsDto })
+	/**
+	 * Get all available items
+	 *
+	 * @remarks Retrieves a paginated list of items that are not currently assigned to any product. The items are sorted by creation date in descending order (newest first) and include their translations.
+	 */
 	@Get('available')
-	async getAllAvailableItems(@Query() query: PaginationQueryDto) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: FullPaginatedItemsDto })
+	public async getAllAvailableItems(
+		@Query() query: PaginationQueryDto,
+	): Promise<FullPaginatedItemsDto> {
 		return await this.itemService.getAllAvailableItems(query);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get item by ID' })
-	@ApiOkResponse({ type: ItemDto })
+	/** Get an item by ID */
 	@Get('id/:id')
-	async getById(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiOkResponse({ type: FullItemDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
+	public async getById(@Param('id') id: string): Promise<FullItemDto> {
 		return await this.itemService.getById(id);
 	}
 
+	/** Update an item */
+	@Patch(':id')
 	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Update an existing item' })
-	@ApiOkResponse({ type: ItemDto })
+	@ApiConsumes('multipart/form-data')
+	@ApiBody({ type: UpdateItemDtoSwaggerDto })
 	@UseInterceptors(
 		FileFieldsInterceptor([
 			{ name: 'media', maxCount: 1 },
 			{ name: 'preview', maxCount: 1 },
 		]),
 	)
-	@ApiBody({ type: UpdateItemDtoSwaggerDto })
-	@ApiConsumes('multipart/form-data')
-	@Patch(':id')
-	async updateItem(
+	@ApiOkResponse({ type: FullItemDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
+	public async updateItem(
 		@Param('id') id: string,
 		@Body() dto: UpdateItemDto,
 		@UploadedFiles(
@@ -118,15 +135,16 @@ export class ItemController {
 			}),
 		)
 		files: UpdateItemFiles,
-	) {
+	): Promise<FullItemDto> {
 		return await this.itemService.updateItem(id, dto, files);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Delete an item' })
-	@ApiOkResponse({ type: Boolean })
+	/** Delete an item */
 	@Delete(':id')
-	async deleteItem(@Param('id') id: string) {
+	@Auth(UserRole.ADMIN)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.ITEM.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.ITEM.NOT_FOUND)
+	public async deleteItem(@Param('id') id: string): Promise<MessageResponse> {
 		return await this.itemService.deleteItem(id);
 	}
 }

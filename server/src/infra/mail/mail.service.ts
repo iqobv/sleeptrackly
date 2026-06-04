@@ -3,12 +3,17 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { render } from '@react-email/components';
 import Mail from 'nodemailer/lib/mailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendEmailDto } from './dto';
 import {
 	ConfirmationTemplate,
 	ResetPasswordTemplate,
 	RestoreAccountTemplate,
 } from './templates';
+
+type SendNotificationResponse = Promise<
+	SMTPTransport.SentMessageInfo | undefined
+>;
 
 @Injectable()
 export class MailService {
@@ -20,7 +25,10 @@ export class MailService {
 		this.domain = this.configService.getOrThrow<string>('CLIENT_URL');
 	}
 
-	async sendVerificationEmail(email: string, token: string) {
+	public async sendVerificationEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
 		const html = await render(
 			ConfirmationTemplate({ domain: this.domain, token }),
 		);
@@ -32,7 +40,10 @@ export class MailService {
 		});
 	}
 
-	async sendResetPasswordEmail(email: string, token: string) {
+	public async sendResetPasswordEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
 		const html = await render(
 			ResetPasswordTemplate({ domain: this.domain, token }),
 		);
@@ -44,7 +55,10 @@ export class MailService {
 		});
 	}
 
-	async sendRestoreAccountEmail(email: string, token: string) {
+	public async sendRestoreAccountEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
 		const html = await render(
 			RestoreAccountTemplate({ domain: this.domain, token }),
 		);
@@ -56,7 +70,7 @@ export class MailService {
 		});
 	}
 
-	async sendEmail(dto: SendEmailDto) {
+	public async sendEmail(dto: SendEmailDto): SendNotificationResponse {
 		const { from, recipients, subject, html } = dto;
 
 		const options: Mail.Options = {

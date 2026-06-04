@@ -1,25 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { PaginatedDataDto } from '@libs/dto';
+import { Expose, Type } from 'class-transformer';
 import { ReportDto } from './report.dto';
 
-class PaginationMetaDto {
-	@ApiProperty({ example: 1 }) total: number;
-	@ApiProperty({ example: 1 }) page: number;
-	@ApiProperty({ example: 10 }) pageSize: number;
-	@ApiProperty({ example: 1 }) totalPages: number;
-}
-
-export class AllReportsDto {
-	@ApiProperty({ type: ReportDto, isArray: true })
-	items: ReportDto[];
-
-	@ApiProperty({
-		example: {
-			total: 1,
-			page: 1,
-			pageSize: 10,
-			totalPages: 1,
-		},
-	})
-	@ApiProperty({ type: PaginationMetaDto })
-	meta: PaginationMetaDto;
+export class AllReportsDto extends PaginatedDataDto<ReportDto> {
+	@Expose()
+	@Type(() => ReportDto)
+	declare items: ReportDto[];
 }

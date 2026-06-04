@@ -1,5 +1,3 @@
-const CreateAchievementLoader = () => {
-	return <div>CreateAchievementLoader</div>;
-};
+import { AchievementFormLoader } from '../AchievementForm';
 
-export default CreateAchievementLoader;
+export const CreateAchievementLoader = () => <AchievementFormLoader />;

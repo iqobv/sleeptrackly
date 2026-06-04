@@ -1,3 +1,5 @@
+import { TokensDto } from '@api/auth/dto';
+import { ERROR_MESSAGES } from '@libs/constants';
 import { ClientInfoDto } from '@libs/dto';
 import {
 	forwardRef,
@@ -24,7 +26,10 @@ export class GoogleService {
 		this.googleClient = new OAuth2Client(this.googleClientId);
 	}
 
-	async verifyOneTapToken(credential: string, clientInfo: ClientInfoDto) {
+	public async verifyOneTapToken(
+		credential: string,
+		clientInfo: ClientInfoDto,
+	): Promise<TokensDto> {
 		try {
 			const ticket = await this.googleClient.verifyIdToken({
 				idToken: credential,
@@ -34,7 +39,9 @@ export class GoogleService {
 			const payload = ticket.getPayload();
 
 			if (!payload || !payload.email || !payload.sub) {
-				throw new UnauthorizedException('Invalid Google token payload.');
+				throw new UnauthorizedException(
+					ERROR_MESSAGES.AUTH.INVALID_GOOGLE_TOKEN,
+				);
 			}
 
 			return await this.authService.validateOAuthLogin(
@@ -48,9 +55,7 @@ export class GoogleService {
 				clientInfo,
 			);
 		} catch {
-			throw new UnauthorizedException(
-				'Invalid Google token. Please try again.',
-			);
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_GOOGLE_TOKEN);
 		}
 	}
 }

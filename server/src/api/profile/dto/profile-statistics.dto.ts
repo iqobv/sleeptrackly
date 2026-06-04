@@ -1,9 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
-export class ProfileStatistics {
-	@ApiProperty({ example: 5 })
-	countOfCompletedChallenges: number;
-
-	@ApiProperty({ example: 10 })
-	countOfSleepEntries: number;
+export class ProfileStatisticsDto {
+	@Expose() countOfCompletedChallenges: number;
+	@Expose() countOfSleepEntries: number;
 }

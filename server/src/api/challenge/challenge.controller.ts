@@ -1,4 +1,11 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+	Auth,
+	Authorized,
+} from '@libs/decorators';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
@@ -10,13 +17,7 @@ import {
 	Patch,
 	Post,
 } from '@nestjs/common';
-import {
-	ApiBadRequestResponse,
-	ApiCreatedResponse,
-	ApiNotFoundResponse,
-	ApiOkResponse,
-	ApiOperation,
-} from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ChallengeService } from './challenge.service';
 import {
 	ChallengeDto,
@@ -25,63 +26,72 @@ import {
 	UpdateChallengeDto,
 } from './dto';
 
+@ApiTags('Challenge')
 @Controller('challenges')
 export class ChallengeController {
 	constructor(private readonly challengeService: ChallengeService) {}
 
-	@ApiOperation({ summary: 'Create challenge' })
-	@ApiCreatedResponse({ type: ChallengeDto })
-	@ApiBadRequestResponse({
-		description: `Start date cannot be in the past<br/>
-		End date cannot be in the past<br/>
-		End date cannot be before start date`,
-	})
+	/** Create new challenge */
 	@Auth()
+	@ApiCreatedResponse({ type: ChallengeDto })
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.CHALLENGE.START_DATE_PAST,
+		ERROR_MESSAGES.CHALLENGE.END_DATE_PAST,
+		ERROR_MESSAGES.CHALLENGE.INVALID_DATE_RANGE,
+	])
 	@HttpCode(HttpStatus.CREATED)
 	@Post()
-	async create(
+	public async create(
 		@Authorized('id') userId: string,
 		@Body() dto: CreateChallengeDto,
-	) {
-		return this.challengeService.create(userId, dto);
+	): Promise<ChallengeDto> {
+		return await this.challengeService.create(userId, dto);
 	}
 
-	@ApiOperation({ summary: 'Get all challenges' })
+	/** Get all user's challenges */
+	@Auth()
 	@ApiOkResponse({ type: [ChallengeDto] })
-	@Auth()
 	@Get('me')
-	async findAll(@Authorized('id') userId: string) {
-		return this.challengeService.findAll(userId);
+	public async findAll(
+		@Authorized('id') userId: string,
+	): Promise<ChallengeDto[]> {
+		return await this.challengeService.findAll(userId);
 	}
 
-	@ApiOperation({ summary: 'Get challenge by id' })
+	/** Get challenge by id */
+	@Auth()
 	@ApiOkResponse({ type: ChallengeFullDto })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
-	@Auth()
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Get(':id')
-	async findById(@Authorized('id') userId: string, @Param('id') id: string) {
-		return this.challengeService.findById(id, userId);
+	public async findById(
+		@Authorized('id') userId: string,
+		@Param('id') id: string,
+	): Promise<ChallengeFullDto> {
+		return await this.challengeService.findById(id, userId);
 	}
 
-	@ApiOperation({ summary: 'Update challenge' })
-	@ApiOkResponse({ type: UpdateChallengeDto })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
+	/** Update challenge */
 	@Auth()
+	@ApiOkResponse({ type: ChallengeDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Patch(':id')
-	async update(
+	public async update(
 		@Authorized('id') userId: string,
 		@Param('id') id: string,
 		@Body() dto: UpdateChallengeDto,
-	) {
+	): Promise<ChallengeDto> {
 		return await this.challengeService.update(id, userId, dto);
 	}
 
-	@ApiOperation({ summary: 'Delete challenge' })
-	@ApiOkResponse({ type: Boolean, example: true })
-	@ApiNotFoundResponse({ description: 'Challenge not found' })
+	/** Delete challenge */
 	@Auth()
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
 	@Delete(':id')
-	async remove(@Authorized('id') userId: string, @Param('id') id: string) {
+	public async remove(
+		@Authorized('id') userId: string,
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
 		return await this.challengeService.remove(id, userId);
 	}
 }

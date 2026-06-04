@@ -1,5 +1,5 @@
 import { SkeletonLoader } from '@/components/UI';
-import AchievementCardLoader from './AchievementCard/AchievementCardLoader';
+import { AchievementCardLoader } from './AchievementCard';
 import styles from './Achievements.module.scss';
 
 export const AchievementsListLoader = () => {

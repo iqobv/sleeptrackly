@@ -1,16 +1,4 @@
-import { Friendship } from '../friend/friendship.types';
-import { EquippedItems } from '../item/equippedItems.types';
-import { ProfileStatistics } from './profileStatistics.types';
+import { getProfile } from '@/api';
 
-export interface Profile {
-	id: string;
-	username: string;
-	avatar: {
-		url: string;
-		isDefault: boolean;
-	};
-	equippedItems: EquippedItems[];
-	friendship: Friendship | null;
-	statistics: ProfileStatistics | null;
-	createdAt: Date;
-}
+export type Profile = Awaited<ReturnType<typeof getProfile>>;
+export type ProfileStatistics = Profile['statistics'];

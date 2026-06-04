@@ -1,4 +1,2 @@
-export * from './friend.types';
-export * from './friendResponse.types';
-export * from './friendship.types';
+export type * from './friend.types';
 export * from './friendStatus.types';

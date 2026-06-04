@@ -1,69 +1,87 @@
 import { UserRole } from '@generated/prisma/enums';
-import { Auth } from '@libs/decorators';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
 import { PaginationQueryWithLanguageDto } from '@libs/dto';
+import { MessageResponse } from '@libs/types';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
 	Query,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
 	CreateProductDto,
 	FullProductDto,
-	PaginatedProductDto,
+	PaginatedFullProductDto,
 	ProductDto,
 	UpdateProductDto,
 } from './dto';
 import { ProductService } from './product.service';
 
+@Auth(UserRole.ADMIN)
+@ApiTags('Product')
 @Controller('products')
 export class ProductController {
 	constructor(private readonly productService: ProductService) {}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Create a new product' })
-	@ApiOkResponse({ type: ProductDto })
+	/** Create a new product */
 	@Post()
-	async createProduct(@Body() dto: CreateProductDto) {
+	@ApiOkResponse({ type: ProductDto })
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.PRODUCT.REQUIRED_PAYLOAD_MISSING,
+		ERROR_MESSAGES.PRODUCT.MUTUALLY_EXCLUSIVE_PAYLOAD,
+		ERROR_MESSAGES.PRODUCT.EXPIRES_AT_INVALID_FUTURE,
+	])
+	@ApiErrorResponse(HttpStatus.CONFLICT, ERROR_MESSAGES.PRODUCT.ALREADY_EXISTS)
+	public async createProduct(
+		@Body() dto: CreateProductDto,
+	): Promise<ProductDto> {
 		return await this.productService.createProduct(dto);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Get product by ID' })
-	@ApiOkResponse({ type: FullProductDto })
+	/** Get a product by its ID */
 	@Get(':id')
-	async getProductById(@Param('id') id: string) {
+	@ApiOkResponse({ type: FullProductDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
+	public async getProductById(
+		@Param('id') id: string,
+	): Promise<FullProductDto> {
 		return await this.productService.getProductById(id);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({
-		summary: 'Get all products with pagination and language support',
-	})
-	@ApiOkResponse({ type: PaginatedProductDto })
+	/** Get all products */
 	@Get()
-	async getAllProducts(@Query() query: PaginationQueryWithLanguageDto) {
+	@ApiOkResponse({ type: PaginatedFullProductDto })
+	public async getAllProducts(
+		@Query() query: PaginationQueryWithLanguageDto,
+	): Promise<PaginatedFullProductDto> {
 		return await this.productService.getAllProducts(query);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Update an existing product' })
-	@ApiOkResponse({ type: ProductDto })
+	/** Update a product by its ID */
 	@Patch(':id')
-	async updateProduct(@Param('id') id: string, @Body() dto: UpdateProductDto) {
+	@ApiOkResponse({ type: ProductDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
+	public async updateProduct(
+		@Param('id') id: string,
+		@Body() dto: UpdateProductDto,
+	): Promise<ProductDto> {
 		return await this.productService.updateProduct(id, dto);
 	}
 
-	@Auth(UserRole.ADMIN)
-	@ApiOperation({ summary: 'Remove a product by ID' })
-	@ApiOkResponse({ type: Boolean })
+	/** Delete a product by its ID */
 	@Delete(':id')
-	async removeProduct(@Param('id') id: string) {
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.PRODUCT.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.PRODUCT.NOT_FOUND)
+	public async removeProduct(
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
 		return await this.productService.removeProduct(id);
 	}
 }

@@ -6,7 +6,7 @@ import styles from './ReportsList.module.scss';
 const items = Array.from({ length: 10 }, (_, i) => i + 1);
 const paginationItems = Array.from({ length: 5 }, (_, i) => i + 1);
 
-const ReportsListLoader = () => {
+export const ReportsListLoader = () => {
 	return (
 		<div className={styles['reports__list-wrapper']}>
 			<div className={styles['reports__list']}>
@@ -33,5 +33,3 @@ const ReportsListLoader = () => {
 		</div>
 	);
 };
-
-export default ReportsListLoader;
