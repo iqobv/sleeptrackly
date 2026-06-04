@@ -1,2 +1,1 @@
-export * from './profile.types';
-export * from './profileStatistics.types';
+export type * from './profile.types';

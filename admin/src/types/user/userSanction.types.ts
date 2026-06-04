@@ -1,19 +1,14 @@
-import { USER_SANCTIONS } from '@/constants';
-import { User } from './user.types';
+import { FullReport } from '../report';
+import { components } from '../schema';
+
+type SwaggerUserSanctionType = components['schemas']['UserSanctionType'];
+
+export const UserSanctionType = {
+	AVATAR_CHANGE_BAN: 'AVATAR_CHANGE_BAN',
+	USERNAME_CHANGE_BAN: 'USERNAME_CHANGE_BAN',
+} as const satisfies Record<SwaggerUserSanctionType, SwaggerUserSanctionType>;
 
 export type UserSanctionType =
-	(typeof USER_SANCTIONS)[keyof typeof USER_SANCTIONS];
+	(typeof UserSanctionType)[keyof typeof UserSanctionType];
 
-export interface UserSanction {
-	id: string;
-	userId: string;
-	reportId: string;
-	createdById: string;
-	startsAt: Date;
-	endsAt: Date;
-	type: UserSanctionType;
-	user: User;
-	createdBy: User;
-	createdAt: Date;
-	updatedAt: Date;
-}
+export type UserSanction = NonNullable<FullReport['sanctions']>[number];

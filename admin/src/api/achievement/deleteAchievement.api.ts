@@ -1,4 +1,9 @@
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
+type DeleteAchievementResponse =
+	paths['/v1/achievements/{id}']['delete']['responses']['200']['content']['application/json'];
+
 export const deleteAchievement = async (id: string) =>
-	(await apiClient.delete<{ message: string }>(`/v1/achievements/${id}`)).data;
+	(await apiClient.delete<DeleteAchievementResponse>(`/v1/achievements/${id}`))
+		.data;

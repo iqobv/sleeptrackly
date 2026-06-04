@@ -1,2 +1,1 @@
-export * from './bundle.types';
-export * from './itemInBundle.types';
+export type * from './bundle.types';

@@ -1,11 +1,10 @@
-import { PRODUCT_TYPES } from '@/constants';
-import { ItemType, ShopSortBy } from '@/types';
+import { ItemType, ProductType, ShopSortBy } from '@/types';
 import { z } from 'zod';
 import { paginationWithLanguageSchema } from '../query/paginationWithLanguage.schema';
 
 export const allShopFilterSchema = z.object({
 	type: z
-		.enum(['ALL', ...Object.values(PRODUCT_TYPES)])
+		.enum(['ALL', ...Object.values(ProductType)])
 		.optional()
 		.default('ALL'),
 	itemType: z.array(z.enum(ItemType)).optional(),

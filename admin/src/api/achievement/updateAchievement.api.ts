@@ -1,6 +1,10 @@
 import { UpdateAchievementDto } from '@/dto';
+import { paths } from '@/types/schema';
 import { getFormData } from '@/utils';
 import { apiClient } from '../axios';
+
+type UpdateAchievementResponse =
+	paths['/v1/achievements/{id}']['patch']['responses']['200']['content']['application/json'];
 
 export const updateAchievement = async (
 	id: string,
@@ -9,10 +13,14 @@ export const updateAchievement = async (
 	const formData = getFormData(dto);
 
 	return (
-		await apiClient.patch(`/v1/achievements/${id}`, formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
+		await apiClient.patch<UpdateAchievementResponse>(
+			`/v1/achievements/${id}`,
+			formData,
+			{
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			},
-		})
+		)
 	).data;
 };

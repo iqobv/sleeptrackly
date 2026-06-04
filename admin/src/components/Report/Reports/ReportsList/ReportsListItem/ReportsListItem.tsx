@@ -12,7 +12,7 @@ interface ReportsListItemProps {
 	report: Report;
 }
 
-const ReportsListItem = ({ report }: ReportsListItemProps) => {
+export const ReportsListItem = ({ report }: ReportsListItemProps) => {
 	return (
 		<Link
 			href={PAGES.REPORT(report.id)}
@@ -40,5 +40,3 @@ const ReportsListItem = ({ report }: ReportsListItemProps) => {
 		</Link>
 	);
 };
-
-export default ReportsListItem;

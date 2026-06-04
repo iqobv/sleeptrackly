@@ -2340,9 +2340,9 @@ export interface components {
             itemId: string;
             bundleId: string;
         };
-        FullBundleDto: {
-            items: components["schemas"]["BundleItemDto"][];
+        BundleDto: {
             translations: components["schemas"]["TranslationDto"][];
+            items: components["schemas"]["BundleItemDto"][];
             basePrice: number;
             isExclusive: boolean;
             discountPercentage: number;
@@ -2355,21 +2355,8 @@ export interface components {
             updatedAt: string;
         };
         PaginatedFullBundlesDto: {
-            items: components["schemas"]["FullBundleDto"][];
+            items: components["schemas"]["BundleDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
-        };
-        BundleDto: {
-            translations: components["schemas"]["TranslationDto"][];
-            basePrice: number;
-            isExclusive: boolean;
-            discountPercentage: number;
-            mediaUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
         };
         PaginatedAvailableBundlesDto: {
             items: components["schemas"]["BundleDto"][];
@@ -2606,6 +2593,20 @@ export interface components {
             updatedAt: string;
         };
         ReportSanctionsDto: {
+            userId: string;
+            reportId: string | null;
+            createdById: string;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string | null;
+            type: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
             user: components["schemas"]["UserDto"] | null;
             createdBy: components["schemas"]["UserDto"] | null;
         };
@@ -2624,7 +2625,7 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-            reporter: components["schemas"]["UserDto"] | null;
+            reporter: components["schemas"]["UserDto"];
             targetUser: components["schemas"]["UserDto"] | null;
             sanctions: components["schemas"]["ReportSanctionsDto"][];
         };
@@ -2762,7 +2763,7 @@ export interface components {
             type: components["schemas"]["ProductType"];
             itemType: components["schemas"]["ProfileItemType"] | null;
             item: components["schemas"]["ItemDto"] | null;
-            bundle: components["schemas"]["FullBundleDto"] | null;
+            bundle: components["schemas"]["BundleDto"] | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2935,7 +2936,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-05T14:04:20.933Z
+             * @example 2026-06-05T18:39:45.501Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2966,7 +2967,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-05T14:04:20.933Z
+             * @example 2026-06-05T18:39:45.501Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -5499,7 +5500,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FullBundleDto"];
+                    "application/json": components["schemas"]["BundleDto"];
                 };
             };
             /** @description Unauthorized */
@@ -5607,7 +5608,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FullBundleDto"];
+                    "application/json": components["schemas"]["BundleDto"];
                 };
             };
             /** @description Unauthorized */
@@ -7754,7 +7755,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PromotionDto"];
+                    "application/json": components["schemas"]["PromotionDto"][];
                 };
             };
             /** @description Unauthorized */

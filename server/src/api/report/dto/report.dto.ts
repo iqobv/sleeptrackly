@@ -1,3 +1,4 @@
+import { UserSanctionDto } from '@api/user-sanction/dto';
 import { UserDto } from '@api/user/dto';
 import { ReportStatus, ReportType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
@@ -21,7 +22,7 @@ export class ReportDto extends DefaultFieldsDto {
 	reportType: ReportType;
 }
 
-export class ReportSanctionsDto {
+export class ReportSanctionsDto extends UserSanctionDto {
 	@Expose()
 	@Type(() => UserDto)
 	user: UserDto | null;
@@ -34,7 +35,7 @@ export class ReportSanctionsDto {
 export class FullReportDto extends ReportDto {
 	@Expose()
 	@Type(() => UserDto)
-	reporter: UserDto | null;
+	reporter: UserDto;
 
 	@Expose()
 	@Type(() => UserDto)

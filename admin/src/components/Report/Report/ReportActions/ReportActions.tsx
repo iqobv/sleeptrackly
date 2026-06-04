@@ -3,16 +3,15 @@
 import { updateReport } from '@/api';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { REPORT_STATUS } from '@/constants';
-import { ReportFull, ReportStatus } from '@/types';
+import { FullReport, ReportStatus } from '@/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import ReportSanction from './ReportSanction/ReportSanction';
+import { ReportSanction } from './ReportSanction/ReportSanction';
 
 interface ReportActionsProps {
-	report: ReportFull;
+	report: FullReport;
 }
 
-const ReportActions = ({ report }: ReportActionsProps) => {
+export const ReportActions = ({ report }: ReportActionsProps) => {
 	const queryCliet = useQueryClient();
 
 	const { mutate } = useMutation({
@@ -27,7 +26,7 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 
 	return (
 		<div>
-			{report.status === REPORT_STATUS.PENDING && (
+			{report.status === ReportStatus.PENDING && (
 				<div>
 					<Button
 						type="submit"
@@ -38,7 +37,7 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 				</div>
 			)}
 			<ReportSanction report={report} />
-			{report.status === REPORT_STATUS.IN_PROGRESS && (
+			{report.status === ReportStatus.IN_PROGRESS && (
 				<div>
 					<Button onClick={() => mutate({ status: 'APPROVED' })}>
 						Close report
@@ -48,5 +47,3 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 		</div>
 	);
 };
-
-export default ReportActions;

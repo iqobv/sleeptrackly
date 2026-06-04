@@ -1,7 +1,7 @@
 'use client';
 
 import { useUserStore } from '@/store';
-import { Error } from '@/types';
+import { MessageApiResponse } from '@/types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
@@ -22,7 +22,7 @@ let failedQueue: Array<{
 	reject: (reason?: unknown) => void;
 }> = [];
 
-const processQueue = (error: Error | null = null) => {
+const processQueue = (error: MessageApiResponse | null = null) => {
 	failedQueue.forEach((prom) => {
 		if (error) {
 			prom.reject(error);
@@ -35,7 +35,7 @@ const processQueue = (error: Error | null = null) => {
 
 apiClient.interceptors.response.use(
 	(response) => response,
-	async (error: AxiosError<Error>) => {
+	async (error: AxiosError<MessageApiResponse>) => {
 		const originalRequest = error.config as CustomAxiosRequestConfig;
 
 		if (error.response?.status === 401 && !originalRequest._retry) {
@@ -64,7 +64,7 @@ apiClient.interceptors.response.use(
 				processQueue(null);
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				processQueue(refreshError as Error);
+				processQueue(refreshError as MessageApiResponse);
 
 				useUserStore.getState().logout();
 				if (typeof window !== 'undefined') {
@@ -79,7 +79,7 @@ apiClient.interceptors.response.use(
 
 		if (error.response?.data?.message) {
 			error.message = error.response.data.message;
-			// error.code = error.response.data.code;
+			error.code = error.response.data.code;
 		}
 
 		return Promise.reject(error);

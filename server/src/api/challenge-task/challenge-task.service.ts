@@ -8,6 +8,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { ChallengeService } from '../challenge/challenge.service';
 import {
 	ChallengeTaskDto,
@@ -64,7 +65,7 @@ export class ChallengeTaskService {
 		if (!task)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE_TASK.NOT_FOUND);
 
-		return task;
+		return plainToInstance(ChallengeTaskDto, task);
 	}
 
 	public async update(
@@ -91,6 +92,6 @@ export class ChallengeTaskService {
 			AchievementType.CHALLENGES_TASKS_COMPLETED,
 		);
 
-		return updatedTask;
+		return plainToInstance(ChallengeTaskDto, updatedTask);
 	}
 }

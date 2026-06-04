@@ -1,14 +1,14 @@
 'use client';
 
 import { UserSanction } from '@/types';
-import ReportUserSanctionsItem from './ReportUserSanctionsItem/ReportUserSanctionsItem';
+import { ReportUserSanctionsItem } from './ReportUserSanctionsItem/ReportUserSanctionsItem';
 
 interface ReportUserSanctionsProps {
 	reportId: string;
 	sanctions: UserSanction[];
 }
 
-const ReportUserSanctions = ({
+export const ReportUserSanctions = ({
 	reportId,
 	sanctions,
 }: ReportUserSanctionsProps) => {
@@ -25,5 +25,3 @@ const ReportUserSanctions = ({
 		</div>
 	);
 };
-
-export default ReportUserSanctions;

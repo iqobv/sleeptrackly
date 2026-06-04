@@ -6,11 +6,11 @@ import { PAGES, QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { MdAdd } from 'react-icons/md';
-import AchievementCard from './AchievementCard/AchievementCard';
+import { AchievementCard } from './AchievementCard';
 import styles from './Achievements.module.scss';
 import { AchievementsListLoader } from './AchievementsLoader';
 
-const Achievements = () => {
+export const Achievements = () => {
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.achievement.all,
 		queryFn: getAllAchievements,
@@ -38,5 +38,3 @@ const Achievements = () => {
 		</div>
 	);
 };
-
-export default Achievements;

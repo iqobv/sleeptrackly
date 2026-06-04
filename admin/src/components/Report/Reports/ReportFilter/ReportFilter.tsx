@@ -1,7 +1,6 @@
 'use client';
 
-import { REPORT_STATUS } from '@/constants';
-import { ReportPaginationQuery } from '@/types';
+import { ReportPaginationQuery, ReportStatus } from '@/types';
 import { capitalize } from '@/utils';
 import { Dispatch, SetStateAction } from 'react';
 import styles from './ReportFilter.module.scss';
@@ -15,7 +14,7 @@ const selectProps: Partial<React.ComponentProps<'select'>> = {
 	className: styles.select,
 };
 
-const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
+export const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 	const onChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
 		key: keyof ReportPaginationQuery,
@@ -35,7 +34,7 @@ const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 					onChange={(e) => onChange(e, 'status')}
 					{...selectProps}
 				>
-					{Object.values(REPORT_STATUS).map((status) => (
+					{Object.values(ReportStatus).map((status) => (
 						<option key={status} value={status}>
 							{capitalize(status.replaceAll('_', ' ').toLowerCase())}
 						</option>
@@ -61,5 +60,3 @@ const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 		</div>
 	);
 };
-
-export default ReportFilter;

@@ -7,14 +7,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { MdOutlineArrowBack } from 'react-icons/md';
 import styles from './Report.module.scss';
-import ReportActions from './ReportActions/ReportActions';
-import ReportDetail from './ReportDetail/ReportDetail';
+import { ReportActions } from './ReportActions/ReportActions';
+import { ReportDetail } from './ReportDetail/ReportDetail';
 
 interface ReportProps {
 	id: string;
 }
 
-const Report = ({ id }: ReportProps) => {
+export const Report = ({ id }: ReportProps) => {
 	const router = useRouter();
 
 	const { data, isLoading: _isLoading } = useQuery({
@@ -38,5 +38,3 @@ const Report = ({ id }: ReportProps) => {
 		</div>
 	);
 };
-
-export default Report;

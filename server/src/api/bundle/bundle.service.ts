@@ -10,8 +10,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import {
 	BaseBundleDto,
+	BundleDto,
 	CreateBundleDto,
-	FullBundleDto,
 	PaginatedAvailableBundlesDto,
 	PaginatedFullBundlesDto,
 	UpdateBundleDto,
@@ -125,7 +125,7 @@ export class BundleService {
 		return plainToInstance(PaginatedAvailableBundlesDto, result);
 	}
 
-	public async getById(id: string): Promise<FullBundleDto> {
+	public async getById(id: string): Promise<BundleDto> {
 		const bundle = await this.prismaService.bundle.findUnique({
 			where: { id },
 			include: bundleInclude,
@@ -133,14 +133,14 @@ export class BundleService {
 
 		if (!bundle) throw new NotFoundException(ERROR_MESSAGES.BUNDLE.NOT_FOUND);
 
-		return plainToInstance(FullBundleDto, bundle);
+		return plainToInstance(BundleDto, bundle);
 	}
 
 	public async updateBundle(
 		id: string,
 		dto: UpdateBundleDto,
 		file?: Express.Multer.File,
-	): Promise<FullBundleDto> {
+	): Promise<BundleDto> {
 		const { translations, itemsIds, ...rest } = dto;
 
 		const bundle = await this.getById(id);
@@ -200,7 +200,7 @@ export class BundleService {
 					include: bundleInclude,
 				});
 
-				return plainToInstance(FullBundleDto, updated);
+				return plainToInstance(BundleDto, updated);
 			},
 			{
 				maxWait: 5000,

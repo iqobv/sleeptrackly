@@ -29,9 +29,9 @@ import {
 import { BundleService } from './bundle.service';
 import {
 	BaseBundleDto,
+	BundleDto,
 	CreateBundleDto,
 	CreateBundleSwaggerDto,
-	FullBundleDto,
 	PaginatedAvailableBundlesDto,
 	PaginatedFullBundlesDto,
 	UpdateBundleDto,
@@ -91,9 +91,9 @@ export class BundleController {
 	/** Get the bundle by ID */
 	@Get('id/:id')
 	@Auth(UserRole.ADMIN)
-	@ApiOkResponse({ type: FullBundleDto })
+	@ApiOkResponse({ type: BundleDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
-	public async getBundleById(@Param('id') id: string): Promise<FullBundleDto> {
+	public async getBundleById(@Param('id') id: string): Promise<BundleDto> {
 		return await this.bundleService.getById(id);
 	}
 
@@ -103,13 +103,13 @@ export class BundleController {
 	@ApiBody({ type: UpdateBundleSwaggerDto })
 	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('file'))
-	@ApiOkResponse({ type: FullBundleDto })
+	@ApiOkResponse({ type: BundleDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.BUNDLE.NOT_FOUND)
 	public async updateBundle(
 		@Param('id') id: string,
 		@Body() dto: UpdateBundleDto,
 		@UploadedFile(ImageValidationPipe(5, false)) file: Express.Multer.File,
-	): Promise<FullBundleDto> {
+	): Promise<BundleDto> {
 		return await this.bundleService.updateBundle(id, dto, file);
 	}
 

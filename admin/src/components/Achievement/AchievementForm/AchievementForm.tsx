@@ -17,8 +17,8 @@ import { FormProps } from '@/components/UI/Form/Form.types';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ACHIEVEMENT_FORM_FIELDS } from './achievementFormFields';
-import AchievementFormProducts from './AchievementFormProducts/AchievementFormProducts';
-import AchievementTranslationForm from './AchievementTranslationForm/AchievementTranslationForm';
+import { AchievementFormProducts } from './AchievementFormProducts/AchievementFormProducts';
+import { AchievementTranslationForm } from './AchievementTranslationForm/AchievementTranslationForm';
 
 interface AchievementFormProps<D extends FieldValues> extends Omit<
 	FormProps<D>,

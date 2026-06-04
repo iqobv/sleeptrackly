@@ -23,7 +23,12 @@ export const FriendItemMenu = ({ friend }: FriendItemMenuProps) => {
 					<MdOutlineMoreVert size={24} />
 				</Button>
 			</DropdownTrigger>
-			<DropdownContent>
+			<DropdownContent
+				side="bottom"
+				align="end"
+				alignOffset={10}
+				style={{ minWidth: '150px' }}
+			>
 				{FRIEND_ITEM_MENU.map((item) => (
 					<FriendItemMenuButton key={item.label} item={item} friend={friend} />
 				))}

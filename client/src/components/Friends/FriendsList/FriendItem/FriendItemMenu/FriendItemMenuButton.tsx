@@ -1,6 +1,6 @@
 'use client';
 
-import { DropdownItem } from '@/components/UI';
+import { Button, DropdownItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { Friend } from '@/types';
@@ -33,5 +33,15 @@ export const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
 
 	const handleClick = () => mutate(friend.id);
 
-	return <DropdownItem onClick={handleClick}>{item.label}</DropdownItem>;
+	return (
+		<DropdownItem onClick={handleClick} asChild>
+			<Button
+				fullWidth
+				variant="text"
+				style={{ justifyContent: 'flex-start', padding: '0.75rem 0.625rem' }}
+			>
+				{item.label}
+			</Button>
+		</DropdownItem>
+	);
 };

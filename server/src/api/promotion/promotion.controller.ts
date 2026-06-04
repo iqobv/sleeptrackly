@@ -41,7 +41,7 @@ export class PromotionController {
 
 	/** Get all active promotions */
 	@Get()
-	@ApiOkResponse({ type: PromotionDto })
+	@ApiOkResponse({ type: [PromotionDto] })
 	public async getAllActivePromotions(): Promise<PromotionDto[]> {
 		return await this.promotionService.getAllActivePromotions();
 	}

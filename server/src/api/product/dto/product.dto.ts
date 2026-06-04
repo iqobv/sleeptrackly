@@ -1,4 +1,4 @@
-import { FullBundleDto } from '@api/bundle/dto';
+import { BundleDto } from '@api/bundle/dto';
 import { ItemDto } from '@api/item/dto';
 import { Expose, Type } from 'class-transformer';
 import { ProductEntityDto } from './product.entity.dto';
@@ -11,6 +11,6 @@ export class FullProductDto extends ProductEntityDto {
 	item: ItemDto | null;
 
 	@Expose()
-	@Type(() => FullBundleDto)
-	bundle: FullBundleDto | null;
+	@Type(() => BundleDto)
+	bundle: BundleDto | null;
 }

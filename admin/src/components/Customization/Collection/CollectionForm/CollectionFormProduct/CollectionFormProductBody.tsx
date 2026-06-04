@@ -7,11 +7,12 @@ import { PaginationWithLanguageDto } from '@/dto';
 import { Product } from '@/types';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { SelectedProduct } from './CollectionFormProduct';
 import styles from './CollectionFormProduct.module.scss';
 import CollectionFormProductGrid from './CollectionFormProductGrid';
 
 interface CollectionFormProductBodyProps {
-	selectedProducts: Product[];
+	selectedProducts: SelectedProduct[];
 	onToggleProduct: (product: Product) => void;
 }
 

@@ -1,1 +1,1 @@
-export * from './promotion.types';
+export type * from './promotion.types';

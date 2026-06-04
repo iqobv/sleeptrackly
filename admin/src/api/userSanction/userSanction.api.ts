@@ -1,9 +1,23 @@
 import { UserSanctionDto } from '@/dto';
-import { UserSanction } from '@/types';
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
+type CreateSanctionResponse =
+	paths['/v1/admin/user-sanctions']['post']['responses']['200']['content']['application/json'];
+type RemoveSanctionResponse =
+	paths['/v1/admin/user-sanctions/{id}']['delete']['responses']['200']['content']['application/json'];
+
 export const createSanction = async (data: UserSanctionDto) =>
-	(await apiClient.post<UserSanction>('/v1/admin/user-sanctions', data)).data;
+	(
+		await apiClient.post<CreateSanctionResponse>(
+			'/v1/admin/user-sanctions',
+			data,
+		)
+	).data;
 
 export const removeUserSanction = async (id: string) =>
-	(await apiClient.delete<boolean>(`/v1/admin/user-sanctions/${id}`)).data;
+	(
+		await apiClient.delete<RemoveSanctionResponse>(
+			`/v1/admin/user-sanctions/${id}`,
+		)
+	).data;

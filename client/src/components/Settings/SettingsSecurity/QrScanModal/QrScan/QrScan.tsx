@@ -44,6 +44,7 @@ export const QrScan = () => {
 						container: {
 							maxWidth: 300,
 							borderRadius: 10,
+							margin: '0 auto',
 						},
 					}}
 					onScan={(scanResult) => setResult(scanResult[0].rawValue)}

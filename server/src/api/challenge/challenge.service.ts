@@ -12,6 +12,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import { ChallengeTaskService } from '../challenge-task/challenge-task.service';
 import { CreateChallengeTaskDto } from '../challenge-task/dto';
@@ -85,7 +86,7 @@ export class ChallengeService {
 
 		await this.challengeTaskService.createMany(challenge.id, userId, tasks);
 
-		return challenge;
+		return plainToInstance(ChallengeDto, challenge);
 	}
 
 	public async findById(id: string, userId: string): Promise<ChallengeFullDto> {
@@ -97,13 +98,15 @@ export class ChallengeService {
 		if (!challenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		return challenge;
+		return plainToInstance(ChallengeFullDto, challenge);
 	}
 
 	public async findAll(userId: string): Promise<ChallengeDto[]> {
-		return await this.prismaService.challenge.findMany({
+		const challenges = await this.prismaService.challenge.findMany({
 			where: { userId, deletedAt: null },
 		});
+
+		return plainToInstance(ChallengeDto, challenges);
 	}
 
 	public async update(
@@ -113,10 +116,12 @@ export class ChallengeService {
 	): Promise<ChallengeDto> {
 		const challenge = await this.findById(id, userId);
 
-		return await this.prismaService.challenge.update({
+		const updated = await this.prismaService.challenge.update({
 			where: { id: challenge.id, userId },
 			data: dto,
 		});
+
+		return plainToInstance(ChallengeDto, updated);
 	}
 
 	@Cron(CronExpression.EVERY_5_MINUTES)

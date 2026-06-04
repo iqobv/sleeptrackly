@@ -9,9 +9,7 @@ export class BundleDto extends BundleEntityDto {
 	@Expose()
 	@Type(() => TranslationDto)
 	translations: TranslationDto[];
-}
 
-export class FullBundleDto extends BundleDto {
 	@Expose()
 	@Type(() => BundleItemDto)
 	items: BundleItemDto[];

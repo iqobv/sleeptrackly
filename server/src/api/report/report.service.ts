@@ -23,7 +23,10 @@ import {
 export class ReportService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	public async create(userId: string, dto: CreateReportDto): Promise<ReportDto> {
+	public async create(
+		userId: string,
+		dto: CreateReportDto,
+	): Promise<ReportDto> {
 		const { reportType, title, description, reportedId } = dto;
 
 		if (reportedId) await this.findSendReports(userId, reportedId);
@@ -80,24 +83,21 @@ export class ReportService {
 			status,
 		} satisfies Prisma.ReportWhereInput;
 
-		const result = await paginate(
-			{ limit, page },
-			async (safePage, safeSize) => {
-				const [total, items] = await this.prismaService.$transaction([
-					this.prismaService.report.count({
-						where,
-					}),
-					this.prismaService.report.findMany({
-						where,
-						orderBy,
-						skip: (safePage - 1) * safeSize,
-						take: safeSize,
-					}),
-				]);
+		const result = await paginate({ limit, page }, async (limit, offset) => {
+			const [total, items] = await this.prismaService.$transaction([
+				this.prismaService.report.count({
+					where,
+				}),
+				this.prismaService.report.findMany({
+					where,
+					orderBy,
+					skip: offset,
+					take: limit,
+				}),
+			]);
 
-				return { items, total };
-			},
-		);
+			return { items, total };
+		});
 
 		return plainToInstance(AllReportsDto, result);
 	}

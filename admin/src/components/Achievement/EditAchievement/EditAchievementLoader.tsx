@@ -1,3 +1,3 @@
-export const EditAchievementLoader = () => {
-	return <div>EditAchievementLoader</div>;
-};
+import { AchievementFormLoader } from '../AchievementForm';
+
+export const EditAchievementLoader = () => <AchievementFormLoader />;

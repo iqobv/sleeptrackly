@@ -18,7 +18,7 @@ interface ReportUserSanctionsItemProps {
 	index: number;
 }
 
-const ReportUserSanctionsItem = ({
+export const ReportUserSanctionsItem = ({
 	sanction,
 	reportId,
 	index,
@@ -62,15 +62,23 @@ const ReportUserSanctionsItem = ({
 			</div>
 			<div className={styles.user}>
 				<p>User: </p>
-				<Link href={PAGES.USER(sanction.user.username)} prefetch={false}>
-					{sanction.user.username}
-				</Link>
+				{sanction.user ? (
+					<Link href={PAGES.USER(sanction.user.username)} prefetch={false}>
+						{sanction.user.username}
+					</Link>
+				) : (
+					<span>Unknown</span>
+				)}
 			</div>
 			<div className={styles.user}>
 				<p>Created by: </p>
-				<Link href={PAGES.USER(sanction.createdBy.username)} prefetch={false}>
-					{sanction.createdBy.username} ({sanction.createdBy.role})
-				</Link>
+				{sanction.createdBy ? (
+					<Link href={PAGES.USER(sanction.createdBy.username)} prefetch={false}>
+						{sanction.createdBy.username} ({sanction.createdBy.role})
+					</Link>
+				) : (
+					<span>Unknown</span>
+				)}
 			</div>
 			<p>Start at: {dayjs(sanction.startsAt).format('DD.MM.YYYY HH:mm')}</p>
 			<p>End at: {dayjs(sanction.endsAt).format('DD.MM.YYYY HH:mm')}</p>
@@ -81,5 +89,3 @@ const ReportUserSanctionsItem = ({
 		</div>
 	);
 };
-
-export default ReportUserSanctionsItem;

@@ -3,7 +3,7 @@ import { ReportType } from './reportType.types';
 
 export interface ReportPaginationQuery {
 	page: number;
-	pageSize: number;
+	limit: number;
 	sortOrder?: 'asc' | 'desc';
 	sortBy?: 'createdAt' | 'updatedAt';
 	status?: ReportStatus;

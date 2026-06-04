@@ -5,17 +5,17 @@ import { QUERY_KEYS } from '@/config';
 import { ReportPaginationQuery } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { Dispatch, SetStateAction } from 'react';
-import ReportsPagination from '../ReportsPagination/ReportsPagination';
+import { ReportsPagination } from '../ReportsPagination/ReportsPagination';
 import styles from './ReportsList.module.scss';
-import ReportsListItem from './ReportsListItem/ReportsListItem';
-import ReportsListLoader from './ReportsListLoader';
+import { ReportsListItem } from './ReportsListItem/ReportsListItem';
+import { ReportsListLoader } from './ReportsListLoader';
 
 interface ReportsListProps {
 	filters: ReportPaginationQuery;
 	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
 }
 
-const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
+export const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.report.getReports(filters),
 		queryFn: () => getReports(filters),
@@ -47,5 +47,3 @@ const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 		</div>
 	);
 };
-
-export default ReportsList;

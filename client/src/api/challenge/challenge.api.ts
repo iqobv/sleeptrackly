@@ -13,7 +13,7 @@ type UpdateChallengeResponse =
 type DeleteChallengeResponse =
 	paths['/v1/challenges/{id}']['delete']['responses']['200']['content']['application/json'];
 
-export const getChellenges = async () =>
+export const getChallenges = async () =>
 	(await apiClient.get<GetChallengesResponse>('/v1/challenges/me')).data;
 
 export const getChallengeById = async (id: string) =>

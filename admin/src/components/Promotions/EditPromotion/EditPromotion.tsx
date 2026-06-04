@@ -29,7 +29,7 @@ const EditPromotion = () => {
 						coinsReward: data.coinsReward ?? undefined,
 						productIdReward: data.productIdReward ?? undefined,
 						maxUses: data.maxUses ?? undefined,
-						expiresAt: data.expiresAt ?? undefined,
+						expiresAt: data.expiresAt ? new Date(data.expiresAt) : undefined,
 					}}
 					mutationFn={(mutationData) =>
 						updatePromotion(id, mutationData) as Promise<Promotion>

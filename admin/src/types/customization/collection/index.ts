@@ -1,3 +1,1 @@
-export * from './collection.types';
-export * from './collectionProduct.types';
-export * from './collectionTranslation.types';
+export type * from './collection.types';

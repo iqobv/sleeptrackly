@@ -1,6 +1,6 @@
 import { PaginatedDataDto } from '@libs/dto';
 import { Expose, Type } from 'class-transformer';
-import { BundleDto, FullBundleDto } from './bundle-response.dto';
+import { BundleDto } from './bundle-response.dto';
 
 export class PaginatedBundlesDto extends PaginatedDataDto<BundleDto> {
 	@Expose()
@@ -8,10 +8,10 @@ export class PaginatedBundlesDto extends PaginatedDataDto<BundleDto> {
 	declare items: BundleDto[];
 }
 
-export class PaginatedFullBundlesDto extends PaginatedDataDto<FullBundleDto> {
+export class PaginatedFullBundlesDto extends PaginatedDataDto<BundleDto> {
 	@Expose()
-	@Type(() => FullBundleDto)
-	declare items: FullBundleDto[];
+	@Type(() => BundleDto)
+	declare items: BundleDto[];
 }
 
 export class PaginatedAvailableBundlesDto extends PaginatedDataDto<BundleDto> {

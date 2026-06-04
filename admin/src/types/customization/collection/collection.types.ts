@@ -1,15 +1,7 @@
-import { DefaultFields } from '@/types/defaultFields.types';
-import { FullCollectionProduct } from './collectionProduct.types';
-import { FullCollectionTranslation } from './collectionTranslation.types';
+import { getAllCollections, getCollectionById } from '@/api';
 
-export interface BaseCollection extends DefaultFields {
-	slug: string;
-	accentColor: string;
-	iconUrl: string;
-	showInStore: boolean;
-}
-
-export interface FullCollection extends BaseCollection {
-	translations: FullCollectionTranslation[];
-	products: FullCollectionProduct[];
-}
+export type BaseCollection = Awaited<
+	ReturnType<typeof getAllCollections>
+>[number];
+export type FullCollection = Awaited<ReturnType<typeof getCollectionById>>;
+export type CollectionProduct = FullCollection['products'][number];

@@ -24,6 +24,7 @@ import {
 	SessionDto,
 	UserAgentDto,
 } from './dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class SessionService {
@@ -128,7 +129,7 @@ export class SessionService {
 			}),
 		);
 
-		return mappedSessions;
+		return plainToInstance(SessionDto, mappedSessions);
 	}
 
 	public async findSessionById(sessionId: string): Promise<Session> {

@@ -1,11 +1,8 @@
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import { USER_ROLES } from './constants';
 import { UserRole } from './types';
 
-const JWT_SECRET = new TextEncoder().encode(
-	process.env.JWT_SECRET || 'your-secret-key',
-);
+const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 interface JwtPayload {
 	id: string;
@@ -35,7 +32,7 @@ export async function proxy(request: NextRequest) {
 			const data = payload as unknown as JwtPayload;
 
 			isAuthenticated = true;
-			if (data.role && data.role.includes(USER_ROLES.ADMIN)) {
+			if (data.role && data.role.includes(UserRole.ADMIN)) {
 				haveAccess = true;
 			}
 		} catch {
@@ -70,7 +67,7 @@ export async function proxy(request: NextRequest) {
 					const { payload } = await jwtVerify(newAccessToken, JWT_SECRET);
 					const data = payload as unknown as JwtPayload;
 
-					if (data.role && data.role.includes(USER_ROLES.ADMIN)) {
+					if (data.role && data.role.includes(UserRole.ADMIN)) {
 						haveAccess = true;
 					}
 				}

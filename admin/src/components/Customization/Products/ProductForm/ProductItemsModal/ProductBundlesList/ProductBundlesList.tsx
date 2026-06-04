@@ -5,22 +5,14 @@ import BundleCard from '@/components/Customization/BundleCard/BundleCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
-import { Bundle } from '@/types';
-import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
+type AvailableBundle = NonNullable<
+	Awaited<ReturnType<typeof getAllAvailableBundles>>['items'][number]
+>;
+
 const ProductBundlesList = <T extends FieldValues>() => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationDto = {
-		page: pageFromParams,
-		limit: 20,
-	};
-
 	const { setValue, watch } = useFormContext<T>();
-
 	const bundleId = watch('bundleId' as Path<T>);
 
 	const handleSelect = (id: string) => {
@@ -29,10 +21,10 @@ const ProductBundlesList = <T extends FieldValues>() => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<Bundle>
-			queryFn={() => getAllAvailableBundles(params)}
-			queryKey={() => [
-				...QUERY_KEYS.customization.bundle.getAllAvailable(params),
+		<ItemsListPaginatedWrapper<AvailableBundle>
+			queryFn={(query) => getAllAvailableBundles(query)}
+			queryKey={(query) => [
+				...QUERY_KEYS.customization.bundle.getAllAvailable(query),
 			]}
 			isModal
 			itemCard={(bundle) => (
