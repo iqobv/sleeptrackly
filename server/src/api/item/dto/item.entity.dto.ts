@@ -11,7 +11,11 @@ export class ItemEntityDto extends DefaultFieldsDto {
 	@Expose() isExclusive: boolean;
 	@Expose() isAnimated: boolean;
 	@Expose() basePrice: number;
-	@Expose() rarity: ItemRarity;
+
+	@Expose()
+	@ApiProperty({ enum: ItemRarity, enumName: 'ItemRarity' })
+	rarity: ItemRarity;
+
 	@Expose() mediaUrl: string;
 	@Expose() previewUrl: string;
 }

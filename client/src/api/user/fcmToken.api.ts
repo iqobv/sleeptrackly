@@ -1,11 +1,27 @@
+import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 
-export const saveFcmToken = async (token: string) =>
-	(await apiClient.post('/v1/fcm/save-token', { token })).data;
+type SaveFcmTokenResponse =
+	paths['/v1/fcm/save-token']['post']['responses']['201']['content']['application/json'];
+type CheckFcmTokenStatusResponse =
+	paths['/v1/fcm/exists/{token}']['get']['responses']['200']['content']['application/json'];
+type RemoveFcmTokenResponse =
+	paths['/v1/fcm/remove-token/{token}']['delete']['responses']['200']['content']['application/json'];
 
-export const checkFcmTokenStatus = async (token: string) =>
-	(await apiClient.get<boolean>(`/v1/fcm/exists/${encodeURIComponent(token)}`))
+export const saveFcmToken = async (token: string) =>
+	(await apiClient.post<SaveFcmTokenResponse>('/v1/fcm/save-token', { token }))
 		.data;
 
+export const checkFcmTokenStatus = async (token: string) =>
+	(
+		await apiClient.get<CheckFcmTokenStatusResponse>(
+			`/v1/fcm/exists/${encodeURIComponent(token)}`,
+		)
+	).data;
+
 export const removeFcmToken = async (token: string) =>
-	(await apiClient.delete<boolean>(`/v1/fcm/remove-token/${token}`)).data;
+	(
+		await apiClient.delete<RemoveFcmTokenResponse>(
+			`/v1/fcm/remove-token/${token}`,
+		)
+	).data;

@@ -1,7 +1,3 @@
-import { Item } from '../item/item.types';
+import { components } from '../schema';
 
-export interface ItemInBundle {
-	itemId: string;
-	bundleId: string;
-	item: Item;
-}
+export type ItemInBundle = components['schemas']['ShopBundleItemDto'];

@@ -1,12 +1,12 @@
 'use client';
 
 import { List, SkeletonLoader } from '@/components/UI';
-import { User } from '@/types';
+import { SearchUser } from '@/types';
 import { AddFriendItem } from './AddFriendItem/AddFriendItem';
 import styles from './AddFriendList.module.scss';
 
 interface AddFriendListProps {
-	data: User[] | null | undefined;
+	data: SearchUser[] | null | undefined;
 	isPending: boolean;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }

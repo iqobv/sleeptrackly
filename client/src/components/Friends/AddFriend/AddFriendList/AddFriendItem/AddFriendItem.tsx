@@ -3,14 +3,14 @@
 import { sendFriendRequest } from '@/api';
 import { Avatar, Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { User } from '@/types';
+import { SearchUser } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import styles from './AddFriendItem.module.scss';
 
 interface AddFriendItemProps {
-	user: User;
+	user: SearchUser;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 

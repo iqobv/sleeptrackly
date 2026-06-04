@@ -1,7 +1,3 @@
-import { Product } from '../product/product.types';
-import { FeaturedShopSection } from './featuredShopSection.types';
+import { getFeaturedShop } from '@/api';
 
-export interface FeaturedShop {
-	carousel: Product[];
-	sections: FeaturedShopSection[];
-}
+export type FeaturedShop = Awaited<ReturnType<typeof getFeaturedShop>>;

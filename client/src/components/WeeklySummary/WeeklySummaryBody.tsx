@@ -5,15 +5,15 @@ import { QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import styles from './WeeklySummary.module.scss';
-import WeeklySummaryCard from './WeeklySummaryCard/WeeklySummaryCard';
+import { WeeklySummaryCard } from './WeeklySummaryCard/WeeklySummaryCard';
 import { WEEKLY_SUMMARY_CARDS } from './weeklySummaryCards';
-import WeeklySummaryLoader from './WeeklySummaryLoader';
+import { WeeklySummaryLoader } from './WeeklySummaryLoader';
 
 interface WeeklySummaryBodyProps {
 	id: string;
 }
 
-const WeeklySummaryBody = ({ id }: WeeklySummaryBodyProps) => {
+export const WeeklySummaryBody = ({ id }: WeeklySummaryBodyProps) => {
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.weeklySummary.one(id),
 		queryFn: () => getWeeklySummary(id),
@@ -37,5 +37,3 @@ const WeeklySummaryBody = ({ id }: WeeklySummaryBodyProps) => {
 		</>
 	);
 };
-
-export default WeeklySummaryBody;

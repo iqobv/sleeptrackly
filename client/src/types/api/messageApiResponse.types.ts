@@ -1,7 +1,5 @@
-export interface MessageApiResponse {
-	statusCode: number;
-	code: string;
-	message: string;
-	field?: string;
-	meta?: Record<string, unknown>;
-}
+import { components } from '../schema';
+
+export type MessageApiResponse = components['schemas']['MessageResponseDto'] & {
+	statusCode?: number;
+};

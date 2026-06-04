@@ -9,7 +9,11 @@ interface WeeklySummaryCardProps {
 	icon: IconType;
 }
 
-const WeeklySummaryCard = ({ icon, label, value }: WeeklySummaryCardProps) => {
+export const WeeklySummaryCard = ({
+	icon,
+	label,
+	value,
+}: WeeklySummaryCardProps) => {
 	const Icon = icon;
 
 	return (
@@ -22,5 +26,3 @@ const WeeklySummaryCard = ({ icon, label, value }: WeeklySummaryCardProps) => {
 		</div>
 	);
 };
-
-export default WeeklySummaryCard;

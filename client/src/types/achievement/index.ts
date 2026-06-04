@@ -1,2 +1,2 @@
-export * from './achievement.types';
+export type * from './achievement.types';
 export * from './achievementType.types';

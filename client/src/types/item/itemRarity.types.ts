@@ -1,3 +1,14 @@
-import { ITEM_RARITIES } from '@/constants';
+import { components } from '../schema';
 
-export type ItemRarity = (typeof ITEM_RARITIES)[keyof typeof ITEM_RARITIES];
+type SwaggerItemRarity = components['schemas']['ItemRarity'];
+
+export const ItemRarity = {
+	COMMON: 'COMMON',
+	UNCOMMON: 'UNCOMMON',
+	RARE: 'RARE',
+	EPIC: 'EPIC',
+	LEGENDARY: 'LEGENDARY',
+	MYTHIC: 'MYTHIC',
+} as const satisfies Record<SwaggerItemRarity, SwaggerItemRarity>;
+
+export type ItemRarity = (typeof ItemRarity)[keyof typeof ItemRarity];

@@ -1,1 +1,1 @@
-export * from './weeklySummary.types';
+export type * from './weeklySummary.types';

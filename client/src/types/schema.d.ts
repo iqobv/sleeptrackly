@@ -2022,6 +2022,8 @@ export interface components {
         AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
         /** @enum {string} */
         ProfileItemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
+        /** @enum {string} */
+        ItemRarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
         TranslationDto: {
             /**
              * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
@@ -2032,12 +2034,11 @@ export interface components {
         };
         InventoryItemDetailsDto: {
             type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             mediaUrl: string;
             isAnimated: boolean;
-            /** @enum {string} */
-            rarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             translation: components["schemas"]["TranslationDto"];
         };
         UserInventoryItemDto: {
@@ -2075,12 +2076,11 @@ export interface components {
         };
         FullItemDto: {
             type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
             translations: components["schemas"]["FullTranslationDto"][];
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
-            /** @enum {string} */
-            rarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             mediaUrl: string;
             previewUrl: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2671,27 +2671,23 @@ export interface components {
         CreateItemSwaggerDto: {
             /** @example AVATAR_FRAME */
             type: components["schemas"]["ProfileItemType"];
+            /** @example COMMON */
+            rarity: components["schemas"]["ItemRarity"];
             /** Format: binary */
             media: string;
             /** Format: binary */
             preview: string;
             isExclusive?: boolean;
             basePrice: number;
-            /**
-             * @example COMMON
-             * @enum {string}
-             */
-            rarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             translations: components["schemas"]["TranslationDto"][];
         };
         ItemDto: {
             type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
             translations: components["schemas"]["TranslationDto"][];
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
-            /** @enum {string} */
-            rarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             mediaUrl: string;
             previewUrl: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -2712,17 +2708,14 @@ export interface components {
         UpdateItemDtoSwaggerDto: {
             /** @example AVATAR_FRAME */
             type?: components["schemas"]["ProfileItemType"];
+            /** @example COMMON */
+            rarity?: components["schemas"]["ItemRarity"];
             /** Format: binary */
             media?: string;
             /** Format: binary */
             preview?: string;
             isExclusive?: boolean;
             basePrice?: number;
-            /**
-             * @example COMMON
-             * @enum {string}
-             */
-            rarity?: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             translations?: components["schemas"]["TranslationDto"][];
         };
         CreateProductDto: {
@@ -2825,6 +2818,7 @@ export interface components {
         };
         ShopItemDto: {
             type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2834,8 +2828,6 @@ export interface components {
             isExclusive: boolean;
             isAnimated: boolean;
             basePrice: number;
-            /** @enum {string} */
-            rarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
             mediaUrl: string;
             previewUrl: string;
             translation: components["schemas"]["TranslationDto"];
@@ -2943,7 +2935,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-04T19:02:57.710Z
+             * @example 2026-06-05T14:04:20.933Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2974,7 +2966,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-04T19:02:57.710Z
+             * @example 2026-06-05T14:04:20.933Z
              */
             expiresAt?: string;
             /** @example 0 */

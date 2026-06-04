@@ -30,6 +30,7 @@ export class CreateItemDto {
 	basePrice: number;
 
 	/** @example COMMON */
+	@ApiProperty({ enum: ItemRarity, enumName: 'ItemRarity' })
 	@IsEnum(ItemRarity)
 	rarity: ItemRarity;
 

@@ -2,8 +2,7 @@
 
 import { equipInventoryItem } from '@/api';
 import { Button } from '@/components/UI';
-import { ITEM_TYPES } from '@/constants';
-import { InventoryItem } from '@/types';
+import { InventoryItem, ItemType } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
@@ -44,7 +43,7 @@ export const InventoryListItem = ({
 	return (
 		<div className={`${styles.item} ${isEquipped ? styles.equipped : ''}`}>
 			<div className={styles.imageContainer}>
-				{item.item.type === ITEM_TYPES.ANIMATED_AVATAR ? (
+				{item.item.type === ItemType.ANIMATED_AVATAR ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.item.mediaUrl}`}
 						loop

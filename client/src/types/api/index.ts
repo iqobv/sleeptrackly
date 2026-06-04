@@ -1,4 +1,2 @@
-export * from './error.types';
-export * from './messageApiResponse.types';
-export * from './paginatedData.types';
-export * from './sseSignalPayload.types';
+export type * from './messageApiResponse.types';
+export type * from './sseSignalPayload.types';

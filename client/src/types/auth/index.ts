@@ -1,2 +1,2 @@
-export * from './authField.types';
-export * from './session.types';
+export type * from './authField.types';
+export type * from './session.types';

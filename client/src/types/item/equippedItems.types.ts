@@ -1,6 +1,3 @@
-import { EquippedItem } from './equippedItem.types';
+import { Profile } from '../profile';
 
-export interface EquippedItems {
-	id: string;
-	item: EquippedItem;
-}
+export type EquippedItems = Profile['equippedItems'][number];
