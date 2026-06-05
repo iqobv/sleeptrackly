@@ -1,27 +1,42 @@
 'use client';
 
 import { Button } from '@/components/UI';
+import Checkbox from '@/components/UI/Checkbox/Checkbox';
 import { ShopFilterDto } from '@/dto';
 import { useFormContext } from 'react-hook-form';
 import { DEFAULT_SHOP_FILTER_VALUES } from '../shopFilterValues';
+import { useShopFilters } from '../useShopFilters.hook';
 import styles from './AllShopFilter.module.scss';
 import { shopItemTypeOptions, shopProductTypeOptions } from './filterOptions';
 
-const AllShopFilter = () => {
+export const AllShopFilter = () => {
 	const { register, reset } = useFormContext<ShopFilterDto>();
 
-	const handleReset = () => reset(DEFAULT_SHOP_FILTER_VALUES);
+	const [, setUrlFilters] = useShopFilters();
+
+	const handleReset = () => {
+		reset(DEFAULT_SHOP_FILTER_VALUES);
+
+		setUrlFilters({
+			type: null,
+			itemType: null,
+			search: null,
+			sortBy: null,
+			sortOrder: null,
+			page: 1,
+		});
+	};
 
 	return (
-		<div className={styles['filter']}>
-			<div className={styles['filter__option']}>
+		<div className={styles.filter}>
+			<div className={styles.option}>
 				{shopProductTypeOptions.map((productType) => (
-					<div key={productType.value} className={styles['filter__item']}>
+					<div key={productType.value}>
 						<input
 							type="radio"
 							id={`productType_${productType.value}`}
 							value={productType.value}
-							className={styles['radio']}
+							className={styles.radio}
 							{...register('type')}
 						/>
 						<label htmlFor={`productType_${productType.value}`}>
@@ -30,19 +45,15 @@ const AllShopFilter = () => {
 					</div>
 				))}
 			</div>
-			<div className={styles['filter__option']}>
+			<div className={styles.option}>
 				{shopItemTypeOptions.map((itemType) => (
-					<div key={itemType.value} className={styles['filter__item']}>
-						<input
-							type="checkbox"
-							id={`itemType_${itemType.value}`}
+					<div key={itemType.value}>
+						<Checkbox
+							label={itemType.label}
 							value={itemType.value}
-							className={styles['checkbox']}
+							id={`itemType_${itemType.value}`}
 							{...register('itemType')}
 						/>
-						<label htmlFor={`itemType_${itemType.value}`}>
-							{itemType.label}
-						</label>
 					</div>
 				))}
 			</div>
@@ -52,5 +63,3 @@ const AllShopFilter = () => {
 		</div>
 	);
 };
-
-export default AllShopFilter;

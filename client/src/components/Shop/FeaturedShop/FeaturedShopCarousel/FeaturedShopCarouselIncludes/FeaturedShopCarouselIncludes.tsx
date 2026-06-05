@@ -7,7 +7,7 @@ interface FeaturedShopCarouselIncludesProps {
 	items: ItemInBundle[];
 }
 
-const FeaturedShopCarouselIncludes = ({
+export const FeaturedShopCarouselIncludes = ({
 	items,
 }: FeaturedShopCarouselIncludesProps) => {
 	return (
@@ -30,5 +30,3 @@ const FeaturedShopCarouselIncludes = ({
 		</div>
 	);
 };
-
-export default FeaturedShopCarouselIncludes;

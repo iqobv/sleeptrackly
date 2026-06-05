@@ -5,19 +5,19 @@ import { SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import styles from './FeaturedShop.module.scss';
-import FeaturedShopBanner from './FeaturedShopBanner/FeaturedShopBanner';
-import FeaturedShopCarousel from './FeaturedShopCarousel/FeaturedShopCarousel';
-import FeaturedShopLoader from './FeaturedShopLoader';
-import FeaturedShopSections from './FeaturedShopSections/FeaturedShopSections';
+import { FeaturedShopBanner } from './FeaturedShopBanner';
+import { FeaturedShopCarousel } from './FeaturedShopCarousel';
+import { FeaturedShopLoader } from './FeaturedShopLoader';
+import { FeaturedShopSections } from './FeaturedShopSections';
 
-const FeaturedShop = () => {
+export const FeaturedShop = () => {
 	const { data, isLoading } = useQuery({
 		queryFn: () => getFeaturedShop({ language: 'en' }),
 		queryKey: QUERY_KEYS.shop.featured,
 	});
 
 	return (
-		<div className={styles['featured-shop']}>
+		<div className={styles.featuredShop}>
 			{isLoading && <FeaturedShopLoader />}
 			{!isLoading && data && (
 				<>
@@ -42,5 +42,3 @@ const FeaturedShop = () => {
 		</div>
 	);
 };
-
-export default FeaturedShop;

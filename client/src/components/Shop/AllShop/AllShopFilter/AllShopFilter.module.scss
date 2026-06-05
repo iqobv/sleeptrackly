@@ -16,12 +16,12 @@
 		max-width: 18.75rem;
 		position: sticky;
 	}
+}
 
-	&__option {
-		gap: 0.25rem;
-		display: flex;
-		flex-direction: column;
-	}
+.option {
+	gap: 0.625rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .radio,

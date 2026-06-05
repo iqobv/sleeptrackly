@@ -7,6 +7,7 @@ export * from './ConfirmModal/ConfirmModal';
 export * from './Divider/Divider';
 export * from './Dropdown';
 export * from './Field/Field';
+export * from './Form';
 export * from './FormLabel/FormLabel';
 export * from './FormSelect';
 export * from './Grid';

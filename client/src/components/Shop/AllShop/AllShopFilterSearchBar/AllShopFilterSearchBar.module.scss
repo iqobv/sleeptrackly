@@ -13,16 +13,6 @@
 	}
 }
 
-.search-input {
-	flex: 1;
-	margin-right: 1rem;
-	width: 100%;
-
-	@include respond-to('md') {
-		max-width: 25rem;
-	}
-}
-
 div.selectContainer {
 	display: flex;
 	flex-direction: column;
