@@ -13,7 +13,7 @@ interface ShopCardProps {
 	isPreload: boolean;
 }
 
-const ShopCard = ({ product, isPreload }: ShopCardProps) => {
+export const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
 	const queryClient = useQueryClient();
 
@@ -96,5 +96,3 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 		</div>
 	);
 };
-
-export default ShopCard;

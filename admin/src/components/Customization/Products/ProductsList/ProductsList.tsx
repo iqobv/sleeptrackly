@@ -3,21 +3,18 @@
 import { getAllProducts } from '@/api';
 import { Grid, Pagination } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { usePagination } from '@/hooks';
+import { usePagination, usePaginationBounds } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
 import { CustomizationPageHeader } from '../../CustomizationPageHeader';
 import { ProductCard } from './ProductCard';
 import styles from './ProductsList.module.scss';
 import { ProductsListLoader } from './ProductsListLoader';
 
 export const ProductsList = () => {
-	const searchParams = useSearchParams();
-
-	const pageFromUrl = Number(searchParams.get('page')) || 1;
+	const { currentPage, setPage } = usePagination();
 
 	const params = {
-		page: pageFromUrl,
+		page: currentPage,
 		limit: 20,
 		language: 'en',
 	};
@@ -27,7 +24,7 @@ export const ProductsList = () => {
 		queryKey: QUERY_KEYS.customization.product.getAll(params),
 	});
 
-	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
+	usePaginationBounds(currentPage, setPage, data?.meta.totalPages);
 
 	return (
 		<>

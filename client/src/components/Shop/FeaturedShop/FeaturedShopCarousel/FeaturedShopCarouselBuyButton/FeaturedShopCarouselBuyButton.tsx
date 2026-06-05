@@ -20,7 +20,7 @@ interface FeaturedShopCarouselBuyButtonProps {
 	expiresAt: Date | null;
 }
 
-const FeaturedShopCarouselBuyButton = ({
+export const FeaturedShopCarouselBuyButton = ({
 	price,
 	discountedPrice,
 	productId,
@@ -86,5 +86,3 @@ const FeaturedShopCarouselBuyButton = ({
 		</div>
 	);
 };
-
-export default FeaturedShopCarouselBuyButton;

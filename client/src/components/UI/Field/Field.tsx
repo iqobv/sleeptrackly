@@ -15,6 +15,7 @@ export const Field = ({
 	required,
 	id,
 	disabled,
+	style,
 }: FieldProps) => {
 	const generatedId = useId();
 	const finalId = id ?? generatedId;
@@ -23,7 +24,7 @@ export const Field = ({
 		<FieldContext.Provider
 			value={{ id: finalId, error: !!error, required, disabled }}
 		>
-			<div className={clsx(styles.field, className)}>
+			<div className={clsx(styles.field, className)} style={style}>
 				{label && (
 					<FormLabel required={required} id={finalId} disabled={disabled}>
 						{label}

@@ -3,29 +3,27 @@
 import { getInventory } from '@/api';
 import { Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { useAuth, usePagination } from '@/hooks';
+import { useAuth, usePagination, usePaginationBounds } from '@/hooks';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
 import styles from './InventoryList.module.scss';
 import { InventoryListEmpty } from './InventoryListEmpty/InventoryListEmpty';
 import { InventoryListItem } from './InventoryListItem';
 import { InventoryListLoader } from './InventoryListLoader';
 
 export const InventoryList = () => {
-	const searchParams = useSearchParams();
-	const pageFromUrl = Number(searchParams.get('page')) || 1;
+	const { currentPage, setPage } = usePagination();
 
 	const { user } = useAuth();
 
 	const { data, isLoading, refetch } = useQuery({
-		queryKey: QUERY_KEYS.inventory.all(user ? user.id : '', pageFromUrl),
+		queryKey: QUERY_KEYS.inventory.all(user ? user.id : '', currentPage),
 		queryFn: () =>
-			getInventory({ page: pageFromUrl, limit: 20, language: 'en' }),
+			getInventory({ page: currentPage, limit: 20, language: 'en' }),
 		placeholderData: keepPreviousData,
 		enabled: !!user?.id,
 	});
 
-	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
+	usePaginationBounds(currentPage, setPage, data?.meta.totalPages);
 
 	return (
 		<div className={styles.inventory}>

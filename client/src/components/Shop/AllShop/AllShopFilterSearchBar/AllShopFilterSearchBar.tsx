@@ -1,18 +1,17 @@
 'use client';
 
 import { Field, FormSelect, Input, SelectItem } from '@/components/UI';
-import { ShopFilterDto } from '@/dto';
-import { ShopSortBy } from '@/types';
+import { ShopSortBy, SortOrder } from '@/types';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { MdSearch } from 'react-icons/md';
+import { AllShopFiltersForm } from '../AllShop';
 import styles from './AllShopFilterSearchBar.module.scss';
 import { SHOP_FILTER_OPTIONS } from './filterSortOptions';
 
-const AllShopFilterSearchBar = () => {
-	const { register, watch, setValue, control } = useFormContext<
-		ShopFilterDto & { sort?: string }
-	>();
+export const AllShopFilterSearchBar = () => {
+	const { register, watch, setValue, control } =
+		useFormContext<AllShopFiltersForm>();
 
 	const sort = watch('sort');
 
@@ -22,20 +21,17 @@ const AllShopFilterSearchBar = () => {
 	useEffect(() => {
 		if (!sortBy || !sortOrder) return;
 
-		setValue('sort', `${sortBy}_${sortOrder}`.toUpperCase(), {
+		setValue('sort', `${sortBy}_${sortOrder}`, {
 			shouldDirty: false,
 		});
 	}, [sortBy, sortOrder, setValue]);
 
 	useEffect(() => {
 		if (sort) {
-			const [sortBy, sortOrder] = sort.split('_') as [
-				ShopSortBy,
-				'ASC' | 'DESC',
-			];
+			const [sortBy, sortOrder] = sort.split('_') as [ShopSortBy, SortOrder];
 
 			setValue('sortBy', sortBy, { shouldValidate: true, shouldDirty: true });
-			setValue('sortOrder', sortOrder.toLowerCase() as 'asc' | 'desc', {
+			setValue('sortOrder', sortOrder, {
 				shouldValidate: true,
 				shouldDirty: true,
 			});
@@ -76,5 +72,3 @@ const AllShopFilterSearchBar = () => {
 		</div>
 	);
 };
-
-export default AllShopFilterSearchBar;

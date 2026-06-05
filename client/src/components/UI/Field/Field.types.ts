@@ -6,6 +6,7 @@ export interface FieldProps {
 	required?: boolean;
 	className?: string;
 	disabled?: boolean;
+	style?: React.CSSProperties;
 }
 
 export interface FieldContextValue {

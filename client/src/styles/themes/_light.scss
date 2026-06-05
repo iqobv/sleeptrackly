@@ -13,6 +13,7 @@
 	--border-radius: 10px;
 	--color-error: #e7000b;
 	--gap: 1rem;
+	--checkbox-transition: 0.2s ease-in-out;
 
 	/* Typography Colors */
 	--text-primary: #111827;
@@ -283,4 +284,14 @@
 	--tooltip-bg: #1f2937;
 	--tooltip-text: #ffffff;
 	--tooltip-arrow-bg: #1f2937;
+
+	/* Checkbox */
+	--checkbox-wrapper-bg: #ffffff;
+	--checkbox-wrapper-bg-active: #ececec;
+	--checkbox-border: #d1d5db;
+	--checkbox-border-active: #000000;
+	--checkbox-input-bg: #ffffff;
+	--checkbox-input-bg-active: #000000;
+	--checkbox-checkmark: #ffffff;
+	--checkbox-text: #000000;
 }

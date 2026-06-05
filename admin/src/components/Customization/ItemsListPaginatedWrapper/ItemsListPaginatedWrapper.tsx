@@ -2,11 +2,10 @@
 
 import { Pagination } from '@/components/UI';
 import { PaginationDto } from '@/dto';
-import { usePagination } from '@/hooks';
+import { usePagination, usePaginationBounds } from '@/hooks';
 import { PaginatedDataResponse } from '@/types';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
-import { useSearchParams } from 'next/navigation';
 import React from 'react';
 import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
 import styles from './ItemsListPaginatedWrapper.module.scss';
@@ -33,11 +32,10 @@ const ItemsListPaginatedWrapper = <T,>({
 	isModal = false,
 	loader,
 }: ItemsListPaginatedWrapperProps<T>) => {
-	const searchParams = useSearchParams();
-	const pageFromUrl = Number(searchParams.get('page')) || 1;
+	const { currentPage, setPage } = usePagination();
 
 	const params: PaginationDto = {
-		page: pageFromUrl,
+		page: currentPage,
 		limit: 20,
 	};
 
@@ -47,7 +45,7 @@ const ItemsListPaginatedWrapper = <T,>({
 		...queryOptions,
 	});
 
-	const { currentPage, setPage } = usePagination(data?.meta.totalPages || 1);
+	usePaginationBounds(currentPage, setPage, data?.meta.totalPages);
 
 	const classNames = clsx(styles.wrapper, isModal && styles.isModal, className);
 

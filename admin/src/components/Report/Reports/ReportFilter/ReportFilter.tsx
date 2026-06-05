@@ -2,25 +2,19 @@
 
 import { ReportPaginationQuery, ReportStatus } from '@/types';
 import { capitalize } from '@/utils';
-import { Dispatch, SetStateAction } from 'react';
+import { ReportsChildsProps } from '../Reports';
 import styles from './ReportFilter.module.scss';
-
-interface ReportFilterProps {
-	filters: ReportPaginationQuery;
-	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
-}
 
 const selectProps: Partial<React.ComponentProps<'select'>> = {
 	className: styles.select,
 };
 
-export const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
+export const ReportFilter = ({ filters, setFilters }: ReportsChildsProps) => {
 	const onChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
 		key: keyof ReportPaginationQuery,
 	) => {
 		setFilters({
-			...filters,
 			page: 1,
 			[key]: e.target.value,
 		});
