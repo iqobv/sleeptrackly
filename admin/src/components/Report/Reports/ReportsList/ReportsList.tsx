@@ -2,20 +2,14 @@
 
 import { getReports } from '@/api';
 import { QUERY_KEYS } from '@/config';
-import { ReportPaginationQuery } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { Dispatch, SetStateAction } from 'react';
+import { ReportsChildsProps } from '../Reports';
 import { ReportsPagination } from '../ReportsPagination/ReportsPagination';
 import styles from './ReportsList.module.scss';
 import { ReportsListItem } from './ReportsListItem/ReportsListItem';
 import { ReportsListLoader } from './ReportsListLoader';
 
-interface ReportsListProps {
-	filters: ReportPaginationQuery;
-	setFilters: Dispatch<SetStateAction<ReportPaginationQuery>>;
-}
-
-export const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
+export const ReportsList = ({ filters, setFilters }: ReportsChildsProps) => {
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.report.getReports(filters),
 		queryFn: () => getReports(filters),

@@ -1,3 +1,9 @@
-import { REPORT_TYPES } from '@/constants';
+import { components } from '../schema';
 
-export type ReportType = (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
+type SwaggerReportType = components['schemas']['ReportType'];
+
+export const ReportType = {
+	USER: 'USER',
+} as const satisfies Record<SwaggerReportType, SwaggerReportType>;
+
+export type ReportType = (typeof ReportType)[keyof typeof ReportType];

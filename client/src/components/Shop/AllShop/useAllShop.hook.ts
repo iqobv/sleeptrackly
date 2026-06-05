@@ -42,7 +42,6 @@ export const useAllShop = () => {
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.shop.allProducts(JSON.stringify(apiFilters)),
 		queryFn: () => getAllShop(apiFilters),
-		// placeholderData: keepPreviousData,
 	});
 
 	useEffect(() => {

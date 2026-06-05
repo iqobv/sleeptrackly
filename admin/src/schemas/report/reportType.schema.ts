@@ -1,6 +1,4 @@
-import { REPORT_TYPES } from '@/constants';
+import { ReportType } from '@/types';
 import z from 'zod';
 
-export const reportTypeSchema = z.enum(
-	Object.values(REPORT_TYPES) as [string, ...string[]]
-);
+export const reportTypeSchema = z.enum(ReportType);
