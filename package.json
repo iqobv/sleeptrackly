@@ -1,6 +1,7 @@
 {
 	"name": "sleeptrackly",
 	"private": true,
+	"packageManager": "pnpm@11.5.1",
 	"scripts": {
 		"dev:client": "pnpm --filter client dev",
 		"dev:admin": "pnpm --filter admin dev",
@@ -25,7 +26,7 @@
 		"typescript": "catalog:",
 		"typescript-eslint": "catalog:"
 	},
-	"resolutions": {
+	"overrides": {
 		"postcss": "^8.5.10",
 		"minimatch": "^10.2.1",
 		"glob": "^10.5.0",
