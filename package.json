@@ -1,0 +1,42 @@
+{
+	"name": "sleeptrackly",
+	"private": true,
+	"scripts": {
+		"dev:client": "pnpm --filter client dev",
+		"dev:admin": "pnpm --filter admin dev",
+		"dev:server": "pnpm --filter server start:dev",
+		"build:all": "pnpm -r build",
+		"lint:all": "pnpm -r lint",
+		"generate:api": "npx openapi-typescript http://localhost:5000/docs-json -o shared/types/src/schema.d.ts"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "catalog:",
+		"@eslint/js": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"eslint": "catalog:",
+		"eslint-config-next": "catalog:",
+		"eslint-config-prettier": "catalog:",
+		"eslint-plugin-oxlint": "catalog:",
+		"globals": "catalog:",
+		"oxlint": "catalog:",
+		"prettier": "catalog:",
+		"typescript": "catalog:",
+		"typescript-eslint": "catalog:"
+	},
+	"resolutions": {
+		"postcss": "^8.5.10",
+		"minimatch": "^10.2.1",
+		"glob": "^10.5.0",
+		"lodash": "^4.17.21",
+		"picomatch": "^2.3.1",
+		"@tootallnate/once": "^3.0.1",
+		"http-proxy-agent": "^5.0.0",
+		"teeny-request": "^9.0.0",
+		"retry-request": "^7.0.2",
+		"path-to-regexp": "^8.3.2",
+		"@hono/node-server": "^1.19.13",
+		"uuid": "^14.0.0"
+	}
+}

@@ -1,4 +1,4 @@
-import { Button, List, SectionHeader } from '@/components/UI';
+import { Button, List, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './CustomizationLinks.module.scss';
 import { CUSTOMIZATION_LINKS } from './customizationLinksItems';

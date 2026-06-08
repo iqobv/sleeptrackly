@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
 	Body,
 	Head,
@@ -7,8 +8,7 @@ import {
 	Preview,
 	Tailwind,
 	Text,
-} from '@react-email/components';
-import * as React from 'react';
+} from 'react-email';
 
 interface ResetPasswordTemplateProps {
 	domain: string;
@@ -37,17 +37,19 @@ export default function ResetPasswordTemplate({
 						href={url}
 						target="_blank"
 						rel="noopener noreferrer"
-						style={{
-							backgroundColor: '#3b82f6',
-							color: '#ffffff',
-							padding: '12px 24px',
-							borderRadius: '8px',
-							textDecoration: 'none',
-							display: 'inline-block',
-							fontWeight: 'bold',
-							marginTop: '16px',
-							textAlign: 'center',
-						}}
+						style={
+							{
+								backgroundColor: '#3b82f6',
+								color: '#ffffff',
+								padding: '12px 24px',
+								borderRadius: '8px',
+								textDecoration: 'none',
+								display: 'inline-block',
+								fontWeight: 'bold',
+								marginTop: '16px',
+								textAlign: 'center',
+							} as React.CSSProperties
+						}
 					>
 						Reset Password
 					</Link>

@@ -30,7 +30,12 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 						height={200}
 					/>
 				) : (
-					<CDNImage src={imageUrl} alt={translation} width={200} height={200} />
+					<CDNImage
+						path={imageUrl}
+						alt={translation}
+						width={200}
+						height={200}
+					/>
 				)}
 			</div>
 			<div>

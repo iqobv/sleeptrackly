@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, List, SectionHeader, Typography } from '@/components/UI';
+import { NavigationBackButton } from '@/components/UI';
 import { FriendStatus } from '@/types';
+import { Button, List, SectionHeader, Typography } from '@shared/ui';
 import { PendingsItem } from './PendingsItem/PendingsItem';
 import styles from './PendingsList.module.scss';
 import { usePendingsList } from './usePendingsList';
@@ -16,7 +17,7 @@ export const PendingsList = () => {
 				titleProps={{
 					variant: 'h3',
 				}}
-				showBackButton
+				leftSlot={<NavigationBackButton />}
 			/>
 			<div className={styles.buttons}>
 				<Button

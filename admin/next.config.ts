@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	transpilePackages: [
+		'@shared/ui',
+		'@shared/utils',
+		'@shared/types',
+		'@shared/hooks',
+	],
 };
 
 export default nextConfig;

@@ -1,8 +1,8 @@
 'use client';
 
+import { Button } from '@shared/ui';
 import React, { ComponentPropsWithRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Button } from '../../Button';
 import { FormSubmitButtonProps } from '../FormSubmit/FormSubmit';
 
 export interface FormResetProps extends Omit<

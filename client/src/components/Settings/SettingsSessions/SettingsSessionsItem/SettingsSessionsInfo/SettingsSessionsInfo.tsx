@@ -1,7 +1,7 @@
 'use client';
 
 import { Session } from '@/types';
-import { capitalize } from '@/utils';
+import { capitalize } from '@shared/utils';
 import styles from './SettingsSessionsInfo.module.scss';
 
 interface SettingsSessionsInfoProps {

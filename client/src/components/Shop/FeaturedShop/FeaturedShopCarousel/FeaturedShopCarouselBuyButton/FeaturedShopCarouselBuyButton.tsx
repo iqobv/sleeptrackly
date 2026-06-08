@@ -2,9 +2,9 @@
 
 import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
-import { Button } from '@/components/UI';
 import { AUTH_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
+import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';

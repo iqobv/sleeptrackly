@@ -1,7 +1,7 @@
 'use client';
 
 import { sendRestoreEmail } from '@/api';
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';

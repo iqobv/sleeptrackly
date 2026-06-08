@@ -1,3 +1,4 @@
+import { FullProductDto } from '@api/product/dto';
 import { AchievementType } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -22,4 +23,8 @@ export class FullAchievementDto extends AchievementDto {
 	@Expose()
 	@Type(() => FullAchievementTranslationDto)
 	translations: FullAchievementTranslationDto[];
+
+	@Expose()
+	@Type(() => FullProductDto)
+	rewardProduct: FullProductDto | null;
 }

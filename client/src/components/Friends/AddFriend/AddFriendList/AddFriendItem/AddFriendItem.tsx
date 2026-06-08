@@ -1,9 +1,10 @@
 'use client';
 
 import { sendFriendRequest } from '@/api';
-import { Avatar, Button } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { SearchUser } from '@/types';
+import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
@@ -30,7 +31,7 @@ export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	return (
 		<div className={styles.item}>
 			<div className={styles.info}>
-				<Avatar avatar={user?.avatar?.url} size={50} />
+				<UserAvatar avatarPath={user?.avatar?.url} size={50} />
 				<Link href={PAGES.PROFILE(user.username)} className={styles.username}>
 					{user.username}
 				</Link>

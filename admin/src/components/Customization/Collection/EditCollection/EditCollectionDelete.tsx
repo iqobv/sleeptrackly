@@ -1,10 +1,11 @@
 'use client';
 
 import { deleteCollection } from '@/api';
-import { Button, ConfirmModal } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
+import { Button, ConfirmModal } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { MdDeleteOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 
@@ -13,6 +14,8 @@ interface EditCollectionDeleteProps {
 }
 
 const EditCollectionDelete = ({ id }: EditCollectionDeleteProps) => {
+	const [isOpen, setIsOpen] = useState(false);
+
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
@@ -29,6 +32,8 @@ const EditCollectionDelete = ({ id }: EditCollectionDeleteProps) => {
 
 	return (
 		<ConfirmModal
+			isOpen={isOpen}
+			onClose={() => setIsOpen((prev) => !prev)}
 			onConfirm={mutate}
 			text="Are you sure you want to delete this collection? This action cannot be undone."
 			title="Delete Collection"

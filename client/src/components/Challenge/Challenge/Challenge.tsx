@@ -1,8 +1,8 @@
 'use client';
 
 import { getChallengeById } from '@/api';
-import { Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
+import { Loader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Calendar from '../Calendar/Calendar';
 import ChallengeInfo from '../ChallengeInfo/ChallengeInfo';

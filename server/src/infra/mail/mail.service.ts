@@ -1,7 +1,7 @@
 import { getMailerConfig } from '@config';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { render } from '@react-email/components';
+import { pretty, render } from '@react-email/render';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendEmailDto } from './dto';
@@ -29,8 +29,8 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await render(
-			ConfirmationTemplate({ domain: this.domain, token }),
+		const html = await pretty(
+			await render(ConfirmationTemplate({ domain: this.domain, token })),
 		);
 
 		return await this.sendEmail({
@@ -44,8 +44,8 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await render(
-			ResetPasswordTemplate({ domain: this.domain, token }),
+		const html = await pretty(
+			await render(ResetPasswordTemplate({ domain: this.domain, token })),
 		);
 
 		return await this.sendEmail({
@@ -59,8 +59,8 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await render(
-			RestoreAccountTemplate({ domain: this.domain, token }),
+		const html = await pretty(
+			await render(RestoreAccountTemplate({ domain: this.domain, token })),
 		);
 
 		return await this.sendEmail({

@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import { AchievementCardLoader } from './AchievementCard';
 import styles from './Achievements.module.scss';
 

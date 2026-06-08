@@ -1,6 +1,6 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './ReportsList.module.scss';
 
 const items = Array.from({ length: 10 }, (_, i) => i + 1);

@@ -1,20 +1,16 @@
 'use client';
 
+import { Select, SelectContent, SelectTrigger } from '@shared/ui';
 import { FieldValues, useController, useFormContext } from 'react-hook-form';
-import { Select, SelectContent, SelectTrigger } from '../Select';
-import { SelectValue } from '../Select/Select.types';
 import { FormSelectProps } from './FormSelect.types';
-import { FormSelectInput } from './FormSelectInput';
 
 export const FormSelect = <T extends FieldValues>({
-	children,
 	control,
 	name,
-	className,
-	customTrigger,
-	displayFormat,
-	multiple,
+	children,
 	placeholder,
+	className = '',
+	id,
 }: FormSelectProps<T>) => {
 	const formContext = useFormContext<T>();
 	const resolvedControl = control || formContext?.control;
@@ -31,39 +27,9 @@ export const FormSelect = <T extends FieldValues>({
 		control: resolvedControl,
 	});
 
-	const formatValue = (currentValue: SelectValue | undefined): string => {
-		if (displayFormat) {
-			return displayFormat(currentValue);
-		}
-
-		if (!currentValue) {
-			return '';
-		}
-
-		return Array.isArray(currentValue) ? currentValue.join(', ') : currentValue;
-	};
-
 	return (
-		<Select
-			value={value as string | string[] | undefined}
-			onChange={onChange}
-			multiple={multiple}
-		>
-			{customTrigger ? (
-				customTrigger
-			) : (
-				<SelectTrigger asChild>
-					{(currentValue, isOpen) => (
-						<FormSelectInput
-							currentValue={currentValue}
-							isOpen={isOpen}
-							placeholder={placeholder}
-							formatValue={formatValue}
-							className={className}
-						/>
-					)}
-				</SelectTrigger>
-			)}
+		<Select value={value} onValueChange={onChange}>
+			<SelectTrigger placeholder={placeholder} className={className} id={id} />
 			<SelectContent>{children}</SelectContent>
 		</Select>
 	);

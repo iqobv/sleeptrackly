@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader, ToggleSwitch } from '@/components/UI';
+import { Loader, ToggleSwitch } from '@shared/ui';
 import { SettingsField } from '../../SettingsField/SettingsField';
 import { useSettingsNotificationsPush } from './useSettingsNotificationsPush.hook';
 

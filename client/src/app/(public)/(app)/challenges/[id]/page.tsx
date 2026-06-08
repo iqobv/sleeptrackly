@@ -1,5 +1,5 @@
 import { Challenge } from '@/components/Challenge';
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import { cookies } from 'next/headers';
 
 interface ChallengePageProps {

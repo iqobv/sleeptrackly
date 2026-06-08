@@ -1,6 +1,7 @@
-import { FormSelect, SelectItem, ToggleSwitch } from '@/components/UI';
+import { FormSelect } from '@/components/UI';
 import { SettingsPrivacyDto } from '@/dto';
 import { Option, PrivacyVisibility, SettingsFormFields } from '@/types';
+import { SelectItem, ToggleSwitch } from '@shared/ui';
 import { Control, Path } from 'react-hook-form';
 
 interface SettingsPrivacyFieldsProps {
@@ -24,14 +25,7 @@ const OPTIONS: Option[] = [
 ];
 
 const PrivacySelectField = ({ control, name }: SettingsPrivacyFieldsProps) => (
-	<FormSelect
-		name={name}
-		control={control}
-		displayFormat={(value) => {
-			const option = OPTIONS.find((option) => option.value === value);
-			return option ? option.label : '';
-		}}
-	>
+	<FormSelect name={name} control={control}>
 		{OPTIONS.map((option) => (
 			<SelectItem key={option.value} value={option.value}>
 				{option.label}
@@ -66,6 +60,15 @@ export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 			name: 'profileVisibility',
 			label: 'Profile Visibility',
 			placeholder: 'Profile Visibility',
+			type: 'text',
+			render: ({ name, methods }) => (
+				<PrivacySelectField name={name} control={methods.control} />
+			),
+		},
+		{
+			name: 'achievementsVisibility',
+			label: 'Achievement Visibility',
+			placeholder: 'Achievement Visibility',
 			type: 'text',
 			render: ({ name, methods }) => (
 				<PrivacySelectField name={name} control={methods.control} />

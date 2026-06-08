@@ -1,5 +1,5 @@
-import { Button } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import styles from './Hero.module.scss';
 

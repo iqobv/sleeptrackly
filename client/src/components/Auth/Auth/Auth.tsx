@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import Login from '../Login/Login';
 import QueryMessageHandler from '../QueryMessageHandler/QueryMessageHandler';
 import Register from '../Register/Register';

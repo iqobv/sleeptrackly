@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, SectionHeader } from '@/components/UI';
 import { FullReport, ReportStatus } from '@/types';
+import { Button, SectionHeader } from '@shared/ui';
 import { useState } from 'react';
 import styles from './ReportSanction.module.scss';
 import { ReportSanctionForm } from './ReportSanctionForm/ReportSanctionForm';

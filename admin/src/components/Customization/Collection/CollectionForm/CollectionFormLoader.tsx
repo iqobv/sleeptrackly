@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import { TranslationFormLoader } from '../../TranslationForm';
 
 export const CollectionFormLoader = () => {

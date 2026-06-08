@@ -1,10 +1,11 @@
 'use client';
 
 import { changeRequestStatus } from '@/api';
-import { Avatar, Button } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { FriendRequest, FriendStatus } from '@/types';
+import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import styles from './PendingsItem.module.scss';
@@ -35,7 +36,7 @@ export const PendingsItem = ({ friend }: PendingsItemProps) => {
 	return (
 		<div key={friend.id} className={styles.item}>
 			<div className={styles.user}>
-				<Avatar avatar={friend.user?.avatar} size={45} />
+				<UserAvatar avatarPath={friend.user?.avatar} size={45} />
 				<Link href={PAGES.PROFILE(friend.user.username)}>
 					{friend.user.username}
 				</Link>

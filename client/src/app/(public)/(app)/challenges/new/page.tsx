@@ -1,5 +1,5 @@
 import { CreateChallenge } from '@/components/Challenge';
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 
 export default function NewChallengePage() {
 	return (

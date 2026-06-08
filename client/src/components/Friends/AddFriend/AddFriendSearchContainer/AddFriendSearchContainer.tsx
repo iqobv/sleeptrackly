@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Field, Input } from '@/components/UI';
+import { Button, Field, Input } from '@shared/ui';
 import { MdOutlineSearch } from 'react-icons/md';
 import styles from './AddFriendSearchContainer.module.scss';
 

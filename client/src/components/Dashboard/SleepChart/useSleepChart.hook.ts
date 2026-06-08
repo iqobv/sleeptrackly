@@ -1,7 +1,7 @@
 'use client';
 
-import { useTransformSecondsToHours } from '@/hooks';
 import { DashboardDay } from '@/types';
+import { useTransformSecondsToHours } from '@shared/hooks';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 

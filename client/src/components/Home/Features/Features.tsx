@@ -1,4 +1,4 @@
-import { List, SectionHeader } from '@/components/UI';
+import { List, SectionHeader } from '@shared/ui';
 import styles from './Features.module.scss';
 import FeaturesItem from './FeaturesItem/FeaturesItem';
 import { FEATURES_ITEMS } from './featuresItems';

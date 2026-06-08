@@ -1,5 +1,6 @@
 'use client';
 
+import { Field, type FieldProps } from '@shared/ui';
 import clsx from 'clsx';
 import React, { cloneElement, ReactElement } from 'react';
 import {
@@ -8,8 +9,6 @@ import {
 	useController,
 	useFormContext,
 } from 'react-hook-form';
-import { Field } from '../../Field/Field';
-import { FieldProps } from '../../Field/Field.types';
 import styles from './FormField.module.scss';
 
 export interface FormFieldProps<D extends FieldValues> extends Omit<

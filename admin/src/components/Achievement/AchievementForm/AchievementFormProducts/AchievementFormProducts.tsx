@@ -1,6 +1,8 @@
 'use client';
 
 import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
+import { BaseAchievementDto } from '@/dto';
+import { Product } from '@/types';
 import {
 	Button,
 	Field,
@@ -8,9 +10,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
-import { BaseAchievementDto } from '@/dto';
-import { Product } from '@/types';
+} from '@shared/ui';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './AchievementFormProducts.module.scss';

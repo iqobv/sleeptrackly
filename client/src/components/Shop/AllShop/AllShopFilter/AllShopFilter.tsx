@@ -1,8 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import Checkbox from '@/components/UI/Checkbox/Checkbox';
 import { ShopFilterDto } from '@/dto';
+import { Button, Checkbox } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
 import { DEFAULT_SHOP_FILTER_VALUES } from '../shopFilterValues';
 import { useShopFilters } from '../useShopFilters.hook';

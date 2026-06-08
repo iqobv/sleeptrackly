@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormatLocaleTime } from './useFormatLocaleTime.hook';
+import { useFormatLocaleTime } from '@shared/hooks';
 
 type DateType = string | Date;
 

@@ -1,8 +1,8 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
-import { useFormatLocaleTime, useTransformSecondsToHours } from '@/hooks';
 import { DashboardDay } from '@/types';
+import { useFormatLocaleTime, useTransformSecondsToHours } from '@shared/hooks';
+import { SectionHeader } from '@shared/ui';
 import DashboardCard from '../../DashboardCard/DashboardCard';
 import styles from './DashboardSleepSessions.module.scss';
 

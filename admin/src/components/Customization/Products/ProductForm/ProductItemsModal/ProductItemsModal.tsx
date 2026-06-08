@@ -1,5 +1,6 @@
 'use client';
 
+import { ProductType } from '@/types';
 import {
 	Button,
 	Modal,
@@ -7,8 +8,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
-import { ProductType } from '@/types';
+} from '@shared/ui';
 import { useState } from 'react';
 import ProductBundlesList from './ProductBundlesList/ProductBundlesList';
 import ProductItemsList from './ProductItemsList/ProductItemsList';

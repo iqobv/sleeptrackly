@@ -1,13 +1,8 @@
 'use client';
 
-import {
-	Checkbox,
-	Field,
-	FormSelect,
-	Input,
-	SelectItem,
-} from '@/components/UI';
+import { FormSelect } from '@/components/UI';
 import type { Field as FieldType } from '@/types';
+import { Checkbox, Field, Input, SelectItem } from '@shared/ui';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
 interface FormFieldsProps<T extends FieldValues> {
@@ -42,18 +37,8 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 							<FormSelect
 								name={pathName}
 								control={control}
-								displayFormat={(value) => {
-									if (!value) return '';
-									const selectedOptions = options?.filter((option) =>
-										Array.isArray(value)
-											? value.includes(option.value)
-											: option.value === value,
-									);
-									return (
-										selectedOptions?.map((option) => option.label).join(', ') ||
-										''
-									);
-								}}
+								placeholder={placeholder}
+								id={pathName}
 							>
 								{options?.map((option) => (
 									<SelectItem key={option.value} value={option.value}>
@@ -66,14 +51,14 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 				}
 
 				return (
-					<Field key={key} label={label} error={error}>
+					<Field key={key} label={label} error={error} id={pathName}>
 						<Input
 							placeholder={placeholder}
 							type={type}
+							id={pathName}
 							{...register(pathName, {
-								...(type === 'number'
-									? { setValueAs: (v) => (v === '' ? undefined : Number(v)) }
-									: { setValueAs: (v) => (v === '' ? undefined : v) }),
+								setValueAs: (v) =>
+									v === '' ? undefined : type === 'number' ? Number(v) : v,
 							})}
 						/>
 					</Field>

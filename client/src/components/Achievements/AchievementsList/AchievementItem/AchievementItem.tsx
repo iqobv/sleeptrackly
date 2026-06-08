@@ -1,14 +1,14 @@
 'use client';
 
+import { CDNImage } from '@/components/UI';
+import { Achievement } from '@/types';
 import {
-	CDNImage,
 	GridItem,
 	Tooltip,
 	TooltipContent,
 	TooltipTrigger,
 	Typography,
-} from '@/components/UI';
-import { Achievement } from '@/types';
+} from '@shared/ui';
 import clsx from 'clsx';
 import { MdInfoOutline, MdLockOutline } from 'react-icons/md';
 import styles from './AchievementItem.module.scss';
@@ -29,7 +29,7 @@ export const AchievementItem = ({ achievement }: AchievementItemProps) => {
 		<GridItem className={classNames}>
 			<div className={styles.imageWrapper}>
 				<CDNImage
-					src={achievement.iconUrl}
+					path={achievement.iconUrl}
 					alt={achievement.translation.title}
 					className={styles.image}
 				/>

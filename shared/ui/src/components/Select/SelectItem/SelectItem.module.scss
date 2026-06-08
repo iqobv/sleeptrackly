@@ -1,0 +1,33 @@
+.item {
+	display: flex;
+	align-items: center;
+	padding: 0.5rem 2rem 0.5rem 1rem;
+	position: relative;
+	user-select: none;
+	outline: none;
+	cursor: pointer;
+	border-radius: 4px;
+
+	// &:focus {
+	// 	background-color: var(--bg-option-hover);
+	// }
+
+	// @include hover {
+	// 	&:hover {
+	// 		background-color: var(--bg-option-hover);
+	// 	}
+	// }
+
+	&[data-highlighted] {
+		background-color: var(--bg-option-hover);
+	}
+}
+
+.itemIndicator {
+	position: absolute;
+	right: 8px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--color-main-text);
+}

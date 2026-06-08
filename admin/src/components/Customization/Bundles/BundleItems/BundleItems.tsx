@@ -1,6 +1,8 @@
 'use client';
 
 import { getAllItems } from '@/api';
+import { QUERY_KEYS } from '@/config';
+import { Item } from '@/types';
 import {
 	Button,
 	Modal,
@@ -8,9 +10,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { Item } from '@/types';
+} from '@shared/ui';
 import { useEffect, useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 import ItemCard from '../../ItemCard/ItemCard';
@@ -69,9 +69,9 @@ const BundleItems = <T extends FieldValues>({
 					<ModalHeader>Select Items</ModalHeader>
 					<ModalBody>
 						<ItemsListPaginatedWrapper
-							queryFn={getAllItems}
-							queryKey={(query) => [
-								...QUERY_KEYS.customization.item.getAll(query),
+							queryFn={({ language: _l, ...params }) => getAllItems(params)}
+							queryKey={({ language: _l, ...params }) => [
+								...QUERY_KEYS.customization.item.getAll(params),
 							]}
 							isModal
 							itemCard={(item) => {

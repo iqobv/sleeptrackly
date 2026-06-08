@@ -1,5 +1,6 @@
 import MainProvider from '@/providers/MainProvider';
 import { User } from '@/types';
+import '@shared/ui/styles/global.scss';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';

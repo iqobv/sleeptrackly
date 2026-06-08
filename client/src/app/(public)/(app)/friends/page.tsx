@@ -1,5 +1,5 @@
 import { Friends } from '@/components/Friends';
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

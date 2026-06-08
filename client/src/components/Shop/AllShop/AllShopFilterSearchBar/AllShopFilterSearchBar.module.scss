@@ -31,10 +31,10 @@ div.selectContainer {
 	white-space: nowrap;
 }
 
-.select {
+button.select {
 	width: 100%;
 
 	@include respond-to(md) {
-		max-width: 18.75rem;
+		width: 15.625rem;
 	}
 }

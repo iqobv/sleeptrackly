@@ -1,7 +1,7 @@
 'use client';
 
-import { List } from '@/components/UI';
 import type { ProfileStatistics as ProfileStatisticsType } from '@/types';
+import { List } from '@shared/ui';
 import { ProfileStatisticsCard } from './ProfileStatisticsCard/ProfileStatisticsCard';
 import { PROFILE_STATISTICS_LIST } from './profileStatisticsList';
 

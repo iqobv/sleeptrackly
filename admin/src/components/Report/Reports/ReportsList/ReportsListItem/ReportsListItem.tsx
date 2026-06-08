@@ -2,7 +2,7 @@
 
 import { PAGES } from '@/config';
 import { Report } from '@/types';
-import { capitalize } from '@/utils';
+import { capitalize } from '@shared/utils';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { CSSProperties } from 'react';

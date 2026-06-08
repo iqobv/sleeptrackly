@@ -1,11 +1,12 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { Button, Field, FormSelect, Input, SelectItem } from '@/components/UI';
+import { FormSelect } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input, SelectItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
@@ -72,18 +73,16 @@ export const ReportSanctionForm = ({
 			<Field label="End date" error={errors['endsAt']?.message as string}>
 				<Input type="datetime-local" {...register('endsAt')} />
 			</Field>
-			<Field label="Sanction type" error={errors['type']?.message as string}>
+			<Field
+				label="Sanction type"
+				id="type"
+				error={errors['type']?.message as string}
+			>
 				<FormSelect
 					name="type"
 					control={control}
-					displayFormat={(value) => {
-						const selectedOption = USER_SANCTIONS_OPTIONS.find(
-							(option) => option.value === value,
-						);
-
-						return selectedOption ? selectedOption.label : '';
-					}}
 					placeholder="Select sanction type"
+					id="type"
 				>
 					{USER_SANCTIONS_OPTIONS.map((option) => (
 						<SelectItem key={option.value} value={option.value}>

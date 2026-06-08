@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
 export const AllShopFilterLoader = () => (
 	<div style={{ flex: '0 0 18.75rem' }}>

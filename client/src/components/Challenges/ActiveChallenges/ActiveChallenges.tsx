@@ -1,9 +1,8 @@
 'use client';
 
 import { Challenge } from '@/types';
+import { SectionHeader } from '@shared/ui';
 import { useEffect, useState } from 'react';
-
-import { SectionHeader } from '@/components/UI';
 import ChallengesList from '../ChallengesList/ChallengesList';
 
 interface ActiveChallengesProps {

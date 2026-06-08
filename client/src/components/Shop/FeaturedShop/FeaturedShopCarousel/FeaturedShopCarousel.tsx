@@ -64,9 +64,8 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 							</div>
 							<div className={styles.imageWrapper}>
 								<CDNImage
-									src={item.bundle.mediaUrl}
+									path={item.bundle.mediaUrl}
 									alt={item.bundle.translation.name || 'Featured Shop Item'}
-									preload
 									className={styles.image}
 									width={300}
 									height={300}

@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, Field, Input } from '@/components/UI';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ export const SettingsForm = <T extends FieldValues, R>({
 }: SettingsFormProps<T, R>) => {
 	const router = useRouter();
 
-	const resolver = !!schema ? zodResolver(schema) : undefined;
+	const resolver = schema ? zodResolver(schema) : undefined;
 
 	const methods = useForm<T>({
 		resolver,
@@ -74,7 +74,7 @@ export const SettingsForm = <T extends FieldValues, R>({
 						label={f.label}
 						mobileDirection={f.mobileDirection}
 					>
-						{!!f.render ? (
+						{f.render ? (
 							f.render({
 								...f,
 								methods,

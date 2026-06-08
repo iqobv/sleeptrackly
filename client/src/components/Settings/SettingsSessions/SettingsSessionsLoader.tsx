@@ -1,6 +1,6 @@
 'use client';
 
-import { Divider, SkeletonLoader } from '@/components/UI';
+import { Divider, SkeletonLoader } from '@shared/ui';
 
 export const SettingsSessionsLoader = () => {
 	return (

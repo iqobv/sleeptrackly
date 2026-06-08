@@ -3,12 +3,12 @@
 'use client';
 
 import { registerWithPassword } from '@/api';
-import { Button, Field, Input } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
 import { useAuth } from '@/hooks';
 import { AuthField, User } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

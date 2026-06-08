@@ -1,9 +1,9 @@
 'use client';
 
-import { Button, DropdownItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { Friend } from '@/types';
+import { Button, DropdownItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { FriendItemMenu } from './friendItemMenu';

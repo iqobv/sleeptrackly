@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, SectionHeader } from '@/components/UI';
 import { ChallengeFull, ChallengeTask } from '@/types';
+import { Button, SectionHeader } from '@shared/ui';
 import Default from './Default/Default';
 import styles from './TaskSummary.module.scss';
 import { useTaskSummary } from './useTaskSummary';

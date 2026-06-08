@@ -1,9 +1,9 @@
 'use client';
 
 import { getAllItems } from '@/api';
-import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { Item } from '@/types';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { CustomizationPageHeader } from '../../CustomizationPageHeader';
 import ItemCard from '../../ItemCard/ItemCard';
@@ -20,8 +20,10 @@ export const ItemsList = () => {
 				buttonText="Add New Item"
 			/>
 			<ItemsListPaginatedWrapper<Item>
-				queryFn={getAllItems}
-				queryKey={(params) => [...QUERY_KEYS.customization.item.getAll(params)]}
+				queryFn={({ language: _l, ...params }) => getAllItems(params)}
+				queryKey={({ language: _l, ...params }) => [
+					...QUERY_KEYS.customization.item.getAll(params),
+				]}
 				loader={<ItemsListLoader />}
 				itemCard={(item) => (
 					<ItemCard

@@ -1,7 +1,8 @@
 'use client';
 
-import { Field, FormSelect, Input, SelectItem } from '@/components/UI';
+import { FormSelect } from '@/components/UI';
 import { ShopSortBy, SortOrder } from '@/types';
+import { Field, Input, SelectItem } from '@shared/ui';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { MdSearch } from 'react-icons/md';
@@ -49,18 +50,13 @@ export const AllShopFilterSearchBar = () => {
 					{...register('search')}
 				/>
 			</Field>
-			<Field className={styles.selectContainer} label="Sort by:">
+			<Field className={styles.selectContainer} id="sortBy" label="Sort by:">
 				<FormSelect
 					name="sort"
 					control={control}
-					displayFormat={(value) => {
-						const option = SHOP_FILTER_OPTIONS.find(
-							(opt) => opt.value === value,
-						);
-						return option ? option.label : '';
-					}}
 					placeholder="Select filter type"
 					className={styles.select}
+					id="sortBy"
 				>
 					{SHOP_FILTER_OPTIONS.map((option) => (
 						<SelectItem key={option.value} value={option.value}>

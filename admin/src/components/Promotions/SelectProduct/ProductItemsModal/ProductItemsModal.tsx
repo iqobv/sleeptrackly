@@ -7,7 +7,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
+} from '@shared/ui';
 
 import styles from './ProductItemsModal.module.scss';
 import ProductsList from './ProductsList/ProductsList';

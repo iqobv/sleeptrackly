@@ -6,7 +6,7 @@ import {
 	DropdownItem,
 	Modal,
 	ModalTrigger,
-} from '@/components/UI';
+} from '@shared/ui';
 import { WeeklySummary } from '@/components/WeeklySummary';
 import { Notification, NotificationType } from '@/types';
 import dayjs from 'dayjs';

@@ -1,8 +1,8 @@
 'use client';
 
-import { Button, SectionHeader } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config';
 import { Challenge } from '@/types';
+import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './ChallengeItem.module.scss';
 

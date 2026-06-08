@@ -1,6 +1,6 @@
 'use client';
 
-import { List } from '@/components/UI';
+import { List } from '@shared/ui';
 import { usePathname } from 'next/navigation';
 import { SettingsTab } from './SettingsTab/SettingsTab';
 import styles from './SettingsTabs.module.scss';

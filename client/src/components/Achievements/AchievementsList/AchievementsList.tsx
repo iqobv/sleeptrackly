@@ -1,8 +1,8 @@
 'use client';
 
 import { getAllAchievements } from '@/api';
-import { Grid } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
+import { Grid } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { AchievementItem } from './AchievementItem/AchievementItem';
 import styles from './AchievementsList.module.scss';

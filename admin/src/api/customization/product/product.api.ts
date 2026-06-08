@@ -36,25 +36,3 @@ export const updateProduct = async (id: string, dto: UpdateProductDto) =>
 
 export const deleteProduct = async (id: string) =>
 	(await apiClient.delete<DeleteProductResponse>(`/v1/products/${id}`)).data;
-
-// {
-//     type: "ITEM" | "BUNDLE";
-//     itemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE" | null;
-//     item: { ... 11 more } | null;
-//     bundle: { ... 9 more } | null;
-//     bundleId: string | null;
-//     itemId: string | null;
-//     isNew: boolean;
-//     isPopular: boolean;
-//     isExclusive: boolean;
-//     isShowInStore: boolean;
-//     isLimited: boolean;
-//     price: number;
-//     discountedPrice: number | null;
-//     maxStock: number | null;
-//     soldCount: number;
-//     expiresAt: string | null;
-//     id: string;
-//     createdAt: string;
-//     updatedAt: string;
-// }

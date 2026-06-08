@@ -1,7 +1,8 @@
 'use client';
 
-import { Button, FormField, Input } from '@/components/UI';
+import { FormField } from '@/components/UI';
 import { TranslationDto } from '@/dto';
+import { Button, Input } from '@shared/ui';
 import {
 	ArrayPath,
 	FieldArray,

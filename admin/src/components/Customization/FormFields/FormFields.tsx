@@ -1,13 +1,8 @@
 'use client';
 
-import {
-	Checkbox,
-	FormField,
-	FormSelect,
-	Input,
-	SelectItem,
-} from '@/components/UI';
+import { FormField, FormSelect } from '@/components/UI';
 import type { Field as FieldType } from '@/types';
+import { Checkbox, Input, SelectItem } from '@shared/ui';
 import { FieldValues, useFormContext } from 'react-hook-form';
 
 interface FormFieldsProps<T extends FieldValues> {
@@ -41,28 +36,14 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 							label={type !== 'checkbox' ? label : ''}
 							hidden={type === 'hidden'}
 							required={required}
+							id={name}
 						>
 							{type === 'checkbox' ? (
 								<Checkbox label={label} />
 							) : type === 'hidden' ? (
 								<input type="hidden" />
 							) : type === 'select' ? (
-								<FormSelect
-									name={name}
-									displayFormat={(value) => {
-										if (!value) return '';
-										const selectedOptions = options?.filter((option) =>
-											Array.isArray(value)
-												? value.includes(option.value)
-												: option.value === value,
-										);
-										return (
-											selectedOptions
-												?.map((option) => option.label)
-												.join(', ') || ''
-										);
-									}}
-								>
+								<FormSelect name={name} placeholder={placeholder} id={name}>
 									{options?.map((option) => (
 										<SelectItem key={option.value} value={option.value}>
 											{option.label}
@@ -73,6 +54,7 @@ const FormFields = <T extends FieldValues>({ fields }: FormFieldsProps<T>) => {
 								<Input
 									placeholder={placeholder}
 									type={type}
+									id={name}
 									autoComplete={autoComplete}
 								/>
 							)}

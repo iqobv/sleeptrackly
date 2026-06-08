@@ -1,8 +1,8 @@
 'use client';
 
 import { getFeaturedShop } from '@/api';
-import { SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
+import { SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import styles from './FeaturedShop.module.scss';
 import { FeaturedShopBanner } from './FeaturedShopBanner';

@@ -169,6 +169,9 @@ export class AchievementCrudService {
 			where: { id },
 			include: {
 				translations: true,
+				rewardProduct: {
+					include: productInclude(),
+				},
 			},
 		});
 

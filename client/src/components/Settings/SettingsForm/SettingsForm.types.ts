@@ -10,4 +10,5 @@ export interface SettingsFormProps<T extends FieldValues, R> {
 	onSuccess?: (data: R) => void;
 	schema?: ZodType<T, any, any>;
 	defaultValues?: DefaultValues<T>;
+	values?: T;
 }

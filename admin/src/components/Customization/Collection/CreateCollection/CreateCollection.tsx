@@ -1,7 +1,7 @@
 'use client';
 
 import { createCollection } from '@/api';
-import { Form } from '@/components/UI';
+import { Form, NavigationBackButton } from '@/components/UI';
 import { PAGES } from '@/config';
 import { CreateCollectionDto } from '@/dto';
 import { createCollectionSchema } from '@/schemas';
@@ -22,7 +22,9 @@ export const CreateCollection = () => {
 		<div className="page">
 			<CustomizationPageHeader
 				title="New Collection"
-				sectionHeaderProps={{ showBackButton: true }}
+				sectionHeaderProps={{
+					leftSlot: <NavigationBackButton />,
+				}}
 			/>
 			<Form<CreateCollectionDto>
 				schema={createCollectionSchema}

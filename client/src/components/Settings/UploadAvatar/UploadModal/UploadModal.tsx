@@ -8,7 +8,7 @@ import {
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
-} from '@/components/UI';
+} from '@shared/ui';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 

@@ -3,9 +3,9 @@
 import { getAllProducts } from '@/api';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
-import { Button, ModalBody } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { Product } from '@/types';
+import { Button, ModalBody } from '@shared/ui';
 import { Dispatch, SetStateAction } from 'react';
 
 interface AchievementFormProductsBodyProps {

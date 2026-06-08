@@ -2,20 +2,14 @@
 
 'use client';
 
-import {
-	Button,
-	Field,
-	FormSelect,
-	Input,
-	SelectItem,
-	Textarea,
-} from '@/components/UI';
 import { ChallengeField } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input, SelectItem, Textarea } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { DefaultValues, FieldValues, get, useForm } from 'react-hook-form';
 import { ZodType } from 'zod';
 
+import { FormSelect } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useEffect } from 'react';
@@ -90,12 +84,14 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 					label={f.label}
 					error={errorMessage(f)}
 					required={f.required}
+					id={f.name}
 				>
 					{componentType === 'input' && (
 						<Input
 							type={f.type}
 							autoComplete={f.autoComplete}
 							placeholder={f.placeholder}
+							id={f.name}
 							{...register(f.name)}
 						/>
 					)}
@@ -105,6 +101,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 							placeholder={f.placeholder}
 							minRows={1}
 							maxRows={4}
+							id={f.name}
 							{...register(f.name)}
 						/>
 					)}
@@ -113,11 +110,7 @@ const ChallengeForm = <T extends FieldValues, R extends { id: string }>({
 							name={f.name}
 							control={control}
 							placeholder={f.placeholder}
-							displayFormat={(value) =>
-								typeof value === 'string'
-									? f.options?.find((opt) => opt.value === value)?.label || ''
-									: ''
-							}
+							id={f.name}
 						>
 							{f.options.map((opt) => (
 								<SelectItem value={opt.value} key={opt.value}>

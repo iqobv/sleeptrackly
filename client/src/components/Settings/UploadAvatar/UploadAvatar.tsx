@@ -1,6 +1,7 @@
 'use client';
 
-import { Avatar, Input, SectionHeader } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
+import { Input, SectionHeader } from '@shared/ui';
 import styles from './UploadAvatar.module.scss';
 import { UploadAvatarLoader } from './UploadAvatarLoader';
 import { UploadModal } from './UploadModal/UploadModal';
@@ -34,7 +35,7 @@ export const UploadAvatar = () => {
 						onClick={() => inputRef.current?.click()}
 						className={styles.wrapper}
 					>
-						<Avatar avatar={user.avatar?.url} size={250} />
+						<UserAvatar avatarPath={user.avatar?.url} size={250} />
 					</button>
 					<div className={styles.inputContainer}>
 						<Input

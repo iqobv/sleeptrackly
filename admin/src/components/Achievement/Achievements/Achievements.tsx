@@ -1,8 +1,8 @@
 'use client';
 
 import { getAllAchievements } from '@/api';
-import { Button, SectionHeader } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
+import { Button, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { MdAdd } from 'react-icons/md';

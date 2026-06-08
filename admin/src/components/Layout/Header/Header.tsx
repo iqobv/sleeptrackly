@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { useNavMenuStore } from '@/store';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';

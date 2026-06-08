@@ -1,6 +1,6 @@
 'use client';
 
-import { Modal, ModalContent, ModalHeader } from '@/components/UI';
+import { Modal, ModalContent, ModalHeader } from '@shared/ui';
 import { useState } from 'react';
 import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
 import styles from './ChangePassword.module.scss';

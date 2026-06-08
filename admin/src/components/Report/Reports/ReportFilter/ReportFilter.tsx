@@ -1,7 +1,7 @@
 'use client';
 
 import { ReportPaginationQuery, ReportStatus } from '@/types';
-import { capitalize } from '@/utils';
+import { capitalize } from '@shared/utils';
 import { ReportsChildsProps } from '../Reports';
 import styles from './ReportFilter.module.scss';
 

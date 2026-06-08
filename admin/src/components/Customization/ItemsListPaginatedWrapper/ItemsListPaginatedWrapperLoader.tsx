@@ -1,4 +1,4 @@
-import { PaginationLoader } from '@/components/UI';
+import { PaginationLoader } from '@shared/ui';
 import clsx from 'clsx';
 import React from 'react';
 import { ItemsListWrapperLoader } from '../ItemsListWrapper';

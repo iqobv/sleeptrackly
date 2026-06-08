@@ -1,6 +1,7 @@
 'use client';
 
 import { ReportSanctionForm } from '@/components/Report';
+import { Profile } from '@/types';
 import {
 	Button,
 	Modal,
@@ -8,8 +9,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
-import { Profile } from '@/types';
+} from '@shared/ui';
 import { MdReportGmailerrorred } from 'react-icons/md';
 
 interface ProfileSanctionsButtonProps {

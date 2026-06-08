@@ -1,8 +1,8 @@
 'use client';
 
-import { useTransformSecondsToHours } from '@/hooks';
 import { WeeklySummary } from '@/types';
-import { formatUtcOffsetToLocalTime } from '@/utils';
+import { useTransformSecondsToHours } from '@shared/hooks';
+import { formatUtcOffsetToLocalTime } from '@shared/utils';
 import dayjs from 'dayjs';
 import { IconType } from 'react-icons';
 import {

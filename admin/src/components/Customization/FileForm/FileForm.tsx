@@ -1,6 +1,7 @@
 'use client';
 
-import { CDNImage, Field, Input } from '@/components/UI';
+import { CDNImage } from '@/components/UI';
+import { Field, Input } from '@shared/ui';
 import Image from 'next/image';
 import { useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
@@ -55,7 +56,12 @@ const FileForm = <T extends FieldValues>({
 							Your browser does not support the video tag.
 						</video>
 					) : (
-						<CDNImage width={width} height={height} src={mediaUrl} />
+						<CDNImage
+							width={width}
+							height={height}
+							path={mediaUrl}
+							alt="avatar"
+						/>
 					)}
 				</>
 			)}

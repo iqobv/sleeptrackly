@@ -1,9 +1,9 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config';
 import { SleepEntry } from '@/types';
 import { formatTime } from '@/utils';
+import { Button } from '@shared/ui';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import styles from './TimerEnd.module.scss';

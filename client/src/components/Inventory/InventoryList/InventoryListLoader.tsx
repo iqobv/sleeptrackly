@@ -1,4 +1,4 @@
-import { PaginationLoader } from '@/components/UI';
+import { PaginationLoader } from '@shared/ui';
 import styles from './InventoryList.module.scss';
 import { InventoryListItemLoader } from './InventoryListItem';
 

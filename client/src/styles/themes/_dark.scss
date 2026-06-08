@@ -3,28 +3,7 @@ html.dark {
 	--bg-body: #0a0a0a;
 	--bg-header: #0b0b0b;
 	--header-border-color: #7a7a7a30;
-	--color-main-text: #ffffff;
 	--secondary-color: #b9bec3;
-	--text-primary: #f3f4f6;
-	--text-secondary: #c2c2c2;
-	--border-color: #27272a;
-	--link-color: #4a90e2;
-	--color-error: #e5363f;
-	--bg-card: #1a1a1a;
-
-	/* Typography Colors */
-	--text-primary: #f3f4f6;
-	--text-secondary: #c2c2c2;
-	--text-success: #16a34a;
-	--text-error: #e5363f;
-	--text-muted: #9ca3af;
-
-	/* Loader */
-	--loader-color: #ffffff;
-
-	/* Skeleton */
-	--skeleton-color: #131313;
-	--skeleton-highlight: #18191b;
 
 	/* Navigation */
 	--nav-color-link: #a3a3a3;
@@ -70,12 +49,6 @@ html.dark {
 	--profile-stat-card-bg: #151515;
 	--profile-stat-card-border: #333;
 
-	/* Pagination */
-	--pagination-bg: #333;
-	--pagination-color: #fff;
-	--pagination-button-bg: #4c5b61;
-	--pagination-button-color: #e8eef2;
-
 	/* Charts */
 	--chart-bg: #20262d;
 	--chart-tooltip-bg: #161616;
@@ -95,68 +68,6 @@ html.dark {
 	--challenge-list-item-color: #fff;
 	--challenge-list-item-border: #333;
 
-	/* Inputs & Forms */
-	--input-bg: #151515;
-	--input-color: #fff;
-	--input-border: #333;
-	--input-border-focus: #737373;
-	--input-border-error: #e7000b;
-	--input-color-error: #f55d5d;
-
-	/* Select */
-	--bg-options: #151515;
-	--bg-option-hover: #26262699;
-	--border-options: #333;
-	--bg-option-selected: #2b2b2b;
-
-	/* Button Variants */
-	--btn-bg-contained: #e5e5e5;
-	--btn-bg-contained-hover: #e5e5e5d4;
-	--btn-color-contained: #171717;
-
-	--btn-bg-secondary: #262626;
-	--btn-bg-secondary-hover: #262626cc;
-	--btn-color-secondary: #fafafa;
-
-	--btn-bg-outlined: #ffffff05;
-	--btn-bg-outlined-hover: #ffffff13;
-	--btn-border-outlined: #ffffff26;
-	--btn-border-outlined-hover: #ffffff66;
-	--btn-color-outlined: #fdfdfd;
-
-	--btn-bg-outlined-secondary: #ffffff03;
-	--btn-bg-outlined-hover-secondary: #32323243;
-	--btn-border-outlined-secondary: #ffffff12;
-	--btn-border-outlined-hover-secondary: #ffffff33;
-	--btn-color-outlined-secondary: #cfcfcf;
-
-	--btn-bg-text: transparent;
-	--btn-bg-text-hover: #26262699;
-	--btn-color-text: #e8edf2;
-
-	--btn-bg-text-secondary: transparent;
-	--btn-bg-text-hover-secondary: #ffffff12;
-	--btn-color-text-secondary: #bababa;
-
-	--btn-bg-link: transparent;
-	--btn-color-link: #e5e5e5;
-
-	--btn-bg-link-secondary: transparent;
-	--btn-color-link-secondary: #bababa;
-
-	--btn-danger-bg: #ff6467;
-	--btn-danger-bg-hover: #ff6467b3;
-	--btn-danger-color: #ffffff;
-	--btn-danger-bg-subtle: transparent;
-	--btn-danger-bg-subtle-hover: #ff64671a;
-	--btn-danger-color-text: #ff6467;
-
-	/* Switch */
-	--switch-bg: #ffffff26;
-	--switch-bg-checked: #e5e5e5;
-	--switch-slider-bg: #ffffff;
-	--switch-slider-bg-active: #0d141c;
-
 	/* Calendar */
 	--calendar-accent: #e8edf2;
 	--calendar-comleted: #91cb3e;
@@ -165,19 +76,8 @@ html.dark {
 	--calendar-today: #acd6ff;
 	--calendar-today-active: #0d141c;
 
-	/* Modals */
-	--modal-bg: #151515;
-	--modal-color: #fff;
-
 	/* Sections */
 	--bg-section: #333;
-
-	/* Dropdowns */
-	--dropdown-bg: #191919;
-	--dropdown-color: #000000;
-	--dropdown-item-bg: #3d3d3d;
-	--dropdown-item-color: #fff;
-	--dropdown-item-bg-hover: #2d2d2d;
 
 	/* Page Titles */
 	--page-title-color: #ffffff;
@@ -191,12 +91,6 @@ html.dark {
 	/* Settings Security */
 	--settings-item-bg: #151515;
 	--settings-item-border: #333;
-
-	/* Avatar */
-	--avatar-border: #333;
-
-	/* Divider */
-	--divider-color: #464646;
 
 	/* Sessions */
 	--device-bg: #293038;
@@ -274,19 +168,4 @@ html.dark {
 	--dashboard-chart-bar-border: #ccc;
 	--dashboard-chart-bar-bg-hover: #e0e0e0;
 	--dashboard-chart-bar-border-hover: #bbb;
-
-	/* Tooltip */
-	--tooltip-bg: #1f2937;
-	--tooltip-text: #ffffff;
-	--tooltip-arrow-bg: #1f2937;
-
-	/* Checkbox */
-	--checkbox-wrapper-bg: #262626;
-	--checkbox-wrapper-bg-active: #151515;
-	--checkbox-border: #4d4d4d;
-	--checkbox-border-active: #ffffff;
-	--checkbox-input-bg: #333333;
-	--checkbox-input-bg-active: #ffffff;
-	--checkbox-checkmark: #111111;
-	--checkbox-text: #ffffff;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './DashboardLoader.module.scss';
 
 const DashboardLoader = () => {

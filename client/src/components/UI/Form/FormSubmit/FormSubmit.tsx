@@ -1,9 +1,8 @@
 'use client';
 
+import { Button, type ButtonProps } from '@shared/ui';
 import React, { ComponentPropsWithRef } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Button } from '../../Button';
-import { ButtonProps } from '../../Button/Button.types';
 
 export type FormSubmitButtonProps = Omit<ButtonProps, 'type' | 'children'>;
 

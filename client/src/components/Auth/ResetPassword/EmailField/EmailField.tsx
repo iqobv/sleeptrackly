@@ -1,11 +1,11 @@
 'use client';
 
 import { sendEmailForResetPassword } from '@/api';
-import { Button, Field, Input } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { EmailDto } from '@/dto';
 import { emailSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';

@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
 const UserMenuCoinsLoader = () => {
 	return <SkeletonLoader height={90} width="100%" />;

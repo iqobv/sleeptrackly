@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, DropdownItem } from '@/components/UI';
+import { Button, DropdownItem } from '@shared/ui';
 import Link from 'next/link';
 import styles from './MenuItem.module.scss';
 

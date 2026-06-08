@@ -1,10 +1,10 @@
 'use client';
 
 import { getChallengeById, updateChallenge } from '@/api';
-import { Button } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { UpdateChallengeDto } from '@/dto';
 import { UpdateSchema } from '@/schemas';
+import { Button } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { IoMdArrowBack } from 'react-icons/io';

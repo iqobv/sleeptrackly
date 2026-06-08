@@ -1,8 +1,9 @@
 'use client';
 
-import { Button, CDNImage } from '@/components/UI';
+import { CDNImage } from '@/components/UI';
 import { PAGES } from '@/config';
 import { BaseCollection } from '@/types';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { MdEdit } from 'react-icons/md';
 import styles from './CollectionItem.module.scss';
@@ -15,7 +16,12 @@ export const CollectionItem = ({ collection }: CollectionItemProps) => {
 	return (
 		<div className={styles.item}>
 			<div className={styles.info}>
-				<CDNImage src={collection.iconUrl} width={64} height={64} />
+				<CDNImage
+					path={collection.iconUrl}
+					alt={collection.slug}
+					width={64}
+					height={64}
+				/>
 				<Link href={PAGES.COLLECTION(collection.id)}>{collection.slug}</Link>
 			</div>
 			<Button variant="text" isIcon isRounded asChild>

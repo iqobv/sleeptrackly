@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './FeaturedShopSections.module.scss';
 
 const CARDS_LOADERS = Array.from({ length: 5 }, (_, index) => (

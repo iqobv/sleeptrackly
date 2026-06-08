@@ -1,5 +1,9 @@
-import { SectionHeader, SectionHeaderProps } from '@/components/UI';
-import { Button, ButtonProps } from '@/components/UI/Button';
+import {
+	Button,
+	SectionHeader,
+	SectionHeaderProps,
+	type ButtonProps,
+} from '@shared/ui';
 import Link from 'next/link';
 import { MdAdd } from 'react-icons/md';
 import styles from './CustomizationPageHeader.module.scss';

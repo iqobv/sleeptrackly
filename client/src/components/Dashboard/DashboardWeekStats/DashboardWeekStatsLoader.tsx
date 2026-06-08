@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './DashboardWeekStats.module.scss';
 
 const cards = Array.from({ length: 2 }).map((_, i) => (

@@ -3,31 +3,8 @@
 	--bg-body: #ffffff;
 	--bg-header: #ffffff;
 	--header-border-color: #e5e8eb;
-	--color-main-text: #0d141c;
 	--secondary-color: #464f58;
 	--header-height: 4.375rem;
-	--text-primary: #111827;
-	--text-secondary: #6b7280;
-	--border-color: #e5e7eb;
-	--link-color: #4a90e2;
-	--border-radius: 10px;
-	--color-error: #e7000b;
-	--gap: 1rem;
-	--checkbox-transition: 0.2s ease-in-out;
-
-	/* Typography Colors */
-	--text-primary: #111827;
-	--text-secondary: #4b5563;
-	--text-success: #16a34a;
-	--text-error: #dc2626;
-	--text-muted: #9ca3af;
-
-	/* Loader */
-	--loader-color: #000;
-
-	/* Skeleton */
-	--skeleton-color: #e0e0e0;
-	--skeleton-highlight: #f5f5f5;
 
 	/* Navigation */
 	--nav-color-link: #808080;
@@ -65,12 +42,6 @@
 	--auth-btn-color: #f6f6f6;
 	--auth-btn-bg-hover: #003a61;
 
-	/* Pagination */
-	--pagination-bg: #e1e1e1;
-	--pagination-color: #000;
-	--pagination-button-bg: #37393a;
-	--pagination-button-color: #e8eef2;
-
 	/* Charts */
 	--chart-bg: #d9e6f3;
 	--chart-tooltip-bg: #fdfeff;
@@ -98,67 +69,6 @@
 	--challenge-list-item-color: #000000;
 	--challenge-list-item-border: #e1e1e1;
 
-	/* Inputs & Forms */
-	--input-bg: #f8f8f8;
-	--input-color: #000000;
-	--input-border: #e1e1e1;
-	--input-border-focus: #a1a1a1;
-	--input-border-error: #e7000b;
-	--input-color-error: #ff0000;
-
-	/* Select */
-	--bg-options: #ececec;
-	--bg-option-hover: #e0e0e0;
-	--border-options: #e1e1e1;
-
-	/* Button Variants */
-	--btn-bg-contained: #171717f2;
-	--btn-bg-contained-hover: #171717cc;
-	--btn-color-contained: #fafafa;
-
-	--btn-bg-secondary: #ebebeb;
-	--btn-bg-secondary-hover: #ebebeb99;
-	--btn-color-secondary: #171717;
-
-	--btn-bg-outlined: transparent;
-	--btn-bg-outlined-hover: #f5f5f5;
-	--btn-border-outlined: #e5e5e5;
-	--btn-border-outlined-hover: #d4d4d4;
-	--btn-color-outlined: #0d141c;
-
-	--btn-bg-outlined-secondary: transparent;
-	--btn-bg-outlined-hover-secondary: #fafafa;
-	--btn-border-outlined-secondary: #d4d4d4;
-	--btn-border-outlined-hover-secondary: #a3a3a3;
-	--btn-color-outlined-secondary: #525252;
-
-	--btn-bg-text: transparent;
-	--btn-bg-text-hover: #f5f5f5cc;
-	--btn-color-text: #0d141c;
-
-	--btn-bg-text-secondary: transparent;
-	--btn-bg-text-hover-secondary: #fafafacc;
-	--btn-color-text-secondary: #525252;
-
-	--btn-bg-link: transparent;
-	--btn-color-link: #171717;
-
-	--btn-bg-link-secondary: transparent;
-	--btn-color-link-secondary: #525252;
-
-	--btn-danger-bg: #e7000bb3;
-	--btn-danger-bg-hover: #e7000bcc;
-	--btn-danger-color: #ffffff;
-	--btn-danger-bg-subtle: transparent;
-	--btn-danger-bg-subtle-hover: #e7000b1a;
-	--btn-danger-color-text: #e7000b;
-
-	/* Switch */
-	--switch-bg: #ccc;
-	--switch-bg-checked: #171717;
-	--switch-slider-bg: #fff;
-	--switch-slider-bg-active: #f5f5f5;
-
 	/* Calendar */
 	--calendar-accent: #0d141c;
 	--calendar-comleted: #4da84d;
@@ -167,20 +77,9 @@
 	--calendar-today: #171717;
 	--calendar-today-active: #ffffff;
 
-	/* Modals */
-	--modal-bg: #ffffff;
-	--modal-color: #000000;
-
 	/* Sections */
 	--bg-section: #e1e1e1;
 	--color-section: #000000;
-
-	/* Dropdowns */
-	--dropdown-bg: #ebebeb;
-	--dropdown-color: #000000;
-	--dropdown-item-bg: #dbdbdb;
-	--dropdown-item-color: #000000;
-	--dropdown-item-bg-hover: #d1d1d1;
 
 	/* Page Titles */
 	--page-title-color: #0d141c;
@@ -194,12 +93,6 @@
 	/* Settings Security */
 	--settings-item-bg: #f8f8f8;
 	--settings-item-border: #e1e1e1;
-
-	/* Avatar */
-	--avatar-border: #e1e1e1;
-
-	/* Divider */
-	--divider-color: #c6c6c6;
 
 	/* Sessions */
 	--device-bg: #e8edf2;
@@ -279,19 +172,4 @@
 	--dashboard-chart-bar-border-hover: #3e3e3e;
 	--dashboard-gap: 1rem;
 	--dashboard-card-border-radius: 10px;
-
-	/* Tooltip */
-	--tooltip-bg: #1f2937;
-	--tooltip-text: #ffffff;
-	--tooltip-arrow-bg: #1f2937;
-
-	/* Checkbox */
-	--checkbox-wrapper-bg: #ffffff;
-	--checkbox-wrapper-bg-active: #ececec;
-	--checkbox-border: #d1d5db;
-	--checkbox-border-active: #000000;
-	--checkbox-input-bg: #ffffff;
-	--checkbox-input-bg-active: #000000;
-	--checkbox-checkmark: #ffffff;
-	--checkbox-text: #000000;
 }

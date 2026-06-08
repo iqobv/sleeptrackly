@@ -2,18 +2,15 @@
 
 import FileForm from '@/components/Customization/FileForm/FileForm';
 import {
-	Checkbox,
 	Form,
 	FormActions,
 	FormField,
 	FormReset,
 	FormSelect,
 	FormSubmit,
-	Input,
-	SelectContent,
-	SelectItem,
 } from '@/components/UI';
 import { FormProps } from '@/components/UI/Form/Form.types';
+import { Checkbox, Input, SelectContent, SelectItem } from '@shared/ui';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ACHIEVEMENT_FORM_FIELDS } from './achievementFormFields';

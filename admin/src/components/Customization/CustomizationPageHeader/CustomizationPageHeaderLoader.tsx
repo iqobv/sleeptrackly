@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './CustomizationPageHeader.module.scss';
 
 export const CustomizationPageHeaderLoader = () => {

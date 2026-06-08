@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { ChangeEventHandler } from 'react';
 import styles from './ResetForm.module.scss';
 

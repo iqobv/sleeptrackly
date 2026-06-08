@@ -1,9 +1,9 @@
 'use client';
 
-import { Button, CDNImage } from '@/components/UI';
-import { Product } from '@/types';
-
+import { CDNImage } from '@/components/UI';
 import { PAGES } from '@/config';
+import { Product } from '@/types';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import styles from './ProductCard.module.scss';
 
@@ -32,8 +32,8 @@ export const ProductCard = ({ product, children }: ProductCardProps) => {
 					/>
 				) : (
 					<CDNImage
-						src={product.item?.mediaUrl || product.bundle?.mediaUrl || ''}
-						alt={translation}
+						path={product.item?.mediaUrl || product.bundle?.mediaUrl || ''}
+						alt={translation || 'No translation'}
 						width={200}
 						height={200}
 					/>

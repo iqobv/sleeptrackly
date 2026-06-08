@@ -1,10 +1,10 @@
 'use client';
 
 import { removeUserSanction } from '@/api';
-import { Button, ConfirmModal, SectionHeader } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { UserSanction } from '@/types';
-import { capitalize } from '@/utils';
+import { Button, ConfirmModal, SectionHeader } from '@shared/ui';
+import { capitalize } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import Link from 'next/link';

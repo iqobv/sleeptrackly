@@ -1,8 +1,8 @@
-import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import oxlint from 'eslint-plugin-oxlint';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import baseConfig from '../eslint.base.mjs';
 
 const uniqueDecorators = [
 	'Auth',
@@ -32,9 +32,9 @@ const httpMethodRule = {
 
 export default tseslint.config(
 	{
-		ignores: ['eslint.config.mjs'],
+		ignores: ['eslint.config.mjs', 'dist/**', 'generated/**'],
 	},
-	eslint.configs.recommended,
+	...baseConfig,
 	...tseslint.configs.recommendedTypeChecked,
 	oxlint.configs['flat/recommended'],
 	eslintConfigPrettier,
@@ -53,7 +53,6 @@ export default tseslint.config(
 	},
 	{
 		rules: {
-			'@typescript-eslint/no-explicit-any': 'error',
 			'@typescript-eslint/explicit-function-return-type': [
 				'error',
 				{
@@ -74,15 +73,6 @@ export default tseslint.config(
 			'@typescript-eslint/parameter-properties': 'off',
 			'@typescript-eslint/no-floating-promises': 'warn',
 			'@typescript-eslint/no-unsafe-argument': 'warn',
-			'@typescript-eslint/no-unused-vars': [
-				'error',
-				{
-					ignoreRestSiblings: true,
-					argsIgnorePattern: '^_',
-					varsIgnorePattern: '^_',
-					destructuredArrayIgnorePattern: '^_',
-				},
-			],
 			'no-restricted-syntax': [
 				'error',
 				httpMethodRule,

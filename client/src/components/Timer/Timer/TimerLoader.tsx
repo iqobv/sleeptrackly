@@ -1,6 +1,6 @@
 'use client';
 
-import { List, SkeletonLoader } from '@/components/UI';
+import { List, SkeletonLoader } from '@shared/ui';
 import styles from './Timer.module.scss';
 
 const TimerLoader = () => {

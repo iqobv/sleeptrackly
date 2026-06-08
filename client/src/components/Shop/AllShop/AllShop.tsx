@@ -1,7 +1,7 @@
 'use client';
 
-import { Grid, GridItem, Pagination } from '@/components/UI';
 import { ShopFilterDto } from '@/dto';
+import { Grid, GridItem, Pagination } from '@shared/ui';
 import { FormProvider } from 'react-hook-form';
 import { ShopCard } from '../ShopCard/ShopCard';
 import styles from './AllShop.module.scss';
@@ -28,13 +28,9 @@ export const AllShop = () => {
 							{data && !isLoading && data.items.length > 0 && (
 								<>
 									<Grid className={styles.itemsGrid} columns={3}>
-										{data.items.map((item, index) => (
+										{data.items.map((item) => (
 											<GridItem key={item.id}>
-												<ShopCard
-													key={item.id}
-													product={item}
-													isPreload={index < 3}
-												/>
+												<ShopCard key={item.id} product={item} />
 											</GridItem>
 										))}
 									</Grid>
