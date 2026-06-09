@@ -1,11 +1,11 @@
 'use client';
 
 import { createSanction } from '@/api';
-import { FormSelect } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UserSanctionDto } from '@/dto';
 import { userSanctionSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormSelect } from '@shared/form';
 import { Button, Field, Input, SelectItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';

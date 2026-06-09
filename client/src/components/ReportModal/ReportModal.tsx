@@ -1,6 +1,7 @@
 'use client';
 
 import { Option, ReportType } from '@/types';
+import { FormSelect } from '@shared/form';
 import {
 	Button,
 	Field,
@@ -13,7 +14,6 @@ import {
 	Textarea,
 } from '@shared/ui';
 import { MdReportGmailerrorred } from 'react-icons/md';
-import { FormSelect } from '../UI';
 import styles from './ReportModal.module.scss';
 import { REPORT_TITLES_OPTIONS } from './reportTitleOptions';
 import { useReportModal } from './useReportModal';

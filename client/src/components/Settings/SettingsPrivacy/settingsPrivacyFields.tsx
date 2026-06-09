@@ -1,6 +1,8 @@
-import { FormSelect } from '@/components/UI';
+'use client';
+
 import { SettingsPrivacyDto } from '@/dto';
 import { Option, PrivacyVisibility, SettingsFormFields } from '@/types';
+import { FormSelect } from '@shared/form';
 import { SelectItem, ToggleSwitch } from '@shared/ui';
 import { Control, Path } from 'react-hook-form';
 

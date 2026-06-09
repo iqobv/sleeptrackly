@@ -6,10 +6,15 @@
 		"dev": "next dev --port 3001 --turbopack",
 		"build": "next build",
 		"start": "next start --port 3001",
-		"lint": "eslint"
+		"lint": "eslint",
+		"generate": "pnpm openapi-typescript http://localhost:5000/docs-json -o src/types/schema.d.ts"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "catalog:",
+		"@shared/form": "workspace:",
+		"@shared/hooks": "workspace:",
+		"@shared/ui": "workspace:",
+		"@shared/utils": "workspace:",
 		"@tanstack/react-query": "catalog:",
 		"axios": "catalog:",
 		"clsx": "catalog:",
@@ -25,10 +30,9 @@
 		"react-toastify": "catalog:",
 		"sass": "catalog:",
 		"zod": "catalog:",
-		"zustand": "catalog:",
-		"@shared/ui": "workspace:*",
-		"@shared/types": "workspace:*",
-		"@shared/hooks": "workspace:*",
-		"@shared/utils": "workspace:*"
+		"zustand": "catalog:"
+	},
+	"devDependencies": {
+		"openapi-typescript": "catalog:"
 	}
 }

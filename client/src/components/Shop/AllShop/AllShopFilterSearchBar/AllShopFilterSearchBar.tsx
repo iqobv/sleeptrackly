@@ -1,7 +1,7 @@
 'use client';
 
-import { FormSelect } from '@/components/UI';
 import { ShopSortBy, SortOrder } from '@/types';
+import { FormSelect } from '@shared/form';
 import { Field, Input, SelectItem } from '@shared/ui';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';

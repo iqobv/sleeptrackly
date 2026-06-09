@@ -1,7 +1,7 @@
 'use client';
 
-import { FormField } from '@/components/UI';
 import { TranslationDto } from '@/dto';
+import { FormField } from '@shared/form';
 import { Button, Input } from '@shared/ui';
 import {
 	ArrayPath,

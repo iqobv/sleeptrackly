@@ -233,7 +233,6 @@ export class AchievementCrudService {
 						},
 						create: {
 							...translation,
-							achievementId: achievement.id,
 						},
 						update: {
 							...translation,

@@ -19,7 +19,11 @@
 			"@shared/ui": ["../shared/ui/src/index.ts"],
 			"@shared/ui/*": ["../shared/ui/src/*"],
 			"@shared/hooks": ["../shared/hooks/src/index.ts"],
-			"@shared/hooks/*": ["../shared/hooks/src/*"]
+			"@shared/hooks/*": ["../shared/hooks/src/*"],
+			"@shared/form": ["../shared/form/src/index.ts"],
+			"@shared/form/*": ["../shared/form/src/*"],
+			"@shared/utils": ["../shared/utils/src/index.ts"],
+			"@shared/utils/*": ["../shared/utils/src/*"]
 		}
 	},
 	"include": [

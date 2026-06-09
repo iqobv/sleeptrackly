@@ -1,6 +1,7 @@
 'use client';
 
 import FileForm from '@/components/Customization/FileForm/FileForm';
+import { FullAchievement } from '@/types';
 import {
 	Form,
 	FormActions,
@@ -8,8 +9,8 @@ import {
 	FormReset,
 	FormSelect,
 	FormSubmit,
-} from '@/components/UI';
-import { FormProps } from '@/components/UI/Form/Form.types';
+	type FormProps,
+} from '@shared/form';
 import { Checkbox, Input, SelectContent, SelectItem } from '@shared/ui';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
@@ -23,11 +24,15 @@ interface AchievementFormProps<D extends FieldValues> extends Omit<
 > {
 	isCreate?: boolean;
 	iconUrl?: string;
+	initData?: FullAchievement;
+	isLoading?: boolean;
 }
 
 export const AchievementForm = <D extends FieldValues>({
 	isCreate,
 	iconUrl = '',
+	initData,
+	isLoading,
 	...formProps
 }: AchievementFormProps<D>) => {
 	return (
@@ -74,11 +79,22 @@ export const AchievementForm = <D extends FieldValues>({
 								</FormField>
 							);
 						})}
-						<AchievementFormProducts />
+						<AchievementFormProducts initProduct={initData?.rewardProduct} />
 						<AchievementTranslationForm />
-						<FormActions>
-							<FormReset>Reset</FormReset>
-							<FormSubmit>{isCreate ? 'Create' : 'Update'}</FormSubmit>
+						<FormActions
+							style={{
+								paddingBottom: '2.5rem',
+							}}
+						>
+							<FormReset disabledOnEmpty>Reset</FormReset>
+							<FormSubmit
+								disabledOnEmpty
+								buttonProps={{
+									loading: isLoading,
+								}}
+							>
+								{isCreate ? 'Create' : 'Update'}
+							</FormSubmit>
 						</FormActions>
 					</>
 				);

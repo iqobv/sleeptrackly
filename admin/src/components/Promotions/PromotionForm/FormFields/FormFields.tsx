@@ -1,7 +1,7 @@
 'use client';
 
-import { FormSelect } from '@/components/UI';
 import type { Field as FieldType } from '@/types';
+import { FormSelect } from '@shared/form';
 import { Checkbox, Field, Input, SelectItem } from '@shared/ui';
 import { FieldValues, useFormContext } from 'react-hook-form';
 

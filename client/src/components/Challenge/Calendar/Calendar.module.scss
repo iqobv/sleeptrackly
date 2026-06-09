@@ -12,3 +12,12 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	max-width: 19.25rem;
+	padding-bottom: 0.25rem;
+}

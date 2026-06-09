@@ -1,8 +1,8 @@
 'use client';
 
 import { ChallengeFull, ChallengeTask } from '@/types';
-import { Button, SectionHeader } from '@shared/ui';
-import Default from './Default/Default';
+import { Button, SectionHeader, Typography } from '@shared/ui';
+import { Default } from './Default/Default';
 import styles from './TaskSummary.module.scss';
 import { useTaskSummary } from './useTaskSummary';
 
@@ -11,7 +11,7 @@ interface TaskSummaryProps {
 	challenge: ChallengeFull;
 }
 
-const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
+export const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 	const { info, canUpdate, isCompleted, handleMarkAsCompleted } =
 		useTaskSummary({
 			challenge,
@@ -25,17 +25,18 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 				titleProps={{
 					variant: 'h3',
 				}}
-				containerClassName={styles.title}
 				description={info ? `Selected date: ${info}` : ''}
 			/>
 			{selectedDate ? (
 				<>
 					<div className={styles.item}>
 						<div className={styles.info}>
-							<p className={styles.name}>{selectedDate.description}</p>
-							<p className={styles.target}>
+							<Typography variant="h6" as="p" weight="medium">
+								{selectedDate.description}
+							</Typography>
+							<Typography color="secondary">
 								Target: {selectedDate.targetValue}
-							</p>
+							</Typography>
 						</div>
 						<div className={styles.status}>
 							{canUpdate ? (
@@ -51,7 +52,7 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 									disabled
 									variant="text"
 									fullWidth
-									className={styles['completed']}
+									className={styles.completed}
 								>
 									{isCompleted ? 'Completed' : 'Not completed'}
 								</Button>
@@ -65,5 +66,3 @@ const TaskSummary = ({ selectedDate, challenge }: TaskSummaryProps) => {
 		</div>
 	);
 };
-
-export default TaskSummary;

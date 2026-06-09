@@ -21,7 +21,7 @@ const iconProps: IconBaseProps = {
 	size: 22,
 };
 
-const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
+export const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	const [open, setOpen] = useState(false);
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
@@ -82,5 +82,3 @@ const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 		</div>
 	);
 };
-
-export default ChallengeSummary;

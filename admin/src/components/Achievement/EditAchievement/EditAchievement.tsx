@@ -20,7 +20,7 @@ export const EditAchievement = () => {
 		enabled: !!id,
 	});
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UpdateAchievementDto) => updateAchievement(id, data),
 		onSuccess: () => {
 			refetch();
@@ -69,6 +69,8 @@ export const EditAchievement = () => {
 						description: t.description,
 					})),
 				}}
+				initData={data}
+				isLoading={isPending}
 			/>
 		</div>
 	);

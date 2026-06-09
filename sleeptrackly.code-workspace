@@ -25,12 +25,12 @@
 			"path": "shared/utils",
 		},
 		{
-			"name": "Shared: Types",
-			"path": "shared/types",
-		},
-		{
 			"name": "Shared: Hooks",
 			"path": "shared/hooks",
+		},
+		{
+			"name": "Shared: Form",
+			"path": "shared/form",
 		},
 	],
 	"settings": {

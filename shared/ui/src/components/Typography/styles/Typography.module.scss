@@ -41,8 +41,18 @@
 	white-space: nowrap;
 }
 
-.lineClamp {
+.lineClamp2 {
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+
+.lineClamp3 {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
 }

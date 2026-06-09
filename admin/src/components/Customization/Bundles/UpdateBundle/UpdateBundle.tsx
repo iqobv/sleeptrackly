@@ -1,10 +1,10 @@
 'use client';
 
 import { getBundleById, updateBundle } from '@/api';
-import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateBundleDto } from '@/dto';
 import { updateBundleSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import BundleForm from '../BundleForm/BundleForm';
