@@ -1,5 +1,5 @@
 import { Challenge } from '@/types';
-import { formatDateTime } from '@/utils';
+import { capitalize, formatDateTime } from '@shared/utils';
 
 export interface ChallengeInfoField {
 	name: string;
@@ -19,9 +19,11 @@ export const CHALLENGE_INFO_FIELDS = (
 	},
 	{
 		name: 'Frequency',
-		value:
-			(data?.frequency).charAt(0).toUpperCase() +
-			data?.frequency.toLowerCase().slice(1),
+		value: (() => {
+			const freq = data?.frequency ?? '';
+			if (!freq) return '';
+			return capitalize(freq);
+		})(),
 	},
 	{
 		name: 'Started',

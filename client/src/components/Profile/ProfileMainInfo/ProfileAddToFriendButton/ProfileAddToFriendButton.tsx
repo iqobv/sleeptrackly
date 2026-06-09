@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { Profile } from '@/types';
+import { Button } from '@shared/ui';
 import { useProfileAddToFriendButton } from './useProfileAddToFriendButton';
 
 interface ProfileAddToFriendButtonProps {

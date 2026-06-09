@@ -5,10 +5,10 @@ import { QUERY_KEYS } from '@/config';
 import { UsePromotionDto } from '@/dto';
 import { usePromotionSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input, SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button, Field, Input, SectionHeader } from '../UI';
 import styles from './Promotion.module.scss';
 
 export const Promotion = () => {

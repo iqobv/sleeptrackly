@@ -6,7 +6,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
+} from '@shared/ui';
 import { MdOutlineQrCode2 } from 'react-icons/md';
 import SocialButton from '../../SocialButton/SocialButton';
 import styles from './QrCode.module.scss';

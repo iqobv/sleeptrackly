@@ -1,9 +1,9 @@
 'use client';
 
 import { createBundle } from '@/api';
-import { Form } from '@/components/UI';
 import { CreateBundleDto } from '@/dto';
 import { createBundleSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';

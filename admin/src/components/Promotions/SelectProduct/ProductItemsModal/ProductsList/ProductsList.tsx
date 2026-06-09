@@ -2,10 +2,10 @@
 
 import { getAllProducts } from '@/api';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreatePromotionDto, PaginationWithLanguageDto } from '@/dto';
 import { Product } from '@/types';
+import { Button } from '@shared/ui';
 import { useSearchParams } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 import ItemCard from './ItemCard/ItemCard';

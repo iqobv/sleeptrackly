@@ -1982,44 +1982,8 @@ export interface components {
             title: string;
             description: string;
         };
-        FullAchievementDto: {
-            type: components["schemas"]["AchievementType"];
-            targetValue: number;
-            iconUrl: string;
-            isActive: boolean;
-            isHidden: boolean;
-            rewardCoins: number;
-            rewardProductId: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            translations: components["schemas"]["FullAchievementTranslationDto"][];
-        };
-        UpdateAchievementSwaggerDto: {
-            /**
-             * @description Type of the achievement, which determines the criteria for unlocking it.
-             * @example SLEEP_COUNT
-             */
-            type?: components["schemas"]["AchievementType"];
-            /** Format: binary */
-            icon?: string;
-            targetValue?: number;
-            isActive?: boolean;
-            isHidden?: boolean;
-            rewardCoins?: number;
-            /**
-             * Format: uuid
-             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            rewardProductId?: string;
-            translations?: components["schemas"]["AchievementTranslationDto"][];
-        };
         /** @enum {string} */
-        AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
+        ProductType: "ITEM" | "BUNDLE";
         /** @enum {string} */
         ProfileItemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
         /** @enum {string} */
@@ -2032,33 +1996,21 @@ export interface components {
             language: string;
             name: string;
         };
-        InventoryItemDetailsDto: {
+        ItemDto: {
             type: components["schemas"]["ProfileItemType"];
             rarity: components["schemas"]["ItemRarity"];
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            mediaUrl: string;
+            translations: components["schemas"]["TranslationDto"][];
+            isExclusive: boolean;
             isAnimated: boolean;
-            translation: components["schemas"]["TranslationDto"];
-        };
-        UserInventoryItemDto: {
-            acquiredFrom: components["schemas"]["AcquiredFrom"];
-            item: components["schemas"]["InventoryItemDetailsDto"];
-            userId: string;
-            itemId: string;
-            isEquipped: boolean;
-            /** Format: date-time */
-            acquiredAt: string;
+            basePrice: number;
+            mediaUrl: string;
+            previewUrl: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-        };
-        PaginatedUserInventoryDto: {
-            items: components["schemas"]["UserInventoryItemDto"][];
-            meta: components["schemas"]["PaginatedMetaDto"];
         };
         FullTranslationDto: {
             /**
@@ -2089,6 +2041,117 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        BundleItemDto: {
+            item: components["schemas"]["FullItemDto"];
+            itemId: string;
+            bundleId: string;
+        };
+        BundleDto: {
+            translations: components["schemas"]["TranslationDto"][];
+            items: components["schemas"]["BundleItemDto"][];
+            basePrice: number;
+            isExclusive: boolean;
+            discountPercentage: number;
+            mediaUrl: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullProductDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
+            item: components["schemas"]["ItemDto"] | null;
+            bundle: components["schemas"]["BundleDto"] | null;
+            bundleId: string | null;
+            itemId: string | null;
+            isNew: boolean;
+            isPopular: boolean;
+            isExclusive: boolean;
+            isShowInStore: boolean;
+            isLimited: boolean;
+            price: number;
+            discountedPrice: number | null;
+            maxStock: number | null;
+            soldCount: number;
+            /** Format: date-time */
+            expiresAt: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullAchievementDto: {
+            type: components["schemas"]["AchievementType"];
+            targetValue: number;
+            iconUrl: string;
+            isActive: boolean;
+            isHidden: boolean;
+            rewardCoins: number;
+            rewardProductId: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            translations: components["schemas"]["FullAchievementTranslationDto"][];
+            rewardProduct: components["schemas"]["FullProductDto"] | null;
+        };
+        UpdateAchievementSwaggerDto: {
+            /**
+             * @description Type of the achievement, which determines the criteria for unlocking it.
+             * @example SLEEP_COUNT
+             */
+            type?: components["schemas"]["AchievementType"];
+            /** Format: binary */
+            icon?: string;
+            targetValue?: number;
+            isActive?: boolean;
+            isHidden?: boolean;
+            rewardCoins?: number;
+            /**
+             * Format: uuid
+             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            rewardProductId?: string;
+            translations?: components["schemas"]["AchievementTranslationDto"][];
+        };
+        /** @enum {string} */
+        AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
+        InventoryItemDetailsDto: {
+            type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            mediaUrl: string;
+            isAnimated: boolean;
+            translation: components["schemas"]["TranslationDto"];
+        };
+        UserInventoryItemDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
+            item: components["schemas"]["InventoryItemDetailsDto"];
+            userId: string;
+            itemId: string;
+            isEquipped: boolean;
+            /** Format: date-time */
+            acquiredAt: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        PaginatedUserInventoryDto: {
+            items: components["schemas"]["UserInventoryItemDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
         };
         FullUserInventoryItemDto: {
             acquiredFrom: components["schemas"]["AcquiredFrom"];
@@ -2324,25 +2387,6 @@ export interface components {
             itemsIds: string[];
         };
         BaseBundleDto: {
-            basePrice: number;
-            isExclusive: boolean;
-            discountPercentage: number;
-            mediaUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        BundleItemDto: {
-            item: components["schemas"]["FullItemDto"];
-            itemId: string;
-            bundleId: string;
-        };
-        BundleDto: {
-            translations: components["schemas"]["TranslationDto"][];
-            items: components["schemas"]["BundleItemDto"][];
             basePrice: number;
             isExclusive: boolean;
             discountPercentage: number;
@@ -2682,22 +2726,6 @@ export interface components {
             basePrice: number;
             translations: components["schemas"]["TranslationDto"][];
         };
-        ItemDto: {
-            type: components["schemas"]["ProfileItemType"];
-            rarity: components["schemas"]["ItemRarity"];
-            translations: components["schemas"]["TranslationDto"][];
-            isExclusive: boolean;
-            isAnimated: boolean;
-            basePrice: number;
-            mediaUrl: string;
-            previewUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
         PaginatedItemsDto: {
             items: components["schemas"]["ItemDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
@@ -2734,36 +2762,9 @@ export interface components {
             /** Format: date-time */
             expiresAt?: string;
         };
-        /** @enum {string} */
-        ProductType: "ITEM" | "BUNDLE";
         ProductDto: {
             type: components["schemas"]["ProductType"];
             itemType: components["schemas"]["ProfileItemType"] | null;
-            bundleId: string | null;
-            itemId: string | null;
-            isNew: boolean;
-            isPopular: boolean;
-            isExclusive: boolean;
-            isShowInStore: boolean;
-            isLimited: boolean;
-            price: number;
-            discountedPrice: number | null;
-            maxStock: number | null;
-            soldCount: number;
-            /** Format: date-time */
-            expiresAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        FullProductDto: {
-            type: components["schemas"]["ProductType"];
-            itemType: components["schemas"]["ProfileItemType"] | null;
-            item: components["schemas"]["ItemDto"] | null;
-            bundle: components["schemas"]["BundleDto"] | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2936,7 +2937,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-05T18:14:08.793Z
+             * @example 2026-06-10T13:09:32.462Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2967,7 +2968,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-05T18:14:08.793Z
+             * @example 2026-06-10T13:09:32.462Z
              */
             expiresAt?: string;
             /** @example 0 */

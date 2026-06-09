@@ -1,8 +1,8 @@
 'use client';
 
 import { getAllCollections } from '@/api';
-import { Grid, GridItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
+import { Grid, GridItem } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { CollectionItem } from './CollectionItem/CollectionItem';
 import styles from './CollectionList.module.scss';

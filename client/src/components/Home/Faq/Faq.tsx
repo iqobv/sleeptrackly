@@ -1,6 +1,6 @@
 'use client';
 
-import { List, SectionHeader } from '@/components/UI';
+import { List, SectionHeader } from '@shared/ui';
 import { useState } from 'react';
 import FaqQuestion from './FaqQuestion/FaqQuestion';
 import { FAQ_QUESTIONS } from './faqQuestions';

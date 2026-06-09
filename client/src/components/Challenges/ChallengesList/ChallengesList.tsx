@@ -1,7 +1,7 @@
 'use client';
 
-import { List } from '@/components/UI';
 import { Challenge } from '@/types';
+import { List } from '@shared/ui';
 import ChallengeItem from './ChallengeItem/ChallengeItem';
 import styles from './ChallengesList.module.scss';
 

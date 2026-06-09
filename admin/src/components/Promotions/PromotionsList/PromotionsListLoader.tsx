@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
 const items = Array.from({ length: 10 }, (_, i) => (
 	<SkeletonLoader key={i} height={40} />

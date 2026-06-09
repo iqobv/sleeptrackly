@@ -1,7 +1,7 @@
 'use client';
 
-import { FormActions, FormReset, FormSubmit } from '@/components/UI';
 import { FullCollection } from '@/types';
+import { FormActions, FormReset, FormSubmit } from '@shared/form';
 import { useEffect } from 'react';
 import { FieldValues, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';

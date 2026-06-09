@@ -1,9 +1,9 @@
 'use client';
 
-import { Pagination } from '@/components/UI';
-import { PaginationDto } from '@/dto';
-import { usePagination, usePaginationBounds } from '@/hooks';
+import { PaginationWithLanguageDto } from '@/dto';
 import { PaginatedDataResponse } from '@/types';
+import { usePagination, usePaginationBounds } from '@shared/hooks';
+import { Pagination } from '@shared/ui';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
 import React from 'react';
@@ -11,8 +11,10 @@ import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
 import styles from './ItemsListPaginatedWrapper.module.scss';
 
 interface ItemsListPaginatedWrapperProps<T> {
-	queryFn: (query: PaginationDto) => Promise<PaginatedDataResponse<T>>;
-	queryKey: (query: PaginationDto) => unknown[];
+	queryFn: (
+		query: PaginationWithLanguageDto,
+	) => Promise<PaginatedDataResponse<T>>;
+	queryKey: (query: PaginationWithLanguageDto) => unknown[];
 	queryOptions?: Omit<
 		UseQueryOptions<PaginatedDataResponse<T>, Error>,
 		'queryKey' | 'queryFn'
@@ -34,9 +36,10 @@ const ItemsListPaginatedWrapper = <T,>({
 }: ItemsListPaginatedWrapperProps<T>) => {
 	const { currentPage, setPage } = usePagination();
 
-	const params: PaginationDto = {
+	const params: PaginationWithLanguageDto = {
 		page: currentPage,
 		limit: 20,
+		language: 'en',
 	};
 
 	const { data, isLoading } = useQuery<PaginatedDataResponse<T>, Error>({

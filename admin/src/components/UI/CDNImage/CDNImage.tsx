@@ -1,31 +1,13 @@
-import Image from 'next/image';
+import { BaseImage, type BaseImageProps } from '@shared/ui';
 
-import styles from './CDNImage.module.scss';
+type CDNImageProps = Omit<BaseImageProps, 'src'> & {
+	path: string;
+};
 
-interface CDNImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-	src: string;
-	width?: number;
-	height?: number;
-	alt?: string;
-	className?: string;
-}
+export const CDNImage = ({ path, ...props }: CDNImageProps) => {
+	const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
+	const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+	const fullSrc = `${cdnUrl}/${cleanPath}`;
 
-export const CDNImage = ({
-	src,
-	width = 100,
-	height = 100,
-	alt = 'image',
-	className,
-	...props
-}: CDNImageProps) => {
-	return (
-		<Image
-			src={`${process.env.NEXT_PUBLIC_CDN_URL}/${src}`}
-			width={width}
-			height={height}
-			alt={alt}
-			className={`${styles.cdnImage} ${className}`}
-			{...props}
-		/>
-	);
+	return <BaseImage src={fullSrc} {...props} />;
 };

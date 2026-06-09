@@ -1,12 +1,12 @@
 'use client';
 
 import { changePassword, needOldPassword } from '@/api';
-import { Button, Field, Input, Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { ChangePasswordDto } from '@/dto';
 import { useAuth } from '@/hooks';
 import { changePasswordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input, Loader } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';

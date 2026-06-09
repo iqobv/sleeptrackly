@@ -1,10 +1,10 @@
 'use client';
 
 import { getAllProducts } from '@/api';
-import { ModalBody, Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PaginationWithLanguageDto } from '@/dto';
 import { Product } from '@/types';
+import { ModalBody, Pagination } from '@shared/ui';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { SelectedProduct } from './CollectionFormProduct';

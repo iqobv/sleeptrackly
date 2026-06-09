@@ -1,7 +1,8 @@
 'use client';
 
-import { Grid, GridItem } from '@/components/UI';
+import { Grid, GridItem } from '@shared/ui';
 import React from 'react';
+import styles from './ItemsListWrapper.module.scss';
 
 interface ItemsListWrapperProps<T> {
 	itemCard: (item: T) => React.ReactNode;
@@ -13,10 +14,7 @@ const ItemsListWrapper = <T,>({
 	items,
 }: ItemsListWrapperProps<T>) => {
 	return (
-		<Grid
-			columns="repeat(auto-fill, minmax(15.625rem, 1fr))"
-			oneColumnOnMobile={false}
-		>
+		<Grid className={styles.itemsGrid}>
 			{items.map((item, index) => (
 				<GridItem key={index}>{itemCard(item)}</GridItem>
 			))}

@@ -1,0 +1,55 @@
+{
+	"folders": [
+		{
+			"name": "Root (Configs)",
+			"path": ".",
+		},
+		{
+			"name": "Client",
+			"path": "client",
+		},
+		{
+			"name": "Admin",
+			"path": "admin",
+		},
+		{
+			"name": "Server",
+			"path": "server",
+		},
+		{
+			"name": "Shared: UI",
+			"path": "shared/ui",
+		},
+		{
+			"name": "Shared: Utils",
+			"path": "shared/utils",
+		},
+		{
+			"name": "Shared: Hooks",
+			"path": "shared/hooks",
+		},
+		{
+			"name": "Shared: Form",
+			"path": "shared/form",
+		},
+	],
+	"settings": {
+		"eslint.workingDirectories": [
+			{ "pattern": "client" },
+			{ "pattern": "admin" },
+			{ "pattern": "server" },
+			{ "pattern": "shared/*" },
+		],
+		"files.watcherExclude": {
+			"**/node_modules/**": true,
+			"**/dist/**": true,
+			"**/.next/**": true,
+			"**/generated/**": true,
+		},
+		"js/ts.tsdk.path": "node_modules/typescript/lib",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+		},
+	},
+}

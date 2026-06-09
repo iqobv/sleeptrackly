@@ -1,20 +1,19 @@
 'use client';
 
 import { Option, ReportType } from '@/types';
-import { MdReportGmailerrorred } from 'react-icons/md';
+import { FormSelect } from '@shared/form';
 import {
 	Button,
 	Field,
-	FormSelect,
 	Modal,
 	ModalBody,
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-	SelectContent,
 	SelectItem,
 	Textarea,
-} from '../UI';
+} from '@shared/ui';
+import { MdReportGmailerrorred } from 'react-icons/md';
 import styles from './ReportModal.module.scss';
 import { REPORT_TITLES_OPTIONS } from './reportTitleOptions';
 import { useReportModal } from './useReportModal';
@@ -63,20 +62,12 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 								name="title"
 								control={control}
 								placeholder="Select a report title"
-								displayFormat={(val) => {
-									const option = REPORT_TITLES_OPTIONS.find(
-										(opt) => opt.value === val,
-									);
-									return option ? option.label : '';
-								}}
 							>
-								<SelectContent>
-									{REPORT_TITLES_OPTIONS.map((option: Option) => (
-										<SelectItem key={option.value} value={option.value}>
-											{option.label}
-										</SelectItem>
-									))}
-								</SelectContent>
+								{REPORT_TITLES_OPTIONS.map((option: Option) => (
+									<SelectItem key={option.value} value={option.value}>
+										{option.label}
+									</SelectItem>
+								))}
 							</FormSelect>
 						</Field>
 						{isOtherTitle && (

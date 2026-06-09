@@ -1,0 +1,21 @@
+{
+	"name": "@shared/hooks",
+	"version": "1.0.0",
+	"private": true,
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"import": "./src/index.ts",
+			"require": "./src/index.ts"
+		}
+	},
+	"peerDependencies": {
+		"react": ">=19.0.0"
+	},
+	"dependencies": {
+		"dayjs": "catalog:",
+		"nuqs": "catalog:"
+	}
+}

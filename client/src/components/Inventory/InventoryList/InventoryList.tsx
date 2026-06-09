@@ -1,9 +1,10 @@
 'use client';
 
 import { getInventory } from '@/api';
-import { Pagination } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
-import { useAuth, usePagination, usePaginationBounds } from '@/hooks';
+import { useAuth } from '@/hooks';
+import { usePagination, usePaginationBounds } from '@shared/hooks';
+import { Pagination } from '@shared/ui';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import styles from './InventoryList.module.scss';
 import { InventoryListEmpty } from './InventoryListEmpty/InventoryListEmpty';

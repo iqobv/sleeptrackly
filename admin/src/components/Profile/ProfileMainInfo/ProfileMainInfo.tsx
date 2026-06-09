@@ -1,8 +1,9 @@
 'use client';
 
-import { Avatar, SectionHeader } from '@/components/UI';
+import { UserAvatar } from '@/components/UI/UserAvatar/UserAvatar';
 import { useAuth } from '@/hooks';
 import { Profile } from '@/types';
+import { SectionHeader } from '@shared/ui';
 import styles from './ProfileMainInfo.module.scss';
 import ProfileSanctionsButton from './ProfileSanctionsButton/ProfileSanctionsButton';
 
@@ -16,7 +17,7 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 
 	return (
 		<div className={styles.info}>
-			<Avatar avatar={profile.avatar?.url} size={300} priority />
+			<UserAvatar avatarPath={profile.avatar?.url} size={300} />
 			<SectionHeader
 				title={profile.username}
 				titleProps={{

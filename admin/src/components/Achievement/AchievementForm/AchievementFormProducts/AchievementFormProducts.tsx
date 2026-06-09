@@ -1,6 +1,8 @@
 'use client';
 
 import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
+import { BaseAchievementDto } from '@/dto';
+import { Product } from '@/types';
 import {
 	Button,
 	Field,
@@ -8,18 +10,28 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
-import { BaseAchievementDto } from '@/dto';
-import { Product } from '@/types';
+} from '@shared/ui';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './AchievementFormProducts.module.scss';
 import { AchievementFormProductsBody } from './AchievementFormProductsBody';
 
-export const AchievementFormProducts = () => {
-	const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+interface AchievementFormProductsProps {
+	initProduct?: Product | null;
+}
+
+export const AchievementFormProducts = ({
+	initProduct,
+}: AchievementFormProductsProps) => {
+	const [selectedProduct, setSelectedProduct] = useState<Product | null>(
+		initProduct || null,
+	);
 
 	const { register, setValue } = useFormContext<BaseAchievementDto>();
+
+	useEffect(() => {
+		if (initProduct) setSelectedProduct(initProduct);
+	}, [initProduct]);
 
 	useEffect(() => {
 		if (selectedProduct) {

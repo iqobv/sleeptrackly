@@ -2,6 +2,7 @@ import TermlyCMP from '@/components/TermlyCMP';
 import { AUTH_PAGES } from '@/config';
 import MainProvider from '@/providers/MainProvider';
 import { User } from '@/types';
+import '@shared/ui/styles/global.scss';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';

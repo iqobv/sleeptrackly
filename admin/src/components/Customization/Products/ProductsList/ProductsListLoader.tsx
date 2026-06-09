@@ -1,4 +1,4 @@
-import { Grid, PaginationLoader } from '@/components/UI';
+import { Grid, PaginationLoader } from '@shared/ui';
 import { CustomizationPageHeaderLoader } from '../../CustomizationPageHeader';
 import { ProductCardLoader } from './ProductCard';
 import styles from './ProductsList.module.scss';

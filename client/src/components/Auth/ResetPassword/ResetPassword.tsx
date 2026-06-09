@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import { useSearchParams } from 'next/navigation';
 import EmailField from './EmailField/EmailField';
 import NewPasswordField from './NewPasswordField/NewPasswordField';

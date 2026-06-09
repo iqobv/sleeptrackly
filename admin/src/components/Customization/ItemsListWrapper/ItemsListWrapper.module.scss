@@ -1,5 +1,3 @@
-.list-wrapper-items {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
-	gap: 1rem;
+.itemsGrid {
+	--grid-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
 }

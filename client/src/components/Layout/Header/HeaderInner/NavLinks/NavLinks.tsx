@@ -1,7 +1,7 @@
 'use client';
 
-import { List } from '@/components/UI';
 import { useAuth } from '@/hooks';
+import { List } from '@shared/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LINKS } from './links';

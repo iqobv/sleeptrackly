@@ -1,7 +1,7 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
 import { Challenge } from '@/types';
+import { SectionHeader } from '@shared/ui';
 import ChallengesList from '../ChallengesList/ChallengesList';
 
 interface AllChallengesProps {

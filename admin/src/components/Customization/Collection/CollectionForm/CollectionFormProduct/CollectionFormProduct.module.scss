@@ -1,8 +1,5 @@
 @use '../../../../../styles/mixins' as *;
 
-.collectionFormProduct {
-}
-
 .modalContent {
 	width: 90vw;
 	height: 80vh;
@@ -14,17 +11,5 @@
 }
 
 .grid {
-	--grid-columns: 1fr;
-
-	@include respond-to(md) {
-		--grid-columns: repeat(2, 1fr);
-	}
-
-	@include respond-to(lg) {
-		--grid-columns: repeat(3, 1fr);
-	}
-
-	@include respond-to(xl) {
-		--grid-columns: repeat(4, 1fr);
-	}
+	--grid-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
 }

@@ -1,36 +1,33 @@
 'use client';
 
 import { getChallengeById } from '@/api';
-import { Loader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useQuery } from '@tanstack/react-query';
-import Calendar from '../Calendar/Calendar';
-import ChallengeInfo from '../ChallengeInfo/ChallengeInfo';
-import ChallengeSummary from '../ChallengeSummary/ChallengeSummary';
+import { notFound } from 'next/navigation';
+import { Calendar } from '../Calendar';
+import { ChallengeInfo } from '../ChallengeInfo';
+import { ChallengeSummary } from '../ChallengeSummary';
+import { ChallengeLoader } from './ChallengeLoader';
 
 interface ChallengeProps {
 	id: string;
 }
 
-const Challenge = ({ id }: ChallengeProps) => {
+export const Challenge = ({ id }: ChallengeProps) => {
 	const { data: challenge, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.challenges.one(id),
 		queryFn: () => getChallengeById(id),
 		enabled: !!id,
 	});
 
+	if (isLoading) return <ChallengeLoader />;
+	if (!challenge) notFound();
+
 	return (
-		<div>
-			{isLoading && <Loader />}
-			{challenge && (
-				<>
-					<ChallengeSummary data={challenge} />
-					<Calendar data={challenge} mode={challenge.frequency} />
-					<ChallengeInfo data={challenge} />
-				</>
-			)}
-		</div>
+		<>
+			<ChallengeSummary data={challenge} />
+			<Calendar data={challenge} mode={challenge.frequency} />
+			<ChallengeInfo data={challenge} />
+		</>
 	);
 };
-
-export default Challenge;

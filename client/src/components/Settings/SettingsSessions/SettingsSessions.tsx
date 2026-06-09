@@ -1,9 +1,9 @@
 'use client';
 
 import { getAllSessions } from '@/api';
-import { BackButton, Divider, List, SectionHeader } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
+import { BackButton, Divider, List, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
@@ -39,7 +39,7 @@ export const SettingsSessions = () => {
 				<>
 					<div>
 						<div className={styles.actions}>
-							<BackButton onBack={() => router.back()} />
+							<BackButton onClick={() => router.back()} />
 							<QrScanModal />
 						</div>
 						<SectionHeader

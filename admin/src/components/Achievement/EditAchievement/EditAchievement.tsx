@@ -1,10 +1,11 @@
 'use client';
 
 import { getAchievementById, updateAchievement } from '@/api';
-import { SectionHeader } from '@/components/UI';
+import { NavigationBackButton } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateAchievementDto } from '@/dto';
 import { updateAchievementSchema } from '@/schemas';
+import { SectionHeader } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -19,7 +20,7 @@ export const EditAchievement = () => {
 		enabled: !!id,
 	});
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UpdateAchievementDto) => updateAchievement(id, data),
 		onSuccess: () => {
 			refetch();
@@ -31,7 +32,10 @@ export const EditAchievement = () => {
 
 	return (
 		<div>
-			<SectionHeader title="Edit Achievement" showBackButton />
+			<SectionHeader
+				title="Edit Achievement"
+				leftSlot={<NavigationBackButton />}
+			/>
 			<AchievementForm<UpdateAchievementDto>
 				schema={updateAchievementSchema}
 				onSubmit={(data) => mutate(data)}
@@ -65,6 +69,8 @@ export const EditAchievement = () => {
 						description: t.description,
 					})),
 				}}
+				initData={data}
+				isLoading={isPending}
 			/>
 		</div>
 	);

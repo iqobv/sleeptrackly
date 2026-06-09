@@ -169,6 +169,9 @@ export class AchievementCrudService {
 			where: { id },
 			include: {
 				translations: true,
+				rewardProduct: {
+					include: productInclude(),
+				},
 			},
 		});
 
@@ -230,7 +233,6 @@ export class AchievementCrudService {
 						},
 						create: {
 							...translation,
-							achievementId: achievement.id,
 						},
 						update: {
 							...translation,

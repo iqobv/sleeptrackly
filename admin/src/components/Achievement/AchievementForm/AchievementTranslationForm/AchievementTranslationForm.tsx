@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, Field, Input } from '@/components/UI';
 import { AchievementTranslationDto } from '@/dto';
+import { Button, Field, Input } from '@shared/ui';
 import {
 	ArrayPath,
 	FieldArray,
@@ -99,4 +99,3 @@ export const AchievementTranslationForm = <D extends HasTranslations>() => {
 		</div>
 	);
 };
-

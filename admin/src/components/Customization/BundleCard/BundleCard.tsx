@@ -20,7 +20,7 @@ const BundleCard = ({ bundle, actions }: BundleCardProps) => {
 		<div key={bundle.id} className={styles.item}>
 			<div className={styles.media}>
 				<CDNImage
-					src={bundle.mediaUrl}
+					path={bundle.mediaUrl}
 					alt={translation}
 					width={200}
 					height={200}

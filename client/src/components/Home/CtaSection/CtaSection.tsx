@@ -1,5 +1,5 @@
-import { Button, SectionHeader } from '@/components/UI';
 import { AUTH_PAGES } from '@/config';
+import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './CtaSection.module.scss';
 

@@ -4,10 +4,28 @@
 	margin-top: 0.625rem;
 }
 
-.title {
-	padding-top: 0;
-	padding-bottom: 0.625rem;
-	font-size: 1.3rem;
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	width: 70%;
+	padding: 1.25rem 0;
+
+	@include respond-to(sm) {
+		width: 60%;
+	}
+
+	@include respond-to(md) {
+		width: 50%;
+	}
+
+	@include respond-to(lg) {
+		width: 35%;
+	}
+
+	@include respond-to(xl) {
+		width: 25%;
+	}
 }
 
 .item {
@@ -26,20 +44,18 @@
 	}
 }
 
+.itemLoader {
+	height: 8.125rem;
+
+	@include respond-to(md) {
+		height: 4.5rem;
+	}
+}
+
 .info {
 	display: flex;
 	flex-direction: column;
 	gap: 0.3125rem;
-}
-
-.name {
-	font-size: 1.3rem;
-	color: var(--page-title-color);
-}
-
-.target {
-	font-size: 1.1rem;
-	color: var(--page-description-color);
 }
 
 .status {

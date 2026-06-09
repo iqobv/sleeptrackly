@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './AllShop.module.scss';
 import { AllShopFilterLoader } from './AllShopFilter';
 import { AllShopFilterSearchBarLoader } from './AllShopFilterSearchBar';

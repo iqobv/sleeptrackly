@@ -1,4 +1,5 @@
-import { Grid } from '@/components/UI';
+import { Grid } from '@shared/ui';
+import styles from './ItemsListWrapper.module.scss';
 
 interface ItemsListWrapperLoaderProps {
 	children?: React.ReactNode;
@@ -7,12 +8,5 @@ interface ItemsListWrapperLoaderProps {
 export const ItemsListWrapperLoader = ({
 	children,
 }: ItemsListWrapperLoaderProps) => {
-	return (
-		<Grid
-			columns="repeat(auto-fill, minmax(15.625rem, 1fr))"
-			oneColumnOnMobile={false}
-		>
-			{children}
-		</Grid>
-	);
+	return <Grid className={styles.itemsGrid}>{children}</Grid>;
 };

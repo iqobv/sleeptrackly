@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './FeaturedShop.module.scss';
 import { FeaturedShopBannerLoader } from './FeaturedShopBanner';
 import { FeaturedShopCarouselLoader } from './FeaturedShopCarousel';

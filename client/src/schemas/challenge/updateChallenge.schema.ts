@@ -1,3 +1,3 @@
-import { ChallengeSchema } from './challenge.schema';
+import { challengeSchema } from './challenge.schema';
 
-export const UpdateSchema = ChallengeSchema;
+export const updateChallengeSchema = challengeSchema;

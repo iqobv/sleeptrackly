@@ -1,10 +1,10 @@
 'use client';
 
 import { getItemById, updateItem } from '@/api';
-import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateItemDto } from '@/dto';
 import { updateItemSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import ItemForm from '../ItemForm/ItemForm';

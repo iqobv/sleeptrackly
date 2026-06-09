@@ -15,7 +15,7 @@ export const ProfileBadges = ({ badges }: ProfileBadgesProps) => {
 			{badges.map((badge) => (
 				<CDNImage
 					key={badge.id}
-					src={badge.item.mediaUrl}
+					path={badge.item.mediaUrl}
 					width={32}
 					height={32}
 					alt="badge"

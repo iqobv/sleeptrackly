@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '../UI';
+import { SectionHeader } from '@shared/ui';
 import { SettingsTabs } from './SettingsTabs/SettingsTabs';
 
 export const Settings = () => {

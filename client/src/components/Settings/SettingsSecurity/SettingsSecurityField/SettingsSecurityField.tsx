@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { SettingsField } from '../../SettingsField/SettingsField';
 import styles from './SettingsSecurityField.module.scss';
 

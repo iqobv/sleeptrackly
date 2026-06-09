@@ -1,9 +1,9 @@
 'use client';
 
 import { getNotifications, markAllNotificationsAsRead } from '@/api';
-import { Button, Dropdown, DropdownTrigger } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
+import { Button, Dropdown, DropdownTrigger } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';

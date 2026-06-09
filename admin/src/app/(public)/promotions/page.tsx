@@ -1,5 +1,5 @@
 import { PromotionsList } from '@/components/Promotions';
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { PAGES } from '@/config';
 import Link from 'next/link';
 

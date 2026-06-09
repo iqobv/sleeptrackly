@@ -2,7 +2,7 @@
 
 import { FieldValues, useFormContext } from 'react-hook-form';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import styles from './FormContent.module.scss';
 
 interface FormContentProps {

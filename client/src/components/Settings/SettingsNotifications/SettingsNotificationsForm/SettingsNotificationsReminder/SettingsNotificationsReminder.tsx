@@ -1,6 +1,6 @@
 'use client';
 
-import { Input, ToggleSwitch } from '@/components/UI';
+import { Input, ToggleSwitch } from '@shared/ui';
 import { SettingsField } from '../../../SettingsField/SettingsField';
 import { UpdateFunction } from '../SettingsNotificationsForm.types';
 import { useSettingsNotificationsReminder } from './useSettingsNotificationsReminder.hook';

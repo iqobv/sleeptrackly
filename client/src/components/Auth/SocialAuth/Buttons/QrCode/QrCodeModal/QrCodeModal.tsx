@@ -1,6 +1,6 @@
 'use client';
 
-import { Typography } from '@/components/UI';
+import { Typography } from '@shared/ui';
 import { QRCodeSVG } from 'qrcode.react';
 import { MdOutlineQrCodeScanner, MdOutlineSettings } from 'react-icons/md';
 import QrCodeLoader from './QrCodeLoader';

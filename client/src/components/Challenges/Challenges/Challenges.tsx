@@ -1,7 +1,7 @@
 'use client';
 
 import { getChallenges } from '@/api';
-import { Loader } from '@/components/UI';
+import { Loader } from '@shared/ui';
 import { QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';

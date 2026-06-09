@@ -1,8 +1,11 @@
+'use client';
+
 import { makePurchase } from '@/api';
 import { Coin } from '@/components/Icons';
-import { Button, CDNImage } from '@/components/UI';
+import { CDNImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { Item, Product, ProductType } from '@/types';
+import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -10,10 +13,9 @@ import styles from './ShopCard.module.scss';
 
 interface ShopCardProps {
 	product: Product;
-	isPreload: boolean;
 }
 
-export const ShopCard = ({ product, isPreload }: ShopCardProps) => {
+export const ShopCard = ({ product }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
 	const queryClient = useQueryClient();
 
@@ -59,11 +61,10 @@ export const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 					/>
 				) : (
 					<CDNImage
-						src={url}
+						path={url}
 						alt={key?.translation.name || 'Product Image'}
 						width={160}
 						height={160}
-						preload={isPreload}
 					/>
 				)}
 			</div>

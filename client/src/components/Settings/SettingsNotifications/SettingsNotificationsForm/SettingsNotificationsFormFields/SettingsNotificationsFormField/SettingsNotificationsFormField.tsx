@@ -1,7 +1,7 @@
 'use client';
 
 import { SettingsField } from '@/components/Settings/SettingsField/SettingsField';
-import { ToggleSwitch } from '@/components/UI';
+import { ToggleSwitch } from '@shared/ui';
 import {
 	NotificationFieldName,
 	UpdateFunction,

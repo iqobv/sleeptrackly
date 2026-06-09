@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '../UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './WeeklySummary.module.scss';
 
 export const WeeklySummaryLoader = () => {

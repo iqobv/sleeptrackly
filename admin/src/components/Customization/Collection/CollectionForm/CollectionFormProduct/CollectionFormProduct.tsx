@@ -1,6 +1,8 @@
 'use client';
 
 import { getCollectionById } from '@/api';
+import { BaseCollectionDto } from '@/dto';
+import { CollectionProduct } from '@/types';
 import {
 	Button,
 	Modal,
@@ -8,9 +10,7 @@ import {
 	ModalHeader,
 	ModalTrigger,
 	SectionHeader,
-} from '@/components/UI';
-import { BaseCollectionDto } from '@/dto';
-import { CollectionProduct } from '@/types';
+} from '@shared/ui';
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './CollectionFormProduct.module.scss';

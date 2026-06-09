@@ -1,13 +1,9 @@
 'use client';
 
-import styles from './Default.module.scss';
+import { Typography } from '@shared/ui';
 
-const Default = () => {
-	return (
-		<div className={styles.default}>
-			No task scheduled for the selected date. Click on a date to view task.
-		</div>
-	);
-};
-
-export default Default;
+export const Default = () => (
+	<Typography variant="h6" as="p" color="secondary" weight="regular">
+		No task scheduled for the selected date. Click on a date to view task.
+	</Typography>
+);

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { PropsWithChildren } from 'react';
 
 interface SocialButtonProps {

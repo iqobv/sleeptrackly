@@ -2,7 +2,7 @@
 
 import { getAllShop } from '@/api';
 import { QUERY_KEYS } from '@/config';
-import { useDebounce } from '@/hooks';
+import { useDebounce } from '@shared/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';

@@ -1,9 +1,9 @@
 'use client';
 
 import { getAllFriends } from '@/api';
-import { Button, List, SectionHeader } from '@/components/UI';
 import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
 import { useAuth } from '@/hooks';
+import { Button, List, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { FriendItem } from './FriendItem';

@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
 import { PAGES } from '@/config';
 import { Friend } from '@/types';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface FriendItemProps {
 export const FriendItemInfo = ({ friend }: FriendItemProps) => {
 	return (
 		<div className={styles.info}>
-			<Avatar avatar={friend.user?.avatar} size={45} />
+			<UserAvatar avatarPath={friend.user?.avatar} size={45} />
 			<div>
 				<Link
 					className={styles.username}

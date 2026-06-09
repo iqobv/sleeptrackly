@@ -1,6 +1,6 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import { SETTINGS_NOTIFICATIONS_FIELDS } from './settingsNotificationsFormFieldsList';
 
 export const SettingsNotificationsFormFieldsLoader = () => {

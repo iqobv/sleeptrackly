@@ -1,10 +1,11 @@
 'use client';
 
 import { createCollection } from '@/api';
-import { Form } from '@/components/UI';
+import { NavigationBackButton } from '@/components/UI';
 import { PAGES } from '@/config';
 import { CreateCollectionDto } from '@/dto';
 import { createCollectionSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
@@ -22,7 +23,9 @@ export const CreateCollection = () => {
 		<div className="page">
 			<CustomizationPageHeader
 				title="New Collection"
-				sectionHeaderProps={{ showBackButton: true }}
+				sectionHeaderProps={{
+					leftSlot: <NavigationBackButton />,
+				}}
 			/>
 			<Form<CreateCollectionDto>
 				schema={createCollectionSchema}

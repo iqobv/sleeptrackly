@@ -1,8 +1,8 @@
 'use client';
 
-import { Button, List } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config';
 import { FeaturedShopSection } from '@/types';
+import { Button, List } from '@shared/ui';
 import Link from 'next/link';
 import { ShopCard } from '../../ShopCard/ShopCard';
 import styles from './FeaturedShopSections.module.scss';
@@ -39,9 +39,7 @@ export const FeaturedShopSections = ({
 						<List
 							items={s.items}
 							className={styles.items}
-							renderItem={(item, index) => (
-								<ShopCard key={item.id} product={item} isPreload={index < 3} />
-							)}
+							renderItem={(item) => <ShopCard key={item.id} product={item} />}
 						/>
 					</div>
 				);

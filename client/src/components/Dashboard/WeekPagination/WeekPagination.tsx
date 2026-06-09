@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { DashboardDay } from '@/types';
+import { Button } from '@shared/ui';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { useEffect, useState } from 'react';

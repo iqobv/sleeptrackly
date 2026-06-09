@@ -1,12 +1,13 @@
 'use client';
 
 import { createNotification } from '@/api';
-import { Button, Field, FormSelect, Input, SelectItem } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { CreateNotificationDto } from '@/dto';
 import { createNotificationSchema } from '@/schemas';
 import { NotificationType } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormSelect } from '@shared/form';
+import { Button, Field, Input, SelectItem } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import styles from './CreateNotification.module.scss';

@@ -1,5 +1,5 @@
 import { SettingsTabs } from '@/components/Settings';
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import styles from './settingsLayout.module.scss';
 
 export default function SettingsLayout({

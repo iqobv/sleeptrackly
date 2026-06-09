@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, ConfirmModal } from '@/components/UI';
+import { Button, ConfirmModal } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';

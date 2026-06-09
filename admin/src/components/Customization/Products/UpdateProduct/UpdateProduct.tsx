@@ -1,10 +1,10 @@
 'use client';
 
 import { getProductById, updateProduct } from '@/api';
-import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { FormProductValues, UpdateProductDto } from '@/dto';
 import { updateProductSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import ProductForm from '../ProductForm/ProductForm';

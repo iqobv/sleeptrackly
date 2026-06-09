@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import { ReportFilter } from './ReportFilter/ReportFilter';
 import { ReportsList } from './ReportsList/ReportsList';
 import { useReportFilters } from './useReportFilters.hook';

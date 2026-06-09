@@ -1,8 +1,8 @@
 'use client';
 
 import { deletePromotion, getAllPromotions } from '@/api';
-import { Button, ConfirmModal } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
+import { Button, ConfirmModal } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';

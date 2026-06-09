@@ -1,3 +1,3 @@
-export { default as Challenge } from './Challenge/Challenge';
-export { default as CreateChallenge } from './CreateChallenge/CreateChallenge';
-export { default as EditChallenge } from './EditChallenge/EditChallenge';
+export { Challenge, ChallengeLoader, ChallengePageLoader } from './Challenge';
+export { CreateChallenge } from './CreateChallenge/CreateChallenge';
+export { EditChallenge } from './EditChallenge/EditChallenge';

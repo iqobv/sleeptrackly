@@ -1,8 +1,9 @@
 'use client';
 
-import { Avatar, CDNImage, SectionHeader } from '@/components/UI';
+import { CDNImage, UserAvatar } from '@/components/UI';
 import { useAuth } from '@/hooks';
 import { Profile } from '@/types';
+import { SectionHeader } from '@shared/ui';
 import { ProfileBadges } from '../ProfileBadges/ProfileBadges';
 import { ProfileAddToFriendButton } from './ProfileAddToFriendButton/ProfileAddToFriendButton';
 import styles from './ProfileMainInfo.module.scss';
@@ -27,21 +28,19 @@ export const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	return (
 		<div className={styles.info}>
 			<div className={styles.avatarWrapper}>
-				<Avatar
-					avatar={avatar ? avatar.item.mediaUrl : profile.avatar?.url}
+				<UserAvatar
+					avatarPath={avatar ? avatar.item.mediaUrl : profile.avatar?.url}
 					size={300}
-					priority
-					isVideo={avatar?.item.isAnimated}
+					isAnimated={avatar?.item.isAnimated}
 				/>
 				{avatarFrame && (
 					<CDNImage
-						src={avatarFrame.item.mediaUrl}
+						path={avatarFrame.item.mediaUrl}
 						width={300}
 						height={300}
 						alt="avatar frame"
 						className={styles.avatarFrame}
 						key={avatarFrame.id}
-						preload
 					/>
 				)}
 			</div>

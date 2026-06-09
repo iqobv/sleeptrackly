@@ -1,5 +1,5 @@
-import { Button, SectionHeader } from '@/components/UI';
 import { PAGES } from '@/config';
+import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './not-found.module.scss';
 

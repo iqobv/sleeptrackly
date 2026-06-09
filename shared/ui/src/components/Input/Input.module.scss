@@ -1,0 +1,40 @@
+@use '../../styles/input-styles' as *;
+
+.container {
+	@include input-base;
+	padding: 0.375rem;
+
+	&[data-has-left='false'] {
+		padding-left: 0.75rem;
+	}
+
+	&[data-has-right='false'] {
+		padding-right: 0.75rem;
+	}
+
+	&.error {
+		& .input {
+			color: var(--input-color-error);
+		}
+	}
+}
+
+.input {
+	font-size: 1rem;
+	height: 100%;
+	flex: 1;
+	border: none;
+	background-color: transparent;
+	outline: none;
+	color: var(--color-main-text);
+}
+
+.section {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.25rem 0;
+	min-width: 1.875rem;
+	min-height: 1.875rem;
+}

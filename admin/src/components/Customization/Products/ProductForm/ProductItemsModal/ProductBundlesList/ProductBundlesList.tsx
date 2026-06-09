@@ -3,8 +3,8 @@
 import { getAllAvailableBundles } from '@/api';
 import BundleCard from '@/components/Customization/BundleCard/BundleCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
+import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
 type AvailableBundle = NonNullable<

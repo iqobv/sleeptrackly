@@ -7,7 +7,7 @@ import {
 	ModalContent,
 	ModalHeader,
 	ModalTrigger,
-} from '@/components/UI';
+} from '@shared/ui';
 import { MdOutlineQrCodeScanner } from 'react-icons/md';
 import { QrScan } from './QrScan/QrScan';
 import styles from './QrScanModal.module.scss';

@@ -3,10 +3,10 @@
 import { getAllBundles } from '@/api';
 import BundleCard from '@/components/Customization/BundleCard/BundleCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PaginationDto } from '@/dto';
 import { Bundle } from '@/types';
+import { Button } from '@shared/ui';
 import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 

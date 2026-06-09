@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { useState } from 'react';
 import { MdOutlineArrowDropDown } from 'react-icons/md';

@@ -1,9 +1,9 @@
 'use client';
 
 import { getAllBundles } from '@/api';
-import { Button } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
 import { Bundle } from '@/types';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import BundleCard from '../../BundleCard/BundleCard';
 import { CustomizationPageHeader } from '../../CustomizationPageHeader';
@@ -18,8 +18,10 @@ const BundlesList = () => {
 				buttonText="Add New Bundle"
 			/>
 			<ItemsListPaginatedWrapper<Bundle>
-				queryFn={getAllBundles}
-				queryKey={(query) => [QUERY_KEYS.customization.bundle.getAll(query)]}
+				queryFn={({ language: _l, ...params }) => getAllBundles(params)}
+				queryKey={({ language: _l, ...params }) => [
+					QUERY_KEYS.customization.bundle.getAll(params),
+				]}
 				itemCard={(bundle) => (
 					<BundleCard
 						actions={

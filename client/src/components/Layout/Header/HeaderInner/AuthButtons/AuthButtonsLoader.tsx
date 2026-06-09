@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
 const AuthButtonsLoader = () => {
 	return <SkeletonLoader height={44} width={150} />;

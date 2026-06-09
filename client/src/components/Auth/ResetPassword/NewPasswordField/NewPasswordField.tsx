@@ -1,11 +1,11 @@
 'use client';
 
 import { resetPassword } from '@/api';
-import { Field, Input } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { PassordDto } from '@/dto';
 import { passwordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';

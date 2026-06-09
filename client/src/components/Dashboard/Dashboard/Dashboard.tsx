@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import DashboardWeekStats from '../DashboardWeekStats/DashboardWeekStats';
 import SleepChart from '../SleepChart/SleepChart';
 import WeekPagination from '../WeekPagination/WeekPagination';

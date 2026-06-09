@@ -1,8 +1,8 @@
 'use client';
 
 import { equipInventoryItem } from '@/api';
-import { Button } from '@/components/UI';
 import { InventoryItem, ItemType } from '@/types';
+import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';

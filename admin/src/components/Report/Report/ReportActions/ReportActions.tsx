@@ -1,9 +1,9 @@
 'use client';
 
 import { updateReport } from '@/api';
-import { Button } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { FullReport, ReportStatus } from '@/types';
+import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ReportSanction } from './ReportSanction/ReportSanction';
 

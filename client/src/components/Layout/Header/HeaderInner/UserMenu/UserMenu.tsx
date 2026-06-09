@@ -1,7 +1,8 @@
 'use client';
 
 import { NotificationsButton } from '@/components/Notification';
-import { Avatar, Dropdown, DropdownTrigger } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
+import { Dropdown, DropdownTrigger } from '@shared/ui';
 import styles from './UserMenu.module.scss';
 import UserMenuDropdown from './UserMenuDropdown/UserMenuDropdown';
 import { useUserMenu } from './useUserMenu';
@@ -22,11 +23,10 @@ const UserMenu = () => {
 			<Dropdown>
 				<DropdownTrigger asChild>
 					<button className={styles.btn}>
-						<Avatar
-							avatar={avatar ? avatar.item.mediaUrl : user.avatar?.url}
+						<UserAvatar
+							avatarPath={avatar ? avatar.item.mediaUrl : user.avatar?.url}
 							size={40}
-							priority
-							isVideo={avatar?.item.isAnimated || false}
+							isAnimated={avatar?.item.isAnimated}
 						/>
 					</button>
 				</DropdownTrigger>

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, List } from '@/components/UI';
+import { Button, List } from '@shared/ui';
 import styles from './Timer.module.scss';
 import TimerButtonLoader from './TimerButtonLoader';
 import TimerEnd from './TimerEnd/TimerEnd';

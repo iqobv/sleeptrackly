@@ -1,4 +1,4 @@
-import { List, SectionHeader } from '@/components/UI';
+import { List, SectionHeader } from '@shared/ui';
 import styles from './HowItWorks.module.scss';
 import HowItWorksItem from './HowItWorksItem/HowItWorksItem';
 import { HOW_IT_WORKS } from './howItWorksSteps';

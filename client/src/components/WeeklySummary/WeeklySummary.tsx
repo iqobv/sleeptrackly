@@ -1,6 +1,6 @@
 'use client';
 
-import { ModalBody, ModalContent, ModalHeader } from '../UI';
+import { ModalBody, ModalContent, ModalHeader } from '@shared/ui';
 import styles from './WeeklySummary.module.scss';
 import { WeeklySummaryBody } from './WeeklySummaryBody';
 

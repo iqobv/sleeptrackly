@@ -1,9 +1,9 @@
 'use client';
 
 import { resendVerificationEmail } from '@/api';
-import { Button, SectionHeader } from '@/components/UI';
 import { AUTH_PAGES, QUERY_KEYS } from '@/config';
 import { LOCAL_STORAGE_KEYS } from '@/constants';
+import { Button, SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import { Grid } from '@/components/UI';
+import { Grid } from '@shared/ui';
 
 import { CollectionItemLoader } from './CollectionItem/CollectionItemLoader';
 import styles from './CollectionList.module.scss';

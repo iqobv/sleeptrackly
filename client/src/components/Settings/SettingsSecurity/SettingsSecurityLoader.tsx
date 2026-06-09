@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './SettingsSecurity.module.scss';
 
 const cards = Array.from({ length: 3 }, (_, i) => i);

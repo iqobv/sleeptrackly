@@ -1,8 +1,9 @@
 'use client';
 
-import { Button, CDNImage } from '@/components/UI';
+import { CDNImage } from '@/components/UI';
 import { PAGES } from '@/config';
 import { Achievement } from '@/types';
+import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { MdEdit } from 'react-icons/md';
 import styles from './AchievementCard.module.scss';
@@ -22,7 +23,12 @@ export const AchievementCard = ({ achievement }: AchievementCardProps) => {
 	return (
 		<div className={styles.card}>
 			<div className={styles.infoWrapper}>
-				<CDNImage src={achievement.iconUrl} width={48} height={48} />
+				<CDNImage
+					path={achievement.iconUrl}
+					width={48}
+					height={48}
+					alt={achievement.type}
+				/>
 				<div className={styles.info}>
 					<p>Type: {achievement.type}</p>
 					<p>Value: {achievement.targetValue}</p>

@@ -1,10 +1,10 @@
 'use client';
 
 import { getCollectionById, updateCollection } from '@/api';
-import { Form } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateCollectionDto } from '@/dto';
 import { updateCollectionSchema } from '@/schemas';
+import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useParams } from 'next/navigation';

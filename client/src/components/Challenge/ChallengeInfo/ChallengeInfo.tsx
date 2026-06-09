@@ -1,6 +1,7 @@
 'use client';
 
 import { ChallengeFull } from '@/types';
+import { Typography } from '@shared/ui';
 import styles from './ChallengeInfo.module.scss';
 import { CHALLENGE_INFO_FIELDS } from './challengeInfoField';
 
@@ -8,7 +9,7 @@ interface ChallengeInfoProps {
 	data: ChallengeFull;
 }
 
-const ChallengeInfo = ({ data }: ChallengeInfoProps) => {
+export const ChallengeInfo = ({ data }: ChallengeInfoProps) => {
 	if (!data) return null;
 
 	return (
@@ -16,13 +17,11 @@ const ChallengeInfo = ({ data }: ChallengeInfoProps) => {
 			<div className={styles.table}>
 				{CHALLENGE_INFO_FIELDS(data).map((el) => (
 					<div key={el.name} className={styles.row}>
-						<div className={styles.name}>{el.name}</div>
-						<div className={styles.value}>{el.value}</div>
+						<Typography color="secondary">{el.name}</Typography>
+						<Typography>{el.value}</Typography>
 					</div>
 				))}
 			</div>
 		</div>
 	);
 };
-
-export default ChallengeInfo;

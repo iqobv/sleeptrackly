@@ -1,7 +1,7 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
 import { ProfileStatistics } from '@/types';
+import { SectionHeader } from '@shared/ui';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
 

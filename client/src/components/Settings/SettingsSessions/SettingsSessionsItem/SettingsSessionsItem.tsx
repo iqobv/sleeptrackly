@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
 import { Session } from '@/types';
+import { Button } from '@shared/ui';
 import { SettingsSessionsDevice } from './SettingsSessionsDevice/SettingsSessionsDevice';
 import { SettingsSessionsInfo } from './SettingsSessionsInfo/SettingsSessionsInfo';
 import styles from './SettingsSessionsItem.module.scss';

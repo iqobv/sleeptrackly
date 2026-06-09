@@ -1,12 +1,12 @@
 'use client';
 
+import { User } from '@/types';
 import {
 	Button,
 	DropdownContent,
 	DropdownItem,
 	DropdownSeparator,
-} from '@/components/UI';
-import { User } from '@/types';
+} from '@shared/ui';
 import MenuItem from '../MenuItem/MenuItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import UserMenuCoins from '../UserMenuCoins/UserMenuCoins';
