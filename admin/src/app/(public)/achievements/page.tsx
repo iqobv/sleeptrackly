@@ -1,4 +1,4 @@
-import { Achievements } from '@/components/Achievement';
+import { Achievements } from '@/components/Achievement/Achievements/Achievements';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -1,11 +1,8 @@
-import { CustomizationPageHeaderLoader } from '../../CustomizationPageHeader';
-import { CollectionFormLoader } from '../CollectionForm';
+import { PageWrapperLoader } from '@/components/UI';
+import { CollectionFormLoader } from '../CollectionForm/CollectionFormLoader';
 
-export const EditCollectionLoader = () => {
-	return (
-		<div className="page">
-			<CustomizationPageHeaderLoader />
-			<CollectionFormLoader />
-		</div>
-	);
-};
+export const EditCollectionLoader = () => (
+	<PageWrapperLoader showBackButton customRightSlot>
+		<CollectionFormLoader isEdit />
+	</PageWrapperLoader>
+);

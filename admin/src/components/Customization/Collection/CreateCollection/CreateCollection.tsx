@@ -1,7 +1,7 @@
 'use client';
 
 import { createCollection } from '@/api';
-import { NavigationBackButton } from '@/components/UI';
+import { PageWrapper } from '@/components/UI';
 import { PAGES } from '@/config';
 import { CreateCollectionDto } from '@/dto';
 import { createCollectionSchema } from '@/schemas';
@@ -9,24 +9,17 @@ import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import { CustomizationPageHeader } from '../../CustomizationPageHeader';
-import { CollectionForm } from '../CollectionForm';
+import { CollectionForm } from '../CollectionForm/CollectionForm';
 
 export const CreateCollection = () => {
 	const router = useRouter();
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: CreateCollectionDto) => createCollection(data),
 	});
 
 	return (
-		<div className="page">
-			<CustomizationPageHeader
-				title="New Collection"
-				sectionHeaderProps={{
-					leftSlot: <NavigationBackButton />,
-				}}
-			/>
+		<PageWrapper title="New Collection">
 			<Form<CreateCollectionDto>
 				schema={createCollectionSchema}
 				onSubmit={(data, _e, methods) => {
@@ -66,8 +59,8 @@ export const CreateCollection = () => {
 					accentColor: '#000000',
 				}}
 			>
-				<CollectionForm />
+				<CollectionForm isLoading={isPending} />
 			</Form>
-		</div>
+		</PageWrapper>
 	);
 };

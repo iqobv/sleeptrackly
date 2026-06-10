@@ -13,7 +13,7 @@ export const ReportsList = ({ filters, setFilters }: ReportsChildsProps) => {
 	const currentPage = filters.page;
 
 	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.report.getReports(filters),
+		queryKey: QUERY_KEYS.report.list(filters),
 		queryFn: () => getReports(filters),
 	});
 

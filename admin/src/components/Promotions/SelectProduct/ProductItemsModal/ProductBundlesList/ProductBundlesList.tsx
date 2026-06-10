@@ -1,24 +1,14 @@
 'use client';
 
 import { getAllBundles } from '@/api';
-import BundleCard from '@/components/Customization/BundleCard/BundleCard';
+import { BundleCard } from '@/components/Customization/BundleCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
 import { Bundle } from '@/types';
 import { Button } from '@shared/ui';
-import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
 const ProductBundlesList = <T extends FieldValues>() => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationDto = {
-		page: pageFromParams,
-		limit: 20,
-	};
-
 	const { setValue, watch } = useFormContext<T>();
 
 	const bundleId = watch('bundleId' as Path<T>);
@@ -30,8 +20,8 @@ const ProductBundlesList = <T extends FieldValues>() => {
 
 	return (
 		<ItemsListPaginatedWrapper<Bundle>
-			queryFn={() => getAllBundles(params)}
-			queryKey={() => [...QUERY_KEYS.customization.bundle.getAll(params)]}
+			queryFn={(params) => getAllBundles(params)}
+			queryKey={(params) => QUERY_KEYS.customization.bundle.list(params)}
 			itemCard={(bundle) => (
 				<BundleCard
 					bundle={bundle}

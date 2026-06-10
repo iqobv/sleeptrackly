@@ -1,4 +1,4 @@
-import { Report } from '@/components/Report';
+import { Report } from '@/components/Report/Report/Report';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,9 +12,5 @@ interface ReportPageProps {
 export default async function ReportPage({ params }: ReportPageProps) {
 	const { id } = await params;
 
-	return (
-		<div>
-			<Report id={id} />
-		</div>
-	);
+	return <Report id={id} />;
 }

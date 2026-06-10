@@ -2,11 +2,11 @@ import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { LanguageQueryDto } from '@libs/dto';
+import { LanguageQueryDto, PaginationQueryDto } from '@libs/dto';
 import { pickTranslation } from '@libs/mappers';
 import { collectionInclude } from '@libs/prisma';
 import { MessageResponse } from '@libs/types';
-import { withField } from '@libs/utils';
+import { paginate, withField } from '@libs/utils';
 import {
 	BadRequestException,
 	ConflictException,
@@ -18,6 +18,7 @@ import {
 	CollectionDto,
 	CreateCollectionDto,
 	FullCollectionDto,
+	PaginatedCollectionsDto,
 	StoreCollectionDto,
 	UpdateCollectionDto,
 } from './dto';
@@ -82,10 +83,24 @@ export class CollectionService {
 		return plainToInstance(FullCollectionDto, collection);
 	}
 
-	public async getAllCollections(): Promise<CollectionDto[]> {
-		const collections = await this.prismaService.collection.findMany();
+	public async getAllCollections(
+		query: PaginationQueryDto,
+	): Promise<PaginatedCollectionsDto> {
+		const result = await paginate(query, async (limit, offset) => {
+			const [items, total] = await this.prismaService.$transaction([
+				this.prismaService.collection.findMany({
+					include: collectionInclude(),
+					orderBy: { createdAt: 'desc' },
+					skip: offset,
+					take: limit,
+				}),
+				this.prismaService.collection.count(),
+			]);
 
-		return plainToInstance(CollectionDto, collections);
+			return { items, total };
+		});
+
+		return plainToInstance(PaginatedCollectionsDto, result);
 	}
 
 	public async getAllCollectionsForStore(

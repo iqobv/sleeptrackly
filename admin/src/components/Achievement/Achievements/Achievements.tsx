@@ -1,11 +1,9 @@
 'use client';
 
 import { getAllAchievements } from '@/api';
+import { PageWrapper } from '@/components/UI';
 import { PAGES, QUERY_KEYS } from '@/config';
-import { Button, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
-import { MdAdd } from 'react-icons/md';
 import { AchievementCard } from './AchievementCard';
 import styles from './Achievements.module.scss';
 import { AchievementsListLoader } from './AchievementsLoader';
@@ -17,16 +15,13 @@ export const Achievements = () => {
 	});
 
 	return (
-		<div className={styles.achievements}>
-			<div className={styles.header}>
-				<SectionHeader title="Achievements" padding={0} />
-				<Button asChild isIcon>
-					<Link href={PAGES.ACHIEVEMENT_NEW}>
-						<MdAdd />
-						<span className={styles.text}>Add Achievement</span>
-					</Link>
-				</Button>
-			</div>
+		<PageWrapper
+			title="Achievements"
+			description="List of all achievements in the system"
+			buttonText="Create Achievement"
+			showBackButton={false}
+			href={PAGES.ACHIEVEMENT_NEW}
+		>
 			{isLoading && <AchievementsListLoader />}
 			{data && data.length > 0 && (
 				<div className={styles.list}>
@@ -35,6 +30,6 @@ export const Achievements = () => {
 					))}
 				</div>
 			)}
-		</div>
+		</PageWrapper>
 	);
 };

@@ -9,8 +9,9 @@ import { useState } from 'react';
 import { MdDelete } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import styles from './PromotionsList.module.scss';
+import { PromotionsListLoader } from './PromotionsListLoader';
 
-const PromotionsList = () => {
+export const PromotionsList = () => {
 	const [promotionIdToDelete, setPromotionIdToDelete] = useState<string | null>(
 		null,
 	);
@@ -41,26 +42,25 @@ const PromotionsList = () => {
 		}
 	};
 
+	if (isLoading) return <PromotionsListLoader />;
+	if (!data || data.length === 0) return <p>No promotions found.</p>;
+
 	return (
 		<div className={styles.list}>
-			{isLoading && <p>Loading promotions...</p>}
-
-			{data &&
-				data.map((promotion) => (
-					<div key={promotion.id} className={styles.item}>
-						<Link href={PAGES.PROMOTION(promotion.id)} prefetch={false}>
-							{promotion.alias}
-						</Link>
-						<Button
-							isIcon
-							variant="text"
-							onClick={() => setPromotionIdToDelete(promotion.id)}
-						>
-							<MdDelete />
-						</Button>
-					</div>
-				))}
-
+			{data.map((promotion) => (
+				<div key={promotion.id} className={styles.item}>
+					<Link href={PAGES.PROMOTION(promotion.id)} prefetch={false}>
+						{promotion.alias}
+					</Link>
+					<Button
+						isIcon
+						variant="text"
+						onClick={() => setPromotionIdToDelete(promotion.id)}
+					>
+						<MdDelete />
+					</Button>
+				</div>
+			))}
 			<ConfirmModal
 				isOpen={promotionIdToDelete !== null}
 				onClose={handleCloseModal}
@@ -71,5 +71,3 @@ const PromotionsList = () => {
 		</div>
 	);
 };
-
-export default PromotionsList;

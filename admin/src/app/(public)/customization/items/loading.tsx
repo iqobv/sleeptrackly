@@ -1,5 +1,5 @@
-import { ItemsLoader } from '@/components/Customization/Items';
+import { ItemsLoader } from '@/components/Customization/Items/ItemsList/ItemsListLoader';
 
-export default function ItemPageLoading() {
+export default function ItemsPageLoading() {
 	return <ItemsLoader />;
 }

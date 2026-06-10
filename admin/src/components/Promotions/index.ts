@@ -1,4 +1,4 @@
-export { default as CreatePromotion } from './CreatePromotion/CreatePromotion';
-export { default as EditPromotion } from './EditPromotion/EditPromotion';
-export { default as Promotions } from './Promotions';
-export { default as PromotionsList } from './PromotionsList/PromotionsList';
+export { CreatePromotion } from './CreatePromotion/CreatePromotion';
+export { EditPromotion } from './EditPromotion/EditPromotion';
+export { Promotions } from './Promotions';
+export { PromotionsLoader } from './PromotionsLoader';

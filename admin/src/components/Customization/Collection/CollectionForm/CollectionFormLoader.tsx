@@ -1,20 +1,31 @@
-import { SkeletonLoader } from '@shared/ui';
+import { FormContentLoader, FormFieldsLoader } from '@/components/UI';
 import { TranslationFormLoader } from '../../TranslationForm';
+import { COLLECTION_FORM_FIELDS } from './collectionFormFields';
+import { CollectionFormProductLoader } from './CollectionFormProduct/CollectionFormProductLoader';
 
-export const CollectionFormLoader = () => {
-	return (
-		<div
-			style={{
-				display: 'flex',
-				flexDirection: 'column',
-				gap: '0.5rem',
-				marginBottom: '1.25rem',
-			}}
-		>
-			{Array.from({ length: 5 }).map((_, i) => (
-				<SkeletonLoader key={i} height={95} />
-			))}
-			<TranslationFormLoader />
-		</div>
-	);
-};
+interface CollectionFormLoaderProps {
+	isEdit?: boolean;
+}
+
+export const CollectionFormLoader = ({
+	isEdit = false,
+}: CollectionFormLoaderProps) => (
+	<FormContentLoader isEdit={isEdit}>
+		<FormFieldsLoader
+			fields={[
+				{
+					label: true,
+					type: 'text',
+				},
+			]}
+		/>
+		<CollectionFormProductLoader isEdit={isEdit} />
+		<FormFieldsLoader
+			fields={COLLECTION_FORM_FIELDS.map((f) => ({
+				label: !!f.label,
+				type: f.type,
+			}))}
+		/>
+		<TranslationFormLoader />
+	</FormContentLoader>
+);

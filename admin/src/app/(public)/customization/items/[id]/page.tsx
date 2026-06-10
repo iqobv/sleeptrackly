@@ -1,4 +1,4 @@
-import { UpdateItem } from '@/components/Customization/Items';
+import { UpdateItem } from '@/components/Customization/Items/UpdateItem/UpdateItem';
 
 interface ItemPageProps {
 	params: Promise<{ id: string }>;
@@ -7,9 +7,5 @@ interface ItemPageProps {
 export default async function ItemPage({ params }: ItemPageProps) {
 	const { id } = await params;
 
-	return (
-		<div>
-			<UpdateItem id={id} />
-		</div>
-	);
+	return <UpdateItem id={id} />;
 }

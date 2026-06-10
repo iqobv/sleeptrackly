@@ -30,14 +30,8 @@ export const AchievementFormProductsBody = ({
 	return (
 		<ModalBody>
 			<ItemsListPaginatedWrapper<Product>
-				queryFn={() => getAllProducts({ limit: 20, page: 1, language: 'en' })}
-				queryKey={() => [
-					...QUERY_KEYS.customization.product.getAll({
-						limit: 20,
-						page: 1,
-						language: 'en',
-					}),
-				]}
+				queryFn={(params) => getAllProducts(params)}
+				queryKey={(params) => QUERY_KEYS.customization.product.list(params)}
 				isModal
 				itemCard={(product) => (
 					<ItemCard

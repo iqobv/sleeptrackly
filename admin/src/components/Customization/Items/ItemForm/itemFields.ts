@@ -1,30 +1,30 @@
+import { CreateItemDto } from '@/dto';
 import { Field } from '@/types';
-import { FieldValues, Path } from 'react-hook-form';
 import { CREATE_ITEM_OPTIONS } from './CreateItemOptions';
 import { CREATE_ITEM_RARITY_OPTIONS } from './CreateItemOptionsRarityOptions';
 
-export const getItemsFields = <T extends FieldValues>(): Field<T>[] => [
+export const ITEM_FIELDS: Field<CreateItemDto>[] = [
 	{
-		name: 'basePrice' as Path<T>,
+		name: 'basePrice',
 		label: 'Base Price',
 		type: 'number',
 		placeholder: 'Enter base price',
 	},
 	{
-		name: 'isExclusive' as Path<T>,
+		name: 'isExclusive',
 		label: 'Exclusive',
 		type: 'checkbox',
 		placeholder: '',
 	},
 	{
-		name: 'type' as Path<T>,
+		name: 'type',
 		label: 'Type',
 		type: 'select',
 		placeholder: 'Select item type',
 		options: CREATE_ITEM_OPTIONS,
 	},
 	{
-		name: 'rarity' as Path<T>,
+		name: 'rarity',
 		label: 'Rarity',
 		type: 'select',
 		placeholder: 'Select item rarity',

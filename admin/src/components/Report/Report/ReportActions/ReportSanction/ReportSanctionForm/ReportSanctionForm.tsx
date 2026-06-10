@@ -51,12 +51,11 @@ export const ReportSanctionForm = ({
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UserSanctionDto) => createSanction(data),
-		mutationKey: QUERY_KEYS.userSanction.create,
 		onSuccess: () => {
 			toast.success('Sanction created');
 			if (reportId) {
 				queryClient.invalidateQueries({
-					queryKey: QUERY_KEYS.report.getReport(reportId),
+					queryKey: QUERY_KEYS.report.detail(reportId),
 				});
 			}
 		},

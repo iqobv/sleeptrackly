@@ -1,21 +1,19 @@
 'use client';
 
+import { PageWrapper } from '@/components/UI';
 import { PAGES } from '@/config';
-import { CustomizationPageHeader } from '../../CustomizationPageHeader';
-import { CollectionList } from '../CollectionList';
+import { CollectionList } from '../CollectionList/CollectionList';
 
 export const Collections = () => {
 	return (
-		<div className="page">
-			<CustomizationPageHeader
-				title="Collections"
-				sectionHeaderProps={{
-					description: 'You can view and manage your collections here.',
-				}}
-				href={PAGES.COLLECTION_NEW}
-				buttonText="Add New Collection"
-			/>
+		<PageWrapper
+			title="Collections"
+			description="You can view and manage your collections here."
+			showBackButton={false}
+			buttonText="Add New Collection"
+			href={PAGES.COLLECTION_NEW}
+		>
 			<CollectionList />
-		</div>
+		</PageWrapper>
 	);
 };

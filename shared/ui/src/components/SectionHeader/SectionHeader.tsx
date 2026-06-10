@@ -33,14 +33,13 @@ export const SectionHeader = ({
 			className={clsx(styles.header, containerClassName)}
 			style={
 				{
-					'--padding': padding ? pxToRem(padding) : undefined,
-					'--gap': gap ? pxToRem(gap) : undefined,
+					'--padding': padding !== undefined ? pxToRem(padding) : undefined,
+					'--gap': gap !== undefined ? pxToRem(gap) : undefined,
 					'--text-align': textAlign,
 				} as React.CSSProperties
 			}
 		>
 			{leftSlot && <div className={styles.leftSlot}>{leftSlot}</div>}
-
 			<div className={styles.content}>
 				{!!title && (
 					<Typography
@@ -61,7 +60,6 @@ export const SectionHeader = ({
 					</Typography>
 				)}
 			</div>
-
 			{rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
 		</div>
 	);

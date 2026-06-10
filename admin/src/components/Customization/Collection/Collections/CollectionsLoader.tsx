@@ -1,11 +1,8 @@
-import { CustomizationPageHeaderLoader } from '../../CustomizationPageHeader';
-import { CollectionListLoader } from '../CollectionList';
+import { PageWrapperLoader } from '@/components/UI';
+import { CollectionListLoader } from '../CollectionList/CollectionListLoader';
 
-export const CollectionsLoader = () => {
-	return (
-		<div className="page">
-			<CustomizationPageHeaderLoader />
-			<CollectionListLoader />
-		</div>
-	);
-};
+export const CollectionsLoader = () => (
+	<PageWrapperLoader showBackButton={false} showRightButton>
+		<CollectionListLoader />
+	</PageWrapperLoader>
+);

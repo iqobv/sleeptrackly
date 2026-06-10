@@ -1,21 +1,23 @@
 'use client';
 
 import { getAchievementById, updateAchievement } from '@/api';
-import { NavigationBackButton } from '@/components/UI';
+import { PageWrapper } from '@/components/UI';
 import { QUERY_KEYS } from '@/config';
 import { UpdateAchievementDto } from '@/dto';
 import { updateAchievementSchema } from '@/schemas';
-import { SectionHeader } from '@shared/ui';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { AchievementForm } from '../AchievementForm';
+import { AchievementForm } from '../AchievementForm/AchievementForm';
+import { EditAchievementDelete } from './EditAchievementDelete';
 
 export const EditAchievement = () => {
+	const queryClient = useQueryClient();
+
 	const { id } = useParams<{ id: string }>();
 
-	const { data, refetch } = useQuery({
-		queryKey: QUERY_KEYS.achievement.byId(id),
+	const { data } = useQuery({
+		queryKey: QUERY_KEYS.achievement.detail(id),
 		queryFn: () => getAchievementById(id),
 		enabled: !!id,
 	});
@@ -23,7 +25,10 @@ export const EditAchievement = () => {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UpdateAchievementDto) => updateAchievement(id, data),
 		onSuccess: () => {
-			refetch();
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.achievement.detail(id),
+			});
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.achievement.lists });
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Failed to update achievement');
@@ -31,11 +36,11 @@ export const EditAchievement = () => {
 	});
 
 	return (
-		<div>
-			<SectionHeader
-				title="Edit Achievement"
-				leftSlot={<NavigationBackButton />}
-			/>
+		<PageWrapper
+			title="Edit Achievement"
+			customRightSlot={<EditAchievementDelete id={id} />}
+			showBackButton
+		>
 			<AchievementForm<UpdateAchievementDto>
 				schema={updateAchievementSchema}
 				onSubmit={(data) => mutate(data)}
@@ -72,6 +77,6 @@ export const EditAchievement = () => {
 				initData={data}
 				isLoading={isPending}
 			/>
-		</div>
+		</PageWrapper>
 	);
 };

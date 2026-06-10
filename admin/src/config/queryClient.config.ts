@@ -2,68 +2,81 @@ import { PaginationDto, PaginationWithLanguageDto } from '@/dto';
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 
 export const QUERY_KEYS = {
-	auth: {
-		logout: (userId: string) => ['logout', userId] as const,
-	},
-	user: {
-		avatar: (userId: string) => ['user', userId] as const,
-	},
 	profile: {
-		username: (username: string) => ['profile', username] as const,
+		all: ['profile'],
+		username: (username: string) =>
+			[...QUERY_KEYS.profile.all, username] as const,
 	},
 	report: {
-		getReports: (filter: ReportPaginationQuery) =>
-			['getReports', filter] as const,
-		getReport: (id: string) => ['getReport', id] as const,
-		send: ['sendReport'] as const,
-	},
-	userSanction: {
-		create: ['createSanction'] as const,
-		remove: ['removeSanction'] as const,
-	},
-	notifications: {
-		create: ['createNotification'] as const,
+		all: ['reports'],
+		lists: ['reports', 'list'],
+		list: (filter: ReportPaginationQuery) =>
+			[...QUERY_KEYS.report.lists, filter] as const,
+		details: ['reports', 'detail'],
+		detail: (id: string) => [...QUERY_KEYS.report.details, id] as const,
 	},
 	customization: {
 		item: {
-			getAll: (params: PaginationDto) => ['getAllItems', params] as const,
-			getById: (id: string) => ['getItemById', id] as const,
-			create: ['createItem'] as const,
-			update: (id: string) => ['updateItem', id] as const,
-			delete: (id: string) => ['deleteItem', id] as const,
-			getAllAvailable: (params: PaginationDto) =>
-				['getAllAvailableItems', params] as const,
+			all: ['customization', 'items'],
+			lists: ['customization', 'items', 'list'],
+			list: (params: PaginationDto) =>
+				[...QUERY_KEYS.customization.item.lists, 'all', params] as const,
+			listAvailable: (params: PaginationDto) =>
+				[...QUERY_KEYS.customization.item.lists, 'available', params] as const,
+			details: ['customization', 'items', 'detail'] as const,
+			detail: (id: string) =>
+				[...QUERY_KEYS.customization.item.details, id] as const,
 		},
 		bundle: {
-			getAll: (params: PaginationDto) => ['getAllBundles', params] as const,
-			getById: (id: string) => ['getBundleById', id] as const,
-			create: ['createBundle'] as const,
-			update: (id: string) => ['updateBundle', id] as const,
-			delete: (id: string) => ['deleteBundle', id] as const,
-			getAllAvailable: (params: PaginationDto) =>
-				['getAllAvailableBundles', params] as const,
+			all: ['customization', 'bundles'],
+			lists: ['customization', 'bundles', 'list'],
+			list: (params: PaginationDto) =>
+				[...QUERY_KEYS.customization.bundle.lists, 'all', params] as const,
+			listAvailable: (params: PaginationDto) =>
+				[
+					...QUERY_KEYS.customization.bundle.lists,
+					'available',
+					params,
+				] as const,
+			details: ['customization', 'bundles', 'detail'],
+			detail: (id: string) =>
+				[...QUERY_KEYS.customization.bundle.details, id] as const,
 		},
 		product: {
-			getAll: (params: PaginationWithLanguageDto) =>
-				['getAllProducts', params] as const,
-			getAllAvailable: (params: PaginationDto) =>
-				['getAllAvailableProducts', params] as const,
-			getById: (id: string) => ['getProductById', id] as const,
-			create: ['createProduct'] as const,
-			update: (id: string) => ['updateProduct', id] as const,
-			delete: (id: string) => ['deleteProduct', id] as const,
+			all: ['customization', 'products'],
+			lists: ['customization', 'products', 'list'],
+			list: (params: PaginationWithLanguageDto) =>
+				[...QUERY_KEYS.customization.product.lists, 'all', params] as const,
+			listAvailable: (params: PaginationDto) =>
+				[
+					...QUERY_KEYS.customization.product.lists,
+					'available',
+					params,
+				] as const,
+			details: ['customization', 'products', 'detail'],
+			detail: (id: string) =>
+				[...QUERY_KEYS.customization.product.details, id] as const,
 		},
 		collection: {
-			all: ['allCollections'],
-			byId: (id: string) => ['collectionById', id],
+			all: ['customization', 'collections'],
+			lists: ['customization', 'collections', 'list'],
+			list: (params: PaginationDto) =>
+				[...QUERY_KEYS.customization.collection.lists, params] as const,
+			details: ['customization', 'collections', 'detail'],
+			detail: (id: string) =>
+				[...QUERY_KEYS.customization.collection.details, id] as const,
 		},
-	} as const,
+	},
 	promotion: {
-		all: ['getAllPromotions'],
-		byId: (id: string) => ['getPromotionById', id] as const,
-	} as const,
+		all: ['promotions'],
+		lists: ['promotions', 'list'],
+		details: ['promotions', 'detail'],
+		detail: (id: string) => [...QUERY_KEYS.promotion.details, id] as const,
+	},
 	achievement: {
-		all: ['getAllAchievements'],
-		byId: (id: string) => ['getAchievementById', id] as const,
-	} as const,
+		all: ['achievements'],
+		lists: ['achievements', 'list'],
+		details: ['achievements', 'detail'],
+		detail: (id: string) => [...QUERY_KEYS.achievement.details, id] as const,
+	},
 } as const;

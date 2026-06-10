@@ -1,0 +1,24 @@
+@use '../../../styles/mixins' as *;
+
+.pageWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	padding: 1.25rem 0 5rem 0;
+}
+
+.header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.rightSlot {
+	width: 2.75rem;
+	height: 2.75rem;
+
+	@include respond-to(md) {
+		width: 12.5rem;
+	}
+}

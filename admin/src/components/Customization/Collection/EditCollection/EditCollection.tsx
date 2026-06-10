@@ -1,37 +1,44 @@
 'use client';
 
-import { getCollectionById, updateCollection } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { deleteCollection, getCollectionById, updateCollection } from '@/api';
+import { DeleteButton, PageWrapper } from '@/components/UI';
+import { PAGES, QUERY_KEYS } from '@/config';
 import { UpdateCollectionDto } from '@/dto';
 import { updateCollectionSchema } from '@/schemas';
 import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useParams } from 'next/navigation';
-import { CustomizationPageHeader } from '../../CustomizationPageHeader';
-import { CollectionForm } from '../CollectionForm';
-import EditCollectionDelete from './EditCollectionDelete';
+import { CollectionForm } from '../CollectionForm/CollectionForm';
 
 export const EditCollection = () => {
 	const { id } = useParams<{ id: string }>();
 	const queryClient = useQueryClient();
 
 	const { data } = useQuery({
-		queryKey: QUERY_KEYS.customization.collection.byId(id),
+		queryKey: QUERY_KEYS.customization.collection.detail(id),
 		queryFn: () => getCollectionById(id),
 		enabled: !!id,
 	});
 
-	const { mutate } = useMutation({
+	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UpdateCollectionDto) => updateCollection(id, data),
 	});
 
 	return (
-		<div className="page" style={{ paddingBottom: '3.75rem' }}>
-			<CustomizationPageHeader
-				title="Edit Collection"
-				customButton={<EditCollectionDelete id={id} />}
-			/>
+		<PageWrapper
+			title="Edit Collection"
+			customRightSlot={
+				<DeleteButton
+					id={id}
+					mutationFn={deleteCollection}
+					onSuccessNavigateTo={PAGES.COLLECTIONS}
+					queryInvalidateKey={QUERY_KEYS.customization.collection.all}
+					title="Delete Collection"
+					text="Are you sure you want to delete this collection? This action cannot be undone."
+				/>
+			}
+		>
 			<Form<UpdateCollectionDto>
 				schema={updateCollectionSchema}
 				defaultValues={{
@@ -51,7 +58,7 @@ export const EditCollection = () => {
 					mutate(data, {
 						onSuccess: (data) => {
 							queryClient.setQueryData(
-								QUERY_KEYS.customization.collection.byId(id),
+								QUERY_KEYS.customization.collection.detail(id),
 								data,
 							);
 
@@ -90,8 +97,8 @@ export const EditCollection = () => {
 					accentColor: data?.accentColor,
 				}}
 			>
-				<CollectionForm initialData={data} isEdit />
+				<CollectionForm initialData={data} isEdit isLoading={isPending} />
 			</Form>
-		</div>
+		</PageWrapper>
 	);
 };

@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 export const promotionFields = {
 	alias: z.string().min(6).max(100).optional(),
-	maxUses: z.number().nullish(),
+	maxUses: z.coerce.number().nullish(),
 	expiresAt: z.coerce.date().nullish(),
-	coinsReward: z.number().nullish(),
+	coinsReward: z.coerce.number().nullish(),
 	productIdReward: z.uuidv4().nullish(),
 };
 
@@ -12,6 +12,7 @@ export const basePromotionSchema = z
 	.object(promotionFields)
 	.refine(
 		(data) => {
+			console.log(data);
 			return (
 				data.coinsReward !== undefined || data.productIdReward !== undefined
 			);

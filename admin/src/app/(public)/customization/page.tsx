@@ -1,4 +1,4 @@
-import { CustomizationLinks } from '@/components/Customization/CustomizationLinks';
+import { CustomizationLinks } from '@/components/Customization/CustomizationLinks/CustomizationLinks';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

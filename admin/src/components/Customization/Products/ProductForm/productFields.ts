@@ -1,64 +1,64 @@
+import { CreateProductDto } from '@/dto';
 import { Field } from '@/types';
-import { FieldValues, Path } from 'react-hook-form';
 
-export const getProductsFields = <T extends FieldValues>(): Field<T>[] => [
+export const PRODUCTS_FIELDS: Field<CreateProductDto>[] = [
 	{
-		name: 'itemId' as Path<T>,
+		name: 'itemId',
 		label: 'Item Id',
 		placeholder: 'Item',
 		type: 'hidden',
 	},
 	{
-		name: 'bundleId' as Path<T>,
+		name: 'bundleId',
 		label: 'Bundle Id',
 		placeholder: 'Bundle',
 		type: 'hidden',
 	},
 	{
-		name: 'isNew' as Path<T>,
+		name: 'isNew',
 		label: 'Is New',
 		placeholder: 'New',
 		type: 'checkbox',
 	},
 	{
-		name: 'isShowInStore' as Path<T>,
+		name: 'isShowInStore',
 		label: 'Show In Store',
 		placeholder: 'Show In Store',
 		type: 'checkbox',
 	},
 	{
-		name: 'isExclusive' as Path<T>,
+		name: 'isExclusive',
 		label: 'Exclusive',
 		placeholder: 'Exclusive',
 		type: 'checkbox',
 	},
 
 	{
-		name: 'isLimited' as Path<T>,
+		name: 'isLimited',
 		label: 'Limited',
 		placeholder: 'Limited',
 		type: 'checkbox',
 	},
 	{
-		name: 'price' as Path<T>,
+		name: 'price',
 		label: 'Enter Price (leave emptry to inherit from item or bundle)',
 		placeholder: 'Price',
 		type: 'number',
 	},
 	{
-		name: 'discountedPrice' as Path<T>,
+		name: 'discountedPrice',
 		label: 'Enter Discounted Price (leave emptry to not make discount)',
 		placeholder: 'Discounted Price',
 		type: 'number',
 	},
 	{
-		name: 'maxStock' as Path<T>,
+		name: 'maxStock',
 		label: 'Enter Max Stock (leave emptry to remove stock limit)',
 		placeholder: 'Max Stock',
 		type: 'number',
 	},
 	{
-		name: 'expiresAt' as Path<T>,
+		name: 'expiresAt',
 		label: 'Expires At',
 		placeholder: 'Expires At',
 		type: 'datetime-local',

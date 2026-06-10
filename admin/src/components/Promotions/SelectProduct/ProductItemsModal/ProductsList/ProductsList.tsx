@@ -3,23 +3,13 @@
 import { getAllProducts } from '@/api';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { QUERY_KEYS } from '@/config';
-import { CreatePromotionDto, PaginationWithLanguageDto } from '@/dto';
+import { CreatePromotionDto } from '@/dto';
 import { Product } from '@/types';
 import { Button } from '@shared/ui';
-import { useSearchParams } from 'next/navigation';
 import { useFormContext } from 'react-hook-form';
 import ItemCard from './ItemCard/ItemCard';
 
-const ProductsList = () => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationWithLanguageDto = {
-		page: pageFromParams,
-		limit: 20,
-		language: 'en',
-	};
-
+export const ProductsList = () => {
 	const { setValue, watch } = useFormContext<CreatePromotionDto>();
 
 	const productId = watch('productIdReward');
@@ -30,8 +20,8 @@ const ProductsList = () => {
 
 	return (
 		<ItemsListPaginatedWrapper<Product>
-			queryFn={() => getAllProducts(params)}
-			queryKey={() => [...QUERY_KEYS.customization.product.getAll(params)]}
+			queryFn={(params) => getAllProducts(params)}
+			queryKey={(params) => QUERY_KEYS.customization.product.list(params)}
 			isModal
 			itemCard={(product) => (
 				<ItemCard
@@ -51,5 +41,3 @@ const ProductsList = () => {
 		/>
 	);
 };
-
-export default ProductsList;

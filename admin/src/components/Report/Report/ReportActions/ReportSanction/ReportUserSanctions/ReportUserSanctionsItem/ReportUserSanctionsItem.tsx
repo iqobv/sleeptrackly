@@ -29,10 +29,9 @@ export const ReportUserSanctionsItem = ({
 
 	const { mutate } = useMutation({
 		mutationFn: (id: string) => removeUserSanction(id),
-		mutationKey: QUERY_KEYS.userSanction.remove,
 		onSuccess: () =>
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.report.getReport(reportId),
+				queryKey: QUERY_KEYS.report.detail(reportId),
 			}),
 	});
 

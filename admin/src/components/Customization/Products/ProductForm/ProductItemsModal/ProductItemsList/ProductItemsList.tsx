@@ -4,21 +4,11 @@ import { getAllAvailableItems } from '@/api';
 import ItemCard from '@/components/Customization/ItemCard/ItemCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
 import { Item } from '@/types';
 import { Button } from '@shared/ui';
-import { useSearchParams } from 'next/navigation';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-const ProductItemsList = <T extends FieldValues>() => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationDto = {
-		page: pageFromParams,
-		limit: 20,
-	};
-
+export const ProductItemsList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
 
 	const itemId = watch('itemId' as Path<T>);
@@ -30,10 +20,8 @@ const ProductItemsList = <T extends FieldValues>() => {
 
 	return (
 		<ItemsListPaginatedWrapper<Item>
-			queryFn={() => getAllAvailableItems(params)}
-			queryKey={() => [
-				...QUERY_KEYS.customization.item.getAllAvailable(params),
-			]}
+			queryFn={(params) => getAllAvailableItems(params)}
+			queryKey={(params) => QUERY_KEYS.customization.item.listAvailable(params)}
 			isModal
 			itemCard={(item) => (
 				<ItemCard
@@ -53,5 +41,3 @@ const ProductItemsList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductItemsList;
