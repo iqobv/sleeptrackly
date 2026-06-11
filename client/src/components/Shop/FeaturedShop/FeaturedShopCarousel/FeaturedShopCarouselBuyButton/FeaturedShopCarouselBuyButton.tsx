@@ -9,7 +9,7 @@ import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
-import FeaturedShopCarouselCountdown from '../FeaturedShopCarouselCountdown';
+import { FeaturedShopCarouselCountdown } from '../FeaturedShopCarouselCountdown';
 import styles from './FeaturedShopCarouselBuyButton.module.scss';
 
 interface FeaturedShopCarouselBuyButtonProps {
