@@ -1,43 +1,31 @@
 'use client';
 
-import { deleteItem } from '@/api';
-import { PAGES } from '@/config';
-import { FieldValues } from 'react-hook-form';
-import DeleteButton from '../../DeleteButton/DeleteButton';
-import FileForm from '../../FileForm/FileForm';
-import FormContent from '../../FormContent/FormContent';
-import FormFields from '../../FormFields/FormFields';
+import { FormContent, FormFields } from '@/components/UI';
+import { FileForm } from '../../FileForm/FileForm';
 import { TranslationForm } from '../../TranslationForm';
-import { getItemsFields } from './itemFields';
+import { ITEM_FIELDS } from './itemFields';
 
 interface ItemFormProps {
 	mediaUrl?: string;
 	previewUrl?: string;
 	isAnimated?: boolean;
-	buttonLabel?: string;
 	isEdit?: boolean;
-	id?: string;
+	isLoading?: boolean;
 }
 
-const ItemForm = <T extends FieldValues>({
+export const ItemForm = ({
 	mediaUrl,
 	previewUrl,
 	isAnimated,
-	buttonLabel = 'Save',
 	isEdit = false,
-	id,
+	isLoading = false,
 }: ItemFormProps) => {
-	const fields = getItemsFields<T>();
-
 	return (
-		<FormContent buttonLabel={buttonLabel} isEdit={isEdit}>
-			{isEdit && id && (
-				<DeleteButton
-					id={id}
-					mutationFn={deleteItem}
-					onSuccessNavigateTo={PAGES.ITEMS}
-				/>
-			)}
+		<FormContent
+			buttonLabel={isEdit ? 'Update Item' : 'Create Item'}
+			isEdit={isEdit}
+			isLoading={isLoading}
+		>
 			<FileForm
 				isAnimated={isAnimated}
 				mediaUrl={mediaUrl}
@@ -50,10 +38,8 @@ const ItemForm = <T extends FieldValues>({
 				pathname="preview"
 				label="Upload Preview"
 			/>
-			<FormFields fields={fields} />
+			<FormFields fields={ITEM_FIELDS} />
 			<TranslationForm />
 		</FormContent>
 	);
 };
-
-export default ItemForm;

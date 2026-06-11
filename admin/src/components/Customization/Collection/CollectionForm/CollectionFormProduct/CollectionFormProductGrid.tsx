@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductCard } from '@/components/Customization/Products';
+import { ProductCard } from '@/components/Customization/Products/ProductsList/ProductCard';
 import { Product } from '@/types';
 import { Button, Grid } from '@shared/ui';
 import { SelectedProduct } from './CollectionFormProduct';

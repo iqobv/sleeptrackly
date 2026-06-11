@@ -1,4 +1,4 @@
-import { CreateCollection } from '@/components/Customization/Collection';
+import { CreateCollection } from '@/components/Customization/Collection/CreateCollection/CreateCollection';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

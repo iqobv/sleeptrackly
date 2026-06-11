@@ -1,4 +1,4 @@
-import { Reports } from '@/components/Report';
+import { Reports } from '@/components/Report/Reports/Reports';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

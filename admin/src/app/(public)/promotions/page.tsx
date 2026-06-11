@@ -1,17 +1,10 @@
-import { PromotionsList } from '@/components/Promotions';
-import { Button } from '@shared/ui';
-import { PAGES } from '@/config';
-import Link from 'next/link';
+import { Promotions } from "@/components/Promotions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: 'Promotions',
+}
 
 export default function PromotionsPage() {
-	return (
-		<div>
-			<Button asChild>
-				<Link href={PAGES.PROMOTION_NEW} prefetch={false}>
-					Create Promotion
-				</Link>
-			</Button>
-			<PromotionsList />
-		</div>
-	);
+	return <Promotions />;
 }

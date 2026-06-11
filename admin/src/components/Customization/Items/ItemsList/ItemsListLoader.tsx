@@ -1,7 +1,6 @@
-import { CustomizationPageHeaderLoader } from '../../CustomizationPageHeader';
-import { ItemCardLoader } from '../../ItemCard';
-import { ItemsListPaginatedWrapperLoader } from '../../ItemsListPaginatedWrapper';
-import styles from './ItemsList.module.scss';
+import { PageWrapperLoader } from '@/components/UI';
+import { ItemCardLoader } from '../../ItemCard/ItemCardLoader';
+import { ItemsListPaginatedWrapperLoader } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapperLoader';
 
 export const ItemsListLoader = () => (
 	<ItemsListPaginatedWrapperLoader count={20}>
@@ -9,11 +8,8 @@ export const ItemsListLoader = () => (
 	</ItemsListPaginatedWrapperLoader>
 );
 
-export const ItemsLoader = () => {
-	return (
-		<div className={styles.items}>
-			<CustomizationPageHeaderLoader />
-			<ItemsListLoader />
-		</div>
-	);
-};
+export const ItemsLoader = () => (
+	<PageWrapperLoader showRightButton showBackButton={false}>
+		<ItemsListLoader />
+	</PageWrapperLoader>
+);

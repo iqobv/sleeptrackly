@@ -19,7 +19,10 @@ export const ReportActions = ({ report }: ReportActionsProps) => {
 			updateReport(report.id, { status }),
 		onSuccess: () => {
 			queryCliet.invalidateQueries({
-				queryKey: QUERY_KEYS.report.getReport(report.id),
+				queryKey: QUERY_KEYS.report.detail(report.id),
+			});
+			queryCliet.invalidateQueries({
+				queryKey: QUERY_KEYS.report.lists,
 			});
 		},
 	});

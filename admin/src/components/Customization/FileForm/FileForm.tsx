@@ -16,7 +16,7 @@ interface FileFormProps<T extends FieldValues> {
 	required?: boolean;
 }
 
-const FileForm = <T extends FieldValues>({
+export const FileForm = <T extends FieldValues>({
 	mediaUrl,
 	pathname,
 	label = 'Upload File',
@@ -101,5 +101,3 @@ const FileForm = <T extends FieldValues>({
 		</div>
 	);
 };
-
-export default FileForm;

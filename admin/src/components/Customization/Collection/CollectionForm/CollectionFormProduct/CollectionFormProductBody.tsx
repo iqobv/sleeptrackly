@@ -32,7 +32,7 @@ const CollectionFormProductBody = ({
 	);
 
 	const { data } = useQuery({
-		queryKey: QUERY_KEYS.customization.product.getAll(params),
+		queryKey: QUERY_KEYS.customization.product.list(params),
 		queryFn: () => getAllProducts(params),
 		placeholderData: keepPreviousData,
 	});

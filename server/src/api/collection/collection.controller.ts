@@ -1,7 +1,7 @@
 import { UserRole } from '@generated/prisma/enums';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
 import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { LanguageQueryDto } from '@libs/dto';
+import { LanguageQueryDto, PaginationQueryDto } from '@libs/dto';
 import { ImageValidationPipe } from '@libs/pipes';
 import { MessageResponse } from '@libs/types';
 import { withField } from '@libs/utils';
@@ -32,6 +32,7 @@ import {
 	CreateCollectionDto,
 	CreateCollectionSwaggerDto,
 	FullCollectionDto,
+	PaginatedCollectionsDto,
 	StoreCollectionDto,
 	UpdateCollectionDto,
 	UpdateCollectionSwaggerDto,
@@ -67,9 +68,11 @@ export class CollectionController {
 	/** Get all collections */
 	@Get('all')
 	@Auth(UserRole.ADMIN)
-	@ApiOkResponse({ type: [CollectionDto] })
-	public async getAllCollections(): Promise<CollectionDto[]> {
-		return await this.collectionService.getAllCollections();
+	@ApiOkResponse({ type: PaginatedCollectionsDto })
+	public async getAllCollections(
+		@Query() query: PaginationQueryDto,
+	): Promise<PaginatedCollectionsDto> {
+		return await this.collectionService.getAllCollections(query);
 	}
 
 	/** Get all collections for store filter */

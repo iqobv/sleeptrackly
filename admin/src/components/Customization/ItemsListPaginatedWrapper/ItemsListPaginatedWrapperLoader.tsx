@@ -1,7 +1,7 @@
 import { PaginationLoader } from '@shared/ui';
 import clsx from 'clsx';
 import React from 'react';
-import { ItemsListWrapperLoader } from '../ItemsListWrapper';
+import { ItemsListWrapperLoader } from '../ItemsListWrapper/ItemsListWrapperLoader';
 import styles from './ItemsListPaginatedWrapper.module.scss';
 
 interface ItemsListPaginatedWrapperLoaderProps {

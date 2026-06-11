@@ -22,7 +22,7 @@ interface BundleItemsProps {
 	initialItems?: Item[];
 }
 
-const BundleItems = <T extends FieldValues>({
+export const BundleItems = <T extends FieldValues>({
 	initialItems,
 }: BundleItemsProps) => {
 	const [selectedItems, setSelectedItems] = useState<Item[]>([]);
@@ -60,7 +60,7 @@ const BundleItems = <T extends FieldValues>({
 	};
 
 	return (
-		<div>
+		<>
 			<Modal>
 				<ModalTrigger asChild>
 					<Button type="button">Add Items</Button>
@@ -70,9 +70,9 @@ const BundleItems = <T extends FieldValues>({
 					<ModalBody>
 						<ItemsListPaginatedWrapper
 							queryFn={({ language: _l, ...params }) => getAllItems(params)}
-							queryKey={({ language: _l, ...params }) => [
-								...QUERY_KEYS.customization.item.getAll(params),
-							]}
+							queryKey={({ language: _l, ...params }) =>
+								QUERY_KEYS.customization.item.list(params)
+							}
 							isModal
 							itemCard={(item) => {
 								const isSelected = selectedIds.includes(item.id);
@@ -96,7 +96,6 @@ const BundleItems = <T extends FieldValues>({
 					</ModalBody>
 				</ModalContent>
 			</Modal>
-
 			{selectedItems.length > 0 && (
 				<ItemsListWrapper
 					items={selectedItems}
@@ -118,8 +117,6 @@ const BundleItems = <T extends FieldValues>({
 					)}
 				/>
 			)}
-		</div>
+		</>
 	);
 };
-
-export default BundleItems;

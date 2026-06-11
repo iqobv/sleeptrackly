@@ -1,5 +1,6 @@
 import { CreateNotificationDto } from '@/dto';
-import { Field } from '@/types';
+import { Field, NotificationType } from '@/types';
+import { capitalize } from '@shared/utils';
 
 export const FIELDS: Field<CreateNotificationDto>[] = [
 	{
@@ -25,6 +26,11 @@ export const FIELDS: Field<CreateNotificationDto>[] = [
 		autoComplete: 'off',
 		type: 'select',
 		required: true,
+		options: Object.values(NotificationType).map((type) => ({
+			value: type,
+			label: capitalize(type.replace(/_/g, ' ')),
+			isDefault: type === NotificationType.OTHER,
+		})),
 	},
 	{
 		name: 'redirectUrl',

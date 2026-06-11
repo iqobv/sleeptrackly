@@ -1,12 +1,11 @@
 'use client';
 
+import { FormContent, FormFields } from '@/components/UI';
 import { FullCollection } from '@/types';
-import { FormActions, FormReset, FormSubmit } from '@shared/form';
 import { useEffect } from 'react';
 import { FieldValues, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import FileForm from '../../FileForm/FileForm';
-import FormFields from '../../FormFields/FormFields';
+import { FileForm } from '../../FileForm/FileForm';
 import { TranslationForm } from '../../TranslationForm';
 import { COLLECTION_FORM_FIELDS } from './collectionFormFields';
 import { CollectionFormProduct } from './CollectionFormProduct/CollectionFormProduct';
@@ -14,11 +13,13 @@ import { CollectionFormProduct } from './CollectionFormProduct/CollectionFormPro
 interface CollectionFormProps {
 	isEdit?: boolean;
 	initialData?: FullCollection;
+	isLoading?: boolean;
 }
 
 export const CollectionForm = <T extends FieldValues>({
 	isEdit = false,
 	initialData,
+	isLoading = false,
 }: CollectionFormProps) => {
 	const {
 		formState: { errors },
@@ -33,7 +34,11 @@ export const CollectionForm = <T extends FieldValues>({
 	}, [errors]);
 
 	return (
-		<>
+		<FormContent
+			buttonLabel={isEdit ? 'Update Collection' : 'Create Collection'}
+			isEdit={isEdit}
+			isLoading={isLoading}
+		>
 			<FileForm
 				label="Upload Icon Image"
 				pathname="icon"
@@ -42,21 +47,6 @@ export const CollectionForm = <T extends FieldValues>({
 			<CollectionFormProduct initialData={initialData?.products} />
 			<FormFields fields={COLLECTION_FORM_FIELDS} />
 			<TranslationForm />
-			<FormActions>
-				{isEdit && (
-					<FormReset
-						disabledOnEmpty
-						buttonProps={{
-							variant: 'outlined',
-						}}
-					>
-						Reset
-					</FormReset>
-				)}
-				<FormSubmit disabledOnEmpty>
-					{isEdit ? 'Update Collection' : 'Create Collection'}
-				</FormSubmit>
-			</FormActions>
-		</>
+		</FormContent>
 	);
 };

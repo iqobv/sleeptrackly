@@ -2937,7 +2937,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-10T13:09:32.462Z
+             * @example 2026-06-11T13:44:31.141Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2968,7 +2968,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-10T13:09:32.462Z
+             * @example 2026-06-11T13:44:31.141Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3003,6 +3003,10 @@ export interface components {
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+        };
+        PaginatedCollectionsDto: {
+            items: components["schemas"]["CollectionDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
         };
         StoreCollectionDto: {
             name: string;
@@ -8196,7 +8200,10 @@ export interface operations {
     };
     CollectionController_getAllCollections_v1: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                limit?: number;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -8208,7 +8215,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CollectionDto"][];
+                    "application/json": components["schemas"]["PaginatedCollectionsDto"];
                 };
             };
             /** @description Unauthorized */

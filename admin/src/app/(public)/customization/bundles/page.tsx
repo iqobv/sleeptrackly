@@ -1,9 +1,5 @@
-import { BundlesList } from '@/components/Customization/Bundles';
+import { Bundles } from '@/components/Customization/Bundles/Bundles/Bundles';
 
 export default function BundlesPage() {
-	return (
-		<div>
-			<BundlesList />
-		</div>
-	);
+	return <Bundles />;
 }

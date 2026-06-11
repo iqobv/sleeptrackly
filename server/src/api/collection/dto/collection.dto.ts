@@ -1,3 +1,4 @@
+import { PaginatedDataDto } from '@libs/dto';
 import { Expose, Type } from 'class-transformer';
 import { CollectionProductDto } from './collection-product.dto';
 import { FullCollectionTranslationDto } from './collection-translation.dto';
@@ -18,4 +19,10 @@ export class FullCollectionDto extends CollectionEntityDto {
 export class StoreCollectionDto {
 	@Expose() name: string;
 	@Expose() slug: string;
+}
+
+export class PaginatedCollectionsDto extends PaginatedDataDto<CollectionDto> {
+	@Expose()
+	@Type(() => CollectionDto)
+	declare items: CollectionDto[];
 }

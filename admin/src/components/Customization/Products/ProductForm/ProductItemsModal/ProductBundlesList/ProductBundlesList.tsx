@@ -1,7 +1,7 @@
 'use client';
 
 import { getAllAvailableBundles } from '@/api';
-import BundleCard from '@/components/Customization/BundleCard/BundleCard';
+import { BundleCard } from '@/components/Customization/BundleCard';
 import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { QUERY_KEYS } from '@/config';
 import { Button } from '@shared/ui';
@@ -11,7 +11,7 @@ type AvailableBundle = NonNullable<
 	Awaited<ReturnType<typeof getAllAvailableBundles>>['items'][number]
 >;
 
-const ProductBundlesList = <T extends FieldValues>() => {
+export const ProductBundlesList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
 	const bundleId = watch('bundleId' as Path<T>);
 
@@ -23,9 +23,7 @@ const ProductBundlesList = <T extends FieldValues>() => {
 	return (
 		<ItemsListPaginatedWrapper<AvailableBundle>
 			queryFn={(query) => getAllAvailableBundles(query)}
-			queryKey={(query) => [
-				...QUERY_KEYS.customization.bundle.getAllAvailable(query),
-			]}
+			queryKey={(query) => QUERY_KEYS.customization.bundle.listAvailable(query)}
 			isModal
 			itemCard={(bundle) => (
 				<BundleCard
@@ -45,5 +43,3 @@ const ProductBundlesList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductBundlesList;

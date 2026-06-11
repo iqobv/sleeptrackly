@@ -3,6 +3,12 @@ import { Field } from '@/types';
 
 export const PROMOTIONS_FIELDS: Field<CreatePromotionDto>[] = [
 	{
+		name: 'productIdReward',
+		label: 'Product Reward',
+		type: 'hidden',
+		placeholder: 'Select a product reward',
+	},
+	{
 		name: 'alias',
 		label: 'Alias',
 		type: 'text',

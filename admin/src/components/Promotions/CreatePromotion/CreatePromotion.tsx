@@ -1,38 +1,73 @@
 'use client';
 
 import { createPromotion } from '@/api';
+import { FormFields, PageWrapper } from '@/components/UI';
 import { PAGES } from '@/config';
 import { CreatePromotionDto } from '@/dto';
-import { basePromotionSchema } from '@/schemas';
-import { Promotion } from '@/types';
+import { createPromotionSchema } from '@/schemas';
+import { Form } from '@shared/form';
+import { useMutation } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
-import FormFields from '../PromotionForm/FormFields/FormFields';
-import PromotionForm from '../PromotionForm/PromotionForm';
-import SelectProduct from '../SelectProduct/SelectProduct';
+import { toast } from 'react-toastify';
+import { PromotionForm } from '../PromotionForm/PromotionForm';
+import { SelectProduct } from '../SelectProduct/SelectProduct';
 import { PROMOTIONS_FIELDS } from './promotionFields';
 
-const CreatePromotion = () => {
+export const CreatePromotion = () => {
 	const router = useRouter();
 
+	const { mutate, isPending } = useMutation({
+		mutationFn: (data: CreatePromotionDto) => createPromotion(data),
+	});
+
 	return (
-		<div>
-			<PromotionForm<CreatePromotionDto, Promotion>
-				schema={basePromotionSchema}
+		<PageWrapper
+			title="Create Promotion"
+			description="Fill in the details to create a new promotion"
+		>
+			<Form<CreatePromotionDto>
+				schema={createPromotionSchema}
 				defaultValues={{
-					alias: '',
-					coinsReward: 0,
-					productIdReward: null,
+					coinsReward: undefined,
+					productIdReward: undefined,
 					maxUses: undefined,
+					alias: undefined,
 					expiresAt: undefined,
 				}}
-				onSuccess={(data) => router.push(PAGES.PROMOTION(data.id))}
-				mutationFn={(data) => createPromotion(data) as Promise<Promotion>}
+				onSubmit={(data, _e, methods) => {
+					const {
+						formState: { errors },
+					} = methods;
+					console.log(data);
+
+					console.log(data, errors);
+					mutate(data, {
+						onSuccess: (data) => router.push(PAGES.PROMOTION(data.id)),
+						onError: (e) => {
+							if (isAxiosError(e) && e.response?.data.code) {
+								if (e.response.data.field) {
+									methods.setError(e.response.data.field, {
+										message: e.response.data.message,
+									});
+									return;
+								}
+
+								toast.error(e.response.data.message);
+							}
+
+							toast.error(
+								e.message || 'An error occurred while creating the promotion',
+							);
+						},
+					});
+				}}
 			>
-				<SelectProduct />
-				<FormFields fields={PROMOTIONS_FIELDS} />
-			</PromotionForm>
-		</div>
+				<PromotionForm isEditing={false} isLoading={isPending}>
+					<SelectProduct />
+					<FormFields fields={PROMOTIONS_FIELDS} />
+				</PromotionForm>
+			</Form>
+		</PageWrapper>
 	);
 };
-
-export default CreatePromotion;

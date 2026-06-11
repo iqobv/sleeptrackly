@@ -1,17 +1,9 @@
 'use client';
 
-import FileForm from '@/components/Customization/FileForm/FileForm';
+import { FileForm } from '@/components/Customization/FileForm/FileForm';
+import { FormContent, FormFields } from '@/components/UI';
 import { FullAchievement } from '@/types';
-import {
-	Form,
-	FormActions,
-	FormField,
-	FormReset,
-	FormSelect,
-	FormSubmit,
-	type FormProps,
-} from '@shared/form';
-import { Checkbox, Input, SelectContent, SelectItem } from '@shared/ui';
+import { Form, type FormProps } from '@shared/form';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ACHIEVEMENT_FORM_FIELDS } from './achievementFormFields';
@@ -43,60 +35,16 @@ export const AchievementForm = <D extends FieldValues>({
 				}
 
 				return (
-					<>
+					<FormContent
+						buttonLabel={isCreate ? 'Create Achievement' : 'Update Achievement'}
+						isEdit={!isCreate}
+						isLoading={isLoading}
+					>
 						<FileForm pathname="icon" mediaUrl={iconUrl} />
-						{ACHIEVEMENT_FORM_FIELDS.map((f) => {
-							const renderElement = () => {
-								if (f.type === 'select' && f.options) {
-									return (
-										<FormSelect name={f.name} placeholder={f.placeholder}>
-											<SelectContent>
-												{f.options.map((option) => (
-													<SelectItem key={option.value} value={option.value}>
-														{option.label}
-													</SelectItem>
-												))}
-											</SelectContent>
-										</FormSelect>
-									);
-								}
-
-								if (f.type === 'checkbox') {
-									return <Checkbox label={f.label} />;
-								}
-
-								return <Input type={f.type} placeholder={f.placeholder} />;
-							};
-
-							return (
-								<FormField
-									name={f.name}
-									label={f.type !== 'checkbox' ? f.label : ''}
-									required={f.required}
-									key={f.name}
-								>
-									{renderElement()}
-								</FormField>
-							);
-						})}
+						<FormFields fields={ACHIEVEMENT_FORM_FIELDS} />
 						<AchievementFormProducts initProduct={initData?.rewardProduct} />
 						<AchievementTranslationForm />
-						<FormActions
-							style={{
-								paddingBottom: '2.5rem',
-							}}
-						>
-							<FormReset disabledOnEmpty>Reset</FormReset>
-							<FormSubmit
-								disabledOnEmpty
-								buttonProps={{
-									loading: isLoading,
-								}}
-							>
-								{isCreate ? 'Create' : 'Update'}
-							</FormSubmit>
-						</FormActions>
-					</>
+					</FormContent>
 				);
 			}}
 		</Form>

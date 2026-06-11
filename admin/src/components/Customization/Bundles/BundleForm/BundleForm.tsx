@@ -1,45 +1,33 @@
 'use client';
 
-import { deleteBundle } from '@/api';
-import { PAGES } from '@/config';
+import { FormContent, FormFields } from '@/components/UI';
 import { Item } from '@/types';
-import { FieldValues } from 'react-hook-form';
-import DeleteButton from '../../DeleteButton/DeleteButton';
-import FileForm from '../../FileForm/FileForm';
-import FormContent from '../../FormContent/FormContent';
-import FormFields from '../../FormFields/FormFields';
+import { FileForm } from '../../FileForm/FileForm';
 import { TranslationForm } from '../../TranslationForm';
-import BundleItems from '../BundleItems/BundleItems';
-import { getBundleFields } from './bundleFilds';
+import { BundleItems } from '../BundleItems/BundleItems';
+import { BUNDLE_FIELDS } from './bundleFilds';
 
 interface BundleFormProps {
 	mediaUrl?: string;
 	isAnimated?: boolean;
-	buttonLabel?: string;
 	isEdit?: boolean;
 	initialItems?: Item[];
-	id?: string;
+	isLoading?: boolean;
 }
 
-const BundleForm = <T extends FieldValues>({
+export const BundleForm = ({
 	mediaUrl,
 	isAnimated,
-	buttonLabel = 'Save',
 	isEdit = false,
 	initialItems,
-	id,
+	isLoading = false,
 }: BundleFormProps) => {
-	const fields = getBundleFields<T>();
-
 	return (
-		<FormContent buttonLabel={buttonLabel} isEdit={isEdit}>
-			{isEdit && id && (
-				<DeleteButton
-					id={id}
-					mutationFn={deleteBundle}
-					onSuccessNavigateTo={PAGES.BUNDLES}
-				/>
-			)}
+		<FormContent
+			buttonLabel={isEdit ? 'Update Bundle' : 'Create Bundle'}
+			isEdit={isEdit}
+			isLoading={isLoading}
+		>
 			<FileForm
 				isAnimated={isAnimated}
 				mediaUrl={mediaUrl}
@@ -47,10 +35,8 @@ const BundleForm = <T extends FieldValues>({
 				pathname="file"
 			/>
 			<BundleItems initialItems={initialItems} />
-			<FormFields fields={fields} />
+			<FormFields fields={BUNDLE_FIELDS} />
 			<TranslationForm />
 		</FormContent>
 	);
 };
-
-export default BundleForm;

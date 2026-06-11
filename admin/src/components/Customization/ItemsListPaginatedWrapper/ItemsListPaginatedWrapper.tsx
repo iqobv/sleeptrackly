@@ -14,7 +14,9 @@ interface ItemsListPaginatedWrapperProps<T> {
 	queryFn: (
 		query: PaginationWithLanguageDto,
 	) => Promise<PaginatedDataResponse<T>>;
-	queryKey: (query: PaginationWithLanguageDto) => unknown[];
+	queryKey: (
+		query: PaginationWithLanguageDto,
+	) => unknown[] | readonly unknown[];
 	queryOptions?: Omit<
 		UseQueryOptions<PaginatedDataResponse<T>, Error>,
 		'queryKey' | 'queryFn'

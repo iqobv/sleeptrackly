@@ -10,7 +10,7 @@ interface BundleCardProps {
 	actions: React.ReactNode;
 }
 
-const BundleCard = ({ bundle, actions }: BundleCardProps) => {
+export const BundleCard = ({ bundle, actions }: BundleCardProps) => {
 	const translation =
 		bundle.translations.find((t) => t.language === 'en')?.name ||
 		bundle.translations[0]?.name ||
@@ -33,5 +33,3 @@ const BundleCard = ({ bundle, actions }: BundleCardProps) => {
 		</div>
 	);
 };
-
-export default BundleCard;

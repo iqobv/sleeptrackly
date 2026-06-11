@@ -8,17 +8,16 @@ import {
 	ModalHeader,
 	ModalTrigger,
 } from '@shared/ui';
-
 import styles from './ProductItemsModal.module.scss';
-import ProductsList from './ProductsList/ProductsList';
+import { ProductsList } from './ProductsList/ProductsList';
 
-const ProductItemModal = () => {
+export const ProductItemModal = () => {
 	return (
 		<Modal>
 			<ModalTrigger asChild>
 				<Button>Select</Button>
 			</ModalTrigger>
-			<ModalContent>
+			<ModalContent className={styles.modalContent}>
 				<ModalHeader>Select Product</ModalHeader>
 				<ModalBody>
 					<div className={styles.tabs}></div>
@@ -30,5 +29,3 @@ const ProductItemModal = () => {
 		</Modal>
 	);
 };
-
-export default ProductItemModal;

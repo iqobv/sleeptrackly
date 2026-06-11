@@ -1,9 +1,5 @@
-import { CreateBundle } from '@/components/Customization/Bundles';
+import { CreateBundle } from '@/components/Customization/Bundles/CreateBundle/CreateBundle';
 
 export default function NewBundlePage() {
-	return (
-		<div>
-			<CreateBundle />
-		</div>
-	);
+	return <CreateBundle />;
 }

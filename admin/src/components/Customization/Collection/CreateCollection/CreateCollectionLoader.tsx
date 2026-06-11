@@ -1,11 +1,8 @@
-import { CustomizationPageHeaderLoader } from '../../CustomizationPageHeader';
-import { CollectionFormLoader } from '../CollectionForm';
+import { PageWrapperLoader } from '@/components/UI';
+import { CollectionFormLoader } from '../CollectionForm/CollectionFormLoader';
 
-export const CreateCollectionLoader = () => {
-	return (
-		<div className="page">
-			<CustomizationPageHeaderLoader />
-			<CollectionFormLoader />
-		</div>
-	);
-};
+export const CreateCollectionLoader = () => (
+	<PageWrapperLoader>
+		<CollectionFormLoader />
+	</PageWrapperLoader>
+);

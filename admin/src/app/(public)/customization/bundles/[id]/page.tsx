@@ -1,4 +1,4 @@
-import { UpdateBundle } from '@/components/Customization/Bundles';
+import { UpdateBundle } from '@/components/Customization/Bundles/UpdateBundle/UpdateBundle';
 
 interface BundlePageProps {
 	params: Promise<{ id: string }>;
@@ -7,9 +7,5 @@ interface BundlePageProps {
 export default async function BundlePage({ params }: BundlePageProps) {
 	const { id } = await params;
 
-	return (
-		<div>
-			<UpdateBundle id={id} />
-		</div>
-	);
+	return <UpdateBundle id={id} />;
 }

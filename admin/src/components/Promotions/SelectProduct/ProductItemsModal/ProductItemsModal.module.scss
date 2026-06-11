@@ -1,3 +1,13 @@
+@use '../../../../styles/mixins' as *;
+
+.modalContent {
+	width: 90%;
+
+	@include respond-to(md) {
+		width: 80%;
+	}
+}
+
 .tabs {
 	display: flex;
 	flex-direction: row;
