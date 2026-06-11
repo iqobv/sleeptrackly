@@ -1,5 +1,5 @@
-import { LoginDto } from '@/dto';
-import { AuthField } from '@/types';
+import { LoginDto } from '@/dto/auth/auth.dto';
+import { AuthField } from '@/types/auth/authField.types';
 import { MdOutlineEmail, MdOutlineVpnKey } from 'react-icons/md';
 
 export const LOGIN_FIELDS: AuthField<LoginDto>[] = [

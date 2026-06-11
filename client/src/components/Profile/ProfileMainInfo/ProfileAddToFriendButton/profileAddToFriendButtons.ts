@@ -1,5 +1,10 @@
-import { changeRequestStatus, deleteFriend, sendFriendRequest } from '@/api';
-import { type Friendship, FriendStatus } from '@/types';
+import {
+	changeRequestStatus,
+	deleteFriend,
+	sendFriendRequest,
+} from '@/api/friend/friend.api';
+import { Friendship } from '@/types/friend/friend.types';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 
 type FriendMutationResponse =
 	| Awaited<ReturnType<typeof sendFriendRequest>>

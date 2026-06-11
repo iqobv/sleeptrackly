@@ -1,6 +1,6 @@
 'use client';
 
-import { ItemInBundle } from '@/types';
+import { ItemInBundle } from '@/types/bundle/itemInBundle.types';
 import styles from './FeaturedShopCarouselIncludes.module.scss';
 
 interface FeaturedShopCarouselIncludesProps {

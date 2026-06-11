@@ -1,4 +1,4 @@
-import { Challenge } from '@/types';
+import { Challenge } from '@/types/challenge/challenge.types';
 import { capitalize, formatDateTime } from '@shared/utils';
 
 export interface ChallengeInfoField {

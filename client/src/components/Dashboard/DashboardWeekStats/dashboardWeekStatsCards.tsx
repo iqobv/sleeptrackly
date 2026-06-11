@@ -1,4 +1,4 @@
-import { Dashboard } from '@/types';
+import { Dashboard } from '@/types/dashboard/dashboard.types';
 
 interface DashboardWeekStatsCard {
 	title: string;

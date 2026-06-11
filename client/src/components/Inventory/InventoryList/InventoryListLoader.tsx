@@ -1,6 +1,6 @@
 import { PaginationLoader } from '@shared/ui';
 import styles from './InventoryList.module.scss';
-import { InventoryListItemLoader } from './InventoryListItem';
+import { InventoryListItemLoader } from './InventoryListItem/InventoryListItemLoader';
 
 export const InventoryListLoader = () => {
 	return (

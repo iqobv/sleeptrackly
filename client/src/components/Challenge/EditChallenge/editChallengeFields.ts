@@ -1,5 +1,5 @@
-import { UpdateChallengeDto } from '@/dto';
-import { ChallengeField } from '@/types';
+import { UpdateChallengeDto } from '@/dto/challenge/challenge.dto';
+import { ChallengeField } from '@/types/challenge/challengeField.types';
 
 export const UPDATE_CHALLENGE_FIELDS: ChallengeField<UpdateChallengeDto>[] = [
 	{

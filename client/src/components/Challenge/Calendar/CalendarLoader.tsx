@@ -1,5 +1,5 @@
 import { SkeletonLoader } from '@shared/ui';
-import { TaskSummaryLoader } from '../TaskSummary';
+import { TaskSummaryLoader } from '../TaskSummary/TaskSummaryLoader';
 import styles from './Calendar.module.scss';
 
 export const CalendarLoader = () => (

@@ -1,10 +1,10 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
-import { Breakpoint } from '@/types';
-import MenuButton from '../MenuButton/MenuButton';
+import { Breakpoint } from '@/types/ui/breakpoint.types';
+import { MenuButton } from '../MenuButton/MenuButton';
 import styles from './NavContainer.module.scss';
-import NavMenu from './NavMenu/NavMenu';
+import { NavMenu } from './NavMenu/NavMenu';
 import { useNavContainer } from './useNavContainer.hook';
 
 interface NavContainerProps {
@@ -16,7 +16,7 @@ interface NavContainerProps {
 	renderLogoInsteadOfMenu?: boolean;
 }
 
-const NavContainer = ({
+export const NavContainer = ({
 	children,
 	withMenu = true,
 	menuButtonClassName,
@@ -62,5 +62,3 @@ const NavContainer = ({
 		</>
 	);
 };
-
-export default NavContainer;

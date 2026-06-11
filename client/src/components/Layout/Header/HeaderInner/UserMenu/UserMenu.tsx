@@ -1,13 +1,13 @@
 'use client';
 
-import { NotificationsButton } from '@/components/Notification';
+import { NotificationsButton } from '@/components/Notification/NotificationsButton/NotificationsButton';
 import { UserAvatar } from '@/components/UI';
 import { Dropdown, DropdownTrigger } from '@shared/ui';
 import styles from './UserMenu.module.scss';
-import UserMenuDropdown from './UserMenuDropdown/UserMenuDropdown';
+import { UserMenuDropdown } from './UserMenuDropdown/UserMenuDropdown';
 import { useUserMenu } from './useUserMenu';
 
-const UserMenu = () => {
+export const UserMenu = () => {
 	const { user, handleLogout } = useUserMenu();
 
 	const avatar =
@@ -35,5 +35,3 @@ const UserMenu = () => {
 		</div>
 	);
 };
-
-export default UserMenu;

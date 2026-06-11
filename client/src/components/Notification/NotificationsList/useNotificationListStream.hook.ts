@@ -1,6 +1,6 @@
 'use client';
 
-import { SseSignalPayload } from '@/types';
+import { SseSignalPayload } from '@/types/api/sseSignalPayload.types';
 import { useEffect } from 'react';
 
 export const useNotificationStream = (refetch: () => void) => {

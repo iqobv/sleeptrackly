@@ -1,9 +1,10 @@
 'use client';
 
-import { deleteChallenge } from '@/api';
-import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { ChallengeFull } from '@/types';
+import { deleteChallenge } from '@/api/challenge/challenge.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { Button, ConfirmModal, SectionHeader } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';

@@ -1,4 +1,4 @@
-import { ShopFilterDto } from '@/dto';
+import { ShopFilterDto } from '@/dto/shop/shop.dto';
 
 export const DEFAULT_SHOP_FILTER_VALUES = {
 	type: 'ALL',

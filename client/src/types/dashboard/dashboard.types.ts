@@ -1,4 +1,4 @@
-import { getStatisticsByWeekForUser } from '@/api';
+import { getStatisticsByWeekForUser } from '@/api/dashboard/dashboard.api';
 import { components } from '../schema';
 
 export type Dashboard = Awaited<ReturnType<typeof getStatisticsByWeekForUser>>;

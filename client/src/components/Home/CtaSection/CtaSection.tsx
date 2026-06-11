@@ -1,9 +1,9 @@
-import { AUTH_PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config/authPages.config';
 import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './CtaSection.module.scss';
 
-const CtaSection = () => {
+export const CtaSection = () => {
 	return (
 		<div className={styles.cta}>
 			<div className={`${styles.container} container`}>
@@ -22,5 +22,3 @@ const CtaSection = () => {
 		</div>
 	);
 };
-
-export default CtaSection;

@@ -1,8 +1,8 @@
 'use client';
 
-import { AUTH_PAGES } from '@/config';
-import { useUserStore } from '@/store';
-import { MessageApiResponse } from '@/types';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { useUserStore } from '@/store/useUser.store';
+import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {

@@ -1,9 +1,9 @@
 import { List, SectionHeader } from '@shared/ui';
 import styles from './HowItWorks.module.scss';
-import HowItWorksItem from './HowItWorksItem/HowItWorksItem';
+import { HowItWorksItem } from './HowItWorksItem/HowItWorksItem';
 import { HOW_IT_WORKS } from './howItWorksSteps';
 
-const HowItWorks = () => {
+export const HowItWorks = () => {
 	return (
 		<div className={`${styles['how-it-works']} container`}>
 			<SectionHeader
@@ -23,5 +23,3 @@ const HowItWorks = () => {
 		</div>
 	);
 };
-
-export default HowItWorks;

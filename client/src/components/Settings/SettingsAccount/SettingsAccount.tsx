@@ -1,10 +1,10 @@
 'use client';
 
-import { updateUser } from '@/api';
-import { SettingsAccountDto } from '@/dto';
-import { useAuth } from '@/hooks';
+import { updateUser } from '@/api/user/user.api';
+import { SettingsAccountDto } from '@/dto/settings/settings.dto';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { SettingsForm } from '../SettingsForm/SettingsForm';
-import { UploadAvatar } from '../UploadAvatar';
+import { UploadAvatar } from '../UploadAvatar/UploadAvatar';
 import styles from './SettingsAccount.module.scss';
 import { ACCOUNT_FIELDS } from './settingsAccountFields';
 import { SettingsAccountLoader } from './SettingsAccountLoader';

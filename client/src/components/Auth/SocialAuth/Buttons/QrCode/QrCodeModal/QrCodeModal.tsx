@@ -3,11 +3,11 @@
 import { Typography } from '@shared/ui';
 import { QRCodeSVG } from 'qrcode.react';
 import { MdOutlineQrCodeScanner, MdOutlineSettings } from 'react-icons/md';
-import QrCodeLoader from './QrCodeLoader';
+import { QrCodeLoader } from './QrCodeLoader';
 import styles from './QrCodeModal.module.scss';
 import { useQrCodeModal } from './useQrCodeModal';
 
-const QrCodeModal = () => {
+export const QrCodeModal = () => {
 	const { isLoading, error, qrId } = useQrCodeModal();
 
 	return (
@@ -40,5 +40,3 @@ const QrCodeModal = () => {
 		</div>
 	);
 };
-
-export default QrCodeModal;

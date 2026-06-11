@@ -1,4 +1,4 @@
-import { CreateChallenge } from '@/components/Challenge';
+import { CreateChallenge } from '@/components/Challenge/CreateChallenge/CreateChallenge';
 import { SectionHeader } from '@shared/ui';
 
 export default function NewChallengePage() {

@@ -11,11 +11,11 @@ interface TermlyCMPProps {
 	websiteUUID: string;
 }
 
-export default function TermlyCMP({
+export const TermlyCMP = ({
 	autoBlock,
 	masterConsentsOrigin,
 	websiteUUID,
-}: TermlyCMPProps) {
+}: TermlyCMPProps) => {
 	const scriptSrc = useMemo(() => {
 		const src = new URL(SCRIPT_SRC_BASE);
 		src.pathname = `/resource-blocker/${websiteUUID}`;
@@ -46,4 +46,4 @@ export default function TermlyCMP({
 	}, [pathname, searchParams]);
 
 	return null;
-}
+};

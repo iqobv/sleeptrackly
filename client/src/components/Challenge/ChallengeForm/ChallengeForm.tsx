@@ -1,6 +1,6 @@
 'use client';
 
-import { ChallengeField } from '@/types';
+import { ChallengeField } from '@/types/challenge/challengeField.types';
 import {
 	FormActions,
 	FormField,

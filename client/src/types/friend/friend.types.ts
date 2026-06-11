@@ -2,7 +2,7 @@ import {
 	getAllFriends,
 	getPendingFriendRequests,
 	sendFriendRequest,
-} from '@/api';
+} from '@/api/friend/friend.api';
 
 export type Friendship = Awaited<ReturnType<typeof sendFriendRequest>>;
 export type Friend = Awaited<

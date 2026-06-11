@@ -1,6 +1,6 @@
 'use client';
 
-import { sendRestoreEmail } from '@/api';
+import { sendRestoreEmail } from '@/api/auth/sendRestoreEmail.api';
 import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -10,7 +10,7 @@ interface AuthFormRestoreProps {
 	email: string;
 }
 
-const AuthFormRestore = ({ email }: AuthFormRestoreProps) => {
+export const AuthFormRestore = ({ email }: AuthFormRestoreProps) => {
 	const [isClicked, setIsClicked] = useState(false);
 
 	const { mutate, isPending } = useMutation({
@@ -45,5 +45,3 @@ const AuthFormRestore = ({ email }: AuthFormRestoreProps) => {
 		</Button>
 	);
 };
-
-export default AuthFormRestore;

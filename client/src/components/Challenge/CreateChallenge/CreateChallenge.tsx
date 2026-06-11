@@ -1,9 +1,9 @@
 'use client';
 
-import { createChallenge } from '@/api';
-import { PRIVATE_PAGES } from '@/config';
-import { CreateChallengeDto } from '@/dto';
-import { createChallengeSchema } from '@/schemas';
+import { createChallenge } from '@/api/challenge/challenge.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { CreateChallengeDto } from '@/dto/challenge/challenge.dto';
+import { createChallengeSchema } from '@/schemas/challenge/createChallenge.schema';
 import { Form } from '@shared/form';
 import { SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';

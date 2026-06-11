@@ -1,4 +1,4 @@
-import { PrivacyVisibility } from '@/types';
+import { PrivacyVisibility } from '@/types/settings/privacyVisibility.types';
 import z from 'zod';
 
 export const settingsPrivacySchema = z.object({

@@ -1,4 +1,4 @@
-const Coin = (props: React.SVGProps<SVGSVGElement>) => {
+export const Coin = (props: React.SVGProps<SVGSVGElement>) => {
 	return (
 		<svg
 			version="1.0"
@@ -13,5 +13,3 @@ const Coin = (props: React.SVGProps<SVGSVGElement>) => {
 		</svg>
 	);
 };
-
-export default Coin;

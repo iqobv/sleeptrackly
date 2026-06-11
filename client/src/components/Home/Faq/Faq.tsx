@@ -2,10 +2,10 @@
 
 import { List, SectionHeader } from '@shared/ui';
 import { useState } from 'react';
-import FaqQuestion from './FaqQuestion/FaqQuestion';
+import { FaqQuestion } from './FaqQuestion/FaqQuestion';
 import { FAQ_QUESTIONS } from './faqQuestions';
 
-const Faq = () => {
+export const Faq = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(0);
 
@@ -43,5 +43,3 @@ const Faq = () => {
 		</div>
 	);
 };
-
-export default Faq;

@@ -1,9 +1,9 @@
 'use client';
 
 import { CgSandClock } from 'react-icons/cg';
-import EmailConfirmationStateWrapper from './EmailConfirmationStateWrapper';
+import { EmailConfirmationStateWrapper } from './EmailConfirmationStateWrapper';
 
-const EmailConfirmationProccesing = () => {
+export const EmailConfirmationProccesing = () => {
 	return (
 		<EmailConfirmationStateWrapper icon={CgSandClock}>
 			<h2>Processing...</h2>
@@ -15,5 +15,3 @@ const EmailConfirmationProccesing = () => {
 		</EmailConfirmationStateWrapper>
 	);
 };
-
-export default EmailConfirmationProccesing;

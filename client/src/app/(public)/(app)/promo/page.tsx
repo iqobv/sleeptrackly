@@ -1,4 +1,4 @@
-import { Promotion } from '@/components/Promotion';
+import { Promotion } from '@/components/Promotion/Promotion';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

@@ -1,9 +1,12 @@
 'use client';
 
-import { getUserPrivacySettings, updatePrivacySettings } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { SettingsPrivacyDto } from '@/dto';
-import { PrivacySettings } from '@/types';
+import {
+	getUserPrivacySettings,
+	updatePrivacySettings,
+} from '@/api/settings/privacy.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
+import { PrivacySettings } from '@/types/settings/privacySettings.types';
 import { useQuery } from '@tanstack/react-query';
 import { SettingsForm } from '../SettingsForm/SettingsForm';
 import { SETTINGS_PRIVACY_FIELDS } from './settingsPrivacyFields';

@@ -1,6 +1,7 @@
 'use client';
 
-import { ShopSortBy, SortOrder } from '@/types';
+import { SortOrder } from '@/types/api/sortOrder.types';
+import { ShopSortBy } from '@/types/shop/shopSortBy.types';
 import { FormSelect } from '@shared/form';
 import { Field, Input, SelectItem } from '@shared/ui';
 import { useEffect } from 'react';

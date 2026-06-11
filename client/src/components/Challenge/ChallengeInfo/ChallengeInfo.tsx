@@ -1,6 +1,6 @@
 'use client';
 
-import { ChallengeFull } from '@/types';
+import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { Typography } from '@shared/ui';
 import styles from './ChallengeInfo.module.scss';
 import { CHALLENGE_INFO_FIELDS } from './challengeInfoField';

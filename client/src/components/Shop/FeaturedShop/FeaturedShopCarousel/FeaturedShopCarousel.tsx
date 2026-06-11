@@ -1,7 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { Product } from '@/types';
+import { Product } from '@/types/product/product.types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';

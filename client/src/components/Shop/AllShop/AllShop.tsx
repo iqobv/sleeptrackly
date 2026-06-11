@@ -1,12 +1,12 @@
 'use client';
 
-import { ShopFilterDto } from '@/dto';
+import { ShopFilterDto } from '@/dto/shop/shop.dto';
 import { Grid, GridItem, Pagination } from '@shared/ui';
 import { FormProvider } from 'react-hook-form';
 import { ShopCard } from '../ShopCard/ShopCard';
 import styles from './AllShop.module.scss';
-import { AllShopFilter } from './AllShopFilter';
-import { AllShopFilterSearchBar } from './AllShopFilterSearchBar';
+import { AllShopFilter } from './AllShopFilter/AllShopFilter';
+import { AllShopFilterSearchBar } from './AllShopFilterSearchBar/AllShopFilterSearchBar';
 import { AllShopItemsLoader } from './AllShopLoader';
 import { useAllShop } from './useAllShop.hook';
 

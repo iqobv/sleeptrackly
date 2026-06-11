@@ -1,6 +1,6 @@
 'use client';
 
-import { DashboardDay } from '@/types';
+import { DashboardDay } from '@/types/dashboard/dashboard.types';
 import {
 	Bar,
 	BarChart,
@@ -9,7 +9,7 @@ import {
 	XAxis,
 	YAxis,
 } from 'recharts';
-import DashboardCard from '../DashboardCard/DashboardCard';
+import { DashboardCard } from '../DashboardCard/DashboardCard';
 import styles from './SleepChart.module.scss';
 import { useSleepChart } from './useSleepChart.hook';
 
@@ -17,7 +17,7 @@ interface SleepChartProps {
 	data: DashboardDay[];
 }
 
-const SleepChart = ({ data }: SleepChartProps) => {
+export const SleepChart = ({ data }: SleepChartProps) => {
 	const chartData = useSleepChart(data);
 
 	return (
@@ -74,5 +74,3 @@ const SleepChart = ({ data }: SleepChartProps) => {
 		</DashboardCard>
 	);
 };
-
-export default SleepChart;

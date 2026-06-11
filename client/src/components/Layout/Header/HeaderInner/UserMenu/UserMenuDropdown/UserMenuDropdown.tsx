@@ -1,15 +1,15 @@
 'use client';
 
-import { User } from '@/types';
+import { User } from '@/types/user/user.types';
 import {
 	Button,
 	DropdownContent,
 	DropdownItem,
 	DropdownSeparator,
 } from '@shared/ui';
-import MenuItem from '../MenuItem/MenuItem';
-import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
-import UserMenuCoins from '../UserMenuCoins/UserMenuCoins';
+import { MenuItem } from '../MenuItem/MenuItem';
+import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
+import { UserMenuCoins } from '../UserMenuCoins/UserMenuCoins';
 import { USER_MAIN_LINKS, USER_SYSTEM_LINKS } from './userManuLinks';
 import styles from './UserMenuDropdown.module.scss';
 
@@ -18,7 +18,10 @@ interface UserMenuDropdownProps {
 	user: User;
 }
 
-const UserMenuDropdown = ({ handleLogout, user }: UserMenuDropdownProps) => {
+export const UserMenuDropdown = ({
+	handleLogout,
+	user,
+}: UserMenuDropdownProps) => {
 	return (
 		<DropdownContent align="end" sideOffset={10} className={styles.content}>
 			<UserMenuCoins />
@@ -38,5 +41,3 @@ const UserMenuDropdown = ({ handleLogout, user }: UserMenuDropdownProps) => {
 		</DropdownContent>
 	);
 };
-
-export default UserMenuDropdown;

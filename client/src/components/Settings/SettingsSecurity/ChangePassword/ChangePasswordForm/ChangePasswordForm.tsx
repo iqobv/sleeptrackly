@@ -1,10 +1,10 @@
 'use client';
 
-import { changePassword, needOldPassword } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { ChangePasswordDto } from '@/dto';
-import { useAuth } from '@/hooks';
-import { changePasswordSchema } from '@/schemas';
+import { changePassword, needOldPassword } from '@/api/auth/password.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { ChangePasswordDto } from '@/dto/auth/password.dto';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { changePasswordSchema } from '@/schemas/auth/changePassword.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input, Loader } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';

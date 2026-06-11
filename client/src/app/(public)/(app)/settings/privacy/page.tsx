@@ -1,4 +1,4 @@
-import { SettingsPrivacy } from '@/components/Settings';
+import { SettingsPrivacy } from '@/components/Settings/SettingsPrivacy/SettingsPrivacy';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

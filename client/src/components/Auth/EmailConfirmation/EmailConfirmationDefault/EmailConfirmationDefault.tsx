@@ -1,18 +1,19 @@
 'use client';
 
-import { resendVerificationEmail } from '@/api';
-import { AUTH_PAGES, QUERY_KEYS } from '@/config';
-import { LOCAL_STORAGE_KEYS } from '@/constants';
+import { resendVerificationEmail } from '@/api/auth/email.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
 import { Button, SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import EmailConfirmationWrapper from '../EmailConfirmationWrapper/EmailConfirmationWrapper';
+import { EmailConfirmationWrapper } from '../EmailConfirmationWrapper/EmailConfirmationWrapper';
 import styles from './EmailConfirmationDefault.module.scss';
 
-const EmailConfirmationDefault = () => {
+export const EmailConfirmationDefault = () => {
 	const [timer, setTimer] = useState(0);
 	const [email, setEmail] = useState<string | null>(null);
 
@@ -77,5 +78,3 @@ const EmailConfirmationDefault = () => {
 		</EmailConfirmationWrapper>
 	);
 };
-
-export default EmailConfirmationDefault;

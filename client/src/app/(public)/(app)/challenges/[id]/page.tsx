@@ -1,4 +1,4 @@
-import { Challenge } from '@/components/Challenge';
+import { Challenge } from '@/components/Challenge/Challenge/Challenge';
 import { SectionHeader } from '@shared/ui';
 import { cookies } from 'next/headers';
 

@@ -1,4 +1,4 @@
-import { Timer } from '@/components/Timer';
+import { Timer } from '@/components/Timer/Timer/Timer';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

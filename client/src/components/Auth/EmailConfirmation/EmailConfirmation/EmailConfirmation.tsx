@@ -1,17 +1,19 @@
 'use client';
 
-import { validateVerificationToken } from '@/api';
-import { AUTH_PAGES, PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { validateVerificationToken } from '@/api/auth/token.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import EmailConfirmationDefault from '../EmailConfirmationDefault/EmailConfirmationDefault';
-import EmailConfirmationProccesing from './EmailConfirmationStates/EmailConfirmationProccesing';
-import EmailConfirmationSuccess from './EmailConfirmationStates/EmailConfirmationSuccess';
+import { EmailConfirmationDefault } from '../EmailConfirmationDefault/EmailConfirmationDefault';
+import { EmailConfirmationProccesing } from './EmailConfirmationStates/EmailConfirmationProccesing';
+import { EmailConfirmationSuccess } from './EmailConfirmationStates/EmailConfirmationSuccess';
 
-const EmailConfirmation = () => {
+export const EmailConfirmation = () => {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 	const router = useRouter();
@@ -58,5 +60,3 @@ const EmailConfirmation = () => {
 		</div>
 	);
 };
-
-export default EmailConfirmation;

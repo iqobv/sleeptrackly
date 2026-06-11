@@ -1,4 +1,4 @@
-import { SettingsNotifications } from '@/components/Settings';
+import { SettingsNotifications } from '@/components/Settings/SettingsNotifications/SettingsNotifications';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

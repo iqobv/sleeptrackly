@@ -1,10 +1,10 @@
 import styles from './Footer.module.scss';
-import FooterCopyright from './FooterCopyright';
-import FooterLinks from './FooterLinks/FooterLinks';
-import FooterLogo from './FooterLogo';
-import FooterSupport from './FooterSupport';
+import { FooterCopyright } from './FooterCopyright';
+import { FooterLinks } from './FooterLinks/FooterLinks';
+import { FooterLogo } from './FooterLogo';
+import { FooterSupport } from './FooterSupport';
 
-const Footer = () => {
+export const Footer = () => {
 	return (
 		<footer className={styles.footer}>
 			<div className={styles.container}>
@@ -16,5 +16,3 @@ const Footer = () => {
 		</footer>
 	);
 };
-
-export default Footer;

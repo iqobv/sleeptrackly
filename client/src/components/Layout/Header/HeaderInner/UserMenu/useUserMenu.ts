@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/useAuth.hook';
 
 export const useUserMenu = () => {
 	const { logout, user } = useAuth();

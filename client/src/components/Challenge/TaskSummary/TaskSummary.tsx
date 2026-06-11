@@ -1,6 +1,9 @@
 'use client';
 
-import { ChallengeFull, ChallengeTask } from '@/types';
+import {
+	ChallengeFull,
+	ChallengeTask,
+} from '@/types/challenge/challenge.types';
 import { Button, SectionHeader, Typography } from '@shared/ui';
 import { Default } from './Default/Default';
 import styles from './TaskSummary.module.scss';

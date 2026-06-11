@@ -1,4 +1,4 @@
-import { getInventory } from '@/api';
+import { getInventory } from '@/api/inventory/inventory.api';
 
 export type InventoryItem = Awaited<
 	ReturnType<typeof getInventory>

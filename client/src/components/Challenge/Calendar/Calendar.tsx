@@ -1,7 +1,8 @@
 'use client';
 
 import { Calendar as UICalendar } from '@/components/UI';
-import { ChallengeFrequency, ChallengeFull } from '@/types';
+import { ChallengeFull } from '@/types/challenge/challenge.types';
+import { ChallengeFrequency } from '@/types/challenge/challengeFrequncy.types';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 import { TaskSummary } from '../TaskSummary/TaskSummary';

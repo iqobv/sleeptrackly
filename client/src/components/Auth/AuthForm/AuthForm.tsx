@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client';
 
-import { registerWithPassword } from '@/api';
-import { AUTH_PAGES } from '@/config';
-import { LOCAL_STORAGE_KEYS } from '@/constants';
-import { useAuth } from '@/hooks';
-import { AuthField, User } from '@/types';
+import { registerWithPassword } from '@/api/auth/auth.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { AuthField } from '@/types/auth/authField.types';
+import { User } from '@/types/user/user.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
@@ -18,8 +17,8 @@ import { MdErrorOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ZodType } from 'zod';
 import styles from './AuthForm.module.scss';
-import AuthFormRestore from './AuthFormRestore';
-import CheckboxField from './CheckboxField';
+import { AuthFormRestore } from './AuthFormRestore';
+import { CheckboxField } from './CheckboxField';
 
 type RegisterApiResponse = Awaited<ReturnType<typeof registerWithPassword>>;
 
@@ -34,7 +33,7 @@ interface AuthFormProps<T extends FieldValues, R> {
 	isRegister?: boolean;
 }
 
-const AuthForm = <T extends FieldValues, R>({
+export const AuthForm = <T extends FieldValues, R>({
 	fields,
 	mutationFn,
 	buttonLabel,
@@ -144,5 +143,3 @@ const AuthForm = <T extends FieldValues, R>({
 		</form>
 	);
 };
-
-export default AuthForm;

@@ -7,7 +7,7 @@ interface SocialButtonProps {
 	onClick?: () => void;
 }
 
-const SocialButton = ({
+export const SocialButton = ({
 	children,
 	onClick,
 }: PropsWithChildren<SocialButtonProps>) => {
@@ -17,5 +17,3 @@ const SocialButton = ({
 		</Button>
 	);
 };
-
-export default SocialButton;

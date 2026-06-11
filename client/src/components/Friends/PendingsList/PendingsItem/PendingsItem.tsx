@@ -1,10 +1,12 @@
 'use client';
 
-import { changeRequestStatus } from '@/api';
+import { changeRequestStatus } from '@/api/friend/friend.api';
 import { UserAvatar } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { FriendRequest, FriendStatus } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { FriendRequest } from '@/types/friend/friend.types';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';

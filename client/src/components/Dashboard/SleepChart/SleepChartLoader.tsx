@@ -1,7 +1,7 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './SleepChart.module.scss';
 
-const SleepChartLoader = () => {
+export const SleepChartLoader = () => {
 	return (
 		<div className={styles.wrapper} style={{ padding: 0 }}>
 			<SkeletonLoader
@@ -11,5 +11,3 @@ const SleepChartLoader = () => {
 		</div>
 	);
 };
-
-export default SleepChartLoader;

@@ -4,7 +4,7 @@ interface LegalContentProps {
 	html: string;
 }
 
-export function LegalContent({ html }: LegalContentProps) {
+export const LegalContent = ({ html }: LegalContentProps) => {
 	const sanitized = html
 		.replace(/<p/g, '<div')
 		.replace(/<\/p>/g, '</div>')
@@ -19,4 +19,4 @@ export function LegalContent({ html }: LegalContentProps) {
 			dangerouslySetInnerHTML={{ __html: sanitized }}
 		/>
 	);
-}
+};

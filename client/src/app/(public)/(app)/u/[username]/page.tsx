@@ -1,6 +1,6 @@
-import { getServerProfile } from '@/api';
-import { Profile } from '@/components/Profile';
-import { QUERY_KEYS } from '@/config';
+import { getServerProfile } from '@/api/profile/profile.api';
+import { Profile } from '@/components/Profile/Profile';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import {
 	dehydrate,
 	HydrationBoundary,

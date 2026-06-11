@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { List } from '@shared/ui';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -13,7 +13,7 @@ interface NavLinksProps {
 	rowDirectionOnLg?: boolean;
 }
 
-const NavLinks = ({
+export const NavLinks = ({
 	closeMenu = () => {},
 	className,
 	rowDirectionOnLg = false,
@@ -60,5 +60,3 @@ const NavLinks = ({
 		/>
 	);
 };
-
-export default NavLinks;

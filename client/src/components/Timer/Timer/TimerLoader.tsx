@@ -3,7 +3,7 @@
 import { List, SkeletonLoader } from '@shared/ui';
 import styles from './Timer.module.scss';
 
-const TimerLoader = () => {
+export const TimerLoader = () => {
 	return (
 		<List
 			items={[0, 1, 2]}
@@ -25,5 +25,3 @@ const TimerLoader = () => {
 		/>
 	);
 };
-
-export default TimerLoader;

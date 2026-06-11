@@ -2,14 +2,14 @@
 
 import { Button, List } from '@shared/ui';
 import styles from './Timer.module.scss';
-import TimerButtonLoader from './TimerButtonLoader';
-import TimerEnd from './TimerEnd/TimerEnd';
-import TimerLoader from './TimerLoader';
+import { TimerButtonLoader } from './TimerButtonLoader';
+import { TimerEnd } from './TimerEnd/TimerEnd';
+import { TimerLoader } from './TimerLoader';
 import { useTimer } from './useTimer';
 
 const labels = ['Hours', 'Minutes', 'Seconds'];
 
-const Timer = () => {
+export const Timer = () => {
 	const {
 		formatedTimer,
 		isSleeping,
@@ -63,5 +63,3 @@ const Timer = () => {
 		</div>
 	);
 };
-
-export default Timer;

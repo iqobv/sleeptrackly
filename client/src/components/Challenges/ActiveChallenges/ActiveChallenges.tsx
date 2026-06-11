@@ -1,15 +1,15 @@
 'use client';
 
-import { Challenge } from '@/types';
+import { Challenge } from '@/types/challenge/challenge.types';
 import { SectionHeader } from '@shared/ui';
 import { useEffect, useState } from 'react';
-import ChallengesList from '../ChallengesList/ChallengesList';
+import { ChallengesList } from '../ChallengesList/ChallengesList';
 
 interface ActiveChallengesProps {
 	data: Challenge[];
 }
 
-const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
+export const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
 	const [activeChallenges, setActiveChallenges] = useState<Challenge[]>([]);
 
 	useEffect(() => {
@@ -32,5 +32,3 @@ const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
 		</div>
 	);
 };
-
-export default ActiveChallenges;

@@ -1,4 +1,5 @@
-import { changePasswordSchema, emailSchema, passwordSchema } from '@/schemas';
+import { emailSchema, passwordSchema } from '@/schemas/auth/baseAuth.schema';
+import { changePasswordSchema } from '@/schemas/auth/changePassword.schema';
 import z from 'zod';
 
 export type EmailDto = z.infer<typeof emailSchema>;

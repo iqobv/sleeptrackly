@@ -1,7 +1,7 @@
 'use client';
 
-import { BREAKPOINTS } from '@/constants';
-import { Breakpoint } from '@/types';
+import { BREAKPOINTS } from '@/constants/breakpoints.constants';
+import { Breakpoint } from '@/types/ui/breakpoint.types';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 

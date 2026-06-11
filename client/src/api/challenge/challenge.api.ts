@@ -1,4 +1,7 @@
-import { CreateChallengeDto, UpdateChallengeDto } from '@/dto';
+import {
+	CreateChallengeDto,
+	UpdateChallengeDto,
+} from '@/dto/challenge/challenge.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

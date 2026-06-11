@@ -1,9 +1,13 @@
 'use client';
 
-import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
-import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { FriendStatus } from '@/types';
+import {
+	getPendingFriendRequests,
+	updateManyPendingRequests,
+} from '@/api/friend/friend.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 

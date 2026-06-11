@@ -11,7 +11,7 @@ interface ResetFormProps {
 	isPending?: boolean;
 }
 
-const ResetForm = ({
+export const ResetForm = ({
 	children,
 	buttonText,
 	onSubmit,
@@ -26,5 +26,3 @@ const ResetForm = ({
 		</form>
 	);
 };
-
-export default ResetForm;

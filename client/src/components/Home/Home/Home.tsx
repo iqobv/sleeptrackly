@@ -1,11 +1,11 @@
-import CtaSection from '../CtaSection/CtaSection';
-import Faq from '../Faq/Faq';
-import Features from '../Features/Features';
-import Hero from '../Hero/Hero';
-import HowItWorks from '../HowItWorks/HowItWorks';
+import { CtaSection } from '../CtaSection/CtaSection';
+import { Faq } from '../Faq/Faq';
+import { Features } from '../Features/Features';
+import { Hero } from '../Hero/Hero';
+import { HowItWorks } from '../HowItWorks/HowItWorks';
 import styles from './Home.module.scss';
 
-const Home = () => {
+export const Home = () => {
 	return (
 		<div className={`${styles.home} fade-in`}>
 			<Hero />
@@ -16,5 +16,3 @@ const Home = () => {
 		</div>
 	);
 };
-
-export default Home;

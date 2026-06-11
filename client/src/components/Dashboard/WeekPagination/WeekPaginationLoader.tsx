@@ -1,7 +1,7 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './WeekPagination.module.scss';
 
-const WeekPaginationLoader = () => {
+export const WeekPaginationLoader = () => {
 	return (
 		<div className={styles.weekPagination}>
 			<div
@@ -18,5 +18,3 @@ const WeekPaginationLoader = () => {
 		</div>
 	);
 };
-
-export default WeekPaginationLoader;

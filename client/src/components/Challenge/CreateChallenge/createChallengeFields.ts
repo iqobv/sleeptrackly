@@ -1,5 +1,7 @@
-import { CreateChallengeDto } from '@/dto';
-import { ChallengeField, ChallengeFrequency, Option } from '@/types';
+import { CreateChallengeDto } from '@/dto/challenge/challenge.dto';
+import { ChallengeField } from '@/types/challenge/challengeField.types';
+import { ChallengeFrequency } from '@/types/challenge/challengeFrequncy.types';
+import { Option } from '@/types/ui/option.types';
 
 const options: Option[] = [
 	{

@@ -1,14 +1,14 @@
 'use client';
 
-import { AUTH_PAGES } from '@/config';
-import { useAuth } from '@/hooks';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import UserMenu from '../UserMenu/UserMenu';
+import {UserMenu} from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
-import AuthButtonsLoader from './AuthButtonsLoader';
+import {AuthButtonsLoader} from './AuthButtonsLoader';
 
-const AuthButtons = () => {
+export const AuthButtons = () => {
 	const { user, isloading } = useAuth();
 
 	return (
@@ -17,7 +17,7 @@ const AuthButtons = () => {
 				<AuthButtonsLoader />
 			) : (
 				<>
-					{!!user ? (
+					{user ? (
 						<UserMenu />
 					) : (
 						<>
@@ -34,5 +34,3 @@ const AuthButtons = () => {
 		</div>
 	);
 };
-
-export default AuthButtons;

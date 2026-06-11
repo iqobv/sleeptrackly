@@ -1,17 +1,17 @@
 'use client';
 
 import { SectionHeader } from '@shared/ui';
-import Login from '../Login/Login';
-import QueryMessageHandler from '../QueryMessageHandler/QueryMessageHandler';
-import Register from '../Register/Register';
-import SocialAuth from '../SocialAuth/SocialAuth';
+import { Login } from '../Login/Login';
+import { QueryMessageHandler } from '../QueryMessageHandler/QueryMessageHandler';
+import { Register } from '../Register/Register';
+import { SocialAuth } from '../SocialAuth/SocialAuth';
 import styles from './Auth.module.scss';
 
 interface AuthProps {
 	isRegister?: boolean;
 }
 
-const Auth = ({ isRegister = false }: AuthProps) => {
+export const Auth = ({ isRegister = false }: AuthProps) => {
 	return (
 		<div className={`container ${styles.auth}`}>
 			<QueryMessageHandler />
@@ -21,5 +21,3 @@ const Auth = ({ isRegister = false }: AuthProps) => {
 		</div>
 	);
 };
-
-export default Auth;

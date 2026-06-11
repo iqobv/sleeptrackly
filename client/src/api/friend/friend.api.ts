@@ -1,4 +1,4 @@
-import { FriendStatus } from '@/types';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

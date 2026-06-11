@@ -9,7 +9,7 @@ interface MenuButtonProps {
 	className?: string;
 }
 
-const MenuButton = ({
+export const MenuButton = ({
 	onClick,
 	isOpen,
 	isClosing,
@@ -29,5 +29,3 @@ const MenuButton = ({
 		</button>
 	);
 };
-
-export default MenuButton;

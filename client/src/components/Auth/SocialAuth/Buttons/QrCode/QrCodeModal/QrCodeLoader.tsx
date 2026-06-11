@@ -2,12 +2,4 @@
 
 import { SkeletonLoader } from '@shared/ui';
 
-const QrCodeLoader = () => {
-	return (
-		<>
-			<SkeletonLoader width={256} height={256} />
-		</>
-	);
-};
-
-export default QrCodeLoader;
+export const QrCodeLoader = () => <SkeletonLoader width={256} height={256} />;

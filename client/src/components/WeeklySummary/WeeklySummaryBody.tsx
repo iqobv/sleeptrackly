@@ -1,7 +1,7 @@
 'use client';
 
-import { getWeeklySummary } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getWeeklySummary } from '@/api/weeklySummary/weeklySummary.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import styles from './WeeklySummary.module.scss';

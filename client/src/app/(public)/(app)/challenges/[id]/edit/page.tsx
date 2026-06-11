@@ -1,4 +1,4 @@
-import { EditChallenge } from '@/components/Challenge';
+import { EditChallenge } from '@/components/Challenge/EditChallenge/EditChallenge';
 import { SectionHeader } from '@shared/ui';
 import { cookies } from 'next/headers';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { Achievement } from '@/types';
+import { Achievement } from '@/types/achievement/achievement.types';
 import {
 	GridItem,
 	Tooltip,

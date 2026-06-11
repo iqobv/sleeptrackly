@@ -1,11 +1,11 @@
 'use client';
 
-import { getSleepStatus, updateSleepStatus } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { UserSleepStatusDto } from '@/dto/user';
-import { useAuth } from '@/hooks';
-import { SleepEntry } from '@/types';
-import { formatTime } from '@/utils';
+import { getSleepStatus, updateSleepStatus } from '@/api/user/sleepStatus.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { SleepEntry } from '@/types/dashboard/dashboard.types';
+import { formatTime } from '@/utils/formatTime.util';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';

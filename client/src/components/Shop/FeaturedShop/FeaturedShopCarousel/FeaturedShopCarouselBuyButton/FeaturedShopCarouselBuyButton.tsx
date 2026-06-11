@@ -1,9 +1,10 @@
 'use client';
 
-import { makePurchase } from '@/api';
-import { Coin } from '@/components/Icons';
-import { AUTH_PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { makePurchase } from '@/api/shop/shop.api';
+import { Coin } from '@/components/Icons/Coin';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

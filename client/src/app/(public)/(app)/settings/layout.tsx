@@ -1,4 +1,4 @@
-import { SettingsTabs } from '@/components/Settings';
+import { SettingsTabs } from '@/components/Settings/SettingsTabs/SettingsTabs';
 import { SectionHeader } from '@shared/ui';
 import styles from './settingsLayout.module.scss';
 

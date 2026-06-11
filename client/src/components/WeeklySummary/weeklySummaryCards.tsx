@@ -1,6 +1,6 @@
 'use client';
 
-import { WeeklySummary } from '@/types';
+import { WeeklySummary } from '@/types/weeklySummary/weeklySummary.types';
 import { useTransformSecondsToHours } from '@shared/hooks';
 import { formatUtcOffsetToLocalTime } from '@shared/utils';
 import dayjs from 'dayjs';

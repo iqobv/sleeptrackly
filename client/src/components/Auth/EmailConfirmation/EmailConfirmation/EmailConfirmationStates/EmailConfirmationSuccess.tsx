@@ -1,9 +1,9 @@
 'use client';
 
 import { IoMdCheckmark } from 'react-icons/io';
-import EmailConfirmationStateWrapper from './EmailConfirmationStateWrapper';
+import { EmailConfirmationStateWrapper } from './EmailConfirmationStateWrapper';
 
-const EmailConfirmationSuccess = () => {
+export const EmailConfirmationSuccess = () => {
 	return (
 		<EmailConfirmationStateWrapper icon={IoMdCheckmark}>
 			<h2>Success!</h2>
@@ -14,5 +14,3 @@ const EmailConfirmationSuccess = () => {
 		</EmailConfirmationStateWrapper>
 	);
 };
-
-export default EmailConfirmationSuccess;

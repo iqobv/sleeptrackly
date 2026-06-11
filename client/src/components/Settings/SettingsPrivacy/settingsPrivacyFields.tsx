@@ -1,7 +1,9 @@
 'use client';
 
-import { SettingsPrivacyDto } from '@/dto';
-import { Option, PrivacyVisibility, SettingsFormFields } from '@/types';
+import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
+import { PrivacyVisibility } from '@/types/settings/privacyVisibility.types';
+import { SettingsFormFields } from '@/types/settings/settingsField.types';
+import { Option } from '@/types/ui/option.types';
 import { FormSelect } from '@shared/form';
 import { SelectItem, ToggleSwitch } from '@shared/ui';
 import { Control, Path } from 'react-hook-form';

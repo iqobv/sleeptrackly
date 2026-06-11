@@ -1,4 +1,4 @@
-import { PRIVATE_PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 
 interface Link {
 	name: string;

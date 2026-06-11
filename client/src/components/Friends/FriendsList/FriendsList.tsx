@@ -1,12 +1,13 @@
 'use client';
 
-import { getAllFriends } from '@/api';
-import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { getAllFriends } from '@/api/friend/friend.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Button, List, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { FriendItem } from './FriendItem';
+import { FriendItem } from './FriendItem/FriendItem';
 import styles from './FriendsList.module.scss';
 
 export const FriendsList = () => {

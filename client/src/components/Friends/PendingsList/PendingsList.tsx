@@ -1,7 +1,7 @@
 'use client';
 
 import { NavigationBackButton } from '@/components/UI';
-import { FriendStatus } from '@/types';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { Button, List, SectionHeader, Typography } from '@shared/ui';
 import { PendingsItem } from './PendingsItem/PendingsItem';
 import styles from './PendingsList.module.scss';

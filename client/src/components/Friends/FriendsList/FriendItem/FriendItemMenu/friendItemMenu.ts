@@ -1,5 +1,5 @@
-import { changeRequestStatus, deleteFriend } from '@/api';
-import { FriendStatus } from '@/types';
+import { changeRequestStatus, deleteFriend } from '@/api/friend/friend.api';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { MutationFunction } from '@tanstack/react-query';
 
 export interface FriendItemMenu {

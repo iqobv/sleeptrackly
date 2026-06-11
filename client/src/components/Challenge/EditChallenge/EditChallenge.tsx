@@ -1,9 +1,13 @@
 'use client';
 
-import { getChallengeById, updateChallenge } from '@/api';
-import { PRIVATE_PAGES, QUERY_KEYS } from '@/config';
-import { UpdateChallengeDto } from '@/dto';
-import { updateChallengeSchema } from '@/schemas';
+import {
+	getChallengeById,
+	updateChallenge,
+} from '@/api/challenge/challenge.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateChallengeDto } from '@/dto/challenge/challenge.dto';
+import { updateChallengeSchema } from '@/schemas/challenge/updateChallenge.schema';
 import { Form } from '@shared/form';
 import { Button } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';

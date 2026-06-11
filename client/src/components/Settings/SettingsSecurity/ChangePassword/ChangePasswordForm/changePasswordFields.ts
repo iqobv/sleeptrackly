@@ -1,5 +1,5 @@
-import { ChangePasswordDto } from '@/dto';
-import { AuthField } from '@/types';
+import { ChangePasswordDto } from '@/dto/auth/password.dto';
+import { AuthField } from '@/types/auth/authField.types';
 
 export const CHANGE_PASSWORD_FIELD: AuthField<ChangePasswordDto>[] = [
 	{

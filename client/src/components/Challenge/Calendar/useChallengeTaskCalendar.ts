@@ -1,6 +1,7 @@
 'use client';
 
-import { ChallengeFrequency, ChallengeTask } from '@/types';
+import { ChallengeTask } from '@/types/challenge/challenge.types';
+import { ChallengeFrequency } from '@/types/challenge/challengeFrequncy.types';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 
