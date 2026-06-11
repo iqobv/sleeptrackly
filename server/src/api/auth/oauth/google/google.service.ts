@@ -1,6 +1,6 @@
-import { TokensDto } from '@api/auth/dto';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ClientInfoDto } from '@libs/dto';
+import { TokensDto } from '@api/auth/dto/tokens.dto';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import {
 	forwardRef,
 	Inject,

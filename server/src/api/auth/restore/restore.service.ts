@@ -3,10 +3,10 @@ import { UserService } from '@api/user/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
 import { Injectable } from '@nestjs/common';
-import { SendRestoreEmailDto } from './dto';
+import { SendRestoreEmailDto } from './dto/send-restore-email.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 
 @Injectable()
 export class RestoreService {

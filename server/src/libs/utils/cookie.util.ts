@@ -1,4 +1,4 @@
-import { getCookieConfig } from '@config';
+import { getCookieConfig } from '@config/cookie.config';
 import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 

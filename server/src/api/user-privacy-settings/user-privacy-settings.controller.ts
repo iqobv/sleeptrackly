@@ -1,7 +1,9 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { BaseUserPrivacySettingsDto, UpdateUserPrivacySettings } from './dto';
+import { UpdateUserPrivacySettings } from './dto/update-user-privacy-settings.dto';
+import { BaseUserPrivacySettingsDto } from './dto/user-privacy-settings.dto';
 import { UserPrivacySettingsService } from './user-privacy-settings.service';
 
 @Auth()

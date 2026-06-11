@@ -15,7 +15,7 @@ interface RestoreAccountTemplateProps {
 	token: string;
 }
 
-const RestoreAccountTemplate = ({
+export const RestoreAccountTemplate = ({
 	domain,
 	token,
 }: RestoreAccountTemplateProps) => {
@@ -66,5 +66,3 @@ const RestoreAccountTemplate = ({
 		</Html>
 	);
 };
-
-export default RestoreAccountTemplate;

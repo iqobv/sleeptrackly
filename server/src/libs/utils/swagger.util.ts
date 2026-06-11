@@ -1,4 +1,4 @@
-import { getSwaggerConfig } from '@config';
+import { getSwaggerConfig } from '@config/swagger.config';
 import { INestApplication } from '@nestjs/common';
 import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import { apiReference } from '@scalar/nestjs-api-reference';

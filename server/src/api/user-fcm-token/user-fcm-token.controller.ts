@@ -1,4 +1,5 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import {
 	Body,
 	Controller,
@@ -9,7 +10,8 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CreateUserFcmTokenDto, FcmTokenDto } from './dto';
+import { CreateUserFcmTokenDto } from './dto/create-user-fcm-token.dto';
+import { FcmTokenDto } from './dto/fcm-token.dto';
 import { UserFcmTokenService } from './user-fcm-token.service';
 
 @Auth()

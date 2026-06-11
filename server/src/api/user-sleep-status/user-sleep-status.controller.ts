@@ -1,11 +1,10 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	UpdatedSleepStatusDto,
-	UpdateUserSleepStatusDto,
-	UserSleepStatusDto,
-} from './dto';
+import { UserSleepStatusDto } from './dto/sleep-status.dto';
+import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
+import { UpdatedSleepStatusDto } from './dto/updated-sleep-status.dto';
 import { UserSleepStatusService } from './user-sleep-status.service';
 
 @Auth()

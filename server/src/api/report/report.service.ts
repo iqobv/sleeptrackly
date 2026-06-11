@@ -1,23 +1,20 @@
 import { Prisma } from '@generated/prisma/client';
 import { ReportStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { userSelect } from '@libs/prisma';
-import { paginate } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { userSelect } from '@libs/prisma/user.select.prisma';
+import { paginate } from '@libs/utils/pagination.util';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import {
-	AllReportsDto,
-	CreateReportDto,
-	FullReportDto,
-	ReportDto,
-	SearchQueryDto,
-	UpdateReportDto,
-} from './dto';
+import { AllReportsDto } from './dto/all-reports.dto';
+import { CreateReportDto } from './dto/create-report.dto';
+import { FullReportDto, ReportDto } from './dto/report.dto';
+import { SearchQueryDto } from './dto/search-query.dto';
+import { UpdateReportDto } from './dto/update-report.dto';
 
 @Injectable()
 export class ReportService {

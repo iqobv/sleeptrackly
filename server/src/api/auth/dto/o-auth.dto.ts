@@ -1,4 +1,4 @@
-import { CreateUserDto } from '@api/user/dto';
+import { CreateUserDto } from '@api/user/dto/create-user.dto';
 import { OmitType } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 

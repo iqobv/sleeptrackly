@@ -1,34 +1,27 @@
-import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
+import { CreateChallengeTaskDto } from '@api/challenge-task/dto/create-challenge-task.dto';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
-import { getDateRanges } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { getDateRanges } from '@libs/utils/date-ranges.util';
 import {
 	BadRequestException,
-	forwardRef,
-	Inject,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
-import { ChallengeTaskService } from '../challenge-task/challenge-task.service';
-import { CreateChallengeTaskDto } from '../challenge-task/dto';
-import {
-	ChallengeDto,
-	ChallengeFullDto,
-	CreateChallengeDto,
-	UpdateChallengeDto,
-} from './dto';
+import { ChallengeDto, ChallengeFullDto } from './dto/challenge.dto';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
+import { UpdateChallengeDto } from './dto/update-challenge.dto';
 
 @Injectable()
 export class ChallengeService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		@Inject(forwardRef(() => ChallengeTaskService))
-		private readonly challengeTaskService: ChallengeTaskService,
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
@@ -37,7 +30,6 @@ export class ChallengeService {
 		dto: CreateChallengeDto,
 	): Promise<ChallengeDto> {
 		const { endDate, frequency, startDate, tasksOptions, ...rest } = dto;
-
 		const nowDate = dayjs().toDate();
 
 		if (dayjs(startDate).isBefore(nowDate))
@@ -51,29 +43,16 @@ export class ChallengeService {
 				ERROR_MESSAGES.CHALLENGE.INVALID_DATE_RANGE,
 			);
 
-		const challenge = await this.prismaService.challenge.create({
-			data: {
-				...rest,
-				frequency,
-				startDate,
-				endDate,
-				isCompleted: false,
-				isStarted: false,
-				user: { connect: { id: userId } },
-			},
-		});
-
-		const tasks: CreateChallengeTaskDto[] = [];
-
 		const dates = getDateRanges(
 			new Date(startDate).toISOString(),
 			new Date(endDate).toISOString(),
 			frequency,
 		);
 
+		const tasks: Omit<CreateChallengeTaskDto, 'challengeId'>[] = [];
 		let targetValue = tasksOptions.value;
 
-		dates.map(({ startDate, endDate }) => {
+		dates.forEach(({ startDate, endDate }) => {
 			tasks.push({
 				startDate: new Date(startDate),
 				endDate: new Date(endDate),
@@ -84,7 +63,22 @@ export class ChallengeService {
 			targetValue += tasksOptions.increment;
 		});
 
-		await this.challengeTaskService.createMany(challenge.id, userId, tasks);
+		const challenge = await this.prismaService.challenge.create({
+			data: {
+				...rest,
+				frequency,
+				startDate,
+				endDate,
+				isCompleted: false,
+				isStarted: false,
+				user: { connect: { id: userId } },
+				tasks: {
+					createMany: {
+						data: tasks.map((task) => ({ ...task, isCompleted: false })),
+					},
+				},
+			},
+		});
 
 		return plainToInstance(ChallengeDto, challenge);
 	}
@@ -128,43 +122,41 @@ export class ChallengeService {
 	private async updateChallengeStatuses(): Promise<void> {
 		const nowDate = dayjs().toDate();
 
-		const challenges = await this.prismaService.challenge.findMany({
-			include: { tasks: true },
+		await this.prismaService.challenge.updateMany({
+			where: {
+				isStarted: false,
+				isCompleted: false,
+				deletedAt: null,
+				startDate: { lte: nowDate },
+				endDate: { gt: nowDate },
+			},
+			data: { isStarted: true },
 		});
 
-		for (const challenge of challenges) {
-			const startDate = dayjs(challenge.startDate).toDate();
-			const endDate = dayjs(challenge.endDate).toDate();
-
-			if (
-				(!challenge.isStarted &&
-					!challenge.isCompleted &&
-					nowDate.getTime() === startDate.getTime()) ||
-				(nowDate.getTime() > startDate.getTime() &&
-					nowDate.getTime() < endDate.getTime())
-			) {
-				challenge.isStarted = true;
-			}
-
-			const completedTasks = challenge.tasks.filter((task) => task.isCompleted);
-
-			if (completedTasks.length === challenge.tasks.length) {
-				challenge.isStarted = false;
-				challenge.isCompleted = true;
-
-				await this.achievementProgressService.checkProgress(
-					challenge.userId,
-					AchievementType.CHALLENGES_COMPLETED,
-				);
-			}
-
-			await this.prismaService.challenge.update({
-				where: { id: challenge.id },
-				data: {
-					isStarted: challenge.isStarted,
-					isCompleted: challenge.isCompleted,
+		const newlyCompletedChallenges =
+			await this.prismaService.challenge.findMany({
+				where: {
+					isCompleted: false,
+					deletedAt: null,
+					NOT: { tasks: { none: {} } },
+					tasks: { every: { isCompleted: true } },
 				},
+				select: { id: true, userId: true },
 			});
+
+		if (newlyCompletedChallenges.length === 0) return;
+
+		const completedIds = newlyCompletedChallenges.map((c) => c.id);
+		await this.prismaService.challenge.updateMany({
+			where: { id: { in: completedIds } },
+			data: { isStarted: false, isCompleted: true },
+		});
+
+		for (const challenge of newlyCompletedChallenges) {
+			await this.achievementProgressService.checkProgress(
+				challenge.userId,
+				AchievementType.CHALLENGES_COMPLETED,
+			);
 		}
 	}
 

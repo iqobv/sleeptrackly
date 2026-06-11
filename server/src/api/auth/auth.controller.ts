@@ -1,16 +1,19 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { FullUserDto } from '@api/user/dto/full-user.dto';
+import { UserDto } from '@api/user/dto/user-response.dto';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-	ClientInfo,
-	Cookie,
-	OptionalAuth,
-} from '@libs/decorators';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { clearAuthCookies, setAuthCookies } from '@libs/utils';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { Cookie } from '@libs/decorators/cookie.decorator';
+import { OptionalAuth } from '@libs/decorators/optional-auth.decorator';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { clearAuthCookies, setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -26,10 +29,10 @@ import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
-import { FullUserDto, UserDto } from '../user/dto';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { LoginDto, RegisterDto } from './dto';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')

@@ -1,5 +1,5 @@
 import { Prisma, ReportStatus, ReportType } from '@generated/prisma/client';
-import { PaginationQueryDto } from '@libs/dto';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export const SORT_BY = ['createdAt', 'updatedAt'] as const;

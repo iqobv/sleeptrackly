@@ -1,6 +1,7 @@
 import { ItemRarity, ProfileItemType } from '@generated/prisma/enums';
-import { TransformBoolean, TransformTranslations } from '@libs/decorators';
-import { TranslationDto } from '@libs/dto';
+import { TransformBoolean } from '@libs/decorators/transform-boolean.decorator';
+import { TransformTranslations } from '@libs/decorators/transform-translations.decorator';
+import { TranslationDto } from '@libs/dto/translation.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

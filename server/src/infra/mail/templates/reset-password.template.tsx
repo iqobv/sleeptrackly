@@ -15,10 +15,10 @@ interface ResetPasswordTemplateProps {
 	token: string;
 }
 
-export default function ResetPasswordTemplate({
+export const ResetPasswordTemplate = ({
 	domain,
 	token,
-}: ResetPasswordTemplateProps) {
+}: ResetPasswordTemplateProps) => {
 	const url = `${domain}/reset-password?token=${token}`;
 
 	return (
@@ -62,4 +62,4 @@ export default function ResetPasswordTemplate({
 			</Tailwind>
 		</Html>
 	);
-}
+};

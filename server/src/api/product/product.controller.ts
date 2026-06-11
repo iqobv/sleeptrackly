@@ -1,8 +1,13 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { PaginationQueryWithLanguageDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -15,13 +20,10 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	CreateProductDto,
-	FullProductDto,
-	PaginatedFullProductDto,
-	ProductDto,
-	UpdateProductDto,
-} from './dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { PaginatedFullProductDto } from './dto/paginated-product.dto';
+import { FullProductDto, ProductDto } from './dto/product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
 
 @Auth(UserRole.ADMIN)

@@ -1,15 +1,16 @@
-import { PasswordRecoveryDto } from '@api/user/dto';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { PasswordRecoveryDto } from '@api/user/dto/password.dto';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-	ClientInfo,
-} from '@libs/decorators';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { setAuthCookies } from '@libs/utils';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -22,7 +23,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
-import { ResetPasswordDto, SendEmailDto } from './dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
+import { SendEmailDto } from './dto/send-email.dto';
 import { PasswordRecoveryService } from './password-recovery.service';
 
 @ApiTags('Password Recovery')

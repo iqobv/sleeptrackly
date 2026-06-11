@@ -1,12 +1,14 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-} from '@libs/decorators';
-import { LanguageQueryDto, PaginationQueryWithLanguageDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -18,12 +20,12 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { PaginatedUserInventoryDto } from './dto/paginated-user-inventory.dto';
+import { UpdateUserInvetoryDto } from './dto/update-user-inventory.dto';
 import {
 	FullUserInventoryItemDto,
-	PaginatedUserInventoryDto,
-	UpdateUserInvetoryDto,
 	UserInventoryItemDto,
-} from './dto';
+} from './dto/user-inventory.dto';
 import { UserInventoryService } from './user-inventory.service';
 
 @Auth()

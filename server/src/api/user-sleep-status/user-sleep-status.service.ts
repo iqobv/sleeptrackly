@@ -1,20 +1,21 @@
-import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
+import { RewardService } from '@api/reward/reward.service';
 import { WeeklySummaryService } from '@api/weekly-summary/weekly-summary.service';
 import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
-import { RewardService } from '../reward/reward.service';
+import { UserSleepStatusDto } from './dto/sleep-status.dto';
+import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
 import {
 	UpdatedSleepRewardDto,
 	UpdatedSleepStatusDto,
-	UpdateUserSleepStatusDto,
-	UserSleepStatusDto,
-} from './dto';
-import { CalculatedSleepDuration, SleepStart } from './interfaces';
+} from './dto/updated-sleep-status.dto';
+import { CalculatedSleepDuration } from './interfaces/calculated-sleep-duration.interface';
 import { SleepEnd } from './interfaces/sleep-end.interface';
+import { SleepStart } from './interfaces/sleep-start.interface';
 
 @Injectable()
 export class UserSleepStatusService {

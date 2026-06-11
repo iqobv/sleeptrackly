@@ -1,10 +1,10 @@
+import { IsPassword } from '@libs/validators/is-password.validator';
 import {
 	IsBoolean,
 	IsEmail,
 	IsNotEmpty,
 	IsOptional,
 	IsString,
-	IsStrongPassword,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -16,20 +16,8 @@ export class CreateUserDto {
 	@IsNotEmpty()
 	username: string;
 
-	@IsStrongPassword(
-		{
-			minLength: 8,
-			minLowercase: 1,
-			minUppercase: 1,
-			minNumbers: 1,
-			minSymbols: 0,
-		},
-		{
-			message:
-				'Password is not strong enough. It must contain at least 8 characters, including lowercase, uppercase, and numbers.',
-		},
-	)
 	@IsOptional()
+	@IsPassword()
 	password?: string;
 
 	@IsBoolean()

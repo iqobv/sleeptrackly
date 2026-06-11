@@ -1,5 +1,5 @@
 import { ShopItemDto } from '@api/item/dto/shop-item.dto';
-import { TranslationDto } from '@libs/dto';
+import { TranslationDto } from '@libs/dto/translation.dto';
 import { Expose, Type } from 'class-transformer';
 import { BundleEntityDto, BundleItemEntityDto } from './bundle.entity.dto';
 

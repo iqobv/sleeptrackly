@@ -1,9 +1,12 @@
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { Prisma } from '@generated/prisma/client';
 import { CoinTransactionType } from '@generated/prisma/enums';
 import { Injectable } from '@nestjs/common';
-import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
-import { SLEEP_TIME } from './constants';
-import { SleepReward, SleepRewardCalculation } from './interfaces';
+import { SLEEP_TIME } from './constants/time.constants';
+import {
+	SleepReward,
+	SleepRewardCalculation,
+} from './interfaces/sleep-reward.interface';
 
 @Injectable()
 export class RewardService {

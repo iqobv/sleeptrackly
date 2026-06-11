@@ -1,15 +1,13 @@
-import { getMailerConfig } from '@config';
+import { getMailerConfig } from '@config/mailer.config';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { pretty, render } from '@react-email/render';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { SendEmailDto } from './dto';
-import {
-	ConfirmationTemplate,
-	ResetPasswordTemplate,
-	RestoreAccountTemplate,
-} from './templates';
+import { SendEmailDto } from './dto/send-email.dto';
+import { ConfirmationTemplate } from './templates/confirmation.template';
+import { ResetPasswordTemplate } from './templates/reset-password.template';
+import { RestoreAccountTemplate } from './templates/restore-account.template';
 
 type SendNotificationResponse = Promise<
 	SMTPTransport.SentMessageInfo | undefined

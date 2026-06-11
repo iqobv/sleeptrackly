@@ -1,6 +1,5 @@
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { Expose } from 'class-transformer';
-
 export class UserNotificationSettingsDto extends DefaultFieldsDto {
 	@Expose() userId: string;
 	@Expose() isEmailNotificationsEnabled: boolean;

@@ -1,5 +1,4 @@
 import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
-import { ProductModule } from '@api/product/product.module';
 import { PurchaseHistoryModule } from '@api/purchase-history/purchase-history.module';
 import { ShopModule } from '@api/shop/shop.module';
 import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
@@ -13,7 +12,6 @@ import { PromotionUsageService } from './promotion-usage.service';
 		ShopModule,
 		PurchaseHistoryModule,
 		UserInventoryModule,
-		ProductModule,
 	],
 	controllers: [PromotionUsageController],
 	providers: [PromotionUsageService],

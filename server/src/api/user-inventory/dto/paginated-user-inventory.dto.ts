@@ -1,4 +1,4 @@
-import { PaginatedDataDto } from '@libs/dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
 import { Expose, Type } from 'class-transformer';
 import { UserInventoryItemDto } from './user-inventory.dto';
 

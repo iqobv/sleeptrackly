@@ -1,9 +1,14 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { PaginationQueryDto } from '@libs/dto';
-import { ImageValidationPipe } from '@libs/pipes';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { ImageValidationPipe } from '@libs/pipes/image-validation.pipe';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	Body,
@@ -27,16 +32,19 @@ import {
 	ApiTags,
 } from '@nestjs/swagger';
 import { BundleService } from './bundle.service';
+import { BaseBundleDto, BundleDto } from './dto/bundle-response.dto';
 import {
-	BaseBundleDto,
-	BundleDto,
 	CreateBundleDto,
 	CreateBundleSwaggerDto,
+} from './dto/create-bundle.dto';
+import {
 	PaginatedAvailableBundlesDto,
 	PaginatedFullBundlesDto,
+} from './dto/paginated-bundles.dto';
+import {
 	UpdateBundleDto,
 	UpdateBundleSwaggerDto,
-} from './dto';
+} from './dto/update-bundle.dto';
 
 @ApiTags('Bundle')
 @Controller('bundles')

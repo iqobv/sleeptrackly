@@ -1,4 +1,4 @@
-import { BaseMessage } from '@libs/types';
+import { BaseMessage } from '@libs/types/messages/message-detail.types';
 import { Expose } from 'class-transformer';
 
 export class MessageResponseDto implements BaseMessage {

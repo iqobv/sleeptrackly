@@ -1,9 +1,7 @@
+import { NotificationModule } from '@api/notification/notification.module';
 import { Module } from '@nestjs/common';
-import { NotificationModule } from '../notification/notification.module';
-import {
-	UserNotificationSettingsCronService,
-	UserNotificationSettingsService,
-} from './services';
+import { UserNotificationSettingsCronService } from './services/user-notification-settings-cron.service';
+import { UserNotificationSettingsService } from './services/user-notification-settings.service';
 import { UserNotificationSettingsController } from './user-notification-settings.controller';
 
 @Module({

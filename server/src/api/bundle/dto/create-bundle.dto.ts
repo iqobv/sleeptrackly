@@ -1,8 +1,8 @@
-import { TransformArray } from '@libs/decorators';
+import { CreateItemDto } from '@api/item/dto/create-item.dto';
+import { TransformArray } from '@libs/decorators/transform-array.decorator';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsNumber, IsUUID, Max, Min } from 'class-validator';
-import { CreateItemDto } from '../../item/dto';
 
 export class CreateBundleDto extends OmitType(CreateItemDto, [
 	'rarity',

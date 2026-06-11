@@ -1,22 +1,23 @@
 import { Prisma, ProfileItemType } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { PaginationQueryWithLanguageDto } from '@libs/dto';
-import { pickTranslation } from '@libs/mappers';
-import { MessageResponse } from '@libs/types';
-import { paginate } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
+import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { CreateUserInventoryDto } from './dto/create-user-inventory.dto';
+import { UserEquippedItemDto } from './dto/equipped-item.dto';
+import { PaginatedUserInventoryDto } from './dto/paginated-user-inventory.dto';
+import { UpdateUserInvetoryDto } from './dto/update-user-inventory.dto';
 import {
-	CreateUserInventoryDto,
 	FullUserInventoryItemDto,
-	PaginatedUserInventoryDto,
-	UpdateUserInvetoryDto,
-	UserEquippedItemDto,
 	UserInventoryDto,
 	UserInventoryItemDto,
-} from './dto';
-import { OwnedItem } from './interfaces';
+} from './dto/user-inventory.dto';
+import { OwnedItem } from './interfaces/owned-item.interface';
 
 @Injectable()
 export class UserInventoryService {

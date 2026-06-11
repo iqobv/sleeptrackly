@@ -1,4 +1,4 @@
-import { parseBoolean } from '@libs/utils';
+import { parseBoolean } from '@libs/utils/parse-boolean.util';
 import { ConfigService } from '@nestjs/config';
 import { CookieOptions } from 'express';
 import ms, { StringValue } from 'ms';

@@ -1,6 +1,10 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse } from '@libs/decorators';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	Body,
@@ -10,7 +14,7 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { SendRestoreEmailDto } from './dto';
+import { SendRestoreEmailDto } from './dto/send-restore-email.dto';
 import { RestoreService } from './restore.service';
 
 @ApiTags('Restore Account')

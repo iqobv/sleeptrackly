@@ -1,26 +1,25 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { PaginationQueryDto } from '@libs/dto';
-import { bundleInclude } from '@libs/prisma';
-import { MessageResponse } from '@libs/types';
-import { paginate } from '@libs/utils';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { bundleInclude } from '@libs/prisma/bundle.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { BaseBundleDto, BundleDto } from './dto/bundle-response.dto';
+import { CreateBundleDto } from './dto/create-bundle.dto';
 import {
-	BaseBundleDto,
-	BundleDto,
-	CreateBundleDto,
 	PaginatedAvailableBundlesDto,
 	PaginatedFullBundlesDto,
-	UpdateBundleDto,
-} from './dto';
+} from './dto/paginated-bundles.dto';
+import { UpdateBundleDto } from './dto/update-bundle.dto';
 
 @Injectable()
 export class BundleService {
-	private readonly PLACEHOLDER_IMAGE_URL = 'defaults/placeholder.webp';
-
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly imageService: ImageService,
@@ -41,12 +40,18 @@ export class BundleService {
 
 		const finalPrice = Math.round(price._sum.basePrice ?? 0);
 
-		const mediaFile = await this.imageService.uploadImage(
+		const mediaFile = await this.imageService.uploadImage({
 			file,
-			'bundles',
-			null,
-			this.PLACEHOLDER_IMAGE_URL,
-		);
+			folder: 'bundles',
+			oldUrl: null,
+			placeholderUrl: DEFAULT_URLS.BUNDLE,
+			options: {
+				width: 800,
+				height: 800,
+				fit: 'cover',
+				quality: 80,
+			},
+		});
 
 		const bundle = await this.prismaService.bundle.create({
 			data: {
@@ -146,12 +151,18 @@ export class BundleService {
 		const bundle = await this.getById(id);
 
 		const mediaFile = file
-			? await this.imageService.uploadImage(
+			? await this.imageService.uploadImage({
 					file,
-					'bundles',
-					bundle.mediaUrl,
-					this.PLACEHOLDER_IMAGE_URL,
-				)
+					folder: 'bundles',
+					oldUrl: bundle.mediaUrl,
+					placeholderUrl: DEFAULT_URLS.BUNDLE,
+					options: {
+						width: 800,
+						height: 800,
+						fit: 'cover',
+						quality: 80,
+					},
+				})
 			: null;
 
 		return await this.prismaService.$transaction(

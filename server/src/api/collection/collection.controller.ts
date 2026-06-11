@@ -1,10 +1,16 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { LanguageQueryDto, PaginationQueryDto } from '@libs/dto';
-import { ImageValidationPipe } from '@libs/pipes';
-import { MessageResponse } from '@libs/types';
-import { withField } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { ImageValidationPipe } from '@libs/pipes/image-validation.pipe';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { withField } from '@libs/utils/with-field.util';
 import {
 	Body,
 	Controller,
@@ -29,14 +35,18 @@ import {
 import { CollectionService } from './collection.service';
 import {
 	CollectionDto,
-	CreateCollectionDto,
-	CreateCollectionSwaggerDto,
 	FullCollectionDto,
 	PaginatedCollectionsDto,
 	StoreCollectionDto,
+} from './dto/collection.dto';
+import {
+	CreateCollectionDto,
+	CreateCollectionSwaggerDto,
+} from './dto/create-collection.dto';
+import {
 	UpdateCollectionDto,
 	UpdateCollectionSwaggerDto,
-} from './dto';
+} from './dto/update-collection.dto';
 
 @ApiTags('Collection')
 @Controller('collections')

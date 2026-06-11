@@ -1,12 +1,16 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { LanguageQueryDto, PaginationQueryDto } from '@libs/dto';
-import { pickTranslation } from '@libs/mappers';
-import { collectionInclude } from '@libs/prisma';
-import { MessageResponse } from '@libs/types';
-import { paginate, withField } from '@libs/utils';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { collectionInclude } from '@libs/prisma/collection.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
+import { withField } from '@libs/utils/with-field.util';
 import {
 	BadRequestException,
 	ConflictException,
@@ -16,12 +20,12 @@ import {
 import { plainToInstance } from 'class-transformer';
 import {
 	CollectionDto,
-	CreateCollectionDto,
 	FullCollectionDto,
 	PaginatedCollectionsDto,
 	StoreCollectionDto,
-	UpdateCollectionDto,
-} from './dto';
+} from './dto/collection.dto';
+import { CreateCollectionDto } from './dto/create-collection.dto';
+import { UpdateCollectionDto } from './dto/update-collection.dto';
 
 @Injectable()
 export class CollectionService {
@@ -39,7 +43,13 @@ export class CollectionService {
 		const { translations, productIds, ...rest } = dto;
 
 		const iconImage = file
-			? (await this.imageService.uploadImage(file, 'collections')).url
+			? (
+					await this.imageService.uploadImage({
+						file,
+						folder: 'collections',
+						placeholderUrl: DEFAULT_URLS.COLLECTION_ICON,
+					})
+				).url
 			: null;
 
 		await this.validateProductIds(productIds || []);
@@ -48,7 +58,7 @@ export class CollectionService {
 			const result = await this.prismaService.collection.create({
 				data: {
 					...rest,
-					iconUrl: iconImage || this.placeholderIconUrl,
+					iconUrl: iconImage || DEFAULT_URLS.COLLECTION_ICON,
 					translations: {
 						createMany: {
 							data: translations,
@@ -145,12 +155,12 @@ export class CollectionService {
 		let iconUrl: string | undefined;
 		if (file) {
 			iconUrl = (
-				await this.imageService.uploadImage(
+				await this.imageService.uploadImage({
 					file,
-					'collections',
-					collection.iconUrl,
-					this.placeholderIconUrl,
-				)
+					folder: 'collections',
+					placeholderUrl: DEFAULT_URLS.COLLECTION_ICON,
+					oldUrl: collection.iconUrl,
+				})
 			).url;
 		}
 

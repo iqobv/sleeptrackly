@@ -1,44 +1,47 @@
+import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { R2Service } from '@infra/r2/r2.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { HttpService } from '@nestjs/axios';
 import {
-	BadGatewayException,
 	ConflictException,
 	ForbiddenException,
-	forwardRef,
-	Inject,
 	Injectable,
+	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { firstValueFrom } from 'rxjs';
-import sharp from 'sharp';
 import { Readable } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
-import { UserService } from '../user/user.service';
-import { UserAvatarDto } from './dto';
+import { UserAvatarDto } from './dto/user-avatar.dto';
 
 @Injectable()
 export class UserAvatarService {
-	private readonly DEFAULT_AVATAR_PATH = 'defaults/default-avatar.png';
-
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly r2Service: R2Service,
 		private readonly httpService: HttpService,
-		@Inject(forwardRef(() => UserService))
-		private readonly userService: UserService,
+		private readonly imageService: ImageService,
 	) {}
 
 	public async upload(
 		file: Express.Multer.File,
 		userId: string,
 	): Promise<UserAvatarDto> {
-		const avatar = await this.findByUserId(userId);
+		const user = await this.prismaService.user.findUnique({
+			where: { id: userId, deletedAt: null },
+			select: {
+				avatar: true,
+				sanctions: {
+					where: {
+						type: UserSanctionType.AVATAR_CHANGE_BAN,
+						endsAt: { gt: new Date() },
+					},
+				},
+			},
+		});
 
-		const user = await this.userService.findById(userId, true);
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
 		if (user.sanctions && user.sanctions.length > 0) {
 			const activeBan = user.sanctions.find(
@@ -55,31 +58,28 @@ export class UserAvatarService {
 				});
 		}
 
-		const processedBuffer = await sharp(file.buffer)
-			.webp({ quality: 100 })
-			.resize(800, 800, { fit: 'cover' })
-			.toBuffer();
+		let avatar = user.avatar;
+		if (!avatar) {
+			avatar = await this.prismaService.userAvatar.create({
+				data: { user: { connect: { id: userId } } },
+			});
+		}
 
-		const filename = uuidv4();
-		file.filename = filename;
+		const uploadResult = await this.imageService.uploadImage({
+			file,
+			folder: 'avatars',
+			oldUrl: avatar.url,
+			placeholderUrl: DEFAULT_URLS.AVATAR,
+			options: { width: 800, height: 800, quality: 100 },
+		});
 
-		if (!avatar.isDefault) await this.r2Service.delete(avatar.url);
-
-		const metadata = await this.r2Service.upload(
-			processedBuffer,
-			`avatars/${filename}.webp`,
-			'image/webp',
-		);
-
-		const url = metadata.key;
-
-		if (!metadata)
-			throw new BadGatewayException(ERROR_MESSAGES.AVATAR.UPLOAD_FAILED);
-
-		return await this.update(avatar.id, url);
+		return await this.update(avatar.id, uploadResult.url);
 	}
 
-	public async uploadProviderAvatar(avatarUrl: string, userId: string): Promise<void> {
+	public async uploadProviderAvatar(
+		avatarUrl: string,
+		userId: string,
+	): Promise<void> {
 		const response = await firstValueFrom(
 			this.httpService.get<ArrayBuffer>(avatarUrl, {
 				responseType: 'arraybuffer',
@@ -119,7 +119,7 @@ export class UserAvatarService {
 
 		const newAvatar = await prisma.userAvatar.create({
 			data: {
-				url: this.DEFAULT_AVATAR_PATH,
+				url: DEFAULT_URLS.AVATAR,
 				user: { connect: { id: userId } },
 			},
 		});
@@ -144,7 +144,7 @@ export class UserAvatarService {
 	private async update(id: string, url: string): Promise<UserAvatarDto> {
 		const avatar = await this.prismaService.userAvatar.update({
 			where: { id },
-			data: { url, isDefault: !!url.includes(this.DEFAULT_AVATAR_PATH) },
+			data: { url, isDefault: !!url.includes(DEFAULT_URLS.AVATAR) },
 		});
 
 		return plainToInstance(UserAvatarDto, avatar);
@@ -154,10 +154,10 @@ export class UserAvatarService {
 		const avatar = await this.findByUserId(userId);
 
 		if (avatar) {
-			if (!avatar.isDefault || !avatar.url.includes(this.DEFAULT_AVATAR_PATH))
-				await this.r2Service.delete(avatar.url);
+			if (!avatar.isDefault || !avatar.url.includes(DEFAULT_URLS.AVATAR))
+				await this.imageService.deleteImage(avatar.url);
 		}
 
-		return await this.update(avatar?.id, this.DEFAULT_AVATAR_PATH);
+		return await this.update(avatar?.id, DEFAULT_URLS.AVATAR);
 	}
 }

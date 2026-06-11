@@ -1,6 +1,6 @@
+import { JwtPayload } from '@libs/types/jwt-payload.types';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { JwtPayload } from '../types';
 
 export const Authorized = createParamDecorator(
 	(data: keyof JwtPayload | undefined, ctx: ExecutionContext) => {

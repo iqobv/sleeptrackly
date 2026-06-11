@@ -1,5 +1,5 @@
-import { ShopProductDto } from '@api/shop/dto';
-import { PaginatedDataDto } from '@libs/dto';
+import { ShopProductDto } from '@api/shop/dto/shop-product.dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
 import { Expose, Type } from 'class-transformer';
 import { FullProductDto, ProductDto } from './product.dto';
 

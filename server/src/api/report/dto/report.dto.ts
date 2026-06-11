@@ -1,7 +1,7 @@
-import { UserSanctionDto } from '@api/user-sanction/dto';
-import { UserDto } from '@api/user/dto';
+import { UserSanctionDto } from '@api/user-sanction/dto/user-sanction.dto';
+import { UserDto } from '@api/user/dto/user-response.dto';
 import { ReportStatus, ReportType } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

@@ -1,4 +1,4 @@
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { BadRequestException } from '@nestjs/common';
 
 export class InsufficientCoinsException extends BadRequestException {

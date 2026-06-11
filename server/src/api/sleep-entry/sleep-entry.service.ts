@@ -4,13 +4,11 @@ import { plainToInstance } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import {
-	QueryDto,
-	SleepDashboardDto,
-	SleepEntryDto,
-	SleepStatisticsDto,
-} from './dto';
+import { QueryDto } from './dto/query.dto';
+import { SleepDashboardDto } from './dto/sleep-dashboard.dto';
 import { SleepDayDto } from './dto/sleep-day.dto';
+import { SleepEntryDto } from './dto/sleep-entry.dto';
+import { SleepStatisticsDto } from './dto/statistics.dto';
 
 dayjs.extend(isoWeek);
 dayjs.extend(utc);

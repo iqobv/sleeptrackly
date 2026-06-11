@@ -1,7 +1,12 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -13,7 +18,9 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreatePromotionDto, PromotionDto, UpdatePromotionDto } from './dto';
+import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { PromotionDto } from './dto/promotion.dto';
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { PromotionService } from './promotion.service';
 
 @Auth(UserRole.ADMIN)

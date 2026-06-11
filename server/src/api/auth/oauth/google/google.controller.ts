@@ -1,8 +1,11 @@
-import { SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiSuccessResponse, ClientInfo } from '@libs/decorators';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { setAuthCookies } from '@libs/utils';
+import { GoogleAuth } from '@api/auth/decorators/google-auth.decorator';
+import { OAuthDto } from '@api/auth/dto/o-auth.dto';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { ApiSuccessResponse } from '@libs/decorators/api-response.decorator';
+import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -19,9 +22,7 @@ import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from '../../auth.service';
-import { GoogleAuth } from '../../decorators';
-import { OAuthDto } from '../../dto';
-import { GoogleOneTapDto } from './dto';
+import { GoogleOneTapDto } from './dto/google-one-tap.dto';
 import { GoogleService } from './google.service';
 
 @ApiTags('Google OAuth')

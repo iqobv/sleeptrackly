@@ -1,10 +1,10 @@
-import { UserCoinDto } from '@api/coin/dto';
-import { BaseUserAvatarDto } from '@api/user-avatar/dto';
-import { UserEquippedItemDto } from '@api/user-inventory/dto';
-import { UserPrivacySettingsDto } from '@api/user-privacy-settings/dto';
-import { UserSanctionDto } from '@api/user-sanction/dto';
+import { UserCoinDto } from '@api/coin/dto/coin.dto';
+import { BaseUserAvatarDto } from '@api/user-avatar/dto/user-avatar.dto';
+import { UserEquippedItemDto } from '@api/user-inventory/dto/equipped-item.dto';
+import { UserPrivacySettingsDto } from '@api/user-privacy-settings/dto/user-privacy-settings.dto';
+import { UserSanctionDto } from '@api/user-sanction/dto/user-sanction.dto';
 import { UserRole } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

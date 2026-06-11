@@ -1,4 +1,4 @@
-import { QrLoginStatusResponse } from '../types';
+import { QrLoginStatusResponse } from '../types/qr-status.types';
 
 export class QrStatusDto {
 	/** @example SUCCESS */

@@ -1,17 +1,15 @@
 import { CoinTransactionType, Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import {
-	CoinTransactionDto,
-	CreateCoinTransactionDto,
-	CreatedCoinTransactionDto,
-} from './dto';
+import { CoinTransactionDto } from './dto/coin-transaction.dto';
+import { CreateCoinTransactionDto } from './dto/create-coin-transaction.dto';
+import { CreatedCoinTransactionDto } from './dto/created-coin-transaction.dto';
 
 @Injectable()
 export class CoinTransactionService {

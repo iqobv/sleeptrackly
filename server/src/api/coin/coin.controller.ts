@@ -1,8 +1,9 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CoinService } from './coin.service';
-import { BaseCoinDto } from './dto';
+import { BaseCoinDto } from './dto/coin.dto';
 
 @Auth()
 @ApiTags('Coins')

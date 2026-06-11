@@ -5,21 +5,15 @@ import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { NotificationService } from '../../notification/notification.service';
-import {
-	UpdateUserNotificationSettingsDto,
-	UserNotificationSettingsDto,
-} from '../dto';
+import { UpdateUserNotificationSettingsDto } from '../dto/update-user-notification-settings.dto';
+import { UserNotificationSettingsDto } from '../dto/user-notification-settings.dto';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 @Injectable()
 export class UserNotificationSettingsService {
-	constructor(
-		private readonly prismaService: PrismaService,
-		private readonly notificationService: NotificationService,
-	) {}
+	constructor(private readonly prismaService: PrismaService) {}
 
 	public async findOrCreate(
 		userId: string,

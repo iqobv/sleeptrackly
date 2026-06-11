@@ -1,6 +1,6 @@
-import { FullItemDto } from '@api/item/dto';
+import { FullItemDto } from '@api/item/dto/item-response.dto';
 import { ItemEntityDto } from '@api/item/dto/item.entity.dto';
-import { TranslationDto } from '@libs/dto';
+import { TranslationDto } from '@libs/dto/translation.dto';
 import { PickType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { UserInventoryEntityDto } from './user-inventory.entity.dto';

@@ -1,13 +1,14 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-} from '@libs/decorators';
-import { PaginationQueryDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -22,10 +23,11 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
-import { NotificationDto, PaginatedNotificationDto } from './dto';
 import { CreateNotificationDto } from './dto/create-notification.dto';
+import { NotificationDto } from './dto/notification.dto';
+import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
-import { SseSignalEvent } from './interfaces';
+import { SseSignalEvent } from './interfaces/signal.interface';
 import { NotificationService } from './notification.service';
 
 @ApiTags('Notification')

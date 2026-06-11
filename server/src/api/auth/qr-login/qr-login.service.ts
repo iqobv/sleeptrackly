@@ -2,14 +2,14 @@ import { TokenService } from '@api/token/token.service';
 import { UserService } from '@api/user/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { SUCCESS_MESSAGES } from '@libs/constants';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
-import { QrIdDto } from './dto';
+import { QrIdDto } from './dto/qr-id.dto';
 import { QrSseEvent, QrSsePayload } from './types/qr-sse.types';
 import { QrLoginStatus, QrLoginStatusResult } from './types/qr-status.types';
 

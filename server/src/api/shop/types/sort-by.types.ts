@@ -1,3 +1,6 @@
-import { SHOP_SORT_BY } from '../constats';
+export const ShopSortBy = {
+	DATE: 'DATE',
+	PRICE: 'PRICE',
+} as const;
 
-export type SortByType = keyof typeof SHOP_SORT_BY;
+export type ShopSortBy = (typeof ShopSortBy)[keyof typeof ShopSortBy];

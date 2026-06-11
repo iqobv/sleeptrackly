@@ -1,4 +1,9 @@
-import { CustomExceptionFilter } from '@libs/filters';
+import { getApiVersioningConfig } from '@config/api-versioning.config';
+import { getCorsConfig } from '@config/cors.config';
+import { getValidationPipeConfig } from '@config/validation-pipe.config';
+import { CustomExceptionFilter } from '@libs/filters/custom-exception.filter';
+import { isDev } from '@libs/utils/is-dev.util';
+import { setupSwagger } from '@libs/utils/swagger.util';
 import { ClassSerializerInterceptor } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
@@ -8,13 +13,7 @@ import { json, urlencoded } from 'express';
 import basicAuth from 'express-basic-auth';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import {
-	getApiVersioningConfig,
-	getCorsConfig,
-	getValidationPipeConfig,
-} from './config';
 import './instrument';
-import { isDev, setupSwagger } from './libs/utils';
 
 async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);

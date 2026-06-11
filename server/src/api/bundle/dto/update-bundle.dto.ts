@@ -1,4 +1,4 @@
-import { TransformArray } from '@libs/decorators';
+import { TransformArray } from '@libs/decorators/transform-array.decorator';
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { IsArray, IsOptional, IsUUID } from 'class-validator';
 import { CreateBundleDto } from './create-bundle.dto';

@@ -1,5 +1,5 @@
 import { MessageResponseDto } from '@libs/dto/message-response.dto';
-import { MessageDomain } from '@libs/types';
+import { MessageDomain } from '@libs/types/messages/message-domain.types';
 
 export const createMessageDomain = <
 	T extends Record<string, string>,

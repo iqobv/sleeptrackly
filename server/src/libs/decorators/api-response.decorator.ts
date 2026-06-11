@@ -1,4 +1,4 @@
-import { MessageDetail } from '@libs/types';
+import { MessageDetail } from '@libs/types/messages/message-detail.types';
 import { applyDecorators, HttpStatus } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
 import { MessageResponseDto } from '../dto/message-response.dto';

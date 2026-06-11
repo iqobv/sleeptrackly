@@ -1,6 +1,6 @@
-import { BundleDto } from '@api/bundle/dto';
-import { ItemDto } from '@api/item/dto';
-import { ProductDto } from '@api/product/dto';
+import { BundleDto } from '@api/bundle/dto/bundle-response.dto';
+import { ItemDto } from '@api/item/dto/item-response.dto';
+import { ProductDto } from '@api/product/dto/product.dto';
 import { Expose, Type } from 'class-transformer';
 import { CollectionProductEntityDto } from './collection.entity.dto';
 
