@@ -1,7 +1,10 @@
 'use client';
 
+import { getShopFilters } from '@/api/shop/getShopFilters.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { ShopFilterDto } from '@/dto/shop/shop.dto';
-import { Button, Checkbox } from '@shared/ui';
+import { Button, Checkbox, Input, Typography } from '@shared/ui';
+import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 import { DEFAULT_SHOP_FILTER_VALUES } from '../shopFilterValues';
 import { useShopFilters } from '../useShopFilters.hook';
@@ -13,6 +16,11 @@ export const AllShopFilter = () => {
 
 	const [, setUrlFilters] = useShopFilters();
 
+	const { data } = useQuery({
+		queryKey: QUERY_KEYS.shop.filters,
+		queryFn: () => getShopFilters({ language: 'en' }),
+	});
+
 	const handleReset = () => {
 		reset(DEFAULT_SHOP_FILTER_VALUES);
 
@@ -20,14 +28,40 @@ export const AllShopFilter = () => {
 			type: null,
 			itemType: null,
 			search: null,
+			collection: null,
 			sortBy: null,
 			sortOrder: null,
 			page: 1,
+			minPrice: 0,
+			maxPrice: null,
 		});
 	};
 
 	return (
 		<div className={styles.filter}>
+			<div className={styles.option}>
+				<Typography variant="subtitle1">Price Range</Typography>
+				<div className={styles.priceRange}>
+					<Input
+						placeholder="Min Price"
+						type="number"
+						className={styles.priceInput}
+						{...register('minPrice', {
+							setValueAs: (v) =>
+								v === '' || Number.isNaN(Number(v)) ? null : Number(v),
+						})}
+					/>
+					<Input
+						placeholder="Max Price"
+						type="number"
+						className={styles.priceInput}
+						{...register('maxPrice', {
+							setValueAs: (v) =>
+								v === '' || Number.isNaN(Number(v)) ? null : Number(v),
+						})}
+					/>
+				</div>
+			</div>
 			<div className={styles.option}>
 				{shopProductTypeOptions.map((productType) => (
 					<div key={productType.value}>
@@ -56,6 +90,23 @@ export const AllShopFilter = () => {
 					</div>
 				))}
 			</div>
+			{data?.collections && (
+				<div className={styles.option}>
+					<Typography variant="subtitle1">Collections</Typography>
+					<div className={styles.option}>
+						{data.collections.map((collection) => (
+							<div key={collection.slug}>
+								<Checkbox
+									label={collection.name}
+									value={collection.slug}
+									id={`collection_${collection.slug}`}
+									{...register('collection')}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 			<Button type="button" onClick={handleReset}>
 				Reset Filters
 			</Button>

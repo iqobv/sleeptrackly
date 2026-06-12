@@ -1,4 +1,5 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { JwtPayload } from '@libs/types/jwt-payload.types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -29,9 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 		});
 
 		if (!session) {
-			throw new UnauthorizedException(
-				'Session not found. Please log in again.',
-			);
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_SESSION);
 		}
 
 		return payload;

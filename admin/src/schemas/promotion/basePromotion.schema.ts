@@ -12,7 +12,6 @@ export const basePromotionSchema = z
 	.object(promotionFields)
 	.refine(
 		(data) => {
-			console.log(data);
 			return (
 				data.coinsReward !== undefined || data.productIdReward !== undefined
 			);

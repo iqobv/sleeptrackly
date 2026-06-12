@@ -4,7 +4,14 @@ import { TransformEnum } from '@libs/decorators/transform-enum.decorator';
 import { TransformToArray } from '@libs/decorators/transform-to-array.decorator';
 import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+	IsArray,
+	IsEnum,
+	IsNumber,
+	IsOptional,
+	IsString,
+} from 'class-validator';
 import { ShopProductType } from '../types/shop-product-type.types';
 import { ShopSortBy } from '../types/sort-by.types';
 
@@ -75,4 +82,14 @@ export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@TransformEnum<Prisma.SortOrder>('lower')
 	@IsEnum(Prisma.SortOrder)
 	sortOrder?: Prisma.SortOrder;
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	minPrice?: number;
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	maxPrice?: number;
 }

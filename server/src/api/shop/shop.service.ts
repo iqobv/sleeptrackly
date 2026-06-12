@@ -11,6 +11,7 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
 import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
 import { transformProduct } from '@libs/mappers/translation-products.mapper';
 import { productInclude } from '@libs/prisma/product.include.prisma';
@@ -23,6 +24,7 @@ import {
 import { plainToInstance } from 'class-transformer';
 import { FeaturedShopDto } from './dto/featured-shop.dto';
 import { FilterQueryDto } from './dto/filter-query.dto';
+import { FiltersDto } from './dto/filters.dto';
 import { PaginatedShopProductsDto } from './dto/paginated-products.dto';
 import { PurchaseDto } from './dto/purchase.dto';
 import { ShopProductDto } from './dto/shop-product.dto';
@@ -159,6 +161,8 @@ export class ShopService {
 			sortBy = 'DATE',
 			sortOrder = 'desc',
 			collection,
+			maxPrice,
+			minPrice,
 		} = query;
 
 		const where: Prisma.ProductWhereInput = {
@@ -204,6 +208,26 @@ export class ShopService {
 									translations: {
 										some: { name: { contains: search, mode: 'insensitive' } },
 									},
+								},
+							},
+						],
+					}
+				: {}),
+			...(minPrice !== undefined || maxPrice !== undefined
+				? {
+						OR: [
+							{
+								discountedPrice: {
+									not: null,
+									...(minPrice !== undefined ? { gte: minPrice } : {}),
+									...(maxPrice !== undefined ? { lte: maxPrice } : {}),
+								},
+							},
+							{
+								discountedPrice: null,
+								price: {
+									...(minPrice !== undefined && { gte: minPrice }),
+									...(maxPrice !== undefined && { lte: maxPrice }),
 								},
 							},
 						],
@@ -407,6 +431,56 @@ export class ShopService {
 		);
 
 		return { alreadyOwnedItems, itemsToAdd };
+	}
+
+	public async getFilters(query: LanguageQueryDto): Promise<FiltersDto> {
+		const { language = 'en' } = query;
+
+		const collections = await this.prismaService.collection.findMany({
+			where: { showInStore: true },
+			select: {
+				slug: true,
+				translations: {
+					where: { language: { in: [language, 'en'] } },
+					select: { name: true, language: true },
+				},
+			},
+		});
+
+		const mappedCollections = collections
+			.map((collection) => {
+				const translation = pickTranslation(collection.translations, language);
+
+				return {
+					slug: collection.slug,
+					name: translation?.name || 'No name',
+				};
+			})
+			.sort((a, b) => a.name.localeCompare(b.name));
+
+		const prices = await this.prismaService.product.aggregate({
+			where: { isShowInStore: true },
+			_min: { price: true, discountedPrice: true },
+			_max: { price: true, discountedPrice: true },
+		});
+
+		const minValues = [prices._min.price, prices._min.discountedPrice].filter(
+			(p) => p !== null,
+		);
+		const finalMinPrice = minValues.length > 0 ? Math.min(...minValues) : 0;
+
+		const maxValues = [prices._max.price, prices._max.discountedPrice].filter(
+			(p) => p !== null,
+		);
+		const finalMaxPrice = maxValues.length > 0 ? Math.max(...maxValues) : 0;
+
+		return plainToInstance(FiltersDto, {
+			collections: mappedCollections,
+			priceRange: {
+				min: finalMinPrice,
+				max: finalMaxPrice,
+			},
+		});
 	}
 
 	private calculateFinalPrice(

@@ -1,3 +1,4 @@
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -24,7 +25,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 		const { id, emails, photos, username } = profile;
 
 		if (!emails || emails.length === 0) {
-			throw new UnauthorizedException('No email associated with this account!');
+			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.NO_EMAIL_ASSOCIATED);
 		}
 
 		const user: OAuthDto = {

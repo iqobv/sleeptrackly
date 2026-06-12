@@ -1,4 +1,5 @@
 import { UserRole } from '@generated/prisma/client';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { JwtPayload } from '@libs/types/jwt-payload.types';
 import {
 	CanActivate,
@@ -28,7 +29,7 @@ export class RolesGuard implements CanActivate {
 		const user = req.user as JwtPayload;
 
 		if (!user || !roles.includes(user.role)) {
-			throw new ForbiddenException('Access denied.');
+			throw new ForbiddenException(ERROR_MESSAGES.AUTH.FORBIDDEN);
 		}
 
 		return true;

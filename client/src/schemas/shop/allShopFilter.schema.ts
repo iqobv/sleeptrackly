@@ -9,8 +9,11 @@ export const allShopFilterSchema = z.object({
 	type: z.enum(FilterProductType).optional().default('ALL'),
 	itemType: z.array(z.enum(ItemType)).optional(),
 	search: z.string().min(3).optional(),
+	collection: z.array(z.string()).optional(),
 	sortBy: z.enum(ShopSortBy).optional().default('DATE'),
 	sortOrder: z.enum(SortOrder).optional().default('DESC'),
+	minPrice: z.coerce.number().min(0).nullable().optional().default(0),
+	maxPrice: z.coerce.number().min(0).nullable().optional(),
 });
 
 export const allShopFilterWithPaginationSchema = allShopFilterSchema.extend(

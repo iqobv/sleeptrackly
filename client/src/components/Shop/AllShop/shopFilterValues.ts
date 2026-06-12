@@ -5,5 +5,8 @@ export const DEFAULT_SHOP_FILTER_VALUES = {
 	sortBy: 'DATE',
 	sortOrder: 'DESC',
 	search: '',
+	collection: [],
 	itemType: [],
+	minPrice: 0,
+	maxPrice: undefined,
 } satisfies ShopFilterDto;

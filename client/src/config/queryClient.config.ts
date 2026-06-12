@@ -69,6 +69,7 @@ export const QUERY_KEYS = {
 		featured: ['featuredShop'] as const,
 		allProducts: (filters: string) => ['allProducts', filters] as const,
 		makePurchase: (productId: string) => ['makePurchase', productId] as const,
+		filters: ['shop', 'filters'],
 	},
 	coin: {
 		userCoin: ['userCoin'] as const,
