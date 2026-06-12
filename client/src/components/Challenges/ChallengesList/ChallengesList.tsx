@@ -1,15 +1,15 @@
 'use client';
 
-import { Challenge } from '@/types';
+import { Challenge } from '@/types/challenge/challenge.types';
 import { List } from '@shared/ui';
-import ChallengeItem from './ChallengeItem/ChallengeItem';
+import { ChallengeItem } from './ChallengeItem/ChallengeItem';
 import styles from './ChallengesList.module.scss';
 
 interface ChallengesListProps {
 	data: Challenge[];
 }
 
-const ChallengesList = ({ data }: ChallengesListProps) => {
+export const ChallengesList = ({ data }: ChallengesListProps) => {
 	return (
 		<>
 			{data && (
@@ -26,5 +26,3 @@ const ChallengesList = ({ data }: ChallengesListProps) => {
 		</>
 	);
 };
-
-export default ChallengesList;

@@ -1,8 +1,8 @@
 'use client';
 
-import { getAllItems } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { Item } from '@/types';
+import { getAllItems } from '@/api/customization/item/item.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
 import {
 	Button,
 	Modal,
@@ -13,9 +13,9 @@ import {
 } from '@shared/ui';
 import { useEffect, useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
-import ItemCard from '../../ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import ItemsListWrapper from '../../ItemsListWrapper/ItemsListWrapper';
+import { ItemCard } from '../../ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemsListWrapper } from '../../ItemsListWrapper/ItemsListWrapper';
 import styles from './BundleItems.module.scss';
 
 interface BundleItemsProps {

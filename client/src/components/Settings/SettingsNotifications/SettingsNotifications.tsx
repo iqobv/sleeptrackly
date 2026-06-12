@@ -1,8 +1,8 @@
 'use client';
 
 import { getUserNotificationSettings } from '@/api/settings/notifications.api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useQuery } from '@tanstack/react-query';
 import styles from './SettingsNotifications.module.scss';
 import { SettingsNotificationsForm } from './SettingsNotificationsForm/SettingsNotificationsForm';

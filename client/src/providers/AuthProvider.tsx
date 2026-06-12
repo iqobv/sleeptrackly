@@ -1,18 +1,18 @@
 'use client';
 
-import { LOCAL_STORAGE_KEYS } from '@/constants';
-import { useUserStore } from '@/store';
-import { User } from '@/types';
+import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
+import { useUserStore } from '@/store/useUser.store';
+import { User } from '@/types/user/user.types';
 import { PropsWithChildren, useEffect } from 'react';
 
 interface MainProviderProps {
 	user: User | null;
 }
 
-export default function AuthProvider({
+export const AuthProvider = ({
 	children,
 	user,
-}: PropsWithChildren<MainProviderProps>) {
+}: PropsWithChildren<MainProviderProps>) => {
 	const setUser = useUserStore((state) => state.setUser);
 
 	useEffect(() => {
@@ -23,4 +23,4 @@ export default function AuthProvider({
 	}, [user, setUser]);
 
 	return <>{children}</>;
-}
+};

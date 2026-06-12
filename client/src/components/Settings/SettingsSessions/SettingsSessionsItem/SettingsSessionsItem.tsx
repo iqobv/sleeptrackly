@@ -1,6 +1,6 @@
 'use client';
 
-import { Session } from '@/types';
+import { Session } from '@/types/auth/session.types';
 import { Button } from '@shared/ui';
 import { SettingsSessionsDevice } from './SettingsSessionsDevice/SettingsSessionsDevice';
 import { SettingsSessionsInfo } from './SettingsSessionsInfo/SettingsSessionsInfo';

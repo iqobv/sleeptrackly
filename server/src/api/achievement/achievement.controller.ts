@@ -1,14 +1,15 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-} from '@libs/decorators';
-import { LanguageQueryDto } from '@libs/dto';
-import { ImageValidationPipe } from '@libs/pipes';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
+import { ImageValidationPipe } from '@libs/pipes/image-validation.pipe';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -30,15 +31,16 @@ import {
 	ApiOkResponse,
 	ApiTags,
 } from '@nestjs/swagger';
+import { AchievementDto, FullAchievementDto } from './dto/achievement.dto';
 import {
-	AchievementDto,
 	CreateAchievementDto,
 	CreateAchievementSwaggerDto,
-	FullAchievementDto,
+} from './dto/create-achievement.dto';
+import {
 	UpdateAchievementDto,
 	UpdateAchievementSwaggerDto,
-	UserAchievementDto,
-} from './dto';
+} from './dto/update-achievement.dto';
+import { UserAchievementDto } from './dto/user-achievement.dto';
 import { AchievementCrudService } from './services/achievement-crud.service';
 
 @ApiTags('Achievements')

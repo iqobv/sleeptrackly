@@ -1,6 +1,6 @@
 'use client';
 
-import { Profile } from '@/types';
+import { Profile } from '@/types/profile/profile.types';
 import { Button } from '@shared/ui';
 import { useProfileAddToFriendButton } from './useProfileAddToFriendButton';
 

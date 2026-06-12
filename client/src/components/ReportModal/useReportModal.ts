@@ -1,9 +1,9 @@
-import { sendReport } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { REPORT_TITLES } from '@/constants';
-import { SendReportDto, SendReportFormValues } from '@/dto';
-import { sendReportSchema } from '@/schemas';
-import { ReportType } from '@/types';
+import { sendReport } from '@/api/report/report.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { REPORT_TITLES } from '@/constants/reportTitle.constats';
+import { SendReportDto, SendReportFormValues } from '@/dto/report/report.dto';
+import { sendReportSchema } from '@/schemas/report/report.schema';
+import { ReportType } from '@/types/report/reportType.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';

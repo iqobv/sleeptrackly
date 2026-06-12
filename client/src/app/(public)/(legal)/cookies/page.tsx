@@ -1,5 +1,5 @@
 import { LegalContent } from '@/components/Layout/LegalContent/LegalContent';
-import { COOKIES_POLICY_HTML } from '@/constants';
+import { COOKIES_POLICY_HTML } from '@/constants/legal/cookiesPolicy.constants';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 

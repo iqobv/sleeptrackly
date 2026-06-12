@@ -1,10 +1,15 @@
 'use client';
 
-import { getPromotionById, updatePromotion } from '@/api';
-import { FormFields, PageWrapper } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { UpdatePromotionDto } from '@/dto';
-import { updatePromotionSchema } from '@/schemas';
+import {
+	deletePromotion,
+	getPromotionById,
+	updatePromotion,
+} from '@/api/promotion/promotion.api';
+import { DeleteButton, FormFields, PageWrapper } from '@/components/UI';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { updatePromotionSchema } from '@/schemas/promotion/updatePromotion.schema';
 import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
@@ -12,7 +17,6 @@ import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { PromotionForm } from '../PromotionForm/PromotionForm';
 import { SelectProduct } from '../SelectProduct/SelectProduct';
-import { EditPromotionDelete } from './EditPromotionDelete';
 import { PROMOTIONS_FIELDS } from './promotionFields';
 
 export const EditPromotion = () => {
@@ -35,7 +39,16 @@ export const EditPromotion = () => {
 			title="Edit Promotion"
 			description="Modify the details of the promotion"
 			showBackButton
-			customRightSlot={<EditPromotionDelete id={id} />}
+			customRightSlot={
+				<DeleteButton
+					id={data?.id || ''}
+					mutationFn={deletePromotion}
+					onSuccessNavigateTo={PAGES.PROMOTIONS}
+					queryInvalidateKey={QUERY_KEYS.promotion.all}
+					title="Delete Promotion"
+					text="Are you sure you want to delete this promotion? This action cannot be undone."
+				/>
+			}
 		>
 			<Form<UpdatePromotionDto>
 				schema={updatePromotionSchema}

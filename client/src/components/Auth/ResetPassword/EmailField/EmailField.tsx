@@ -1,19 +1,19 @@
 'use client';
 
-import { sendEmailForResetPassword } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { EmailDto } from '@/dto';
-import { emailSchema } from '@/schemas';
+import { sendEmailForResetPassword } from '@/api/auth/password.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { EmailDto } from '@/dto/auth/password.dto';
+import { emailSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import ResetForm from '../ResetForm/ResetForm';
+import { ResetForm } from '../ResetForm/ResetForm';
 import styles from './EmailField.module.scss';
 
-const EmailField = () => {
+export const EmailField = () => {
 	const {
 		register,
 		handleSubmit,
@@ -60,5 +60,3 @@ const EmailField = () => {
 		</div>
 	);
 };
-
-export default EmailField;

@@ -4,9 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { PropsWithChildren, useState } from 'react';
 
-export function TanstackQueryProvider({
+export const TanstackQueryProvider = ({
 	children,
-}: PropsWithChildren<unknown>) {
+}: PropsWithChildren<unknown>) => {
 	const router = useRouter();
 
 	const [client] = useState(
@@ -29,4 +29,4 @@ export function TanstackQueryProvider({
 	);
 
 	return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-}
+};

@@ -1,6 +1,6 @@
 import { UserEntityDto } from '@api/user/dto/user.entity.dto';
 import { FriendshipStatus } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty, OmitType, PickType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

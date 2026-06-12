@@ -1,4 +1,4 @@
-import { SettingsAccount } from '@/components/Settings';
+import { SettingsAccount } from '@/components/Settings/SettingsAccount/SettingsAccount';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

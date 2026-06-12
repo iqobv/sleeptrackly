@@ -1,10 +1,10 @@
 'use client';
 
-import { createPromotion } from '@/api';
+import { createPromotion } from '@/api/promotion/promotion.api';
 import { FormFields, PageWrapper } from '@/components/UI';
-import { PAGES } from '@/config';
-import { CreatePromotionDto } from '@/dto';
-import { createPromotionSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { createPromotionSchema } from '@/schemas/promotion/createPromotion.schema';
 import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';

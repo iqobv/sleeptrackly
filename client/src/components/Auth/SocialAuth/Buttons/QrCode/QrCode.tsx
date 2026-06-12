@@ -8,11 +8,11 @@ import {
 	ModalTrigger,
 } from '@shared/ui';
 import { MdOutlineQrCode2 } from 'react-icons/md';
-import SocialButton from '../../SocialButton/SocialButton';
+import { SocialButton } from '../../SocialButton/SocialButton';
 import styles from './QrCode.module.scss';
-import QrCodeModal from './QrCodeModal/QrCodeModal';
+import { QrCodeModal } from './QrCodeModal/QrCodeModal';
 
-const QrCode = () => {
+export const QrCode = () => {
 	return (
 		<Modal>
 			<ModalTrigger asChild>
@@ -30,5 +30,3 @@ const QrCode = () => {
 		</Modal>
 	);
 };
-
-export default QrCode;

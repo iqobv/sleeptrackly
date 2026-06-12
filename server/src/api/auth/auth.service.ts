@@ -1,16 +1,23 @@
+import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
+import { UserProviderService } from '@api/user-provider/user-provider.service';
+import { CreateUserDto } from '@api/user/dto/create-user.dto';
+import {
+	BaseUserDto,
+	UserDto,
+	UserWithPasswordDto,
+} from '@api/user/dto/user-response.dto';
+import { UserService } from '@api/user/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ClientInfoDto } from '@libs/dto';
-import { JwtPayload, MessageResponse } from '@libs/types';
-import {
-	comparePassword,
-	createRefreshToken,
-	generateRawToken,
-	hashToken,
-	splitToken,
-} from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { JwtPayload } from '@libs/types/jwt-payload.types';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { comparePassword } from '@libs/utils/password.util';
+import { createRefreshToken, splitToken } from '@libs/utils/refresh-token.util';
+import { generateRawToken, hashToken } from '@libs/utils/token.util';
 import {
 	ForbiddenException,
 	Injectable,
@@ -19,16 +26,10 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
-import { UserAvatarService } from '../user-avatar/user-avatar.service';
-import { UserProviderService } from '../user-provider/user-provider.service';
-import {
-	BaseUserDto,
-	CreateUserDto,
-	UserDto,
-	UserWithPasswordDto,
-} from '../user/dto';
-import { UserService } from '../user/user.service';
-import { LoginDto, LoginServiceResponseDto, OAuthDto, TokensDto } from './dto';
+import { LoginServiceResponseDto } from './dto/login-response.dto';
+import { LoginDto } from './dto/login.dto';
+import { OAuthDto } from './dto/o-auth.dto';
+import { TokensDto } from './dto/tokens.dto';
 import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
 import { SessionService } from './session/session.service';
 

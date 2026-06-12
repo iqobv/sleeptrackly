@@ -1,7 +1,7 @@
 'use client';
 
-import { getReports } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getReports } from '@/api/report/reports.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Pagination } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { ReportsChildsProps } from '../Reports';

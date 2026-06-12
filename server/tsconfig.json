@@ -17,7 +17,6 @@
 			"@infra/*": ["./src/infra/*"],
 			"@api/*": ["./src/api/*"],
 			"@libs/*": ["./src/libs/*"],
-			"@config": ["./src/config/index"],
 			"@config/*": ["./src/config/*"]
 		},
 		"incremental": false,
@@ -34,6 +33,6 @@
 		"synchronousWatchDirectory": true,
 		"excludeDirectories": ["**/node_modules", "../client", "dist", ".next"]
 	},
-	"include": ["src/**/*", "generated/**/*"],
+	"include": ["src/**/*", "generated/**/*", "prisma.config.ts"],
 	"exclude": ["node_modules", "dist"]
 }

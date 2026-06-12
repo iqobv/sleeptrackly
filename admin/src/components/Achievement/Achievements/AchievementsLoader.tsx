@@ -1,5 +1,5 @@
 import { PageWrapperLoader } from '@/components/UI';
-import { AchievementCardLoader } from './AchievementCard';
+import { AchievementCardLoader } from './AchievementCard/AchievementCardLoader';
 import styles from './Achievements.module.scss';
 
 export const AchievementsListLoader = () => (

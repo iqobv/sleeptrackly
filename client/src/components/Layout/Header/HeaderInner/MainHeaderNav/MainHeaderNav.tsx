@@ -1,13 +1,13 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
-import { useAuth } from '@/hooks';
-import AuthButtons from '../AuthButtons/AuthButtons';
-import NavContainer from '../NavContainer/NavContainer';
-import NavLinks from '../NavLinks/NavLinks';
+import { AuthButtons } from '../AuthButtons/AuthButtons';
+import { NavContainer } from '../NavContainer/NavContainer';
+import { NavLinks } from '../NavLinks/NavLinks';
 import styles from './MainHeaderNav.module.scss';
+import { useAuth } from '@/hooks/useAuth.hook';
 
-const MainHeaderNav = () => {
+export const MainHeaderNav = () => {
 	const { user } = useAuth();
 
 	return (
@@ -26,5 +26,3 @@ const MainHeaderNav = () => {
 		</NavContainer>
 	);
 };
-
-export default MainHeaderNav;

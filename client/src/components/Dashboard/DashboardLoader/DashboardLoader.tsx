@@ -3,7 +3,7 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './DashboardLoader.module.scss';
 
-const DashboardLoader = () => {
+export const DashboardLoader = () => {
 	return (
 		<div className={styles.dashboardLoader}>
 			<SkeletonLoader height={60} />
@@ -12,5 +12,3 @@ const DashboardLoader = () => {
 		</div>
 	);
 };
-
-export default DashboardLoader;

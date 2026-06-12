@@ -1,13 +1,14 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import {
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { BaseCoinDto, UpdateCoinDto } from './dto';
+import { BaseCoinDto } from './dto/coin.dto';
+import { UpdateCoinDto } from './dto/update-coin.dto';
 
 @Injectable()
 export class CoinService {

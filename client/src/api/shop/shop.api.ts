@@ -1,4 +1,4 @@
-import { LanguageDto } from '@/dto';
+import { LanguageDto } from '@/dto/query/pagination.dto';
 import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';

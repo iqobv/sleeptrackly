@@ -1,10 +1,10 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 
-const CreateChellengeButton = () => {
+export const CreateChellengeButton = () => {
 	return (
 		<div>
 			<Button asChild>
@@ -13,5 +13,3 @@ const CreateChellengeButton = () => {
 		</div>
 	);
 };
-
-export default CreateChellengeButton;

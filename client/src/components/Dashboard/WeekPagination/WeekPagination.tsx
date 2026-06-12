@@ -1,13 +1,13 @@
 'use client';
 
-import { DashboardDay } from '@/types';
+import { DashboardDay } from '@/types/dashboard/dashboard.types';
 import { Button } from '@shared/ui';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
-import DashboardCard from '../DashboardCard/DashboardCard';
+import { DashboardCard } from '../DashboardCard/DashboardCard';
 import styles from './WeekPagination.module.scss';
 import { useWeekPagination } from './useWeekPagination.hook';
 
@@ -26,7 +26,7 @@ const iconProps: IconBaseProps = {
 const weekLabelFormat = 'MMM D';
 const dateFormat = 'YYYY-MM-DD';
 
-const WeekPagination = ({ days, hasMore }: WeekPaginationProps) => {
+export const WeekPagination = ({ days, hasMore }: WeekPaginationProps) => {
 	const [weekLabel, setWeekLabel] = useState('');
 
 	const { date, handleWeekChange } = useWeekPagination();
@@ -81,5 +81,3 @@ const WeekPagination = ({ days, hasMore }: WeekPaginationProps) => {
 		</div>
 	);
 };
-
-export default WeekPagination;

@@ -1,13 +1,16 @@
 'use client';
 
-import { getNotifications, markAllNotificationsAsRead } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import {
+	getNotifications,
+	markAllNotificationsAsRead,
+} from '@/api/notification/notification.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Button, Dropdown, DropdownTrigger } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
-import { NotificationsList } from '../NotificationsList';
+import { NotificationsList } from '../NotificationsList/NotificationsList';
 import styles from './NotificationsButton.module.scss';
 
 export const NotificationsButton = () => {

@@ -1,10 +1,11 @@
 'use client';
 
-import { getAllAchievements } from '@/api';
+import { getAllAchievements } from '@/api/achievement/getAllAchievements.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
-import { AchievementCard } from './AchievementCard';
+import { AchievementCard } from './AchievementCard/AchievementCard';
 import styles from './Achievements.module.scss';
 import { AchievementsListLoader } from './AchievementsLoader';
 

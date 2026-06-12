@@ -1,4 +1,4 @@
-import { UserSanctionDto } from '@/dto';
+import { UserSanctionDto } from '@/dto/userSanction/userSanction.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

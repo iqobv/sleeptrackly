@@ -1,4 +1,4 @@
-import { FIREBASE_CONFIG } from '@/config';
+import { FIREBASE_CONFIG } from '@/config/firebase.config';
 import { getApps, initializeApp } from 'firebase/app';
 import { getMessaging, isSupported, Messaging } from 'firebase/messaging';
 

@@ -1,9 +1,9 @@
 'use client';
 
-import { getAllAvailableBundles } from '@/api';
-import { BundleCard } from '@/components/Customization/BundleCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { QUERY_KEYS } from '@/config';
+import { getAllAvailableBundles } from '@/api/customization/bundle/getAvaibleBundles.api';
+import { BundleCard } from '@/components/Customization/BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 

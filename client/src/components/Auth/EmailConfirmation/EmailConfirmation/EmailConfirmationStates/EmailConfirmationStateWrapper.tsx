@@ -1,7 +1,6 @@
 'use client';
 
 import { IconType } from 'react-icons';
-
 import styles from './EmailConfirmationStates.module.scss';
 
 interface EmailConfirmationStateWrapperProps {
@@ -9,7 +8,7 @@ interface EmailConfirmationStateWrapperProps {
 	icon: IconType;
 }
 
-const EmailConfirmationStateWrapper = ({
+export const EmailConfirmationStateWrapper = ({
 	children,
 	icon: Icon,
 }: EmailConfirmationStateWrapperProps) => {
@@ -22,5 +21,3 @@ const EmailConfirmationStateWrapper = ({
 		</div>
 	);
 };
-
-export default EmailConfirmationStateWrapper;

@@ -1,9 +1,12 @@
 'use client';
 
-import { updateTask } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { ChallengeTaskDto } from '@/dto';
-import { ChallengeFull, ChallengeTask } from '@/types';
+import { updateTask } from '@/api/challenge/challengeTask.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { ChallengeTaskDto } from '@/dto/challenge/challengeTask.dto';
+import {
+	ChallengeFull,
+	ChallengeTask,
+} from '@/types/challenge/challenge.types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';

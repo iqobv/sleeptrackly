@@ -1,7 +1,7 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './AllShop.module.scss';
-import { AllShopFilterLoader } from './AllShopFilter';
-import { AllShopFilterSearchBarLoader } from './AllShopFilterSearchBar';
+import { AllShopFilterLoader } from './AllShopFilter/AllShopFilterLoader';
+import { AllShopFilterSearchBarLoader } from './AllShopFilterSearchBar/AllShopFilterSearchBarLoader';
 
 const ITEMS = Array.from({ length: 20 }).map((_, i) => (
 	<SkeletonLoader key={i} height={316} />

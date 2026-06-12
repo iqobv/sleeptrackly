@@ -1,13 +1,12 @@
 'use client';
 
+import { deleteAccount } from '@/api/auth/auth.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { ConfirmModal } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
-
-import { deleteAccount } from '@/api';
-import { QUERY_KEYS } from '@/config';
 
 export const SettingsDeleteAccount = () => {
 	const router = useRouter();

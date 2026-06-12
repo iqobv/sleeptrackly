@@ -1,9 +1,9 @@
 'use client';
 
-import { resetPassword } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { PassordDto } from '@/dto';
-import { passwordSchema } from '@/schemas';
+import { resetPassword } from '@/api/auth/password.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { PassordDto } from '@/dto/auth/password.dto';
+import { passwordSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
@@ -11,13 +11,13 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { MdOutlineVpnKey } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import ResetForm from '../ResetForm/ResetForm';
+import { ResetForm } from '../ResetForm/ResetForm';
 
 interface NewPasswordFieldProps {
 	token: string;
 }
 
-const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
+export const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 	const router = useRouter();
 
 	const {
@@ -64,5 +64,3 @@ const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 		</ResetForm>
 	);
 };
-
-export default NewPasswordField;

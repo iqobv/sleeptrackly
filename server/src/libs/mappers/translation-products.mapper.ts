@@ -1,6 +1,6 @@
-import { pickTranslation } from '@libs/mappers';
-import { TransformedProduct } from '../../api/shop/types';
-import { ProductWithInclude } from '../types';
+import { TransformedProduct } from '@api/shop/types/transformed-product.types';
+import { ProductWithInclude } from '@libs/types/product-with-include.types';
+import { pickTranslation } from './pick-translation.mapper';
 
 export const transformProduct = (
 	product: ProductWithInclude,

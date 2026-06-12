@@ -1,8 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { Bundle } from '@/types';
-
+import { Bundle } from '@/types/customization/bundle/bundle.types';
 import styles from '../ItemCard/ItemCard.module.scss';
 
 interface BundleCardProps {

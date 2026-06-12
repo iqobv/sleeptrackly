@@ -1,27 +1,17 @@
-import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
-import {
-	forwardRef,
-	Inject,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { ChallengeService } from '../challenge/challenge.service';
-import {
-	ChallengeTaskDto,
-	CreateChallengeTaskDto,
-	UpdateChallengeTaskDto,
-} from './dto';
+import { ChallengeTaskDto } from './dto/challenge-task.dto';
+import { CreateChallengeTaskDto } from './dto/create-challenge-task.dto';
+import { UpdateChallengeTaskDto } from './dto/update-challenge-task.dto';
 
 @Injectable()
 export class ChallengeTaskService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		@Inject(forwardRef(() => ChallengeService))
-		private readonly challengeService: ChallengeService,
 		private readonly achievementProgressService: AchievementProgressService,
 	) {}
 
@@ -30,13 +20,13 @@ export class ChallengeTaskService {
 		userId: string,
 		tasks: CreateChallengeTaskDto[],
 	): Promise<ChallengeTaskDto[]> {
-		const challenge = await this.challengeService.findById(challengeId, userId);
+		await this.ensureChallengeOwnership(challengeId, userId);
 
 		return await this.prismaService.challengeTask.createManyAndReturn({
 			data: tasks.map((task) => ({
 				...task,
 				isCompleted: false,
-				challengeId: challenge.id,
+				challengeId,
 			})),
 		});
 	}
@@ -46,15 +36,17 @@ export class ChallengeTaskService {
 		userId: string,
 		task: CreateChallengeTaskDto,
 	): Promise<ChallengeTaskDto> {
-		const challenge = await this.challengeService.findById(challengeId, userId);
+		await this.ensureChallengeOwnership(challengeId, userId);
 
-		return await this.prismaService.challengeTask.create({
+		const newTask = await this.prismaService.challengeTask.create({
 			data: {
 				...task,
 				isCompleted: false,
-				challenge: { connect: { id: challenge.id } },
+				challenge: { connect: { id: challengeId } },
 			},
 		});
+
+		return plainToInstance(ChallengeTaskDto, newTask);
 	}
 
 	public async findById(id: string): Promise<ChallengeTaskDto> {
@@ -76,11 +68,10 @@ export class ChallengeTaskService {
 	): Promise<ChallengeTaskDto> {
 		const { isCompleted, completedValue } = data;
 
-		const task = await this.findById(taskId);
-		const challenge = await this.challengeService.findById(challengeId, userId);
+		await this.ensureChallengeOwnership(challengeId, userId);
 
 		const updatedTask = await this.prismaService.challengeTask.update({
-			where: { id: task.id, challengeId: challenge.id },
+			where: { id: taskId, challengeId },
 			data: {
 				isCompleted,
 				completedValue,
@@ -93,5 +84,19 @@ export class ChallengeTaskService {
 		);
 
 		return plainToInstance(ChallengeTaskDto, updatedTask);
+	}
+
+	private async ensureChallengeOwnership(
+		challengeId: string,
+		userId: string,
+	): Promise<void> {
+		const challenge = await this.prismaService.challenge.findUnique({
+			where: { id: challengeId, userId, deletedAt: null },
+			select: { id: true },
+		});
+
+		if (!challenge) {
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
+		}
 	}
 }

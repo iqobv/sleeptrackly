@@ -1,4 +1,5 @@
-import { getAchievementById, getAllAchievements } from '@/api';
+import { getAchievementById } from '@/api/achievement/getAchievementById.api';
+import { getAllAchievements } from '@/api/achievement/getAllAchievements.api';
 
 export type Achievement = Awaited<
 	ReturnType<typeof getAllAchievements>

@@ -1,4 +1,4 @@
-import { SettingsPrivacyDto } from '@/dto';
+import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

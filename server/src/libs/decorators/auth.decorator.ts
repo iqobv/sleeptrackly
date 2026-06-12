@@ -1,7 +1,8 @@
-import { Roles } from '@api/auth/decorators';
-import { AccessTokenGuard, RolesGuard } from '@api/auth/guards';
+import { Roles } from '@api/auth/decorators/roles.decorator';
+import { AccessTokenGuard } from '@api/auth/guards/access-token.guard';
+import { RolesGuard } from '@api/auth/guards/roles.guard';
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { applyDecorators, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiErrorResponse } from './api-response.decorator';
 

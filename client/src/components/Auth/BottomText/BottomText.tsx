@@ -9,7 +9,7 @@ interface BottomTextProps {
 	redirectText: string;
 }
 
-const BottomText = ({
+export const BottomText = ({
 	children,
 	redirectText,
 	redirectUrl,
@@ -23,5 +23,3 @@ const BottomText = ({
 		</div>
 	);
 };
-
-export default BottomText;

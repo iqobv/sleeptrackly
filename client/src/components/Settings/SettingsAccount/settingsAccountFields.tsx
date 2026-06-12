@@ -1,5 +1,5 @@
-import { SettingsAccountDto } from '@/dto';
-import { SettingsFormFields } from '@/types';
+import { SettingsAccountDto } from '@/dto/settings/settings.dto';
+import { SettingsFormFields } from '@/types/settings/settingsField.types';
 
 export const ACCOUNT_FIELDS: SettingsFormFields<SettingsAccountDto>[] = [
 	{

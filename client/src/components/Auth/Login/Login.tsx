@@ -1,16 +1,16 @@
 'use client';
 
-import { loginWithPassword } from '@/api';
-import { AUTH_PAGES } from '@/config';
-import { LoginDto } from '@/dto';
-import { LoginSchema } from '@/schemas';
-import AuthForm from '../AuthForm/AuthForm';
-import BottomText from '../BottomText/BottomText';
+import { loginWithPassword } from '@/api/auth/auth.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { LoginDto } from '@/dto/auth/auth.dto';
+import { LoginSchema } from '@/schemas/auth/login.schema';
+import { AuthForm } from '../AuthForm/AuthForm';
+import { BottomText } from '../BottomText/BottomText';
 import { LOGIN_FIELDS } from './loginFields';
 
 type LoginResponse = Awaited<ReturnType<typeof loginWithPassword>>;
 
-const Login = () => {
+export const Login = () => {
 	return (
 		<AuthForm<LoginDto, LoginResponse>
 			fields={LOGIN_FIELDS}
@@ -26,5 +26,3 @@ const Login = () => {
 		/>
 	);
 };
-
-export default Login;

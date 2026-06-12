@@ -1,4 +1,4 @@
-import { UsePromotionDto } from '@/dto';
+import { UsePromotionDto } from '@/dto/promotion/promotion.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

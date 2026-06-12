@@ -1,4 +1,4 @@
-import { PAGES } from '@/config';
+import { PAGES } from '@/config/pages.config';
 import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './not-found.module.scss';

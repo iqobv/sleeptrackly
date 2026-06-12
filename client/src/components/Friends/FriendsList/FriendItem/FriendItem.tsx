@@ -1,6 +1,6 @@
 'use client';
 
-import { Friend } from '@/types';
+import { Friend } from '@/types/friend/friend.types';
 import styles from './FriendItem.module.scss';
 import { FriendItemInfo } from './FriendItemInfo/FriendItemInfo';
 import { FriendItemMenu } from './FriendItemMenu/FriendItemMenu';

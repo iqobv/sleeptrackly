@@ -4,7 +4,8 @@ import { NotificationModule } from '@api/notification/notification.module';
 import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
 import { Module } from '@nestjs/common';
 import { AchievementController } from './achievement.controller';
-import { AchievementCrudService, AchievementProgressService } from './services';
+import { AchievementCrudService } from './services/achievement-crud.service';
+import { AchievementProgressService } from './services/achievement-progress.service';
 
 @Module({
 	controllers: [AchievementController],

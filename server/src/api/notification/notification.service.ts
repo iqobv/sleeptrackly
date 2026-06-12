@@ -1,22 +1,21 @@
 import { Prisma } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { PaginationQueryDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { paginate } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
 import { filter, map, Observable, Subject } from 'rxjs';
-import {
-	CreateNotificationDto,
-	NotificationDto,
-	PaginatedNotificationDto,
-	UpdateNotificationDto,
-} from './dto';
-import { SignalPayload, SseSignalEvent } from './interfaces';
-import { getNotificationsForUserSql } from './sql';
+import { CreateNotificationDto } from './dto/create-notification.dto';
+import { NotificationDto } from './dto/notification.dto';
+import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
+import { UpdateNotificationDto } from './dto/update-notification.dto';
+import { SignalPayload, SseSignalEvent } from './interfaces/signal.interface';
+import { getNotificationsForUserSql } from './sql/get-all-notifications.sql';
 
 @Injectable()
 export class NotificationService {

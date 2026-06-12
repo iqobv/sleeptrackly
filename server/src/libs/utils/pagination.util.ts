@@ -1,4 +1,5 @@
-import { PaginatedDataDto, PaginationQueryDto } from '../dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
 
 export const paginate = async <T>(
 	query: PaginationQueryDto,

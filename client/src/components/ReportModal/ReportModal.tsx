@@ -1,6 +1,7 @@
 'use client';
 
-import { Option, ReportType } from '@/types';
+import { ReportType } from '@/types/report/reportType.types';
+import { Option } from '@/types/ui/option.types';
 import { FormSelect } from '@shared/form';
 import {
 	Button,
@@ -23,7 +24,10 @@ interface ReportModalProps {
 	reportType?: ReportType;
 }
 
-const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
+export const ReportModal = ({
+	reportedId,
+	reportType = 'USER',
+}: ReportModalProps) => {
 	const {
 		isOpen,
 		handleOpenChange,
@@ -96,5 +100,3 @@ const ReportModal = ({ reportedId, reportType = 'USER' }: ReportModalProps) => {
 		</Modal>
 	);
 };
-
-export default ReportModal;

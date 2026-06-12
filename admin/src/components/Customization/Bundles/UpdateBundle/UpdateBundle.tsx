@@ -1,10 +1,13 @@
 'use client';
 
-import { deleteBundle, getBundleById, updateBundle } from '@/api';
+import { deleteBundle } from '@/api/customization/bundle/deleteBundle.api';
+import { getBundleById } from '@/api/customization/bundle/getBundleById.api';
+import { updateBundle } from '@/api/customization/bundle/updateBundle.api';
 import { DeleteButton, PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { UpdateBundleDto } from '@/dto';
-import { updateBundleSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateBundleDto } from '@/dto/customization/bundle.dto';
+import { updateBundleSchema } from '@/schemas/customization/bundle/updateBundle.schema';
 import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';

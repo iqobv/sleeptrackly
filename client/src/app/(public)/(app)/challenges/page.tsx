@@ -1,4 +1,4 @@
-import { Challenges } from '@/components/Challenges';
+import { Challenges } from '@/components/Challenges/Challenges/Challenges';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

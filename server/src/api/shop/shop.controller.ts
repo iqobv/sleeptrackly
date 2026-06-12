@@ -1,6 +1,8 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
-import { LanguageQueryDto } from '@libs/dto';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
 import {
 	Controller,
 	Get,
@@ -10,13 +12,11 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	FeaturedShopDto,
-	FilterQueryDto,
-	PaginatedShopProductsDto,
-	PurchaseDto,
-	ShopProductDto,
-} from './dto';
+import { FeaturedShopDto } from './dto/featured-shop.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
+import { PaginatedShopProductsDto } from './dto/paginated-products.dto';
+import { PurchaseDto } from './dto/purchase.dto';
+import { ShopProductDto } from './dto/shop-product.dto';
 import { ShopService } from './shop.service';
 
 @Auth()

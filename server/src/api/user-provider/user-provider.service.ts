@@ -1,7 +1,7 @@
 import { Prisma, UserProvider } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { CreateUserProviderDto } from './dto';
+import { CreateUserProviderDto } from './dto/create-user-provider.dto';
 
 @Injectable()
 export class UserProviderService {

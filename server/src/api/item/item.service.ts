@@ -1,33 +1,29 @@
 import { ImageService } from '@api/image/image.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { R2Service } from '@infra/r2/r2.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { PaginationQueryDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { paginate } from '@libs/utils';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import {
-	CreateItemDto,
-	FullItemDto,
-	FullPaginatedItemsDto,
-	ItemDto,
-	UpdateItemDto,
-} from './dto';
-import { CreateItemFiles, UpdateItemFiles } from './types';
+import { CreateItemDto } from './dto/create-item.dto';
+import { FullItemDto, ItemDto } from './dto/item-response.dto';
+import { FullPaginatedItemsDto } from './dto/paginated-items.dto';
+import { UpdateItemDto } from './dto/update-item.dto';
+import { CreateItemFiles } from './types/create-item-files.types';
+import { UpdateItemFiles } from './types/update-item-files.types';
 
 @Injectable()
 export class ItemService {
-	private readonly PLACEHOLDER_IMAGE_URL = 'defaults/placeholder.webp';
-
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly r2Service: R2Service,
 		private readonly imageService: ImageService,
 	) {}
 
@@ -40,19 +36,19 @@ export class ItemService {
 		if (!files.media)
 			throw new BadRequestException(ERROR_MESSAGES.ITEM.IMAGE_REQUIRED);
 
-		const mediaFile = await this.imageService.uploadImage(
-			files.media[0],
-			'items',
-			null,
-			this.PLACEHOLDER_IMAGE_URL,
-		);
+		const mediaFile = await this.imageService.uploadImage({
+			file: files.media[0],
+			folder: 'items',
+			oldUrl: null,
+			placeholderUrl: DEFAULT_URLS.ITEM,
+		});
 
-		const previewFile = await this.imageService.uploadImage(
-			files.preview[0],
-			'previews',
-			null,
-			this.PLACEHOLDER_IMAGE_URL,
-		);
+		const previewFile = await this.imageService.uploadImage({
+			file: files.preview[0],
+			folder: 'previews',
+			oldUrl: null,
+			placeholderUrl: DEFAULT_URLS.ITEM_PREVIEW,
+		});
 
 		const item = await this.prismaService.item.create({
 			data: {
@@ -147,23 +143,22 @@ export class ItemService {
 		const { translations, ...rest } = dto;
 
 		const item = await this.getById(id);
-
 		const mediaFile = files?.media
-			? await this.imageService.uploadImage(
-					files.media[0],
-					'items',
-					item.mediaUrl,
-					this.PLACEHOLDER_IMAGE_URL,
-				)
+			? await this.imageService.uploadImage({
+					file: files.media[0],
+					folder: 'items',
+					oldUrl: item.mediaUrl,
+					placeholderUrl: DEFAULT_URLS.ITEM,
+				})
 			: null;
 
 		const previewFile = files?.preview
-			? await this.imageService.uploadImage(
-					files.preview[0],
-					'previews',
-					item.previewUrl,
-					this.PLACEHOLDER_IMAGE_URL,
-				)
+			? await this.imageService.uploadImage({
+					file: files.preview[0],
+					folder: 'items',
+					oldUrl: item.previewUrl,
+					placeholderUrl: DEFAULT_URLS.ITEM_PREVIEW,
+				})
 			: null;
 
 		return await this.prismaService.$transaction(

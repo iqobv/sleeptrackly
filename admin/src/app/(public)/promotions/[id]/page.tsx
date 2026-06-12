@@ -1,4 +1,4 @@
-import { EditPromotion } from '@/components/Promotions';
+import { EditPromotion } from '@/components/Promotions/EditPromotion/EditPromotion';
 
 export default function PromotionPage() {
 	return (

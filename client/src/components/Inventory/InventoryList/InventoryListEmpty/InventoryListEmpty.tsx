@@ -1,6 +1,6 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 import styles from './InventoryListEmpty.module.scss';

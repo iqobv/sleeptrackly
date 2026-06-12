@@ -1,4 +1,4 @@
-import { PaginationWithLanguageDto } from '@/dto';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

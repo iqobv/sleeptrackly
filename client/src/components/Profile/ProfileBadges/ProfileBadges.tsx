@@ -1,8 +1,7 @@
 'use client';
 
-import { EquippedItems } from '@/types';
-
 import { CDNImage } from '@/components/UI';
+import { EquippedItems } from '@/types/item/equippedItems.types';
 import styles from './ProfileBadges.module.scss';
 
 interface ProfileBadgesProps {

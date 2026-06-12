@@ -1,6 +1,7 @@
-import { MobileDirection } from '@/components/Settings/SettingsField/SettingsField';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { Field } from '../ui/field.types';
+
+export type MobileDirection = 'row' | 'column';
 
 export interface SettingsFormFields<T extends FieldValues> extends Field<T> {
 	render?: (

@@ -1,4 +1,4 @@
-import { Option } from '@/types';
+import { Option } from '@/types/ui/option.types';
 
 export const SHOP_FILTER_OPTIONS: Option[] = [
 	{

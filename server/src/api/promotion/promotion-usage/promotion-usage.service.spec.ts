@@ -1,5 +1,4 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
-import { ProductService } from '@api/product/product.service';
 import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
 import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
@@ -46,10 +45,6 @@ type UserInventoryMock = {
 	bulkAddItemsToInventory: jest.Mock;
 };
 
-type ProductMock = {
-	getProductById: jest.Mock;
-};
-
 describe('PromotionUsageService', () => {
 	let service: PromotionUsageService;
 	let prismaTx: PrismaTxMock;
@@ -58,7 +53,6 @@ describe('PromotionUsageService', () => {
 	let shopService: ShopMock;
 	let purchaseHistoryService: PurchaseHistoryMock;
 	let userInventoryService: UserInventoryMock;
-	let productService: ProductMock;
 
 	const mockItem = {
 		id: 'item_1',
@@ -133,10 +127,6 @@ describe('PromotionUsageService', () => {
 			bulkAddItemsToInventory: jest.fn(),
 		};
 
-		productService = {
-			getProductById: jest.fn(),
-		};
-
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				PromotionUsageService,
@@ -145,7 +135,6 @@ describe('PromotionUsageService', () => {
 				{ provide: ShopService, useValue: shopService },
 				{ provide: PurchaseHistoryService, useValue: purchaseHistoryService },
 				{ provide: UserInventoryService, useValue: userInventoryService },
-				{ provide: ProductService, useValue: productService },
 			],
 		}).compile();
 
@@ -245,7 +234,6 @@ describe('PromotionUsageService', () => {
 				productIdReward: 'prod_1',
 			});
 
-			productService.getProductById.mockResolvedValue(mockProductWithItem);
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
 			coinTransactionService.createTransaction.mockResolvedValue({
 				transaction: { id: 'tx_1' },
@@ -253,7 +241,6 @@ describe('PromotionUsageService', () => {
 
 			const result = await service.usePromotion('TEST', 'user_1');
 
-			expect(productService.getProductById).toHaveBeenCalledWith('prod_1');
 			expect(shopService.getItemsToAdd).toHaveBeenCalledWith(
 				[mockItem],
 				'user_1',
@@ -308,7 +295,6 @@ describe('PromotionUsageService', () => {
 				productIdReward: 'prod_2',
 			});
 
-			productService.getProductById.mockResolvedValue(mockProductWithBundle);
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
 			coinTransactionService.createTransaction.mockResolvedValue({
 				transaction: { id: 'tx_2' },

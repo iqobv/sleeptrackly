@@ -1,4 +1,4 @@
-import { MainHeader } from '@/components/Layout/Header';
+import { MainHeader } from '@/components/Layout/Header/MainHeader/MainHeader';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	return (

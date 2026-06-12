@@ -1,4 +1,4 @@
-import { getNotifications } from '@/api';
+import { getNotifications } from '@/api/notification/notification.api';
 
 export type Notification = Awaited<
 	ReturnType<typeof getNotifications>

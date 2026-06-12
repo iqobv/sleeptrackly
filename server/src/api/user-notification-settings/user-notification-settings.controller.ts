@@ -1,11 +1,10 @@
-import { Auth, Authorized } from '@libs/decorators';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	UpdateUserNotificationSettingsDto,
-	UserNotificationSettingsDto,
-} from './dto';
-import { UserNotificationSettingsService } from './services';
+import { UpdateUserNotificationSettingsDto } from './dto/update-user-notification-settings.dto';
+import { UserNotificationSettingsDto } from './dto/user-notification-settings.dto';
+import { UserNotificationSettingsService } from './services/user-notification-settings.service';
 
 @Auth()
 @ApiTags('User Notification Settings')

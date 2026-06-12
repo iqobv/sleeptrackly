@@ -1,4 +1,4 @@
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { Exclude, Expose } from 'class-transformer';
 
 @Exclude()

@@ -1,6 +1,5 @@
-import { Logo } from '@/components/Icons';
-import { LogoProps } from '@/components/Icons/Logo';
-import { PAGES } from '@/config';
+import { Logo, LogoProps } from '@/components/Icons/Logo';
+import { PAGES } from '@/config/pages.config';
 import clsx from 'clsx';
 import Link from 'next/link';
 import styles from './NavLogo.module.scss';

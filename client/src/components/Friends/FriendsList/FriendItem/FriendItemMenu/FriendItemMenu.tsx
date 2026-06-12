@@ -1,10 +1,10 @@
 'use client';
 
-import { Friend } from '@/types';
 import { Button, Dropdown, DropdownContent, DropdownTrigger } from '@shared/ui';
 import { MdOutlineMoreVert } from 'react-icons/md';
 import { FRIEND_ITEM_MENU } from './friendItemMenu';
 import { FriendItemMenuButton } from './FriendItemMenuButton';
+import { Friend } from '@/types/friend/friend.types';
 
 interface FriendItemMenuProps {
 	friend: Friend;

@@ -1,8 +1,11 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { CreateReportDto, ReportDto } from './dto';
+import { CreateReportDto } from './dto/create-report.dto';
+import { ReportDto } from './dto/report.dto';
 import { ReportService } from './report.service';
 
 @Auth()

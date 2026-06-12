@@ -1,5 +1,7 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import {
 	Body,
 	Controller,
@@ -9,7 +11,10 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SearchDto, UpdateUserDto, UserDto, UsersSearchResultDto } from './dto';
+import { SearchDto } from './dto/search.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user-response.dto';
+import { UsersSearchResultDto } from './dto/users-search-result.dto';
 import { UserService } from './user.service';
 
 @Auth()

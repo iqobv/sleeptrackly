@@ -1,6 +1,6 @@
 'use client';
 
-import { NotificationSettings } from '@/types';
+import { NotificationSettings } from '@/types/settings/notifications.types';
 import { FormProvider } from 'react-hook-form';
 import styles from './SettingsNotificationsForm.module.scss';
 import { SettingsNotificationsFormFields } from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';

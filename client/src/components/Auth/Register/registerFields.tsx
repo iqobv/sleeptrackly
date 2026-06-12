@@ -1,6 +1,6 @@
-import { PAGES } from '@/config';
-import { RegisterDto } from '@/dto';
-import { AuthField } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { RegisterDto } from '@/dto/auth/auth.dto';
+import { AuthField } from '@/types/auth/authField.types';
 import Link from 'next/link';
 import { ComponentProps } from 'react';
 import {

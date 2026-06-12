@@ -1,4 +1,4 @@
-import { IsFutureDate } from '@libs/validators';
+import { IsFutureDate } from '@libs/validators/is-future-date.validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {

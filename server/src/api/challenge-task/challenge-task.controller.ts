@@ -1,13 +1,13 @@
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Body, Controller, HttpStatus, Param, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ChallengeTaskService } from './challenge-task.service';
-import {
-	ChallengeTaskDto,
-	UpdateChallengeTaskDto,
-	UpdateChallengeTaskParamsDto,
-} from './dto';
+import { ChallengeTaskDto } from './dto/challenge-task.dto';
+import { UpdateChallengeTaskParamsDto } from './dto/update-challenge-task-params.dto';
+import { UpdateChallengeTaskDto } from './dto/update-challenge-task.dto';
 
 @ApiTags('Challenge Task')
 @Auth()

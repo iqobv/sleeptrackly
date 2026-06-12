@@ -1,1 +1,0 @@
-export * from './userSanction.api';

@@ -1,5 +1,6 @@
-import { PAGES, PRIVATE_PAGES } from '@/config';
-import { User } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { User } from '@/types/user/user.types';
 import { IconBaseProps } from 'react-icons';
 import {
 	MdOutlineEmojiEvents,

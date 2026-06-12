@@ -1,6 +1,8 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, Auth, Authorized } from '@libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import {
 	Body,
 	Controller,
@@ -11,13 +13,10 @@ import {
 	Query,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	AllReportsDto,
-	FullReportDto,
-	ReportDto,
-	SearchQueryDto,
-	UpdateReportDto,
-} from './dto';
+import { AllReportsDto } from './dto/all-reports.dto';
+import { FullReportDto, ReportDto } from './dto/report.dto';
+import { SearchQueryDto } from './dto/search-query.dto';
+import { UpdateReportDto } from './dto/update-report.dto';
 import { ReportService } from './report.service';
 
 @Auth(UserRole.ADMIN)

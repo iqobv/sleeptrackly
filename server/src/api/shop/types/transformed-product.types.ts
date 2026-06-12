@@ -1,5 +1,5 @@
 import { BundleTranslation, ItemTranslation } from '@generated/prisma/client';
-import { ProductWithInclude } from '../../../libs/types/product-with-include.types';
+import { ProductWithInclude } from '@libs/types/product-with-include.types';
 import {
 	BundleItemWithInclude,
 	BundleWithTranslations,

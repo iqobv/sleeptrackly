@@ -1,9 +1,9 @@
-import { AUTH_PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config/authPages.config';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 import styles from './Hero.module.scss';
 
-const Hero = () => {
+export const Hero = () => {
 	return (
 		<div className={`${styles.hero}`}>
 			<div className={`${styles.container} container`}>
@@ -22,5 +22,3 @@ const Hero = () => {
 		</div>
 	);
 };
-
-export default Hero;

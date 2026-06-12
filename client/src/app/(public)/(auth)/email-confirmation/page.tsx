@@ -1,4 +1,4 @@
-import { EmailConfirmation } from '@/components/Auth';
+import { EmailConfirmation } from '@/components/Auth/EmailConfirmation/EmailConfirmation/EmailConfirmation';
 
 export default function EmailConfirmationPage() {
 	return (

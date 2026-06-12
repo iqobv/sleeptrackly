@@ -1,7 +1,7 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
-import { Challenge } from '@/types';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { Challenge } from '@/types/challenge/challenge.types';
 import { Button, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './ChallengeItem.module.scss';
@@ -10,7 +10,7 @@ interface ChallengeItemProps {
 	challenge: Challenge;
 }
 
-const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
+export const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 	if (!challenge) return null;
 
 	return (
@@ -39,5 +39,3 @@ const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 		</li>
 	);
 };
-
-export default ChallengeItem;

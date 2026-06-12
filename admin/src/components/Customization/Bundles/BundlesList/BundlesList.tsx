@@ -1,12 +1,13 @@
 'use client';
 
-import { getAllBundles } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { Bundle } from '@/types';
+import { getAllBundles } from '@/api/customization/bundle/getAllBundles.api';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Bundle } from '@/types/customization/bundle/bundle.types';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import { BundleCard } from '../../BundleCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { BundleCard } from '../../BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { BundlesListLoader } from './BundlesListLoader';
 
 export const BundlesList = () => {

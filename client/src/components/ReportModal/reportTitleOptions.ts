@@ -1,5 +1,5 @@
-import { REPORT_TITLES } from '@/constants';
-import { Option } from '@/types';
+import { REPORT_TITLES } from '@/constants/reportTitle.constats';
+import { Option } from '@/types/ui/option.types';
 
 interface ReportTitleOption extends Option {
 	value: (typeof REPORT_TITLES)[keyof typeof REPORT_TITLES];

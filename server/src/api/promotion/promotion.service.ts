@@ -1,6 +1,7 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -9,7 +10,9 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ProductService } from '../product/product.service';
-import { CreatePromotionDto, PromotionDto, UpdatePromotionDto } from './dto';
+import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { PromotionDto } from './dto/promotion.dto';
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
 
 @Injectable()
 export class PromotionService {

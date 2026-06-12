@@ -1,4 +1,4 @@
-import { TranslationDto } from '@libs/dto';
+import { TranslationDto } from '@libs/dto/translation.dto';
 import { OmitType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { ItemDto } from './item-response.dto';

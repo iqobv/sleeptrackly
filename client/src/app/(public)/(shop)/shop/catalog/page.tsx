@@ -1,4 +1,4 @@
-import { AllShop } from '@/components/Shop';
+import { AllShop } from '@/components/Shop/AllShop/AllShop';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

@@ -1,4 +1,4 @@
-import { sendReportSchema } from '@/schemas';
+import { sendReportSchema } from '@/schemas/report/report.schema';
 import z from 'zod';
 
 export type SendReportFormValues = z.input<typeof sendReportSchema>;

@@ -1,5 +1,6 @@
-import { BaseAchievementDto } from '@/dto';
-import { AchievementType, Field } from '@/types';
+import { BaseAchievementDto } from '@/dto/achievement/achievement.dto';
+import { AchievementType } from '@/types/achievement/achievementType.types';
+import { Field } from '@/types/ui/field.types';
 import { capitalize } from '@shared/utils';
 
 export const ACHIEVEMENT_FORM_FIELDS: Field<BaseAchievementDto>[] = [

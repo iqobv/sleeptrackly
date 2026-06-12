@@ -1,6 +1,6 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { useRouter } from 'next/navigation';
 import { SettingsSecurityField } from '../SettingsSecurityField/SettingsSecurityField';
 

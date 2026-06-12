@@ -1,10 +1,10 @@
 'use client';
 
-import { Dashboard } from '@/types';
+import { Dashboard } from '@/types/dashboard/dashboard.types';
 import { useTransformSecondsToHours } from '@shared/hooks';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import DashboardCard from '../DashboardCard/DashboardCard';
+import { DashboardCard } from '../DashboardCard/DashboardCard';
 import styles from './DashboardWeekStats.module.scss';
 import { DASHBOARD_WEEK_STATS_CARDS } from './dashboardWeekStatsCards';
 
@@ -14,7 +14,7 @@ interface DashboardWeekStatsProps {
 	data: Dashboard;
 }
 
-const DashboardWeekStats = ({ data }: DashboardWeekStatsProps) => {
+export const DashboardWeekStats = ({ data }: DashboardWeekStatsProps) => {
 	const transform = useTransformSecondsToHours();
 
 	return (
@@ -28,5 +28,3 @@ const DashboardWeekStats = ({ data }: DashboardWeekStatsProps) => {
 		</div>
 	);
 };
-
-export default DashboardWeekStats;

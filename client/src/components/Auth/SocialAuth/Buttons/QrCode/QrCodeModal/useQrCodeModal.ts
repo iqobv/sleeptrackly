@@ -1,7 +1,7 @@
 'use client';
 
-import { getQrStatus, initiateQrCode } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getQrStatus, initiateQrCode } from '@/api/auth/qr.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';

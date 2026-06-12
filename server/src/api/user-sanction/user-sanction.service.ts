@@ -1,8 +1,12 @@
+import { NotificationService } from '@api/notification/notification.service';
+import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
+import { UserService } from '@api/user/user.service';
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	Injectable,
@@ -10,14 +14,9 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
-import { NotificationService } from '../notification/notification.service';
-import { UserAvatarService } from '../user-avatar/user-avatar.service';
-import { UserService } from '../user/user.service';
-import {
-	CreaeteUserSanctionDto,
-	UpdateUserSanctionDto,
-	UserSanctionDto,
-} from './dto';
+import { CreaeteUserSanctionDto } from './dto/create-user-sanction.dto';
+import { UpdateUserSanctionDto } from './dto/update-user-sanction.dto';
+import { UserSanctionDto } from './dto/user-sanction.dto';
 
 @Injectable()
 export class UserSanctionService {

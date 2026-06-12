@@ -1,4 +1,5 @@
-import { Option, UserSanctionType } from '@/types';
+import { Option } from '@/types/ui/option.types';
+import { UserSanctionType } from '@/types/user/userSanction.types';
 
 export interface UserSanctionOption extends Option {
 	value: UserSanctionType;

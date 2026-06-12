@@ -1,11 +1,11 @@
-import { getUserCoins } from '@/api';
-import { Coin } from '@/components/Icons';
-import { QUERY_KEYS } from '@/config';
+import { getUserCoins } from '@/api/coin/userCoins.api';
+import { Coin } from '@/components/Icons/Coin';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import styles from './UserMenuCoins.module.scss';
-import UserMenuCoinsLoader from './UserMenuCoinsLoader';
+import { UserMenuCoinsLoader } from './UserMenuCoinsLoader';
 
-const UserMenuCoins = () => {
+export const UserMenuCoins = () => {
 	const { data: userCoins, isLoading } = useQuery({
 		queryFn: () => getUserCoins(),
 		queryKey: QUERY_KEYS.coin.userCoin,
@@ -35,5 +35,3 @@ const UserMenuCoins = () => {
 		</div>
 	);
 };
-
-export default UserMenuCoins;

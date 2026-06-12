@@ -1,6 +1,7 @@
 'use client';
 
-import { FullReport, ReportStatus } from '@/types';
+import { FullReport } from '@/types/report/report.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
 import { Button, SectionHeader } from '@shared/ui';
 import { useState } from 'react';
 import styles from './ReportSanction.module.scss';

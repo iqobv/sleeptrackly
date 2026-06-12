@@ -1,53 +1,32 @@
 import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { userSelect } from '@libs/prisma';
-import { MessageResponse } from '@libs/types';
-import {
-	comparePassword,
-	generateUsername as generateUsernameUtil,
-	hashPassword,
-} from '@libs/utils';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { userInventorySelect } from '@libs/prisma/user-inventory.select.prisma';
+import { userSelect } from '@libs/prisma/user.select.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { generateUsername as generateUsernameUtil } from '@libs/utils/generate-username.util';
+import { comparePassword, hashPassword } from '@libs/utils/password.util';
 import {
 	ConflictException,
 	ForbiddenException,
-	forwardRef,
-	Inject,
 	Injectable,
 	InternalServerErrorException,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CoinService } from '../coin/coin.service';
-import { UserAvatarService } from '../user-avatar/user-avatar.service';
-import { UserInventoryService } from '../user-inventory/user-inventory.service';
-import { UserNotificationSettingsService } from '../user-notification-settings/services/user-notification-settings.service';
-import { UserPrivacySettingsService } from '../user-privacy-settings/user-privacy-settings.service';
-import { UserSleepStatusService } from '../user-sleep-status/user-sleep-status.service';
-import {
-	CreateUserDto,
-	FullUserDto,
-	FullUserWithPasswordDto,
-	InternalUpdateUserDto,
-	PasswordRecoveryDto,
-	UserDto,
-	UsersSearchResultDto,
-	UserWithPasswordDto,
-} from './dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { FullUserDto, FullUserWithPasswordDto } from './dto/full-user.dto';
+import { PasswordRecoveryDto } from './dto/password.dto';
+import { InternalUpdateUserDto } from './dto/update-user.dto';
+import { UserDto, UserWithPasswordDto } from './dto/user-response.dto';
+import { UsersSearchResultDto } from './dto/users-search-result.dto';
 
 @Injectable()
 export class UserService {
-	constructor(
-		private readonly prismaService: PrismaService,
-		private readonly userSleepStatusService: UserSleepStatusService,
-		@Inject(forwardRef(() => UserAvatarService))
-		private readonly userAvatarService: UserAvatarService,
-		private readonly userNotificationSettingsService: UserNotificationSettingsService,
-		private readonly coinService: CoinService,
-		private readonly userInventoryService: UserInventoryService,
-		private readonly userPrivacySettingsService: UserPrivacySettingsService,
-	) {}
+	constructor(private readonly prismaService: PrismaService) {}
 
 	public async create(
 		dto: CreateUserDto,
@@ -66,25 +45,18 @@ export class UserService {
 					username,
 					password: hashedPassword,
 					emailVerified,
+					sleepStatus: { create: {} },
+					avatar: {
+						create: { url: DEFAULT_URLS.AVATAR, isDefault: true },
+					},
+					notificationSettings: { create: {} },
+					coins: { create: { amount: 0 } },
+					userPrivacySettings: { create: {} },
 				},
 				select: userSelect,
 			});
 
-			await this.userSleepStatusService.createSleepStatus(user.id, tx);
-			await this.userAvatarService.create(user.id, tx);
-			await this.userNotificationSettingsService.findOrCreate(user.id, tx);
-			await this.coinService.create(user.id, tx);
-			await this.userPrivacySettingsService.createUserPrivacySettings(
-				user.id,
-				tx,
-			);
-
-			const finalUser = await tx.user.findUniqueOrThrow({
-				where: { id: user.id },
-				select: userSelect,
-			});
-
-			return plainToInstance(UserDto, finalUser);
+			return plainToInstance(UserDto, user);
 		};
 
 		if (tx) {
@@ -111,7 +83,7 @@ export class UserService {
 		full: boolean = false,
 	): Promise<unknown> {
 		const user = await this.prismaService.user.findUnique({
-			where: { email },
+			where: { email, deletedAt: null },
 			select: {
 				...userSelect,
 				...(full && { password: true }),
@@ -139,41 +111,28 @@ export class UserService {
 				...userSelect,
 				...(full && { password: true }),
 				sanctions: true,
+				inventory: { where: { isEquipped: true }, select: userInventorySelect },
 			},
 		});
 
 		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
-		const equippedItems = await this.userInventoryService.getUserEquippedItems(
-			user.id,
+		const { inventory, ...dataUser } = user;
+
+		const finalUser: FullUserDto | FullUserWithPasswordDto = {
+			...dataUser,
+			equippedItems: inventory,
+		};
+
+		return plainToInstance(
+			full ? FullUserWithPasswordDto : FullUserDto,
+			finalUser,
 		);
-
-		return plainToInstance(full ? FullUserWithPasswordDto : FullUserDto, {
-			...user,
-			equippedItems,
-		});
-	}
-
-	public async getById(
-		id: string,
-		full: boolean = false,
-	): Promise<UserDto | UserWithPasswordDto | null> {
-		const user = await this.prismaService.user.findUnique({
-			where: { id },
-			select: {
-				...userSelect,
-				...(full && { password: true }),
-			},
-		});
-
-		if (!user) return null;
-
-		return plainToInstance(full ? UserWithPasswordDto : UserDto, user);
 	}
 
 	public async findByUsername(username: string): Promise<UserDto> {
 		const user = await this.prismaService.user.findUnique({
-			where: { username },
+			where: { username, deletedAt: null },
 			select: userSelect,
 		});
 
@@ -191,6 +150,7 @@ export class UserService {
 				id: { not: userId },
 				username: { contains: username, mode: 'insensitive' },
 				userPrivacySettings: { acceptFriendRequests: true },
+				deletedAt: null,
 			},
 			select: {
 				id: true,

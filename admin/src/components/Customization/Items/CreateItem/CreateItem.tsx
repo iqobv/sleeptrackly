@@ -1,10 +1,10 @@
 'use client';
 
-import { createItem } from '@/api';
+import { createItem } from '@/api/customization/item/item.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES } from '@/config';
-import { CreateItemDto } from '@/dto';
-import { createItemSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { CreateItemDto } from '@/dto/customization/item.dto';
+import { createItemSchema } from '@/schemas/customization/item/createItem.schema';
 import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

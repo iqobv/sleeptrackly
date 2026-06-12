@@ -1,4 +1,4 @@
-import { ProductCardLoader } from '@/components/Customization/Products/ProductsList/ProductCard';
+import { ProductCardLoader } from '@/components/Customization/Products/ProductsList/ProductCard/ProductCardLoader';
 import { Grid, SkeletonLoader } from '@shared/ui';
 import styles from './CollectionFormProduct.module.scss';
 

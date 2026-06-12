@@ -1,12 +1,13 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	ClientInfo,
-} from '@libs/decorators';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
-import { setAuthCookies } from '@libs/utils';
+} from '@libs/decorators/api-response.decorator';
+import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -18,7 +19,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
-import { ConfirmationDto, ResendEmailDto } from './dto';
+import { ConfirmationDto } from './dto/confirmation.dto';
+import { ResendEmailDto } from './dto/resend-email.dto';
 import { EmailConfirmationService } from './email-confirmation.service';
 
 @ApiTags('Email Confirmation')

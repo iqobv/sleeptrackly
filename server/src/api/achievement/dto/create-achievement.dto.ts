@@ -1,5 +1,6 @@
 import { AchievementType } from '@generated/prisma/enums';
-import { TransformBoolean, TransformTranslations } from '@libs/decorators';
+import { TransformBoolean } from '@libs/decorators/transform-boolean.decorator';
+import { TransformTranslations } from '@libs/decorators/transform-translations.decorator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {

@@ -1,22 +1,22 @@
 'use client';
 
-import { getAllProducts } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { PaginationWithLanguageDto } from '@/dto';
-import { Product } from '@/types';
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
+import { Product } from '@/types/customization/product/product.types';
 import { ModalBody, Pagination } from '@shared/ui';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { SelectedProduct } from './CollectionFormProduct';
 import styles from './CollectionFormProduct.module.scss';
-import CollectionFormProductGrid from './CollectionFormProductGrid';
+import { CollectionFormProductGrid } from './CollectionFormProductGrid';
 
 interface CollectionFormProductBodyProps {
 	selectedProducts: SelectedProduct[];
 	onToggleProduct: (product: Product) => void;
 }
 
-const CollectionFormProductBody = ({
+export const CollectionFormProductBody = ({
 	onToggleProduct,
 	selectedProducts,
 }: CollectionFormProductBodyProps) => {
@@ -56,5 +56,3 @@ const CollectionFormProductBody = ({
 		</ModalBody>
 	);
 };
-
-export default CollectionFormProductBody;

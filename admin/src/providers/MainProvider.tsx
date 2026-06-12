@@ -1,21 +1,21 @@
 'use client';
 
-import { User } from '@/types';
+import { User } from '@/types/user/user.types';
 import { PropsWithChildren } from 'react';
-import AuthProvider from './AuthProvider';
-import NuqsProvider from './NuqsProvider';
+import { AuthProvider } from './AuthProvider';
+import { NuqsProvider } from './NuqsProvider';
 import { TanstackQueryProvider } from './TanstackQueryProvider';
-import ThemeProvider from './ThemeProvider';
-import ToastProvider from './ToastProvider';
+import { ThemeProvider } from './ThemeProvider';
+import { ToastProvider } from './ToastProvider';
 
 interface MainProviderProps {
 	user: User | null;
 }
 
-export default function MainProvider({
+export const MainProvider = ({
 	children,
 	user,
-}: PropsWithChildren<MainProviderProps>) {
+}: PropsWithChildren<MainProviderProps>) => {
 	return (
 		<AuthProvider user={user}>
 			<TanstackQueryProvider>
@@ -27,4 +27,4 @@ export default function MainProvider({
 			</TanstackQueryProvider>
 		</AuthProvider>
 	);
-}
+};

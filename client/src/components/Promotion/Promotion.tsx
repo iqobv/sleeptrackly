@@ -1,9 +1,9 @@
 'use client';
 
-import { usePromotion } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { UsePromotionDto } from '@/dto';
-import { usePromotionSchema } from '@/schemas';
+import { usePromotion } from '@/api/promotion/promotion.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UsePromotionDto } from '@/dto/promotion/promotion.dto';
+import { usePromotionSchema } from '@/schemas/promotion/promotion.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input, SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';

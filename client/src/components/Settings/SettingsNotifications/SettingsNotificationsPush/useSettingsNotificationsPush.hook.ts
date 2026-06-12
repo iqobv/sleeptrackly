@@ -1,7 +1,11 @@
 'use client';
 
-import { checkFcmTokenStatus, removeFcmToken, saveFcmToken } from '@/api';
-import { getFcmToken } from '@/utils';
+import {
+	checkFcmTokenStatus,
+	removeFcmToken,
+	saveFcmToken,
+} from '@/api/user/fcmToken.api';
+import { getFcmToken } from '@/utils/fcm/getFcmToken.util';
 import { useEffect, useState } from 'react';
 
 export const useSettingsNotificationsPush = () => {

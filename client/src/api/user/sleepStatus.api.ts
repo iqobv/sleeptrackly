@@ -1,4 +1,4 @@
-import { UserSleepStatusDto } from '@/dto';
+import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

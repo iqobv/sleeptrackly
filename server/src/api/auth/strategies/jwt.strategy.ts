@@ -1,5 +1,5 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { JwtPayload } from '@libs/types';
+import { JwtPayload } from '@libs/types/jwt-payload.types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';

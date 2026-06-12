@@ -1,4 +1,4 @@
-import { DashboardQueryDto } from '@/dto';
+import { DashboardQueryDto } from '@/dto/dashboard/dashboard.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

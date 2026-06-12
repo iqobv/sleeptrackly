@@ -1,12 +1,13 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-	Cookie,
-} from '@libs/decorators';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { Cookie } from '@libs/decorators/cookie.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	Controller,
@@ -17,7 +18,7 @@ import {
 	Param,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { SessionDto } from './dto';
+import { SessionDto } from './dto/session.dto';
 import { SessionService } from './session.service';
 
 @Auth()

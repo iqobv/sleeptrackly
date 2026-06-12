@@ -1,4 +1,4 @@
-import { ProfileStatistics } from '@/types';
+import { ProfileStatistics } from '@/types/profile/profile.types';
 
 export interface ProfileStatisticsList {
 	name: string;

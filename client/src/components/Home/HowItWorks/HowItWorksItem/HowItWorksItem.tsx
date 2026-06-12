@@ -7,7 +7,7 @@ interface HowItWorksItemProps {
 	index: number;
 }
 
-const HowItWorksItem = ({ item, index }: HowItWorksItemProps) => {
+export const HowItWorksItem = ({ item, index }: HowItWorksItemProps) => {
 	return (
 		<div
 			className={styles['how-it-works-item']}
@@ -33,5 +33,3 @@ const HowItWorksItem = ({ item, index }: HowItWorksItemProps) => {
 		</div>
 	);
 };
-
-export default HowItWorksItem;

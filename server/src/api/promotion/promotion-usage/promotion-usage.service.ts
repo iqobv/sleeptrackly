@@ -1,12 +1,13 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
-import { ProductService } from '@api/product/product.service';
 import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
 import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -22,7 +23,6 @@ export class PromotionUsageService {
 		private readonly shopService: ShopService,
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
-		private readonly productService: ProductService,
 	) {}
 
 	public async usePromotion(
@@ -32,7 +32,10 @@ export class PromotionUsageService {
 		return await this.prismaService.$transaction(async (tx) => {
 			const promotion = await tx.promotion.findUnique({
 				where: { alias },
-				include: { usage: { where: { userId } } },
+				include: {
+					usage: { where: { userId } },
+					product: { include: productInclude() },
+				},
 			});
 
 			if (!promotion)
@@ -76,13 +79,11 @@ export class PromotionUsageService {
 				);
 			}
 
-			if (promotion.productIdReward) {
-				const product = await this.productService.getProductById(
-					promotion.productIdReward,
-				);
+			if (promotion.productIdReward && promotion.product) {
+				const product = promotion.product;
+				const initialPrice = product.discountedPrice ?? product.price;
 
 				let items: Item[] = [];
-				const initialPrice = product.discountedPrice ?? product.price;
 
 				if (product.itemId && product.item) {
 					items = [product.item];

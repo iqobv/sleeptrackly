@@ -1,12 +1,8 @@
-import Header from '../Header';
-import { MainHeaderNav } from '../HeaderInner';
+import { Header } from '../Header';
+import { MainHeaderNav } from '../HeaderInner/MainHeaderNav/MainHeaderNav';
 
-const MainHeader = () => {
-	return (
-		<Header>
-			<MainHeaderNav />
-		</Header>
-	);
-};
-
-export default MainHeader;
+export const MainHeader = () => (
+	<Header>
+		<MainHeaderNav />
+	</Header>
+);

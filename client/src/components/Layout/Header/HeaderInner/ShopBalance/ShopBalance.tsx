@@ -1,12 +1,12 @@
 'use client';
 
-import { getUserCoins } from '@/api';
-import { Coin } from '@/components/Icons';
-import { QUERY_KEYS } from '@/config';
+import { getUserCoins } from '@/api/coin/userCoins.api';
+import { Coin } from '@/components/Icons/Coin';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import styles from './ShopBalance.module.scss';
 
-const ShopBalance = () => {
+export const ShopBalance = () => {
 	const { data } = useQuery({
 		queryFn: () => getUserCoins(),
 		queryKey: QUERY_KEYS.coin.userCoin,
@@ -21,5 +21,3 @@ const ShopBalance = () => {
 		</div>
 	);
 };
-
-export default ShopBalance;

@@ -1,11 +1,12 @@
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-} from '@libs/decorators';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { Controller, HttpCode, HttpStatus, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PromotionUsageService } from './promotion-usage.service';

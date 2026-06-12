@@ -12,7 +12,7 @@ interface NavMenuLinkProps {
 	isOpen: boolean;
 }
 
-const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
+export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	const [isExpanded, setExpanded] = useState(false);
 
 	const handleExpand = (e: React.MouseEvent) => {
@@ -78,5 +78,3 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 		</div>
 	);
 };
-
-export default NavMenuLink;

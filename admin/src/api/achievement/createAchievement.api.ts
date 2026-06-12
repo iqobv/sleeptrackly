@@ -1,6 +1,6 @@
-import { CreateAchievementDto } from '@/dto';
+import { CreateAchievementDto } from '@/dto/achievement/achievement.dto';
 import { paths } from '@/types/schema';
-import { getFormData } from '@/utils';
+import { getFormData } from '@/utils/getFormData.util';
 import { apiClient } from '../axios';
 
 type CreateAchievementResponse =

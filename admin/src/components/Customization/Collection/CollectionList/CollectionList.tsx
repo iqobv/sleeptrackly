@@ -1,8 +1,8 @@
 'use client';
 
-import { getAllCollections } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
+import { getAllCollections } from '@/api/customization/collection/getAllCollections.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { PaginationDto } from '@/dto/query/pagination.dto';
 import { usePagination, usePaginationBounds } from '@shared/hooks';
 import { Grid, GridItem, Pagination } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';

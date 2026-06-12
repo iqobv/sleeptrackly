@@ -1,4 +1,5 @@
-import { ItemType, ProductType } from '@/types';
+import { ItemType } from '@/types/item/itemType.types';
+import { ProductType } from '@/types/product/productType.types';
 
 export const shopProductTypeOptions: {
 	label: string;

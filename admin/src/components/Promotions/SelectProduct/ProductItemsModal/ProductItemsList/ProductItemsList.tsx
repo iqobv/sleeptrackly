@@ -1,14 +1,14 @@
 'use client';
 
-import { getAllItems } from '@/api';
-import ItemCard from '@/components/Customization/ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { QUERY_KEYS } from '@/config';
-import { Item } from '@/types';
+import { getAllItems } from '@/api/customization/item/item.api';
+import { ItemCard } from '@/components/Customization/ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
 import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-const ProductItemsList = <T extends FieldValues>() => {
+export const ProductItemsList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
 
 	const itemId = watch('itemId' as Path<T>);
@@ -39,5 +39,3 @@ const ProductItemsList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductItemsList;

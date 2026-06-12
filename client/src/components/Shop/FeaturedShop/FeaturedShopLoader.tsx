@@ -1,8 +1,8 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './FeaturedShop.module.scss';
-import { FeaturedShopBannerLoader } from './FeaturedShopBanner';
-import { FeaturedShopCarouselLoader } from './FeaturedShopCarousel';
-import { FeaturedShopSectionsLoader } from './FeaturedShopSections';
+import { FeaturedShopBannerLoader } from './FeaturedShopBanner/FeaturedShopBannerLoader';
+import { FeaturedShopCarouselLoader } from './FeaturedShopCarousel/FeaturedShopCarouselLoader';
+import { FeaturedShopSectionsLoader } from './FeaturedShopSections/FeaturedShopSectionsLoader';
 
 export const FeaturedShopLoader = () => (
 	<div className={styles.featuredShop}>

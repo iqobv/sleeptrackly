@@ -1,7 +1,7 @@
 'use client';
 
-import { getProfile } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getProfile } from '@/api/profile/profile.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import styles from './Profile.module.scss';
 import { ProfileMainInfo } from './ProfileMainInfo/ProfileMainInfo';

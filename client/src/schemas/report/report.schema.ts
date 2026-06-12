@@ -1,6 +1,6 @@
 import { REPORT_TITLES_OPTIONS } from '@/components/ReportModal/reportTitleOptions';
-import { REPORT_TITLES } from '@/constants';
-import { ReportType } from '@/types';
+import { REPORT_TITLES } from '@/constants/reportTitle.constats';
+import { ReportType } from '@/types/report/reportType.types';
 import z from 'zod';
 
 export const sendReportSchema = z
@@ -15,7 +15,7 @@ export const sendReportSchema = z
 		if (data.title === REPORT_TITLES.OTHER) {
 			if (!data.customTitle || data.customTitle.length < 3) {
 				ctx.addIssue({
-					code: z.ZodIssueCode.custom,
+					code: 'custom',
 					path: ['customTitle'],
 					message: 'Title must be at least 3 characters',
 				});

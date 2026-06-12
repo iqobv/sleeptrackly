@@ -1,5 +1,5 @@
-import { CreateProductDto } from '@/dto';
-import { Field } from '@/types';
+import { CreateProductDto } from '@/dto/customization/product.dto';
+import { Field } from '@/types/ui/field.types';
 
 export const PRODUCTS_FIELDS: Field<CreateProductDto>[] = [
 	{

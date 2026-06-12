@@ -12,7 +12,7 @@ const cards = Array.from({ length: 7 }).map((_, i) => (
 	/>
 ));
 
-const DashboardSleepSessionsLoader = () => {
+export const DashboardSleepSessionsLoader = () => {
 	return (
 		<div className={styles.sleepSessions}>
 			<div style={{ padding: '1.25rem 0' }}>
@@ -22,5 +22,3 @@ const DashboardSleepSessionsLoader = () => {
 		</div>
 	);
 };
-
-export default DashboardSleepSessionsLoader;

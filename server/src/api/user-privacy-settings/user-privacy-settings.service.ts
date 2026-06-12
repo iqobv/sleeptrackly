@@ -2,7 +2,8 @@ import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { BaseUserPrivacySettingsDto, UpdateUserPrivacySettings } from './dto';
+import { UpdateUserPrivacySettings } from './dto/update-user-privacy-settings.dto';
+import { BaseUserPrivacySettingsDto } from './dto/user-privacy-settings.dto';
 
 @Injectable()
 export class UserPrivacySettingsService {

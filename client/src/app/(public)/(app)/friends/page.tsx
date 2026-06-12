@@ -1,4 +1,4 @@
-import { Friends } from '@/components/Friends';
+import { Friends } from '@/components/Friends/Friends';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

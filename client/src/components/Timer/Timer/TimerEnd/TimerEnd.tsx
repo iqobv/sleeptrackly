@@ -1,8 +1,8 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
-import { SleepEntry } from '@/types';
-import { formatTime } from '@/utils';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { SleepEntry } from '@/types/dashboard/dashboard.types';
+import { formatTime } from '@/utils/formatTime.util';
 import { Button } from '@shared/ui';
 import dayjs from 'dayjs';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ interface TimerEndProps {
 	data: SleepEntry;
 }
 
-const TimerEnd = ({ data }: TimerEndProps) => {
+export const TimerEnd = ({ data }: TimerEndProps) => {
 	const { sleepDuration, sleepStart, sleepEnd } = data;
 
 	return (
@@ -26,5 +26,3 @@ const TimerEnd = ({ data }: TimerEndProps) => {
 		</div>
 	);
 };
-
-export default TimerEnd;

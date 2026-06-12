@@ -1,4 +1,4 @@
-import { LoginDto, RegisterDto } from '@/dto';
+import { LoginDto, RegisterDto } from '@/dto/auth/auth.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

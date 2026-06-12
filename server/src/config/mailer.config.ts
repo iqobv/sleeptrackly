@@ -1,4 +1,4 @@
-import { isDev } from '@libs/utils';
+import { isDev } from '@libs/utils/is-dev.util';
 import { ConfigService } from '@nestjs/config';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';

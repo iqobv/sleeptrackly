@@ -1,8 +1,8 @@
 'use client';
 
-import { getStatisticsByWeekForUser } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { getStatisticsByWeekForUser } from '@/api/dashboard/dashboard.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useWeekPagination } from '../WeekPagination/useWeekPagination.hook';

@@ -1,5 +1,5 @@
 import { FormContentLoader, FormFieldsLoader } from '@/components/UI';
-import { TranslationFormLoader } from '../../TranslationForm';
+import { TranslationFormLoader } from '../../TranslationForm/TranslationFormLoader';
 import { COLLECTION_FORM_FIELDS } from './collectionFormFields';
 import { CollectionFormProductLoader } from './CollectionFormProduct/CollectionFormProductLoader';
 

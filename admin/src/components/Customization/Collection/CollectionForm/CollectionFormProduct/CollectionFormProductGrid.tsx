@@ -1,7 +1,7 @@
 'use client';
 
-import { ProductCard } from '@/components/Customization/Products/ProductsList/ProductCard';
-import { Product } from '@/types';
+import { ProductCard } from '@/components/Customization/Products/ProductsList/ProductCard/ProductCard';
+import { Product } from '@/types/customization/product/product.types';
 import { Button, Grid } from '@shared/ui';
 import { SelectedProduct } from './CollectionFormProduct';
 import styles from './CollectionFormProduct.module.scss';
@@ -12,7 +12,7 @@ interface CollectionFormProductGridProps {
 	onToggleProduct: (product: Product) => void;
 }
 
-const CollectionFormProductGrid = ({
+export const CollectionFormProductGrid = ({
 	products,
 	selectedProducts,
 	onToggleProduct,
@@ -40,5 +40,3 @@ const CollectionFormProductGrid = ({
 		</Grid>
 	);
 };
-
-export default CollectionFormProductGrid;

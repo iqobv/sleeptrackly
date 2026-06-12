@@ -1,8 +1,8 @@
 'use client';
 
+import { MobileDirection } from '@/types/settings/settingsField.types';
 import styles from './SettingsField.module.scss';
 
-export type MobileDirection = 'row' | 'column';
 interface SettingsFieldProps {
 	label: string | React.ReactNode;
 	children?: React.ReactNode;

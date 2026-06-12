@@ -1,4 +1,4 @@
-import { ShopHeader } from '@/components/Layout/Header';
+import { ShopHeader } from '@/components/Layout/Header/ShopHeader/ShopHeader';
 
 export default function ShopLayout({
 	children,

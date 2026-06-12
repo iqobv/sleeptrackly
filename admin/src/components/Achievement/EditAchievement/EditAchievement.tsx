@@ -1,15 +1,17 @@
 'use client';
 
-import { getAchievementById, updateAchievement } from '@/api';
-import { PageWrapper } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { UpdateAchievementDto } from '@/dto';
-import { updateAchievementSchema } from '@/schemas';
+import { deleteAchievement } from '@/api/achievement/deleteAchievement.api';
+import { getAchievementById } from '@/api/achievement/getAchievementById.api';
+import { updateAchievement } from '@/api/achievement/updateAchievement.api';
+import { DeleteButton, PageWrapper } from '@/components/UI';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateAchievementDto } from '@/dto/achievement/achievement.dto';
+import { updateAchievementSchema } from '@/schemas/achievement/updateAchievement.schema';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { AchievementForm } from '../AchievementForm/AchievementForm';
-import { EditAchievementDelete } from './EditAchievementDelete';
 
 export const EditAchievement = () => {
 	const queryClient = useQueryClient();
@@ -38,7 +40,16 @@ export const EditAchievement = () => {
 	return (
 		<PageWrapper
 			title="Edit Achievement"
-			customRightSlot={<EditAchievementDelete id={id} />}
+			customRightSlot={
+				<DeleteButton
+					id={id}
+					mutationFn={deleteAchievement}
+					onSuccessNavigateTo={PAGES.ACHIEVEMENTS}
+					queryInvalidateKey={QUERY_KEYS.achievement.all}
+					title="Delete Achievement"
+					text="Are you sure you want to delete this achievement? This action cannot be undone."
+				/>
+			}
 			showBackButton
 		>
 			<AchievementForm<UpdateAchievementDto>

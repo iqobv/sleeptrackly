@@ -10,7 +10,7 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { AchievementDto } from '../dto';
+import { AchievementDto } from '../dto/achievement.dto';
 
 @Injectable()
 export class AchievementProgressService {

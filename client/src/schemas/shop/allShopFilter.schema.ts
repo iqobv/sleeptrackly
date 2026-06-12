@@ -1,4 +1,7 @@
-import { FilterProductType, ItemType, ShopSortBy, SortOrder } from '@/types';
+import { SortOrder } from '@/types/api/sortOrder.types';
+import { ItemType } from '@/types/item/itemType.types';
+import { FilterProductType } from '@/types/product/productType.types';
+import { ShopSortBy } from '@/types/shop/shopSortBy.types';
 import { z } from 'zod';
 import { paginationWithLanguageSchema } from '../query/paginationWithLanguage.schema';
 

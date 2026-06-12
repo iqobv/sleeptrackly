@@ -1,7 +1,7 @@
 'use client';
 
 import { ReportSanctionForm } from '@/components/Report/Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
-import { Profile } from '@/types';
+import { Profile } from '@/types/profile/profile.types';
 import {
 	Button,
 	Modal,
@@ -16,7 +16,9 @@ interface ProfileSanctionsButtonProps {
 	profile: Profile;
 }
 
-const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
+export const ProfileSanctionsButton = ({
+	profile,
+}: ProfileSanctionsButtonProps) => {
 	return (
 		<Modal>
 			<ModalTrigger asChild>
@@ -43,5 +45,3 @@ const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
 		</Modal>
 	);
 };
-
-export default ProfileSanctionsButton;

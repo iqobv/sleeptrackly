@@ -15,10 +15,10 @@ interface ConfirmationTemplateProps {
 	token: string;
 }
 
-export default function ConfirmationTemplate({
+export const ConfirmationTemplate = ({
 	domain,
 	token,
-}: ConfirmationTemplateProps) {
+}: ConfirmationTemplateProps) => {
 	const url = `${domain}/email-confirmation?token=${token}`;
 
 	return (
@@ -64,4 +64,4 @@ export default function ConfirmationTemplate({
 			</Tailwind>
 		</Html>
 	);
-}
+};

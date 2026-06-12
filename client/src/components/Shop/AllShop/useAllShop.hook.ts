@@ -1,7 +1,7 @@
 'use client';
 
-import { getAllShop } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getAllShop } from '@/api/shop/shop.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useDebounce } from '@shared/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';

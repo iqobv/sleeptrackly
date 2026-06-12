@@ -1,7 +1,7 @@
 'use client';
 
-import { approveQrLogin } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { approveQrLogin } from '@/api/auth/qr.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { Scanner } from '@yudiel/react-qr-scanner';

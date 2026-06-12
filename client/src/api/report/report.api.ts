@@ -1,4 +1,4 @@
-import { SendReportDto } from '@/dto';
+import { SendReportDto } from '@/dto/report/report.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

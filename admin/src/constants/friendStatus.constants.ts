@@ -1,6 +1,0 @@
-export const FRIEND_STATUS = {
-	PENDING: 'PENDING',
-	ACCEPTED: 'ACCEPTED',
-	REJECTED: 'REJECTED',
-	BLOCKED: 'BLOCKED',
-} as const;

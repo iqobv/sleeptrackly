@@ -1,10 +1,13 @@
 'use client';
 
-import { deleteCollection, getCollectionById, updateCollection } from '@/api';
+import { deleteCollection } from '@/api/customization/collection/deleteCollection.api';
+import { getCollectionById } from '@/api/customization/collection/getCollectionById.api';
+import { updateCollection } from '@/api/customization/collection/updateCollection.api';
 import { DeleteButton, PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { UpdateCollectionDto } from '@/dto';
-import { updateCollectionSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateCollectionDto } from '@/dto/customization/collection.dto';
+import { updateCollectionSchema } from '@/schemas/customization/collection/updateCollection.schema';
 import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';

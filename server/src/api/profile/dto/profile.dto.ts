@@ -1,4 +1,4 @@
-import { BaseFriendshipDto } from '@api/friendship/dto';
+import { BaseFriendshipDto } from '@api/friendship/dto/friendship.dto';
 import { UserEntityDto } from '@api/user/dto/user.entity.dto';
 import { PickType } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';

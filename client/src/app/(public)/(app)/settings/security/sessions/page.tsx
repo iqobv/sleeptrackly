@@ -1,4 +1,4 @@
-import { SettingsSessions } from '@/components/Settings';
+import { SettingsSessions } from '@/components/Settings/SettingsSessions/SettingsSessions';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

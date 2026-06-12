@@ -12,7 +12,7 @@ interface FaqQuestionProps {
 	handleClick: (index: number) => void;
 }
 
-const FaqQuestion = ({
+export const FaqQuestion = ({
 	item,
 	activeIndex,
 	isOpen,
@@ -53,5 +53,3 @@ const FaqQuestion = ({
 		</div>
 	);
 };
-
-export default FaqQuestion;

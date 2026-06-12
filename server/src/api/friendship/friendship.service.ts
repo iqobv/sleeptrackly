@@ -1,13 +1,14 @@
 import { NotificationService } from '@api/notification/notification.service';
-import { UserService } from '@api/user/user.service';
 import {
 	FriendshipStatus,
 	NotificationType,
 	Prisma,
 } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { userSelect } from '@libs/prisma/user.select.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -16,15 +17,10 @@ import {
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import ms from 'ms';
-import {
-	BaseFriendshipDto,
-	FriendDto,
-	FriendRequestDto,
-	FriendshipDto,
-	UpdateFriendshipDto,
-	UserFriendRequestsDto,
-	UserFriendsDto,
-} from './dto';
+import { FriendDto, FriendRequestDto } from './dto/friend.dto';
+import { BaseFriendshipDto, FriendshipDto } from './dto/friendship.dto';
+import { UpdateFriendshipDto } from './dto/update-friendship.dto';
+import { UserFriendRequestsDto, UserFriendsDto } from './dto/user-friend.dto';
 
 const selectUserFields = {
 	id: true,
@@ -45,7 +41,6 @@ export class FriendshipService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly notificationService: NotificationService,
-		private readonly userService: UserService,
 	) {}
 
 	public async sendFriendshipRequest(
@@ -57,7 +52,7 @@ export class FriendshipService {
 				ERROR_MESSAGES.FRIENDSHIP.CANNOT_FRIEND_SELF,
 			);
 
-		const addressee = await this.userService.findById(addresseeId, false);
+		const addressee = await this.getUserById(addresseeId);
 
 		if (!addressee.userPrivacySettings?.acceptFriendRequests)
 			throw new BadRequestException(
@@ -84,17 +79,19 @@ export class FriendshipService {
 			});
 		}
 
-		await this.notificationService.create({
-			userId: addressee.id,
-			title: 'New Friend Request',
-			body: `You have a new friend request from ${newFriendship.requester.username}`,
-			isEmail: false,
-			isGlobal: false,
-			isPush: false,
-			showInApp: true,
-			redirectUrl: `/friends/pending`,
-			type: NotificationType.FRIEND_REQUEST,
-		});
+		if (addressee.notificationSettings?.isFriendRequestsEnabled) {
+			await this.notificationService.create({
+				userId: addressee.id,
+				title: 'New Friend Request',
+				body: `You have a new friend request from ${newFriendship.requester.username}`,
+				isEmail: false,
+				isGlobal: false,
+				isPush: false,
+				showInApp: true,
+				redirectUrl: `/friends/pending`,
+				type: NotificationType.FRIEND_REQUEST,
+			});
+		}
 
 		return plainToInstance(FriendshipDto, newFriendship);
 	}
@@ -289,5 +286,20 @@ export class FriendshipService {
 		});
 
 		return SUCCESS_MESSAGES.FRIENDSHIP.DELETED;
+	}
+
+	private async getUserById(id: string) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id, deletedAt: null },
+			select: {
+				id: true,
+				userPrivacySettings: userSelect.userPrivacySettings,
+				notificationSettings: { select: { isFriendRequestsEnabled: true } },
+			},
+		});
+
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
+
+		return user;
 	}
 }

@@ -1,14 +1,14 @@
 'use client';
 
-import { Challenge } from '@/types';
+import { Challenge } from '@/types/challenge/challenge.types';
 import { SectionHeader } from '@shared/ui';
-import ChallengesList from '../ChallengesList/ChallengesList';
+import { ChallengesList } from '../ChallengesList/ChallengesList';
 
 interface AllChallengesProps {
 	data: Challenge[];
 }
 
-const AllChallenges = ({ data }: AllChallengesProps) => {
+export const AllChallenges = ({ data }: AllChallengesProps) => {
 	return (
 		<div>
 			<SectionHeader
@@ -22,5 +22,3 @@ const AllChallenges = ({ data }: AllChallengesProps) => {
 		</div>
 	);
 };
-
-export default AllChallenges;

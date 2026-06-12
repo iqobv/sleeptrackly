@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { SettingsFormFields } from '@/types';
+import { SettingsFormFields } from '@/types/settings/settingsField.types';
 import { DefaultValues, FieldValues } from 'react-hook-form';
 import { ZodType } from 'zod';
 

@@ -1,7 +1,7 @@
 import { SkeletonLoader } from '@shared/ui';
-import { CalendarLoader } from '../Calendar';
-import { ChallengeInfoLoader } from '../ChallengeInfo';
-import { ChallengeSummaryLoader } from '../ChallengeSummary';
+import { CalendarLoader } from '../Calendar/CalendarLoader';
+import { ChallengeInfoLoader } from '../ChallengeInfo/ChallengeInfoLoader';
+import { ChallengeSummaryLoader } from '../ChallengeSummary/ChallengeSummaryLoader';
 
 export const ChallengeLoader = () => (
 	<div>

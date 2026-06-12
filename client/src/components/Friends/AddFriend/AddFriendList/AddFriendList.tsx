@@ -1,6 +1,6 @@
 'use client';
 
-import { SearchUser } from '@/types';
+import { SearchUser } from '@/types/user/user.types';
 import { List, SkeletonLoader } from '@shared/ui';
 import { AddFriendItem } from './AddFriendItem/AddFriendItem';
 import styles from './AddFriendList.module.scss';

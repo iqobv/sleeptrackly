@@ -1,11 +1,13 @@
 import { Prisma, PurchaseHistory } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { PaginationQueryWithLanguageDto, TranslationDto } from '@libs/dto';
-import { pickTranslation } from '@libs/mappers';
-import { paginate } from '@libs/utils';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
+import { TranslationDto } from '@libs/dto/translation.dto';
+import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { paginate } from '@libs/utils/pagination.util';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CreatePurchaseHistoryDto, PaginatedPurchaseHistoryDto } from './dto';
+import { CreatePurchaseHistoryDto } from './dto/create-purchase-history.dto';
+import { PaginatedPurchaseHistoryDto } from './dto/paginated-purchase-history.dto';
 
 @Injectable()
 export class PurchaseHistoryService {

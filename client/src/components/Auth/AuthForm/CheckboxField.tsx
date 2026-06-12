@@ -8,7 +8,11 @@ interface CheckboxFieldProps extends ComponentPropsWithRef<'input'> {
 	error?: string;
 }
 
-const CheckboxField = ({ label, error, ...props }: CheckboxFieldProps) => {
+export const CheckboxField = ({
+	label,
+	error,
+	...props
+}: CheckboxFieldProps) => {
 	const generatedId = useId();
 	const id = props.id || generatedId;
 
@@ -22,5 +26,3 @@ const CheckboxField = ({ label, error, ...props }: CheckboxFieldProps) => {
 		</div>
 	);
 };
-
-export default CheckboxField;

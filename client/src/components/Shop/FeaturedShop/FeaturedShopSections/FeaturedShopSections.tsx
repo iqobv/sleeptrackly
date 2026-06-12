@@ -1,7 +1,7 @@
 'use client';
 
-import { PRIVATE_PAGES } from '@/config';
-import { FeaturedShopSection } from '@/types';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { FeaturedShopSection } from '@/types/shop/featuredShopSection.types';
 import { Button, List } from '@shared/ui';
 import Link from 'next/link';
 import { ShopCard } from '../../ShopCard/ShopCard';

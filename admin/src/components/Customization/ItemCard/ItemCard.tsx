@@ -1,7 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { Item } from '@/types';
+import { Item } from '@/types/customization/item/item.types';
 import styles from './ItemCard.module.scss';
 
 interface ItemCardProps {
@@ -9,7 +9,7 @@ interface ItemCardProps {
 	actions?: React.ReactNode;
 }
 
-const ItemCard = ({ item, actions }: ItemCardProps) => {
+export const ItemCard = ({ item, actions }: ItemCardProps) => {
 	const translation =
 		item.translations.find((t) => t.language === 'en')?.name ||
 		item.translations[0]?.name ||
@@ -47,5 +47,3 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 		</div>
 	);
 };
-
-export default ItemCard;

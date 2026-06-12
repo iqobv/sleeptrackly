@@ -1,17 +1,17 @@
-import { UserDto } from '@api/user/dto';
+import { UserDto } from '@api/user/dto/user-response.dto';
 import type { Prisma, Token } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { userSelect } from '@libs/prisma';
-import { generateRawToken, hashToken } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { userSelect } from '@libs/prisma/user.select.prisma';
+import { generateRawToken, hashToken } from '@libs/utils/token.util';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CreateTokenDto } from './dto';
+import { CreateTokenDto } from './dto/create-token.dto';
 
 @Injectable()
 export class TokenService {
@@ -111,6 +111,7 @@ export class TokenService {
 
 		if (hasExpired) {
 			await this.deleteToken(existsToken.id, tx);
+
 			throw new NotFoundException(ERROR_MESSAGES.TOKEN.EXPIRED);
 		}
 

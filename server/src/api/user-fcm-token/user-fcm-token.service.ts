@@ -1,7 +1,8 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { PrismaService } from '../../infra/prisma/prisma.service';
-import { CreateUserFcmTokenDto, FcmTokenDto } from './dto';
+import { CreateUserFcmTokenDto } from './dto/create-user-fcm-token.dto';
+import { FcmTokenDto } from './dto/fcm-token.dto';
 
 @Injectable()
 export class UserFcmTokenService {
@@ -42,7 +43,10 @@ export class UserFcmTokenService {
 		return plainToInstance(FcmTokenDto, tokens);
 	}
 
-	public async checkTokenExists(userId: string, token: string): Promise<boolean> {
+	public async checkTokenExists(
+		userId: string,
+		token: string,
+	): Promise<boolean> {
 		const count = await this.prismaService.userFcmToken.count({
 			where: {
 				userId,

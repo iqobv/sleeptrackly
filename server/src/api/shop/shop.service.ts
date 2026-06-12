@@ -1,10 +1,7 @@
-import {
-	ConflictException,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
-
-import { AchievementProgressService } from '@api/achievement/services';
+import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
+import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { Item, Prisma } from '@generated/prisma/client';
 import {
 	AcquiredFrom,
@@ -13,24 +10,25 @@ import {
 	ProfileItemType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
-import { pickTranslation, transformProduct } from '@libs/mappers';
-import { productInclude } from '@libs/prisma';
-import { paginate } from '@libs/utils';
-import { plainToInstance } from 'class-transformer';
-import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
-import { PurchaseHistoryService } from '../purchase-history/purchase-history.service';
-import { UserInventoryService } from '../user-inventory/user-inventory.service';
-import { SHOP_SORT_BY } from './constats';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { transformProduct } from '@libs/mappers/translation-products.mapper';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { paginate } from '@libs/utils/pagination.util';
 import {
-	FeaturedShopDto,
-	FilterQueryDto,
-	PaginatedShopProductsDto,
-	PurchaseDto,
-	ShopProductDto,
-} from './dto';
-import { ItemsToAdd } from './interfaces';
-import { TransformedProduct } from './types';
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { FeaturedShopDto } from './dto/featured-shop.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
+import { PaginatedShopProductsDto } from './dto/paginated-products.dto';
+import { PurchaseDto } from './dto/purchase.dto';
+import { ShopProductDto } from './dto/shop-product.dto';
+import { ItemsToAdd } from './interfaces/items-to-add.interface';
+import { ShopSortBy } from './types/sort-by.types';
+import { TransformedProduct } from './types/transformed-product.types';
 
 @Injectable()
 export class ShopService {
@@ -219,7 +217,7 @@ export class ShopService {
 				this.prismaService.product.findMany({
 					where,
 					orderBy: {
-						[sortBy === SHOP_SORT_BY.DATE ? 'createdAt' : 'price']: sortOrder,
+						[sortBy === ShopSortBy.DATE ? 'createdAt' : 'price']: sortOrder,
 					},
 					skip: offset,
 					take: limit,

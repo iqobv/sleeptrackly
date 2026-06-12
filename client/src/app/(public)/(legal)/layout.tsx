@@ -1,6 +1,5 @@
-import { LegalHeader } from '@/components/Layout/Header';
-
-import { Footer } from '@/components/Layout/Footer';
+import { Footer } from '@/components/Layout/Footer/Footer';
+import { LegalHeader } from '@/components/Layout/Header/LegalHeader/LegalHeader';
 import styles from './layout.module.scss';
 
 export default function LegalLayout({

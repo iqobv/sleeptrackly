@@ -1,4 +1,4 @@
-import { AUTH_PAGES } from '@/config';
+import { AUTH_PAGES } from '@/config/authPages.config';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';

@@ -1,10 +1,10 @@
-import DashboardWeekStatsLoader from '../DashboardWeekStats/DashboardWeekStatsLoader';
-import SleepChartLoader from '../SleepChart/SleepChartLoader';
-import WeekPaginationLoader from '../WeekPagination/WeekPaginationLoader';
+import { DashboardWeekStatsLoader } from '../DashboardWeekStats/DashboardWeekStatsLoader';
+import { SleepChartLoader } from '../SleepChart/SleepChartLoader';
+import { WeekPaginationLoader } from '../WeekPagination/WeekPaginationLoader';
 import styles from './Dashboard.module.scss';
-import DashboardSleepSessionsLoader from './DashboardSleepSessions/DashboardSleepSessionsLoader';
+import { DashboardSleepSessionsLoader } from './DashboardSleepSessions/DashboardSleepSessionsLoader';
 
-const DashboardLoader = () => {
+export const DashboardLoader = () => {
 	return (
 		<div className={styles.wrapper}>
 			<WeekPaginationLoader />
@@ -16,5 +16,3 @@ const DashboardLoader = () => {
 		</div>
 	);
 };
-
-export default DashboardLoader;

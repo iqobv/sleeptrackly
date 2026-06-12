@@ -1,7 +1,7 @@
 'use client';
 
-import { logout as apiLogout } from '@/api';
-import { useUserStore } from '@/store';
+import { logout as apiLogout } from '@/api/auth/auth.api';
+import { useUserStore } from '@/store/useUser.store';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';

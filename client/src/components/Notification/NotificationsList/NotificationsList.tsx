@@ -1,6 +1,6 @@
 'use client';
 
-import { getNotifications } from '@/api';
+import { getNotifications } from '@/api/notification/notification.api';
 import { DropdownContent } from '@shared/ui';
 import { UseQueryResult } from '@tanstack/react-query';
 import styles from './NotificationsList.module.scss';

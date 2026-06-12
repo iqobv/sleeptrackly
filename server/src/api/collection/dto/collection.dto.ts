@@ -1,4 +1,4 @@
-import { PaginatedDataDto } from '@libs/dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
 import { Expose, Type } from 'class-transformer';
 import { CollectionProductDto } from './collection-product.dto';
 import { FullCollectionTranslationDto } from './collection-translation.dto';

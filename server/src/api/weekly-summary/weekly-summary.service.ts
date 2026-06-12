@@ -1,13 +1,13 @@
 import { NotificationService } from '@api/notification/notification.service';
 import { NotificationType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import { WeeklySummaryDto } from './dto';
+import { WeeklySummaryDto } from './dto/weekly-summary.dto';
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);

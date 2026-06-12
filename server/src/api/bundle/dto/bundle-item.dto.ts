@@ -1,4 +1,4 @@
-import { FullItemDto } from '@api/item/dto';
+import { FullItemDto } from '@api/item/dto/item-response.dto';
 import { Expose, Type } from 'class-transformer';
 import { BundleItemEntityDto } from './bundle.entity.dto';
 

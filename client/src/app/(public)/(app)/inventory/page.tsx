@@ -1,4 +1,4 @@
-import { InventoryList } from '@/components/Inventory';
+import { InventoryList } from '@/components/Inventory/InventoryList/InventoryList';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

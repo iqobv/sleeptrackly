@@ -1,7 +1,7 @@
 'use client';
 
-import { searchByUsername } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { searchByUsername } from '@/api/user/user.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 

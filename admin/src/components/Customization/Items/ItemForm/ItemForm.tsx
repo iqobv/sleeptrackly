@@ -2,7 +2,7 @@
 
 import { FormContent, FormFields } from '@/components/UI';
 import { FileForm } from '../../FileForm/FileForm';
-import { TranslationForm } from '../../TranslationForm';
+import { TranslationForm } from '../../TranslationForm/TranslationForm';
 import { ITEM_FIELDS } from './itemFields';
 
 interface ItemFormProps {

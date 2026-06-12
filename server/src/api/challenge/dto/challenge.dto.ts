@@ -1,6 +1,6 @@
-import { ChallengeTaskDto } from '@api/challenge-task/dto';
+import { ChallengeTaskDto } from '@api/challenge-task/dto/challenge-task.dto';
 import { ChallengeFrequency } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 

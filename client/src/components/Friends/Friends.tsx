@@ -1,7 +1,7 @@
 'use client';
 
-import { AddFriend } from './AddFriend';
-import { FriendsList } from './FriendsList';
+import { AddFriend } from './AddFriend/AddFriend';
+import { FriendsList } from './FriendsList/FriendsList';
 
 export const Friends = () => {
 	return (

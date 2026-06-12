@@ -1,9 +1,9 @@
 import { List, SectionHeader } from '@shared/ui';
 import styles from './Features.module.scss';
-import FeaturesItem from './FeaturesItem/FeaturesItem';
+import { FeaturesItem } from './FeaturesItem/FeaturesItem';
 import { FEATURES_ITEMS } from './featuresItems';
 
-const Features = () => {
+export const Features = () => {
 	return (
 		<div className="container">
 			<SectionHeader
@@ -20,5 +20,3 @@ const Features = () => {
 		</div>
 	);
 };
-
-export default Features;

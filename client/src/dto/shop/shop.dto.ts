@@ -1,7 +1,7 @@
 import {
 	allShopFilterSchema,
 	allShopFilterWithPaginationSchema,
-} from '@/schemas';
+} from '@/schemas/shop/allShopFilter.schema';
 import z from 'zod';
 
 export type ShopFilterDto = z.infer<typeof allShopFilterSchema>;

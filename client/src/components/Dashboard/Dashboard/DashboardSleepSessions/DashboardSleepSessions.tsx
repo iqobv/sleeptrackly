@@ -1,16 +1,18 @@
 'use client';
 
-import { DashboardDay } from '@/types';
+import { DashboardDay } from '@/types/dashboard/dashboard.types';
 import { useFormatLocaleTime, useTransformSecondsToHours } from '@shared/hooks';
 import { SectionHeader } from '@shared/ui';
-import DashboardCard from '../../DashboardCard/DashboardCard';
+import { DashboardCard } from '../../DashboardCard/DashboardCard';
 import styles from './DashboardSleepSessions.module.scss';
 
 interface DashboardSleepSessionsProps {
 	days: DashboardDay[];
 }
 
-const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {
+export const DashboardSleepSessions = ({
+	days,
+}: DashboardSleepSessionsProps) => {
 	const transform = useTransformSecondsToHours();
 	const formatTime = useFormatLocaleTime();
 
@@ -51,5 +53,3 @@ const DashboardSleepSessions = ({ days }: DashboardSleepSessionsProps) => {
 		</div>
 	);
 };
-
-export default DashboardSleepSessions;

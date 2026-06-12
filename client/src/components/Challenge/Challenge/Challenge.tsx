@@ -1,12 +1,12 @@
 'use client';
 
-import { getChallengeById } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getChallengeById } from '@/api/challenge/challenge.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
-import { Calendar } from '../Calendar';
-import { ChallengeInfo } from '../ChallengeInfo';
-import { ChallengeSummary } from '../ChallengeSummary';
+import { Calendar } from '../Calendar/Calendar';
+import { ChallengeInfo } from '../ChallengeInfo/ChallengeInfo';
+import { ChallengeSummary } from '../ChallengeSummary/ChallengeSummary';
 import { ChallengeLoader } from './ChallengeLoader';
 
 interface ChallengeProps {

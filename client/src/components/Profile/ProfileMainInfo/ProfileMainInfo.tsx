@@ -1,8 +1,8 @@
 'use client';
 
 import { CDNImage, UserAvatar } from '@/components/UI';
-import { useAuth } from '@/hooks';
-import { Profile } from '@/types';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { Profile } from '@/types/profile/profile.types';
 import { SectionHeader } from '@shared/ui';
 import { ProfileBadges } from '../ProfileBadges/ProfileBadges';
 import { ProfileAddToFriendButton } from './ProfileAddToFriendButton/ProfileAddToFriendButton';

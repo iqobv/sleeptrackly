@@ -1,14 +1,13 @@
 import { Prisma, Session } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { MessageResponse } from '@libs/types';
-import {
-	extractClientIP,
-	hashToken,
-	isPrivateIP,
-	normalizeIp,
-	splitToken,
-} from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { extractClientIP } from '@libs/utils/extract-client-ip.util';
+import { isPrivateIP } from '@libs/utils/is-private.ip.util';
+import { normalizeIp } from '@libs/utils/normalize-ip.util';
+import { splitToken } from '@libs/utils/refresh-token.util';
+import { hashToken } from '@libs/utils/token.util';
 import { HttpService } from '@nestjs/axios';
 import {
 	ForbiddenException,
@@ -16,15 +15,13 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { UAParser } from 'ua-parser-js';
-import {
-	CreateSessionDto,
-	IpApiDto,
-	RotateSessionDto,
-	SessionDto,
-	UserAgentDto,
-} from './dto';
 import { plainToInstance } from 'class-transformer';
+import { UAParser } from 'ua-parser-js';
+import { CreateSessionDto } from './dto/create-session.dto';
+import { IpApiDto } from './dto/ip-api.dto';
+import { RotateSessionDto } from './dto/rotate-session.dto';
+import { SessionDto } from './dto/session.dto';
+import { UserAgentDto } from './dto/user-agent.dto';
 
 @Injectable()
 export class SessionService {
@@ -193,19 +190,13 @@ export class SessionService {
 		return SUCCESS_MESSAGES.SESSION.OTHER_SESSIONS_DELETED;
 	}
 
-	private async terminateExpiredSessions(): Promise<boolean> {
+	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+	private async handleTerminateExpiredSessions(): Promise<void> {
 		const now = new Date();
 
 		await this.prismaService.session.deleteMany({
 			where: { expiresAt: { lt: now } },
 		});
-
-		return true;
-	}
-
-	@Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
-	private async handleTerminateExpiredSessions(): Promise<void> {
-		await this.terminateExpiredSessions();
 	}
 
 	private async getInfoFromIp(ip: string): Promise<IpApiDto | null> {

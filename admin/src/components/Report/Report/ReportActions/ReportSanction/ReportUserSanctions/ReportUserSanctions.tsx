@@ -1,6 +1,6 @@
 'use client';
 
-import { UserSanction } from '@/types';
+import { UserSanction } from '@/types/user/userSanction.types';
 import { ReportUserSanctionsItem } from './ReportUserSanctionsItem/ReportUserSanctionsItem';
 
 interface ReportUserSanctionsProps {

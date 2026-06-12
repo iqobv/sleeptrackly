@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreatePromotionDto, UpdatePromotionDto } from './dto';
+import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { PromotionController } from './promotion.controller';
 import { PromotionService } from './promotion.service';
 

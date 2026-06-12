@@ -1,13 +1,13 @@
 'use client';
 
-import { getAllProducts } from '@/api';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { QUERY_KEYS } from '@/config';
-import { CreatePromotionDto } from '@/dto';
-import { Product } from '@/types';
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { Product } from '@/types/customization/product/product.types';
 import { Button } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
-import ItemCard from './ItemCard/ItemCard';
+import { ItemCard } from './ItemCard/ItemCard';
 
 export const ProductsList = () => {
 	const { setValue, watch } = useFormContext<CreatePromotionDto>();

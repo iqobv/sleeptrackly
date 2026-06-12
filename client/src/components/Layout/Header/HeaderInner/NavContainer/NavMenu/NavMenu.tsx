@@ -1,7 +1,7 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
-import NavLinks from '../../NavLinks/NavLinks';
+import { NavLinks } from '../../NavLinks/NavLinks';
 import styles from './NavMenu.module.scss';
 
 interface NavMenuProps {
@@ -12,7 +12,7 @@ interface NavMenuProps {
 	rowDirectionOnLg?: boolean;
 }
 
-const NavMenu = ({
+export const NavMenu = ({
 	isOpen,
 	isClosing,
 	handleClick,
@@ -39,5 +39,3 @@ const NavMenu = ({
 		</div>
 	);
 };
-
-export default NavMenu;

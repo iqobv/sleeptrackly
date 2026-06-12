@@ -1,4 +1,4 @@
-import { ItemType } from '@/types';
+import { ItemType } from '@/types/item/itemType.types';
 
 interface FeaturedShopSectionItem {
 	type: ItemType;

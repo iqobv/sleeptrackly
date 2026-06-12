@@ -1,12 +1,13 @@
 import { TokenService } from '@api/token/token.service';
-import { PasswordRecoveryDto } from '@api/user/dto';
+import { PasswordRecoveryDto } from '@api/user/dto/password.dto';
 import { UserService } from '@api/user/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	forwardRef,
 	Inject,
@@ -14,8 +15,8 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
-import { TokensDto } from '../dto';
-import { ResetPasswordDto } from './dto';
+import { TokensDto } from '../dto/tokens.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class PasswordRecoveryService {

@@ -1,5 +1,5 @@
-import { Profile } from '@/components/Profile';
-import { MessageApiResponse } from '@/types';
+import { Profile } from '@/components/Profile/Profile';
+import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 

@@ -1,16 +1,16 @@
 'use client';
 
-import { registerWithPassword } from '@/api';
-import { AUTH_PAGES } from '@/config';
-import { RegisterDto } from '@/dto';
-import { RegisterSchema } from '@/schemas';
-import AuthForm from '../AuthForm/AuthForm';
-import BottomText from '../BottomText/BottomText';
+import { registerWithPassword } from '@/api/auth/auth.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { RegisterDto } from '@/dto/auth/auth.dto';
+import { RegisterSchema } from '@/schemas/auth/register.schema';
+import { AuthForm } from '../AuthForm/AuthForm';
+import { BottomText } from '../BottomText/BottomText';
 import { REGISTER_FIELDS } from './registerFields';
 
 type RegisterResponse = Awaited<ReturnType<typeof registerWithPassword>>;
 
-const Register = () => {
+export const Register = () => {
 	return (
 		<AuthForm<RegisterDto, RegisterResponse>
 			buttonLabel="Register"
@@ -27,5 +27,3 @@ const Register = () => {
 		/>
 	);
 };
-
-export default Register;

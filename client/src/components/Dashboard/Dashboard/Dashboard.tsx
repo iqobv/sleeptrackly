@@ -1,15 +1,15 @@
 'use client';
 
 import { SectionHeader } from '@shared/ui';
-import DashboardWeekStats from '../DashboardWeekStats/DashboardWeekStats';
-import SleepChart from '../SleepChart/SleepChart';
-import WeekPagination from '../WeekPagination/WeekPagination';
+import { DashboardWeekStats } from '../DashboardWeekStats/DashboardWeekStats';
+import { SleepChart } from '../SleepChart/SleepChart';
+import { WeekPagination } from '../WeekPagination/WeekPagination';
 import styles from './Dashboard.module.scss';
-import DashboardLoader from './DashboardLoader';
-import DashboardSleepSessions from './DashboardSleepSessions/DashboardSleepSessions';
+import { DashboardLoader } from './DashboardLoader';
+import { DashboardSleepSessions } from './DashboardSleepSessions/DashboardSleepSessions';
 import { useDashboard } from './useDashboard';
 
-const Dashboard = () => {
+export const Dashboard = () => {
 	const { showSkeleton, data } = useDashboard();
 
 	return (
@@ -32,5 +32,3 @@ const Dashboard = () => {
 		</div>
 	);
 };
-
-export default Dashboard;

@@ -1,7 +1,10 @@
 'use client';
 
-import { PaginatedShopFilterDto } from '@/dto';
-import { FilterProductType, ItemType, ShopSortBy, SortOrder } from '@/types';
+import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
+import { SortOrder } from '@/types/api/sortOrder.types';
+import { ItemType } from '@/types/item/itemType.types';
+import { FilterProductType } from '@/types/product/productType.types';
+import { ShopSortBy } from '@/types/shop/shopSortBy.types';
 import {
 	parseAsArrayOf,
 	parseAsInteger,

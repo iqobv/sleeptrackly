@@ -1,6 +1,6 @@
-import { FullProductDto } from '@api/product/dto';
+import { FullProductDto } from '@api/product/dto/product.dto';
 import { AchievementType } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { FullAchievementTranslationDto } from './achievement-translation.dto';

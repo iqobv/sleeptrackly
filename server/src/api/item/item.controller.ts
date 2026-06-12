@@ -1,9 +1,14 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ApiErrorResponse, ApiSuccessResponse, Auth } from '@libs/decorators';
-import { PaginationQueryDto } from '@libs/dto';
-import { FilesValidationPipe } from '@libs/pipes';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { FilesValidationPipe } from '@libs/pipes/files-validation.pipe';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -25,18 +30,16 @@ import {
 	ApiOkResponse,
 	ApiTags,
 } from '@nestjs/swagger';
+import { CreateItemDto, CreateItemSwaggerDto } from './dto/create-item.dto';
+import { FullItemDto, ItemDto } from './dto/item-response.dto';
 import {
-	CreateItemDto,
-	CreateItemSwaggerDto,
-	FullItemDto,
 	FullPaginatedItemsDto,
-	ItemDto,
 	PaginatedItemsDto,
-	UpdateItemDto,
-	UpdateItemDtoSwaggerDto,
-} from './dto';
+} from './dto/paginated-items.dto';
+import { UpdateItemDto, UpdateItemDtoSwaggerDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
-import type { CreateItemFiles, UpdateItemFiles } from './types';
+import type { CreateItemFiles } from './types/create-item-files.types';
+import type { UpdateItemFiles } from './types/update-item-files.types';
 
 const ALLOWED_TYPES = [
 	'image/png',

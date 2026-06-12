@@ -1,10 +1,10 @@
 'use client';
 
-import Google from './Buttons/Google';
-import QrCode from './Buttons/QrCode/QrCode';
+import { Google } from './Buttons/Google';
+import { QrCode } from './Buttons/QrCode/QrCode';
 import styles from './SocialAuth.module.scss';
 
-const SocialAuth = () => {
+export const SocialAuth = () => {
 	return (
 		<div className={styles.socialAuth}>
 			<div className={styles.divider}>
@@ -19,5 +19,3 @@ const SocialAuth = () => {
 		</div>
 	);
 };
-
-export default SocialAuth;

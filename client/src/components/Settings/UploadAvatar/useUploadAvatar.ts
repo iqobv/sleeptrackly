@@ -1,8 +1,8 @@
 'use client';
 
-import { uploadUserAvatar } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { uploadUserAvatar } from '@/api/user/userAvatar.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';

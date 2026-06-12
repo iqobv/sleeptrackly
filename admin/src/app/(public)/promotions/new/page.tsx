@@ -1,4 +1,4 @@
-import { CreatePromotion } from '@/components/Promotions';
+import { CreatePromotion } from '@/components/Promotions/CreatePromotion/CreatePromotion';
 
 export default function NewPromotionPage() {
 	return (

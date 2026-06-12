@@ -1,23 +1,20 @@
 import { ImageService } from '@api/image/image.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { transformProduct } from '@libs/mappers';
-import { productInclude } from '@libs/prisma';
-import { MessageResponse } from '@libs/types';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { transformProduct } from '@libs/mappers/translation-products.mapper';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import {
-	AchievementDto,
-	CreateAchievementDto,
-	FullAchievementDto,
-	UpdateAchievementDto,
-	UserAchievementDto,
-} from '../dto';
+import { AchievementDto, FullAchievementDto } from '../dto/achievement.dto';
+import { CreateAchievementDto } from '../dto/create-achievement.dto';
+import { UpdateAchievementDto } from '../dto/update-achievement.dto';
+import { UserAchievementDto } from '../dto/user-achievement.dto';
 
 @Injectable()
 export class AchievementCrudService {
-	private readonly defaultIconUrl = 'placeholders/achievement.png';
-
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly imageService: ImageService,
@@ -29,16 +26,15 @@ export class AchievementCrudService {
 	): Promise<AchievementDto> {
 		const { translations, ...rest } = dto;
 
-		let iconUrl = this.defaultIconUrl;
+		let iconUrl = DEFAULT_URLS.ACHIEVEMENT;
 
 		if (icon) {
-			const uploadedIcon = await this.imageService.uploadImage(
-				icon,
-				'achievements',
-				null,
-				this.defaultIconUrl,
-			);
-
+			const uploadedIcon = await this.imageService.uploadImage({
+				file: icon,
+				folder: 'achievements',
+				oldUrl: null,
+				placeholderUrl: DEFAULT_URLS.ACHIEVEMENT,
+			});
 			iconUrl = uploadedIcon.url;
 		}
 
@@ -191,12 +187,12 @@ export class AchievementCrudService {
 		let iconUrl = achievement.iconUrl;
 
 		if (icon) {
-			const uploadedIcon = await this.imageService.uploadImage(
-				icon,
-				'achievements',
-				achievement.iconUrl,
-				this.defaultIconUrl,
-			);
+			const uploadedIcon = await this.imageService.uploadImage({
+				file: icon,
+				folder: 'achievements',
+				oldUrl: achievement.iconUrl,
+				placeholderUrl: DEFAULT_URLS.ACHIEVEMENT,
+			});
 
 			iconUrl = uploadedIcon.url;
 		}
@@ -251,7 +247,10 @@ export class AchievementCrudService {
 	public async deleteAchievement(id: string): Promise<MessageResponse> {
 		const achievement = await this.getAchievementById(id);
 
-		if (achievement.iconUrl && achievement.iconUrl !== this.defaultIconUrl) {
+		if (
+			achievement.iconUrl &&
+			achievement.iconUrl !== DEFAULT_URLS.ACHIEVEMENT
+		) {
 			await this.imageService.deleteImage(achievement.iconUrl);
 		}
 

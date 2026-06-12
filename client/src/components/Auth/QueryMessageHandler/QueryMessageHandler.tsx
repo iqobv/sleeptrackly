@@ -4,7 +4,7 @@ import { parseAsString, useQueryStates } from 'nuqs';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 
-const QueryMessageHandler = () => {
+export const QueryMessageHandler = () => {
 	const [{ error, success }, setMessages] = useQueryStates({
 		error: parseAsString,
 		success: parseAsString,
@@ -26,5 +26,3 @@ const QueryMessageHandler = () => {
 
 	return null;
 };
-
-export default QueryMessageHandler;

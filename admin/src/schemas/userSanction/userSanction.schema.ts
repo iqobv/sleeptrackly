@@ -1,4 +1,4 @@
-import { UserSanctionType } from '@/types';
+import { UserSanctionType } from '@/types/user/userSanction.types';
 import z from 'zod';
 
 export const userSanctionSchema = z

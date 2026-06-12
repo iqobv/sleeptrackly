@@ -1,4 +1,4 @@
-import { AchievementsList } from '@/components/Achievements';
+import { AchievementsList } from '@/components/Achievements/AchievementsList/AchievementsList';
 import { SectionHeader } from '@shared/ui';
 import { Metadata } from 'next';
 

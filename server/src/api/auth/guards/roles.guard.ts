@@ -1,5 +1,5 @@
 import { UserRole } from '@generated/prisma/client';
-import { JwtPayload } from '@libs/types';
+import { JwtPayload } from '@libs/types/jwt-payload.types';
 import {
 	CanActivate,
 	ExecutionContext,

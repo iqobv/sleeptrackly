@@ -1,9 +1,9 @@
 'use client';
 
-import { getAllProducts } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { ProductCard } from './ProductCard';
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ProductCard } from './ProductCard/ProductCard';
 import { ProductsListLoader } from './ProductsListLoader';
 
 type FullProduct = Awaited<ReturnType<typeof getAllProducts>>['items'][number];

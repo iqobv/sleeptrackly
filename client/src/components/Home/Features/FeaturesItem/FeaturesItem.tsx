@@ -5,7 +5,7 @@ interface FeaturesItemProps {
 	item: FeatureItem;
 }
 
-const FeaturesItem = ({ item }: FeaturesItemProps) => {
+export const FeaturesItem = ({ item }: FeaturesItemProps) => {
 	return (
 		<div className={styles['features-item']}>
 			<div className={styles['features-item__icon']}>{item.icon}</div>
@@ -18,5 +18,3 @@ const FeaturesItem = ({ item }: FeaturesItemProps) => {
 		</div>
 	);
 };
-
-export default FeaturesItem;

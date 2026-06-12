@@ -1,5 +1,5 @@
 import { Visibility } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto';
+import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { Expose } from 'class-transformer';
 
 export class UserPrivacySettingsEntityDto extends DefaultFieldsDto {

@@ -1,5 +1,5 @@
-import { restoreAccountServer } from '@/api';
-import { AUTH_PAGES } from '@/config';
+import { restoreAccountServer } from '@/api/auth/restoreAccount.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
 import { redirect, RedirectType } from 'next/navigation';
 
 export async function GET(req: Request) {

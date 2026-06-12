@@ -1,8 +1,8 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { PAGES } from '@/config';
-import { BaseCollection } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { BaseCollection } from '@/types/customization/collection/collection.types';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { MdEdit } from 'react-icons/md';

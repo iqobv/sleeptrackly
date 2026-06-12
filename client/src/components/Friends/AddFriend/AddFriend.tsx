@@ -2,7 +2,7 @@
 
 import { SectionHeader } from '@shared/ui';
 import styles from './AddFriend.module.scss';
-import { AddFriendList } from './AddFriendList';
+import { AddFriendList } from './AddFriendList/AddFriendList';
 import { AddFriendSearchContainer } from './AddFriendSearchContainer/AddFriendSearchContainer';
 import { useAddFriend } from './useAddFriend';
 

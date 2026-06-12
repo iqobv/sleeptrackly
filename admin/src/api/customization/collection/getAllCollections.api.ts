@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/axios';
-import { PaginationDto } from '@/dto';
+import { PaginationDto } from '@/dto/query/pagination.dto';
 import { paths } from '@/types/schema';
 
 type GetAllCollectionsResponse =

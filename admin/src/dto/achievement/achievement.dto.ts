@@ -1,9 +1,7 @@
-import {
-	achievementTranslationSchema,
-	baseAchievementSchema,
-	createAchievementSchema,
-	updateAchievementSchema,
-} from '@/schemas';
+import { achievementTranslationSchema } from '@/schemas/achievement/achievementTranslation.schema';
+import { baseAchievementSchema } from '@/schemas/achievement/baseAchievement.schema';
+import { createAchievementSchema } from '@/schemas/achievement/createAchievement.schema';
+import { updateAchievementSchema } from '@/schemas/achievement/updateAchievement.schema';
 import z from 'zod';
 
 export type CreateAchievementDto = z.infer<typeof createAchievementSchema>;

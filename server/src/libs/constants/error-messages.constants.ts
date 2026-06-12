@@ -1,4 +1,4 @@
-import { createMessageDomain } from '@libs/utils';
+import { createMessageDomain } from '@libs/utils/create-message-domain.util';
 import {
 	ACHIEVEMENT_ERROR_MESSAGES,
 	AUTH_ERROR_MESSAGES,

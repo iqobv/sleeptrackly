@@ -1,10 +1,11 @@
 import { ProductType, ProfileItemType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { PaginationQueryWithLanguageDto } from '@libs/dto';
-import { productInclude } from '@libs/prisma';
-import { MessageResponse } from '@libs/types';
-import { paginate } from '@libs/utils';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { paginate } from '@libs/utils/pagination.util';
 import {
 	BadRequestException,
 	ConflictException,
@@ -12,13 +13,10 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import {
-	CreateProductDto,
-	FullProductDto,
-	PaginatedFullProductDto,
-	ProductDto,
-	UpdateProductDto,
-} from './dto';
+import { CreateProductDto } from './dto/create-product.dto';
+import { PaginatedFullProductDto } from './dto/paginated-product.dto';
+import { FullProductDto, ProductDto } from './dto/product.dto';
+import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
 export class ProductService {

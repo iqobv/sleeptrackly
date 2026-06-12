@@ -1,4 +1,4 @@
-import { UpdateNotificationSettingsDto } from '@/dto';
+import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

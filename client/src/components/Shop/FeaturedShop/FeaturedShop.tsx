@@ -1,14 +1,14 @@
 'use client';
 
-import { getFeaturedShop } from '@/api';
-import { QUERY_KEYS } from '@/config';
+import { getFeaturedShop } from '@/api/shop/shop.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import styles from './FeaturedShop.module.scss';
-import { FeaturedShopBanner } from './FeaturedShopBanner';
-import { FeaturedShopCarousel } from './FeaturedShopCarousel';
+import { FeaturedShopBanner } from './FeaturedShopBanner/FeaturedShopBanner';
+import { FeaturedShopCarousel } from './FeaturedShopCarousel/FeaturedShopCarousel';
 import { FeaturedShopLoader } from './FeaturedShopLoader';
-import { FeaturedShopSections } from './FeaturedShopSections';
+import { FeaturedShopSections } from './FeaturedShopSections/FeaturedShopSections';
 
 export const FeaturedShop = () => {
 	const { data, isLoading } = useQuery({

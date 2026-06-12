@@ -1,8 +1,8 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { PAGES } from '@/config';
-import { Product } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { Product } from '@/types/customization/product/product.types';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 import styles from './ProductCard.module.scss';

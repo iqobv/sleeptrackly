@@ -1,16 +1,16 @@
 'use client';
 
-import { getChallenges } from '@/api';
+import { getChallenges } from '@/api/challenge/challenge.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Loader } from '@shared/ui';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
 import { useQuery } from '@tanstack/react-query';
-import ActiveChallenges from '../ActiveChallenges/ActiveChallenges';
-import AllChallenges from '../AllChallenges/AllChallenges';
-import CreateChellengeButton from '../CreateChellengeButton/CreateChellengeButton';
+import { ActiveChallenges } from '../ActiveChallenges/ActiveChallenges';
+import { AllChallenges } from '../AllChallenges/AllChallenges';
+import { CreateChellengeButton } from '../CreateChellengeButton/CreateChellengeButton';
 import styles from './Challenges.module.scss';
 
-const Challenges = () => {
+export const Challenges = () => {
 	const { user } = useAuth();
 
 	const { data: challenges, isLoading } = useQuery({
@@ -32,5 +32,3 @@ const Challenges = () => {
 		</div>
 	);
 };
-
-export default Challenges;

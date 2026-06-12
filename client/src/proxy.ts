@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AUTH_PAGES, PRIVATE_PAGES } from './config';
+import { AUTH_PAGES } from './config/authPages.config';
+import { PRIVATE_PAGES } from './config/privatePages.config';
 
 export async function proxy(request: NextRequest) {
 	const ip =

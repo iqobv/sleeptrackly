@@ -1,13 +1,14 @@
 'use client';
 
-import { getAllItems } from '@/api';
+import { getAllItems } from '@/api/customization/item/item.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { Item } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import ItemCard from '../../ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemCard } from '../../ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { ItemsListLoader } from './ItemsListLoader';
 
 export const ItemsList = () => {

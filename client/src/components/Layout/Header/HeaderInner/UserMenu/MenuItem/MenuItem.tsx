@@ -11,7 +11,12 @@ interface MenuItemProps {
 	onClick?: () => void;
 }
 
-const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
+export const MenuItem = ({
+	label,
+	icon,
+	path = '',
+	onClick,
+}: MenuItemProps) => {
 	return (
 		<DropdownItem asChild>
 			<Button
@@ -36,5 +41,3 @@ const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
 		</DropdownItem>
 	);
 };
-
-export default MenuItem;

@@ -1,6 +1,6 @@
-import { FullCoinTransactionDto } from '@api/coin-transaction/dto';
-import { PurchaseHistoryDto } from '@api/purchase-history/dto';
-import { UserInventoryDto } from '@api/user-inventory/dto';
+import { FullCoinTransactionDto } from '@api/coin-transaction/dto/full-coin-transaction.dto';
+import { PurchaseHistoryDto } from '@api/purchase-history/dto/purchase-history.dto';
+import { UserInventoryDto } from '@api/user-inventory/dto/user-inventory.dto';
 import { Expose, Type } from 'class-transformer';
 
 export class PurchaseDto {

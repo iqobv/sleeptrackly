@@ -2,11 +2,11 @@
 
 import { SectionHeader } from '@shared/ui';
 import { useSearchParams } from 'next/navigation';
-import EmailField from './EmailField/EmailField';
-import NewPasswordField from './NewPasswordField/NewPasswordField';
+import { EmailField } from './EmailField/EmailField';
+import { NewPasswordField } from './NewPasswordField/NewPasswordField';
 import styles from './ResetPassword.module.scss';
 
-const ResetPassword = () => {
+export const ResetPassword = () => {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 
@@ -23,5 +23,3 @@ const ResetPassword = () => {
 		</div>
 	);
 };
-
-export default ResetPassword;

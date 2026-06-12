@@ -1,4 +1,4 @@
-import { ClientInfoDto } from '@libs/dto';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { Type } from 'class-transformer';
 import { IsDate, IsString, IsUUID } from 'class-validator';
 

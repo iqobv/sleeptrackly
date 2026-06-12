@@ -1,10 +1,12 @@
 'use client';
 
-import { makePurchase } from '@/api';
-import { Coin } from '@/components/Icons';
+import { makePurchase } from '@/api/shop/shop.api';
+import { Coin } from '@/components/Icons/Coin';
 import { CDNImage } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { Item, Product, ProductType } from '@/types';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/item/item.types';
+import { Product } from '@/types/product/product.types';
+import { ProductType } from '@/types/product/productType.types';
 import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';

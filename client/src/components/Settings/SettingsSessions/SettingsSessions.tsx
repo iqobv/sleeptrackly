@@ -1,8 +1,8 @@
 'use client';
 
-import { getAllSessions } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { getAllSessions } from '@/api/auth/session.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { BackButton, Divider, List, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

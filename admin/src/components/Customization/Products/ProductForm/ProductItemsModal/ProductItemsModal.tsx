@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductType } from '@/types';
+import { ProductType } from '@/types/customization/product/productType.types';
 import {
 	Button,
 	Modal,
@@ -12,7 +12,6 @@ import {
 import { useState } from 'react';
 import { ProductBundlesList } from './ProductBundlesList/ProductBundlesList';
 import { ProductItemsList } from './ProductItemsList/ProductItemsList';
-
 import styles from './ProductItemsModal.module.scss';
 
 export const ProductItemModal = () => {

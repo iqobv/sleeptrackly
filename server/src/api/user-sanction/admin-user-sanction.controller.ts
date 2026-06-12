@@ -1,12 +1,13 @@
 import { UserRole } from '@generated/prisma/enums';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	ApiErrorResponse,
 	ApiSuccessResponse,
-	Auth,
-	Authorized,
-} from '@libs/decorators';
-import { MessageResponse } from '@libs/types';
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -18,11 +19,9 @@ import {
 	Post,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import {
-	CreaeteUserSanctionDto,
-	UpdateUserSanctionDto,
-	UserSanctionDto,
-} from './dto';
+import { CreaeteUserSanctionDto } from './dto/create-user-sanction.dto';
+import { UpdateUserSanctionDto } from './dto/update-user-sanction.dto';
+import { UserSanctionDto } from './dto/user-sanction.dto';
 import { UserSanctionService } from './user-sanction.service';
 
 @Auth(UserRole.ADMIN)

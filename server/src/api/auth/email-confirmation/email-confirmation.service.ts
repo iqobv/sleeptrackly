@@ -1,12 +1,12 @@
 import { TokenService } from '@api/token/token.service';
-import { UserService } from '@api/user/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@libs/constants';
-import { ClientInfoDto } from '@libs/dto';
-import { MessageResponse } from '@libs/types';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	forwardRef,
 	Inject,
@@ -14,14 +14,14 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from '../auth.service';
-import { TokensDto } from '../dto';
-import { ConfirmationDto, ResendEmailDto } from './dto';
+import { TokensDto } from '../dto/tokens.dto';
+import { ConfirmationDto } from './dto/confirmation.dto';
+import { ResendEmailDto } from './dto/resend-email.dto';
 
 @Injectable()
 export class EmailConfirmationService {
 	constructor(
 		private readonly tokenService: TokenService,
-		private readonly userService: UserService,
 		private readonly mailService: MailService,
 		@Inject(forwardRef(() => AuthService))
 		private readonly authService: AuthService,
@@ -42,20 +42,18 @@ export class EmailConfirmationService {
 			if (!existsToken.userId)
 				throw new NotFoundException(ERROR_MESSAGES.TOKEN.NOT_FOUND);
 
-			await this.userService.update(
-				existsToken.userId,
-				{
-					emailVerified: true,
-				},
-				true,
-				tx,
-			);
+			const updatedUser = await tx.user.update({
+				where: { id: existsToken.userId },
+				data: { emailVerified: true },
+			});
 
 			await this.tokenService.deleteToken(existsToken.id, tx);
 
-			const user = await this.userService.findById(existsToken.userId);
-
-			return await this.authService.generateAndSaveTokens(user, clientInfo, tx);
+			return await this.authService.generateAndSaveTokens(
+				updatedUser,
+				clientInfo,
+				tx,
+			);
 		});
 	}
 
@@ -64,7 +62,9 @@ export class EmailConfirmationService {
 	): Promise<MessageResponse> {
 		const { email } = dto;
 
-		const user = await this.userService.findByEmail(email);
+		const user = await this.prismaService.user.findUnique({
+			where: { email },
+		});
 
 		if (!user) return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.EMAIL_SENT;
 

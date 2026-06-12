@@ -1,8 +1,8 @@
 'use client';
 
 import { UserAvatar } from '@/components/UI';
-import { PAGES } from '@/config';
-import { Friend } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { Friend } from '@/types/friend/friend.types';
 import Link from 'next/link';
 import styles from './FriendItemInfo.module.scss';
 

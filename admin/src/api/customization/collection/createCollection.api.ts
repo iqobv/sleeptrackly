@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/axios';
-import { CreateCollectionDto } from '@/dto';
+import { CreateCollectionDto } from '@/dto/customization/collection.dto';
 import { paths } from '@/types/schema';
-import { getFormData } from '@/utils';
+import { getFormData } from '@/utils/getFormData.util';
 
 type CreateCollectionResponse =
 	paths['/v1/collections']['post']['responses']['201']['content']['application/json'];

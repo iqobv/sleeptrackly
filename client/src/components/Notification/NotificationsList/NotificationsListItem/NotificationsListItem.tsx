@@ -1,14 +1,9 @@
 'use client';
 
-import {
-	Button,
-	Divider,
-	DropdownItem,
-	Modal,
-	ModalTrigger,
-} from '@shared/ui';
-import { WeeklySummary } from '@/components/WeeklySummary';
-import { Notification, NotificationType } from '@/types';
+import { WeeklySummary } from '@/components/WeeklySummary/WeeklySummary';
+import { Notification } from '@/types/notification/notification.types';
+import { NotificationType } from '@/types/notification/notificationType.types';
+import { Button, Divider, DropdownItem, Modal, ModalTrigger } from '@shared/ui';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import Link from 'next/link';
