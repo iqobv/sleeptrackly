@@ -1,10 +1,10 @@
 'use client';
 
-import { getAllProducts } from '@/api';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
-import { QUERY_KEYS } from '@/config';
-import { Product } from '@/types';
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemCard } from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Product } from '@/types/customization/product/product.types';
 import { Button, ModalBody } from '@shared/ui';
 import { Dispatch, SetStateAction } from 'react';
 

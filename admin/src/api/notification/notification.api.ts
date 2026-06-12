@@ -1,4 +1,4 @@
-import { CreateNotificationDto } from '@/dto';
+import { CreateNotificationDto } from '@/dto/notification/notification.dto';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

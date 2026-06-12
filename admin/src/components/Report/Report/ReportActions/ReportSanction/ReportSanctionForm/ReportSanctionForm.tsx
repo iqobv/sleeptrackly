@@ -1,9 +1,9 @@
 'use client';
 
-import { createSanction } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { UserSanctionDto } from '@/dto';
-import { userSanctionSchema } from '@/schemas';
+import { createSanction } from '@/api/userSanction/userSanction.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UserSanctionDto } from '@/dto/userSanction/userSanction.dto';
+import { userSanctionSchema } from '@/schemas/userSanction/userSanction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormSelect } from '@shared/form';
 import { Button, Field, Input, SelectItem } from '@shared/ui';

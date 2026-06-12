@@ -1,9 +1,9 @@
 import { apiClient } from '@/api/axios';
 import {
 	CreateProductDto,
-	PaginationWithLanguageDto,
 	UpdateProductDto,
-} from '@/dto';
+} from '@/dto/customization/product.dto';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
 import { paths } from '@/types/schema';
 
 type GetAllProductsResponse =

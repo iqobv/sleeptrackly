@@ -1,6 +1,6 @@
 'use client';
 
-import { ProfileStatistics } from '@/types';
+import { ProfileStatistics } from '@/types/profile/profile.types';
 import { SectionHeader } from '@shared/ui';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
@@ -10,7 +10,7 @@ interface ProfileStatisticsCardProps {
 	statistics: ProfileStatistics;
 }
 
-const ProfileStatisticsCard = ({
+export const ProfileStatisticsCard = ({
 	item,
 	statistics,
 }: ProfileStatisticsCardProps) => {
@@ -28,5 +28,3 @@ const ProfileStatisticsCard = ({
 		</div>
 	);
 };
-
-export default ProfileStatisticsCard;

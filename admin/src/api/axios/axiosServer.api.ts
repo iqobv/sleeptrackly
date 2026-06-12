@@ -1,6 +1,6 @@
 'use server';
 
-import { MessageApiResponse } from '@/types';
+import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';

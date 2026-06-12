@@ -1,4 +1,4 @@
-import { translationSchema } from '@/schemas/translation';
+import { translationSchema } from '@/schemas/translation/translation.schema';
 import z from 'zod';
 
 export const baseCollectionSchema = z.object({

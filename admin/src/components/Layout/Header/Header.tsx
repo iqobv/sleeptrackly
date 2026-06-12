@@ -1,18 +1,18 @@
 'use client';
 
-import { useNavMenuStore } from '@/store';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { MdMenu, MdMenuOpen } from 'react-icons/md';
 import styles from './Header.module.scss';
+import { useNavMenuStore } from '@/store/navMenu.store';
 
 const iconsProps: IconBaseProps = {
 	size: 24,
 };
 
-const Header = () => {
+export const Header = () => {
 	const [isMounted, setMounted] = useState(false);
 
 	const isExpended = useNavMenuStore((state) => state.isExpanded);
@@ -41,5 +41,3 @@ const Header = () => {
 		</header>
 	);
 };
-
-export default Header;

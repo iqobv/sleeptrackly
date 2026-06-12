@@ -1,4 +1,4 @@
-import { BundleCardLoader } from '../../BundleCard';
+import { BundleCardLoader } from '../../BundleCard/BundleCardLoader';
 import { ItemsListPaginatedWrapperLoader } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapperLoader';
 
 export const BundlesListLoader = () => (

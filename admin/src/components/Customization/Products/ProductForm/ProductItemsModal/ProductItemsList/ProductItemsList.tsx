@@ -1,10 +1,10 @@
 'use client';
 
-import { getAllAvailableItems } from '@/api';
-import ItemCard from '@/components/Customization/ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { QUERY_KEYS } from '@/config';
-import { Item } from '@/types';
+import { getAllAvailableItems } from '@/api/customization/item/item.api';
+import { ItemCard } from '@/components/Customization/ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
 import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 

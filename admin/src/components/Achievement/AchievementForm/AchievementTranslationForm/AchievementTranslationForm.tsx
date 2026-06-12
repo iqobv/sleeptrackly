@@ -1,6 +1,6 @@
 'use client';
 
-import { AchievementTranslationDto } from '@/dto';
+import { AchievementTranslationDto } from '@/dto/achievement/achievement.dto';
 import { Button, Field, Input } from '@shared/ui';
 import {
 	ArrayPath,

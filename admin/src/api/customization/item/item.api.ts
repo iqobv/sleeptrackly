@@ -1,7 +1,8 @@
 import { apiClient } from '@/api/axios';
-import { CreateItemDto, PaginationDto, UpdateItemDto } from '@/dto';
+import { CreateItemDto, UpdateItemDto } from '@/dto/customization/item.dto';
+import { PaginationDto } from '@/dto/query/pagination.dto';
 import { paths } from '@/types/schema';
-import { getFormData } from '@/utils';
+import { getFormData } from '@/utils/getFormData.util';
 
 type CreateItemResponse =
 	paths['/v1/items']['post']['responses']['201']['content']['application/json'];

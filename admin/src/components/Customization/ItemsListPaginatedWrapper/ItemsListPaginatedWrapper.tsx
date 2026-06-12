@@ -1,13 +1,13 @@
 'use client';
 
-import { PaginationWithLanguageDto } from '@/dto';
-import { PaginatedDataResponse } from '@/types';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
+import { PaginatedDataResponse } from '@/types/api/paginatedData.types';
 import { usePagination, usePaginationBounds } from '@shared/hooks';
 import { Pagination } from '@shared/ui';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
 import React from 'react';
-import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
+import { ItemsListWrapper } from '../ItemsListWrapper/ItemsListWrapper';
 import styles from './ItemsListPaginatedWrapper.module.scss';
 
 interface ItemsListPaginatedWrapperProps<T> {
@@ -27,7 +27,7 @@ interface ItemsListPaginatedWrapperProps<T> {
 	loader?: React.ReactNode;
 }
 
-const ItemsListPaginatedWrapper = <T,>({
+export const ItemsListPaginatedWrapper = <T,>({
 	itemCard,
 	queryOptions,
 	queryFn,
@@ -73,5 +73,3 @@ const ItemsListPaginatedWrapper = <T,>({
 		</div>
 	);
 };
-
-export default ItemsListPaginatedWrapper;

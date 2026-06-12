@@ -1,7 +1,8 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { Item, Product } from '@/types';
+import { Item } from '@/types/customization/item/item.types';
+import { Product } from '@/types/customization/product/product.types';
 import styles from './ItemCard.module.scss';
 
 interface ItemCardProps {
@@ -9,7 +10,7 @@ interface ItemCardProps {
 	actions?: React.ReactNode;
 }
 
-const ItemCard = ({ product, actions }: ItemCardProps) => {
+export const ItemCard = ({ product, actions }: ItemCardProps) => {
 	const finalProduct = product.type === 'ITEM' ? product.item : product.bundle;
 
 	if (!finalProduct) return null;
@@ -64,5 +65,3 @@ const ItemCard = ({ product, actions }: ItemCardProps) => {
 		</div>
 	);
 };
-
-export default ItemCard;

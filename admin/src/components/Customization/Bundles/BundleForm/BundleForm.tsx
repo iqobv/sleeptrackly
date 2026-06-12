@@ -1,9 +1,9 @@
 'use client';
 
 import { FormContent, FormFields } from '@/components/UI';
-import { Item } from '@/types';
+import { Item } from '@/types/customization/item/item.types';
 import { FileForm } from '../../FileForm/FileForm';
-import { TranslationForm } from '../../TranslationForm';
+import { TranslationForm } from '../../TranslationForm/TranslationForm';
 import { BundleItems } from '../BundleItems/BundleItems';
 import { BUNDLE_FIELDS } from './bundleFilds';
 

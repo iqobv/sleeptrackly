@@ -1,8 +1,8 @@
 'use client';
 
-import { getCollectionById } from '@/api';
-import { BaseCollectionDto } from '@/dto';
-import { CollectionProduct } from '@/types';
+import { getCollectionById } from '@/api/customization/collection/getCollectionById.api';
+import { BaseCollectionDto } from '@/dto/customization/collection.dto';
+import { CollectionProduct } from '@/types/customization/collection/collection.types';
 import {
 	Button,
 	Modal,
@@ -14,8 +14,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import styles from './CollectionFormProduct.module.scss';
-import CollectionFormProductBody from './CollectionFormProductBody';
-import CollectionFormProductGrid from './CollectionFormProductGrid';
+import { CollectionFormProductBody } from './CollectionFormProductBody';
+import { CollectionFormProductGrid } from './CollectionFormProductGrid';
 
 export type SelectedProduct = NonNullable<
 	Awaited<ReturnType<typeof getCollectionById>>['products'][number]['product']

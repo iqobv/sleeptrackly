@@ -1,4 +1,4 @@
-import { NotificationType } from '@/types';
+import { NotificationType } from '@/types/notification/notification.types';
 import z from 'zod';
 
 export const createNotificationSchema = z.object({

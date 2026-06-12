@@ -1,10 +1,11 @@
 'use client';
 
-import { createProduct } from '@/api';
+import { createProduct } from '@/api/customization/product/product.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { CreateProductDto } from '@/dto';
-import { createProductSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { CreateProductDto } from '@/dto/customization/product.dto';
+import { createProductSchema } from '@/schemas/customization/product/createProduct.schema';
 import { Form } from '@shared/form';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

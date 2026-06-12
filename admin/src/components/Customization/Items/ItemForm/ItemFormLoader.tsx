@@ -1,5 +1,5 @@
 import { FormContentLoader, FormFieldsLoader } from '@/components/UI';
-import { TranslationFormLoader } from '../../TranslationForm';
+import { TranslationFormLoader } from '../../TranslationForm/TranslationFormLoader';
 import { ITEM_FIELDS } from './itemFields';
 
 interface ItemFormLoaderProps {

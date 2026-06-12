@@ -35,5 +35,3 @@ export const UserMenuCoins = () => {
 		</div>
 	);
 };
-
-export default UserMenuCoins;

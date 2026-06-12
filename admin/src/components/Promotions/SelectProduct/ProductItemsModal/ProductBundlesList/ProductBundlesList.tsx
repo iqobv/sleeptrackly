@@ -1,14 +1,14 @@
 'use client';
 
-import { getAllBundles } from '@/api';
-import { BundleCard } from '@/components/Customization/BundleCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { QUERY_KEYS } from '@/config';
-import { Bundle } from '@/types';
+import { getAllBundles } from '@/api/customization/bundle/getAllBundles.api';
+import { BundleCard } from '@/components/Customization/BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Bundle } from '@/types/customization/bundle/bundle.types';
 import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-const ProductBundlesList = <T extends FieldValues>() => {
+export const ProductBundlesList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
 
 	const bundleId = watch('bundleId' as Path<T>);
@@ -40,5 +40,3 @@ const ProductBundlesList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductBundlesList;

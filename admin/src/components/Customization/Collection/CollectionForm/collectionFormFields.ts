@@ -1,5 +1,5 @@
-import { BaseCollectionDto } from '@/dto';
-import type { Field } from '@/types';
+import { BaseCollectionDto } from '@/dto/customization/collection.dto';
+import type { Field } from '@/types/ui/field.types';
 
 export const COLLECTION_FORM_FIELDS: Field<BaseCollectionDto>[] = [
 	{

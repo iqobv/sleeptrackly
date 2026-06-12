@@ -1,5 +1,5 @@
-import { ReportStatus } from '@/types';
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
 import { paths } from '@/types/schema';
 import { apiClient } from '../axios';
 

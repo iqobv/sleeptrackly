@@ -3,7 +3,7 @@
 import { SkeletonLoader } from '@shared/ui';
 import styles from './ProfileSkeleton.module.scss';
 
-const ProfileSkeleton = () => {
+export const ProfileSkeleton = () => {
 	return (
 		<div className={styles.profileSkeleton}>
 			<SkeletonLoader height={300} width={300} circle />
@@ -15,5 +15,3 @@ const ProfileSkeleton = () => {
 		</div>
 	);
 };
-
-export default ProfileSkeleton;

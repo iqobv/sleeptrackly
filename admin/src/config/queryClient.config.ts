@@ -1,4 +1,7 @@
-import { PaginationDto, PaginationWithLanguageDto } from '@/dto';
+import {
+	PaginationDto,
+	PaginationWithLanguageDto,
+} from '@/dto/query/pagination.dto';
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 
 export const QUERY_KEYS = {

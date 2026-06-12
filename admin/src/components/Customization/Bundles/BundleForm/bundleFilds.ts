@@ -1,5 +1,5 @@
-import { CreateBundleDto } from '@/dto';
-import { Field } from '@/types';
+import { CreateBundleDto } from '@/dto/customization/bundle.dto';
+import { Field } from '@/types/ui/field.types';
 
 export const BUNDLE_FIELDS: Field<CreateBundleDto>[] = [
 	{

@@ -1,12 +1,9 @@
 'use client';
 
-import {
-	ReportPaginationQuery,
-	ReportStatus,
-	ReportType,
-	SortBy,
-	SortOrder,
-} from '@/types';
+import { SortBy, SortOrder } from '@/types/report/reportFilters.types';
+import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
+import { ReportType } from '@/types/report/reportType.types';
 import { parseAsInteger, parseAsStringEnum, useQueryStates } from 'nuqs';
 
 type StrictParsersMap<T> = Record<keyof Required<T>, unknown>;

@@ -1,6 +1,6 @@
 import { FormContentLoader, FormFieldsLoader } from '@/components/UI';
 import { FileFormLoader } from '../../FileForm/FileFormLoader';
-import { TranslationFormLoader } from '../../TranslationForm';
+import { TranslationFormLoader } from '../../TranslationForm/TranslationFormLoader';
 import { BundleItemsLoader } from '../BundleItems/BundleItemsLoader';
 import { BUNDLE_FIELDS } from './bundleFilds';
 

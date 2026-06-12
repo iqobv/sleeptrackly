@@ -1,10 +1,10 @@
 'use client';
 
-import { createAchievement } from '@/api';
+import { createAchievement } from '@/api/achievement/createAchievement.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES } from '@/config';
-import { CreateAchievementDto } from '@/dto';
-import { createAchievementSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { CreateAchievementDto } from '@/dto/achievement/achievement.dto';
+import { createAchievementSchema } from '@/schemas/achievement/createAchievement.schema';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';

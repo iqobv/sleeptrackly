@@ -1,7 +1,7 @@
 'use client';
 
 import { PageWrapper } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PAGES } from '@/config/pages.config';
 import { BundlesList } from '../BundlesList/BundlesList';
 
 export const Bundles = () => {

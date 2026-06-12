@@ -1,9 +1,9 @@
 'use client';
 
-import { createBundle } from '@/api';
+import { createBundle } from '@/api/customization/bundle/createBundle.api';
 import { PageWrapper } from '@/components/UI';
-import { CreateBundleDto } from '@/dto';
-import { createBundleSchema } from '@/schemas';
+import { CreateBundleDto } from '@/dto/customization/bundle.dto';
+import { createBundleSchema } from '@/schemas/customization/bundle/createBundle.schema';
 import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';

@@ -1,7 +1,7 @@
 'use client';
 
-import { PAGES } from '@/config';
-import { FullReport } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { FullReport } from '@/types/report/report.types';
 import Link from 'next/link';
 import styles from './ReportDetail.module.scss';
 

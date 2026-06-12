@@ -1,7 +1,7 @@
 'use client';
 
-import { PAGES } from '@/config';
-import { Report } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { Report } from '@/types/report/report.types';
 import { capitalize } from '@shared/utils';
 import dayjs from 'dayjs';
 import Link from 'next/link';

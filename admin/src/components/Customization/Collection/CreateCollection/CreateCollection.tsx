@@ -1,10 +1,10 @@
 'use client';
 
-import { createCollection } from '@/api';
+import { createCollection } from '@/api/customization/collection/createCollection.api';
 import { PageWrapper } from '@/components/UI';
-import { PAGES } from '@/config';
-import { CreateCollectionDto } from '@/dto';
-import { createCollectionSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { CreateCollectionDto } from '@/dto/customization/collection.dto';
+import { createCollectionSchema } from '@/schemas/customization/collection/createCollection.schema';
 import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';

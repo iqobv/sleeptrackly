@@ -1,12 +1,12 @@
 'use client';
 
 import { FormContent, FormFields } from '@/components/UI';
-import { FullCollection } from '@/types';
+import { FullCollection } from '@/types/customization/collection/collection.types';
 import { useEffect } from 'react';
 import { FieldValues, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { FileForm } from '../../FileForm/FileForm';
-import { TranslationForm } from '../../TranslationForm';
+import { TranslationForm } from '../../TranslationForm/TranslationForm';
 import { COLLECTION_FORM_FIELDS } from './collectionFormFields';
 import { CollectionFormProduct } from './CollectionFormProduct/CollectionFormProduct';
 

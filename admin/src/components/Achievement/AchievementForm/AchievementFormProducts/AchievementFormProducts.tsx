@@ -1,8 +1,8 @@
 'use client';
 
-import ItemCard from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
-import { BaseAchievementDto } from '@/dto';
-import { Product } from '@/types';
+import { ItemCard } from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
+import { BaseAchievementDto } from '@/dto/achievement/achievement.dto';
+import { Product } from '@/types/customization/product/product.types';
 import {
 	Button,
 	Field,

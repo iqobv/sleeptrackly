@@ -1,8 +1,9 @@
 'use client';
 
-import { removeUserSanction } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { UserSanction } from '@/types';
+import { removeUserSanction } from '@/api/userSanction/userSanction.api';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UserSanction } from '@/types/user/userSanction.types';
 import { Button, ConfirmModal, SectionHeader } from '@shared/ui';
 import { capitalize } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

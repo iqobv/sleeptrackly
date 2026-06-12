@@ -1,10 +1,15 @@
 'use client';
 
-import { deleteItem, getItemById, updateItem } from '@/api';
+import {
+	deleteItem,
+	getItemById,
+	updateItem,
+} from '@/api/customization/item/item.api';
 import { DeleteButton, PageWrapper } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { UpdateItemDto } from '@/dto';
-import { updateItemSchema } from '@/schemas';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateItemDto } from '@/dto/customization/item.dto';
+import { updateItemSchema } from '@/schemas/customization/item/updateItem.schema';
 import { Form } from '@shared/form';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';

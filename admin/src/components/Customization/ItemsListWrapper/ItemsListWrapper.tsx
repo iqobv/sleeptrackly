@@ -9,7 +9,7 @@ interface ItemsListWrapperProps<T> {
 	items: T[];
 }
 
-const ItemsListWrapper = <T,>({
+export const ItemsListWrapper = <T,>({
 	itemCard,
 	items,
 }: ItemsListWrapperProps<T>) => {
@@ -21,5 +21,3 @@ const ItemsListWrapper = <T,>({
 		</Grid>
 	);
 };
-
-export default ItemsListWrapper;

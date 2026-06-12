@@ -1,4 +1,5 @@
-import { ItemType, Option } from '@/types';
+import { ItemType } from '@/types/customization/item/itemType.types';
+import { Option } from '@/types/ui/option.types';
 
 export const CREATE_ITEM_OPTIONS: Option<ItemType>[] = [
 	{

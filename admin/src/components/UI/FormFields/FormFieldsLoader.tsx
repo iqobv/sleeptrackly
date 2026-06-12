@@ -1,4 +1,4 @@
-import { Field } from '@/types';
+import { Field } from '@/types/ui/field.types';
 import { SkeletonLoader } from '@shared/ui';
 
 type FieldLoader = Pick<Field<unknown>, 'type'> & { label?: boolean };

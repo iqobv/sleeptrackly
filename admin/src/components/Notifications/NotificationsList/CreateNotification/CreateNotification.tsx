@@ -1,14 +1,14 @@
 'use client';
 
-import { createNotification } from '@/api';
+import { createNotification } from '@/api/notification/notification.api';
 import { FormContent, FormFields } from '@/components/UI';
-import { CreateNotificationDto } from '@/dto';
-import { createNotificationSchema } from '@/schemas';
+import { CreateNotificationDto } from '@/dto/notification/notification.dto';
+import { createNotificationSchema } from '@/schemas/notification/notification.schema';
 import { Form } from '@shared/form';
 import { useMutation } from '@tanstack/react-query';
 import { FIELDS } from './createNotificationFields';
 
-const CreateNotification = () => {
+export const CreateNotification = () => {
 	const { mutate, isPending } = useMutation({
 		mutationFn: (dto: CreateNotificationDto) => createNotification(dto),
 	});
@@ -41,5 +41,3 @@ const CreateNotification = () => {
 		</Form>
 	);
 };
-
-export default CreateNotification;

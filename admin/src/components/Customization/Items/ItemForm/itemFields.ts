@@ -1,5 +1,5 @@
-import { CreateItemDto } from '@/dto';
-import { Field } from '@/types';
+import { CreateItemDto } from '@/dto/customization/item.dto';
+import { Field } from '@/types/ui/field.types';
 import { CREATE_ITEM_OPTIONS } from './CreateItemOptions';
 import { CREATE_ITEM_RARITY_OPTIONS } from './CreateItemOptionsRarityOptions';
 

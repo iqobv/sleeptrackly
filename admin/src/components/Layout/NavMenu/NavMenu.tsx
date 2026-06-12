@@ -1,12 +1,12 @@
 'use client';
 
-import { useNavMenuStore } from '@/store';
+import { useNavMenuStore } from '@/store/navMenu.store';
 import { useEffect, useState } from 'react';
 import slyles from './NavMenu.module.scss';
-import NavMenuLink from './NavMenuLink/NavMenuLink';
+import { NavMenuLink } from './NavMenuLink/NavMenuLink';
 import { NAV_MENU_LINKS } from './navMenuLinks';
 
-const NavMenu = () => {
+export const NavMenu = () => {
 	const [isMounted, setMounted] = useState(false);
 	const isExpended = useNavMenuStore((state) => state.isExpanded);
 
@@ -28,5 +28,3 @@ const NavMenu = () => {
 		</div>
 	);
 };
-
-export default NavMenu;

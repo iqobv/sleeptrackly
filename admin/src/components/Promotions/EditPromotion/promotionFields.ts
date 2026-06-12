@@ -1,5 +1,5 @@
-import { CreatePromotionDto } from '@/dto';
-import { Field } from '@/types';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { Field } from '@/types/ui/field.types';
 
 export const PROMOTIONS_FIELDS: Field<CreatePromotionDto>[] = [
 	{

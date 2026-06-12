@@ -1,4 +1,4 @@
-import { PAGES } from '@/config';
+import { PAGES } from '@/config/pages.config';
 import { IconType } from 'react-icons';
 import {
 	MdCardGiftcard,

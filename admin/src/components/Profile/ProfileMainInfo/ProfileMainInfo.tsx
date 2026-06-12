@@ -1,17 +1,17 @@
 'use client';
 
 import { UserAvatar } from '@/components/UI/UserAvatar/UserAvatar';
-import { useAuth } from '@/hooks';
-import { Profile } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
+import { Profile } from '@/types/profile/profile.types';
 import { SectionHeader } from '@shared/ui';
 import styles from './ProfileMainInfo.module.scss';
-import ProfileSanctionsButton from './ProfileSanctionsButton/ProfileSanctionsButton';
+import { ProfileSanctionsButton } from './ProfileSanctionsButton/ProfileSanctionsButton';
 
 interface ProfileMainInfoProps {
 	profile: Profile;
 }
 
-const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
+export const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const year = new Date(profile.createdAt).getFullYear().toString();
 	const { user } = useAuth();
 
@@ -34,5 +34,3 @@ const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 		</div>
 	);
 };
-
-export default ProfileMainInfo;

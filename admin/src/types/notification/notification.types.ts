@@ -1,4 +1,9 @@
+import { components } from '../schema';
+
+type SwaggerNotificationType = components['schemas']['NotificationType'];
+
 export const NotificationType = {
+	ACHIEVEMENT_UNLOCKED: 'ACHIEVEMENT_UNLOCKED',
 	FRIEND_REQUEST: 'FRIEND_REQUEST',
 	SANCTION: 'SANCTION',
 	WEEKLY_SUMMARY: 'WEEKLY_SUMMARY',
@@ -8,7 +13,7 @@ export const NotificationType = {
 	PERSONAL_MESSAGE: 'PERSONAL_MESSAGE',
 	MARKETING: 'MARKETING',
 	OTHER: 'OTHER',
-} as const;
+} as const satisfies Record<SwaggerNotificationType, SwaggerNotificationType>;
 
 export type NotificationType =
 	(typeof NotificationType)[keyof typeof NotificationType];

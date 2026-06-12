@@ -1,6 +1,6 @@
 'use client';
 
-import { TranslationDto } from '@/dto';
+import { TranslationDto } from '@/dto/translation/translation.dto';
 import { FormField } from '@shared/form';
 import { Button, Input } from '@shared/ui';
 import {

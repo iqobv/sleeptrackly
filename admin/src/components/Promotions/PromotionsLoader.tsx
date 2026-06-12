@@ -1,5 +1,5 @@
 import { PageWrapperLoader } from '../UI';
-import { PromotionsListLoader } from './PromotionsList';
+import { PromotionsListLoader } from './PromotionsList/PromotionsListLoader';
 
 export const PromotionsLoader = () => (
 	<PageWrapperLoader showRightButton>

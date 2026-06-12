@@ -1,8 +1,8 @@
 'use client';
 
-import { getReport } from '@/api';
+import { getReport } from '@/api/report/reports.api';
 import { PageWrapper } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
 import { ReportActions } from './ReportActions/ReportActions';
 import { ReportDetail } from './ReportDetail/ReportDetail';

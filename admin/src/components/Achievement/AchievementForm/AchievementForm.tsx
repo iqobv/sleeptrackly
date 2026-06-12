@@ -2,7 +2,7 @@
 
 import { FileForm } from '@/components/Customization/FileForm/FileForm';
 import { FormContent, FormFields } from '@/components/UI';
-import { FullAchievement } from '@/types';
+import { FullAchievement } from '@/types/achievement/achievement.types';
 import { Form, type FormProps } from '@shared/form';
 import { FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';

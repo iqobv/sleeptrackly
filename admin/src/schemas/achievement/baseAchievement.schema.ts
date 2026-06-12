@@ -1,4 +1,4 @@
-import { AchievementType } from '@/types';
+import { AchievementType } from '@/types/achievement/achievementType.types';
 import z from 'zod';
 import { achievementTranslationSchema } from './achievementTranslation.schema';
 
