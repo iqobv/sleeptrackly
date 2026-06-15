@@ -33,26 +33,15 @@ export class SleepEntryService {
 	): SleepDayDto[] {
 		return Array.from({ length: 7 }, (_, i) => {
 			const day = startOfWeek.add(i, 'day').format(FORMAT);
-			const data = entries.find((entry) => entry.dateForChart === day) || null;
-			return { day, data };
+			const data = entries.filter((entry) => entry.dateForChart === day);
+			const sleepDuration = data.reduce(
+				(acc, entry) => acc + entry.sleepDuration,
+				0,
+			);
+
+			return { day, sleepDuration, data };
 		});
 	}
-
-	private calculateStatistics(days: SleepDayDto[]): SleepStatisticsDto {
-		const totalSleepDuration = days.reduce(
-			(acc, d) => acc + (d.data?.sleepDuration || 0),
-			0,
-		);
-		const daysWithData = days.filter((d) => d.data).length;
-
-		return {
-			totalSleepDuration,
-			averageSleepDuration: daysWithData
-				? totalSleepDuration / daysWithData
-				: 0,
-		};
-	}
-
 	public async getSleepsEntryForWeek(
 		userId: string,
 		query: QueryDto,
@@ -74,8 +63,39 @@ export class SleepEntryService {
 			},
 		});
 
-		const days = this.buildDaysForWeek(startOfWeek, sleepEntries);
-		const statistics = this.calculateStatistics(days);
+		const statistics = await this.prismaService.sleepEntry.groupBy({
+			where: {
+				userId,
+				id: { in: sleepEntries.map((e) => e.id) },
+			},
+			by: ['dateForChart'],
+			_sum: {
+				sleepDuration: true,
+			},
+			_avg: {
+				rating: true,
+				sleepDuration: true,
+			},
+			_count: {
+				id: true,
+			},
+		});
+
+		const mappedEntries = plainToInstance(SleepEntryDto, sleepEntries);
+		const days = this.buildDaysForWeek(startOfWeek, mappedEntries);
+
+		const mappedStatistics: SleepStatisticsDto = {
+			totalSleepDuration: statistics.reduce(
+				(acc, s) => acc + (s._sum.sleepDuration || 0),
+				0,
+			),
+			averageSleepDuration:
+				statistics.reduce((acc, s) => acc + (s._avg.sleepDuration || 0), 0) /
+				(statistics.length || 1),
+			averageSleepRating:
+				statistics.reduce((acc, s) => acc + (s._avg.rating || 0), 0) /
+				(statistics.length || 1),
+		};
 
 		const moreRecord = await this.prismaService.sleepEntry.findFirst({
 			where: {
@@ -86,8 +106,8 @@ export class SleepEntryService {
 			},
 		});
 
-		const result = {
-			statistics,
+		const result: SleepDashboardDto = {
+			statistics: mappedStatistics,
 			days,
 			hasMore: !!moreRecord,
 		};

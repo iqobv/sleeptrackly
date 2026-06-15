@@ -1,12 +1,20 @@
-import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
+import {
+	ACHIEVEMENT_CHECK_EVENT,
+	AchievementCheckEvent,
+} from '@api/achievement/events/achievement-progress.event';
 import { RewardService } from '@api/reward/reward.service';
-import { WeeklySummaryService } from '@api/weekly-summary/weekly-summary.service';
+import {
+	SLEEP_ENDED_EVENT,
+	SleepEndedEvent,
+} from '@api/weekly-summary/events/sleep-ended.event';
 import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
+import { CreateSleepEntryDto } from './dto/create-sleep-entry.dto';
 import { UserSleepStatusDto } from './dto/sleep-status.dto';
 import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
 import {
@@ -16,14 +24,14 @@ import {
 import { CalculatedSleepDuration } from './interfaces/calculated-sleep-duration.interface';
 import { SleepEnd } from './interfaces/sleep-end.interface';
 import { SleepStart } from './interfaces/sleep-start.interface';
+import { WakeUpArgs } from './interfaces/wake-up-args.interface';
 
 @Injectable()
 export class UserSleepStatusService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly rewardService: RewardService,
-		private readonly weeklySummaryService: WeeklySummaryService,
-		private readonly achievementProgressService: AchievementProgressService,
+		private readonly eventEmitter: EventEmitter2,
 	) {}
 
 	public async getSleepStatus(
@@ -63,42 +71,39 @@ export class UserSleepStatusService {
 	}
 
 	private async createSleepEntry(
-		userId: string,
-		sleepStart: Date,
-		sleepEnd: Date,
-		sleepDuration: number,
-		dateForChart: string,
+		dto: CreateSleepEntryDto,
 		tx?: Prisma.TransactionClient,
 	): Promise<SleepEntry> {
+		const { sleepStart, sleepEnd, userId, ...rest } = dto;
+
 		const prisma = tx ?? this.prismaService;
 
 		return await prisma.sleepEntry.create({
 			data: {
-				userId,
+				user: { connect: { id: userId } },
 				sleepStart: new Date(sleepStart),
 				sleepEnd: new Date(sleepEnd),
-				sleepDuration,
-				dateForChart,
+				...rest,
 			},
 		});
 	}
 
-	private async handleWakeUp(
-		userId: string,
-		sleepStart: Date,
-		clickedAt: Date,
-		dateForChart?: string,
-	): Promise<SleepEnd> {
+	private async handleWakeUp(args: WakeUpArgs): Promise<SleepEnd> {
+		const { clickedAt, rating, sleepStart, userId, dateForChart } = args;
+
 		const { sleepDuration, dateForChart: generatedDateForChart } =
 			this.calculateSleepDuration(sleepStart, clickedAt);
 
 		return await this.prismaService.$transaction(async (tx) => {
 			const sleepEntry = await this.createSleepEntry(
-				userId,
-				sleepStart,
-				clickedAt,
-				sleepDuration,
-				dateForChart || generatedDateForChart,
+				{
+					userId,
+					sleepStart,
+					sleepEnd: clickedAt,
+					sleepDuration,
+					rating,
+					dateForChart: dateForChart || generatedDateForChart,
+				},
 				tx,
 			);
 
@@ -109,10 +114,12 @@ export class UserSleepStatusService {
 				tx,
 			);
 
-			await this.achievementProgressService.checkProgress(
-				userId,
-				AchievementType.SLEEP_COUNT,
-				tx,
+			this.eventEmitter.emit(
+				ACHIEVEMENT_CHECK_EVENT,
+				new AchievementCheckEvent({
+					userId,
+					type: AchievementType.SLEEP_COUNT,
+				}),
 			);
 
 			return { sleepEntry, isSleeping: false, sleepStart: null, reward };
@@ -146,7 +153,7 @@ export class UserSleepStatusService {
 	): Promise<UpdatedSleepStatusDto> {
 		const serverNow = new Date();
 
-		const { dateForChart } = dto;
+		const { dateForChart, rating } = dto;
 
 		let userSleepStatus = await this.getSleepStatus(userId);
 		if (!userSleepStatus)
@@ -157,12 +164,13 @@ export class UserSleepStatusService {
 		let reward: UpdatedSleepRewardDto | null = null;
 
 		if (isSleeping && sleepStart) {
-			const result = await this.handleWakeUp(
+			const result = await this.handleWakeUp({
 				userId,
 				sleepStart,
-				serverNow,
+				clickedAt: serverNow,
 				dateForChart,
-			);
+				rating: rating ?? 0,
+			});
 			sleepEntry = result.sleepEntry;
 			isSleeping = result.isSleeping;
 			sleepStart = result.sleepStart;
@@ -181,11 +189,13 @@ export class UserSleepStatusService {
 		);
 
 		if (sleepEntry && dateForChart) {
-			this.weeklySummaryService
-				.generateSummaryForPreviousWeek(userId, dateForChart)
-				.catch((error) => {
-					console.error('Error generating weekly summary:', error);
-				});
+			this.eventEmitter.emit(
+				SLEEP_ENDED_EVENT,
+				new SleepEndedEvent({
+					userId,
+					dateForChart,
+				}),
+			);
 		}
 
 		const result = { userSleepStatus, sleepEntry, reward };

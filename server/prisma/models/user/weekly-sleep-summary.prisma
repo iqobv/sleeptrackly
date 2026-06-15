@@ -24,11 +24,13 @@ model WeeklySleepSummary {
   coinsEarned          Int @default(0) @map("coins_earned")
   achievementsUnlocked Int @default(0) @map("achievements_unlocked")
 
+  avgRating Int @default(0) @map("avg_rating")
+
   createdAt DateTime @default(now()) @map("created_at")
 
   notifications Notification[]
 
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, year, weekNumber])
   @@index([userId, year])

@@ -10,13 +10,14 @@ dayjs.extend(isoWeek);
 @Injectable()
 export class WeeklySummaryCronService {
 	private readonly logger = new Logger(WeeklySummaryCronService.name);
+	private readonly BATCH_SIZE = 50;
 
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly weeklySummaryService: WeeklySummaryService,
 	) {}
 
-	@Cron('5 3 * * 3')
+	@Cron('5 3 * * 2')
 	private async generateWeeklySummariesForAllUsers(): Promise<void> {
 		const todayString = dayjs().format('YYYY-MM-DD');
 		const previousWeek = dayjs().subtract(1, 'week');
@@ -54,26 +55,35 @@ export class WeeklySummaryCronService {
 			usersWithSummaries.map((user) => user.userId),
 		);
 
-		const ghostUsers = usersWithEntries.filter(
-			(user) => !summarizedUserIds.has(user.userId),
-		);
+		const ghostUserIds = usersWithEntries
+			.map((u) => u.userId)
+			.filter((userId) => !summarizedUserIds.has(userId));
 
-		if (ghostUsers.length === 0) return;
+		if (ghostUserIds.length === 0) return;
 
 		let successCount = 0;
-		for (const ghostUser of ghostUsers) {
-			try {
-				await this.weeklySummaryService.generateSummaryForPreviousWeek(
-					ghostUser.userId,
-					todayString,
-				);
-				successCount++;
-			} catch (error: unknown) {
-				this.logger.error(
-					`Failed to generate missing summary for user ${ghostUser.userId}`,
-					error instanceof Error ? error.stack : 'Unknown error',
-				);
-			}
+
+		for (let i = 0; i < ghostUserIds.length; i += this.BATCH_SIZE) {
+			const batch = ghostUserIds.slice(i, i + this.BATCH_SIZE);
+
+			const batchPromises = batch.map(async (userId) => {
+				try {
+					await this.weeklySummaryService.generateSummaryForPreviousWeek(
+						userId,
+						todayString,
+					);
+					return true;
+				} catch (error: unknown) {
+					this.logger.error(
+						`Failed to generate missing summary for user ${userId}`,
+						error instanceof Error ? error.stack : 'Unknown error',
+					);
+					return false;
+				}
+			});
+
+			const results = await Promise.all(batchPromises);
+			successCount += results.filter(Boolean).length;
 		}
 
 		this.logger.log(
