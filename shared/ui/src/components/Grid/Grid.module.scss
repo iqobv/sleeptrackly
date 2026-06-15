@@ -13,7 +13,7 @@
 	gap: var(--grid-gap);
 	row-gap: var(--grid-row-gap, var(--grid-gap));
 	column-gap: var(--grid-column-gap, var(--grid-gap));
-	grid-template-columns: 1fr;
+	grid-template-columns: var(--grid-columns);
 
 	&.oneColumnOnMobile {
 		@include respond-to(md) {

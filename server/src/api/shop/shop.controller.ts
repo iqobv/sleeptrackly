@@ -14,6 +14,7 @@ import {
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FeaturedShopDto } from './dto/featured-shop.dto';
 import { FilterQueryDto } from './dto/filter-query.dto';
+import { FiltersDto } from './dto/filters.dto';
 import { PaginatedShopProductsDto } from './dto/paginated-products.dto';
 import { PurchaseDto } from './dto/purchase.dto';
 import { ShopProductDto } from './dto/shop-product.dto';
@@ -46,6 +47,15 @@ export class ShopController {
 		@Authorized('id') userId?: string,
 	): Promise<PaginatedShopProductsDto> {
 		return await this.shopService.getAllProducts(query, userId);
+	}
+
+	/** Get available filters for the shop */
+	@Get('filters')
+	@ApiOkResponse({ type: FiltersDto })
+	public async getAvailableFilters(
+		@Query() query: LanguageQueryDto,
+	): Promise<FiltersDto> {
+		return await this.shopService.getFilters(query);
 	}
 
 	/** Get a product by its ID */

@@ -40,27 +40,29 @@ export const SectionHeader = ({
 			}
 		>
 			{leftSlot && <div className={styles.leftSlot}>{leftSlot}</div>}
-			<div className={styles.content}>
-				{!!title && (
-					<Typography
-						variant={titleVariant}
-						className={titleClassName}
-						{...restTitleProps}
-					>
-						{title}
-					</Typography>
-				)}
-				{!!description && (
-					<Typography
-						variant={descriptionVariant}
-						className={descriptionClassName}
-						{...restDescriptionProps}
-					>
-						{description}
-					</Typography>
-				)}
+			<div className={styles.wrapper}>
+				<div className={styles.content}>
+					{!!title && (
+						<Typography
+							variant={titleVariant}
+							className={titleClassName}
+							{...restTitleProps}
+						>
+							{title}
+						</Typography>
+					)}
+					{!!description && (
+						<Typography
+							variant={descriptionVariant}
+							className={descriptionClassName}
+							{...restDescriptionProps}
+						>
+							{description}
+						</Typography>
+					)}
+				</div>
+				{rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
 			</div>
-			{rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
 		</div>
 	);
 };

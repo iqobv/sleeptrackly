@@ -7,5 +7,5 @@ const SECTION = Array.from({ length: FEATURED_SHOP_SECTIONS_ITEMS.length }).map(
 );
 
 export const FeaturedShopSectionsLoader = () => {
-	return <div className={styles['featured-shop-sections']}>{SECTION}</div>;
+	return <div className={styles.sections}>{SECTION}</div>;
 };

@@ -1,3 +1,5 @@
+import { SkeletonLoader } from '@shared/ui';
+
 export const AchievementItemLoader = () => {
-	return <div>AchievementItemLoader</div>;
+	return <SkeletonLoader height="5.375rem" />;
 };

@@ -1,4 +1,4 @@
-.shop-card {
+.card {
 	background-color: var(--shop-card-bg);
 	border: 1px solid var(--shop-card-border);
 	padding: 1rem;
@@ -6,8 +6,9 @@
 	display: flex;
 	flex-direction: column;
 	gap: 1.25rem;
+	min-width: 250px;
 
-	&__image-wrapper {
+	.imageWrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -18,7 +19,7 @@
 		}
 	}
 
-	&__price {
+	.price {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -27,8 +28,8 @@
 		font-weight: 700;
 		position: relative;
 
-		&:has(.shop-card__price-discounted) {
-			.shop-card__price-original {
+		&:has(.priceDiscounted) {
+			.priceOriginal {
 				text-decoration: line-through;
 				color: var(--shop-card-price-original);
 				font-weight: 400;
@@ -37,13 +38,13 @@
 				top: -0.5rem;
 			}
 		}
+
+		&Discounted {
+			color: var(--shop-card-price-discounted);
+		}
 	}
 
-	&__price-discounted {
-		color: var(--shop-card-price-discounted);
-	}
-
-	&__actions {
+	.actions {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;

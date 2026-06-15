@@ -1,5 +1,9 @@
 import { InventoryListLoader } from '@/components/Inventory/InventoryList/InventoryListLoader';
 
 export default function InventoryPageLoading() {
-	return <InventoryListLoader />;
+	return (
+		<div className="page container">
+			<InventoryListLoader />
+		</div>
+	);
 }

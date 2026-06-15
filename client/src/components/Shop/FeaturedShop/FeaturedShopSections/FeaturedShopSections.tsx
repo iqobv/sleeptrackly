@@ -1,8 +1,8 @@
 'use client';
 
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
-import { FeaturedShopSection } from '@/types/shop/featuredShopSection.types';
-import { Button, List } from '@shared/ui';
+import { FeaturedShopSection } from '@/types/shop/featuredShop.types';
+import { Button, Grid, GridItem } from '@shared/ui';
 import Link from 'next/link';
 import { ShopCard } from '../../ShopCard/ShopCard';
 import styles from './FeaturedShopSections.module.scss';
@@ -36,11 +36,16 @@ export const FeaturedShopSections = ({
 								</Link>
 							</Button>
 						</div>
-						<List
-							items={s.items}
-							className={styles.items}
-							renderItem={(item) => <ShopCard key={item.id} product={item} />}
-						/>
+						<Grid
+							oneColumnOnMobile={false}
+							columns="repeat(auto-fit, minmax(250px, 1fr))"
+						>
+							{s.items.map((item) => (
+								<GridItem key={item.id}>
+									<ShopCard product={item} />
+								</GridItem>
+							))}
+						</Grid>
 					</div>
 				);
 			})}

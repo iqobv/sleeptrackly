@@ -85,16 +85,6 @@ export class CollectionController {
 		return await this.collectionService.getAllCollections(query);
 	}
 
-	/** Get all collections for store filter */
-	@Get('store')
-	@Auth()
-	@ApiOkResponse({ type: [StoreCollectionDto] })
-	public async getAllCollectionsForStore(
-		@Query() query: LanguageQueryDto,
-	): Promise<StoreCollectionDto[]> {
-		return await this.collectionService.getAllCollectionsForStore(query);
-	}
-
 	/** Get a collection by ID */
 	@Get('id/:id')
 	@Auth(UserRole.ADMIN)

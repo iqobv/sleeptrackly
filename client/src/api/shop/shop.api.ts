@@ -17,21 +17,15 @@ export const getFeaturedShop = async (dto: LanguageDto) =>
 		})
 	).data;
 
-export const getAllShop = async ({
-	itemType,
-	...dto
-}: PaginatedShopFilterDto) => {
-	const params = {
-		...dto,
-		itemType: itemType?.length ? itemType?.join(',') : undefined,
-	};
-
-	return (
+export const getAllShop = async (params: PaginatedShopFilterDto) =>
+	(
 		await apiClient.get<GetAllShopResponse>(`/v1/shop/all`, {
 			params,
+			paramsSerializer: {
+				indexes: null,
+			},
 		})
 	).data;
-};
 
 export const makePurchase = async (productId: string) =>
 	(await apiClient.post<MakePurchaseResponse>(`/v1/shop/purchase/${productId}`))

@@ -4,9 +4,7 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
-import { LanguageQueryDto } from '@libs/dto/language-query.dto';
 import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
-import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
 import { collectionInclude } from '@libs/prisma/collection.include.prisma';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { paginate } from '@libs/utils/pagination.util';
@@ -22,7 +20,6 @@ import {
 	CollectionDto,
 	FullCollectionDto,
 	PaginatedCollectionsDto,
-	StoreCollectionDto,
 } from './dto/collection.dto';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { UpdateCollectionDto } from './dto/update-collection.dto';
@@ -111,36 +108,6 @@ export class CollectionService {
 		});
 
 		return plainToInstance(PaginatedCollectionsDto, result);
-	}
-
-	public async getAllCollectionsForStore(
-		query: LanguageQueryDto,
-	): Promise<StoreCollectionDto[]> {
-		const { language = 'en' } = query;
-
-		const collections = await this.prismaService.collection.findMany({
-			where: { showInStore: true },
-			select: {
-				slug: true,
-				translations: {
-					where: { language: { in: [language, 'en'] } },
-					select: { name: true, language: true },
-				},
-			},
-		});
-
-		const mappedCollections = collections
-			.map((collection) => {
-				const translation = pickTranslation(collection.translations, language);
-
-				return {
-					slug: collection.slug,
-					name: translation?.name || 'No name',
-				};
-			})
-			.sort((a, b) => a.name.localeCompare(b.name));
-
-		return plainToInstance(StoreCollectionDto, mappedCollections);
 	}
 
 	public async updateCollection(

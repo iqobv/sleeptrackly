@@ -18,9 +18,7 @@ interface FeaturedShopCarouselProps {
 export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 	const validSlides = data.filter((item) => item.bundle);
 
-	if (validSlides.length === 0) {
-		return null;
-	}
+	if (validSlides.length === 0) return null;
 
 	return (
 		<div className={styles.shopCarousel}>

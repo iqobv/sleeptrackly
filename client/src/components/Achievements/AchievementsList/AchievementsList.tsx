@@ -6,13 +6,15 @@ import { Grid } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { AchievementItem } from './AchievementItem/AchievementItem';
 import styles from './AchievementsList.module.scss';
+import { AchievementsListLoader } from './AchievementsListLoader';
 
 export const AchievementsList = () => {
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.achievement.all,
 		queryFn: getAllAchievements,
 	});
 
+	if (isLoading) return <AchievementsListLoader />;
 	if (!data) return null;
 
 	return (

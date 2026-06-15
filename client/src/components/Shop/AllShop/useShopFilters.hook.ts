@@ -29,6 +29,7 @@ export const shopFilterParsers = {
 	itemType: parseAsArrayOf(parseAsStringEnum(itemTypeValues)).withDefault(
 		DEFAULT_SHOP_FILTER_VALUES.itemType,
 	),
+	collection: parseAsArrayOf(parseAsString).withDefault([]),
 	type: parseAsStringEnum(productTypeValues).withDefault(
 		DEFAULT_SHOP_FILTER_VALUES.type,
 	),
@@ -38,6 +39,8 @@ export const shopFilterParsers = {
 	sortOrder: parseAsStringEnum(sortOrderValues).withDefault(
 		DEFAULT_SHOP_FILTER_VALUES.sortOrder,
 	),
+	minPrice: parseAsInteger.withDefault(DEFAULT_SHOP_FILTER_VALUES.minPrice),
+	maxPrice: parseAsInteger,
 } satisfies StrictParsersMap<PaginatedShopFilterDto>;
 
 export const useShopFilters = () => {

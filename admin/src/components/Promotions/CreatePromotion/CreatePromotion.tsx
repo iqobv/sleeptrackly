@@ -36,12 +36,6 @@ export const CreatePromotion = () => {
 					expiresAt: undefined,
 				}}
 				onSubmit={(data, _e, methods) => {
-					const {
-						formState: { errors },
-					} = methods;
-					console.log(data);
-
-					console.log(data, errors);
 					mutate(data, {
 						onSuccess: (data) => router.push(PAGES.PROMOTION(data.id)),
 						onError: (e) => {

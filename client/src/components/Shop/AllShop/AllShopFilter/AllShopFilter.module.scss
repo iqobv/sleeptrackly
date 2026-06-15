@@ -30,3 +30,19 @@
 	width: 1rem;
 	height: 1rem;
 }
+
+.priceRange {
+	display: flex;
+	flex-direction: row;
+	gap: var(--gap);
+	align-items: center;
+	justify-content: space-between;
+}
+
+.priceInput {
+	min-width: 0;
+
+	& input {
+		min-width: 0;
+	}
+}
