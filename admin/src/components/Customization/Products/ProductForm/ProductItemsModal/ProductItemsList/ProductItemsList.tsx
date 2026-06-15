@@ -20,8 +20,10 @@ export const ProductItemsList = <T extends FieldValues>() => {
 
 	return (
 		<ItemsListPaginatedWrapper<Item>
-			queryFn={(params) => getAllAvailableItems(params)}
-			queryKey={(params) => QUERY_KEYS.customization.item.listAvailable(params)}
+			queryFn={({ language: _l, ...params }) => getAllAvailableItems(params)}
+			queryKey={({ language: _l, ...params }) =>
+				QUERY_KEYS.customization.item.listAvailable(params)
+			}
 			isModal
 			itemCard={(item) => (
 				<ItemCard

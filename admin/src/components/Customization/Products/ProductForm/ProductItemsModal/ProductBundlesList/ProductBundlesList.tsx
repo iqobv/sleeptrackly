@@ -22,8 +22,10 @@ export const ProductBundlesList = <T extends FieldValues>() => {
 
 	return (
 		<ItemsListPaginatedWrapper<AvailableBundle>
-			queryFn={(query) => getAllAvailableBundles(query)}
-			queryKey={(query) => QUERY_KEYS.customization.bundle.listAvailable(query)}
+			queryFn={({ language: _l, ...params }) => getAllAvailableBundles(params)}
+			queryKey={({ language: _l, ...params }) =>
+				QUERY_KEYS.customization.bundle.listAvailable(params)
+			}
 			isModal
 			itemCard={(bundle) => (
 				<BundleCard

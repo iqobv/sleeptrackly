@@ -85,27 +85,23 @@ export const useAllShop = () => {
 		let shouldUpdate = false;
 		const newFilters: Partial<PaginatedShopFilterDto> = {};
 
-		if (
-			debouncedSearch !== undefined &&
-			debouncedSearch !== urlFilters.search
-		) {
-			newFilters.search = debouncedSearch || undefined;
+		const normalizedSearch = debouncedSearch;
+		if (normalizedSearch !== (urlFilters.search ?? undefined)) {
+			newFilters.search = normalizedSearch;
 			shouldUpdate = true;
 		}
 
-		if (
-			debouncedMinPrice !== undefined &&
-			debouncedMinPrice !== urlFilters.minPrice
-		) {
-			newFilters.minPrice = debouncedMinPrice ?? 0;
+		const normalizedMinPrice = debouncedMinPrice ?? 0;
+
+		if (normalizedMinPrice !== urlFilters.minPrice) {
+			newFilters.minPrice = normalizedMinPrice;
 			shouldUpdate = true;
 		}
 
-		if (
-			debouncedMaxPrice !== undefined &&
-			debouncedMaxPrice !== urlFilters.maxPrice
-		) {
-			newFilters.maxPrice = debouncedMaxPrice ?? null;
+		const normalizedMaxPrice = debouncedMaxPrice ?? null;
+
+		if (normalizedMaxPrice !== urlFilters.maxPrice) {
+			newFilters.maxPrice = normalizedMaxPrice;
 			shouldUpdate = true;
 		}
 

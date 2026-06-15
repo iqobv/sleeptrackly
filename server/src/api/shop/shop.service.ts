@@ -120,7 +120,7 @@ export class ShopService {
 				...rest,
 				name:
 					pickTranslation(translations, language)?.name ?? 'Unnamed Collection',
-				products: products.map((cp) => ({
+				products: products.slice(0, 4).map((cp) => ({
 					...cp,
 					product: transformProduct(cp.product, language),
 				})),

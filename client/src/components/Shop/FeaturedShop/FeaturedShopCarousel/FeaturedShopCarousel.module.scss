@@ -26,8 +26,9 @@
 	:global(.swiper-pagination-bullet) {
 		background: var(--featured-bullet);
 		opacity: 0.5;
-		width: 0.75rem;
-		height: 0.75rem;
+		width: 1.25rem;
+		border-radius: var(--border-radius);
+		height: 0.5rem;
 	}
 
 	:global(.swiper-pagination-bullet-active) {

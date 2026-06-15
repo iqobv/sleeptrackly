@@ -34,7 +34,10 @@ export const FormContent = <T extends FieldValues>({
 						Reset
 					</FormReset>
 				)}
-				<FormSubmit disabledOnEmpty buttonProps={{ loading: isLoading }}>
+				<FormSubmit
+					disabledOnEmpty={isEdit}
+					buttonProps={{ loading: isLoading }}
+				>
 					{buttonLabel}
 				</FormSubmit>
 			</FormActions>

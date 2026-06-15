@@ -11,6 +11,9 @@ import { useShopFilters } from '../useShopFilters.hook';
 import styles from './AllShopFilter.module.scss';
 import { shopItemTypeOptions, shopProductTypeOptions } from './filterOptions';
 
+const setValueAs = (v: unknown) =>
+	v === '' || v == null || Number.isNaN(Number(v)) ? null : Number(v);
+
 export const AllShopFilter = () => {
 	const { register, reset } = useFormContext<ShopFilterDto>();
 
@@ -47,8 +50,7 @@ export const AllShopFilter = () => {
 						type="number"
 						className={styles.priceInput}
 						{...register('minPrice', {
-							setValueAs: (v) =>
-								v === '' || Number.isNaN(Number(v)) ? null : Number(v),
+							setValueAs: (v) => setValueAs(v),
 						})}
 					/>
 					<Input
@@ -56,8 +58,7 @@ export const AllShopFilter = () => {
 						type="number"
 						className={styles.priceInput}
 						{...register('maxPrice', {
-							setValueAs: (v) =>
-								v === '' || Number.isNaN(Number(v)) ? null : Number(v),
+							setValueAs: (v) => setValueAs(v),
 						})}
 					/>
 				</div>

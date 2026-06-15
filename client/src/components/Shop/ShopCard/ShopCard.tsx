@@ -7,7 +7,7 @@ import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Item } from '@/types/item/item.types';
 import { Product } from '@/types/product/product.types';
 import { ProductType } from '@/types/product/productType.types';
-import { Button } from '@shared/ui';
+import { Button, Typography } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -49,8 +49,8 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 			: (key?.mediaUrl ?? '');
 
 	return (
-		<div className={styles['shop-card']}>
-			<div className={styles['shop-card__image-wrapper']}>
+		<div className={styles.card}>
+			<div className={styles.imageWrapper}>
 				{product.item?.isAnimated ? (
 					<video
 						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
@@ -59,7 +59,7 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 						muted
 						width={160}
 						height={160}
-						className={styles['shop-card__video']}
+						className={styles.video}
 					/>
 				) : (
 					<CDNImage
@@ -71,15 +71,15 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 				)}
 			</div>
 			<div>
-				<h4 className={styles['shop-card__title']}>{key?.translation.name}</h4>
+				<Typography variant="h4" className={styles.title}>
+					{key?.translation.name}
+				</Typography>
 			</div>
-			<div className={styles['shop-card__actions']}>
-				<div className={styles['shop-card__price']}>
-					<span className={styles['shop-card__price-original']}>
-						{product.price}
-					</span>
+			<div className={styles.actions}>
+				<div className={styles.price}>
+					<span className={styles.priceOriginal}>{product.price}</span>
 					{product.discountedPrice && (
-						<span className={styles['shop-card__price-discounted']}>
+						<span className={styles.priceDiscounted}>
 							{product.discountedPrice}
 						</span>
 					)}
