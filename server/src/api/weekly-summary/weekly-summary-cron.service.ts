@@ -1,4 +1,5 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import dayjs from 'dayjs';
@@ -19,15 +20,13 @@ export class WeeklySummaryCronService {
 
 	@Cron('5 3 * * 2')
 	private async generateWeeklySummariesForAllUsers(): Promise<void> {
-		const todayString = dayjs().format('YYYY-MM-DD');
+		const todayString = dayjs().format(DATE_FORMAT);
 		const previousWeek = dayjs().subtract(1, 'week');
 		const prevYear = previousWeek.isoWeekYear();
 		const prevWeekNumber = previousWeek.isoWeek();
 
-		const startDateString = previousWeek
-			.startOf('isoWeek')
-			.format('YYYY-MM-DD');
-		const endDateString = previousWeek.endOf('isoWeek').format('YYYY-MM-DD');
+		const startDateString = previousWeek.startOf('isoWeek').format(DATE_FORMAT);
+		const endDateString = previousWeek.endOf('isoWeek').format(DATE_FORMAT);
 
 		const usersWithEntries = await this.prismaService.sleepEntry.findMany({
 			where: {

@@ -27,6 +27,7 @@ model WeeklySleepSummary {
   avgRating Int @default(0) @map("avg_rating")
 
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   notifications Notification[]
 

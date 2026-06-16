@@ -4,24 +4,22 @@ import {
 } from '@api/achievement/events/achievement-progress.event';
 import { RewardService } from '@api/reward/reward.service';
 import {
-	SLEEP_ENDED_EVENT,
-	SleepEndedEvent,
+	SLEEP_RECORDED_EVENT,
+	SleepRecordedEvent,
 } from '@api/weekly-summary/events/sleep-ended.event';
 import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { calculateSleepDuration } from '@libs/utils/calculate-sleep-duration.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
-import { CreateSleepEntryDto } from './dto/create-sleep-entry.dto';
 import { UserSleepStatusDto } from './dto/sleep-status.dto';
 import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
 import {
 	UpdatedSleepRewardDto,
 	UpdatedSleepStatusDto,
 } from './dto/updated-sleep-status.dto';
-import { CalculatedSleepDuration } from './interfaces/calculated-sleep-duration.interface';
 import { SleepEnd } from './interfaces/sleep-end.interface';
 import { SleepStart } from './interfaces/sleep-start.interface';
 import { WakeUpArgs } from './interfaces/wake-up-args.interface';
@@ -57,55 +55,23 @@ export class UserSleepStatusService {
 		});
 	}
 
-	private calculateSleepDuration(
-		start: Date,
-		end: Date,
-	): CalculatedSleepDuration {
-		const sleepEndDate = dayjs(end).toDate();
-		const sleepDuration = dayjs(sleepEndDate).diff(start, 'second');
-		const dateForChart = dayjs(sleepEndDate)
-			.startOf('day')
-			.format('YYYY-MM-DD');
-
-		return { sleepDuration, dateForChart };
-	}
-
-	private async createSleepEntry(
-		dto: CreateSleepEntryDto,
-		tx?: Prisma.TransactionClient,
-	): Promise<SleepEntry> {
-		const { sleepStart, sleepEnd, userId, ...rest } = dto;
-
-		const prisma = tx ?? this.prismaService;
-
-		return await prisma.sleepEntry.create({
-			data: {
-				user: { connect: { id: userId } },
-				sleepStart: new Date(sleepStart),
-				sleepEnd: new Date(sleepEnd),
-				...rest,
-			},
-		});
-	}
-
 	private async handleWakeUp(args: WakeUpArgs): Promise<SleepEnd> {
 		const { clickedAt, rating, sleepStart, userId, dateForChart } = args;
 
 		const { sleepDuration, dateForChart: generatedDateForChart } =
-			this.calculateSleepDuration(sleepStart, clickedAt);
+			calculateSleepDuration(sleepStart, clickedAt);
 
 		return await this.prismaService.$transaction(async (tx) => {
-			const sleepEntry = await this.createSleepEntry(
-				{
-					userId,
-					sleepStart,
-					sleepEnd: clickedAt,
+			const sleepEntry = await tx.sleepEntry.create({
+				data: {
+					sleepStart: new Date(sleepStart),
+					sleepEnd: new Date(clickedAt),
 					sleepDuration,
+					dateForChart: dateForChart ?? generatedDateForChart,
 					rating,
-					dateForChart: dateForChart || generatedDateForChart,
+					user: { connect: { id: userId } },
 				},
-				tx,
-			);
+			});
 
 			const reward = await this.rewardService.rewardForSleep(
 				userId,
@@ -190,8 +156,8 @@ export class UserSleepStatusService {
 
 		if (sleepEntry && dateForChart) {
 			this.eventEmitter.emit(
-				SLEEP_ENDED_EVENT,
-				new SleepEndedEvent({
+				SLEEP_RECORDED_EVENT,
+				new SleepRecordedEvent({
 					userId,
 					dateForChart,
 				}),

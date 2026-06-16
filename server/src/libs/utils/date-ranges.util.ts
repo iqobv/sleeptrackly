@@ -1,4 +1,5 @@
 import { ChallengeFrequency } from '@generated/prisma/enums';
+import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
@@ -21,8 +22,8 @@ export const getDateRanges = (
 	if (frequency === 'ONCE') {
 		return [
 			{
-				startDate: startDate.format('YYYY-MM-DD'),
-				endDate: endDate.format('YYYY-MM-DD'),
+				startDate: startDate.format(DATE_FORMAT),
+				endDate: endDate.format(DATE_FORMAT),
 			},
 		];
 	}
@@ -51,8 +52,8 @@ export const getDateRanges = (
 		}
 
 		ranges.push({
-			startDate: currentStart.format('YYYY-MM-DD'),
-			endDate: currentEnd.format('YYYY-MM-DD'),
+			startDate: currentStart.format(DATE_FORMAT),
+			endDate: currentEnd.format(DATE_FORMAT),
 		});
 
 		currentStart = currentEnd.add(1, 'day');
