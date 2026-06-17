@@ -32,22 +32,24 @@ export const DashboardSleepSessions = ({
 				{days.map((day) => {
 					if (!day.data) return null;
 
-					const startTime = formatTime(day.data.sleepStart);
-					const endTime = formatTime(day.data.sleepEnd);
+					return day.data.map((entry) => {
+						const startTime = formatTime(entry.sleepStart);
+						const endTime = formatTime(entry.sleepEnd);
 
-					const rangeLabel = `${startTime} - ${endTime}`;
+						const rangeLabel = `${startTime} - ${endTime}`;
 
-					return (
-						<DashboardCard key={day.day} className={styles.sleepSession}>
-							<div className={styles.info}>
-								<p className={styles.date}>
-									{dateFormatter.format(new Date(day.day))}
-								</p>
-								<div>{rangeLabel}</div>
-							</div>
-							<p>{transform(day.data.sleepDuration)}</p>
-						</DashboardCard>
-					);
+						return (
+							<DashboardCard key={entry.id} className={styles.sleepSession}>
+								<div className={styles.info}>
+									<p className={styles.date}>
+										{dateFormatter.format(new Date(day.day))}
+									</p>
+									<div>{rangeLabel}</div>
+								</div>
+								<p>{transform(entry.sleepDuration)}</p>
+							</DashboardCard>
+						);
+					});
 				})}
 			</div>
 		</div>

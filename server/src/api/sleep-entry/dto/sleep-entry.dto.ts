@@ -7,4 +7,5 @@ export class SleepEntryDto extends DefaultFieldsDto {
 	@Expose() sleepEnd: Date;
 	@Expose() sleepDuration: number;
 	@Expose() dateForChart: string;
+	@Expose() rating: number;
 }

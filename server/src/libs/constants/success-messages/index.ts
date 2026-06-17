@@ -13,4 +13,5 @@ export * from './promotion.constants';
 export * from './restore.constants';
 export * from './sanction.constants';
 export * from './session.constants';
+export * from './sleep-entry.constants';
 export * from './user-inventory.constants';

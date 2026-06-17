@@ -17,6 +17,7 @@ export * from './promotion.constants';
 export * from './report.constants';
 export * from './sanction.constants';
 export * from './session.constants';
+export * from './sleep-entry.constants';
 export * from './token.constants';
 export * from './user-inventory.constants';
 export * from './user.constants';

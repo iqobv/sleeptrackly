@@ -21,7 +21,7 @@ export class UserSleepStatusController {
 	public async getSleepStatus(
 		@Authorized('id') userId: string,
 	): Promise<UserSleepStatusDto | null> {
-		return this.userSleepStatusService.getSleepStatus(userId);
+		return await this.userSleepStatusService.getSleepStatus(userId);
 	}
 
 	/** Update user sleep status (start/stop sleep) */
@@ -31,6 +31,6 @@ export class UserSleepStatusController {
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserSleepStatusDto,
 	): Promise<UpdatedSleepStatusDto> {
-		return this.userSleepStatusService.updateSleepStatus(userId, dto);
+		return await this.userSleepStatusService.updateSleepStatus(userId, dto);
 	}
 }

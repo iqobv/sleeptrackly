@@ -1,7 +1,6 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationService } from '@api/notification/notification.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
-import { Prisma } from '@generated/prisma/client';
 import {
 	AchievementType,
 	AcquiredFrom,
@@ -10,7 +9,12 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
 import { AchievementDto } from '../dto/achievement.dto';
+import {
+	ACHIEVEMENT_CHECK_EVENT,
+	AchievementCheckEvent,
+} from '../events/achievement-progress.event';
 
 @Injectable()
 export class AchievementProgressService {
@@ -21,21 +25,27 @@ export class AchievementProgressService {
 		private readonly notificationService: NotificationService,
 	) {}
 
+	@OnEvent(ACHIEVEMENT_CHECK_EVENT, { async: true })
+	public async handleCheckProgress(
+		payload: AchievementCheckEvent,
+	): Promise<void> {
+		const { userId, type } = payload;
+
+		await this.checkProgress(userId, type);
+	}
+
 	public async checkProgress(
 		userId: string,
 		type: AchievementType,
-		tx?: Prisma.TransactionClient,
 	): Promise<void> {
-		const prisma = tx ?? this.prismaService;
-
-		const userAchievements = await prisma.userAchievement.findMany({
+		const userAchievements = await this.prismaService.userAchievement.findMany({
 			where: { userId },
 			select: { achievementId: true },
 		});
 
 		const userAchievementsIds = userAchievements.map((ua) => ua.achievementId);
 
-		const pendingAchievements = await prisma.achievement.findMany({
+		const pendingAchievements = await this.prismaService.achievement.findMany({
 			where: {
 				type,
 				id: { notIn: userAchievementsIds },
@@ -50,7 +60,7 @@ export class AchievementProgressService {
 
 		for (const achievement of pendingAchievements) {
 			if (currentValue >= achievement.targetValue) {
-				await this.awardAchievement(userId, achievement.id, tx);
+				await this.awardAchievement(userId, achievement.id);
 			}
 		}
 	}
@@ -91,11 +101,8 @@ export class AchievementProgressService {
 	private async awardAchievement(
 		userId: string,
 		achievementId: string,
-		tx?: Prisma.TransactionClient,
 	): Promise<AchievementDto | null> {
-		const execute = async (
-			tx: Prisma.TransactionClient,
-		): Promise<AchievementDto | null> => {
+		const achievement = await this.prismaService.$transaction(async (tx) => {
 			const achievement = await tx.achievement.findUnique({
 				where: { id: achievementId },
 			});
@@ -161,11 +168,7 @@ export class AchievementProgressService {
 			}
 
 			return achievement;
-		};
-
-		const achievement = tx
-			? await execute(tx)
-			: await this.prismaService.$transaction(execute);
+		});
 
 		if (achievement) {
 			const userSettings =

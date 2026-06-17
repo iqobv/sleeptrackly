@@ -1,4 +1,7 @@
-import { AchievementProgressService } from '@api/achievement/services/achievement-progress.service';
+import {
+	ACHIEVEMENT_CHECK_EVENT,
+	AchievementCheckEvent,
+} from '@api/achievement/events/achievement-progress.event';
 import { CreateChallengeTaskDto } from '@api/challenge-task/dto/create-challenge-task.dto';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -11,6 +14,7 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
 import dayjs from 'dayjs';
@@ -22,7 +26,7 @@ import { UpdateChallengeDto } from './dto/update-challenge.dto';
 export class ChallengeService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly achievementProgressService: AchievementProgressService,
+		private readonly eventEmitter: EventEmitter2,
 	) {}
 
 	public async create(
@@ -153,9 +157,12 @@ export class ChallengeService {
 		});
 
 		for (const challenge of newlyCompletedChallenges) {
-			await this.achievementProgressService.checkProgress(
-				challenge.userId,
-				AchievementType.CHALLENGES_COMPLETED,
+			this.eventEmitter.emit(
+				ACHIEVEMENT_CHECK_EVENT,
+				new AchievementCheckEvent({
+					userId: challenge.userId,
+					type: AchievementType.SLEEP_COUNT,
+				}),
 			);
 		}
 	}

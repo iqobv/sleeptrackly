@@ -1,5 +1,6 @@
 import { NotificationService } from '@api/notification/notification.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import dayjs from 'dayjs';
@@ -46,7 +47,7 @@ export class UserNotificationSettingsCronService {
 
 			if (!setting.user.sleepStatus?.isSleeping) continue;
 
-			const todayInUserTZ = dayjs().tz(userTimeZone).format('YYYY-MM-DD');
+			const todayInUserTZ = dayjs().tz(userTimeZone).format(DATE_FORMAT);
 			const userTargetTimeStr = `${todayInUserTZ} ${reminderTime}`;
 			const targetTimeUTC = dayjs.tz(userTargetTimeStr, userTimeZone).utc();
 			const targetMinute = targetTimeUTC.startOf('minute').valueOf();

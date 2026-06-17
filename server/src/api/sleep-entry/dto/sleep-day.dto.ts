@@ -4,7 +4,9 @@ import { SleepEntryDto } from './sleep-entry.dto';
 export class SleepDayDto {
 	@Expose() day: string;
 
+	@Expose() sleepDuration: number;
+
 	@Expose()
 	@Type(() => SleepEntryDto)
-	data: SleepEntryDto | null;
+	data: SleepEntryDto[];
 }

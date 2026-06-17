@@ -1,4 +1,4 @@
-import { PrismaClient } from '@generated/prisma/client';
+import { Prisma, PrismaClient } from '@generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -132,15 +132,31 @@ async function runDataMigration(): Promise<void> {
 				const sortedByDuration = [...weekRecords].sort(
 					(a, b) => a.sleepDuration - b.sleepDuration,
 				);
+
+				const avgRating = Math.round(
+					weekRecords.reduce((acc, curr) => acc + curr.rating, 0) /
+						weekRecords.length,
+				);
+
 				const minSleep = sortedByDuration[0];
 				const maxSleep = sortedByDuration[sortedByDuration.length - 1];
 
-				const daysTracked = weekRecords.length;
+				const daysTracked = new Set(
+					weekRecords.map((record) => record.dateForChart),
+				).size;
+
 				const transactionRecords = await prisma.coinTransaction.findMany({
 					where: {
 						userId,
-						type: 'SLEEP_REWARD',
-						referenceId: { in: entries.map((record) => record.id) },
+						type: { in: ['SLEEP_REWARD', 'ACHIEVEMENT'] },
+						createdAt: { gte: weekStartDate, lte: weekEndDate },
+					},
+				});
+
+				const achievementsEarned = await prisma.userAchievement.findMany({
+					where: {
+						userId,
+						achievedAt: { gte: weekStartDate, lte: weekEndDate },
 					},
 				});
 
@@ -149,12 +165,27 @@ async function runDataMigration(): Promise<void> {
 					0,
 				);
 
-				const avgBedtimeOffset = calculateAvgBedtimeOffset(
-					weekRecords.map((r) => r.sleepStart),
-				);
-				const avgWakeTimeOffset = calculateAvgWakeTimeOffset(
-					weekRecords.map((r) => r.sleepEnd),
-				);
+				const data = {
+					weekEndDate,
+					weekStartDate,
+					minSleepDuration: minSleep.sleepDuration,
+					minSleepDate: minSleep.sleepEnd,
+					maxSleepDuration: maxSleep.sleepDuration,
+					maxSleepDate: maxSleep.sleepEnd,
+					totalSleepDuration,
+					sleepScoreAvg: 0,
+					avgSleepDuration,
+					avgBedtimeOffset: calculateAvgBedtimeOffset(
+						weekRecords.map((r) => r.sleepStart),
+					),
+					avgWakeTimeOffset: calculateAvgWakeTimeOffset(
+						weekRecords.map((r) => r.sleepEnd),
+					),
+					achievementsUnlocked: achievementsEarned.length,
+					coinsEarned,
+					daysTracked,
+					avgRating,
+				} satisfies Prisma.WeeklySleepSummaryUpdateInput;
 
 				await prisma.weeklySleepSummary.upsert({
 					where: {
@@ -165,34 +196,13 @@ async function runDataMigration(): Promise<void> {
 						},
 					},
 					update: {
-						totalSleepDuration,
-						avgSleepDuration,
-						minSleepDuration: minSleep.sleepDuration,
-						minSleepDate: minSleep.sleepEnd,
-						maxSleepDuration: maxSleep.sleepDuration,
-						maxSleepDate: maxSleep.sleepEnd,
-						avgBedtimeOffset,
-						avgWakeTimeOffset,
-						daysTracked,
-						coinsEarned,
+						...data,
 					},
 					create: {
 						userId,
 						year,
 						weekNumber,
-						weekStartDate,
-						weekEndDate,
-						totalSleepDuration,
-						avgSleepDuration,
-						minSleepDuration: minSleep.sleepDuration,
-						minSleepDate: minSleep.sleepEnd,
-						maxSleepDuration: maxSleep.sleepDuration,
-						maxSleepDate: maxSleep.sleepEnd,
-						avgBedtimeOffset,
-						avgWakeTimeOffset,
-						daysTracked,
-						sleepScoreAvg: 0,
-						coinsEarned,
+						...data,
 					},
 				});
 			}

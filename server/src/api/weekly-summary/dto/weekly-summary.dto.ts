@@ -1,10 +1,7 @@
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
-import { OmitType } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export class WeeklySummaryDto extends OmitType(DefaultFieldsDto, [
-	'updatedAt',
-] as const) {
+export class WeeklySummaryDto extends DefaultFieldsDto {
 	@Expose() userId: string;
 	@Expose() year: number;
 	@Expose() weekNumber: number;
