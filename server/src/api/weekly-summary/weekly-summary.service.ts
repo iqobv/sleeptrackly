@@ -210,16 +210,13 @@ export class WeeklySummaryService {
 				},
 			});
 
-			await this.notificationService.create(
-				{
-					userId,
-					weeklySleepSummaryId: summary.id,
-					title: 'Your Weekly Sleep Summary is here!',
-					body: 'Check out how you slept last week! Tap to view your personalized insights.',
-					type: NotificationType.WEEKLY_SUMMARY,
-				},
-				tx,
-			);
+			await this.notificationService.create({
+				userId,
+				weeklySleepSummaryId: summary.id,
+				title: 'Your Weekly Sleep Summary is here!',
+				body: 'Check out how you slept last week! Tap to view your personalized insights.',
+				type: NotificationType.WEEKLY_SUMMARY,
+			});
 
 			return plainToInstance(WeeklySummaryDto, summary);
 		});
