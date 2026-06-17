@@ -24,9 +24,9 @@ export const useSleepChart = (data: DashboardDay[]) => {
 		return {
 			day: labels[index],
 			chartValue: dayData.data
-				? Number((dayData.data.sleepDuration / 60 / 60).toFixed(1))
+				? Number((dayData.sleepDuration / 60 / 60).toFixed(1))
 				: 0,
-			tooltipValue: transform(dayData.data?.sleepDuration || 0),
+			tooltipValue: transform(dayData.sleepDuration || 0),
 			tooltipLabel: dayjs(dayData.day).format('dddd'),
 		};
 	});
