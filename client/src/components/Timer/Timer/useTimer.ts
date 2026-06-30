@@ -2,6 +2,8 @@
 
 import { getSleepStatus, updateSleepStatus } from '@/api/user/sleepStatus.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { CHART_DATE_FORMAT } from '@/constants/dateFormat.constants';
+import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
 import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
 import { useAuth } from '@/hooks/useAuth.hook';
 import { SleepEntry } from '@/types/dashboard/dashboard.types';
@@ -20,6 +22,7 @@ export const useTimer = () => {
 	const [timer, setTimer] = useState(0);
 	const [initialTime, setInitialTime] = useState<Date | null>(null);
 	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
+	const [finishTime, setFinishTime] = useState<Date | null>(null);
 	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
 
 	const { data, isLoading, isFetched } = useQuery({
@@ -33,9 +36,9 @@ export const useTimer = () => {
 		mutationFn: (dto: UserSleepStatusDto) => updateSleepStatus(dto),
 		mutationKey: QUERY_KEYS.timer.update(user?.id || ''),
 		onSuccess: (data) => {
-			if (!!data.sleepEntry) setFinishedSleep(data.sleepEntry);
+			if (data.sleepEntry) setFinishedSleep(data.sleepEntry);
 			if (data.reward && data.reward.rewarded)
-				queryClient.refetchQueries({
+				queryClient.invalidateQueries({
 					queryKey: QUERY_KEYS.coin.userCoin,
 				});
 		},
@@ -64,6 +67,7 @@ export const useTimer = () => {
 		setIsFinished(false);
 		setFormattedTimer(formatTime(0));
 		setInitialTime(new Date());
+		setFinishTime(null);
 		update({});
 	};
 
@@ -88,13 +92,36 @@ export const useTimer = () => {
 	const stopTimer = () => {
 		const now = new Date();
 
+		setFinishTime(now);
 		setIsSleeping(false);
 		setIsFinished(true);
 		setFinishedSleep(null);
-		update({
-			dateForChart: dayjs(now).format('YYYY-MM-DD'),
-		});
 		if (interval.current) clearInterval(interval.current);
+	};
+
+	const handleSaveSleep = (dto: UpdateSleepEntryDto) => {
+		const { sleepEnd, ...rest } = dto;
+
+		const dateForChart = sleepEnd
+			? dayjs(sleepEnd).format(CHART_DATE_FORMAT)
+			: finishTime
+				? dayjs(finishTime).format(CHART_DATE_FORMAT)
+				: undefined;
+
+		const finalDto: UserSleepStatusDto = {
+			...rest,
+			dateForChart,
+		};
+
+		update(finalDto);
+	};
+
+	const resumeTimer = () => {
+		if (isSleeping || !initialTime) return;
+
+		setIsSleeping(true);
+		setIsFinished(false);
+		setFinishTime(null);
 	};
 
 	return {
@@ -107,5 +134,7 @@ export const useTimer = () => {
 		isFetched,
 		startTimer,
 		stopTimer,
+		handleSaveSleep,
+		resumeTimer,
 	};
 };

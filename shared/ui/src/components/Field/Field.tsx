@@ -16,13 +16,14 @@ export const Field = ({
 	id,
 	disabled,
 	style,
+	hidden,
 }: FieldProps) => {
 	const generatedId = useId();
 	const finalId = id ?? generatedId;
 
 	return (
 		<FieldContext.Provider
-			value={{ id: finalId, error: !!error, required, disabled }}
+			value={{ id: finalId, error: !!error, required, disabled, hidden }}
 		>
 			<div className={clsx(styles.field, className)} style={style}>
 				{label && (

@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, List } from '@shared/ui';
+import { Button } from '@shared/ui';
+import { Reminder } from './Reminder/Reminder';
 import styles from './Timer.module.scss';
 import { TimerButtonLoader } from './TimerButtonLoader';
+import { TimerContent } from './TimerContent/TimerContent';
+import { TimerContentLoader } from './TimerContent/TimerContentLoader';
 import { TimerEnd } from './TimerEnd/TimerEnd';
-import { TimerLoader } from './TimerLoader';
 import { useTimer } from './useTimer';
-
-const labels = ['Hours', 'Minutes', 'Seconds'];
 
 export const Timer = () => {
 	const {
@@ -20,6 +20,8 @@ export const Timer = () => {
 		isFetched,
 		startTimer,
 		stopTimer,
+		handleSaveSleep,
+		resumeTimer,
 	} = useTimer();
 
 	const handleClick = () => {
@@ -28,27 +30,15 @@ export const Timer = () => {
 	};
 
 	return (
-		<div className={styles['timer']}>
-			<div className={styles['timer__time-container']}>
+		<div className={styles.timer}>
+			<div className={styles.timeContainer}>
 				{isLoading || !isFetched ? (
-					<TimerLoader />
+					<TimerContentLoader />
 				) : (
-					<List
-						items={formatedTimer}
-						isHorizontal
-						className={styles['timer__time-container-inner']}
-						renderItem={(time, index) => (
-							<div className={styles['timer__time-item']} key={index}>
-								<div className={styles['timer__time-item-value']}>{time}</div>
-								<p className={styles['timer__time-item-label']}>
-									{labels[index]}
-								</p>
-							</div>
-						)}
-					/>
+					<TimerContent time={formatedTimer} />
 				)}
 			</div>
-			<div className={styles['timer__control']}>
+			<div className={styles.control}>
 				{isLoading || !isFetched ? (
 					<TimerButtonLoader />
 				) : (
@@ -60,6 +50,7 @@ export const Timer = () => {
 					</>
 				)}
 			</div>
+			<Reminder />
 		</div>
 	);
 };

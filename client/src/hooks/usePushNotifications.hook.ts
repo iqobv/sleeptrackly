@@ -8,7 +8,7 @@ import {
 import { getFcmToken } from '@/utils/fcm/getFcmToken.util';
 import { useEffect, useState } from 'react';
 
-export const useSettingsNotificationsPush = () => {
+export const usePushNotifications = () => {
 	const [isPushEnabled, setIsPushEnabled] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 

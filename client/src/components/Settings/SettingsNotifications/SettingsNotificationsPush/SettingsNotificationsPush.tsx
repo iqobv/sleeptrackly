@@ -1,12 +1,11 @@
 'use client';
 
+import { usePushNotifications } from '@/hooks/usePushNotifications.hook';
 import { Loader, ToggleSwitch } from '@shared/ui';
 import { SettingsField } from '../../SettingsField/SettingsField';
-import { useSettingsNotificationsPush } from './useSettingsNotificationsPush.hook';
 
 export const SettingsNotificationsPush = () => {
-	const { isPushEnabled, isLoading, handleTogglePush } =
-		useSettingsNotificationsPush();
+	const { isPushEnabled, isLoading, handleTogglePush } = usePushNotifications();
 
 	return (
 		<SettingsField label="Enable Push Notifications" mobileDirection="row">

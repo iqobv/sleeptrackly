@@ -20,6 +20,23 @@ const eslintConfig = [
 		},
 	},
 	{
+		rules: {
+			'no-restricted-imports': [
+				'error',
+				{
+					paths: [
+						{
+							name: 'zod',
+							importNames: ['default'],
+							message:
+								"Always use named import for Zod: import { z } from 'zod'.",
+						},
+					],
+				},
+			],
+		},
+	},
+	{
 		ignores: [
 			'node_modules/**',
 			'.next/**',

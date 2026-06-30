@@ -24,9 +24,18 @@ export const Input = ({
 	inputStyle,
 	wrapperRef,
 	wrapperProps,
+	hidden,
 	...props
 }: InputProps) => {
-	const field = useField({ id, error, disabled, required });
+	const isHidden = hidden || type === 'hidden';
+
+	const field = useField({
+		id,
+		error,
+		disabled,
+		required,
+		hidden: isHidden,
+	});
 
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 	const internalRef = useRef<HTMLInputElement>(null);
@@ -35,6 +44,7 @@ export const Input = ({
 		styles.container,
 		field.error && styles.error,
 		field.disabled && styles.disabled,
+		field.hidden && styles.hidden,
 		className,
 	);
 

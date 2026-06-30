@@ -66,6 +66,7 @@ export const FormField = <D extends FieldValues>({
 			id={id}
 			className={clsx(hidden && styles.hidden, className)}
 			style={style}
+			hidden={hidden}
 		>
 			{controlledChild}
 		</Field>

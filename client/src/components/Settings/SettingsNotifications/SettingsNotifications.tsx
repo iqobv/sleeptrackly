@@ -13,7 +13,7 @@ export const SettingsNotifications = () => {
 	const { user, isAuthenticated } = useAuth();
 
 	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.notifications.settings(user ? user.id! : ''),
+		queryKey: QUERY_KEYS.notifications.settings(),
 		queryFn: getUserNotificationSettings,
 		enabled: isAuthenticated && !!user,
 	});

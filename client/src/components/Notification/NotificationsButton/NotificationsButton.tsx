@@ -19,14 +19,13 @@ export const NotificationsButton = () => {
 
 	const queryNotifications = useQuery({
 		queryFn: getNotifications,
-		queryKey: QUERY_KEYS.notifications.all(user?.id ?? ''),
+		queryKey: QUERY_KEYS.notifications.all,
 		enabled: !!user,
 		staleTime: 1000 * 60 * 5,
 	});
 
 	const { mutate } = useMutation({
 		mutationFn: markAllNotificationsAsRead,
-		mutationKey: QUERY_KEYS.notifications.markAllAsRead(user?.id ?? ''),
 		onSuccess: () => queryNotifications.refetch(),
 	});
 
