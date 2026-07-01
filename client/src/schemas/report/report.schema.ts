@@ -1,7 +1,7 @@
 import { REPORT_TITLES_OPTIONS } from '@/components/ReportModal/reportTitleOptions';
 import { REPORT_TITLES } from '@/constants/reportTitle.constats';
 import { ReportType } from '@/types/report/reportType.types';
-import z from 'zod';
+import { z } from 'zod';
 
 export const sendReportSchema = z
 	.object({

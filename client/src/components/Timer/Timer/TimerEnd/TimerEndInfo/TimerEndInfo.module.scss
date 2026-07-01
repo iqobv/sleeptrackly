@@ -1,0 +1,40 @@
+@use '../../../../../styles/mixins' as *;
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+	background-color: var(--sleep-end-time-bg);
+	border-radius: var(--border-radius);
+	padding: 0.625rem 0;
+
+	@include respond-to(md) {
+		padding: 0.625rem 1.25rem;
+	}
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	@include respond-to(md) {
+		flex-direction: row;
+	}
+}
+
+.itemContent {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.input {
+	width: 11rem;
+
+	@include respond-to(sm) {
+		width: unset;
+	}
+}

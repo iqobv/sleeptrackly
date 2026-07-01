@@ -4,4 +4,5 @@ export interface WakeUpArgs {
 	clickedAt: Date;
 	dateForChart?: string;
 	rating: number;
+	isEdited: boolean;
 }

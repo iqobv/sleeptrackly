@@ -7,7 +7,9 @@ import { Button } from '../../Button/Button';
 import { ModalPartProps } from './ModalPart.types';
 import styles from './ModalParts.module.scss';
 
-export const ModalHeader = ({ children, className = '' }: ModalPartProps) => {
+type ModalHeaderProps = Partial<ModalPartProps>;
+
+export const ModalHeader = ({ children, className = '' }: ModalHeaderProps) => {
 	return (
 		<Dialog.Title className={clsx(styles.header, className)}>
 			<div>{children}</div>

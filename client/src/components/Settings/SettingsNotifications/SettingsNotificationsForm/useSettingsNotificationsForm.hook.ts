@@ -3,8 +3,7 @@
 import { updateUserNotificationSettings } from '@/api/settings/notifications.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
-import { useAuth } from '@/hooks/useAuth.hook';
-import { SettingsNotificationsSchema } from '@/schemas/settings/settingsNotifications.schema';
+import { settingsNotificationsSchema } from '@/schemas/settings/settingsNotifications.schema';
 import { NotificationSettings } from '@/types/settings/notifications.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -19,10 +18,9 @@ export const useSettingsNotificationsForm = ({
 	data,
 }: UseSettingsNotificationsFormProps) => {
 	const queryClient = useQueryClient();
-	const { user } = useAuth();
 
 	const methods = useForm({
-		resolver: zodResolver(SettingsNotificationsSchema),
+		resolver: zodResolver(settingsNotificationsSchema),
 		defaultValues: {
 			isAchievementUnlockedEnabled: true,
 			isEmailNotificationsEnabled: true,
@@ -39,10 +37,9 @@ export const useSettingsNotificationsForm = ({
 	const { mutate } = useMutation({
 		mutationFn: (dto: UpdateNotificationSettingsDto) =>
 			updateUserNotificationSettings(dto),
-		mutationKey: QUERY_KEYS.notifications.updateSettings(user?.id ?? ''),
 		onSuccess: (updatedSettings: NotificationSettings) => {
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.notifications.settings(user?.id ?? ''),
+				queryKey: QUERY_KEYS.notifications.settings(),
 			});
 			methods.reset(updatedSettings);
 		},

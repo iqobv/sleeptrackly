@@ -2098,6 +2098,11 @@ export interface components {
             /** @example 2026-05-22 */
             dateForChart?: string;
             rating?: number;
+            /** Format: date-time */
+            sleepStart?: string;
+            /** Format: date-time */
+            sleepEnd?: string;
+            isEdited?: boolean;
         };
         UpdatedSleepRewardDto: {
             rewarded: boolean;
@@ -2884,7 +2889,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-18T15:46:24.926Z
+             * @example 2026-07-02T15:51:02.238Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2915,7 +2920,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-06-18T15:46:24.926Z
+             * @example 2026-07-02T15:51:02.238Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -4812,6 +4817,20 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UpdatedSleepStatusDto"];
+                };
+            };
+            /** @description Invalid time range */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
                 };
             };
             /** @description Unauthorized */

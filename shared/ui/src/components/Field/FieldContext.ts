@@ -10,6 +10,7 @@ export const useField = ({
 	disabled,
 	error,
 	required,
+	hidden,
 }: FieldContextValue): FieldContextValue => {
 	const context = useContext(FieldContext);
 
@@ -18,5 +19,6 @@ export const useField = ({
 		disabled: disabled ?? context?.disabled,
 		error: error ?? context?.error,
 		required: required ?? context?.required,
+		hidden: hidden ?? context?.hidden,
 	};
 };

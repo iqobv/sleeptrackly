@@ -55,11 +55,8 @@ export const QUERY_KEYS = {
 		send: ['sendReport'] as const,
 	},
 	notifications: {
-		all: (userId: string) => ['notifications', userId] as const,
-		settings: (userId: string) => ['notificationSettings', userId] as const,
-		updateSettings: (userId: string) =>
-			['updateNotificationSettings', userId] as const,
-		markAllAsRead: (userId: string) => ['markAllAsRead', userId] as const,
+		all: ['notifications'] as const,
+		settings: () => ['notifications', 'settings'] as const,
 	},
 	inventory: {
 		all: (userId: string, page: number) => ['inventory', userId, page] as const,

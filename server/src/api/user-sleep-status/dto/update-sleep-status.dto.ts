@@ -1,4 +1,14 @@
-import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { IsBefore } from '@libs/validators/is-before.validator';
+import { Type } from 'class-transformer';
+import {
+	IsBoolean,
+	IsDate,
+	IsNumber,
+	IsOptional,
+	IsString,
+	Max,
+	Min,
+} from 'class-validator';
 
 export class UpdateUserSleepStatusDto {
 	/** @example '2026-05-22' */
@@ -11,4 +21,19 @@ export class UpdateUserSleepStatusDto {
 	@Min(0)
 	@Max(5)
 	rating?: number;
+
+	@IsOptional()
+	@Type(() => Date)
+	@IsDate()
+	@IsBefore('sleepEnd')
+	sleepStart?: Date;
+
+	@IsOptional()
+	@Type(() => Date)
+	@IsDate()
+	sleepEnd?: Date;
+
+	@IsOptional()
+	@IsBoolean()
+	isEdited?: boolean;
 }
