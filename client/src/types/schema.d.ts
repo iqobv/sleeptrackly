@@ -2102,6 +2102,7 @@ export interface components {
             sleepStart?: string;
             /** Format: date-time */
             sleepEnd?: string;
+            isEdited?: boolean;
         };
         UpdatedSleepRewardDto: {
             rewarded: boolean;
@@ -2888,7 +2889,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-01T17:37:10.711Z
+             * @example 2026-07-02T15:51:02.238Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2919,7 +2920,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-01T17:37:10.711Z
+             * @example 2026-07-02T15:51:02.238Z
              */
             expiresAt?: string;
             /** @example 0 */

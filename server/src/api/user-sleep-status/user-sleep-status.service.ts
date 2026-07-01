@@ -153,8 +153,6 @@ export class UserSleepStatusService {
 		let reward: UpdatedSleepRewardDto | null = null;
 
 		if (isSleeping && sleepStart) {
-			const isEdited = Boolean(customSleepStart || sleepEnd);
-
 			const finalSleepStart = customSleepStart ?? sleepStart;
 			const finalSleepEnd = sleepEnd ?? serverNow;
 
@@ -162,6 +160,14 @@ export class UserSleepStatusService {
 				throw new BadRequestException(
 					ERROR_MESSAGES.SLEEP_ENTRY.INVALID_TIME_RANGE,
 				);
+
+			const timeDiffHours =
+				Math.abs(serverNow.getTime() - finalSleepEnd.getTime()) /
+				(1000 * 60 * 60);
+
+			const isEdited = Boolean(
+				customSleepStart || dto.isEdited || timeDiffHours > 2,
+			);
 
 			const result = await this.handleWakeUp({
 				userId,

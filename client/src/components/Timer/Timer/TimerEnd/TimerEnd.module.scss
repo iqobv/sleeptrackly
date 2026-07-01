@@ -1,6 +1,17 @@
-.timer__end {
+@use '../../../../styles/mixins' as *;
+
+.modalContent {
+	max-width: 90%;
+	width: 100%;
+
+	@include respond-to(md) {
+		max-width: 35rem;
+	}
+}
+
+.modalFooter {
 	display: flex;
 	flex-direction: column;
-	gap: 0.3125rem;
+	gap: var(--gap);
 	align-items: center;
 }

@@ -1,6 +1,7 @@
 import { IsBefore } from '@libs/validators/is-before.validator';
 import { Type } from 'class-transformer';
 import {
+	IsBoolean,
 	IsDate,
 	IsNumber,
 	IsOptional,
@@ -31,4 +32,8 @@ export class UpdateUserSleepStatusDto {
 	@Type(() => Date)
 	@IsDate()
 	sleepEnd?: Date;
+
+	@IsOptional()
+	@IsBoolean()
+	isEdited?: boolean;
 }

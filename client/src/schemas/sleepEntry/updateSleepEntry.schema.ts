@@ -15,10 +15,21 @@ export const validateDateRange = (
 	}
 };
 
+const localDatetimeToIso = z
+	.string()
+	.refine((val) => val === '' || !isNaN(Date.parse(val)), {
+		message: 'Invalid date',
+	})
+	.transform((val) => (val === '' ? undefined : new Date(val).toISOString()));
+
 export const updateSleepEntrySchema = z
 	.object({
-		rating: z.coerce.number().min(1).max(5),
-		sleepStart: z.iso.datetime().optional(),
-		sleepEnd: z.iso.datetime().optional(),
+		rating: z.coerce
+			.number()
+			.min(1, { error: 'Rating must be greater than or equal to 1' })
+			.max(5, { error: 'Rating must be less than or equal to 5' }),
+		sleepStart: localDatetimeToIso.optional(),
+		sleepEnd: localDatetimeToIso.optional(),
+		isEdited: z.boolean().optional(),
 	})
 	.superRefine((data, ctx) => validateDateRange(data, ctx));
