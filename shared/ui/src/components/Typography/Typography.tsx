@@ -1,10 +1,11 @@
 import clsx from 'clsx';
+import { ElementType } from 'react';
 import { defaultElementMapping, defaultWeights } from './defaults';
 import styles from './styles/Typography.module.scss';
 import { TypographyProps } from './Typography.types';
 import { typographyVariants } from './typographyVariants';
 
-export const Typography = ({
+export const Typography = <C extends ElementType = 'p'>({
 	children,
 	variant = 'body1',
 	as,
@@ -16,9 +17,9 @@ export const Typography = ({
 	className,
 	style,
 	...rest
-}: TypographyProps) => {
-	const Component = as || defaultElementMapping[variant || 'body1'];
-
+}: TypographyProps<C>) => {
+	const Component = (as ||
+		defaultElementMapping[variant || 'body1']) as ElementType;
 	const appliedWeight = weight || defaultWeights[variant || 'body1'];
 
 	const typographyStyle = maxLines

@@ -1,12 +1,12 @@
 import { VariantProps } from 'class-variance-authority';
-import { ElementType, HTMLAttributes, ReactNode } from 'react';
+import { ComponentProps, ElementType, ReactNode } from 'react';
 import { typographyVariants } from './typographyVariants';
 
 export type TypographyVariants = VariantProps<typeof typographyVariants>;
 
-export interface TypographyProps
-	extends Omit<HTMLAttributes<HTMLElement>, 'color'>, TypographyVariants {
+export type TypographyProps<C extends ElementType = 'p'> = {
+	as?: C;
 	children: ReactNode;
-	as?: ElementType;
 	maxLines?: number;
-}
+} & Omit<ComponentProps<C>, 'color' | 'as'> &
+	TypographyVariants;

@@ -1,4 +1,4 @@
-import { Grid, SectionHeader, SkeletonLoader } from '@shared/ui';
+import { Grid, SectionHeaderLoader } from '@shared/ui';
 import { AchievementItemLoader } from './AchievementItem/AchievementItemLoader';
 
 export const AchievementsListLoader = () => {
@@ -13,11 +13,10 @@ export const AchievementsListLoader = () => {
 
 export const AchievementsPageLoader = () => (
 	<>
-		<SectionHeader
-			title={<SkeletonLoader width="16.5rem" height="3rem" />}
-			titleProps={{ as: 'div' }}
-			description={<SkeletonLoader width="10rem" height="1.5rem" />}
-			descriptionProps={{ as: 'div' }}
+		<SectionHeaderLoader
+			titleWidth={250}
+			descriptionHeight={160}
+			hasDescription
 		/>
 		<AchievementsListLoader />
 	</>

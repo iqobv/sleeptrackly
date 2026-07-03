@@ -121,6 +121,7 @@ export const useTimer = () => {
 
 		const finalDto: UserSleepStatusDto = {
 			...rest,
+			sleepEnd,
 			dateForChart,
 		};
 

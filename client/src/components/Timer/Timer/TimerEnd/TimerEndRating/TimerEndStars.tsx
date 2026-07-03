@@ -39,7 +39,7 @@ export const TimerEndStars = () => {
 						type="button"
 						className={styles.starButton}
 					>
-						{rating >= value || hover >= value ? (
+						{(rating ?? 0) >= value || hover >= value ? (
 							<MdOutlineStar {...iconProps} />
 						) : (
 							<MdOutlineStarBorder {...iconProps} />

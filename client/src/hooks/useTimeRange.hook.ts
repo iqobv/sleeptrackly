@@ -1,31 +1,22 @@
 'use client';
 
-import { useFormatLocaleTime } from '@shared/hooks';
+import { formatTimeRange, type IsoDate } from '@/utils/dateFomatter.util';
+import { useCallback } from 'react';
 
-type DateType = string | Date;
-
-interface UseTimeRangeReturn {
-	raw: {
-		start: string;
-		end: string;
-	};
-	formatted: string;
+interface TimeRange {
+	start: string;
+	end: string;
 }
 
-export const useTimeRange = (
-	startDate: DateType,
-	endDate: DateType,
-): UseTimeRangeReturn => {
-	const formatTime = useFormatLocaleTime();
+export const useTimeRange = () => {
+	const getRange = useCallback((start: IsoDate, end: IsoDate): TimeRange => {
+		const [startTime, endTime] = formatTimeRange(start, end);
 
-	const startTime = formatTime(startDate);
-	const endTime = formatTime(endDate);
-
-	return {
-		raw: {
+		return {
 			start: startTime,
 			end: endTime,
-		},
-		formatted: `${startTime} - ${endTime}`,
-	};
+		};
+	}, []);
+
+	return { getRange };
 };

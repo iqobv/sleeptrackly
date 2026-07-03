@@ -1,5 +1,6 @@
 import { Challenge } from '@/types/challenge/challenge.types';
-import { capitalize, formatDateTime } from '@shared/utils';
+import { capitalize } from '@shared/utils';
+import { formatDate } from '@shared/utils/formatDateTime.util';
 
 export interface ChallengeInfoField {
 	name: string;
@@ -11,11 +12,11 @@ export const CHALLENGE_INFO_FIELDS = (
 ): ChallengeInfoField[] => [
 	{
 		name: 'Start date',
-		value: formatDateTime(new Date(data.startDate)),
+		value: formatDate(new Date(data.startDate)),
 	},
 	{
 		name: 'End date',
-		value: formatDateTime(new Date(data.endDate)),
+		value: formatDate(new Date(data.endDate)),
 	},
 	{
 		name: 'Frequency',

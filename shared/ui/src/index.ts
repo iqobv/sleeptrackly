@@ -64,6 +64,7 @@ export { PaginationLoader } from './components/Pagination/PaginationLoader';
 
 export { SectionHeader } from './components/SectionHeader/SectionHeader';
 export type { SectionHeaderProps } from './components/SectionHeader/SectionHeader.types';
+export { SectionHeaderLoader } from './components/SectionHeader/SectionHeaderLoader';
 
 export { Select } from './components/Select/Select';
 export type {

@@ -2095,7 +2095,7 @@ export interface components {
             updatedAt: string;
         };
         UpdateUserSleepStatusDto: {
-            /** @example 2026-05-22 */
+            /** @example 2026-05-2@Min(0)2 */
             dateForChart?: string;
             rating?: number;
             /** Format: date-time */
@@ -2889,7 +2889,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-02T15:51:02.238Z
+             * @example 2026-07-04T11:34:28.628Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2920,7 +2920,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-02T15:51:02.238Z
+             * @example 2026-07-04T11:34:28.628Z
              */
             expiresAt?: string;
             /** @example 0 */
