@@ -16,7 +16,7 @@ export const useQrCodeModal = () => {
 
 	const { data, isLoading, error, refetch } = useQuery({
 		queryFn: initiateQrCode,
-		queryKey: QUERY_KEYS.auth.generateQr,
+		queryKey: QUERY_KEYS.auth.generateQr(),
 		staleTime: Infinity,
 		gcTime: 0,
 	});

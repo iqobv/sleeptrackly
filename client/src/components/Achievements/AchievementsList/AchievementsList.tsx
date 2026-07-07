@@ -10,7 +10,7 @@ import { AchievementsListLoader } from './AchievementsListLoader';
 
 export const AchievementsList = () => {
 	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.achievement.all,
+		queryKey: QUERY_KEYS.achievement.list(),
 		queryFn: getAllAchievements,
 	});
 

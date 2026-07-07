@@ -1,7 +1,6 @@
 'use client';
 
 import { sendEmailForResetPassword } from '@/api/auth/password.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { EmailDto } from '@/dto/auth/password.dto';
 import { emailSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -27,7 +26,6 @@ export const EmailField = () => {
 
 	const { mutate, isSuccess, isPending } = useMutation({
 		mutationFn: ({ email }: EmailDto) => sendEmailForResetPassword(email),
-		mutationKey: QUERY_KEYS.auth.sendEmailForResetPassword,
 	});
 
 	const onSubmit = (data: EmailDto) => mutate(data);

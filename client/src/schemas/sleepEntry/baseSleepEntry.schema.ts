@@ -13,6 +13,16 @@ export const validateDateRange = (
 			});
 		}
 	}
+
+	if (data.sleepEnd) {
+		if (new Date(data.sleepEnd) > new Date()) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'sleepEnd cannot be in the future',
+				path: ['sleepEnd'],
+			});
+		}
+	}
 };
 
 const localDatetimeToIso = z

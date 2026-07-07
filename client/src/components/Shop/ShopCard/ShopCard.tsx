@@ -25,7 +25,6 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => makePurchase(product.id),
-		mutationKey: QUERY_KEYS.shop.makePurchase(product.id),
 		onMutate: () => {
 			setIsOwned(true);
 		},

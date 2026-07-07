@@ -1,15 +1,15 @@
 'use client';
 
-import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
+import { CreateSleepEntryFormDto } from '@/dto/sleepEntry/sleepEntry.dto';
 import { Typography } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
-import styles from './TimerEndRating.module.scss';
-import { TimerEndStars } from './TimerEndStars';
+import styles from './SleepEntryRating.module.scss';
+import { SleepEntryRatingStars } from './SleepEntryRatingStars';
 
-export const TimerEndRating = () => {
+export const SleepEntryRating = () => {
 	const {
 		formState: { errors },
-	} = useFormContext<UpdateSleepEntryDto>();
+	} = useFormContext<CreateSleepEntryFormDto>();
 
 	const hasError = !!errors.rating;
 
@@ -18,7 +18,7 @@ export const TimerEndRating = () => {
 			<Typography as="p" variant="h4" color="secondary" align="center">
 				Rate Your Sleep
 			</Typography>
-			<TimerEndStars />
+			<SleepEntryRatingStars />
 			{hasError && (
 				<Typography as="p" variant="body2" color="error" align="center">
 					{errors.rating?.message}

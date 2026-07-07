@@ -9,7 +9,8 @@ import clsx from 'clsx';
 import React, { useMemo, useState } from 'react';
 import { MdAdd, MdOutlineExpandMore } from 'react-icons/md';
 import styles from './DashboardSleepSessionCard.module.scss';
-import { DashboardSleepSessionCardDropdown } from './DashboardSleepSessionCardDropdown';
+import { DashboardSleepSessionCardDropdown } from './DashboardSleepSessionCardDropdown/DashboardSleepSessionCardDropdown';
+import { SleepSessionCreate } from './DashboardSleepSessionCardDropdown/SleepSessionCreate';
 
 interface DashboardSleepSessionCardProps {
 	moreThanOneEntry?: boolean;
@@ -67,10 +68,10 @@ export const DashboardSleepSessionCard = ({
 						</Button>
 					) : (
 						<DashboardSleepSessionCardDropdown
-							id={data?.data[0]?.id}
 							date={day}
 							showAddButton
 							isEmpty={!hasData}
+							sleepEntry={data.data[0]}
 						/>
 					)}
 				</div>
@@ -92,19 +93,21 @@ export const DashboardSleepSessionCard = ({
 										</Typography>
 									</div>
 									<DashboardSleepSessionCardDropdown
-										id={entry.id}
 										date={day}
 										isEmpty={false}
+										sleepEntry={entry}
 									/>
 								</div>
 								<Divider />
 							</React.Fragment>
 						))}
 						<div className={styles.entry}>
-							<Button variant="text" fullWidth>
-								<MdAdd size={22} />
-								Add Sleep Session
-							</Button>
+							<SleepSessionCreate date={day}>
+								<Button variant="text" fullWidth>
+									<MdAdd size={22} />
+									Add Sleep Session
+								</Button>
+							</SleepSessionCreate>
 						</div>
 					</div>
 				</DashboardCard>

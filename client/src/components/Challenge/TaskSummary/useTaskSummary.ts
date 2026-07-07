@@ -51,11 +51,10 @@ export const useTaskSummary = ({
 			taskId: string;
 			data: ChallengeTaskDto;
 		}) => updateTask(challengeId, taskId, data),
-		mutationKey: QUERY_KEYS.challenges.markTaskAsCompleted(task?.id || ''),
 		onSuccess: () => {
 			toast.success('Task marked as completed');
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.challenges.one(challenge.id),
+				queryKey: QUERY_KEYS.challenges.detail(challenge.id),
 			});
 		},
 		onError: (error) => {

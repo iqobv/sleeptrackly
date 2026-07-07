@@ -10,3 +10,10 @@ export const updateSleepEntryObject = baseSleepEntrySchema.partial().extend({
 
 export const updateSleepEntrySchema =
 	updateSleepEntryObject.superRefine(validateDateRange);
+
+export const updateSleepEntryFormSchema = updateSleepEntryObject
+	.omit({
+		dateForChart: true,
+		isEdited: true,
+	})
+	.superRefine(validateDateRange);

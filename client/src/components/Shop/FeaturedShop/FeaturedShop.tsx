@@ -14,7 +14,7 @@ import { FeaturedShopSections } from './FeaturedShopSections/FeaturedShopSection
 export const FeaturedShop = () => {
 	const { data, isLoading } = useQuery({
 		queryFn: () => getFeaturedShop({ language: 'en' }),
-		queryKey: QUERY_KEYS.shop.featured,
+		queryKey: QUERY_KEYS.shop.featured(),
 	});
 
 	return (

@@ -6,7 +6,6 @@ import {
 } from '@/api/friend/friend.api';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -14,19 +13,15 @@ import { useRouter } from 'next/navigation';
 export const usePendingsList = () => {
 	const router = useRouter();
 
-	const { user } = useAuth();
-
 	const { data, refetch } = useQuery({
 		queryFn: getPendingFriendRequests,
-		queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
+		queryKey: QUERY_KEYS.friends.pendings(),
 		staleTime: 0,
-		enabled: !!user?.id,
 	});
 
 	const { mutate: mutateMany } = useMutation({
 		mutationFn: ({ status }: { status: FriendStatus }) =>
 			updateManyPendingRequests(status),
-		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
 		onSuccess: () => {
 			refetch();
 			router.push(PRIVATE_PAGES.FRIENDS.ALL);

@@ -1,5 +1,6 @@
 'use client';
 
+import { SleepEntry } from '@/types/dashboard/dashboard.types';
 import {
 	Button,
 	Dropdown,
@@ -8,25 +9,28 @@ import {
 	DropdownTrigger,
 } from '@shared/ui';
 import { FaEllipsisVertical } from 'react-icons/fa6';
-import styles from './DashboardSleepSessionCard.module.scss';
+import styles from './DashboardSleepSessionCardDropdown.module.scss';
+import { SleepSessionCreate } from './SleepSessionCreate';
+import { SleepSessionDelete } from './SleepSessionDelete';
+import { SleepSessionEdit } from './SleepSessionEdit';
 
 interface DashboardSleepSessionCardDropdownProps {
-	id?: string;
 	showAddButton?: boolean;
-	date?: Date;
+	date: Date;
 	isEmpty?: boolean;
+	sleepEntry?: SleepEntry;
 }
 
 export const DashboardSleepSessionCardDropdown = ({
-	id,
 	showAddButton = false,
 	date,
 	isEmpty = false,
+	sleepEntry,
 }: DashboardSleepSessionCardDropdownProps) => {
 	const now = new Date();
 	const isFuture = date ? date > now : false;
 
-	const finalShowAddButton = !isFuture && (showAddButton || !id);
+	const finalShowAddButton = !isFuture && (showAddButton || !sleepEntry?.id);
 
 	if (isFuture) return null;
 
@@ -40,22 +44,24 @@ export const DashboardSleepSessionCardDropdown = ({
 			<DropdownContent align="end">
 				{finalShowAddButton && (
 					<DropdownItem asChild>
-						<Button variant="text" className={styles.button}>
-							Add Sleep Session
-						</Button>
+						<SleepSessionCreate date={date}>
+							<Button variant="text" className={styles.button}>
+								Add Sleep Session
+							</Button>
+						</SleepSessionCreate>
 					</DropdownItem>
 				)}
-				{!isEmpty && (
+				{!isEmpty && sleepEntry && (
 					<>
 						<DropdownItem asChild>
-							<Button variant="text" className={styles.button}>
-								Edit Sleep Session
-							</Button>
+							<SleepSessionEdit date={date} sleepEntry={sleepEntry}>
+								<Button variant="text" className={styles.button}>
+									Edit Sleep Session
+								</Button>
+							</SleepSessionEdit>
 						</DropdownItem>
 						<DropdownItem asChild>
-							<Button variant="text" color="danger" className={styles.button}>
-								Delete Sleep Session
-							</Button>
+							<SleepSessionDelete sleepEntry={sleepEntry} date={date} />
 						</DropdownItem>
 					</>
 				)}

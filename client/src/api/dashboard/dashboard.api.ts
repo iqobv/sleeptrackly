@@ -1,14 +1,20 @@
 import { DashboardQueryDto } from '@/dto/dashboard/dashboard.dto';
 import { paths } from '@/types/schema';
-import { apiClient } from '../axios';
+import { apiClient, apiServer } from '../axios';
 
-type GetStatisticsByWeekForUserResponse =
+type GetDashboadResponse =
 	paths['/v1/sleep-entries/me']['get']['responses']['200']['content']['application/json'];
 
-export const getStatisticsByWeekForUser = async (query: DashboardQueryDto) =>
+export const getDashboard = async (query: DashboardQueryDto) =>
 	(
-		await apiClient.get<GetStatisticsByWeekForUserResponse>(
-			`/v1/sleep-entries/me`,
-			{ params: query },
-		)
+		await apiClient.get<GetDashboadResponse>(`/v1/sleep-entries/me`, {
+			params: query,
+		})
+	).data;
+
+export const getServerDashboard = async (query: DashboardQueryDto) =>
+	(
+		await apiServer.get<GetDashboadResponse>(`/v1/sleep-entries/me`, {
+			params: query,
+		})
 	).data;

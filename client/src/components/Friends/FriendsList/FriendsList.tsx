@@ -3,7 +3,6 @@
 import { getAllFriends } from '@/api/friend/friend.api';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { Button, List, SectionHeader } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -11,12 +10,9 @@ import { FriendItem } from './FriendItem/FriendItem';
 import styles from './FriendsList.module.scss';
 
 export const FriendsList = () => {
-	const { user } = useAuth();
-
 	const { data } = useQuery({
-		queryKey: QUERY_KEYS.friends.all(user?.id || ''),
+		queryKey: QUERY_KEYS.friends.list(),
 		queryFn: getAllFriends,
-		enabled: !!user?.id,
 	});
 
 	return (
@@ -27,7 +23,7 @@ export const FriendsList = () => {
 					variant: 'h3',
 				}}
 			/>
-			{data && user && (
+			{data && (
 				<>
 					<Button variant="outlined" asChild>
 						<Link href={PRIVATE_PAGES.FRIENDS.REQUESTS}>

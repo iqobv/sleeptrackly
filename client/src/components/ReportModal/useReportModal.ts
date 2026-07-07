@@ -1,5 +1,4 @@
 import { sendReport } from '@/api/report/report.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { REPORT_TITLES } from '@/constants/reportTitle.constats';
 import { SendReportDto, SendReportFormValues } from '@/dto/report/report.dto';
 import { sendReportSchema } from '@/schemas/report/report.schema';
@@ -54,7 +53,6 @@ export const useReportModal = ({
 
 	const { mutate } = useMutation({
 		mutationFn: (data: SendReportDto) => sendReport(data),
-		mutationKey: QUERY_KEYS.report.send,
 		onSuccess: () => {
 			toast.success('Report sent');
 			handleOpenChange(false);

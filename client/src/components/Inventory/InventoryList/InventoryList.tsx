@@ -17,7 +17,7 @@ export const InventoryList = () => {
 	const { user } = useAuth();
 
 	const { data, isLoading, refetch } = useQuery({
-		queryKey: QUERY_KEYS.inventory.all(user ? user.id : '', currentPage),
+		queryKey: QUERY_KEYS.inventory.list(currentPage),
 		queryFn: () =>
 			getInventory({ page: currentPage, limit: 20, language: 'en' }),
 		placeholderData: keepPreviousData,

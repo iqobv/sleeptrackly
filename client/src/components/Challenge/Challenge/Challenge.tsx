@@ -15,7 +15,7 @@ interface ChallengeProps {
 
 export const Challenge = ({ id }: ChallengeProps) => {
 	const { data: challenge, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.challenges.one(id),
+		queryKey: QUERY_KEYS.challenges.detail(id),
 		queryFn: () => getChallengeById(id),
 		enabled: !!id,
 	});

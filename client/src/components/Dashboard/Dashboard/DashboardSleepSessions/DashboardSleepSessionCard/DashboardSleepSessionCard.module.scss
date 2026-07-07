@@ -9,10 +9,14 @@
 
 		.entriesContainer {
 			grid-template-rows: 1fr;
-			padding: 1rem;
+			padding: 1rem !important;
 			margin-top: var(--gap);
 		}
 	}
+}
+
+.icon {
+	transition: transform 0.3s ease;
 }
 
 .card {
@@ -31,7 +35,7 @@
 .entriesContainer {
 	display: grid;
 	grid-template-rows: 0fr;
-	padding: 0 1rem;
+	padding: 0 1rem !important;
 	margin-top: 0;
 	transition:
 		grid-template-rows 0.3s ease,
@@ -58,10 +62,4 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 0.5rem 0;
-}
-
-button.button {
-	padding: 0.7rem;
-	width: 100%;
-	justify-content: start;
 }

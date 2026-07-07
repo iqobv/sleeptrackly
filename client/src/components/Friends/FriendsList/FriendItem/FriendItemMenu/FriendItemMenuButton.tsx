@@ -1,7 +1,6 @@
 'use client';
 
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { Friend } from '@/types/friend/friend.types';
 import { Button, DropdownItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -14,15 +13,13 @@ interface FriendItemMenuProps {
 }
 
 export const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
-	const { user } = useAuth();
-
 	const queryClient = useQueryClient();
 
 	const { mutate } = useMutation({
 		mutationFn: item.mutationFn,
 		onSuccess: () => {
 			queryClient.refetchQueries({
-				queryKey: QUERY_KEYS.friends.all(user?.id || ''),
+				queryKey: QUERY_KEYS.friends.list(),
 			});
 			toast.success(item.successText);
 		},

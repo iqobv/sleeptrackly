@@ -3,7 +3,6 @@
 import { changePassword, needOldPassword } from '@/api/auth/password.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { ChangePasswordDto } from '@/dto/auth/password.dto';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { changePasswordSchema } from '@/schemas/auth/changePassword.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input, Loader } from '@shared/ui';
@@ -21,7 +20,6 @@ interface ChangePasswordFormProps {
 export const ChangePasswordForm = ({
 	handleClose,
 }: ChangePasswordFormProps) => {
-	const { user } = useAuth();
 	const router = useRouter();
 
 	const {
@@ -39,14 +37,13 @@ export const ChangePasswordForm = ({
 
 	const { data, isFetched, isLoading } = useQuery<boolean>({
 		queryFn: needOldPassword,
-		queryKey: QUERY_KEYS.auth.needOldPassword(user?.id || ''),
-		enabled: !!user?.id,
+		queryKey: QUERY_KEYS.auth.needOldPassword(),
+		staleTime: 0,
 	});
 
 	const { mutate } = useMutation({
 		mutationFn: ({ oldPassword, newPassword }: ChangePasswordDto) =>
 			changePassword({ oldPassword, newPassword }),
-		mutationKey: QUERY_KEYS.auth.changePassword(user?.id || ''),
 		onSuccess() {
 			reset();
 			toast.success('Password changed');
