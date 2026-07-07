@@ -14,7 +14,7 @@ export const Challenges = () => {
 	const { user } = useAuth();
 
 	const { data: challenges, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
+		queryKey: QUERY_KEYS.challenges.list(),
 		queryFn: getChallenges,
 		enabled: !!user?.id,
 	});

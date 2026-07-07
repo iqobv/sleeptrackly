@@ -3,7 +3,6 @@
 import { deleteChallenge } from '@/api/challenge/challenge.api';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { Button, ConfirmModal, SectionHeader } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,17 +23,15 @@ const iconProps: IconBaseProps = {
 
 export const ChallengeSummary = ({ data }: ChallengeSummaryProps) => {
 	const [open, setOpen] = useState(false);
-	const { user } = useAuth();
 	const queryClient = useQueryClient();
 
 	const router = useRouter();
 
 	const { mutate } = useMutation({
 		mutationFn: () => deleteChallenge(data?.id),
-		mutationKey: QUERY_KEYS.challenges.deleteChallenge(data?.id),
 		onSuccess() {
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
+				queryKey: QUERY_KEYS.challenges.all,
 			});
 			router.push(PRIVATE_PAGES.CHALLENGES.ALL);
 		},

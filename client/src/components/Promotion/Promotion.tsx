@@ -6,12 +6,14 @@ import { UsePromotionDto } from '@/dto/promotion/promotion.dto';
 import { usePromotionSchema } from '@/schemas/promotion/promotion.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input, SectionHeader } from '@shared/ui';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './Promotion.module.scss';
 
 export const Promotion = () => {
+	const queryClient = useQueryClient();
+
 	const {
 		register,
 		handleSubmit,
@@ -24,10 +26,18 @@ export const Promotion = () => {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UsePromotionDto) => usePromotion(data),
-		mutationKey: QUERY_KEYS.promotion.use,
 		onSuccess: () => {
 			toast.success('Promo code applied successfully!');
 			reset({ alias: '' });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.coin.userCoin,
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.inventory.lists(),
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.shop.all,
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Failed to apply promo code.');

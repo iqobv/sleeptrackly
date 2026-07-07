@@ -3,7 +3,6 @@
 import { validateVerificationToken } from '@/api/auth/token.api';
 import { AUTH_PAGES } from '@/config/authPages.config';
 import { PAGES } from '@/config/pages.config';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useAuth } from '@/hooks/useAuth.hook';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -22,10 +21,6 @@ export const EmailConfirmation = () => {
 	const { mutate, isSuccess, isPending } = useMutation({
 		mutationFn: ({ token }: { token: string }) =>
 			validateVerificationToken(token),
-		mutationKey: QUERY_KEYS.auth.validateVerificationToken(
-			user?.id || '',
-			token,
-		),
 		onSuccess: () => {
 			router.refresh();
 			toast.success('Email confirmed');

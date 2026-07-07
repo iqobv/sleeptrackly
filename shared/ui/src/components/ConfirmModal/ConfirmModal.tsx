@@ -20,9 +20,7 @@ export const ConfirmModal = ({
 		<Modal open={isOpen} onOpenChange={onClose}>
 			<ModalContent className={styles.confirmModal}>
 				<ModalHeader>{title}</ModalHeader>
-				<ModalBody>
-					<p>{text}</p>
-				</ModalBody>
+				<ModalBody>{text}</ModalBody>
 				<ModalFooter className={styles.footer}>
 					<ModalClose asChild>
 						<Button variant="outlined">Cancel</Button>

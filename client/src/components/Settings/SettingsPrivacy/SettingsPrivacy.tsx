@@ -13,7 +13,7 @@ import { SETTINGS_PRIVACY_FIELDS } from './settingsPrivacyFields';
 
 export const SettingsPrivacy = () => {
 	const { data, refetch } = useQuery({
-		queryKey: QUERY_KEYS.privacy.get,
+		queryKey: QUERY_KEYS.privacy.settings(),
 		queryFn: getUserPrivacySettings,
 	});
 

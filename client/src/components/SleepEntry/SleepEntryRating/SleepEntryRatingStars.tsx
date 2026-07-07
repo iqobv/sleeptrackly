@@ -1,22 +1,22 @@
 'use client';
 
-import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
+import { CreateSleepEntryFormDto } from '@/dto/sleepEntry/sleepEntry.dto';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { IconBaseProps } from 'react-icons';
 import { MdOutlineStar, MdOutlineStarBorder } from 'react-icons/md';
-import styles from './TimerEndRating.module.scss';
+import styles from './SleepEntryRating.module.scss';
 
 const iconProps: IconBaseProps = {
 	size: 24,
 	color: 'var(--sleep-end-star-color)',
 };
 
-export const TimerEndStars = () => {
+export const SleepEntryRatingStars = () => {
 	const [hover, setHover] = useState(0);
 
 	const { watch, setValue, clearErrors } =
-		useFormContext<UpdateSleepEntryDto>();
+		useFormContext<CreateSleepEntryFormDto>();
 
 	const rating = watch('rating');
 
@@ -39,7 +39,7 @@ export const TimerEndStars = () => {
 						type="button"
 						className={styles.starButton}
 					>
-						{rating >= value || hover >= value ? (
+						{(rating ?? 0) >= value || hover >= value ? (
 							<MdOutlineStar {...iconProps} />
 						) : (
 							<MdOutlineStarBorder {...iconProps} />

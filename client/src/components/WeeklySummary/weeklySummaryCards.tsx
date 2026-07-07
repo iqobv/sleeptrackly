@@ -1,8 +1,10 @@
 'use client';
 
 import { WeeklySummary } from '@/types/weeklySummary/weeklySummary.types';
-import { useTransformSecondsToHours } from '@shared/hooks';
-import { formatUtcOffsetToLocalTime } from '@shared/utils';
+import {
+	formatUtcOffsetToLocalTime,
+	transformSecondsToHours,
+} from '@shared/utils';
 import dayjs from 'dayjs';
 import { IconType } from 'react-icons';
 import {
@@ -25,12 +27,12 @@ export const WEEKLY_SUMMARY_CARDS = (
 ): WeeklySummaryCard[] => [
 	{
 		label: 'Total Sleep Time',
-		value: useTransformSecondsToHours(data.totalSleepDuration),
+		value: transformSecondsToHours(data.totalSleepDuration),
 		icon: MdTimelapse,
 	},
 	{
 		label: 'Average Sleep Time',
-		value: useTransformSecondsToHours(data.avgSleepDuration),
+		value: transformSecondsToHours(data.avgSleepDuration),
 		icon: MdInfoOutline,
 	},
 	{
@@ -47,7 +49,7 @@ export const WEEKLY_SUMMARY_CARDS = (
 		label: 'Longest Sleep',
 		value: (
 			<>
-				<p>{useTransformSecondsToHours(data.maxSleepDuration)}</p>
+				<p>{transformSecondsToHours(data.maxSleepDuration)}</p>
 				{data.maxSleepDate && (
 					<span>on {dayjs(data.maxSleepDate).format('dddd')}</span>
 				)}
@@ -59,7 +61,7 @@ export const WEEKLY_SUMMARY_CARDS = (
 		label: 'Shortest Sleep',
 		value: (
 			<>
-				<p>{useTransformSecondsToHours(data.minSleepDuration)}</p>
+				<p>{transformSecondsToHours(data.minSleepDuration)}</p>
 				{data.minSleepDate && (
 					<span>on {dayjs(data.minSleepDate).format('dddd')}</span>
 				)}

@@ -44,7 +44,7 @@ export const useAllShop = () => {
 	}, [urlFilters]);
 
 	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.shop.allProducts(JSON.stringify(apiFilters)),
+		queryKey: QUERY_KEYS.shop.catalog(apiFilters),
 		queryFn: () => getAllShop(apiFilters),
 	});
 

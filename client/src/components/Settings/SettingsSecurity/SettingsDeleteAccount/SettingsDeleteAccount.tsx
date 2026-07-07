@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteAccount } from '@/api/auth/auth.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { ConfirmModal } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -17,7 +16,6 @@ export const SettingsDeleteAccount = () => {
 
 	const { mutate } = useMutation({
 		mutationFn: deleteAccount,
-		mutationKey: QUERY_KEYS.auth.deleteAccount,
 		onSuccess() {
 			router.refresh();
 		},

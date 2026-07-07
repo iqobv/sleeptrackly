@@ -4,7 +4,6 @@ import { changeRequestStatus } from '@/api/friend/friend.api';
 import { UserAvatar } from '@/components/UI';
 import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { FriendRequest } from '@/types/friend/friend.types';
 import { FriendStatus } from '@/types/friend/friendStatus.types';
 import { Button } from '@shared/ui';
@@ -17,18 +16,19 @@ interface PendingsItemProps {
 }
 
 export const PendingsItem = ({ friend }: PendingsItemProps) => {
-	const { user } = useAuth();
-
 	const queryClient = useQueryClient();
 
 	const { mutate } = useMutation({
 		mutationFn: ({ id, status }: { id: string; status: FriendStatus }) =>
 			changeRequestStatus(id, status),
-		mutationKey: QUERY_KEYS.friends.pendingsChange(user?.id || ''),
-		onSuccess: () =>
+		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
-			}),
+				queryKey: QUERY_KEYS.friends.pendings(),
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.friends.list(),
+			});
+		},
 	});
 
 	const handleUpdate = (id: string, status: FriendStatus) => {

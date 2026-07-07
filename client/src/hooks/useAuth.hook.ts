@@ -1,13 +1,14 @@
 'use client';
 
 import { logout as apiLogout } from '@/api/auth/auth.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useUserStore } from '@/store/useUser.store';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export const useAuth = () => {
+	const queryClient = useQueryClient();
+
 	const [isloading, setIsLoading] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -24,10 +25,10 @@ export const useAuth = () => {
 
 	const { mutate: logout } = useMutation({
 		mutationFn: apiLogout,
-		mutationKey: QUERY_KEYS.auth.logout(user?.id || ''),
 		onSuccess: () => {
 			storeLogout();
 			router.refresh();
+			queryClient.clear();
 		},
 	});
 

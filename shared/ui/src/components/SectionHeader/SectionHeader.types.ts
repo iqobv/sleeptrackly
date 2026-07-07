@@ -1,17 +1,33 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, ElementType, ReactNode } from 'react';
 import { TypographyProps } from '../Typography/Typography.types';
 
-type ElementProps = Partial<Omit<TypographyProps, 'children'>>;
+type ElementProps = Partial<Omit<TypographyProps<ElementType>, 'children'>>;
 
 export interface SectionHeaderProps {
-	title: React.ReactNode;
-	description?: React.ReactNode;
+	title: ReactNode;
+	description?: ReactNode;
 	containerClassName?: string;
 	padding?: number;
 	gap?: number;
 	titleProps?: ElementProps;
 	descriptionProps?: ElementProps;
 	textAlign?: CSSProperties['textAlign'];
-	leftSlot?: React.ReactNode;
-	rightSlot?: React.ReactNode;
+	leftSlot?: ReactNode;
+	rightSlot?: ReactNode;
+}
+
+export interface SectionHeaderLoaderProps extends Pick<
+	SectionHeaderProps,
+	| 'containerClassName'
+	| 'padding'
+	| 'gap'
+	| 'textAlign'
+	| 'leftSlot'
+	| 'rightSlot'
+> {
+	hasDescription?: boolean;
+	titleWidth?: string | number;
+	titleHeight?: string | number;
+	descriptionWidth?: string | number;
+	descriptionHeight?: string | number;
 }

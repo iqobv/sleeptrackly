@@ -1,87 +1,72 @@
+import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
+
 export const QUERY_KEYS = {
 	auth: {
-		needOldPassword: (userId: string) => ['needOldPassword', userId] as const,
-		sessions: (userId: string) => ['sessions', userId] as const,
-		terminateSession: (userId: string, sessionId: string) =>
-			['terminateSession', userId, sessionId] as const,
-		terminateAllSession: (userId: string) =>
-			['terminateAllSession', userId] as const,
-		validateVerificationToken: (userId: string, token: string | null) =>
-			['validateVerificationToken', userId, token] as const,
-		sendEmailForResetPassword: ['sendEmailForResetPassword'] as const,
-		sendVerificationEmail: ['sendVerificationEmail'] as const,
-		resetPassword: ['resetPassword'] as const,
-		changePassword: (userId: string) => ['changePassword', userId] as const,
-		deleteAccount: ['deleteAccount'] as const,
-		generateQr: ['generateQr'] as const,
-		setSession: ['setSession'] as const,
-		approveQrLogin: ['approveQrLogin'] as const,
-		logout: (userId: string) => ['logout', userId] as const,
-		resendVerificationEmail: (email: string) =>
-			['resendVerificationEmail', email] as const,
+		all: ['auth'] as const,
+		needOldPassword: () => ['auth', 'needOldPassword'] as const,
+		generateQr: () => ['auth', 'qr', 'generate'] as const,
+	},
+	sessions: {
+		all: ['sessions'] as const,
+		list: () => ['sessions', 'list'] as const,
 	},
 	challenges: {
-		all: (userId: string) => ['challenges', userId] as const,
-		one: (id: string) => ['challenge', id] as const,
-		deleteChallenge: (id: string) => ['challenge', id] as const,
-		markTaskAsCompleted: (taskId: string) =>
-			['markAsCompleted', taskId] as const,
+		all: ['challenges'] as const,
+		list: () => ['challenges', 'list'] as const,
+		details: () => ['challenges', 'detail'] as const,
+		detail: (id: string) => ['challenges', 'detail', id] as const,
 	},
 	dashboard: {
-		all: (userId: string, date: string) => ['dashboard', userId, date] as const,
+		base: ['dashboard'] as const,
+		byDate: (date: string) => ['dashboard', { date }] as const,
 	},
 	friends: {
-		all: (userId: string) => ['friends', userId] as const,
-		pendings: (userId: string) => ['pendings', userId] as const,
-		search: (search: string) => ['search', search] as const,
-		sendFriendRequest: (userId: string) =>
-			['sendFriendRequest', userId] as const,
-		pendingsManyChange: (userId: string) =>
-			['pendingsManyChange', userId] as const,
-		pendingsChange: (userId: string) => ['pendingsChange', userId] as const,
+		all: ['friends'] as const,
+		list: () => ['friends', 'list'] as const,
+		pendings: () => ['friends', 'pendings'] as const,
 	},
 	user: {
-		avatar: (userId: string) => ['user', userId] as const,
-		me: ['user', 'me'] as const,
+		base: ['user'] as const,
+		me: () => ['user', 'me'] as const,
 	},
 	profile: {
+		base: ['profile'] as const,
 		username: (username: string) => ['profile', username] as const,
 	},
 	timer: {
-		one: (userId: string) => ['timer', userId] as const,
-		update: (userId: string) => ['updateSleep', userId] as const,
-	},
-	report: {
-		send: ['sendReport'] as const,
+		one: ['timer'] as const,
 	},
 	notifications: {
 		all: ['notifications'] as const,
+		list: () => ['notifications', 'list'] as const,
 		settings: () => ['notifications', 'settings'] as const,
 	},
 	inventory: {
-		all: (userId: string, page: number) => ['inventory', userId, page] as const,
-		equipItem: (itemId: string) => ['equipItem', itemId] as const,
+		all: ['inventory'] as const,
+		lists: () => ['inventory', 'list'] as const,
+		list: (page: number) => ['inventory', 'list', { page }] as const,
 	},
 	shop: {
-		featured: ['featuredShop'] as const,
-		allProducts: (filters: string) => ['allProducts', filters] as const,
-		makePurchase: (productId: string) => ['makePurchase', productId] as const,
+		all: ['shop'] as const,
+		featured: () => ['shop', 'featured'] as const,
+		catalogs: () => ['shop', 'catalog'] as const,
+		catalog: (filters: PaginatedShopFilterDto) =>
+			['shop', 'catalog', filters] as const,
 		filters: ['shop', 'filters'],
 	},
 	coin: {
-		userCoin: ['userCoin'] as const,
+		userCoin: ['coins'] as const,
 	},
 	privacy: {
-		get: ['privacy', 'get'] as const,
-		update: ['privacy', 'update'] as const,
-	},
-	promotion: {
-		use: ['promotion', 'use'] as const,
+		base: ['privacy'] as const,
+		settings: () => ['privacy', 'setting'] as const,
 	},
 	weeklySummary: {
+		base: ['weeklySummary'] as const,
 		one: (id: string) => ['weeklySummary', id],
-	} as const,
+	},
 	achievement: {
-		all: ['achievementAll'],
+		all: ['achievements'],
+		list: () => ['achievements', 'list'] as const,
 	} as const,
 } as const;

@@ -4,6 +4,7 @@
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: var(--dashboard-gap);
+	align-items: start;
 
 	@include respond-to(md) {
 		grid-template-columns: repeat(2, 1fr);
@@ -11,26 +12,5 @@
 		& > *:last-child:not(:nth-child(even)) {
 			grid-column: 1 / -1;
 		}
-	}
-}
-
-.sleepSession {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: var(--dashboard-gap);
-
-	.date {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: var(--dashboard-sleep-session-date-color);
-	}
-
-	.info {
-		color: var(--dashboard-sleep-session-times-color);
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-		font-size: 0.9rem;
 	}
 }

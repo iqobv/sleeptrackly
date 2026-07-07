@@ -1,3 +1,4 @@
+import { SectionHeaderLoader } from '@shared/ui';
 import { DashboardWeekStatsLoader } from '../DashboardWeekStats/DashboardWeekStatsLoader';
 import { SleepChartLoader } from '../SleepChart/SleepChartLoader';
 import { WeekPaginationLoader } from '../WeekPagination/WeekPaginationLoader';
@@ -16,3 +17,10 @@ export const DashboardLoader = () => {
 		</div>
 	);
 };
+
+export const DashboardPageLoader = () => (
+	<div className={styles.dashboard}>
+		<SectionHeaderLoader titleWidth={200} />
+		<DashboardLoader />
+	</div>
+);

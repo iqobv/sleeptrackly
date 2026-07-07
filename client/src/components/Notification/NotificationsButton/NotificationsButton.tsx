@@ -5,7 +5,6 @@ import {
 	markAllNotificationsAsRead,
 } from '@/api/notification/notification.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { Button, Dropdown, DropdownTrigger } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
@@ -14,13 +13,11 @@ import { NotificationsList } from '../NotificationsList/NotificationsList';
 import styles from './NotificationsButton.module.scss';
 
 export const NotificationsButton = () => {
-	const { user } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
 
 	const queryNotifications = useQuery({
 		queryFn: getNotifications,
-		queryKey: QUERY_KEYS.notifications.all,
-		enabled: !!user,
+		queryKey: QUERY_KEYS.notifications.list(),
 		staleTime: 1000 * 60 * 5,
 	});
 

@@ -1,7 +1,6 @@
 'use client';
 
 import { searchByUsername } from '@/api/user/user.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -14,7 +13,6 @@ export const useAddFriend = () => {
 	const { mutate, data, isPending } = useMutation({
 		mutationFn: ({ username }: { username: string }) =>
 			searchByUsername(username),
-		mutationKey: QUERY_KEYS.friends.search(search),
 	});
 
 	const handleSearch = () => {

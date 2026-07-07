@@ -1,12 +1,17 @@
 'use client';
 
+import { SleepEntryForm } from '@/components/SleepEntry/SleepEntryForm';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
-import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
-import { updateSleepEntrySchema } from '@/schemas/sleepEntry/updateSleepEntry.schema';
-import { Form, FormSubmit } from '@shared/form';
+import {
+	UpdateSleepEntryDto,
+	UpdateSleepEntryFormDto,
+} from '@/dto/sleepEntry/sleepEntry.dto';
+import { updateSleepEntryFormSchema } from '@/schemas/sleepEntry/updateSleepEntry.schema';
+import { FormSubmit } from '@shared/form';
 import {
 	Button,
 	Modal,
+	ModalBody,
 	ModalClose,
 	ModalContent,
 	ModalFooter,
@@ -17,7 +22,6 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { UseTimerReturnType } from '../useTimer.hook';
 import styles from './TimerEnd.module.scss';
-import { TimerEndBody } from './TimerEndBody/TimerEndBody';
 
 interface TimerEndProps extends Pick<
 	UseTimerReturnType,
@@ -79,34 +83,35 @@ export const TimerEnd = ({
 	return (
 		<Modal open={open} onOpenChange={handleClose}>
 			<ModalContent className={styles.modalContent}>
-				<Form<UpdateSleepEntryDto>
-					schema={updateSleepEntrySchema}
-					onSubmit={handleSubmit}
+				<ModalHeader>Sleep Summary</ModalHeader>
+				<SleepEntryForm<UpdateSleepEntryFormDto>
+					schema={updateSleepEntryFormSchema}
 					defaultValues={{
 						rating: 0,
 						sleepStart: formatLocalDatetime(defaultSleepStart),
 						sleepEnd: formatLocalDatetime(defaultSleepEnd),
 					}}
-				>
-					<ModalHeader>Sleep Summary</ModalHeader>
-					<TimerEndBody />
-					<ModalFooter className={styles.modalFooter}>
-						{finishedSleep ? (
-							<Button asChild>
-								<Link href={PRIVATE_PAGES.DASHBOARD}>Go To Dashboard</Link>
-							</Button>
-						) : (
-							<>
-								<FormSubmit>Save Sleep Record</FormSubmit>
-								<ModalClose asChild onClick={resumeTimer}>
-									<Button variant="text" color="secondary" size="sm">
-										Resume Timer
-									</Button>
-								</ModalClose>
-							</>
-						)}
-					</ModalFooter>
-				</Form>
+					onSubmit={handleSubmit}
+					formBodyWrapper={ModalBody}
+					customSubmit={
+						<ModalFooter className={styles.modalFooter}>
+							{finishedSleep ? (
+								<Button asChild>
+									<Link href={PRIVATE_PAGES.DASHBOARD}>Go To Dashboard</Link>
+								</Button>
+							) : (
+								<>
+									<FormSubmit>Save Sleep Record</FormSubmit>
+									<ModalClose asChild onClick={resumeTimer}>
+										<Button variant="text" color="secondary" size="sm">
+											Resume Timer
+										</Button>
+									</ModalClose>
+								</>
+							)}
+						</ModalFooter>
+					}
+				/>
 			</ModalContent>
 		</Modal>
 	);

@@ -2,11 +2,12 @@
 
 import { createChallenge } from '@/api/challenge/challenge.api';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { CreateChallengeDto } from '@/dto/challenge/challenge.dto';
 import { createChallengeSchema } from '@/schemas/challenge/createChallenge.schema';
 import { Form } from '@shared/form';
 import { SectionHeader } from '@shared/ui';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -14,6 +15,8 @@ import { ChallengeForm } from '../ChallengeForm/ChallengeForm';
 import { CREATE_CHALLENGE_FIELDS } from './createChallengeFields';
 
 export const CreateChallenge = () => {
+	const queryClient = useQueryClient();
+
 	const router = useRouter();
 
 	const { mutate } = useMutation({
@@ -27,8 +30,12 @@ export const CreateChallenge = () => {
 				schema={createChallengeSchema}
 				onSubmit={(data, _e, methods) => {
 					mutate(data, {
-						onSuccess: (data) =>
-							router.push(PRIVATE_PAGES.CHALLENGES.BY_ID(data.id)),
+						onSuccess: (data) => {
+							router.push(PRIVATE_PAGES.CHALLENGES.BY_ID(data.id));
+							queryClient.invalidateQueries({
+								queryKey: QUERY_KEYS.challenges.list(),
+							});
+						},
 						onError: (error) => {
 							if (isAxiosError(error) && error.response?.data.field) {
 								methods.setError(error.response.data.field, {

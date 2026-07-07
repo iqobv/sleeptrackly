@@ -10,7 +10,7 @@ import { UpdateChallengeDto } from '@/dto/challenge/challenge.dto';
 import { updateChallengeSchema } from '@/schemas/challenge/updateChallenge.schema';
 import { Form } from '@shared/form';
 import { Button } from '@shared/ui';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import Link from 'next/link';
 import { IoMdArrowBack } from 'react-icons/io';
@@ -24,8 +24,10 @@ interface EditChallengeProps {
 }
 
 export const EditChallenge = ({ id }: EditChallengeProps) => {
-	const { data: challenge, refetch } = useQuery({
-		queryKey: QUERY_KEYS.challenges.one(id),
+	const queryClient = useQueryClient();
+
+	const { data: challenge } = useQuery({
+		queryKey: QUERY_KEYS.challenges.detail(id),
 		queryFn: () => getChallengeById(id),
 		enabled: !!id,
 	});
@@ -54,7 +56,15 @@ export const EditChallenge = ({ id }: EditChallengeProps) => {
 				}}
 				onSubmit={(data, _e, methods) => {
 					mutate(data, {
-						onSuccess: () => refetch(),
+						onSuccess: () => {
+							queryClient.invalidateQueries({
+								queryKey: QUERY_KEYS.challenges.detail(id),
+							});
+							queryClient.invalidateQueries({
+								queryKey: QUERY_KEYS.challenges.list(),
+							});
+							toast.success('Challenge updated successfully');
+						},
 						onError: (error) => {
 							if (isAxiosError(error) && error.response?.data.field) {
 								methods.setError(error.response.data.field, {

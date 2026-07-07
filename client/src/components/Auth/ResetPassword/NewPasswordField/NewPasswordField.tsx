@@ -1,7 +1,6 @@
 'use client';
 
 import { resetPassword } from '@/api/auth/password.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { PassordDto } from '@/dto/auth/password.dto';
 import { passwordSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,7 +30,6 @@ export const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: ({ password }: PassordDto) => resetPassword(token, password),
-		mutationKey: QUERY_KEYS.auth.resetPassword,
 		onSuccess() {
 			router.refresh();
 		},

@@ -5,7 +5,6 @@ import { QUERY_KEYS } from '@/config/queryClient.config';
 import { CHART_DATE_FORMAT } from '@/constants/dateFormat.constants';
 import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
 import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
-import { useAuth } from '@/hooks/useAuth.hook';
 import { SleepEntry } from '@/types/dashboard/dashboard.types';
 import { formatTime } from '@/utils/formatTime.util';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +14,6 @@ import { useEffect, useRef, useState } from 'react';
 export type UseTimerReturnType = ReturnType<typeof useTimer>;
 
 export const useTimer = () => {
-	const { user } = useAuth();
 	const queryClient = useQueryClient();
 
 	const [isSleeping, setIsSleeping] = useState(false);
@@ -28,15 +26,13 @@ export const useTimer = () => {
 	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
 
 	const { data, isLoading, isFetched } = useQuery({
-		queryKey: QUERY_KEYS.timer.one(user?.id || ''),
+		queryKey: QUERY_KEYS.timer.one,
 		queryFn: getSleepStatus,
-		enabled: !!user?.id,
 		retry: false,
 	});
 
 	const { mutate: update, isPending } = useMutation({
 		mutationFn: (dto: UserSleepStatusDto) => updateSleepStatus(dto),
-		mutationKey: QUERY_KEYS.timer.update(user?.id || ''),
 		onSuccess: (data) => {
 			if (data.sleepEntry) {
 				setFinishedSleep(data.sleepEntry);
@@ -100,7 +96,7 @@ export const useTimer = () => {
 		const now = new Date();
 
 		queryClient.invalidateQueries({
-			queryKey: QUERY_KEYS.timer.one(user?.id || ''),
+			queryKey: QUERY_KEYS.timer.one,
 		});
 
 		setFinishTime(now);
@@ -121,6 +117,7 @@ export const useTimer = () => {
 
 		const finalDto: UserSleepStatusDto = {
 			...rest,
+			sleepEnd,
 			dateForChart,
 		};
 

@@ -1,7 +1,7 @@
 export interface ConfirmModalProps {
 	trigger?: React.ReactNode;
-	title: string;
-	text: string;
+	title: React.ReactNode | string;
+	text: React.ReactNode | string;
 	isOpen: boolean;
 	onClose: () => void;
 	onConfirm: () => void;

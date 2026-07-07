@@ -1,7 +1,6 @@
 'use client';
 
 import { approveQrLogin } from '@/api/auth/qr.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { Scanner } from '@yudiel/react-qr-scanner';
@@ -13,7 +12,6 @@ export const QrScan = () => {
 
 	const { mutate, isSuccess, error } = useMutation({
 		mutationFn: (qrId: string) => approveQrLogin(qrId),
-		mutationKey: QUERY_KEYS.auth.approveQrLogin,
 	});
 
 	useEffect(() => {

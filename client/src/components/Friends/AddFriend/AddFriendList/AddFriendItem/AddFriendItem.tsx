@@ -3,7 +3,6 @@
 import { sendFriendRequest } from '@/api/friend/friend.api';
 import { UserAvatar } from '@/components/UI';
 import { PAGES } from '@/config/pages.config';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { SearchUser } from '@/types/user/user.types';
 import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
@@ -19,7 +18,6 @@ interface AddFriendItemProps {
 export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	const { mutate } = useMutation({
 		mutationFn: () => sendFriendRequest(user.id),
-		mutationKey: QUERY_KEYS.friends.sendFriendRequest(user.id),
 		onSuccess() {
 			toast.success('Friend request sent');
 			setSearch('');

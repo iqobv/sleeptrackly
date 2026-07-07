@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@shared/ui';
+import { SectionHeaderLoader } from '@shared/ui';
 import styles from './FeaturedShop.module.scss';
 import { FeaturedShopBannerLoader } from './FeaturedShopBanner/FeaturedShopBannerLoader';
 import { FeaturedShopCarouselLoader } from './FeaturedShopCarousel/FeaturedShopCarouselLoader';
@@ -8,12 +8,12 @@ import { FeaturedShopSectionsLoader } from './FeaturedShopSections/FeaturedShopS
 export const FeaturedShopLoader = () => (
 	<div className={styles.featuredShop}>
 		<div>
-			<SkeletonLoader height={40} width={250} style={{ margin: '1.25rem 0' }} />
+			<SectionHeaderLoader titleHeight={40} titleWidth={220} />
 			<FeaturedShopCarouselLoader />
 		</div>
 		<FeaturedShopCollectionsLoader />
 		<FeaturedShopBannerLoader />
-		<SkeletonLoader height={30} width={250} style={{ marginTop: '1.25rem' }} />
+		<SectionHeaderLoader titleHeight={30} titleWidth={220} />
 		<FeaturedShopSectionsLoader />
 	</div>
 );

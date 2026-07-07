@@ -1,7 +1,7 @@
 'use client';
 
 import { DashboardDay } from '@/types/dashboard/dashboard.types';
-import { useTransformSecondsToHours } from '@shared/hooks';
+import { transformSecondsToHours } from '@shared/utils';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 
@@ -13,8 +13,6 @@ interface ChartData {
 }
 
 export const useSleepChart = (data: DashboardDay[]) => {
-	const transform = useTransformSecondsToHours();
-
 	const labels = useMemo(
 		() => data?.map((item) => dayjs(item.day).format('ddd')),
 		[data],
@@ -26,7 +24,7 @@ export const useSleepChart = (data: DashboardDay[]) => {
 			chartValue: dayData.data
 				? Number((dayData.sleepDuration / 60 / 60).toFixed(1))
 				: 0,
-			tooltipValue: transform(dayData.sleepDuration || 0),
+			tooltipValue: transformSecondsToHours(dayData.sleepDuration || 0),
 			tooltipLabel: dayjs(dayData.day).format('dddd'),
 		};
 	});

@@ -6,7 +6,7 @@ import { AUTH_PAGES } from '@/config/authPages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useAuth } from '@/hooks/useAuth.hook';
 import { Button } from '@shared/ui';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { FeaturedShopCarouselCountdown } from '../FeaturedShopCarouselCountdown';
@@ -29,6 +29,8 @@ export const FeaturedShopCarouselBuyButton = ({
 	basePrice,
 	expiresAt,
 }: FeaturedShopCarouselBuyButtonProps) => {
+	const queryClient = useQueryClient();
+
 	const router = useRouter();
 
 	const discountedPercentage = discountedPrice
@@ -42,9 +44,13 @@ export const FeaturedShopCarouselBuyButton = ({
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => makePurchase(productId),
-		mutationKey: QUERY_KEYS.shop.makePurchase(productId),
 		onError: (error) => {
 			toast.error(error instanceof Error ? error.message : 'Purchase failed');
+		},
+		onSuccess: () => {
+			queryClient.refetchQueries({
+				queryKey: QUERY_KEYS.coin.userCoin,
+			});
 		},
 	});
 

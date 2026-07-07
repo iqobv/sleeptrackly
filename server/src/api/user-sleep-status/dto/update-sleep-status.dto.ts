@@ -11,14 +11,14 @@ import {
 } from 'class-validator';
 
 export class UpdateUserSleepStatusDto {
-	/** @example '2026-05-22' */
+	/** @example '2026-05-2@Min(0)2' */
 	@IsString()
 	@IsOptional()
 	dateForChart?: string;
 
 	@IsOptional()
 	@IsNumber()
-	@Min(0)
+	@Min(1)
 	@Max(5)
 	rating?: number;
 

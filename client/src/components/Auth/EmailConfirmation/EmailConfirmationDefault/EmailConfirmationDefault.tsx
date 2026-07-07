@@ -2,7 +2,6 @@
 
 import { resendVerificationEmail } from '@/api/auth/email.api';
 import { AUTH_PAGES } from '@/config/authPages.config';
-import { QUERY_KEYS } from '@/config/queryClient.config';
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
 import { Button, SectionHeader } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
@@ -27,7 +26,6 @@ export const EmailConfirmationDefault = () => {
 	const { mutate } = useMutation({
 		mutationFn: (emailToVerify: string) =>
 			resendVerificationEmail(emailToVerify),
-		mutationKey: QUERY_KEYS.auth.resendVerificationEmail(email ?? ''),
 		onSuccess: () => {
 			toast.info('Verification email resent successfully!');
 		},
