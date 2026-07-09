@@ -28,6 +28,7 @@ export const CreateAchievement = () => {
 			<AchievementForm<CreateAchievementDto>
 				schema={createAchievementSchema}
 				onSubmit={(data) => mutate(data)}
+				isCreate
 				defaultValues={{
 					type: undefined,
 					targetValue: 0,

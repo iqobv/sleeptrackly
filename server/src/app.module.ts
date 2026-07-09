@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
@@ -14,7 +13,6 @@ import { InfraModule } from './infra/infra.module';
 		SentryModule.forRoot(),
 		ConfigModule.forRoot({ isGlobal: true }),
 		ScheduleModule.forRoot(),
-		EventEmitterModule.forRoot(),
 		ThrottlerModule.forRoot([
 			{
 				name: 'short',

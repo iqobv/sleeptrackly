@@ -5,7 +5,7 @@ import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Controller, Get, HttpStatus, Param } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { WeeklySummaryDto } from './dto/weekly-summary.dto';
-import { WeeklySummaryService } from './weekly-summary.service';
+import { WeeklySummaryService } from './services/weekly-summary.service';
 
 @ApiTags('Weekly Summaries')
 @Controller('weekly-summaries')

@@ -1,12 +1,8 @@
-import {
-	ACHIEVEMENT_CHECK_EVENT,
-	AchievementCheckEvent,
-} from '@api/achievement/events/achievement-progress.event';
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { AchievementType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import { ChallengeTaskDto } from './dto/challenge-task.dto';
 import { CreateChallengeTaskDto } from './dto/create-challenge-task.dto';
@@ -16,7 +12,7 @@ import { UpdateChallengeTaskDto } from './dto/update-challenge-task.dto';
 export class ChallengeTaskService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly eventEmitter: EventEmitter2,
+		private readonly achievementPublisherService: AchievementsPublisherService,
 	) {}
 
 	public async createMany(
@@ -82,13 +78,10 @@ export class ChallengeTaskService {
 			},
 		});
 
-		this.eventEmitter.emit(
-			ACHIEVEMENT_CHECK_EVENT,
-			new AchievementCheckEvent({
-				userId,
-				type: AchievementType.CHALLENGES_TASKS_COMPLETED,
-			}),
-		);
+		await this.achievementPublisherService.dispatchProgressCheck({
+			userId,
+			type: AchievementType.CHALLENGES_TASKS_COMPLETED,
+		});
 
 		return plainToInstance(ChallengeTaskDto, updatedTask);
 	}

@@ -14,7 +14,7 @@ export const useAuth = () => {
 	const storeLogout = useUserStore((state) => state.logout);
 
 	const isAuthenticated = !!user?.id;
-	const isloading = user === undefined;
+	const isloading = user === null || user === undefined;
 
 	const { mutate: logout } = useMutation({
 		mutationFn: apiLogout,

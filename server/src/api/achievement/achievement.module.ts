@@ -2,10 +2,14 @@ import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.mo
 import { ImageModule } from '@api/image/image.module';
 import { NotificationModule } from '@api/notification/notification.module';
 import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
+import { QUEUE_NAME } from '@libs/constants/queue.constants';
+import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { AchievementController } from './achievement.controller';
 import { AchievementCrudService } from './services/achievement-crud.service';
 import { AchievementProgressService } from './services/achievement-progress.service';
+import { AchievementsPublisherService } from './services/achievements-publisher.service';
+import { AchievementsWorker } from './workers/achievements.worker';
 
 @Module({
 	controllers: [AchievementController],
@@ -14,8 +18,16 @@ import { AchievementProgressService } from './services/achievement-progress.serv
 		CoinTransactionModule,
 		UserInventoryModule,
 		NotificationModule,
+		BullModule.registerQueue({
+			name: QUEUE_NAME.ACHIEVEMENTS,
+		}),
 	],
-	exports: [AchievementProgressService],
-	providers: [AchievementCrudService, AchievementProgressService],
+	providers: [
+		AchievementCrudService,
+		AchievementProgressService,
+		AchievementsPublisherService,
+		AchievementsWorker,
+	],
+	exports: [AchievementsPublisherService],
 })
 export class AchievementModule {}

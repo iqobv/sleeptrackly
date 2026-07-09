@@ -1,7 +1,4 @@
-import {
-	ACHIEVEMENT_CHECK_EVENT,
-	AchievementCheckEvent,
-} from '@api/achievement/events/achievement-progress.event';
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { SleepReward } from '@api/reward/interfaces/sleep-reward.interface';
 import { RewardService } from '@api/reward/reward.service';
 import { SleepEntryService } from '@api/sleep-entry/sleep-entry.service';
@@ -14,7 +11,6 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import { UserSleepStatusDto } from './dto/sleep-status.dto';
 import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
@@ -32,7 +28,7 @@ export class UserSleepStatusService {
 		private readonly prismaService: PrismaService,
 		private readonly rewardService: RewardService,
 		private readonly sleepEntryService: SleepEntryService,
-		private readonly eventEmitter: EventEmitter2,
+		private readonly achievementPublisherService: AchievementsPublisherService,
 	) {}
 
 	public async getSleepStatus(
@@ -107,13 +103,10 @@ export class UserSleepStatusService {
 						tx,
 					);
 
-			this.eventEmitter.emit(
-				ACHIEVEMENT_CHECK_EVENT,
-				new AchievementCheckEvent({
-					userId,
-					type: AchievementType.SLEEP_COUNT,
-				}),
-			);
+			await this.achievementPublisherService.dispatchProgressCheck({
+				type: AchievementType.SLEEP_COUNT,
+				userId,
+			});
 
 			return {
 				sleepEntry,

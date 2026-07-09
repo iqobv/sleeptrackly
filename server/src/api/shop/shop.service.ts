@@ -1,7 +1,4 @@
-import {
-	ACHIEVEMENT_CHECK_EVENT,
-	AchievementCheckEvent,
-} from '@api/achievement/events/achievement-progress.event';
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
@@ -25,7 +22,6 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import { FeaturedShopDto } from './dto/featured-shop.dto';
 import { FilterQueryDto } from './dto/filter-query.dto';
@@ -44,7 +40,7 @@ export class ShopService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
-		private readonly eventEmitter: EventEmitter2,
+		private readonly achievementPublisherService: AchievementsPublisherService,
 	) {}
 
 	public async getFeaturedProducts(
@@ -382,13 +378,10 @@ export class ShopService {
 					tx,
 				);
 
-			this.eventEmitter.emit(
-				ACHIEVEMENT_CHECK_EVENT,
-				new AchievementCheckEvent({
-					userId,
-					type: AchievementType.ITEMS_PURCHASED,
-				}),
-			);
+			await this.achievementPublisherService.dispatchProgressCheck({
+				userId,
+				type: AchievementType.ITEMS_PURCHASED,
+			});
 
 			const translations = (purchaseHistoryResult.nameSnapshot || []) as {
 				language: string;

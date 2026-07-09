@@ -9,12 +9,7 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
 import { AchievementDto } from '../dto/achievement.dto';
-import {
-	ACHIEVEMENT_CHECK_EVENT,
-	AchievementCheckEvent,
-} from '../events/achievement-progress.event';
 
 @Injectable()
 export class AchievementProgressService {
@@ -24,15 +19,6 @@ export class AchievementProgressService {
 		private readonly userInventoryService: UserInventoryService,
 		private readonly notificationService: NotificationService,
 	) {}
-
-	@OnEvent(ACHIEVEMENT_CHECK_EVENT, { async: true })
-	public async handleCheckProgress(
-		payload: AchievementCheckEvent,
-	): Promise<void> {
-		const { userId, type } = payload;
-
-		await this.checkProgress(userId, type);
-	}
 
 	public async checkProgress(
 		userId: string,
