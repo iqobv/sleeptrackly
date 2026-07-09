@@ -11,6 +11,8 @@ import { AuthButtonsLoader } from './AuthButtonsLoader';
 export const AuthButtons = () => {
 	const { user, isloading } = useAuth();
 
+	console.log(isloading);
+
 	return (
 		<div className={styles.authButtons}>
 			{isloading ? (

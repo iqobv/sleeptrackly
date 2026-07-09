@@ -1,7 +1,4 @@
-import {
-	SLEEP_RECORDED_EVENT,
-	SleepRecordedEvent,
-} from '@api/weekly-summary/events/sleep-ended.event';
+import { WeeklySummaryPublisherService } from '@api/weekly-summary/services/weekly-summary-publisher.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
@@ -14,7 +11,6 @@ import {
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -35,7 +31,7 @@ dayjs.extend(utc);
 export class SleepEntryService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly eventEmitter: EventEmitter2,
+		private readonly weeklySummaryPublisherService: WeeklySummaryPublisherService,
 	) {}
 
 	public async findByUserId(userId: string): Promise<SleepEntryDto[]> {
@@ -162,14 +158,11 @@ export class SleepEntryService {
 			},
 		});
 
-		this.eventEmitter.emit(
-			SLEEP_RECORDED_EVENT,
-			new SleepRecordedEvent({
-				userId,
-				dateForChart,
-				isManual: true,
-			}),
-		);
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart,
+			isManual: true,
+		});
 
 		return plainToInstance(SleepEntryDto, created);
 	}
@@ -218,14 +211,11 @@ export class SleepEntryService {
 			},
 		});
 
-		this.eventEmitter.emit(
-			SLEEP_RECORDED_EVENT,
-			new SleepRecordedEvent({
-				userId,
-				dateForChart: updated.dateForChart,
-				isManual: true,
-			}),
-		);
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart: updated.dateForChart,
+			isManual: true,
+		});
 
 		return plainToInstance(SleepEntryDto, updated);
 	}
@@ -243,14 +233,11 @@ export class SleepEntryService {
 			where: { id, userId },
 		});
 
-		this.eventEmitter.emit(
-			SLEEP_RECORDED_EVENT,
-			new SleepRecordedEvent({
-				userId,
-				dateForChart: sleepEntry.dateForChart,
-				isManual: true,
-			}),
-		);
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart: sleepEntry.dateForChart,
+			isManual: true,
+		});
 
 		return SUCCESS_MESSAGES.SLEEP_ENTRY.DELETED;
 	}

@@ -5,22 +5,20 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
 import { plainToInstance } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import { WeeklySummaryDto } from './dto/weekly-summary.dto';
-import {
-	SLEEP_RECORDED_EVENT,
-	SleepRecordedEvent,
-} from './events/sleep-ended.event';
-import { CalculateStatisticsParams } from './interfaces/calculate-statistics-params.interface';
-import { Dates } from './interfaces/dates.interface';
-import { WeeklyStatistics } from './interfaces/weekly-statistics.interface';
+import { WeeklySummaryPayloadDto } from '../dto/weekly-summary-payload.dto';
+import { WeeklySummaryDto } from '../dto/weekly-summary.dto';
+import { CalculateStatisticsParams } from '../interfaces/calculate-statistics-params.interface';
+import { Dates } from '../interfaces/dates.interface';
+import { WeeklyStatistics } from '../interfaces/weekly-statistics.interface';
 
 dayjs.extend(utc);
 dayjs.extend(isoWeek);
+dayjs.extend(tz);
 
 @Injectable()
 export class WeeklySummaryService {
@@ -29,34 +27,23 @@ export class WeeklySummaryService {
 		private readonly notificationService: NotificationService,
 	) {}
 
-	@OnEvent(SLEEP_RECORDED_EVENT, { async: true })
-	public async handleSleepEndedEvent(
-		payload: SleepRecordedEvent,
+	public async processRecalculation(
+		payload: WeeklySummaryPayloadDto,
 	): Promise<void> {
-		const { dateForChart, userId, isManual } = payload;
+		const { dateForChart, userId } = payload;
 
-		if (isManual) {
+		const user = await this.prismaService.user.findUnique({
+			where: { id: userId },
+			select: { timezone: true },
+		});
+
+		if (!user || !user.timezone) return;
+
+		const currentLocalTime = dayjs().tz(user.timezone);
+		const startOfWeek = currentLocalTime.startOf('isoWeek').format(DATE_FORMAT);
+
+		if (dateForChart < startOfWeek) {
 			await this.recalculateSummaryForWeek(userId, dateForChart);
-		} else {
-			const currentChartDay = dayjs(dateForChart, DATE_FORMAT);
-			const previousWeek = currentChartDay.subtract(1, 'week');
-
-			const year = previousWeek.isoWeekYear();
-			const week = previousWeek.isoWeek();
-
-			const existingSummary =
-				await this.prismaService.weeklySleepSummary.findUnique({
-					where: {
-						userId_year_weekNumber: {
-							userId,
-							year,
-							weekNumber: week,
-						},
-					},
-				});
-
-			if (!existingSummary)
-				await this.generateSummaryForPreviousWeek(userId, dateForChart);
 		}
 	}
 

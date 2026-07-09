@@ -1,6 +1,6 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { WeeklySummaryService } from './weekly-summary.service';
+import { WeeklySummaryService } from './services/weekly-summary.service';
 
 type PrismaMock = {
 	weeklySleepSummary: {
