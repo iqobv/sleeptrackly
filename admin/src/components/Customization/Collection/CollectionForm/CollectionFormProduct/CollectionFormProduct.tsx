@@ -11,8 +11,8 @@ import {
 	ModalTrigger,
 	SectionHeader,
 } from '@shared/ui';
-import { useEffect, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import styles from './CollectionFormProduct.module.scss';
 import { CollectionFormProductBody } from './CollectionFormProductBody';
 import { CollectionFormProductGrid } from './CollectionFormProductGrid';
@@ -28,26 +28,22 @@ interface CollectionFormProductProps {
 export const CollectionFormProduct = ({
 	initialData,
 }: CollectionFormProductProps) => {
+	const { setValue, control } = useFormContext<BaseCollectionDto>();
+
 	const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
-		[],
+		() => {
+			if (initialData && initialData.length > 0) {
+				return initialData.map((p) => p.product);
+			}
+			return [];
+		},
 	);
 
-	const { setValue, watch } = useFormContext<BaseCollectionDto>();
-
-	useEffect(() => {
-		if (initialData && initialData.length > 0) {
-			setSelectedProducts(initialData.map((p) => p.product));
-			setValue(
-				'productIds',
-				initialData.map((p) => p.productId),
-				{
-					shouldDirty: false,
-				},
-			);
-		}
-	}, [initialData, setValue]);
-
-	const selectedProductIds = watch('productIds') || [];
+	const selectedProductIds =
+		useWatch({
+			control,
+			name: 'productIds',
+		}) || [];
 
 	const handleSelect = (product: SelectedProduct) => {
 		const isSelected = selectedProductIds.includes(product.id);

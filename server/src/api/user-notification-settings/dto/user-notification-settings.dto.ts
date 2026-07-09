@@ -9,5 +9,4 @@ export class UserNotificationSettingsDto extends DefaultFieldsDto {
 	@Expose() isFriendRequestsEnabled: boolean;
 	@Expose() isAchievementUnlockedEnabled: boolean;
 	@Expose() reminderTime: string | null;
-	@Expose() userTimeZone: string | null;
 }

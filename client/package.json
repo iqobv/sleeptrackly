@@ -6,7 +6,8 @@
 		"dev": "next dev --turbopack",
 		"build": "next build",
 		"start": "next start",
-		"lint": "eslint",
+		"lint": "oxlint . && eslint .",
+		"lint:fix": "eslint . --fix",
 		"generate": "pnpm openapi-typescript http://localhost:5000/docs-json -o src/types/schema.d.ts"
 	},
 	"dependencies": {

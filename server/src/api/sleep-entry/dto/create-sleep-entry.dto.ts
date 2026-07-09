@@ -1,6 +1,13 @@
 import { IsChartDate } from '@libs/validators/is-chart-date.validator';
 import { Type } from 'class-transformer';
-import { IsDate, IsNumber, IsString, Max, Min } from 'class-validator';
+import {
+	IsDate,
+	IsNumber,
+	IsString,
+	IsTimeZone,
+	Max,
+	Min,
+} from 'class-validator';
 
 export class CreateSleepEntryDto {
 	@Type(() => Date)
@@ -19,4 +26,8 @@ export class CreateSleepEntryDto {
 	@Min(1)
 	@Max(5)
 	rating: number;
+
+	@IsString()
+	@IsTimeZone()
+	timezone: string;
 }

@@ -29,7 +29,6 @@ export const useSettingsNotificationsForm = ({
 			isReminderEnabled: false,
 			isUpdatesEnabled: true,
 			reminderTime: undefined,
-			userTimeZone: undefined,
 		},
 		values: data,
 	});

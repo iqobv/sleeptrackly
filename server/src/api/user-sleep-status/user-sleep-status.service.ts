@@ -60,9 +60,23 @@ export class UserSleepStatusService {
 		});
 	}
 
+	public async resetSleepStatus(userId: string): Promise<void> {
+		await this.prismaService.userSleepStatus.update({
+			where: { userId },
+			data: { isSleeping: false, sleepStart: null },
+		});
+	}
+
 	private async handleWakeUp(args: WakeUpArgs): Promise<SleepEnd> {
-		const { clickedAt, rating, sleepStart, userId, dateForChart, isEdited } =
-			args;
+		const {
+			clickedAt,
+			rating,
+			sleepStart,
+			userId,
+			dateForChart,
+			isEdited,
+			timezone,
+		} = args;
 
 		const { dateForChart: generatedDateForChart } = calculateSleepDuration(
 			sleepStart,
@@ -79,6 +93,7 @@ export class UserSleepStatusService {
 					sleepEnd: clickedAt,
 					dateForChart: finaldateForChart,
 					rating: rating ?? 0,
+					timezone,
 				},
 				tx,
 			);
@@ -141,9 +156,11 @@ export class UserSleepStatusService {
 			rating,
 			sleepEnd,
 			sleepStart: customSleepStart,
+			timezone,
 		} = dto;
 
 		let userSleepStatus = await this.getSleepStatus(userId);
+
 		if (!userSleepStatus) {
 			throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 		}
@@ -169,6 +186,16 @@ export class UserSleepStatusService {
 				customSleepStart || dto.isEdited || timeDiffHours > 2,
 			);
 
+			const finalTimezone =
+				timezone ??
+				(await this.prismaService.user
+					.findUnique({
+						where: { id: userId, deletedAt: null },
+						select: { timezone: true },
+					})
+					.then((user) => user?.timezone)) ??
+				'UTC';
+
 			const result = await this.handleWakeUp({
 				userId,
 				sleepStart: finalSleepStart,
@@ -176,6 +203,7 @@ export class UserSleepStatusService {
 				dateForChart,
 				rating: rating ?? 0,
 				isEdited,
+				timezone: finalTimezone,
 			});
 
 			sleepEntry = result.sleepEntry;

@@ -16,23 +16,25 @@ export type UseTimerReturnType = ReturnType<typeof useTimer>;
 export const useTimer = () => {
 	const queryClient = useQueryClient();
 
-	const [isSleeping, setIsSleeping] = useState(false);
-	const [isFinished, setIsFinished] = useState(false);
-	const [finishedSleep, setFinishedSleep] = useState<SleepEntry | null>(null);
-	const [timer, setTimer] = useState(0);
-	const [initialTime, setInitialTime] = useState<Date | null>(null);
-	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
-	const [finishTime, setFinishTime] = useState<Date | null>(null);
-	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
-
 	const { data, isLoading, isFetched } = useQuery({
 		queryKey: QUERY_KEYS.timer.one,
 		queryFn: getSleepStatus,
 		retry: false,
 	});
 
+	const [isSleeping, setIsSleeping] = useState(() => data?.isSleeping ?? false);
+	const [initialTime, setInitialTime] = useState<Date | null>(() =>
+		data?.sleepStart ? new Date(data.sleepStart) : null,
+	);
+	const [isFinished, setIsFinished] = useState(false);
+	const [finishedSleep, setFinishedSleep] = useState<SleepEntry | null>(null);
+	const [timer, setTimer] = useState(0);
+	const [formatedTimer, setFormattedTimer] = useState(formatTime(timer));
+	const [finishTime, setFinishTime] = useState<Date | null>(null);
+	const interval = useRef<null | ReturnType<typeof setInterval>>(null);
+
 	const { mutate: update, isPending } = useMutation({
-		mutationFn: (dto: UserSleepStatusDto) => updateSleepStatus(dto),
+		mutationFn: (dto?: UserSleepStatusDto) => updateSleepStatus(dto),
 		onSuccess: (data) => {
 			if (data.sleepEntry) {
 				setFinishedSleep(data.sleepEntry);
@@ -55,13 +57,6 @@ export const useTimer = () => {
 		},
 	});
 
-	useEffect(() => {
-		if (data) {
-			setIsSleeping(data.isSleeping);
-			setInitialTime(data.sleepStart ? new Date(data.sleepStart) : null);
-		}
-	}, [data]);
-
 	const startTimer = () => {
 		if (isSleeping) return;
 
@@ -71,7 +66,7 @@ export const useTimer = () => {
 		setFormattedTimer(formatTime(0));
 		setInitialTime(new Date());
 		setFinishTime(null);
-		update({});
+		update(undefined);
 	};
 
 	useEffect(() => {
@@ -88,10 +83,6 @@ export const useTimer = () => {
 		};
 	}, [isSleeping, initialTime]);
 
-	useEffect(() => {
-		setFormattedTimer(formatTime(timer));
-	}, [timer]);
-
 	const stopTimer = () => {
 		const now = new Date();
 
@@ -107,18 +98,22 @@ export const useTimer = () => {
 	};
 
 	const handleSaveSleep = (dto: UpdateSleepEntryDto) => {
-		const { sleepEnd, ...rest } = dto;
+		const { sleepEnd, rating, sleepStart, timezone, isEdited } = dto;
 
 		const dateForChart = sleepEnd
 			? dayjs(sleepEnd).format(CHART_DATE_FORMAT)
 			: finishTime
 				? dayjs(finishTime).format(CHART_DATE_FORMAT)
-				: undefined;
+				: dayjs().format(CHART_DATE_FORMAT);
 
 		const finalDto: UserSleepStatusDto = {
-			...rest,
-			sleepEnd,
+			sleepStart,
+			rating: rating || 1,
+			sleepEnd:
+				sleepEnd || finishTime?.toISOString() || new Date().toISOString(),
 			dateForChart,
+			timezone,
+			isEdited,
 		};
 
 		update(finalDto);

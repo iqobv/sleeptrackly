@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: EditChallengePageProps) {
 	}).then((res) => res.json());
 
 	return {
-		title: `Edit ${challenge.title}` || 'Edit Challenge',
+		title: challenge.title ? `Edit ${challenge.title}` : 'Edit Challenge',
 	};
 }
 

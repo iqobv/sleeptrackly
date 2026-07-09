@@ -2,12 +2,12 @@
 
 import { BREAKPOINTS } from '@/constants/breakpoints.constants';
 import { Breakpoint } from '@/types/ui/breakpoint.types';
+import { useMounted } from '@shared/hooks';
 import { useEffect, useState } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
 export const useNavContainer = (breakpoint: Breakpoint) => {
-	const [mounted, setMounted] = useState(false);
-	useEffect(() => setMounted(true), []);
+	const mounted = useMounted();
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [isClosing, setIsClosing] = useState(false);

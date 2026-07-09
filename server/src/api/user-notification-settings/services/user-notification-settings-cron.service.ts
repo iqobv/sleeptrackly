@@ -18,49 +18,51 @@ export class UserNotificationSettingsCronService {
 	) {}
 
 	private async sendReminderNotifications(): Promise<void> {
-		const reminderSettings =
-			await this.prismaService.userNotificationSettings.findMany({
-				where: {
-					isReminderEnabled: true,
-					reminderTime: { not: null },
-					userTimeZone: { not: null },
-				},
-				select: {
-					userId: true,
-					reminderTime: true,
-					userTimeZone: true,
-					user: {
-						select: {
-							userFcmTokens: { select: { token: true } },
-							sleepStatus: { select: { isSleeping: true } },
-						},
+		const users = await this.prismaService.user.findMany({
+			where: { deletedAt: null },
+			select: {
+				id: true,
+				timezone: true,
+				sleepStatus: { select: { isSleeping: true } },
+				userFcmTokens: { select: { token: true } },
+				notificationSettings: {
+					where: {
+						isReminderEnabled: true,
+						reminderTime: { not: null },
+					},
+					select: {
+						reminderTime: true,
 					},
 				},
-			});
+			},
+		});
 
 		const nowUTC = dayjs().utc();
 
-		for (const setting of reminderSettings) {
-			const { reminderTime, userTimeZone } = setting;
+		for (const user of users) {
+			const { timezone, notificationSettings, sleepStatus, userFcmTokens } =
+				user;
 
-			if (!reminderTime || !userTimeZone) continue;
+			const { reminderTime } = notificationSettings || {};
 
-			if (!setting.user.sleepStatus?.isSleeping) continue;
+			if (!reminderTime) continue;
 
-			const todayInUserTZ = dayjs().tz(userTimeZone).format(DATE_FORMAT);
+			if (!sleepStatus?.isSleeping) continue;
+
+			const todayInUserTZ = dayjs().tz(timezone).format(DATE_FORMAT);
 			const userTargetTimeStr = `${todayInUserTZ} ${reminderTime}`;
-			const targetTimeUTC = dayjs.tz(userTargetTimeStr, userTimeZone).utc();
+			const targetTimeUTC = dayjs.tz(userTargetTimeStr, timezone).utc();
 			const targetMinute = targetTimeUTC.startOf('minute').valueOf();
 			const nowMinute = nowUTC.startOf('minute').valueOf();
 
 			if (targetMinute === nowMinute) {
-				const fcmTokens = setting.user.userFcmTokens.map((t) => t.token);
+				const fcmTokens = userFcmTokens.map((t) => t.token);
 
 				if (fcmTokens.length > 0) {
 					await this.notificationService.sendDirectPush(
 						fcmTokens,
 						'Timer Reminder',
-						"Your sleep timer is set. Don't forget to stop it when you wake up!",
+						"The sleep timer has started. Don't forget to turn it off when you wake up!",
 						'/timer',
 					);
 				}

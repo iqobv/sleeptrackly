@@ -2,7 +2,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import oxlint from 'eslint-plugin-oxlint';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import baseConfig from '../eslint.base.mjs';
+import baseConfig from '../eslint.config.mjs';
 
 const uniqueDecorators = [
 	'Auth',

@@ -24,14 +24,10 @@ export const AchievementFormProducts = ({
 	initProduct,
 }: AchievementFormProductsProps) => {
 	const [selectedProduct, setSelectedProduct] = useState<Product | null>(
-		initProduct || null,
+		() => initProduct || null,
 	);
 
 	const { register, setValue } = useFormContext<BaseAchievementDto>();
-
-	useEffect(() => {
-		if (initProduct) setSelectedProduct(initProduct);
-	}, [initProduct]);
 
 	useEffect(() => {
 		if (selectedProduct) {

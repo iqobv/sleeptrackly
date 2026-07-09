@@ -5,4 +5,5 @@ export interface WakeUpArgs {
 	dateForChart?: string;
 	rating: number;
 	isEdited: boolean;
+	timezone: string;
 }

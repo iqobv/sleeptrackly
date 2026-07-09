@@ -15,7 +15,6 @@ export const SettingsNotificationsReminder = ({
 	const {
 		reminderToggleField,
 		reminderTimeField,
-		userTimeZoneField,
 		isEnabled,
 		handleToggleChange,
 		handleTimeBlur,
@@ -43,7 +42,6 @@ export const SettingsNotificationsReminder = ({
 							minWidth: 200,
 						}}
 					/>
-					<input type="hidden" {...userTimeZoneField} />
 				</SettingsField>
 			)}
 		</>

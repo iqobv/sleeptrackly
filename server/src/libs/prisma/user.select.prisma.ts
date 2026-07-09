@@ -6,6 +6,7 @@ export const userSelect = {
 	username: true,
 	role: true,
 	emailVerified: true,
+	timezone: true,
 	createdAt: true,
 	updatedAt: true,
 	deletedAt: true,

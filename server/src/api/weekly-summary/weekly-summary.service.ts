@@ -60,7 +60,10 @@ export class WeeklySummaryService {
 		}
 	}
 
-	public async recalculateSummaryForWeek(userId: string, dateForChart: string) {
+	public async recalculateSummaryForWeek(
+		userId: string,
+		dateForChart: string,
+	): Promise<WeeklySummaryDto | null> {
 		const targetDate = dayjs(dateForChart, DATE_FORMAT);
 
 		const {

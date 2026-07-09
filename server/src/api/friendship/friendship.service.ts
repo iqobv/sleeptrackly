@@ -288,7 +288,15 @@ export class FriendshipService {
 		return SUCCESS_MESSAGES.FRIENDSHIP.DELETED;
 	}
 
-	private async getUserById(id: string) {
+	private async getUserById(id: string): Promise<
+		Prisma.UserGetPayload<{
+			select: {
+				id: true;
+				userPrivacySettings: typeof userSelect.userPrivacySettings;
+				notificationSettings: { select: { isFriendRequestsEnabled: true } };
+			};
+		}>
+	> {
 		const user = await this.prismaService.user.findUnique({
 			where: { id, deletedAt: null },
 			select: {

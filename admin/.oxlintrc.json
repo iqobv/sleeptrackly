@@ -1,0 +1,8 @@
+{
+	"plugins": ["nextjs"],
+	"rules": {
+		"nextjs/no-img-element": "error",
+		"nextjs/no-typos": "error",
+		"nextjs/next-script-for-ga": "error"
+	}
+}

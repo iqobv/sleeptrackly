@@ -57,12 +57,10 @@ export const Reminder = () => {
 					defaultValues={{
 						isReminderEnabled: false,
 						reminderTime: undefined,
-						userTimeZone: undefined,
 					}}
 					values={{
 						reminderTime: data?.reminderTime,
 						isReminderEnabled: data?.isReminderEnabled,
-						userTimeZone: data?.userTimeZone,
 					}}
 					onSubmit={(data) => mutate(data)}
 				>
@@ -75,14 +73,9 @@ export const Reminder = () => {
 									<ToggleSwitch label="Enable Reminder" />
 								</FormField>
 								{isReminderEnabled && (
-									<>
-										<FormField name="reminderTime" label="Reminder Time">
-											<Input type="time" />
-										</FormField>
-										<FormField name="userTimeZone" hidden>
-											<Input type="hidden" hidden />
-										</FormField>
-									</>
+									<FormField name="reminderTime" label="Reminder Time">
+										<Input type="time" />
+									</FormField>
 								)}
 								<FormActions justifyContent="center">
 									<FormReset disabledOnEmpty>Reset</FormReset>

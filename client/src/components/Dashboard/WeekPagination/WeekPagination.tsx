@@ -4,7 +4,6 @@ import { DashboardDay } from '@/types/dashboard/dashboard.types';
 import { Button } from '@shared/ui';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { DashboardCard } from '../DashboardCard/DashboardCard';
@@ -27,8 +26,6 @@ const weekLabelFormat = 'MMM D';
 const dateFormat = 'YYYY-MM-DD';
 
 export const WeekPagination = ({ days, hasMore }: WeekPaginationProps) => {
-	const [weekLabel, setWeekLabel] = useState('');
-
 	const { date, handleWeekChange } = useWeekPagination();
 
 	const isNextDisabled = dayjs(date, dateFormat).isSame(dayjs(), 'isoWeek');
@@ -42,14 +39,13 @@ export const WeekPagination = ({ days, hasMore }: WeekPaginationProps) => {
 		!isNextDisabled &&
 		handleWeekChange(dayjs(date).add(1, 'week').format(dateFormat));
 
-	useEffect(() => {
-		const firstDay = days[0].day;
-		const lastDay = days[days.length - 1].day;
+	const firstDay = days[0]?.day;
+	const lastDay = days[days.length - 1]?.day;
 
-		setWeekLabel(
-			`${dayjs(firstDay).format(weekLabelFormat)} - ${dayjs(lastDay).format(weekLabelFormat)}`,
-		);
-	}, [days]);
+	const weekLabel =
+		firstDay && lastDay
+			? `${dayjs(firstDay).format(weekLabelFormat)} - ${dayjs(lastDay).format(weekLabelFormat)}`
+			: '';
 
 	return (
 		<div className={`${styles.weekPagination}`}>

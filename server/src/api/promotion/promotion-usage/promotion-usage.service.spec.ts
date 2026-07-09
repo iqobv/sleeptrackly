@@ -59,29 +59,6 @@ describe('PromotionUsageService', () => {
 		translations: [{ name: 'Sword', language: 'en' }],
 	} as unknown as Item;
 
-	const mockProductWithItem = {
-		id: 'prod_1',
-		price: 1000,
-		discountedPrice: 800,
-		itemId: 'item_1',
-		item: mockItem,
-		bundleId: null,
-		bundle: null,
-	};
-
-	const mockProductWithBundle = {
-		id: 'prod_2',
-		price: 2000,
-		discountedPrice: null,
-		itemId: null,
-		item: null,
-		bundleId: 'bundle_1',
-		bundle: {
-			translations: [{ name: 'Starter Pack', language: 'en' }],
-			items: [{ item: mockItem }],
-		},
-	};
-
 	const defaultPromotion = {
 		id: 'promo_1',
 		alias: 'TEST_PROMO',

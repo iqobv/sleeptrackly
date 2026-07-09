@@ -2,6 +2,7 @@ import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { ApiSuccessResponse } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
 import { Authorized } from '@libs/decorators/authorized.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -55,7 +56,7 @@ export class SleepEntryController {
 		@Param('id') id: string,
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateSleepEntryDto,
-	) {
+	): Promise<SleepEntryDto> {
 		return await this.sleepEntryService.updateSleepEntry(id, userId, dto);
 	}
 
@@ -66,7 +67,7 @@ export class SleepEntryController {
 	public async deleteSleepEntry(
 		@Param('id') id: string,
 		@Authorized('id') userId: string,
-	) {
+	): Promise<MessageResponse> {
 		return await this.sleepEntryService.deleteSleepEntry(id, userId);
 	}
 }

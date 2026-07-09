@@ -28,26 +28,26 @@ export async function generateMetadata({ params }: ProfilePageProps) {
 export default async function ProfilePage({ params }: ProfilePageProps) {
 	const { username } = await params;
 
+	const queryClient = new QueryClient();
+
 	try {
 		const profile = await getCachedProfile(username);
 
 		if (!profile) notFound();
 
-		const queryClient = new QueryClient();
-
 		queryClient.prefetchQuery({
 			queryKey: QUERY_KEYS.profile.username(username),
 			queryFn: () => getCachedProfile(username),
 		});
-
-		return (
-			<HydrationBoundary state={dehydrate(queryClient)}>
-				<div className="page">
-					<Profile username={username} />
-				</div>
-			</HydrationBoundary>
-		);
 	} catch {
 		notFound();
 	}
+
+	return (
+		<HydrationBoundary state={dehydrate(queryClient)}>
+			<div className="page">
+				<Profile username={username} />
+			</div>
+		</HydrationBoundary>
+	);
 }

@@ -1,7 +1,7 @@
 import {
 	createSleepEntryFormSchema,
 	createSleepEntrySchema,
-} from '@/schemas/sleepEntry/createSleepEntry,schema';
+} from '@/schemas/sleepEntry/createSleepEntry.schema';
 import {
 	updateSleepEntryFormSchema,
 	updateSleepEntrySchema,

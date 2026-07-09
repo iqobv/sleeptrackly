@@ -1,24 +1,22 @@
 'use client';
 
+import { useNavMenuStore } from '@/store/navMenu.store';
+import { useMounted } from '@shared/hooks';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { IconBaseProps } from 'react-icons';
 import { MdMenu, MdMenuOpen } from 'react-icons/md';
 import styles from './Header.module.scss';
-import { useNavMenuStore } from '@/store/navMenu.store';
 
 const iconsProps: IconBaseProps = {
 	size: 24,
 };
 
 export const Header = () => {
-	const [isMounted, setMounted] = useState(false);
+	const mounted = useMounted();
 
 	const isExpended = useNavMenuStore((state) => state.isExpanded);
 	const setIsExpanded = useNavMenuStore((state) => state.setIsExpanded);
-
-	useEffect(() => setMounted(true), []);
 
 	const handleClick = () => setIsExpanded(!isExpended);
 
@@ -26,7 +24,7 @@ export const Header = () => {
 		<header className={styles.header}>
 			<div className={styles.container}>
 				<Button variant="text" isIcon onClick={handleClick}>
-					{isMounted && isExpended ? (
+					{mounted && isExpended ? (
 						<MdMenuOpen {...iconsProps} />
 					) : (
 						<MdMenu {...iconsProps} />

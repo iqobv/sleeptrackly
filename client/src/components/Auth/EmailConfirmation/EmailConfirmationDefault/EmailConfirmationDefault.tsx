@@ -12,16 +12,17 @@ import { toast } from 'react-toastify';
 import { EmailConfirmationWrapper } from '../EmailConfirmationWrapper/EmailConfirmationWrapper';
 import styles from './EmailConfirmationDefault.module.scss';
 
+const localStorageEmailKey = LOCAL_STORAGE_KEYS.auth.registrationEmail;
+
 export const EmailConfirmationDefault = () => {
 	const [timer, setTimer] = useState(0);
-	const [email, setEmail] = useState<string | null>(null);
 
-	const localStorageEmailKey = LOCAL_STORAGE_KEYS.auth.registrationEmail;
-
-	useEffect(() => {
-		const storedEmail = localStorage.getItem(localStorageEmailKey);
-		setEmail(storedEmail);
-	}, [localStorageEmailKey]);
+	const [email] = useState<string | null>(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem(localStorageEmailKey);
+		}
+		return null;
+	});
 
 	const { mutate } = useMutation({
 		mutationFn: (emailToVerify: string) =>
