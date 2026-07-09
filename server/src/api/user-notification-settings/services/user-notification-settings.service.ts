@@ -2,14 +2,8 @@ import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { UpdateUserNotificationSettingsDto } from '../dto/update-user-notification-settings.dto';
 import { UserNotificationSettingsDto } from '../dto/user-notification-settings.dto';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 @Injectable()
 export class UserNotificationSettingsService {

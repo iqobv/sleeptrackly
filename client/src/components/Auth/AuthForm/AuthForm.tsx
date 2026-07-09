@@ -12,7 +12,13 @@ import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { DefaultValues, FieldValues, Path, useForm } from 'react-hook-form';
+import {
+	DefaultValues,
+	FieldValues,
+	Path,
+	useForm,
+	useWatch,
+} from 'react-hook-form';
 import { MdErrorOutline } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { ZodType } from 'zod';
@@ -26,6 +32,7 @@ interface AuthFormProps<T extends FieldValues, R> {
 	fields: AuthField<T>[];
 	mutationFn: (data: T) => Promise<R>;
 	onSuccess?: (data: R) => void;
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	schema?: ZodType<T, any, any>;
 	buttonLabel?: string;
 	bottomText?: React.ReactNode;
@@ -57,7 +64,7 @@ export const AuthForm = <T extends FieldValues, R>({
 		setError,
 		resetField,
 		formState: { errors },
-		watch,
+		control,
 	} = useForm<T>({
 		resolver,
 		defaultValues,
@@ -95,7 +102,7 @@ export const AuthForm = <T extends FieldValues, R>({
 
 	const onSubmit = (data: T) => mutate(data);
 
-	const email = watch('email' as Path<T>);
+	const email = useWatch({ control, name: 'email' as Path<T> });
 
 	return (
 		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>

@@ -2,7 +2,6 @@
 
 import { Challenge } from '@/types/challenge/challenge.types';
 import { SectionHeader } from '@shared/ui';
-import { useEffect, useState } from 'react';
 import { ChallengesList } from '../ChallengesList/ChallengesList';
 
 interface ActiveChallengesProps {
@@ -10,11 +9,7 @@ interface ActiveChallengesProps {
 }
 
 export const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
-	const [activeChallenges, setActiveChallenges] = useState<Challenge[]>([]);
-
-	useEffect(() => {
-		if (data) setActiveChallenges(data.filter((c) => c.isStarted));
-	}, [data]);
+	const activeChallenges = data.filter((c) => c.isStarted);
 
 	if (activeChallenges.length === 0) return null;
 

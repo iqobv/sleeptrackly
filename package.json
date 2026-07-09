@@ -6,6 +6,7 @@
 		"dev:client": "pnpm --filter client dev",
 		"dev:admin": "pnpm --filter admin dev",
 		"dev:server": "pnpm --filter server start:dev",
+		"start:all": "pnpm -r --parallel start",
 		"build:all": "pnpm -r build",
 		"lint:all": "pnpm -r lint",
 		"generate:api": "npx openapi-typescript http://localhost:5000/docs-json -o shared/types/src/schema.d.ts"

@@ -3,7 +3,6 @@ import { z } from 'zod';
 export const reminderTimeSchema = z.object({
 	isReminderEnabled: z.boolean().optional(),
 	reminderTime: z.string().nullable().optional(),
-	userTimeZone: z.string().nullable().optional(),
 });
 
 export const settingsNotificationsSchema = reminderTimeSchema.extend({

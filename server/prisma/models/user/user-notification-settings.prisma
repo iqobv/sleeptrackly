@@ -12,7 +12,6 @@ model UserNotificationSettings {
   isAchievementUnlockedEnabled Boolean @default(true) @map("is_achievement_unlocked_enabled")
 
   reminderTime String? @map("reminder_time")
-  userTimeZone String? @map("user_time_zone")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

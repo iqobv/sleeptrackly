@@ -1,3 +1,4 @@
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
 import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
 
 export const QUERY_KEYS = {
@@ -44,7 +45,8 @@ export const QUERY_KEYS = {
 	inventory: {
 		all: ['inventory'] as const,
 		lists: () => ['inventory', 'list'] as const,
-		list: (page: number) => ['inventory', 'list', { page }] as const,
+		list: (query: PaginationWithLanguageDto) =>
+			['inventory', 'list', query] as const,
 	},
 	shop: {
 		all: ['shop'] as const,

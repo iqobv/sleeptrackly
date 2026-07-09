@@ -21,6 +21,23 @@ export interface paths {
         patch: operations["UserController_updateUser_v1"];
         trace?: never;
     };
+    "/v1/users/me/timezone": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Sync user timezone */
+        patch: operations["UserController_syncTimezone_v1"];
+        trace?: never;
+    };
     "/v1/users/search": {
         parameters: {
             query?: never;
@@ -617,7 +634,7 @@ export interface paths {
         patch: operations["SleepEntryController_updateSleepEntry_v1"];
         trace?: never;
     };
-    "/v1/sleep/me": {
+    "/v1/sleep": {
         parameters: {
             query?: never;
             header?: never;
@@ -633,6 +650,23 @@ export interface paths {
         head?: never;
         /** Update user sleep status (start/stop sleep) */
         patch: operations["UserSleepStatusController_updateSleepStatus_v1"];
+        trace?: never;
+    };
+    "/v1/sleep/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Reset user sleep status (set isSleeping to false and sleepStart to null) */
+        patch: operations["UserSleepStatusController_resetSleepStatus_v1"];
         trace?: never;
     };
     "/v1/coin-transactions/me": {
@@ -1740,7 +1774,9 @@ export interface components {
             code: string;
             message: string;
             field?: string;
-            meta?: Record<string, never>;
+            meta?: {
+                [key: string]: unknown;
+            };
         };
         UpdateUserDto: {
             /** Format: email */
@@ -1777,11 +1813,15 @@ export interface components {
             email: string;
             username: string;
             emailVerified: boolean;
+            timezone: string;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
             coins: components["schemas"]["UserCoinDto"] | null;
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
+        };
+        UpdateUserTimezoneDto: {
+            timezone: string;
         };
         AvatarSearchDto: {
             url: string;
@@ -1844,6 +1884,7 @@ export interface components {
             email: string;
             username: string;
             emailVerified: boolean;
+            timezone: string;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
@@ -2049,6 +2090,7 @@ export interface components {
             sleepDuration: number;
             dateForChart: string;
             rating: number;
+            timezone: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2073,6 +2115,7 @@ export interface components {
             sleepEnd: string;
             dateForChart: string;
             rating: number;
+            timezone: string;
         };
         UpdateSleepEntryDto: {
             /** Format: date-time */
@@ -2081,6 +2124,7 @@ export interface components {
             sleepEnd?: string;
             dateForChart?: string;
             rating?: number;
+            timezone?: string;
         };
         UserSleepStatusDto: {
             userId: string;
@@ -2103,6 +2147,7 @@ export interface components {
             /** Format: date-time */
             sleepEnd?: string;
             isEdited?: boolean;
+            timezone?: string;
         };
         UpdatedSleepRewardDto: {
             rewarded: boolean;
@@ -2503,7 +2548,6 @@ export interface components {
             isFriendRequestsEnabled: boolean;
             isAchievementUnlockedEnabled: boolean;
             reminderTime: string | null;
-            userTimeZone: string | null;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2519,7 +2563,6 @@ export interface components {
             isFriendRequestsEnabled?: boolean;
             isAchievementUnlockedEnabled?: boolean;
             reminderTime?: string;
-            userTimeZone?: string;
         };
         BaseCoinDto: {
             userId: string;
@@ -2889,7 +2932,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-04T11:34:28.628Z
+             * @example 2026-07-10T12:25:08.624Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2920,7 +2963,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-04T11:34:28.628Z
+             * @example 2026-07-10T12:25:08.624Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3208,6 +3251,57 @@ export interface operations {
             };
             /** @description Username already taken | User already exists | You are banned from changing username */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserController_syncTimezone_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserTimezoneDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description User not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4821,6 +4915,45 @@ export interface operations {
             };
             /** @description Invalid time range */
             400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserSleepStatusController_resetSleepStatus_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User sleep status has been reset successfully. */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };

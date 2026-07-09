@@ -6,7 +6,6 @@ import {
 	ApiSuccessResponse,
 } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
-import { LanguageQueryDto } from '@libs/dto/language-query.dto';
 import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
 import { ImageValidationPipe } from '@libs/pipes/image-validation.pipe';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
@@ -37,7 +36,6 @@ import {
 	CollectionDto,
 	FullCollectionDto,
 	PaginatedCollectionsDto,
-	StoreCollectionDto,
 } from './dto/collection.dto';
 import {
 	CreateCollectionDto,

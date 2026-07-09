@@ -75,6 +75,7 @@ export const SleepSessionEdit = ({
 
 					const finalData: UpdateSleepEntryDto = {
 						...data,
+						timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 						dateForChart: dayjs(date).format('YYYY-MM-DD'),
 					};
 

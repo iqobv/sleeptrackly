@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { timezoneSchema } from '../user/syncTimezone.schema';
 
 export const validateDateRange = (
 	data: { sleepStart?: string; sleepEnd?: string },
@@ -44,4 +45,5 @@ export const baseSleepEntrySchema = z.object({
 	sleepStart: localDatetimeToIso,
 	sleepEnd: localDatetimeToIso,
 	dateForChart: dateForChartSchema,
+	timezone: timezoneSchema,
 });

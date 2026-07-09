@@ -6,7 +6,7 @@ import { PaginatedShopFilterDto } from '@/dto/shop/shop.dto';
 import { useDebounce } from '@shared/hooks';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { AllShopFiltersForm } from './AllShop';
 import { useShopFilters } from './useShopFilters.hook';
 
@@ -24,8 +24,6 @@ export const useAllShop = () => {
 	const methods = useForm<AllShopFiltersForm>({
 		defaultValues: formValues,
 	});
-
-	const { watch } = methods;
 
 	const apiFilters = useMemo((): PaginatedShopFilterDto => {
 		return {
@@ -48,34 +46,32 @@ export const useAllShop = () => {
 		queryFn: () => getAllShop(apiFilters),
 	});
 
-	useEffect(() => {
-		const subscription = watch((value, { name }) => {
-			if (
-				!name ||
-				name === 'search' ||
-				name === 'sort' ||
-				name === 'minPrice' ||
-				name === 'maxPrice'
-			) {
-				return;
-			}
+	const handleSelectChange = <K extends keyof AllShopFiltersForm>(
+		name: K,
+		value: AllShopFiltersForm[K],
+	) => {
+		methods.setValue(name, value as never);
 
-			setUrlFilters({
-				type: value.type ?? null,
-				itemType: value.itemType?.length ? value.itemType : null,
-				collection: value.collection?.length ? value.collection : null,
-				sortBy: value.sortBy ?? null,
-				sortOrder: value.sortOrder ?? null,
-				page: 1,
-			});
-		});
+		if (name === 'sort' && typeof value === 'string') {
+			const [sortBy, sortOrder] = value.split('_') as [
+				PaginatedShopFilterDto['sortBy'],
+				PaginatedShopFilterDto['sortOrder'],
+			];
+			setUrlFilters({ sortBy, sortOrder, page: 1 });
+		} else {
+			setUrlFilters({ [name]: value, page: 1 });
+		}
+	};
 
-		return () => subscription.unsubscribe();
-	}, [watch, setUrlFilters]);
-
-	const watchedSearch = watch('search');
-	const watchedMinPrice = watch('minPrice');
-	const watchedMaxPrice = watch('maxPrice');
+	const watchedSearch = useWatch({ control: methods.control, name: 'search' });
+	const watchedMinPrice = useWatch({
+		control: methods.control,
+		name: 'minPrice',
+	});
+	const watchedMaxPrice = useWatch({
+		control: methods.control,
+		name: 'maxPrice',
+	});
 
 	const debouncedSearch = useDebounce(watchedSearch, 500);
 	const debouncedMinPrice = useDebounce(watchedMinPrice, 500);
@@ -85,21 +81,18 @@ export const useAllShop = () => {
 		let shouldUpdate = false;
 		const newFilters: Partial<PaginatedShopFilterDto> = {};
 
-		const normalizedSearch = debouncedSearch;
-		if (normalizedSearch !== (urlFilters.search ?? undefined)) {
-			newFilters.search = normalizedSearch;
+		if (debouncedSearch !== (urlFilters.search ?? undefined)) {
+			newFilters.search = debouncedSearch;
 			shouldUpdate = true;
 		}
 
 		const normalizedMinPrice = debouncedMinPrice ?? 0;
-
 		if (normalizedMinPrice !== urlFilters.minPrice) {
 			newFilters.minPrice = normalizedMinPrice;
 			shouldUpdate = true;
 		}
 
 		const normalizedMaxPrice = debouncedMaxPrice ?? null;
-
 		if (normalizedMaxPrice !== urlFilters.maxPrice) {
 			newFilters.maxPrice = normalizedMaxPrice;
 			shouldUpdate = true;
@@ -127,5 +120,6 @@ export const useAllShop = () => {
 		methods,
 		currentPage: urlFilters.page,
 		handlePageChange,
+		handleSelectChange,
 	};
 };

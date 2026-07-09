@@ -10,7 +10,7 @@ import {
 	ModalHeader,
 } from '@shared/ui';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './UploadModal.module.scss';
 
@@ -25,11 +25,7 @@ export const UploadModal = ({
 	handleClear,
 	handleUpdate,
 }: UploadModalProps) => {
-	const [isOpen, setIsOpen] = useState(false);
-
-	useEffect(() => {
-		if (file) setIsOpen(true);
-	}, [file]);
+	const [isOpen, setIsOpen] = useState(() => Boolean(file));
 
 	const handleClose = () => {
 		setIsOpen(false);

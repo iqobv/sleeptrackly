@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SearchDto } from './dto/search.dto';
+import { UpdateUserTimezoneDto } from './dto/update-user-timezone.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user-response.dto';
 import { UsersSearchResultDto } from './dto/users-search-result.dto';
@@ -40,6 +41,17 @@ export class UserController {
 		@Body() dto: UpdateUserDto,
 	): Promise<UserDto> {
 		return await this.userService.update(userId, dto);
+	}
+
+	/** Sync user timezone */
+	@Patch('me/timezone')
+	@ApiOkResponse({ type: UserDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	public async syncTimezone(
+		@Authorized('id') userId: string,
+		@Body() dto: UpdateUserTimezoneDto,
+	): Promise<UserDto> {
+		return await this.userService.syncTimezone(userId, dto);
 	}
 
 	/** Search users by username */

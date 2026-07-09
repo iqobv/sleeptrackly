@@ -5,11 +5,13 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AccessTokenGuard extends AuthGuard('jwt') {
-	public handleRequest<TUser = JwtPayload>(err: any, user: any): TUser {
+	public handleRequest<TUser = JwtPayload>(err: unknown, user: unknown): TUser {
 		if (err || !user) {
-			throw err || new UnauthorizedException(ERROR_MESSAGES.AUTH.UNAUTHORIZED);
+			throw err instanceof Error
+				? err
+				: new UnauthorizedException(ERROR_MESSAGES.AUTH.UNAUTHORIZED);
 		}
 
-		return user;
+		return user as TUser;
 	}
 }

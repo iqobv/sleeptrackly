@@ -17,14 +17,14 @@ export const MainProvider = ({
 	user,
 }: PropsWithChildren<MainProviderProps>) => {
 	return (
-		<AuthProvider user={user}>
-			<TanstackQueryProvider>
+		<TanstackQueryProvider>
+			<AuthProvider user={user}>
 				<ThemeProvider>
 					<ToastProvider>
 						<NuqsProvider>{children}</NuqsProvider>
 					</ToastProvider>
 				</ThemeProvider>
-			</TanstackQueryProvider>
-		</AuthProvider>
+			</AuthProvider>
+		</TanstackQueryProvider>
 	);
 };

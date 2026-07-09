@@ -1,48 +1,25 @@
 'use client';
 
-import { equipInventoryItem } from '@/api/inventory/inventory.api';
 import { InventoryItem } from '@/types/inventory/inventory.types';
 import { ItemType } from '@/types/item/itemType.types';
 import { Button } from '@shared/ui';
-import { useMutation } from '@tanstack/react-query';
+import clsx from 'clsx';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 import styles from './InventoryListItem.module.scss';
 
 interface InventoryListItemProps {
 	item: InventoryItem;
-	refetch?: () => void;
+	onEquip: () => void;
 }
 
 export const InventoryListItem = ({
 	item,
-	refetch,
+	onEquip,
 }: InventoryListItemProps) => {
-	const [isEquipped, setIsEquipped] = useState(item.isEquipped);
-
-	const { mutate } = useMutation({
-		mutationFn: () => equipInventoryItem(item.id),
-		mutationKey: ['equipItem', item.id],
-		onMutate: () => {
-			setIsEquipped((prev) => !prev);
-		},
-		onError: () => {
-			setIsEquipped((prev) => !prev);
-		},
-		onSuccess: (data) => {
-			setIsEquipped(data.isEquipped);
-			if (refetch) {
-				refetch();
-			}
-		},
-	});
-
-	useEffect(() => {
-		setIsEquipped(item.isEquipped);
-	}, [item]);
+	const isEquipped = item.isEquipped;
 
 	return (
-		<div className={`${styles.item} ${isEquipped ? styles.equipped : ''}`}>
+		<div className={clsx(styles.item, isEquipped && styles.equipped)}>
 			<div className={styles.imageContainer}>
 				{item.item.type === ItemType.ANIMATED_AVATAR ? (
 					<video
@@ -76,7 +53,7 @@ export const InventoryListItem = ({
 						fullWidth
 						variant="contained"
 						color={isEquipped ? 'secondary' : 'primary'}
-						onClick={() => mutate()}
+						onClick={onEquip}
 					>
 						{isEquipped ? 'Unequip' : 'Equip'}
 					</Button>

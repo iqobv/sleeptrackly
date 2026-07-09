@@ -8,7 +8,7 @@ import {
 
 @ValidatorConstraint({ name: 'isBefore', async: false })
 export class IsBeforeConstraint implements ValidatorConstraintInterface {
-	validate(propertyValue: unknown, args: ValidationArguments) {
+	public validate(propertyValue: unknown, args: ValidationArguments): boolean {
 		const relatedPropertyName = args.constraints[0] as string;
 		const obj = args.object as Record<string, unknown>;
 		const relatedValue = obj[relatedPropertyName];
@@ -22,7 +22,7 @@ export class IsBeforeConstraint implements ValidatorConstraintInterface {
 		return true;
 	}
 
-	defaultMessage(args: ValidationArguments) {
+	public defaultMessage(args: ValidationArguments): string {
 		return `${args.property} must be before ${args.constraints[0]}`;
 	}
 }

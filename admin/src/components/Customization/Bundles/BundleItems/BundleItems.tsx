@@ -11,8 +11,14 @@ import {
 	ModalHeader,
 	ModalTrigger,
 } from '@shared/ui';
-import { useEffect, useState } from 'react';
-import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
+import { useState } from 'react';
+import {
+	FieldValues,
+	Path,
+	PathValue,
+	useFormContext,
+	useWatch,
+} from 'react-hook-form';
 import { ItemCard } from '../../ItemCard/ItemCard';
 import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
 import { ItemsListWrapper } from '../../ItemsListWrapper/ItemsListWrapper';
@@ -25,21 +31,21 @@ interface BundleItemsProps {
 export const BundleItems = <T extends FieldValues>({
 	initialItems,
 }: BundleItemsProps) => {
-	const [selectedItems, setSelectedItems] = useState<Item[]>([]);
+	const [selectedItems, setSelectedItems] = useState<Item[]>(() => {
+		if (initialItems && initialItems.length > 0) {
+			return initialItems;
+		}
+		return [];
+	});
 
 	const name = 'itemsIds' as Path<T>;
+	const { setValue, control } = useFormContext<T>();
 
-	const { setValue, watch } = useFormContext<T>();
-	const selectedIds = (watch(name) as string[]) || [];
-
-	useEffect(() => {
-		if (initialItems && initialItems.length > 0) {
-			setSelectedItems(initialItems);
-			setValue(name, initialItems.map((i) => i.id) as PathValue<T, Path<T>>, {
-				shouldDirty: false,
-			});
-		}
-	}, [initialItems, setValue, name]);
+	const selectedIds =
+		(useWatch({
+			control,
+			name,
+		}) as string[]) || [];
 
 	const toggleItem = (item: Item) => {
 		const isSelected = selectedIds.includes(item.id);

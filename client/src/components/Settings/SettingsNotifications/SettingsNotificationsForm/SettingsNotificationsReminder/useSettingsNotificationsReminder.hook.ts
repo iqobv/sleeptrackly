@@ -23,11 +23,6 @@ export const useSettingsNotificationsReminder = ({
 		control,
 	});
 
-	const { field: userTimeZoneField } = useController({
-		name: 'userTimeZone',
-		control,
-	});
-
 	const isEnabled = watch('isReminderEnabled');
 
 	const handleToggleChange = useCallback(
@@ -35,36 +30,28 @@ export const useSettingsNotificationsReminder = ({
 			reminderToggleField.onChange(checked);
 
 			if (checked) {
-				const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-				setValue('userTimeZone', timezone);
 				updateSetting({
 					isReminderEnabled: checked,
 					reminderTime: getValues('reminderTime'),
-					userTimeZone: timezone,
 				});
 			} else {
 				updateSetting({ isReminderEnabled: checked });
 			}
 		},
-		[reminderToggleField, updateSetting, setValue, getValues]
+		[reminderToggleField, updateSetting, setValue, getValues],
 	);
 
 	const handleTimeBlur = useCallback(() => {
-		const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 		const timeValue = getValues('reminderTime');
-
-		setValue('userTimeZone', timezone);
 
 		updateSetting({
 			reminderTime: timeValue,
-			userTimeZone: timezone,
 		});
 	}, [updateSetting, getValues, setValue]);
 
 	return {
 		reminderToggleField,
 		reminderTimeField,
-		userTimeZoneField,
 		isEnabled,
 		handleToggleChange,
 		handleTimeBlur,

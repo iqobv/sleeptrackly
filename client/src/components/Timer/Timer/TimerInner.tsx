@@ -1,12 +1,13 @@
 'use client';
 
 import { Button } from '@shared/ui';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './Timer.module.scss';
 import { TimerButtonLoader } from './TimerButtonLoader';
 import { TimerContent } from './TimerContent/TimerContent';
 import { TimerContentLoader } from './TimerContent/TimerContentLoader';
 import { TimerEnd } from './TimerEnd/TimerEnd';
+import { TimerReset } from './TimerReset';
 import { useTimer } from './useTimer.hook';
 
 export const TimerInner = () => {
@@ -27,18 +28,16 @@ export const TimerInner = () => {
 		resetTimer,
 	} = useTimer();
 
-	const [open, setOpen] = useState<boolean>(isFinished);
+	const [wasManuallyClosed, setWasManuallyClosed] = useState(false);
+
+	const open = isFinished && !wasManuallyClosed;
 
 	const handleClick = () => {
 		if (isSleeping) stopTimer();
 		else startTimer();
 	};
 
-	const handleClose = () => setOpen((prev) => !prev);
-
-	useEffect(() => {
-		setOpen(isFinished);
-	}, [isFinished]);
+	const handleClose = () => setWasManuallyClosed((prev) => !prev);
 
 	return (
 		<>
@@ -64,13 +63,22 @@ export const TimerInner = () => {
 							onClose={handleClose}
 						/>
 						{finishedSleep ? (
-							<Button onClick={resetTimer} loading={isPending}>
+							<Button
+								onClick={() => {
+									setWasManuallyClosed(false);
+									resetTimer();
+								}}
+								loading={isPending}
+							>
 								Reset Timer
 							</Button>
 						) : (
-							<Button onClick={handleClick} loading={isPending}>
-								{isSleeping ? 'Stop Timer' : 'Start Timer'}
-							</Button>
+							<>
+								<Button onClick={handleClick} loading={isPending}>
+									{isSleeping ? 'Stop Timer' : 'Start Timer'}
+								</Button>
+								{isSleeping && <TimerReset resetTimer={resetTimer} />}
+							</>
 						)}
 					</>
 				)}

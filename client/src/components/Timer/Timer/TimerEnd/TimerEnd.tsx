@@ -19,7 +19,6 @@ import {
 } from '@shared/ui';
 import { formatLocalDatetime } from '@shared/utils';
 import Link from 'next/link';
-import { useMemo } from 'react';
 import { UseTimerReturnType } from '../useTimer.hook';
 import styles from './TimerEnd.module.scss';
 
@@ -44,20 +43,18 @@ export const TimerEnd = ({
 	onClose,
 	open,
 }: TimerEndProps) => {
-	const defaultSleepStart = useMemo(() => {
-		return sleepStatus?.sleepStart
-			? new Date(sleepStatus.sleepStart).toISOString()
-			: new Date().toISOString();
-	}, [sleepStatus?.sleepStart]);
+	const defaultSleepStart = sleepStatus?.sleepStart
+		? new Date(sleepStatus.sleepStart).toISOString()
+		: new Date().toISOString();
 
-	const defaultSleepEnd = useMemo(() => {
-		return finishTime
-			? new Date(finishTime).toISOString()
-			: new Date().toISOString();
-	}, [finishTime]);
+	const defaultSleepEnd = finishTime
+		? new Date(finishTime).toISOString()
+		: new Date().toISOString();
 
-	const handleSubmit = (data: UpdateSleepEntryDto) => {
+	const handleSubmit = (data: UpdateSleepEntryFormDto) => {
 		const { sleepStart, sleepEnd, ...rest } = data;
+
+		if (!sleepEnd) return;
 
 		const isEdited =
 			sleepStart !== defaultSleepStart || sleepEnd !== defaultSleepEnd;
@@ -67,6 +64,7 @@ export const TimerEnd = ({
 			sleepStart: sleepStart !== defaultSleepStart ? sleepStart : undefined,
 			sleepEnd,
 			isEdited,
+			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		};
 
 		handleSaveSleep(payload);

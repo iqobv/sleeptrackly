@@ -31,8 +31,4 @@ export class UpdateUserNotificationSettingsDto {
 	})
 	@IsOptional()
 	reminderTime?: string;
-
-	@IsString()
-	@IsOptional()
-	userTimeZone?: string;
 }

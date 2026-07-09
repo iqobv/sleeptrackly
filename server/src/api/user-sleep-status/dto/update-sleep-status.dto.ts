@@ -6,6 +6,7 @@ import {
 	IsNumber,
 	IsOptional,
 	IsString,
+	IsTimeZone,
 	Max,
 	Min,
 } from 'class-validator';
@@ -36,4 +37,9 @@ export class UpdateUserSleepStatusDto {
 	@IsOptional()
 	@IsBoolean()
 	isEdited?: boolean;
+
+	@IsOptional()
+	@IsString()
+	@IsTimeZone()
+	timezone?: string;
 }

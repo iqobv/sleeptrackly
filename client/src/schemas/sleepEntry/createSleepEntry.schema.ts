@@ -11,5 +11,6 @@ export const createSleepEntrySchema =
 export const createSleepEntryFormSchema = createSleepEntryObject
 	.omit({
 		dateForChart: true,
+		timezone: true,
 	})
 	.superRefine(validateDateRange);

@@ -4,7 +4,7 @@ import { createSleepEntry } from '@/api/sleepEntry/createSleepEntry.api';
 import { SleepEntryForm } from '@/components/SleepEntry/SleepEntryForm';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { CreateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
-import { createSleepEntryFormSchema } from '@/schemas/sleepEntry/createSleepEntry,schema';
+import { createSleepEntryFormSchema } from '@/schemas/sleepEntry/createSleepEntry.schema';
 import { FormReset, FormSubmit } from '@shared/form';
 import { ModalBody, ModalClose, ModalFooter, SectionHeader } from '@shared/ui';
 import { formatDate } from '@shared/utils';
@@ -63,9 +63,12 @@ export const SleepSessionCreate = ({
 						return;
 					}
 
+					const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 					const finalData: CreateSleepEntryDto = {
 						...data,
 						dateForChart: dayjs(date).format('YYYY-MM-DD'),
+						timezone,
 					};
 
 					mutate(finalData, {

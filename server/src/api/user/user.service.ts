@@ -20,6 +20,7 @@ import { plainToInstance } from 'class-transformer';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FullUserDto, FullUserWithPasswordDto } from './dto/full-user.dto';
 import { PasswordRecoveryDto } from './dto/password.dto';
+import { UpdateUserTimezoneDto } from './dto/update-user-timezone.dto';
 import { InternalUpdateUserDto } from './dto/update-user.dto';
 import { UserDto, UserWithPasswordDto } from './dto/user-response.dto';
 import { UsersSearchResultDto } from './dto/users-search-result.dto';
@@ -240,6 +241,25 @@ export class UserService {
 				username,
 				...rest,
 			},
+			select: userSelect,
+		});
+
+		return plainToInstance(UserDto, updated);
+	}
+
+	public async syncTimezone(
+		id: string,
+		dto: UpdateUserTimezoneDto,
+	): Promise<UserDto> {
+		const { timezone } = dto;
+
+		const user = await this.findById(id);
+
+		if (user.timezone === timezone) return plainToInstance(UserDto, user);
+
+		const updated = await this.prismaService.user.update({
+			where: { id: user.id },
+			data: { timezone },
 			select: userSelect,
 		});
 
