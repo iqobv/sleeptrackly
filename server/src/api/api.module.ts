@@ -30,6 +30,7 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
+import { ChallengeTemplateModule } from './challenge-template/challenge-template.module';
 
 @Module({
 	imports: [
@@ -64,6 +65,7 @@ import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 		AchievementModule,
 		ImageModule,
 		CollectionModule,
+		ChallengeTemplateModule,
 	],
 })
 export class ApiModule {}

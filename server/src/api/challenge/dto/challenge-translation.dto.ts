@@ -6,7 +6,7 @@ export class ChallengeTranslationEntityDto extends DefaultFieldsDto {
 	@Expose() challengeId: string;
 	@Expose() language: string;
 	@Expose() title: string;
-	@Expose() description: string | null;
+	@Expose() description: string;
 }
 
 export class ChallengeTranslationDto extends OmitType(

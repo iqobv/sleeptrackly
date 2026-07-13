@@ -29,6 +29,7 @@ export const transformMetadata = ({
 		case ChallengeType.SLEEP_DURATION:
 			return plainToInstance(SleepDurationMetadataDto, metadata);
 		case ChallengeType.BEDTIME_CONSISTENCY:
+			return plainToInstance(TimeConsistencyMetadataDto, metadata);
 		case ChallengeType.WAKE_TIME_CONSISTENCY:
 			return plainToInstance(TimeConsistencyMetadataDto, metadata);
 		case ChallengeType.BEDTIME_VARIANCE:
@@ -68,8 +69,8 @@ export class ChallengeEntityDto extends DefaultFieldsDto {
 		| BedtimeVarianceMetadataDto
 		| null;
 
-	@Expose()
-	rewardCoins: number;
+	@Expose() rewardCoins: number;
+	@Expose() dailyRewardCoins: number;
 	@Expose() rewardProductId: string | null;
 
 	@Type(() => ChallengeTranslationEntityDto)

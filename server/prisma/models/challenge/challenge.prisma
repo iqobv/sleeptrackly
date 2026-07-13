@@ -2,6 +2,7 @@ model Challenge {
   id String @id @default(uuid())
 
   type ChallengeType
+  tier ChallengeTier
 
   availableFrom DateTime? @map("available_from")
   availableTo   DateTime? @map("available_to")
@@ -14,8 +15,9 @@ model Challenge {
 
   metadata Json?
 
-  rewardCoins     Int     @default(0) @map("reward_coins")
-  rewardProductId String? @map("reward_product_id")
+  rewardCoins      Int     @default(0) @map("reward_coins")
+  dailyRewardCoins Int     @default(0) @map("daily_reward_coins")
+  rewardProductId  String? @map("reward_product_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

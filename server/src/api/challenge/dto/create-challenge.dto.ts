@@ -1,4 +1,8 @@
-import { ChallengeType, ChallengeVisibility } from '@generated/prisma/enums';
+import {
+	ChallengeTier,
+	ChallengeType,
+	ChallengeVisibility,
+} from '@generated/prisma/enums';
 import { IsBefore } from '@libs/validators/is-before.validator';
 import { IsChallengeMetadata } from '@libs/validators/is-challenge-metadata.validator';
 import { IsFutureDate } from '@libs/validators/is-future-date.validator';
@@ -33,6 +37,10 @@ export class CreateChallengeDto {
 	@ApiProperty({ enum: ChallengeType, enumName: 'ChallengeType' })
 	@IsEnum(ChallengeType)
 	type: ChallengeType;
+
+	@ApiProperty({ enum: ChallengeTier, enumName: 'ChallengeTier' })
+	@IsEnum(ChallengeTier)
+	tier: ChallengeTier;
 
 	@IsOptional()
 	@Type(() => Date)
@@ -82,6 +90,10 @@ export class CreateChallengeDto {
 	@IsNumber()
 	@Min(0)
 	rewardCoins: number;
+
+	@IsNumber()
+	@Min(0)
+	dailyRewardCoins: number;
 
 	@IsOptional()
 	@IsUUID('4')

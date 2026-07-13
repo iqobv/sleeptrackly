@@ -1,0 +1,280 @@
+[
+	{
+		"tier": "TIER_1",
+		"type": "SLEEP_DURATION",
+		"generationRules": {
+			"durations": [3, 4, 5],
+			"targetVariances": [0],
+			"metadataOptions": {
+				"minDurationMinutes": [420, 450]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Sleep Starter",
+				"description": "Sleep at least {{minDurationMinutes}} minutes for {{durationDays}} days. Complete every day with up to {{targetVariance}} missed days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "SLEEP_DURATION",
+		"generationRules": {
+			"durations": [5, 6, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"minDurationMinutes": [420, 450, 480]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Build Your Sleep Habit",
+				"description": "Aim for at least {{minDurationMinutes}} minutes of sleep each night for {{durationDays}} days. You can miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "SLEEP_DURATION",
+		"generationRules": {
+			"durations": [3, 5, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"minDurationMinutes": [450, 480]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Recharge Challenge",
+				"description": "Recharge with at least {{minDurationMinutes}} minutes of sleep for {{durationDays}} days. You may miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "WAKE_TIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [3, 4, 5],
+			"targetVariances": [0],
+			"metadataOptions": {
+				"targetTime": ["07:00", "07:30", "08:00"],
+				"allowedWindowMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Morning Rhythm",
+				"description": "Wake up within {{allowedWindowMinutes}} minutes of {{targetTime}} for {{durationDays}} days. Stay consistent with up to {{targetVariance}} missed days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "WAKE_TIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [5, 6, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["06:30", "07:00", "07:30"],
+				"allowedWindowMinutes": [45, 60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Easy Wake-Up Week",
+				"description": "Wake around {{targetTime}} within {{allowedWindowMinutes}} minutes for {{durationDays}} days. You can miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "WAKE_TIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [3, 5],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["07:30", "08:00", "08:30"],
+				"allowedWindowMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Fresh Start",
+				"description": "Start your day by waking within {{allowedWindowMinutes}} minutes of {{targetTime}} for {{durationDays}} days. Up to {{targetVariance}} missed days are allowed."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [3, 4, 5],
+			"targetVariances": [0],
+			"metadataOptions": {
+				"targetTime": ["22:00", "22:30", "23:00"],
+				"allowedWindowMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Gentle Bedtime",
+				"description": "Go to bed within {{allowedWindowMinutes}} minutes of {{targetTime}} for {{durationDays}} days. You may miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [5, 6, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["21:30", "22:00", "22:30"],
+				"allowedWindowMinutes": [45, 60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Relax Into Routine",
+				"description": "Keep your bedtime within {{allowedWindowMinutes}} minutes of {{targetTime}} for {{durationDays}} days. You can miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [3, 5, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["22:30", "23:00", "23:30"],
+				"allowedWindowMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Bedtime Basics",
+				"description": "Head to bed around {{targetTime}}, staying within {{allowedWindowMinutes}} minutes for {{durationDays}} days. Up to {{targetVariance}} missed days are allowed."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_VARIANCE",
+		"generationRules": {
+			"durations": [3, 4, 5],
+			"targetVariances": [0],
+			"metadataOptions": {
+				"maxVarianceMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Steady Evenings",
+				"description": "Keep your bedtime variation within {{maxVarianceMinutes}} minutes for {{durationDays}} days. Complete the challenge with up to {{targetVariance}} missed days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_VARIANCE",
+		"generationRules": {
+			"durations": [5, 6, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"maxVarianceMinutes": [45, 60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Keep It Consistent",
+				"description": "Limit your bedtime variation to {{maxVarianceMinutes}} minutes for {{durationDays}} days. You can miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_VARIANCE",
+		"generationRules": {
+			"durations": [3, 5, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"maxVarianceMinutes": [60, 75]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Evening Balance",
+				"description": "Keep bedtime changes within {{maxVarianceMinutes}} minutes over {{durationDays}} days. Up to {{targetVariance}} missed days are allowed."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "WAKE_TIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [4, 5, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["06:30", "07:00", "08:00"],
+				"allowedWindowMinutes": [60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Rise and Shine",
+				"description": "Wake within {{allowedWindowMinutes}} minutes of {{targetTime}} for {{durationDays}} days. You may miss up to {{targetVariance}} days."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "SLEEP_DURATION",
+		"generationRules": {
+			"durations": [4, 6, 7],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"minDurationMinutes": [420, 480]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Rest Well",
+				"description": "Get at least {{minDurationMinutes}} minutes of sleep for {{durationDays}} days. Up to {{targetVariance}} missed days are allowed."
+			}
+		]
+	},
+	{
+		"tier": "TIER_1",
+		"type": "BEDTIME_CONSISTENCY",
+		"generationRules": {
+			"durations": [4, 5, 6],
+			"targetVariances": [0, 1],
+			"metadataOptions": {
+				"targetTime": ["22:00", "22:30", "23:00"],
+				"allowedWindowMinutes": [45, 60]
+			}
+		},
+		"translations": [
+			{
+				"language": "en",
+				"title": "Wind Down Together",
+				"description": "Aim to be in bed around {{targetTime}} within {{allowedWindowMinutes}} minutes for {{durationDays}} days. You can miss up to {{targetVariance}} days."
+			}
+		]
+	}
+]
