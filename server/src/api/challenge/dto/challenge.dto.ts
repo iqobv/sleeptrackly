@@ -1,27 +1,46 @@
-import { ChallengeTaskDto } from '@api/challenge-task/dto/challenge-task.dto';
-import { ChallengeFrequency } from '@generated/prisma/enums';
-import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
-import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
+import { OmitType } from '@nestjs/swagger';
+import { Expose, Transform, Type } from 'class-transformer';
+import { ChallengeTranslationDto } from './challenge-translation.dto';
+import { ChallengeEntityDto, transformMetadata } from './challenge.entity.dto';
+import { BedtimeVarianceMetadataDto } from './metadata/bedtime-variance-metadata.dto';
+import { SleepDurationMetadataDto } from './metadata/sleep-duration-metadata.dto';
+import { TimeConsistencyMetadataDto } from './metadata/time-consistency-metadata.dto';
+import { UserChallengeDto } from './user-challenge.dto';
 
-export class ChallengeDto extends DefaultFieldsDto {
-	@Expose() userId: string;
-	@Expose() title: string;
-	@Expose() description: string;
+export class FullChallengeDto extends ChallengeEntityDto {}
 
+export class BaseChallengeDto extends OmitType(ChallengeEntityDto, [
+	'translations',
+] as const) {
 	@Expose()
-	@ApiProperty({ enum: ChallengeFrequency, enumName: 'ChallengeFrequency' })
-	frequency: ChallengeFrequency;
-
-	@Expose() isStarted: boolean;
-	@Expose() isCompleted: boolean;
-	@Expose() startDate: Date;
-	@Expose() endDate: Date;
-	@Expose() deletedAt: Date | null;
+	@Transform(transformMetadata)
+	metadata?:
+		| SleepDurationMetadataDto
+		| TimeConsistencyMetadataDto
+		| BedtimeVarianceMetadataDto
+		| null;
 }
 
-export class ChallengeFullDto extends ChallengeDto {
+export class ChallengeDto extends OmitType(ChallengeEntityDto, [
+	'translations',
+] as const) {
+	@Type(() => ChallengeTranslationDto)
 	@Expose()
-	@Type(() => ChallengeTaskDto)
-	tasks: ChallengeTaskDto[];
+	translation: ChallengeTranslationDto;
+
+	@Expose()
+	@Transform(transformMetadata)
+	metadata?:
+		| SleepDurationMetadataDto
+		| TimeConsistencyMetadataDto
+		| BedtimeVarianceMetadataDto
+		| null;
+}
+
+export class ChallengeWithUserStatusDto extends ChallengeDto {
+	@Expose() isParticipating: boolean;
+
+	@Type(() => UserChallengeDto)
+	@Expose()
+	userChallenge: UserChallengeDto | null;
 }

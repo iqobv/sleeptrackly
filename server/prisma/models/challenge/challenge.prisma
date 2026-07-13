@@ -1,0 +1,30 @@
+model Challenge {
+  id String @id @default(uuid())
+
+  type ChallengeType
+
+  availableFrom DateTime? @map("available_from")
+  availableTo   DateTime? @map("available_to")
+
+  visibility ChallengeVisibility @default(DRAFT)
+
+  durationDays  Int @default(7) @map("duration_days")
+  targetValue   Int @map("target_value")
+  maxRecoveries Int @default(1) @map("max_recoveries")
+
+  metadata Json?
+
+  rewardCoins     Int     @default(0) @map("reward_coins")
+  rewardProductId String? @map("reward_product_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  participants UserChallenge[]
+  translations ChallengeTranslation[]
+
+  product Product? @relation(fields: [rewardProductId], references: [id], onDelete: SetNull)
+
+  @@index([availableFrom, availableTo, visibility])
+  @@map("challenges")
+}

@@ -1,16 +1,26 @@
-import { OmitType, PartialType } from '@nestjs/swagger';
-import { IsBoolean, IsOptional } from 'class-validator';
+import {
+	ApiPropertyOptional,
+	getSchemaPath,
+	OmitType,
+	PartialType,
+} from '@nestjs/swagger';
+import { IsObject, IsOptional } from 'class-validator';
 import { CreateChallengeDto } from './create-challenge.dto';
+import { BedtimeVarianceMetadataDto } from './metadata/bedtime-variance-metadata.dto';
+import { SleepDurationMetadataDto } from './metadata/sleep-duration-metadata.dto';
+import { TimeConsistencyMetadataDto } from './metadata/time-consistency-metadata.dto';
 
-export class UpdateChallengeDto extends OmitType(
-	PartialType(CreateChallengeDto),
-	['tasksOptions', 'startDate', 'endDate', 'frequency'],
+export class UpdateChallengeDto extends PartialType(
+	OmitType(CreateChallengeDto, ['metadata'] as const),
 ) {
-	@IsBoolean()
+	@ApiPropertyOptional({
+		oneOf: [
+			{ $ref: getSchemaPath(SleepDurationMetadataDto) },
+			{ $ref: getSchemaPath(TimeConsistencyMetadataDto) },
+			{ $ref: getSchemaPath(BedtimeVarianceMetadataDto) },
+		],
+	})
 	@IsOptional()
-	isStarted?: boolean;
-
-	@IsBoolean()
-	@IsOptional()
-	isCompleted?: boolean;
+	@IsObject()
+	metadata?: unknown;
 }

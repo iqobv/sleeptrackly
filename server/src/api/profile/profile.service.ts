@@ -30,9 +30,6 @@ export class ProfileService {
 				_count: {
 					select: {
 						sleepEntries: true,
-						challenges: {
-							where: { isCompleted: true },
-						},
 					},
 				},
 			},
@@ -68,9 +65,7 @@ export class ProfileService {
 
 		const statistics: ProfileStatisticsDto = {
 			countOfSleepEntries: canViewStatistics ? user._count.sleepEntries : 0,
-			countOfCompletedChallenges: canViewStatistics
-				? user._count.challenges
-				: 0,
+			countOfCompletedChallenges: 0,
 		};
 
 		const {

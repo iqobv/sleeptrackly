@@ -1,0 +1,6 @@
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  FAILED
+  EXPIRED
+}

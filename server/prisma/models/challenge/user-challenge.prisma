@@ -1,0 +1,25 @@
+model UserChallenge {
+  id String @id @default(uuid())
+
+  userId      String @map("user_id")
+  challengeId String @map("challenge_id")
+
+  status   ChallengeStatus @default(ACTIVE)
+  progress Int             @default(0)
+
+  usedRecoveries Int @default(0) @map("used_recoveries")
+
+  startDate String @map("start_date")
+  endDate   String @map("end_date")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  challengeTasks ChallengeTask[]
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, challengeId])
+  @@map("user_challenges")
+}
