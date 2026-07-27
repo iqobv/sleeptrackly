@@ -5,4 +5,5 @@ export class UserSleepStatusDto extends DefaultFieldsDto {
 	@Expose() userId: string;
 	@Expose() isSleeping: boolean;
 	@Expose() sleepStart: Date | null;
+	@Expose() sleepEnd: Date | null;
 }

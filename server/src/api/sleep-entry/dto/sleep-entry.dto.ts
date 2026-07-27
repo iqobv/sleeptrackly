@@ -9,4 +9,5 @@ export class SleepEntryDto extends DefaultFieldsDto {
 	@Expose() dateForChart: string;
 	@Expose() rating: number;
 	@Expose() timezone: string;
+	@Expose() isVerified: boolean;
 }

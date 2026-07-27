@@ -3,6 +3,8 @@ model SleepEntry {
 
   userId String @map("user_id")
 
+  isVerified Boolean @default(true) @map("is_verified")
+
   sleepStart    DateTime @map("sleep_start")
   sleepEnd      DateTime @map("sleep_end")
   sleepDuration Int      @map("sleep_duration")

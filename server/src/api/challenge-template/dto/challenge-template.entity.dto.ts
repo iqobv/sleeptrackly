@@ -39,6 +39,11 @@ export class ChallengeTemplateEntityDto extends DefaultFieldsDto {
 				);
 				break;
 			case ChallengeType.BEDTIME_CONSISTENCY:
+				metadataInstance = plainToInstance(
+					GenerationTimeConsistencyMetadataDto,
+					rawRules.metadata,
+				);
+				break;
 			case ChallengeType.WAKE_TIME_CONSISTENCY:
 				metadataInstance = plainToInstance(
 					GenerationTimeConsistencyMetadataDto,

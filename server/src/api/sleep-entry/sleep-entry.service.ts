@@ -15,7 +15,7 @@ import { plainToInstance } from 'class-transformer';
 import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import { CreateSleepEntryDto } from './dto/create-sleep-entry.dto';
+import { InternalCreateSleepEntryDto } from './dto/create-sleep-entry.dto';
 import { QueryDto } from './dto/query.dto';
 import { SleepDashboardDto } from './dto/sleep-dashboard.dto';
 import { SleepDayDto } from './dto/sleep-day.dto';
@@ -133,7 +133,7 @@ export class SleepEntryService {
 
 	public async createSleepEntry(
 		userId: string,
-		dto: CreateSleepEntryDto,
+		dto: InternalCreateSleepEntryDto,
 		tx?: Prisma.TransactionClient,
 	): Promise<SleepEntryDto> {
 		const { sleepStart, sleepEnd, dateForChart, ...rest } = dto;
@@ -208,6 +208,7 @@ export class SleepEntryService {
 					dateForChart ?? sleepEntry.dateForChart ?? generatedDateForChart,
 				sleepEnd: targetEnd,
 				sleepStart: targetStart,
+				isVerified: false,
 			},
 		});
 

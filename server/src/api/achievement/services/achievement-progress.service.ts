@@ -58,7 +58,7 @@ export class AchievementProgressService {
 		switch (type) {
 			case AchievementType.SLEEP_COUNT:
 				return await this.prismaService.sleepEntry.count({
-					where: { userId },
+					where: { userId, isVerified: true },
 				});
 			case AchievementType.ITEMS_PURCHASED:
 				return await this.prismaService.purchaseHistory.count({

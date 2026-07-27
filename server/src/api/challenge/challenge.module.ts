@@ -4,12 +4,18 @@ import { AdminChallengeController } from './controllers/admin-challenge.controll
 import { ChallengeController } from './controllers/challenge.controller';
 import { AdminChallengeService } from './services/admin-challenge.service';
 import { ChallengeCronService } from './services/challenge-cron.service';
+import { ChallengeGeneratorService } from './services/challenge-generator.service';
 import { ChallengeService } from './services/challenge.service';
 
 @Module({
 	imports: [AchievementModule],
 	controllers: [ChallengeController, AdminChallengeController],
 	exports: [ChallengeService],
-	providers: [ChallengeCronService, ChallengeService, AdminChallengeService],
+	providers: [
+		ChallengeCronService,
+		ChallengeService,
+		AdminChallengeService,
+		ChallengeGeneratorService,
+	],
 })
 export class ChallengeModule {}

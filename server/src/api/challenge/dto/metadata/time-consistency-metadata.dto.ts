@@ -4,7 +4,7 @@ import { IsNumber, IsString, Matches, Min } from 'class-validator';
 export const targetTimeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 export class TimeConsistencyMetadataDto {
-	/** @remarks '22:00' */
+	/** @example '22:00' */
 	@Expose()
 	@IsString()
 	@Matches(targetTimeRegex)

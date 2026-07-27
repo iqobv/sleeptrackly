@@ -11,13 +11,12 @@ import { GenerationTimeConsistencyMetadataDto } from './metadata/time-consistenc
 	GenerationSleepDurationMetadataDto,
 )
 export class GenerationRulesDto {
+	/** Array of durations in days for which the challenge should be generated
+	 * @example [7, 14, 21]
+	 */
 	@Expose()
 	@IsNumber({ allowInfinity: false, allowNaN: false }, { each: true })
 	durations: number[];
-
-	@Expose()
-	@IsNumber({ allowInfinity: false, allowNaN: false }, { each: true })
-	targetVariances: number[];
 
 	@Expose()
 	@ApiProperty({
