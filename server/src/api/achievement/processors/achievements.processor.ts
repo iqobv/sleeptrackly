@@ -7,7 +7,7 @@ import { AchievementPayloadDto } from '../dto/achievement-payload.dto';
 import { AchievementProgressService } from '../services/achievement-progress.service';
 
 @Processor(QUEUE_NAME.ACHIEVEMENTS)
-export class AchievementsWorker extends WorkerHost {
+export class AchievementsProcessor extends WorkerHost {
 	constructor(
 		private readonly achievementProgressService: AchievementProgressService,
 	) {

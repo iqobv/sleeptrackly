@@ -18,13 +18,17 @@ import {
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ChallengeDto, ChallengeWithUserStatusDto } from '../dto/challenge.dto';
 import { FullUserChallengeDto } from '../dto/user-challenge.dto';
+import { ChallengeRecoveryService } from '../services/challenge-recovery.service';
 import { ChallengeService } from '../services/challenge.service';
 
 @Auth()
 @ApiTags('Challenge')
 @Controller('challenges')
 export class ChallengeController {
-	constructor(private readonly challengeService: ChallengeService) {}
+	constructor(
+		private readonly challengeService: ChallengeService,
+		private readonly challengeRecoveryService: ChallengeRecoveryService,
+	) {}
 
 	/** Get all challenges for the current user */
 	@Get()

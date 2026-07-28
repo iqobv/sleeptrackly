@@ -6,10 +6,10 @@ import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
 import { AchievementController } from './achievement.controller';
+import { AchievementsProcessor } from './processors/achievements.processor';
 import { AchievementCrudService } from './services/achievement-crud.service';
 import { AchievementProgressService } from './services/achievement-progress.service';
 import { AchievementsPublisherService } from './services/achievements-publisher.service';
-import { AchievementsWorker } from './workers/achievements.worker';
 
 @Module({
 	controllers: [AchievementController],
@@ -26,7 +26,7 @@ import { AchievementsWorker } from './workers/achievements.worker';
 		AchievementCrudService,
 		AchievementProgressService,
 		AchievementsPublisherService,
-		AchievementsWorker,
+		AchievementsProcessor,
 	],
 	exports: [AchievementsPublisherService],
 })

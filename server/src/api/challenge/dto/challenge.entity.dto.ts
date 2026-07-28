@@ -2,6 +2,7 @@ import { ChallengeType, ChallengeVisibility } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import {
 	ApiExtraModels,
+	ApiProperty,
 	ApiPropertyOptional,
 	getSchemaPath,
 } from '@nestjs/swagger';
@@ -45,10 +46,17 @@ export const transformMetadata = ({
 	BedtimeVarianceMetadataDto,
 )
 export class ChallengeEntityDto extends DefaultFieldsDto {
-	@Expose() type: ChallengeType;
+	@Expose()
+	@ApiProperty({ enum: ChallengeType, enumName: 'ChallengeType' })
+	type: ChallengeType;
+
 	@Expose() availableFrom: Date | null;
 	@Expose() availableTo: Date | null;
-	@Expose() visibility: ChallengeVisibility;
+
+	@Expose()
+	@ApiProperty({ enum: ChallengeVisibility, enumName: 'ChallengeVisibility' })
+	visibility: ChallengeVisibility;
+
 	@Expose() durationDays: number;
 	@Expose() targetValue: number;
 	@Expose() maxRecoveries: number;

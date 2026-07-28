@@ -1,4 +1,5 @@
 import { AchievementModule } from '@api/achievement/achievement.module';
+import { ChallengeModule } from '@api/challenge/challenge.module';
 import { RewardModule } from '@api/reward/reward.module';
 import { SleepEntryModule } from '@api/sleep-entry/sleep-entry.module';
 import { WeeklySummaryModule } from '@api/weekly-summary/weekly-summary.module';
@@ -12,6 +13,7 @@ import { UserSleepStatusService } from './user-sleep-status.service';
 		WeeklySummaryModule,
 		SleepEntryModule,
 		AchievementModule,
+		ChallengeModule,
 	],
 	controllers: [UserSleepStatusController],
 	providers: [UserSleepStatusService],

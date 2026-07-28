@@ -11,4 +11,7 @@ export const QUEUE_JOB_NAME = {
 	WEEKLY_SUMMARY: {
 		RECALCULATE: 'recalculate-weekly-summary',
 	},
+	CHALLENGES: {
+		PROCCESS: 'process-challenge',
+	},
 } as const;

@@ -12,6 +12,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	HttpCode,
 	HttpStatus,
 	Param,
 	Patch,
@@ -28,6 +29,7 @@ import { TimeConsistencyMetadataDto } from '../dto/metadata/time-consistency-met
 import { PaginatedChallengesDto } from '../dto/paginated-challenges.dto';
 import { UpdateChallengeDto } from '../dto/update-challenge.dto';
 import { AdminChallengeService } from '../services/admin-challenge.service';
+import { ChallengeGeneratorService } from '../services/challenge-generator.service';
 
 @Auth(UserRole.ADMIN)
 @ApiTags('Admin Challenge')
@@ -38,7 +40,10 @@ import { AdminChallengeService } from '../services/admin-challenge.service';
 )
 @Controller('admin/challenges')
 export class AdminChallengeController {
-	constructor(private readonly adminChallengeService: AdminChallengeService) {}
+	constructor(
+		private readonly adminChallengeService: AdminChallengeService,
+		private readonly challengeGeneratorService: ChallengeGeneratorService,
+	) {}
 
 	/** Get all challenges */
 	@Get()
@@ -75,6 +80,19 @@ export class AdminChallengeController {
 		@Body() dto: UpdateChallengeDto,
 	): Promise<FullChallengeDto> {
 		return await this.adminChallengeService.update(id, dto);
+	}
+
+	/** Regenerate challenge */
+	@Post(':id/regenerate')
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.REGENERATED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
+	@HttpCode(HttpStatus.OK)
+	public async regenerateChallenge(
+		@Param('id') id: string,
+	): Promise<MessageResponse> {
+		await this.challengeGeneratorService.regenerateChallenge(id);
+
+		return SUCCESS_MESSAGES.CHALLENGE.REGENERATED;
 	}
 
 	/** Delete challenge */

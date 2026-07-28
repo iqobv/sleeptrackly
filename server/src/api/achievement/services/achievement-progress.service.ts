@@ -77,7 +77,7 @@ export class AchievementProgressService {
 				});
 			case AchievementType.CHALLENGES_TASKS_COMPLETED:
 				return await this.prismaService.userChallenge.count({
-					where: { userId, challengeTasks: { every: { isCompleted: true } } },
+					where: { userId, challengeTasks: { every: { status: 'COMPLETED' } } },
 				});
 			default:
 				return 0;

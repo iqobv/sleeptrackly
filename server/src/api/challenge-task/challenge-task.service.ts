@@ -1,96 +1,80 @@
-import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
+import { ChallengeStatus, ChallengeTaskStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 
 @Injectable()
 export class ChallengeTaskService {
-	constructor(
-		private readonly prismaService: PrismaService,
-		private readonly achievementPublisherService: AchievementsPublisherService,
-	) {}
+	constructor(private readonly prismaService: PrismaService) {}
 
-	// public async createMany(
-	// 	challengeId: string,
-	// 	userId: string,
-	// 	tasks: CreateChallengeTaskDto[],
-	// ): Promise<ChallengeTaskDto[]> {
-	// 	await this.ensureChallengeOwnership(challengeId, userId);
+	public async recoverChallengeTask(
+		userId: string,
+		taskId: string,
+	): Promise<void> {
+		const task = await this.prismaService.challengeTask.findUnique({
+			where: { id: taskId, userChallenge: { userId } },
+			include: {
+				userChallenge: {
+					include: {
+						user: { select: { id: true, challengeRecoveries: true } },
+						challenge: true,
+					},
+				},
+			},
+		});
 
-	// 	return await this.prismaService.challengeTask.createManyAndReturn({
-	// 		data: tasks.map((task) => ({
-	// 			...task,
-	// 			isCompleted: false,
-	// 			challengeId,
-	// 		})),
-	// 	});
-	// }
+		if (!task)
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE_TASK.NOT_FOUND);
 
-	// public async create(
-	// 	challengeId: string,
-	// 	userId: string,
-	// 	task: CreateChallengeTaskDto,
-	// ): Promise<ChallengeTaskDto> {
-	// 	await this.ensureChallengeOwnership(challengeId, userId);
+		if (task.status !== ChallengeTaskStatus.FAILED)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE_TASK.ONLY_FAILED_TASKS_CAN_BE_RECOVERED,
+			);
 
-	// 	const newTask = await this.prismaService.challengeTask.create({
-	// 		data: {
-	// 			...task,
-	// 			isCompleted: false,
-	// 			challenge: { connect: { id: challengeId } },
-	// 		},
-	// 	});
+		if (task.userChallenge.status !== ChallengeStatus.FROZEN)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE_TASK.RECOVERY_NOT_AVAILABLE,
+			);
 
-	// 	return plainToInstance(ChallengeTaskDto, newTask);
-	// }
+		if (
+			task.userChallenge.usedRecoveries >=
+			task.userChallenge.challenge.maxRecoveries
+		)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE_TASK.RECOVERY_LIMIT_REACHED,
+			);
 
-	// public async findById(id: string): Promise<ChallengeTaskDto> {
-	// 	const task = await this.prismaService.challengeTask.findUnique({
-	// 		where: { id },
-	// 	});
+		if (task.userChallenge.user.challengeRecoveries <= 0)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE_TASK.NOT_ENOUGH_RECOVERIES_LEFT,
+			);
 
-	// 	if (!task)
-	// 		throw new NotFoundException(ERROR_MESSAGES.CHALLENGE_TASK.NOT_FOUND);
+		await this.prismaService.$transaction(async (tx) => {
+			await tx.challengeTask.update({
+				where: { id: taskId },
+				data: {
+					status: ChallengeTaskStatus.RECOVERED,
+					completedAt: new Date(),
+				},
+			});
 
-	// 	return plainToInstance(ChallengeTaskDto, task);
-	// }
+			await tx.userChallenge.update({
+				where: { id: task.userChallenge.id },
+				data: {
+					usedRecoveries: { increment: 1 },
+					status: ChallengeStatus.ACTIVE,
+					frozenAt: null,
+				},
+			});
 
-	// public async update(
-	// 	challengeId: string,
-	// 	taskId: string,
-	// 	userId: string,
-	// 	data: UpdateChallengeTaskDto,
-	// ): Promise<ChallengeTaskDto> {
-	// 	const { isCompleted, completedValue } = data;
-
-	// 	await this.ensureChallengeOwnership(challengeId, userId);
-
-	// 	const updatedTask = await this.prismaService.challengeTask.update({
-	// 		where: { id: taskId, challengeId },
-	// 		data: {
-	// 			isCompleted,
-	// 			completedValue,
-	// 		},
-	// 	});
-
-	// 	await this.achievementPublisherService.dispatchProgressCheck({
-	// 		userId,
-	// 		type: AchievementType.CHALLENGES_TASKS_COMPLETED,
-	// 	});
-
-	// 	return plainToInstance(ChallengeTaskDto, updatedTask);
-	// }
-
-	// private async ensureChallengeOwnership(
-	// 	challengeId: string,
-	// 	userId: string,
-	// ): Promise<void> {
-	// 	const challenge = await this.prismaService.challenge.findUnique({
-	// 		where: { id: challengeId, userId, deletedAt: null },
-	// 		select: { id: true },
-	// 	});
-
-	// 	if (!challenge) {
-	// 		throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
-	// 	}
-	// }
+			await tx.user.update({
+				where: { id: userId },
+				data: { challengeRecoveries: { decrement: 1 } },
+			});
+		});
+	}
 }

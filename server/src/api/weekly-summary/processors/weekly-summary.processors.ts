@@ -7,7 +7,7 @@ import { WeeklySummaryPayloadDto } from '../dto/weekly-summary-payload.dto';
 import { WeeklySummaryService } from '../services/weekly-summary.service';
 
 @Processor(QUEUE_NAME.WEEKLY_SUMMARY)
-export class WeeklySummaryWorker extends WorkerHost {
+export class WeeklySummaryProcessor extends WorkerHost {
 	constructor(private readonly weeklySummaryService: WeeklySummaryService) {
 		super();
 	}

@@ -2,11 +2,11 @@ import { NotificationModule } from '@api/notification/notification.module';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
+import { WeeklySummaryProcessor } from './processors/weekly-summary.processors';
 import { WeeklySummaryCronService } from './services/weekly-summary-cron.service';
 import { WeeklySummaryPublisherService } from './services/weekly-summary-publisher.service';
 import { WeeklySummaryService } from './services/weekly-summary.service';
 import { WeeklySummaryController } from './weekly-summary.controller';
-import { WeeklySummaryWorker } from './workers/weekly-summary.worker';
 
 @Module({
 	controllers: [WeeklySummaryController],
@@ -14,7 +14,7 @@ import { WeeklySummaryWorker } from './workers/weekly-summary.worker';
 		WeeklySummaryService,
 		WeeklySummaryCronService,
 		WeeklySummaryPublisherService,
-		WeeklySummaryWorker,
+		WeeklySummaryProcessor,
 	],
 	imports: [
 		NotificationModule,

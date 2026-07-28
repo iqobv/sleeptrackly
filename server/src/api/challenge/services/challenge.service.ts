@@ -1,4 +1,10 @@
-import { Challenge, Prisma } from '@generated/prisma/client';
+import {
+	Challenge,
+	ChallengeStatus,
+	ChallengeTaskStatus,
+	ChallengeVisibility,
+	Prisma,
+} from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -29,7 +35,7 @@ export class ChallengeService {
 		language: string = 'en',
 	): Promise<FullUserChallengeDto[]> {
 		const challenges = await this.prismaService.userChallenge.findMany({
-			where: { userId, status: 'ACTIVE' },
+			where: { userId, status: ChallengeStatus.ACTIVE },
 			include: {
 				challenge: {
 					include: challengeTranslationSelect(language),
@@ -66,13 +72,13 @@ export class ChallengeService {
 
 		const challenges = await this.prismaService.challenge.findMany({
 			where: {
-				visibility: 'PUBLISHED',
+				visibility: ChallengeVisibility.PUBLISHED,
 				availableFrom: { lte: now },
 				OR: [{ availableTo: { gte: now } }, { availableTo: null }],
 				participants: {
 					none: {
 						userId,
-						status: { in: ['ACTIVE', 'COMPLETED'] },
+						status: { in: [ChallengeStatus.ACTIVE, ChallengeStatus.COMPLETED] },
 					},
 				},
 			},
@@ -188,7 +194,7 @@ export class ChallengeService {
 				data: {
 					challengeId: challenge.id,
 					userId,
-					status: 'ACTIVE',
+					status: ChallengeStatus.ACTIVE,
 					startDate,
 					endDate,
 				},
@@ -201,6 +207,7 @@ export class ChallengeService {
 					return {
 						date,
 						userChallengeId: userChallenge.id,
+						status: ChallengeTaskStatus.PENDING,
 					};
 				},
 			);
@@ -223,7 +230,7 @@ export class ChallengeService {
 		if (!userChallenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		if (userChallenge.status !== 'ACTIVE')
+		if (userChallenge.status !== ChallengeStatus.ACTIVE)
 			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.NOT_PARTICIPATING);
 
 		await this.prismaService.userChallenge.delete({
@@ -241,7 +248,7 @@ export class ChallengeService {
 
 		const { visibility, availableFrom, availableTo } = challenge;
 
-		if (visibility !== 'PUBLISHED')
+		if (visibility !== ChallengeVisibility.PUBLISHED)
 			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.NOT_AVAILABLE);
 
 		if (availableFrom && availableFrom > now)

@@ -3,6 +3,7 @@ import { AchievementModule } from './achievement/achievement.module';
 import { AuthModule } from './auth/auth.module';
 import { BundleModule } from './bundle/bundle.module';
 import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
+import { ChallengeTemplateModule } from './challenge-template/challenge-template.module';
 import { ChallengeModule } from './challenge/challenge.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { CoinModule } from './coin/coin.module';
@@ -30,42 +31,41 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
-import { ChallengeTemplateModule } from './challenge-template/challenge-template.module';
 
 @Module({
 	imports: [
-		UserModule,
 		AuthModule,
-		BundleModule,
+		UserModule,
 		UserProviderModule,
-		SleepEntryModule,
-		UserSleepStatusModule,
-		ChallengeModule,
-		ChallengeTaskModule,
 		UserAvatarModule,
-		ProfileModule,
-		TokenModule,
-		FriendshipModule,
-		ReportModule,
+		UserSleepStatusModule,
+		UserInventoryModule,
+		UserPrivacySettingsModule,
+		UserNotificationSettingsModule,
 		UserSanctionModule,
 		UserFcmTokenModule,
+		SleepEntryModule,
+		TokenModule,
+		ProfileModule,
+		FriendshipModule,
 		NotificationModule,
-		UserNotificationSettingsModule,
-		CoinModule,
 		CoinTransactionModule,
+		ReportModule,
+		CoinModule,
 		RewardModule,
 		ItemModule,
-		UserInventoryModule,
+		BundleModule,
 		ProductModule,
-		PurchaseHistoryModule,
+		CollectionModule,
 		ShopModule,
-		UserPrivacySettingsModule,
+		AchievementModule,
+		ChallengeModule,
+		ChallengeTaskModule,
+		ChallengeTemplateModule,
+		PurchaseHistoryModule,
 		PromotionModule,
 		WeeklySummaryModule,
-		AchievementModule,
 		ImageModule,
-		CollectionModule,
-		ChallengeTemplateModule,
 	],
 })
 export class ApiModule {}
