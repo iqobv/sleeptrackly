@@ -6,4 +6,4 @@ export class BaseChallengeTemplateDto extends OmitType(
 	['translations'] as const,
 ) {}
 
-export class ChallengeTemplateDto extends BaseChallengeTemplateDto {}
+export class ChallengeTemplateDto extends ChallengeTemplateEntityDto {}

@@ -4,57 +4,6 @@
  */
 
 export interface paths {
-    "/v1/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update user */
-        patch: operations["UserController_updateUser_v1"];
-        trace?: never;
-    };
-    "/v1/users/me/timezone": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Sync user timezone */
-        patch: operations["UserController_syncTimezone_v1"];
-        trace?: never;
-    };
-    "/v1/users/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Search users by username */
-        get: operations["UserController_findByUsername_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/auth/login": {
         parameters: {
             query?: never;
@@ -152,6 +101,57 @@ export interface paths {
         post?: never;
         /** Delete account */
         delete: operations["AuthController_deleteAccount_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update user */
+        patch: operations["UserController_updateUser_v1"];
+        trace?: never;
+    };
+    "/v1/users/me/timezone": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Sync user timezone */
+        patch: operations["UserController_syncTimezone_v1"];
+        trace?: never;
+    };
+    "/v1/users/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search users by username */
+        get: operations["UserController_findByUsername_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -509,131 +509,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/bundles": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all bundles */
-        get: operations["BundleController_getAllBundles_v1"];
-        put?: never;
-        /** Create a new bundle */
-        post: operations["BundleController_createBundle_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/bundles/available": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all available bundles
-         * @description Retrieves a paginated list of items that are not currently assigned to any bundle. The items are sorted by creation date in descending order (newest first) and include their translations.
-         */
-        get: operations["BundleController_getAllAvailableItems_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/bundles/id/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get the bundle by ID */
-        get: operations["BundleController_getBundleById_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/bundles/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a bundle */
-        delete: operations["BundleController_removeBundle_v1"];
-        options?: never;
-        head?: never;
-        /** Update a bundle */
-        patch: operations["BundleController_updateBundle_v1"];
-        trace?: never;
-    };
-    "/v1/sleep-entries/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get sleep entries for week */
-        get: operations["SleepEntryController_getSleepsEntryForWeek_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/sleep-entries": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create sleep entry */
-        post: operations["SleepEntryController_createSleepEntry_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/sleep-entries/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete sleep entry */
-        delete: operations["SleepEntryController_deleteSleepEntry_v1"];
-        options?: never;
-        head?: never;
-        /** Update sleep entry */
-        patch: operations["SleepEntryController_updateSleepEntry_v1"];
-        trace?: never;
-    };
     "/v1/sleep": {
         parameters: {
             query?: never;
@@ -650,6 +525,40 @@ export interface paths {
         head?: never;
         /** Update user sleep status (start/stop sleep) */
         patch: operations["UserSleepStatusController_updateSleepStatus_v1"];
+        trace?: never;
+    };
+    "/v1/sleep/wake-up": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Stop sleep timer and save sleep end time */
+        patch: operations["UserSleepStatusController_wakeUp_v1"];
+        trace?: never;
+    };
+    "/v1/sleep/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Resume sleep timer (set sleepEnd to null) */
+        patch: operations["UserSleepStatusController_resumeSleepTimer_v1"];
         trace?: never;
     };
     "/v1/sleep/reset": {
@@ -805,7 +714,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/challenges": {
+    "/v1/sleep-entries/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get sleep entries for week */
+        get: operations["SleepEntryController_getSleepsEntryForWeek_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/sleep-entries": {
         parameters: {
             query?: never;
             header?: never;
@@ -814,23 +740,203 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create new challenge */
-        post: operations["ChallengeController_create_v1"];
+        /** Create sleep entry */
+        post: operations["SleepEntryController_createSleepEntry_v1"];
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/v1/challenges/me": {
+    "/v1/sleep-entries/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get all user's challenges */
-        get: operations["ChallengeController_findAll_v1"];
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete sleep entry */
+        delete: operations["SleepEntryController_deleteSleepEntry_v1"];
+        options?: never;
+        head?: never;
+        /** Update sleep entry */
+        patch: operations["SleepEntryController_updateSleepEntry_v1"];
+        trace?: never;
+    };
+    "/v1/achievements/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get user's achievements
+         * @description Get all achievements for the authenticated user, with optional language parameter for localization.
+         */
+        get: operations["AchievementController_getAchievements_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/achievements": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new achievement */
+        post: operations["AchievementController_createAchievement_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/achievements/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all achievements (admin only)
+         * @description Get all achievements without user-specific data. Admin only.
+         */
+        get: operations["AchievementController_getAllAchievementsForAdmin_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/achievements/id/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get achievement by ID */
+        get: operations["AchievementController_getAchievementById_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/achievements/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete an achievement */
+        delete: operations["AchievementController_deleteAchievement_v1"];
+        options?: never;
+        head?: never;
+        /** Update an achievement */
+        patch: operations["AchievementController_updateAchievement_v1"];
+        trace?: never;
+    };
+    "/v1/inventory/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get current user inventory */
+        get: operations["UserInventoryController_getUserInventory_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/inventory/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user inventory item by id */
+        get: operations["UserInventoryController_findById_v1"];
+        put?: never;
+        post?: never;
+        /** Remove item from user inventory */
+        delete: operations["UserInventoryController_removeItem_v1"];
+        options?: never;
+        head?: never;
+        /** Update user inventory item */
+        patch: operations["UserInventoryController_updateUserInventoryItem_v1"];
+        trace?: never;
+    };
+    "/v1/inventory/{id}/equip": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Equip inventory item */
+        patch: operations["UserInventoryController_equipItem_v1"];
+        trace?: never;
+    };
+    "/v1/challenges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all challenges for the current user */
+        get: operations["ChallengeController_findUserChallenges_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/challenges/available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all available challenges for the current user */
+        get: operations["ChallengeController_findAvailableChallenges_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -846,19 +952,123 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
+        /** Get a specific challenge by ID for the current user */
+        get: operations["ChallengeController_findChallengeById_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/challenges/{id}/participate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Participate in a specific challenge by ID */
+        post: operations["ChallengeController_participateInChallenge_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/challenges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all challenges */
+        get: operations["AdminChallengeController_findAll_v1"];
+        put?: never;
+        /** Create challenge */
+        post: operations["AdminChallengeController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/challenges/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
         /** Get challenge by id */
-        get: operations["ChallengeController_findById_v1"];
+        get: operations["AdminChallengeController_findById_v1"];
         put?: never;
         post?: never;
         /** Delete challenge */
-        delete: operations["ChallengeController_remove_v1"];
+        delete: operations["AdminChallengeController_delete_v1"];
         options?: never;
         head?: never;
         /** Update challenge */
-        patch: operations["ChallengeController_update_v1"];
+        patch: operations["AdminChallengeController_update_v1"];
         trace?: never;
     };
-    "/v1/challenge-tasks/challenge/{challengeId}/task/{taskId}": {
+    "/v1/admin/challenges/{id}/regenerate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Regenerate challenge */
+        post: operations["AdminChallengeController_regenerateChallenge_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/user-privacy-settings/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user privacy settings */
+        get: operations["UserPrivacySettingsController_getUserPrivacySettings_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update user privacy settings */
+        patch: operations["UserPrivacySettingsController_updateUserPrivacySettings_v1"];
+        trace?: never;
+    };
+    "/v1/settings/notifications/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get current user notification settings */
+        get: operations["UserNotificationSettingsController_getUserNotificationSettings_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/settings/notifications": {
         parameters: {
             query?: never;
             header?: never;
@@ -871,8 +1081,162 @@ export interface paths {
         delete?: never;
         options?: never;
         head?: never;
-        /** Update challenge task */
-        patch: operations["ChallengeTaskController_update_v1"];
+        /** Update current user notification settings */
+        patch: operations["UserNotificationSettingsController_update_v1"];
+        trace?: never;
+    };
+    "/v1/user-sanctions/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all sanctions for the authenticated user */
+        get: operations["UserSanctionController_getUserSanctions_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/user-sanctions/user/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all sanctions for a specific user */
+        get: operations["AdminUserSanctionController_findByUserId_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/user-sanctions/id/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a specific sanction by its ID */
+        get: operations["AdminUserSanctionController_findById_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/user-sanctions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a new sanction for a user */
+        post: operations["AdminUserSanctionController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/admin/user-sanctions/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove a sanction by its ID */
+        delete: operations["AdminUserSanctionController_remove_v1"];
+        options?: never;
+        head?: never;
+        /** Update an existing sanction */
+        patch: operations["AdminUserSanctionController_update_v1"];
+        trace?: never;
+    };
+    "/v1/fcm/save-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Save FCM token for the user */
+        post: operations["UserFcmTokenController_saveFcmToken_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/fcm/tokens": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all FCM tokens for the user */
+        get: operations["UserFcmTokenController_getUserFcmTokens_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/fcm/exists/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Check if FCM token exists for the user */
+        get: operations["UserFcmTokenController_checkTokenExists_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/fcm/remove-token/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove FCM token for the user */
+        delete: operations["UserFcmTokenController_removeFcmToken_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/v1/profiles/{username}": {
@@ -1030,194 +1394,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/user-sanctions/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all sanctions for the authenticated user */
-        get: operations["UserSanctionController_getUserSanctions_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/admin/user-sanctions/user/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all sanctions for a specific user */
-        get: operations["AdminUserSanctionController_findByUserId_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/admin/user-sanctions/id/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a specific sanction by its ID */
-        get: operations["AdminUserSanctionController_findById_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/admin/user-sanctions": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create a new sanction for a user */
-        post: operations["AdminUserSanctionController_create_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/admin/user-sanctions/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Remove a sanction by its ID */
-        delete: operations["AdminUserSanctionController_remove_v1"];
-        options?: never;
-        head?: never;
-        /** Update an existing sanction */
-        patch: operations["AdminUserSanctionController_update_v1"];
-        trace?: never;
-    };
-    "/v1/fcm/save-token": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Save FCM token for the user */
-        post: operations["UserFcmTokenController_saveFcmToken_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/fcm/tokens": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all FCM tokens for the user */
-        get: operations["UserFcmTokenController_getUserFcmTokens_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/fcm/exists/{token}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Check if FCM token exists for the user */
-        get: operations["UserFcmTokenController_checkTokenExists_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/fcm/remove-token/{token}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Remove FCM token for the user */
-        delete: operations["UserFcmTokenController_removeFcmToken_v1"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/settings/notifications/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get current user notification settings */
-        get: operations["UserNotificationSettingsController_getUserNotificationSettings_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/settings/notifications": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update current user notification settings */
-        patch: operations["UserNotificationSettingsController_update_v1"];
-        trace?: never;
-    };
     "/v1/coins": {
         parameters: {
             query?: never;
@@ -1308,15 +1484,36 @@ export interface paths {
         patch: operations["ItemController_updateItem_v1"];
         trace?: never;
     };
-    "/v1/inventory/me": {
+    "/v1/bundles": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get current user inventory */
-        get: operations["UserInventoryController_getUserInventory_v1"];
+        /** Get all bundles */
+        get: operations["BundleController_getAllBundles_v1"];
+        put?: never;
+        /** Create a new bundle */
+        post: operations["BundleController_createBundle_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/bundles/available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all available bundles
+         * @description Retrieves a paginated list of items that are not currently assigned to any bundle. The items are sorted by creation date in descending order (newest first) and include their translations.
+         */
+        get: operations["BundleController_getAllAvailableItems_v1"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1325,26 +1522,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/inventory/{id}": {
+    "/v1/bundles/id/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get user inventory item by id */
-        get: operations["UserInventoryController_findById_v1"];
+        /** Get the bundle by ID */
+        get: operations["BundleController_getBundleById_v1"];
         put?: never;
         post?: never;
-        /** Remove item from user inventory */
-        delete: operations["UserInventoryController_removeItem_v1"];
+        delete?: never;
         options?: never;
         head?: never;
-        /** Update user inventory item */
-        patch: operations["UserInventoryController_updateUserInventoryItem_v1"];
+        patch?: never;
         trace?: never;
     };
-    "/v1/inventory/{id}/equip": {
+    "/v1/bundles/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1354,11 +1549,12 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        delete?: never;
+        /** Delete a bundle */
+        delete: operations["BundleController_removeBundle_v1"];
         options?: never;
         head?: never;
-        /** Equip inventory item */
-        patch: operations["UserInventoryController_equipItem_v1"];
+        /** Update a bundle */
+        patch: operations["BundleController_updateBundle_v1"];
         trace?: never;
     };
     "/v1/products": {
@@ -1398,21 +1594,73 @@ export interface paths {
         patch: operations["ProductController_updateProduct_v1"];
         trace?: never;
     };
-    "/v1/purchase-histories/me": {
+    "/v1/collections": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get purchase histories of the authenticated user */
-        get: operations["PurchaseHistoryController_getUserPurchaseHistories_v1"];
+        get?: never;
+        put?: never;
+        /** Create new collection */
+        post: operations["CollectionController_createCollection_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/collections/all": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get all collections */
+        get: operations["CollectionController_getAllCollections_v1"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/v1/collections/id/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a collection by ID */
+        get: operations["CollectionController_getCollectionById_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/collections/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete a collection by ID */
+        delete: operations["CollectionController_deleteCollection_v1"];
+        options?: never;
+        head?: never;
+        /** Update collection */
+        patch: operations["CollectionController_updateCollection_v1"];
         trace?: never;
     };
     "/v1/shop/featured": {
@@ -1500,22 +1748,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/user-privacy-settings/me": {
+    "/v1/purchase-histories/me": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get user privacy settings */
-        get: operations["UserPrivacySettingsController_getUserPrivacySettings_v1"];
+        /** Get purchase histories of the authenticated user */
+        get: operations["PurchaseHistoryController_getUserPurchaseHistories_v1"];
         put?: never;
         post?: never;
         delete?: never;
         options?: never;
         head?: never;
-        /** Update user privacy settings */
-        patch: operations["UserPrivacySettingsController_updateUserPrivacySettings_v1"];
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/challenge-tasks/{id}/recover": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Recover a failed challenge task for the current user */
+        post: operations["ChallengeTaskController_recoverChallengeTask_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/challenge-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find all challenge templates */
+        get: operations["ChallengeTemplateController_findAll_v1"];
+        put?: never;
+        /** Create a new challenge template */
+        post: operations["ChallengeTemplateController_create_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/challenge-templates/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Find a challenge template by ID */
+        get: operations["ChallengeTemplateController_findById_v1"];
+        put?: never;
+        post?: never;
+        /** Delete a challenge template by ID */
+        delete: operations["ChallengeTemplateController_delete_v1"];
+        options?: never;
+        head?: never;
+        /** Update a challenge template by ID */
+        patch: operations["ChallengeTemplateController_update_v1"];
         trace?: never;
     };
     "/v1/promotions": {
@@ -1605,167 +1906,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/achievements/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get user's achievements
-         * @description Get all achievements for the authenticated user, with optional language parameter for localization.
-         */
-        get: operations["AchievementController_getAchievements_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/achievements": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create a new achievement */
-        post: operations["AchievementController_createAchievement_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/achievements/all": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all achievements (admin only)
-         * @description Get all achievements without user-specific data. Admin only.
-         */
-        get: operations["AchievementController_getAllAchievementsForAdmin_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/achievements/id/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get achievement by ID */
-        get: operations["AchievementController_getAchievementById_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/achievements/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete an achievement */
-        delete: operations["AchievementController_deleteAchievement_v1"];
-        options?: never;
-        head?: never;
-        /** Update an achievement */
-        patch: operations["AchievementController_updateAchievement_v1"];
-        trace?: never;
-    };
-    "/v1/collections": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create new collection */
-        post: operations["CollectionController_createCollection_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/collections/all": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get all collections */
-        get: operations["CollectionController_getAllCollections_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/collections/id/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get a collection by ID */
-        get: operations["CollectionController_getCollectionById_v1"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/v1/collections/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete a collection by ID */
-        delete: operations["CollectionController_deleteCollection_v1"];
-        options?: never;
-        head?: never;
-        /** Update collection */
-        patch: operations["CollectionController_updateCollection_v1"];
-        trace?: never;
-    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1778,10 +1918,10 @@ export interface components {
                 [key: string]: unknown;
             };
         };
-        UpdateUserDto: {
+        LoginDto: {
             /** Format: email */
-            email?: string;
-            username?: string;
+            email: string;
+            password: string;
         };
         /** @enum {string} */
         UserRole: "USER" | "ADMIN";
@@ -1819,23 +1959,6 @@ export interface components {
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
             coins: components["schemas"]["UserCoinDto"] | null;
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
-        };
-        UpdateUserTimezoneDto: {
-            timezone: string;
-        };
-        AvatarSearchDto: {
-            url: string;
-        };
-        UsersSearchResultDto: {
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            username: string;
-            avatar: components["schemas"]["AvatarSearchDto"] | null;
-        };
-        LoginDto: {
-            /** Format: email */
-            email: string;
-            password: string;
         };
         RegisterDto: {
             /** Format: email */
@@ -1892,6 +2015,23 @@ export interface components {
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
             equippedItems: components["schemas"]["UserEquippedItemDto"][];
             sanctions: components["schemas"]["UserSanctionDto"][] | null;
+        };
+        UpdateUserDto: {
+            /** Format: email */
+            email?: string;
+            username?: string;
+        };
+        UpdateUserTimezoneDto: {
+            timezone: string;
+        };
+        AvatarSearchDto: {
+            url: string;
+        };
+        UsersSearchResultDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            username: string;
+            avatar: components["schemas"]["AvatarSearchDto"] | null;
         };
         UploadUserAvatarDto: {
             /** Format: binary */
@@ -1971,29 +2111,13 @@ export interface components {
              */
             email: string;
         };
-        TranslationDto: {
-            /**
-             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
-             * @example en
-             */
-            language: string;
-            name: string;
-        };
-        CreateBundleSwaggerDto: {
-            isExclusive?: boolean;
-            translations: components["schemas"]["TranslationDto"][];
-            /** Format: binary */
-            file: string;
-            /** @example 20 */
-            discountPercentage: number;
-            /** @example ["550e8400-e29b-41d4-a716-446655440000", "550e8400-e29b-41d4-a716-446655440001"], */
-            itemsIds: string[];
-        };
-        BaseBundleDto: {
-            basePrice: number;
-            isExclusive: boolean;
-            discountPercentage: number;
-            mediaUrl: string;
+        UserSleepStatusDto: {
+            userId: string;
+            isSleeping: boolean;
+            /** Format: date-time */
+            sleepStart: string | null;
+            /** Format: date-time */
+            sleepEnd: string | null;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2001,85 +2125,16 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
-        /** @enum {string} */
-        ItemRarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
-        FullTranslationDto: {
-            /**
-             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
-             * @example en
-             */
-            language: string;
-            name: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
+        UpdateUserSleepStatusDto: {
+            /** @example 2026-05-22 */
+            dateForChart?: string;
+            rating?: number;
             /** Format: date-time */
-            createdAt: string;
+            sleepStart?: string;
             /** Format: date-time */
-            updatedAt: string;
-        };
-        FullItemDto: {
-            type: components["schemas"]["ProfileItemType"];
-            rarity: components["schemas"]["ItemRarity"];
-            translations: components["schemas"]["FullTranslationDto"][];
-            isExclusive: boolean;
-            isAnimated: boolean;
-            basePrice: number;
-            mediaUrl: string;
-            previewUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        BundleItemDto: {
-            item: components["schemas"]["FullItemDto"];
-            itemId: string;
-            bundleId: string;
-        };
-        BundleDto: {
-            translations: components["schemas"]["TranslationDto"][];
-            items: components["schemas"]["BundleItemDto"][];
-            basePrice: number;
-            isExclusive: boolean;
-            discountPercentage: number;
-            mediaUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        PaginatedMetaDto: {
-            total: number;
-            page: number;
-            pageSize: number;
-            totalPages: number;
-        };
-        PaginatedFullBundlesDto: {
-            items: components["schemas"]["BundleDto"][];
-            meta: components["schemas"]["PaginatedMetaDto"];
-        };
-        PaginatedAvailableBundlesDto: {
-            items: components["schemas"]["BundleDto"][];
-            meta: components["schemas"]["PaginatedMetaDto"];
-        };
-        UpdateBundleSwaggerDto: {
-            isExclusive?: boolean;
-            translations?: components["schemas"]["TranslationDto"][];
-            /** @example 20 */
-            discountPercentage?: number;
-            /** @example ["550e8400-e29b-41d4-a716-446655440000", "550e8400-e29b-41d4-a716-446655440001"], */
-            itemsIds?: string[];
-            /** Format: binary */
-            file?: string;
-        };
-        SleepStatisticsDto: {
-            totalSleepDuration: number;
-            averageSleepDuration: number;
-            averageSleepRating: number;
+            sleepEnd?: string;
+            isEdited?: boolean;
+            timezone?: string;
         };
         SleepEntryDto: {
             userId: string;
@@ -2091,63 +2146,13 @@ export interface components {
             dateForChart: string;
             rating: number;
             timezone: string;
+            isVerified: boolean;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-        };
-        SleepDayDto: {
-            day: string;
-            sleepDuration: number;
-            data: components["schemas"]["SleepEntryDto"][];
-        };
-        SleepDashboardDto: {
-            statistics: components["schemas"]["SleepStatisticsDto"];
-            days: components["schemas"]["SleepDayDto"][];
-            hasMore: boolean;
-        };
-        CreateSleepEntryDto: {
-            /** Format: date-time */
-            sleepStart: string;
-            /** Format: date-time */
-            sleepEnd: string;
-            dateForChart: string;
-            rating: number;
-            timezone: string;
-        };
-        UpdateSleepEntryDto: {
-            /** Format: date-time */
-            sleepStart?: string;
-            /** Format: date-time */
-            sleepEnd?: string;
-            dateForChart?: string;
-            rating?: number;
-            timezone?: string;
-        };
-        UserSleepStatusDto: {
-            userId: string;
-            isSleeping: boolean;
-            /** Format: date-time */
-            sleepStart: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        UpdateUserSleepStatusDto: {
-            /** @example 2026-05-2@Min(0)2 */
-            dateForChart?: string;
-            rating?: number;
-            /** Format: date-time */
-            sleepStart?: string;
-            /** Format: date-time */
-            sleepEnd?: string;
-            isEdited?: boolean;
-            timezone?: string;
         };
         UpdatedSleepRewardDto: {
             rewarded: boolean;
@@ -2159,7 +2164,7 @@ export interface components {
             reward: components["schemas"]["UpdatedSleepRewardDto"] | null;
         };
         /** @enum {string} */
-        CoinTransactionType: "EARN" | "SLEEP_REWARD" | "SLEEP_STREAK" | "ACHIEVEMENT" | "DEPOSIT" | "SPEND" | "REFUND" | "ADMIN_ADJUSTMENT" | "PROMOTION";
+        CoinTransactionType: "EARN" | "SLEEP_REWARD" | "SLEEP_STREAK" | "ACHIEVEMENT" | "DEPOSIT" | "SPEND" | "REFUND" | "ADMIN_ADJUSTMENT" | "PROMOTION" | "CHALLENGE_TASK_REWARD" | "CHALLENGE_REWARD";
         CoinTransactionDto: {
             type: components["schemas"]["CoinTransactionType"];
             userId: string;
@@ -2248,6 +2253,12 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
+        PaginatedMetaDto: {
+            total: number;
+            page: number;
+            pageSize: number;
+            totalPages: number;
+        };
         PaginatedNotificationDto: {
             items: components["schemas"]["NotificationDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
@@ -2255,91 +2266,623 @@ export interface components {
         UpdateNotificationDto: {
             isRead?: boolean;
         };
+        SleepStatisticsDto: {
+            totalSleepDuration: number;
+            averageSleepDuration: number;
+            averageSleepRating: number;
+        };
+        SleepDayDto: {
+            day: string;
+            sleepDuration: number;
+            data: components["schemas"]["SleepEntryDto"][];
+        };
+        SleepDashboardDto: {
+            statistics: components["schemas"]["SleepStatisticsDto"];
+            days: components["schemas"]["SleepDayDto"][];
+            hasMore: boolean;
+        };
+        CreateSleepEntryDto: {
+            /** Format: date-time */
+            sleepStart: string;
+            /** Format: date-time */
+            sleepEnd: string;
+            dateForChart: string;
+            rating: number;
+            timezone: string;
+        };
+        UpdateSleepEntryDto: {
+            /** Format: date-time */
+            sleepStart?: string;
+            /** Format: date-time */
+            sleepEnd?: string;
+            dateForChart?: string;
+            rating?: number;
+            timezone?: string;
+        };
         /** @enum {string} */
-        ChallengeFrequency: "DAILY" | "WEEKLY" | "MONTHLY" | "ONCE";
-        TaskOptionsDto: {
-            increment: number;
-            value: number;
+        AchievementType: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
+        AchievementTranslationDto: {
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
+             * @example en
+             */
+            language: string;
+            title: string;
+            description: string;
+        };
+        UserAchievementRewardProductDto: {
+            name: string;
+        };
+        UserAchievementDto: {
+            type: components["schemas"]["AchievementType"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            targetValue: number;
+            iconUrl: string;
+            isActive: boolean;
+            rewardCoins: number;
+            rewardProductId: string | null;
+            isAchieved: boolean;
+            /** Format: date-time */
+            achievedAt: string | null;
+            translation: components["schemas"]["AchievementTranslationDto"];
+            rewardProduct: components["schemas"]["UserAchievementRewardProductDto"] | null;
+        };
+        CreateAchievementSwaggerDto: {
+            /**
+             * @description Type of the achievement, which determines the criteria for unlocking it.
+             * @example SLEEP_COUNT
+             */
+            type: components["schemas"]["AchievementType"];
+            /** Format: binary */
+            icon?: string;
+            targetValue: number;
+            isActive?: boolean;
+            isHidden?: boolean;
+            rewardCoins?: number;
+            /**
+             * Format: uuid
+             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            rewardProductId?: string;
+            translations: components["schemas"]["AchievementTranslationDto"][];
+        };
+        AchievementDto: {
+            type: components["schemas"]["AchievementType"];
+            targetValue: number;
+            iconUrl: string;
+            isActive: boolean;
+            isHidden: boolean;
+            rewardCoins: number;
+            rewardProductId: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullAchievementTranslationDto: {
+            achievementId: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
+             * @example en
+             */
+            language: string;
+            title: string;
+            description: string;
+        };
+        /** @enum {string} */
+        ProductType: "ITEM" | "BUNDLE";
+        /** @enum {string} */
+        ItemRarity: "COMMON" | "UNCOMMON" | "RARE" | "EPIC" | "LEGENDARY" | "MYTHIC";
+        TranslationDto: {
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
+             * @example en
+             */
+            language: string;
+            name: string;
+        };
+        ItemDto: {
+            type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
+            translations: components["schemas"]["TranslationDto"][];
+            isExclusive: boolean;
+            isAnimated: boolean;
+            basePrice: number;
+            mediaUrl: string;
+            previewUrl: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullTranslationDto: {
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr')
+             * @example en
+             */
+            language: string;
+            name: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullItemDto: {
+            type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
+            translations: components["schemas"]["FullTranslationDto"][];
+            isExclusive: boolean;
+            isAnimated: boolean;
+            basePrice: number;
+            mediaUrl: string;
+            previewUrl: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        BundleItemDto: {
+            item: components["schemas"]["FullItemDto"];
+            itemId: string;
+            bundleId: string;
+        };
+        BundleDto: {
+            translations: components["schemas"]["TranslationDto"][];
+            items: components["schemas"]["BundleItemDto"][];
+            basePrice: number;
+            isExclusive: boolean;
+            discountPercentage: number;
+            mediaUrl: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullProductDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
+            item: components["schemas"]["ItemDto"] | null;
+            bundle: components["schemas"]["BundleDto"] | null;
+            bundleId: string | null;
+            itemId: string | null;
+            isNew: boolean;
+            isPopular: boolean;
+            isExclusive: boolean;
+            isShowInStore: boolean;
+            isLimited: boolean;
+            price: number;
+            discountedPrice: number | null;
+            maxStock: number | null;
+            soldCount: number;
+            /** Format: date-time */
+            expiresAt: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullAchievementDto: {
+            type: components["schemas"]["AchievementType"];
+            targetValue: number;
+            iconUrl: string;
+            isActive: boolean;
+            isHidden: boolean;
+            rewardCoins: number;
+            rewardProductId: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            translations: components["schemas"]["FullAchievementTranslationDto"][];
+            rewardProduct: components["schemas"]["FullProductDto"] | null;
+        };
+        UpdateAchievementSwaggerDto: {
+            /**
+             * @description Type of the achievement, which determines the criteria for unlocking it.
+             * @example SLEEP_COUNT
+             */
+            type?: components["schemas"]["AchievementType"];
+            /** Format: binary */
+            icon?: string;
+            targetValue?: number;
+            isActive?: boolean;
+            isHidden?: boolean;
+            rewardCoins?: number;
+            /**
+             * Format: uuid
+             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
+             * @example 123e4567-e89b-12d3-a456-426614174000
+             */
+            rewardProductId?: string;
+            translations?: components["schemas"]["AchievementTranslationDto"][];
+        };
+        /** @enum {string} */
+        AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT" | "CHALLENGE_REWARD";
+        InventoryItemDetailsDto: {
+            type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            mediaUrl: string;
+            isAnimated: boolean;
+            translation: components["schemas"]["TranslationDto"];
+        };
+        UserInventoryItemDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
+            item: components["schemas"]["InventoryItemDetailsDto"];
+            userId: string;
+            itemId: string;
+            isEquipped: boolean;
+            /** Format: date-time */
+            acquiredAt: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        PaginatedUserInventoryDto: {
+            items: components["schemas"]["UserInventoryItemDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
+        };
+        FullUserInventoryItemDto: {
+            acquiredFrom: components["schemas"]["AcquiredFrom"];
+            item: components["schemas"]["FullItemDto"];
+            userId: string;
+            itemId: string;
+            isEquipped: boolean;
+            /** Format: date-time */
+            acquiredAt: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        UpdateUserInvetoryDto: {
+            isEquipped?: boolean;
+        };
+        /** @enum {string} */
+        ChallengeStatus: "ACTIVE" | "COMPLETED" | "FAILED" | "EXPIRED" | "FROZEN";
+        /** @enum {string} */
+        ChallengeType: "SLEEP_DURATION" | "BEDTIME_CONSISTENCY" | "WAKE_TIME_CONSISTENCY" | "BEDTIME_VARIANCE";
+        /** @enum {string} */
+        ChallengeVisibility: "DRAFT" | "PUBLISHED";
+        ChallengeTranslationDto: {
+            language: string;
+            title: string;
+            description: string;
+        };
+        ChallengeDto: {
+            type: components["schemas"]["ChallengeType"];
+            visibility: components["schemas"]["ChallengeVisibility"];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** Format: date-time */
+            availableFrom: string | null;
+            /** Format: date-time */
+            availableTo: string | null;
+            durationDays: number;
+            targetValue: number;
+            maxRecoveries: number;
+            rewardCoins: number;
+            dailyRewardCoins: number;
+            rewardProductId: string | null;
+            translation: components["schemas"]["ChallengeTranslationDto"];
+        };
+        FullUserChallengeDto: {
+            status: components["schemas"]["ChallengeStatus"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            userId: string;
+            challengeId: string;
+            progress: number;
+            usedRecoveries: number;
+            startDate: string;
+            endDate: string;
+            /** Format: date-time */
+            frozenAt: string | null;
+            /** Format: date-time */
+            completedAt: string | null;
+            challenge: components["schemas"]["ChallengeDto"];
+        };
+        /** @enum {string} */
+        ChallengeTaskStatus: "PENDING" | "COMPLETED" | "FAILED" | "RECOVERED";
+        ChallengeTaskEntityDto: {
+            status: components["schemas"]["ChallengeTaskStatus"];
+            userChallengeId: string;
+            date: string;
+            sleepEntryId: string | null;
+            /** Format: date-time */
+            completedAt: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        UserChallengeDto: {
+            status: components["schemas"]["ChallengeStatus"];
+            userId: string;
+            challengeId: string;
+            progress: number;
+            usedRecoveries: number;
+            startDate: string;
+            endDate: string;
+            /** Format: date-time */
+            frozenAt: string | null;
+            /** Format: date-time */
+            completedAt: string | null;
+            tasks: components["schemas"]["ChallengeTaskEntityDto"][];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ChallengeWithUserStatusDto: {
+            type: components["schemas"]["ChallengeType"];
+            visibility: components["schemas"]["ChallengeVisibility"];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** Format: date-time */
+            availableFrom: string | null;
+            /** Format: date-time */
+            availableTo: string | null;
+            durationDays: number;
+            targetValue: number;
+            maxRecoveries: number;
+            rewardCoins: number;
+            dailyRewardCoins: number;
+            rewardProductId: string | null;
+            translation: components["schemas"]["ChallengeTranslationDto"];
+            isParticipating: boolean;
+            userChallenge: components["schemas"]["UserChallengeDto"] | null;
+        };
+        SleepDurationMetadataDto: {
+            minDurationMinutes: number;
+        };
+        TimeConsistencyMetadataDto: {
+            /** @example 22:00 */
+            targetTime: string;
+            marginMinutes: number;
+        };
+        BedtimeVarianceMetadataDto: {
+            maxVarianceMinutes: number;
+        };
+        /** @enum {string} */
+        ChallengeSortBy: "availableTo" | "availableFrom" | "createdAt" | "durationDays";
+        /** @enum {string} */
+        SortOrder: "asc" | "desc";
+        BaseChallengeDto: {
+            type: components["schemas"]["ChallengeType"];
+            visibility: components["schemas"]["ChallengeVisibility"];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            /** Format: date-time */
+            availableFrom: string | null;
+            /** Format: date-time */
+            availableTo: string | null;
+            durationDays: number;
+            targetValue: number;
+            maxRecoveries: number;
+            rewardCoins: number;
+            dailyRewardCoins: number;
+            rewardProductId: string | null;
+        };
+        PaginatedChallengesDto: {
+            items: components["schemas"]["BaseChallengeDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
+        };
+        ChallengeTranslationEntityDto: {
+            challengeId: string;
+            language: string;
+            title: string;
+            description: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        FullChallengeDto: {
+            type: components["schemas"]["ChallengeType"];
+            visibility: components["schemas"]["ChallengeVisibility"];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** Format: date-time */
+            availableFrom: string | null;
+            /** Format: date-time */
+            availableTo: string | null;
+            durationDays: number;
+            targetValue: number;
+            maxRecoveries: number;
+            rewardCoins: number;
+            dailyRewardCoins: number;
+            rewardProductId: string | null;
+            translations: components["schemas"]["ChallengeTranslationEntityDto"][];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        /** @enum {string} */
+        ChallengeTier: "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4";
+        CreateChallengeTranslationDto: {
+            language: string;
+            title: string;
             description: string;
         };
         CreateChallengeDto: {
-            /** @example DAILY */
-            frequency: components["schemas"]["ChallengeFrequency"];
-            title: string;
-            description: string;
+            type: components["schemas"]["ChallengeType"];
+            tier: components["schemas"]["ChallengeTier"];
+            visibility: components["schemas"]["ChallengeVisibility"];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
             /** Format: date-time */
-            startDate: string;
+            availableFrom?: string | null;
             /** Format: date-time */
-            endDate: string;
-            tasksOptions: components["schemas"]["TaskOptionsDto"];
-        };
-        ChallengeDto: {
-            frequency: components["schemas"]["ChallengeFrequency"];
-            userId: string;
-            title: string;
-            description: string;
-            isStarted: boolean;
-            isCompleted: boolean;
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
-            /** Format: date-time */
-            deletedAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        ChallengeTaskDto: {
-            challengeId: string;
-            description: string;
-            targetValue: number | null;
-            completedValue: number | null;
-            isCompleted: boolean;
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        ChallengeFullDto: {
-            frequency: components["schemas"]["ChallengeFrequency"];
-            userId: string;
-            title: string;
-            description: string;
-            isStarted: boolean;
-            isCompleted: boolean;
-            /** Format: date-time */
-            startDate: string;
-            /** Format: date-time */
-            endDate: string;
-            /** Format: date-time */
-            deletedAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            tasks: components["schemas"]["ChallengeTaskDto"][];
+            availableTo?: string | null;
+            durationDays: number;
+            targetValue: number;
+            maxRecoveries: number;
+            rewardCoins: number;
+            dailyRewardCoins: number;
+            /** Format: uuid */
+            rewardProductId?: string | null;
+            translations: components["schemas"]["CreateChallengeTranslationDto"][];
         };
         UpdateChallengeDto: {
-            title?: string;
-            description?: string;
-            isStarted?: boolean;
-            isCompleted?: boolean;
+            type?: components["schemas"]["ChallengeType"];
+            tier?: components["schemas"]["ChallengeTier"];
+            visibility?: components["schemas"]["ChallengeVisibility"];
+            /** Format: date-time */
+            availableFrom?: string | null;
+            /** Format: date-time */
+            availableTo?: string | null;
+            durationDays?: number;
+            targetValue?: number;
+            maxRecoveries?: number;
+            rewardCoins?: number;
+            dailyRewardCoins?: number;
+            /** Format: uuid */
+            rewardProductId?: string | null;
+            translations?: components["schemas"]["CreateChallengeTranslationDto"][];
+            metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
         };
-        UpdateChallengeTaskDto: {
-            isCompleted?: boolean;
-            completedValue?: number;
+        BaseUserPrivacySettingsDto: {
+            userId: string;
+            acceptFriendRequests: boolean;
+            showActivity: boolean;
+            /** @enum {string} */
+            profileVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
+            /** @enum {string} */
+            achievementsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
+            /** @enum {string} */
+            statisticsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        /** @enum {string} */
+        Visibility: "PUBLIC" | "PRIVATE" | "FRIENDS";
+        UpdateUserPrivacySettings: {
+            /** @example PUBLIC */
+            profileVisibility?: components["schemas"]["Visibility"];
+            achievementsVisibility?: components["schemas"]["Visibility"];
+            statisticsVisibility?: components["schemas"]["Visibility"];
+            acceptFriendRequests?: boolean;
+            showActivity?: boolean;
+        };
+        UserNotificationSettingsDto: {
+            userId: string;
+            isEmailNotificationsEnabled: boolean;
+            isInAppNotificationsEnabled: boolean;
+            isReminderEnabled: boolean;
+            isUpdatesEnabled: boolean;
+            isFriendRequestsEnabled: boolean;
+            isAchievementUnlockedEnabled: boolean;
+            reminderTime: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        UpdateUserNotificationSettingsDto: {
+            isEmailNotificationsEnabled?: boolean;
+            isInAppNotificationsEnabled?: boolean;
+            isReminderEnabled?: boolean;
+            isUpdatesEnabled?: boolean;
+            isFriendRequestsEnabled?: boolean;
+            isAchievementUnlockedEnabled?: boolean;
+            reminderTime?: string;
+        };
+        /** @enum {string} */
+        UserSanctionType: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
+        CreaeteUserSanctionDto: {
+            type: components["schemas"]["UserSanctionType"];
+            /** Format: uuid */
+            reportId?: string;
+            /** Format: uuid */
+            targetUserId: string;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            endsAt: string;
+        };
+        UpdateUserSanctionDto: {
+            /** Format: date-time */
+            endsAt?: string;
+        };
+        CreateUserFcmTokenDto: {
+            /** @example fcm_token_1234567890abcdef */
+            token: string;
+        };
+        FcmTokenDto: {
+            token: string;
+            userId: string;
+            userAgent: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
         };
         /** @enum {string} */
         FriendshipStatus: "PENDING" | "ACCEPTED" | "REJECTED" | "BLOCKED";
@@ -2507,63 +3050,6 @@ export interface components {
             status?: components["schemas"]["ReportStatus"];
             response?: string;
         };
-        /** @enum {string} */
-        UserSanctionType: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
-        CreaeteUserSanctionDto: {
-            type: components["schemas"]["UserSanctionType"];
-            /** Format: uuid */
-            reportId?: string;
-            /** Format: uuid */
-            targetUserId: string;
-            /** Format: date-time */
-            startsAt: string;
-            /** Format: date-time */
-            endsAt: string;
-        };
-        UpdateUserSanctionDto: {
-            /** Format: date-time */
-            endsAt?: string;
-        };
-        CreateUserFcmTokenDto: {
-            /** @example fcm_token_1234567890abcdef */
-            token: string;
-        };
-        FcmTokenDto: {
-            token: string;
-            userId: string;
-            userAgent: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        UserNotificationSettingsDto: {
-            userId: string;
-            isEmailNotificationsEnabled: boolean;
-            isInAppNotificationsEnabled: boolean;
-            isReminderEnabled: boolean;
-            isUpdatesEnabled: boolean;
-            isFriendRequestsEnabled: boolean;
-            isAchievementUnlockedEnabled: boolean;
-            reminderTime: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        UpdateUserNotificationSettingsDto: {
-            isEmailNotificationsEnabled?: boolean;
-            isInAppNotificationsEnabled?: boolean;
-            isReminderEnabled?: boolean;
-            isUpdatesEnabled?: boolean;
-            isFriendRequestsEnabled?: boolean;
-            isAchievementUnlockedEnabled?: boolean;
-            reminderTime?: string;
-        };
         BaseCoinDto: {
             userId: string;
             amount: number;
@@ -2587,22 +3073,6 @@ export interface components {
             basePrice: number;
             translations: components["schemas"]["TranslationDto"][];
         };
-        ItemDto: {
-            type: components["schemas"]["ProfileItemType"];
-            rarity: components["schemas"]["ItemRarity"];
-            translations: components["schemas"]["TranslationDto"][];
-            isExclusive: boolean;
-            isAnimated: boolean;
-            basePrice: number;
-            mediaUrl: string;
-            previewUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
         PaginatedItemsDto: {
             items: components["schemas"]["ItemDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
@@ -2624,25 +3094,21 @@ export interface components {
             basePrice?: number;
             translations?: components["schemas"]["TranslationDto"][];
         };
-        /** @enum {string} */
-        AcquiredFrom: "BUNDLE" | "REWARD" | "PURCHASE" | "PROMOTION" | "ADMIN_GRANT";
-        InventoryItemDetailsDto: {
-            type: components["schemas"]["ProfileItemType"];
-            rarity: components["schemas"]["ItemRarity"];
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            mediaUrl: string;
-            isAnimated: boolean;
-            translation: components["schemas"]["TranslationDto"];
+        CreateBundleSwaggerDto: {
+            isExclusive?: boolean;
+            translations: components["schemas"]["TranslationDto"][];
+            /** Format: binary */
+            file: string;
+            /** @example 20 */
+            discountPercentage: number;
+            /** @example ["550e8400-e29b-41d4-a716-446655440000", "550e8400-e29b-41d4-a716-446655440001"], */
+            itemsIds: string[];
         };
-        UserInventoryItemDto: {
-            acquiredFrom: components["schemas"]["AcquiredFrom"];
-            item: components["schemas"]["InventoryItemDetailsDto"];
-            userId: string;
-            itemId: string;
-            isEquipped: boolean;
-            /** Format: date-time */
-            acquiredAt: string;
+        BaseBundleDto: {
+            basePrice: number;
+            isExclusive: boolean;
+            discountPercentage: number;
+            mediaUrl: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2650,27 +3116,23 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
-        PaginatedUserInventoryDto: {
-            items: components["schemas"]["UserInventoryItemDto"][];
+        PaginatedFullBundlesDto: {
+            items: components["schemas"]["BundleDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
         };
-        FullUserInventoryItemDto: {
-            acquiredFrom: components["schemas"]["AcquiredFrom"];
-            item: components["schemas"]["FullItemDto"];
-            userId: string;
-            itemId: string;
-            isEquipped: boolean;
-            /** Format: date-time */
-            acquiredAt: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
+        PaginatedAvailableBundlesDto: {
+            items: components["schemas"]["BundleDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
         };
-        UpdateUserInvetoryDto: {
-            isEquipped?: boolean;
+        UpdateBundleSwaggerDto: {
+            isExclusive?: boolean;
+            translations?: components["schemas"]["TranslationDto"][];
+            /** @example 20 */
+            discountPercentage?: number;
+            /** @example ["550e8400-e29b-41d4-a716-446655440000", "550e8400-e29b-41d4-a716-446655440001"], */
+            itemsIds?: string[];
+            /** Format: binary */
+            file?: string;
         };
         CreateProductDto: {
             /** Format: uuid */
@@ -2687,36 +3149,9 @@ export interface components {
             /** Format: date-time */
             expiresAt?: string;
         };
-        /** @enum {string} */
-        ProductType: "ITEM" | "BUNDLE";
         ProductDto: {
             type: components["schemas"]["ProductType"];
             itemType: components["schemas"]["ProfileItemType"] | null;
-            bundleId: string | null;
-            itemId: string | null;
-            isNew: boolean;
-            isPopular: boolean;
-            isExclusive: boolean;
-            isShowInStore: boolean;
-            isLimited: boolean;
-            price: number;
-            discountedPrice: number | null;
-            maxStock: number | null;
-            soldCount: number;
-            /** Format: date-time */
-            expiresAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        FullProductDto: {
-            type: components["schemas"]["ProductType"];
-            itemType: components["schemas"]["ProfileItemType"] | null;
-            item: components["schemas"]["ItemDto"] | null;
-            bundle: components["schemas"]["BundleDto"] | null;
             bundleId: string | null;
             itemId: string | null;
             isNew: boolean;
@@ -2754,21 +3189,101 @@ export interface components {
             itemType?: components["schemas"]["ProfileItemType"];
             isPopular?: boolean;
         };
-        PurchaseHistoryDto: {
+        CollectionTranslationDto: {
+            language: string;
+            name: string;
+        };
+        CreateCollectionSwaggerDto: {
+            /** Format: binary */
+            icon: string;
+            slug: string;
+            showInStore: boolean;
+            translations: components["schemas"]["CollectionTranslationDto"][];
+            productIds: string[];
+            accentColor: string;
+        };
+        CollectionDto: {
+            slug: string;
+            accentColor: string;
+            iconUrl: string;
+            showInStore: boolean;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
-            nameSnapshot: components["schemas"]["TranslationDto"];
-            userId: string | null;
-            productId: string | null;
-            transactionId: string | null;
-            pricePaid: number;
-            priceSnapshot: number;
+            /** Format: date-time */
+            updatedAt: string;
         };
-        PaginatedPurchaseHistoryDto: {
-            items: components["schemas"]["PurchaseHistoryDto"][];
+        PaginatedCollectionsDto: {
+            items: components["schemas"]["CollectionDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
+        };
+        FullCollectionTranslationDto: {
+            language: string;
+            name: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ProductDetailsDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
+            bundleId: string | null;
+            itemId: string | null;
+            isNew: boolean;
+            isPopular: boolean;
+            isExclusive: boolean;
+            isShowInStore: boolean;
+            isLimited: boolean;
+            price: number;
+            discountedPrice: number | null;
+            maxStock: number | null;
+            soldCount: number;
+            /** Format: date-time */
+            expiresAt: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            item: components["schemas"]["ItemDto"] | null;
+            bundle: components["schemas"]["BundleDto"] | null;
+        };
+        CollectionProductDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            product: components["schemas"]["ProductDetailsDto"];
+            collectionId: string;
+            productId: string;
+        };
+        FullCollectionDto: {
+            translations: components["schemas"]["FullCollectionTranslationDto"][];
+            products: components["schemas"]["CollectionProductDto"][];
+            slug: string;
+            accentColor: string;
+            iconUrl: string;
+            showInStore: boolean;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        UpdateCollectionSwaggerDto: {
+            /** Format: binary */
+            icon?: string;
+            slug?: string;
+            showInStore?: boolean;
+            translations?: components["schemas"]["CollectionTranslationDto"][];
+            productIds?: string[];
+            accentColor?: string;
         };
         ShopItemDto: {
             type: components["schemas"]["ProfileItemType"];
@@ -2879,6 +3394,18 @@ export interface components {
             balance: number;
             transaction: components["schemas"]["CoinTransactionDto"];
         };
+        PurchaseHistoryDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            nameSnapshot: components["schemas"]["TranslationDto"];
+            userId: string | null;
+            productId: string | null;
+            transactionId: string | null;
+            pricePaid: number;
+            priceSnapshot: number;
+        };
         UserInventoryDto: {
             acquiredFrom: components["schemas"]["AcquiredFrom"];
             userId: string;
@@ -2898,32 +3425,104 @@ export interface components {
             purchaseHistory: components["schemas"]["PurchaseHistoryDto"];
             inventoryResults: components["schemas"]["UserInventoryDto"][];
         };
-        BaseUserPrivacySettingsDto: {
-            userId: string;
-            acceptFriendRequests: boolean;
-            showActivity: boolean;
-            /** @enum {string} */
-            profileVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
-            /** @enum {string} */
-            achievementsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
-            /** @enum {string} */
-            statisticsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
+        PaginatedPurchaseHistoryDto: {
+            items: components["schemas"]["PurchaseHistoryDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
+        };
+        GenerationBedtimeVarianceMetadataDto: {
+            /**
+             * @description Array of maximum allowed variances in minutes for which the challenge should be generated
+             * @example [
+             *       15,
+             *       30,
+             *       45
+             *     ]
+             */
+            maxVarianceMinutes: number[];
+        };
+        GenerationSleepDurationMetadataDto: {
+            minDurationMinutes: number[];
+        };
+        GenerationTimeConsistencyMetadataDto: {
+            /**
+             * @example [
+             *       "22:00",
+             *       "22:30"
+             *     ]
+             */
+            targetTime: string[];
+            /**
+             * @example [
+             *       30,
+             *       60
+             *     ]
+             */
+            marginMinutes: number[];
+        };
+        /** @enum {string} */
+        ChallengeTemplateSortBy: "createdAt";
+        GenerationRulesDto: {
+            metadata: components["schemas"]["GenerationBedtimeVarianceMetadataDto"] | components["schemas"]["GenerationTimeConsistencyMetadataDto"] | components["schemas"]["GenerationSleepDurationMetadataDto"];
+            /**
+             * @description Array of durations in days for which the challenge should be generated
+             * @example [
+             *       7,
+             *       14,
+             *       21
+             *     ]
+             */
+            durations: number[];
+        };
+        BaseChallengeTemplateDto: {
+            tier: components["schemas"]["ChallengeTier"];
+            type: components["schemas"]["ChallengeType"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
+            generationRules: components["schemas"]["GenerationRulesDto"];
+            isActive: boolean;
+            /** Format: date-time */
+            lastUsedAt: string | null;
         };
-        /** @enum {string} */
-        Visibility: "PUBLIC" | "PRIVATE" | "FRIENDS";
-        UpdateUserPrivacySettings: {
-            /** @example PUBLIC */
-            profileVisibility?: components["schemas"]["Visibility"];
-            achievementsVisibility?: components["schemas"]["Visibility"];
-            statisticsVisibility?: components["schemas"]["Visibility"];
-            acceptFriendRequests?: boolean;
-            showActivity?: boolean;
+        PaginatedChallengeTemplatesDto: {
+            items: components["schemas"]["BaseChallengeTemplateDto"][];
+            meta: components["schemas"]["PaginatedMetaDto"];
+        };
+        ChallengeTemplateDto: {
+            tier: components["schemas"]["ChallengeTier"];
+            type: components["schemas"]["ChallengeType"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            generationRules: components["schemas"]["GenerationRulesDto"];
+            isActive: boolean;
+            /** Format: date-time */
+            lastUsedAt: string | null;
+        };
+        CreateChallengeTemplateTranslationDto: {
+            language: string;
+            title: string;
+            description: string;
+        };
+        CreateChallengeTemplateDto: {
+            tier: components["schemas"]["ChallengeTier"];
+            type: components["schemas"]["ChallengeType"];
+            isActive: boolean;
+            generationRules: components["schemas"]["GenerationRulesDto"];
+            translations: components["schemas"]["CreateChallengeTemplateTranslationDto"][];
+        };
+        UpdateChallengeTemplateDto: {
+            tier?: components["schemas"]["ChallengeTier"];
+            type?: components["schemas"]["ChallengeType"];
+            isActive?: boolean;
+            generationRules?: components["schemas"]["GenerationRulesDto"];
+            translations?: components["schemas"]["CreateChallengeTemplateTranslationDto"][];
         };
         CreatePromotionDto: {
             /** @example alias */
@@ -2932,7 +3531,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-10T12:25:08.624Z
+             * @example 2026-07-29T16:58:58.123Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2963,7 +3562,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-07-10T12:25:08.624Z
+             * @example 2026-07-29T16:58:58.123Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -2974,223 +3573,6 @@ export interface components {
              */
             productIdReward?: string;
         };
-        /** @enum {string} */
-        AchievementType: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED";
-        AchievementTranslationDto: {
-            /**
-             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
-             * @example en
-             */
-            language: string;
-            title: string;
-            description: string;
-        };
-        UserAchievementRewardProductDto: {
-            name: string;
-        };
-        UserAchievementDto: {
-            type: components["schemas"]["AchievementType"];
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            targetValue: number;
-            iconUrl: string;
-            isActive: boolean;
-            rewardCoins: number;
-            rewardProductId: string | null;
-            isAchieved: boolean;
-            /** Format: date-time */
-            achievedAt: string | null;
-            translation: components["schemas"]["AchievementTranslationDto"];
-            rewardProduct: components["schemas"]["UserAchievementRewardProductDto"] | null;
-        };
-        CreateAchievementSwaggerDto: {
-            /**
-             * @description Type of the achievement, which determines the criteria for unlocking it.
-             * @example SLEEP_COUNT
-             */
-            type: components["schemas"]["AchievementType"];
-            /** Format: binary */
-            icon?: string;
-            targetValue: number;
-            isActive?: boolean;
-            isHidden?: boolean;
-            rewardCoins?: number;
-            /**
-             * Format: uuid
-             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            rewardProductId?: string;
-            translations: components["schemas"]["AchievementTranslationDto"][];
-        };
-        AchievementDto: {
-            type: components["schemas"]["AchievementType"];
-            targetValue: number;
-            iconUrl: string;
-            isActive: boolean;
-            isHidden: boolean;
-            rewardCoins: number;
-            rewardProductId: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        FullAchievementTranslationDto: {
-            achievementId: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            /**
-             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
-             * @example en
-             */
-            language: string;
-            title: string;
-            description: string;
-        };
-        FullAchievementDto: {
-            type: components["schemas"]["AchievementType"];
-            targetValue: number;
-            iconUrl: string;
-            isActive: boolean;
-            isHidden: boolean;
-            rewardCoins: number;
-            rewardProductId: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            translations: components["schemas"]["FullAchievementTranslationDto"][];
-            rewardProduct: components["schemas"]["FullProductDto"] | null;
-        };
-        UpdateAchievementSwaggerDto: {
-            /**
-             * @description Type of the achievement, which determines the criteria for unlocking it.
-             * @example SLEEP_COUNT
-             */
-            type?: components["schemas"]["AchievementType"];
-            /** Format: binary */
-            icon?: string;
-            targetValue?: number;
-            isActive?: boolean;
-            isHidden?: boolean;
-            rewardCoins?: number;
-            /**
-             * Format: uuid
-             * @description Optional ID of the product that can be redeemed with this achievement. Must be a valid UUID if provided.
-             * @example 123e4567-e89b-12d3-a456-426614174000
-             */
-            rewardProductId?: string;
-            translations?: components["schemas"]["AchievementTranslationDto"][];
-        };
-        CollectionTranslationDto: {
-            language: string;
-            name: string;
-        };
-        CreateCollectionSwaggerDto: {
-            /** Format: binary */
-            icon: string;
-            slug: string;
-            showInStore: boolean;
-            translations: components["schemas"]["CollectionTranslationDto"][];
-            productIds: string[];
-            accentColor: string;
-        };
-        CollectionDto: {
-            slug: string;
-            accentColor: string;
-            iconUrl: string;
-            showInStore: boolean;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        PaginatedCollectionsDto: {
-            items: components["schemas"]["CollectionDto"][];
-            meta: components["schemas"]["PaginatedMetaDto"];
-        };
-        FullCollectionTranslationDto: {
-            language: string;
-            name: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        ProductDetailsDto: {
-            type: components["schemas"]["ProductType"];
-            itemType: components["schemas"]["ProfileItemType"] | null;
-            bundleId: string | null;
-            itemId: string | null;
-            isNew: boolean;
-            isPopular: boolean;
-            isExclusive: boolean;
-            isShowInStore: boolean;
-            isLimited: boolean;
-            price: number;
-            discountedPrice: number | null;
-            maxStock: number | null;
-            soldCount: number;
-            /** Format: date-time */
-            expiresAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            item: components["schemas"]["ItemDto"] | null;
-            bundle: components["schemas"]["BundleDto"] | null;
-        };
-        CollectionProductDto: {
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            product: components["schemas"]["ProductDetailsDto"];
-            collectionId: string;
-            productId: string;
-        };
-        FullCollectionDto: {
-            translations: components["schemas"]["FullCollectionTranslationDto"][];
-            products: components["schemas"]["CollectionProductDto"][];
-            slug: string;
-            accentColor: string;
-            iconUrl: string;
-            showInStore: boolean;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        UpdateCollectionSwaggerDto: {
-            /** Format: binary */
-            icon?: string;
-            slug?: string;
-            showInStore?: boolean;
-            translations?: components["schemas"]["CollectionTranslationDto"][];
-            productIds?: string[];
-            accentColor?: string;
-        };
     };
     responses: never;
     parameters: never;
@@ -3200,157 +3582,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    UserController_updateUser_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description User not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Username already taken | User already exists | You are banned from changing username */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserController_syncTimezone_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserTimezoneDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description User not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserController_findByUsername_v1: {
-        parameters: {
-            query: {
-                username: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UsersSearchResultDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
     AuthController_login_v1: {
         parameters: {
             query?: never;
@@ -3595,6 +3826,157 @@ export interface operations {
             };
             /** @description User not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserController_updateUser_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Username already taken | User already exists | You are banned from changing username */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserController_syncTimezone_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserTimezoneDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description User not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserController_findByUsername_v1: {
+        parameters: {
+            query: {
+                username: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsersSearchResultDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -4427,438 +4809,6 @@ export interface operations {
             };
         };
     };
-    BundleController_getAllBundles_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PaginatedFullBundlesDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    BundleController_createBundle_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["CreateBundleSwaggerDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BaseBundleDto"];
-                };
-            };
-            /** @description Item image is required | Failed to process image */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    BundleController_getAllAvailableItems_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PaginatedAvailableBundlesDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    BundleController_getBundleById_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BundleDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Bundle not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    BundleController_removeBundle_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Bundle deleted successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Bundle not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    BundleController_updateBundle_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["UpdateBundleSwaggerDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BundleDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Bundle not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    SleepEntryController_getSleepsEntryForWeek_v1: {
-        parameters: {
-            query: {
-                date: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SleepDashboardDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    SleepEntryController_createSleepEntry_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateSleepEntryDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SleepEntryDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    SleepEntryController_deleteSleepEntry_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Sleep entry successfully deleted */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    SleepEntryController_updateSleepEntry_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateSleepEntryDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["SleepEntryDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
     UserSleepStatusController_getSleepStatus_v1: {
         parameters: {
             query?: never;
@@ -4925,6 +4875,86 @@ export interface operations {
                         /** @description Additional dynamic metadata for the response context */
                         meta?: Record<string, never>;
                     };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserSleepStatusController_wakeUp_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSleepStatusDto"];
+                };
+            };
+            /** @description Invalid time range */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserSleepStatusController_resumeSleepTimer_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSleepStatusDto"];
                 };
             };
             /** @description Unauthorized */
@@ -5317,7 +5347,42 @@ export interface operations {
             };
         };
     };
-    ChallengeController_create_v1: {
+    SleepEntryController_getSleepsEntryForWeek_v1: {
+        parameters: {
+            query: {
+                date: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SleepDashboardDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    SleepEntryController_createSleepEntry_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5326,7 +5391,160 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["CreateChallengeDto"];
+                "application/json": components["schemas"]["CreateSleepEntryDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SleepEntryDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    SleepEntryController_deleteSleepEntry_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sleep entry successfully deleted */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    SleepEntryController_updateSleepEntry_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateSleepEntryDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SleepEntryDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AchievementController_getAchievements_v1: {
+        parameters: {
+            query?: {
+                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
+                language?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserAchievementDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AchievementController_createAchievement_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["CreateAchievementSwaggerDto"];
             };
         };
         responses: {
@@ -5335,10 +5553,10 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeDto"];
+                    "application/json": components["schemas"]["AchievementDto"];
                 };
             };
-            /** @description Start date cannot be in the past | End date cannot be in the past | End date must be after the start date */
+            /** @description Failed to process image */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -5368,7 +5586,477 @@ export interface operations {
             };
         };
     };
-    ChallengeController_findAll_v1: {
+    AchievementController_getAllAchievementsForAdmin_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AchievementDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AchievementController_getAchievementById_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAchievementDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Achievement not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AchievementController_deleteAchievement_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Achievement deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Achievement not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AchievementController_updateAchievement_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["UpdateAchievementSwaggerDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullAchievementDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Achievement not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserInventoryController_getUserInventory_v1: {
+        parameters: {
+            query?: {
+                page?: number;
+                limit?: number;
+                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
+                language?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedUserInventoryDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserInventoryController_findById_v1: {
+        parameters: {
+            query?: {
+                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
+                language?: string;
+            };
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullUserInventoryItemDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Item not found in user inventory */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserInventoryController_removeItem_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Item removed from inventory successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Item not found in user inventory */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserInventoryController_updateUserInventoryItem_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserInvetoryDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserInventoryItemDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Item not found in user inventory */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserInventoryController_equipItem_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserInventoryItemDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Item not found in user inventory */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeController_findUserChallenges_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullUserChallengeDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeController_findAvailableChallenges_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5401,7 +6089,7 @@ export interface operations {
             };
         };
     };
-    ChallengeController_findById_v1: {
+    ChallengeController_findChallengeById_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5417,7 +6105,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeFullDto"];
+                    "application/json": components["schemas"]["ChallengeWithUserStatusDto"];
                 };
             };
             /** @description Unauthorized */
@@ -5450,7 +6138,217 @@ export interface operations {
             };
         };
     };
-    ChallengeController_remove_v1: {
+    ChallengeController_participateInChallenge_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenge participation started successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge has not started yet | Challenge has already ended | Challenge is not available yet */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description User not found | Challenge not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description You are already participating in this challenge */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminChallengeController_findAll_v1: {
+        parameters: {
+            query?: {
+                visibility?: components["schemas"]["ChallengeVisibility"];
+                type?: components["schemas"]["ChallengeType"];
+                sortBy?: components["schemas"]["ChallengeSortBy"];
+                sortOrder?: components["schemas"]["SortOrder"];
+                showExpired?: boolean;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedChallengesDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminChallengeController_create_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChallengeDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullChallengeDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminChallengeController_findById_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullChallengeDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminChallengeController_delete_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5505,7 +6403,7 @@ export interface operations {
             };
         };
     };
-    ChallengeController_update_v1: {
+    AdminChallengeController_update_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -5525,7 +6423,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeDto"];
+                    "application/json": components["schemas"]["FullChallengeDto"];
                 };
             };
             /** @description Unauthorized */
@@ -5558,28 +6456,29 @@ export interface operations {
             };
         };
     };
-    ChallengeTaskController_update_v1: {
+    AdminChallengeController_regenerateChallenge_v1: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                challengeId: string;
-                taskId: string;
+                id: string;
             };
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateChallengeTaskDto"];
-            };
-        };
+        requestBody?: never;
         responses: {
+            /** @description Challenge regenerated successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ChallengeTaskDto"];
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
                 };
             };
             /** @description Unauthorized */
@@ -5596,8 +6495,580 @@ export interface operations {
                     };
                 };
             };
-            /** @description Challenge not found | Challenge task not found */
+            /** @description Challenge not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserPrivacySettingsController_getUserPrivacySettings_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseUserPrivacySettingsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserPrivacySettingsController_updateUserPrivacySettings_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserPrivacySettings"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseUserPrivacySettingsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserNotificationSettingsController_getUserNotificationSettings_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserNotificationSettingsController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserNotificationSettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserNotificationSettingsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserSanctionController_getUserSanctions_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSanctionDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminUserSanctionController_findByUserId_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSanctionDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminUserSanctionController_findById_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSanctionDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Sanction not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminUserSanctionController_create_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreaeteUserSanctionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSanctionDto"];
+                };
+            };
+            /** @description Start date must be before end date | End date must be in the future */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminUserSanctionController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Sanction removed successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Sanction not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminUserSanctionController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUserSanctionDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSanctionDto"];
+                };
+            };
+            /** @description End date must be in the future */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Sanction not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserFcmTokenController_saveFcmToken_v1: {
+        parameters: {
+            query?: never;
+            header: {
+                "user-agent": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUserFcmTokenDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FcmTokenDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserFcmTokenController_getUserFcmTokens_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FcmTokenDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserFcmTokenController_checkTokenExists_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": boolean;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserFcmTokenController_removeFcmToken_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": boolean;
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -6158,508 +7629,6 @@ export interface operations {
             };
         };
     };
-    UserSanctionController_getUserSanctions_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSanctionDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AdminUserSanctionController_findByUserId_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                userId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSanctionDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AdminUserSanctionController_findById_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSanctionDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Sanction not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AdminUserSanctionController_create_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreaeteUserSanctionDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSanctionDto"];
-                };
-            };
-            /** @description Start date must be before end date | End date must be in the future */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AdminUserSanctionController_remove_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Sanction removed successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Sanction not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AdminUserSanctionController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserSanctionDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserSanctionDto"];
-                };
-            };
-            /** @description End date must be in the future */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Sanction not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserFcmTokenController_saveFcmToken_v1: {
-        parameters: {
-            query?: never;
-            header: {
-                "user-agent": string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateUserFcmTokenDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FcmTokenDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserFcmTokenController_getUserFcmTokens_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FcmTokenDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserFcmTokenController_checkTokenExists_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                token: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": boolean;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserFcmTokenController_removeFcmToken_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                token: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": boolean;
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserNotificationSettingsController_getUserNotificationSettings_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserNotificationSettingsDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserNotificationSettingsController_update_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserNotificationSettingsDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserNotificationSettingsDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
     CoinController_getCoins_v1: {
         parameters: {
             query?: never;
@@ -6973,13 +7942,11 @@ export interface operations {
             };
         };
     };
-    UserInventoryController_getUserInventory_v1: {
+    BundleController_getAllBundles_v1: {
         parameters: {
             query?: {
                 page?: number;
                 limit?: number;
-                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
-                language?: string;
             };
             header?: never;
             path?: never;
@@ -6992,7 +7959,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaginatedUserInventoryDto"];
+                    "application/json": components["schemas"]["PaginatedFullBundlesDto"];
                 };
             };
             /** @description Unauthorized */
@@ -7011,16 +7978,65 @@ export interface operations {
             };
         };
     };
-    UserInventoryController_findById_v1: {
+    BundleController_createBundle_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["CreateBundleSwaggerDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BaseBundleDto"];
+                };
+            };
+            /** @description Item image is required | Failed to process image */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    BundleController_getAllAvailableItems_v1: {
         parameters: {
             query?: {
-                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
-                language?: string;
+                page?: number;
+                limit?: number;
             };
             header?: never;
-            path: {
-                id: string;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;
@@ -7030,7 +8046,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["FullUserInventoryItemDto"];
+                    "application/json": components["schemas"]["PaginatedAvailableBundlesDto"];
                 };
             };
             /** @description Unauthorized */
@@ -7047,23 +8063,9 @@ export interface operations {
                     };
                 };
             };
-            /** @description Item not found in user inventory */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
         };
     };
-    UserInventoryController_removeItem_v1: {
+    BundleController_getBundleById_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -7074,7 +8076,56 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Item removed from inventory successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BundleDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Bundle not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    BundleController_removeBundle_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Bundle deleted successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -7102,7 +8153,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description Item not found in user inventory */
+            /** @description Bundle not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7118,7 +8169,7 @@ export interface operations {
             };
         };
     };
-    UserInventoryController_updateUserInventoryItem_v1: {
+    BundleController_updateBundle_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -7129,7 +8180,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateUserInvetoryDto"];
+                "multipart/form-data": components["schemas"]["UpdateBundleSwaggerDto"];
             };
         };
         responses: {
@@ -7138,7 +8189,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["UserInventoryItemDto"];
+                    "application/json": components["schemas"]["BundleDto"];
                 };
             };
             /** @description Unauthorized */
@@ -7155,56 +8206,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description Item not found in user inventory */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    UserInventoryController_equipItem_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserInventoryItemDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Item not found in user inventory */
+            /** @description Bundle not found */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -7480,13 +8482,76 @@ export interface operations {
             };
         };
     };
-    PurchaseHistoryController_getUserPurchaseHistories_v1: {
+    CollectionController_createCollection_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["CreateCollectionSwaggerDto"];
+            };
+        };
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CollectionDto"];
+                };
+            };
+            /** @description One or more provided product IDs do not exist */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Collection with this slug already exists */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    CollectionController_getAllCollections_v1: {
         parameters: {
             query?: {
                 page?: number;
                 limit?: number;
-                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
-                language?: string;
             };
             header?: never;
             path?: never;
@@ -7499,11 +8564,196 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PaginatedPurchaseHistoryDto"];
+                    "application/json": components["schemas"]["PaginatedCollectionsDto"];
                 };
             };
             /** @description Unauthorized */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    CollectionController_getCollectionById_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullCollectionDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Collection not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    CollectionController_deleteCollection_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Collection deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Collection not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    CollectionController_updateCollection_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["UpdateCollectionSwaggerDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FullCollectionDto"];
+                };
+            };
+            /** @description One or more provided product IDs do not exist */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Collection not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Collection with this slug already exists */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -7770,9 +9020,14 @@ export interface operations {
             };
         };
     };
-    UserPrivacySettingsController_getUserPrivacySettings_v1: {
+    PurchaseHistoryController_getUserPurchaseHistories_v1: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                limit?: number;
+                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
+                language?: string;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -7784,7 +9039,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseUserPrivacySettingsDto"];
+                    "application/json": components["schemas"]["PaginatedPurchaseHistoryDto"];
                 };
             };
             /** @description Unauthorized */
@@ -7803,7 +9058,117 @@ export interface operations {
             };
         };
     };
-    UserPrivacySettingsController_updateUserPrivacySettings_v1: {
+    ChallengeTaskController_recoverChallengeTask_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenge task recovered successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Only failed challenge tasks can be recovered | You cannot recover this challenge task at the moment | You have reached the maximum number of recoveries for this challenge | You do not have enough recoveries left */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge task not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_findAll_v1: {
+        parameters: {
+            query?: {
+                sortOrder?: components["schemas"]["SortOrder"];
+                type?: components["schemas"]["ChallengeType"];
+                tier?: components["schemas"]["ChallengeTier"];
+                sortBy?: components["schemas"]["ChallengeTemplateSortBy"];
+                isActive?: boolean;
+                page?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaginatedChallengeTemplatesDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_create_v1: {
         parameters: {
             query?: never;
             header?: never;
@@ -7812,7 +9177,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UpdateUserPrivacySettings"];
+                "application/json": components["schemas"]["CreateChallengeTemplateDto"];
             };
         };
         responses: {
@@ -7821,11 +9186,168 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["BaseUserPrivacySettingsDto"];
+                    "application/json": components["schemas"]["ChallengeTemplateDto"];
                 };
             };
             /** @description Unauthorized */
             401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_findById_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTemplateDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge template not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_delete_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenge template deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge template not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateChallengeTemplateDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTemplateDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge template not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -8212,569 +9734,6 @@ export interface operations {
                 };
             };
             /** @description You have already used this promotion | You already own this product */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_getAchievements_v1: {
-        parameters: {
-            query?: {
-                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
-                language?: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserAchievementDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_createAchievement_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["CreateAchievementSwaggerDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AchievementDto"];
-                };
-            };
-            /** @description Failed to process image */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_getAllAchievementsForAdmin_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AchievementDto"][];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_getAchievementById_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullAchievementDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Achievement not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_deleteAchievement_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Achievement deleted successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Achievement not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    AchievementController_updateAchievement_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["UpdateAchievementSwaggerDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullAchievementDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Achievement not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    CollectionController_createCollection_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["CreateCollectionSwaggerDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CollectionDto"];
-                };
-            };
-            /** @description One or more provided product IDs do not exist */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Collection with this slug already exists */
-            409: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    CollectionController_getAllCollections_v1: {
-        parameters: {
-            query?: {
-                page?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PaginatedCollectionsDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    CollectionController_getCollectionById_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullCollectionDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Collection not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    CollectionController_deleteCollection_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Collection deleted successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Collection not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    CollectionController_updateCollection_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["UpdateCollectionSwaggerDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FullCollectionDto"];
-                };
-            };
-            /** @description One or more provided product IDs do not exist */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Collection not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Collection with this slug already exists */
             409: {
                 headers: {
                     [name: string]: unknown;

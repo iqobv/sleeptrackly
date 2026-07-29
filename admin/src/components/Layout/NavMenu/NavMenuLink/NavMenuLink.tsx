@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@shared/ui';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { useState } from 'react';
-import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { NavMenuLinksProps } from '../navMenuLinks';
+import { ButtonContent } from './ButtonContent';
 import styles from './NavMenuLink.module.scss';
 
 interface NavMenuLinkProps {
@@ -26,29 +27,35 @@ export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	return (
 		<div>
 			<Button
-				key={link.href}
+				key={link.id}
 				variant="text"
-				className={`${styles.link} ${isOpen ? styles.open : ''}`}
+				className={clsx(styles.link, isOpen && styles.open)}
 				asChild
+				onClick={(e) => {
+					if (!link.href) handleExpand(e);
+				}}
 			>
-				<Link
-					href={link.href}
-					className={styles.buttonContent}
-					prefetch={false}
-				>
-					<div className={styles.content}>
-						<link.Icon size={25} className={styles.icon} />
-						<p className={styles.text}>{link.label}</p>
+				{link.href ? (
+					<Link
+						href={link.href}
+						className={styles.buttonContent}
+						prefetch={false}
+					>
+						<ButtonContent
+							isExpanded={isExpanded}
+							isOpen={isOpen}
+							link={link}
+						/>
+					</Link>
+				) : (
+					<div className={styles.buttonContent}>
+						<ButtonContent
+							isExpanded={isExpanded}
+							isOpen={isOpen}
+							link={link}
+						/>
 					</div>
-					{isOpen && link.expanded && (
-						<div className={`${styles.expand}`} onClick={handleExpand}>
-							<MdOutlineArrowDropDown
-								className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}
-								size={30}
-							/>
-						</div>
-					)}
-				</Link>
+				)}
 			</Button>
 
 			{isOpen &&
@@ -56,23 +63,27 @@ export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 				link.innerLinks &&
 				link.innerLinks.length > 0 && (
 					<div className={`${styles.innerLinks}`}>
-						{link.innerLinks.map((innerLink) => (
-							<Button
-								key={innerLink.href}
-								variant="text"
-								className={`${styles.link} ${isOpen ? styles.open : ''}`}
-								asChild
-							>
-								<Link
-									href={innerLink.href}
-									className={styles.buttonContent}
-									prefetch={false}
+						{link.innerLinks.map((innerLink) => {
+							if (!innerLink.href) return null;
+
+							return (
+								<Button
+									key={innerLink.href}
+									variant="text"
+									className={`${styles.link} ${isOpen ? styles.open : ''}`}
+									asChild
 								>
-									<innerLink.Icon size={25} className={styles.icon} />
-									<p className={styles.text}>{innerLink.label}</p>
-								</Link>
-							</Button>
-						))}
+									<Link
+										href={innerLink.href}
+										className={styles.buttonContent}
+										prefetch={false}
+									>
+										<innerLink.Icon size={25} className={styles.icon} />
+										<p className={styles.text}>{innerLink.label}</p>
+									</Link>
+								</Button>
+							);
+						})}
 					</div>
 				)}
 		</div>

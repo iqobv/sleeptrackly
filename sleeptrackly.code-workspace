@@ -29,6 +29,10 @@
 			"path": "shared/form",
 		},
 		{
+			"name": "Shared: Tables",
+			"path": "shared/tables",
+		},
+		{
 			"name": "Root (Configs)",
 			"path": ".",
 		},

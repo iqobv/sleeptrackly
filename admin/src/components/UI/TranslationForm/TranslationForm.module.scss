@@ -1,0 +1,25 @@
+@use '../../../styles/mixins' as *;
+
+.translations {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	padding: 0;
+
+	@include respond-to(md) {
+		padding: 0 1rem;
+	}
+}
+
+.item {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--gap);
+}
+
+.fields {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}

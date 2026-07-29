@@ -35,7 +35,7 @@ export const UpdateItem = ({ id }: UpdateItemProps) => {
 				queryKey: QUERY_KEYS.customization.item.detail(id),
 			});
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.customization.item.lists,
+				queryKey: QUERY_KEYS.customization.item.lists(),
 			});
 			toast.success('Item updated successfully');
 		},

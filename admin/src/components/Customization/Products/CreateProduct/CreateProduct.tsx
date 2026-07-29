@@ -21,7 +21,7 @@ export const CreateProduct = () => {
 		mutationFn: (data: CreateProductDto) => createProduct(data),
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.customization.product.lists,
+				queryKey: QUERY_KEYS.customization.product.lists(),
 			});
 			router.push(PAGES.PRODUCT(data.id));
 		},

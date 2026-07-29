@@ -26,4 +26,10 @@ export const PAGES = {
 	COLLECTIONS: '/customization/collections',
 	COLLECTION: (id: string) => `/customization/collections/${id}`,
 	COLLECTION_NEW: '/customization/collections/new',
+	CHALLENGES: '/challenges',
+	CHALLENGE: (id: string) => `/challenges/${id}`,
+	CHALLENGE_NEW: '/challenges/new',
+	CHALLENGE_TEMPLATES: '/challenges/templates',
+	CHALLENGE_TEMPLATE: (id: string) => `/challenges/templates/${id}`,
+	CHALLENGE_TEMPLATE_NEW: '/challenges/templates/new',
 } as const;

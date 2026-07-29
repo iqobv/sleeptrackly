@@ -30,7 +30,9 @@ export const EditAchievement = () => {
 			queryClient.invalidateQueries({
 				queryKey: QUERY_KEYS.achievement.detail(id),
 			});
-			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.achievement.lists });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.achievement.lists(),
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Failed to update achievement');

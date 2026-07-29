@@ -8,3 +8,4 @@ export { NavigationBackButton } from './NavigationBackButton/NavigationBackButto
 export { PageWrapper } from './PageWrapper/PageWrapper';
 export { PageWrapperLoader } from './PageWrapper/PageWrapperLoader';
 export { UserAvatar } from './UserAvatar/UserAvatar';
+export { TranslationForm } from './TranslationForm/TranslationForm'

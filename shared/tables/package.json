@@ -1,0 +1,24 @@
+{
+	"name": "@shared/tables",
+	"version": "1.0.0",
+	"private": true,
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"import": "./src/index.ts",
+			"require": "./src/index.ts"
+		}
+	},
+	"peerDependencies": {
+		"react": ">=19.0.0",
+		"react-dom": ">=19.0.0"
+	},
+	"dependencies": {
+		"@tanstack/react-table": "^8.21.3",
+		"clsx": "catalog:",
+		"react-icons": "catalog:",
+		"sass": "catalog:"
+	}
+}

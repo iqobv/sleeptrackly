@@ -31,8 +31,7 @@ export const AchievementTranslationForm = <D extends HasTranslations>() => {
 	});
 
 	const translationsErrors = errors.translations as
-		| FieldErrors<AchievementTranslationDto[]>
-		| undefined;
+		FieldErrors<AchievementTranslationDto[]> | undefined;
 
 	return (
 		<div className={styles.translations}>
