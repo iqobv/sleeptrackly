@@ -30,6 +30,7 @@ export class AdminChallengeService {
 			sortOrder = 'asc',
 			type,
 			visibility,
+			tier,
 		} = query;
 
 		const now = new Date();
@@ -37,6 +38,7 @@ export class AdminChallengeService {
 		const where: Prisma.ChallengeWhereInput = {
 			...(type && { type }),
 			...(visibility && { visibility }),
+			...(tier && { tier }),
 			...(!showExpired && {
 				OR: [{ availableTo: { gte: now } }, { availableTo: null }],
 			}),
@@ -106,6 +108,12 @@ export class AdminChallengeService {
 		const { metadata, translations, ...rest } = dto;
 
 		const challenge = await this.findById(id);
+
+		if (dto.type && dto.type !== challenge.type) {
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.TYPE_CANNOT_BE_CHANGED,
+			);
+		}
 
 		if (metadata) {
 			const errors = validateChallengeMetadata(challenge.type, metadata);

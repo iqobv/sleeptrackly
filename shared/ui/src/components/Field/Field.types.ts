@@ -8,6 +8,7 @@ export interface FieldProps {
 	disabled?: boolean;
 	style?: React.CSSProperties;
 	hidden?: boolean;
+	contentClassName?: string;
 }
 
 export interface FieldContextValue {

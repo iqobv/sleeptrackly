@@ -3,8 +3,8 @@ import { ChallengeTier } from '@/types/challenge/challengeTier.types';
 import { ChallengeType } from '@/types/challenge/challengeType.types';
 import { ChallengeTemplateSortBy } from '@/types/challenge/templates/challengeTemplateSortBy.types';
 import { z } from 'zod';
-import { createBaseQuerySortingSchema } from '../query/baseSorting.schema';
-import { tablePaginationSchema } from '../query/tablePagination.schema';
+import { createBaseQuerySortingSchema } from '../../query/baseSorting.schema';
+import { tablePaginationSchema } from '../../query/tablePagination.schema';
 
 const challengeTemplatesSortingSchema = createBaseQuerySortingSchema(
 	ChallengeTemplateSortBy,

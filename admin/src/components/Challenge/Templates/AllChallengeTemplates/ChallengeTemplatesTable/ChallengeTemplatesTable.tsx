@@ -8,7 +8,7 @@ import {
 	useTableSorting,
 } from '@shared/tables';
 import { useChallengeTemplatesFilters } from '../useChallengeTemplatesFilters.hook';
-import { PROJECTS_TABLE_COLUMNS } from './challengeTemplatesTableColumns';
+import { CHALLENGE_TEMPLATES_TABLE_COLUMNS } from './challengeTemplatesTableColumns';
 
 interface ChallengeTemplatesTableProps {
 	templates: ChallengeTemplate[];
@@ -37,7 +37,7 @@ export const ChallengeTemplatesTable = ({
 
 	return (
 		<Table
-			columns={PROJECTS_TABLE_COLUMNS}
+			columns={CHALLENGE_TEMPLATES_TABLE_COLUMNS}
 			data={templates}
 			manualPagination
 			manualSorting

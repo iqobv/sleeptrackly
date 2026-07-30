@@ -4,7 +4,7 @@ import { getAllChallengeTemplates } from '@/api/challenge/templates/getAllTempla
 import { PageWrapper } from '@/components/UI';
 import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { challengeTemplatesQuerySchema } from '@/schemas/challenge/challengeTemplatesQuery.schema';
+import { challengeTemplatesQuerySchema } from '@/schemas/challenge/templates/challengeTemplatesQuery.schema';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import styles from './AllChallengeTemplates.module.scss';

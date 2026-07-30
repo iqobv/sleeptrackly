@@ -2,7 +2,11 @@ import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { paginate } from '@libs/utils/pagination.util';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { ChallengeTemplateDto } from './dto/challenge-template.dto';
 import { ChallengeTemplateQueryDto } from './dto/challenge-templates-query.dto';
@@ -97,6 +101,12 @@ export class ChallengeTemplateService {
 		const { translations, generationRules, ...rest } = dto;
 
 		const template = await this.findById(id);
+
+		if (dto.type && dto.type !== template.type) {
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE_TEMPLATE.TYPE_CANNOT_BE_CHANGED,
+			);
+		}
 
 		const incomingLanguages = translations?.map((t) => t.language) || [];
 

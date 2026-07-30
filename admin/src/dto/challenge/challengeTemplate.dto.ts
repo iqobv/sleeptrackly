@@ -1,5 +1,5 @@
-import { challengeTemplatesQuerySchema } from '@/schemas/challenge/challengeTemplatesQuery.schema';
 import { baseGenerationMetadataSchema } from '@/schemas/challenge/templates/baseChallengeTemplate.schema';
+import { challengeTemplatesQuerySchema } from '@/schemas/challenge/templates/challengeTemplatesQuery.schema';
 import { challengeTemplateTranslationSchema } from '@/schemas/challenge/templates/challengeTemplateTranslation.schema';
 import { createChallengeTemplateSchema } from '@/schemas/challenge/templates/createChallengeTemplate.schema';
 import { updateChallengeTemplateSchema } from '@/schemas/challenge/templates/updateChallengeTemplate.schema';

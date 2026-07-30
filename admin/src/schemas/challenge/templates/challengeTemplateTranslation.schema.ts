@@ -1,9 +1,3 @@
-import { z } from 'zod';
+import { challengeTranslationSchema } from '../challengeTranslation.schema';
 
-export const challengeTemplateTranslationSchema = z.object({
-	language: z
-		.string()
-		.min(2, 'Language code must be at least 2 characters long'),
-	title: z.string().min(1, 'Title is required'),
-	description: z.string().min(1, 'Description is required'),
-});
+export const challengeTemplateTranslationSchema = challengeTranslationSchema;

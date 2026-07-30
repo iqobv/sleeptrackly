@@ -1,3 +1,4 @@
+import { Challenges } from '@/components/Challenge/All/Challenges/Challenges';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChallengesPage() {
-	return <div></div>;
+	return <Challenges />;
 }

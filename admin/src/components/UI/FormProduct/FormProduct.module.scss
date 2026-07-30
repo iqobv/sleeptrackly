@@ -1,0 +1,10 @@
+.content {
+	min-width: 90%;
+	min-height: 80%;
+}
+
+.product {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+}

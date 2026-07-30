@@ -8,4 +8,5 @@ export const CHALLENGE_ERROR_MESSAGES = {
 	NOT_AVAILABLE: 'Challenge is not available yet',
 	ALREADY_PARTICIPATING: 'You are already participating in this challenge',
 	NOT_PARTICIPATING: 'You are not participating in this challenge',
+	TYPE_CANNOT_BE_CHANGED: 'Challenge type cannot be changed',
 } as const;

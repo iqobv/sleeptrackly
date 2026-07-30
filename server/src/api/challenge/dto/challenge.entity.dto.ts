@@ -1,4 +1,8 @@
-import { ChallengeType, ChallengeVisibility } from '@generated/prisma/enums';
+import {
+	ChallengeTier,
+	ChallengeType,
+	ChallengeVisibility,
+} from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import {
 	ApiExtraModels,
@@ -49,6 +53,10 @@ export class ChallengeEntityDto extends DefaultFieldsDto {
 	@Expose()
 	@ApiProperty({ enum: ChallengeType, enumName: 'ChallengeType' })
 	type: ChallengeType;
+
+	@Expose()
+	@ApiProperty({ enum: ChallengeTier, enumName: 'ChallengeTier' })
+	tier: ChallengeTier;
 
 	@Expose() availableFrom: Date | null;
 	@Expose() availableTo: Date | null;

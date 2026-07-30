@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { MdDelete } from 'react-icons/md';
 import styles from './ChallengeTemplatesTable.module.scss';
 
-export const PROJECTS_TABLE_COLUMNS: Columns<ChallengeTemplate> = [
+export const CHALLENGE_TEMPLATES_TABLE_COLUMNS: Columns<ChallengeTemplate> = [
 	{
 		accessorKey: 'type',
 		header: 'Type',

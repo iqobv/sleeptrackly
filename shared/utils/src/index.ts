@@ -7,3 +7,4 @@ export { formatDate, getFormatter } from './formatDateTime.util';
 export { formatLocalDatetime } from './formatLocalDatetime.util';
 export { formatUtcOffsetToLocalTime } from './time.util';
 export { transformSecondsToHours } from './timeTransforms.util';
+export { formatToUtcDatetimeLocal } from './utcFormatter.util';

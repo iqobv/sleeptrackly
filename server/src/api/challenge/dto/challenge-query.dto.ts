@@ -1,5 +1,9 @@
 import { Prisma } from '@generated/prisma/client';
-import { ChallengeType, ChallengeVisibility } from '@generated/prisma/enums';
+import {
+	ChallengeTier,
+	ChallengeType,
+	ChallengeVisibility,
+} from '@generated/prisma/enums';
 import { ChallengeOrderByWithRelationInput } from '@generated/prisma/models';
 import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -36,6 +40,15 @@ export class ChallengeQueryDto extends PaginationQueryDto {
 	@IsOptional()
 	@IsEnum(ChallengeType)
 	type?: ChallengeType;
+
+	@ApiProperty({
+		enum: ChallengeTier,
+		enumName: 'ChallengeTier',
+		required: false,
+	})
+	@IsOptional()
+	@IsEnum(ChallengeTier)
+	tier?: ChallengeTier;
 
 	@IsOptional()
 	@Type(() => Boolean)

@@ -22,6 +22,5 @@ export const challengeTemplatesParsers = createTableParsers(
 	},
 ) satisfies StrictParsersMap<ChallengeTemplatesQueryDto>;
 
-export const monitorFiltersSearchParamsCache = createSearchParamsCache(
-	challengeTemplatesParsers,
-);
+export const challengeTemplatesFiltersSearchParamsCache =
+	createSearchParamsCache(challengeTemplatesParsers);

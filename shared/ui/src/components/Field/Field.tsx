@@ -17,6 +17,7 @@ export const Field = ({
 	disabled,
 	style,
 	hidden,
+	contentClassName,
 }: FieldProps) => {
 	const generatedId = useId();
 	const finalId = id ?? generatedId;
@@ -31,7 +32,7 @@ export const Field = ({
 						{label}
 					</FormLabel>
 				)}
-				<div>{children}</div>
+				<div className={clsx(contentClassName)}>{children}</div>
 				{error && (
 					<span className={clsx(styles.error, disabled && styles.disabled)}>
 						{error}

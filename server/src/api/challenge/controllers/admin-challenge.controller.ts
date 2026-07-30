@@ -75,6 +75,10 @@ export class AdminChallengeController {
 	@Patch(':id')
 	@ApiOkResponse({ type: FullChallengeDto })
 	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.CHALLENGE.TYPE_CANNOT_BE_CHANGED,
+	)
 	public async update(
 		@Param('id') id: string,
 		@Body() dto: UpdateChallengeDto,

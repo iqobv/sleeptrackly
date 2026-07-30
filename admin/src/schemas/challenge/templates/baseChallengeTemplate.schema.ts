@@ -5,7 +5,7 @@ import {
 	bedtimeVarianceMetadataSchema,
 	sleepDurationMetadataSchema,
 	timeConsistencyMetadataSchema,
-} from './challengeTemplareGenerationMetadata.schema';
+} from './challengeTemplateMetadata.schema';
 import { challengeTemplateTranslationSchema } from './challengeTemplateTranslation.schema';
 
 export const baseChallengeTemplateSchema = z.object({

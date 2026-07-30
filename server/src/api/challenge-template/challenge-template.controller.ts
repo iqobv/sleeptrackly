@@ -80,6 +80,10 @@ export class ChallengeTemplateController {
 		HttpStatus.NOT_FOUND,
 		ERROR_MESSAGES.CHALLENGE_TEMPLATE.NOT_FOUND,
 	)
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.CHALLENGE_TEMPLATE.TYPE_CANNOT_BE_CHANGED,
+	)
 	public async update(
 		@Param('id') id: string,
 		@Body() dto: UpdateChallengeTemplateDto,
