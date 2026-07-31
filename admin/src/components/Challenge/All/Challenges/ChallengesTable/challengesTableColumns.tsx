@@ -3,7 +3,7 @@ import { Challenge } from '@/types/challenge/challenge.types';
 import { Columns } from '@shared/tables';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import { MdDelete } from 'react-icons/md';
+import { DeleteChallenge } from '../../DeleteChallenge/DeleteChallenge';
 import styles from './ChallengesTable.module.scss';
 
 export const CHALLENGES_TABLE_COLUMNS: Columns<Challenge> = [
@@ -52,9 +52,7 @@ export const CHALLENGES_TABLE_COLUMNS: Columns<Challenge> = [
 				<Button variant="link" size="sm" asChild>
 					<Link href={PAGES.CHALLENGE(props.row.original.id)}>Details</Link>
 				</Button>
-				<Button variant="text" color="danger" isIcon isRounded>
-					<MdDelete />
-				</Button>
+				<DeleteChallenge id={props.row.original.id} />
 			</div>
 		),
 	},

@@ -3,7 +3,7 @@ import { ChallengeTemplate } from '@/types/challenge/challenge.types';
 import { Columns } from '@shared/tables';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
-import { MdDelete } from 'react-icons/md';
+import { DeleteChallengeTemplate } from '../../DeleteChallengeTemplate/DeleteChallengeTemplate';
 import styles from './ChallengeTemplatesTable.module.scss';
 
 export const CHALLENGE_TEMPLATES_TABLE_COLUMNS: Columns<ChallengeTemplate> = [
@@ -47,9 +47,7 @@ export const CHALLENGE_TEMPLATES_TABLE_COLUMNS: Columns<ChallengeTemplate> = [
 						Details
 					</Link>
 				</Button>
-				<Button variant="text" color="danger" isIcon isRounded>
-					<MdDelete />
-				</Button>
+				<DeleteChallengeTemplate id={props.row.original.id} />
 			</div>
 		),
 	},

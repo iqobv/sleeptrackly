@@ -3,6 +3,7 @@
 import { getChallengeTemplate } from '@/api/challenge/templates/getChallengeTemplate.api';
 import { updateChallengeTemplate } from '@/api/challenge/templates/updateChallengeTemplate.api';
 import { PageWrapper } from '@/components/UI';
+import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { UpdateChallengeTemplateDto } from '@/dto/challenge/challengeTemplate.dto';
 import { updateChallengeTemplateSchema } from '@/schemas/challenge/templates/updateChallengeTemplate.schema';
@@ -16,7 +17,9 @@ import {
 import { isAxiosError } from 'axios';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { CHALLENGE_TEMPLATE_DEFAULT_VALUES } from '../ChallengeTemplateForm/challengeTemplateDefaultValues';
 import { ChallengeTemplateForm } from '../ChallengeTemplateForm/ChallengeTemplateForm';
+import { DeleteChallengeTemplate } from '../DeleteChallengeTemplate/DeleteChallengeTemplate';
 import styles from './EditChallengeTemplate.module.scss';
 
 export const EditChallengeTemplate = () => {
@@ -40,27 +43,15 @@ export const EditChallengeTemplate = () => {
 
 	return (
 		<div className={styles.create}>
-			<PageWrapper title="Update Challenge Template">
+			<PageWrapper
+				title="Update Challenge Template"
+				customRightSlot={
+					<DeleteChallengeTemplate id={id} href={PAGES.CHALLENGE_TEMPLATES} />
+				}
+			>
 				<Form<UpdateChallengeTemplateDto>
 					schema={updateChallengeTemplateSchema}
-					defaultValues={{
-						isActive: true,
-						tier: 'TIER_1',
-						type: 'SLEEP_DURATION',
-						generationRules: {
-							durations: [1],
-							metadata: {
-								minDurationMinutes: [60],
-							},
-						},
-						translations: [
-							{
-								language: 'en',
-								title: '',
-								description: '',
-							},
-						],
-					}}
+					defaultValues={CHALLENGE_TEMPLATE_DEFAULT_VALUES}
 					values={challengeTemplateValues}
 					onSubmit={(data) =>
 						mutate(data, {

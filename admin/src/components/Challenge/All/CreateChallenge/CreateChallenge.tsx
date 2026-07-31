@@ -12,6 +12,7 @@ import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ChallengeForm } from '../ChallengeForm/ChallengeForm';
+import { CHALLENGE_DEFAULT_VALUES } from '../ChallengeForm/challengeDefaultValues';
 
 export const CreateChallenge = () => {
 	const queryClient = useQueryClient();
@@ -26,27 +27,7 @@ export const CreateChallenge = () => {
 		<PageWrapper title="Create Challenge" description="Create a new challenge">
 			<Form<CreateChallengeDto>
 				schema={createChallengeSchema}
-				defaultValues={{
-					type: 'SLEEP_DURATION',
-					metadata: { minDurationMinutes: 60 },
-					availableFrom: undefined,
-					availableTo: undefined,
-					dailyRewardCoins: 0,
-					durationDays: 0,
-					maxRecoveries: 0,
-					rewardCoins: 0,
-					rewardProductId: null,
-					targetValue: 0,
-					tier: 'TIER_1',
-					translations: [
-						{
-							language: 'en',
-							title: '',
-							description: '',
-						},
-					],
-					visibility: 'DRAFT',
-				}}
+				defaultValues={CHALLENGE_DEFAULT_VALUES}
 				onSubmit={(data) =>
 					mutate(data, {
 						onSuccess: (data) => {

@@ -4,9 +4,9 @@ import { CreateChallengeTemplateDto } from '@/dto/challenge/challengeTemplate.dt
 import { usePrimitiveArrayField } from '@/hooks/usePrimitiveArrayField.hook';
 import { Button, Field, Input } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
+import { DeleteButton } from '../../PrimitiveArrayField/DeleteButton';
 import styles from './ChallengeTemplateForm.module.scss';
 import { ChallengeTemplateGenerationMetadata } from './ChallengeTemplateGenerationMetadata/ChallengeTemplateGenerationMetadata';
-import { DeleteButton } from './DeleteButton';
 
 export const ChallengeTemplateGenerationForm = () => {
 	const {

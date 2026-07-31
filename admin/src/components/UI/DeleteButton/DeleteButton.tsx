@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, ConfirmModal } from '@shared/ui';
+import { Button, ButtonProps, ConfirmModal } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,10 +9,11 @@ import { MdDeleteOutline } from 'react-icons/md';
 interface DeleteButtonProps {
 	id: string;
 	mutationFn: (id: string) => Promise<unknown>;
-	onSuccessNavigateTo: string;
+	onSuccessNavigateTo?: string;
 	queryInvalidateKey: unknown[] | readonly unknown[];
 	text: string;
 	title: string;
+	buttonProps?: Omit<ButtonProps, 'onClick' | 'children'>;
 }
 
 export const DeleteButton = ({
@@ -22,9 +23,18 @@ export const DeleteButton = ({
 	queryInvalidateKey,
 	text,
 	title,
+	buttonProps,
 }: DeleteButtonProps) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
+
+	const {
+		variant = 'text',
+		color = 'danger',
+		isIcon = true,
+		isRounded = true,
+		...restButtonProps
+	} = buttonProps || {};
 
 	const [open, setOpen] = useState(false);
 
@@ -33,7 +43,7 @@ export const DeleteButton = ({
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: queryInvalidateKey });
 			handleClose();
-			router.push(onSuccessNavigateTo);
+			if (onSuccessNavigateTo) router.push(onSuccessNavigateTo);
 		},
 	});
 
@@ -42,11 +52,12 @@ export const DeleteButton = ({
 	return (
 		<>
 			<Button
+				variant={variant}
+				color={color}
+				isIcon={isIcon}
+				isRounded={isRounded}
 				onClick={handleClose}
-				variant="text"
-				color="danger"
-				isIcon
-				isRounded
+				{...restButtonProps}
 			>
 				<MdDeleteOutline size={22} />
 			</Button>

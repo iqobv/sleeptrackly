@@ -11,6 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { CHALLENGE_TEMPLATE_DEFAULT_VALUES } from '../ChallengeTemplateForm/challengeTemplateDefaultValues';
 import { ChallengeTemplateForm } from '../ChallengeTemplateForm/ChallengeTemplateForm';
 import styles from './CreateChallengeTemplate.module.scss';
 
@@ -29,24 +30,7 @@ export const CreateChallengeTemplate = () => {
 			<PageWrapper title="Create Challenge Template">
 				<Form<CreateChallengeTemplateDto>
 					schema={createChallengeTemplateSchema}
-					defaultValues={{
-						isActive: true,
-						tier: 'TIER_1',
-						type: 'SLEEP_DURATION',
-						generationRules: {
-							durations: [1],
-							metadata: {
-								minDurationMinutes: [60],
-							},
-						},
-						translations: [
-							{
-								language: 'en',
-								title: '',
-								description: '',
-							},
-						],
-					}}
+					defaultValues={CHALLENGE_TEMPLATE_DEFAULT_VALUES}
 					onSubmit={(data) =>
 						mutate(data, {
 							onSuccess: (data) => {

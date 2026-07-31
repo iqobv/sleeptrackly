@@ -3,6 +3,7 @@
 import { getChallengeById } from '@/api/challenge/getChallengeById.api';
 import { updateChallenge } from '@/api/challenge/updteChallenge.api';
 import { PageWrapper } from '@/components/UI';
+import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { UpdateChallengeDto } from '@/dto/challenge/challenge.dto';
 import { updateChallengeSchema } from '@/schemas/challenge/updateChallenge.schema';
@@ -18,6 +19,8 @@ import { isAxiosError } from 'axios';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ChallengeForm } from '../ChallengeForm/ChallengeForm';
+import { CHALLENGE_DEFAULT_VALUES } from '../ChallengeForm/challengeDefaultValues';
+import { DeleteChallenge } from '../DeleteChallenge/DeleteChallenge';
 
 export const EditChallenge = () => {
 	const { id } = useParams<{ id: string }>();
@@ -46,30 +49,14 @@ export const EditChallenge = () => {
 		: undefined;
 
 	return (
-		<PageWrapper title="Update Challenge" description="Update a challenge">
+		<PageWrapper
+			title="Update Challenge"
+			description="Update a challenge"
+			customRightSlot={<DeleteChallenge id={id} href={PAGES.CHALLENGES} />}
+		>
 			<Form<UpdateChallengeDto>
 				schema={updateChallengeSchema}
-				defaultValues={{
-					type: 'SLEEP_DURATION',
-					metadata: { minDurationMinutes: 60 },
-					availableFrom: undefined,
-					availableTo: undefined,
-					dailyRewardCoins: 0,
-					durationDays: 0,
-					maxRecoveries: 0,
-					rewardCoins: 0,
-					rewardProductId: undefined,
-					targetValue: 0,
-					tier: 'TIER_1',
-					translations: [
-						{
-							language: 'en',
-							title: '',
-							description: '',
-						},
-					],
-					visibility: 'DRAFT',
-				}}
+				defaultValues={CHALLENGE_DEFAULT_VALUES}
 				values={challengeValues}
 				onSubmit={(data) =>
 					mutate(data, {
