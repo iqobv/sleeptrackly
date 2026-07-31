@@ -1,4 +1,4 @@
-import { components } from '../schema';
+import { components } from '@shared/types';
 
 type SwaggerItemType = components['schemas']['ProfileItemType'];
 

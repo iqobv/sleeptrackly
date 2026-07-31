@@ -1,5 +1,5 @@
 import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type GetUserNotificationSettingsResponse =

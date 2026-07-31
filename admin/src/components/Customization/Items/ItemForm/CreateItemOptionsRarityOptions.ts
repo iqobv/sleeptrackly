@@ -1,5 +1,5 @@
-import { ItemRarity } from '@/types/customization/item/itemRarity.types';
 import { Option } from '@/types/ui/option.types';
+import { ItemRarity } from '@shared/types';
 
 export const CREATE_ITEM_RARITY_OPTIONS: Option<ItemRarity>[] = [
 	{

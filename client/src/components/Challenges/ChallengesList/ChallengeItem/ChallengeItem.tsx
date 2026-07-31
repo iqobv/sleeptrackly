@@ -19,11 +19,11 @@ export const ChallengeItem = ({ challenge }: ChallengeItemProps) => {
 				<p className={styles.tag}>Challenge</p>
 				<div className={styles.content}>
 					<SectionHeader
-						title={challenge.title}
+						title={challenge.id}
 						titleProps={{
 							variant: 'h3',
 						}}
-						description={challenge.description}
+						// description={challenge.description}
 						gap={3}
 						padding={0}
 					/>

@@ -1,4 +1,3 @@
-import { EditChallenge } from '@/components/Challenge/EditChallenge/EditChallenge';
 import { SectionHeader } from '@shared/ui';
 import { cookies } from 'next/headers';
 
@@ -31,7 +30,6 @@ export default async function EditChallengePage({
 	return (
 		<div className="container">
 			<SectionHeader title="Edit Challenge" />
-			<EditChallenge id={id} />
 		</div>
 	);
 }

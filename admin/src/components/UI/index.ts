@@ -7,5 +7,6 @@ export { FormFieldsLoader } from './FormFields/FormFieldsLoader';
 export { NavigationBackButton } from './NavigationBackButton/NavigationBackButton';
 export { PageWrapper } from './PageWrapper/PageWrapper';
 export { PageWrapperLoader } from './PageWrapper/PageWrapperLoader';
+export { TranslationForm } from './TranslationForm/TranslationForm';
+export { TranslationFormLoader } from './TranslationForm/TranslationFormLoader';
 export { UserAvatar } from './UserAvatar/UserAvatar';
-export { TranslationForm } from './TranslationForm/TranslationForm'

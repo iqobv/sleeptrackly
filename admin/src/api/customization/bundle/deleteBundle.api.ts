@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/axios';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 
 type DeleteBundleResponse =
 	paths['/v1/bundles/{id}']['delete']['responses']['200']['content']['application/json'];

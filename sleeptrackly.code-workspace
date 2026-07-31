@@ -33,6 +33,10 @@
 			"path": "shared/tables",
 		},
 		{
+			"name": "Shared: Types",
+			"path": "shared/types",
+		},
+		{
 			"name": "Root (Configs)",
 			"path": ".",
 		},

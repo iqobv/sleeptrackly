@@ -7,9 +7,9 @@ import { QUERY_KEYS } from '@/config/queryClient.config';
 import { challengeTemplatesQuerySchema } from '@/schemas/challenge/templates/challengeTemplatesQuery.schema';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
-import styles from './AllChallengeTemplates.module.scss';
 import { ChallengeTemplatesTable } from './ChallengeTemplatesTable/ChallengeTemplatesTable';
 import { ChallengeTemplatesTableFilters } from './ChallengeTemplatesTable/ChallengeTemplatesTableFilters';
+import { ChallengeTemplatesTableFiltersLoader } from './ChallengeTemplatesTable/ChallengeTemplatesTableFiltersLoader';
 import { useChallengeTemplatesFilters } from './useChallengeTemplatesFilters.hook';
 
 export const AllChallengeTemplates = () => {
@@ -29,13 +29,12 @@ export const AllChallengeTemplates = () => {
 		<PageWrapper
 			title="Challenge Templates"
 			description="Manage challenge templates. Creaete, edit, and delete templates to customize challenges for users."
-			className={styles.allChallengeTemplates}
 			showBackButton={false}
 			buttonText="Create Template"
 			href={PAGES.CHALLENGE_TEMPLATE_NEW}
 		>
 			<ChallengeTemplatesTableFilters />
-
+			<ChallengeTemplatesTableFiltersLoader />
 			{data && data.meta.total > 0 && (
 				<ChallengeTemplatesTable
 					templates={data.items}

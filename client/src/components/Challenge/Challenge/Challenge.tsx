@@ -26,7 +26,7 @@ export const Challenge = ({ id }: ChallengeProps) => {
 	return (
 		<>
 			<ChallengeSummary data={challenge} />
-			<Calendar data={challenge} mode={challenge.frequency} />
+			<Calendar data={challenge} mode={'DAILY'} />
 			<ChallengeInfo data={challenge} />
 		</>
 	);

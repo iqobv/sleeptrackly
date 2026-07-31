@@ -1,5 +1,5 @@
 import { FriendStatus } from '@/types/friend/friendStatus.types';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type SendFriendRequestResponse =

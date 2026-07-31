@@ -1,4 +1,4 @@
-import { components } from '../schema';
+import { components } from '../../schema';
 
 type SwaggerUserRole = components['schemas']['UserRole'];
 

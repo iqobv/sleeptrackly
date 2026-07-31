@@ -1,3 +1,3 @@
-import { components } from '../schema';
+import { components } from '@shared/types';
 
 export type Item = components['schemas']['ShopItemDto'];

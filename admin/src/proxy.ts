@@ -1,6 +1,6 @@
+import { UserRole } from '@shared/types';
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
-import { UserRole } from './types/user/userRole.types';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 

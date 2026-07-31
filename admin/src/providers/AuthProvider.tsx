@@ -1,7 +1,7 @@
 'use client';
 
 import { useUserStore } from '@/store/useUser.store';
-import { User } from '@/types/user/user.types';
+import { User } from '@shared/types';
 import { PropsWithChildren, useEffect } from 'react';
 
 interface MainProviderProps {

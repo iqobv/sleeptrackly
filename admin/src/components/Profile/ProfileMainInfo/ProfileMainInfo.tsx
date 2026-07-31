@@ -2,7 +2,7 @@
 
 import { UserAvatar } from '@/components/UI/UserAvatar/UserAvatar';
 import { useAuth } from '@/hooks/useAuth';
-import { Profile } from '@/types/profile/profile.types';
+import { Profile } from '@shared/types';
 import { SectionHeader } from '@shared/ui';
 import styles from './ProfileMainInfo.module.scss';
 import { ProfileSanctionsButton } from './ProfileSanctionsButton/ProfileSanctionsButton';

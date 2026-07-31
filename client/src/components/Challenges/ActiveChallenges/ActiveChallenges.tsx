@@ -9,7 +9,7 @@ interface ActiveChallengesProps {
 }
 
 export const ActiveChallenges = ({ data }: ActiveChallengesProps) => {
-	const activeChallenges = data.filter((c) => c.isStarted);
+	const activeChallenges = data;
 
 	if (activeChallenges.length === 0) return null;
 

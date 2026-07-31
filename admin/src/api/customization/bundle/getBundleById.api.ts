@@ -1,5 +1,5 @@
 import { apiClient } from '@/api/axios';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 
 type GetBundleByIdResponse =
 	paths['/v1/bundles/id/{id}']['get']['responses']['200']['content']['application/json'];

@@ -1,39 +1,35 @@
 'use client';
 
-import { Calendar as UICalendar } from '@/components/UI';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
-import { ChallengeFrequency } from '@/types/challenge/challengeFrequncy.types';
 import dayjs from 'dayjs';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { TaskSummary } from '../TaskSummary/TaskSummary';
 import styles from './Calendar.module.scss';
-import { useChallengeTaskCalendar } from './useChallengeTaskCalendar';
 
 dayjs.extend(isSameOrBefore);
 
 interface CalendarProps {
 	data: ChallengeFull;
-	mode: ChallengeFrequency;
+	mode: 'DAILY';
 }
 
 export const Calendar = ({ data, mode }: CalendarProps) => {
-	const tasks = data.tasks || [];
+	// const tasks = [];
 
-	const {
-		allDates,
-		completedGroups,
-		pendingGroups,
-		selectedTask,
-		handleClick,
-	} = useChallengeTaskCalendar({
-		tasks,
-		mode,
-	});
+	// const {
+	// 	allDates,
+	// 	completedGroups,
+	// 	pendingGroups,
+	// 	selectedTask,
+	// 	handleClick,
+	// } = useChallengeTaskCalendar({
+	// 	tasks,
+	// 	mode,
+	// });
 
 	return (
 		<div className={styles.calendar}>
 			<div className={styles.container}>
-				<UICalendar
+				{/* <UICalendar
 					mode="single"
 					selected={
 						selectedTask ? dayjs(selectedTask.startDate).toDate() : undefined
@@ -47,9 +43,9 @@ export const Calendar = ({ data, mode }: CalendarProps) => {
 					}}
 					startMonth={allDates[0]}
 					endMonth={allDates[allDates.length - 1]}
-				/>
+				/> */}
 			</div>
-			<TaskSummary challenge={data} selectedDate={selectedTask} />
+			{/* <TaskSummary challenge={data} selectedDate={selectedTask} /> */}
 		</div>
 	);
 };

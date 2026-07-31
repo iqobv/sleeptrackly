@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/axios';
 import { CreateBundleDto } from '@/dto/customization/bundle.dto';
-import { paths } from '@/types/schema';
 import { getFormData } from '@/utils/getFormData.util';
+import { paths } from '@shared/types';
 
 type CreateBundleResponse =
 	paths['/v1/bundles']['post']['responses']['201']['content']['application/json'];

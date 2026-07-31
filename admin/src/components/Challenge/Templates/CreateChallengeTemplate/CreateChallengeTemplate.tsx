@@ -13,7 +13,6 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { CHALLENGE_TEMPLATE_DEFAULT_VALUES } from '../ChallengeTemplateForm/challengeTemplateDefaultValues';
 import { ChallengeTemplateForm } from '../ChallengeTemplateForm/ChallengeTemplateForm';
-import styles from './CreateChallengeTemplate.module.scss';
 
 export const CreateChallengeTemplate = () => {
 	const router = useRouter();
@@ -26,34 +25,32 @@ export const CreateChallengeTemplate = () => {
 	});
 
 	return (
-		<div className={styles.create}>
-			<PageWrapper title="Create Challenge Template">
-				<Form<CreateChallengeTemplateDto>
-					schema={createChallengeTemplateSchema}
-					defaultValues={CHALLENGE_TEMPLATE_DEFAULT_VALUES}
-					onSubmit={(data) =>
-						mutate(data, {
-							onSuccess: (data) => {
-								queryClient.invalidateQueries({
-									queryKey: QUERY_KEYS.challenge.listsTemplates(),
-								});
+		<PageWrapper title="Create Challenge Template">
+			<Form<CreateChallengeTemplateDto>
+				schema={createChallengeTemplateSchema}
+				defaultValues={CHALLENGE_TEMPLATE_DEFAULT_VALUES}
+				onSubmit={(data) =>
+					mutate(data, {
+						onSuccess: (data) => {
+							queryClient.invalidateQueries({
+								queryKey: QUERY_KEYS.challenge.listsTemplates(),
+							});
 
-								router.push(PAGES.CHALLENGE_TEMPLATE(data.id));
-							},
-							onError: (error) => {
-								if (isAxiosError(error) && error.response?.data?.message) {
-									toast.error(error.response.data.message);
-									return;
-								}
+							router.push(PAGES.CHALLENGE_TEMPLATE(data.id));
+						},
+						onError: (error) => {
+							if (isAxiosError(error) && error.response?.data?.message) {
+								toast.error(error.response.data.message);
+								return;
+							}
 
-								toast.error('Failed to create challenge template');
-							},
-						})
-					}
-				>
-					<ChallengeTemplateForm isLoading={isPending} isEditing={false} />
-				</Form>
-			</PageWrapper>
-		</div>
+							toast.error('Failed to create challenge template');
+						},
+					})
+				}
+			>
+				<ChallengeTemplateForm isLoading={isPending} isEditing={false} />
+			</Form>
+		</PageWrapper>
 	);
 };

@@ -1,5 +1,5 @@
 import { FullReport } from '../report/report.types';
-import { components } from '../schema';
+import { components } from '@shared/types';
 
 type SwaggerUserSanctionType = components['schemas']['UserSanctionType'];
 

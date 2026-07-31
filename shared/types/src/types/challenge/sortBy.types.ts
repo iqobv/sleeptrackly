@@ -1,4 +1,4 @@
-import { components } from '../schema';
+import { components } from '../../schema';
 
 type SwaggerType = components['schemas']['ChallengeSortBy'];
 

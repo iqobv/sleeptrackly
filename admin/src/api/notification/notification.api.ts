@@ -1,5 +1,5 @@
 import { CreateNotificationDto } from '@/dto/notification/notification.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type CreateNotificationResponse =

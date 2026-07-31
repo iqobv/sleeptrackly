@@ -1,5 +1,10 @@
-import React from 'react';
+import { PageWrapperLoader } from '@/components/UI';
+import { ChallengeFormLoader } from '../ChallengeForm/ChallengeFormLoader';
 
 export const CreateChallengeLoader = () => {
-  return <div>CreateChallengeLoader</div>;
+	return (
+		<PageWrapperLoader showBackButton>
+			<ChallengeFormLoader />
+		</PageWrapperLoader>
+	);
 };

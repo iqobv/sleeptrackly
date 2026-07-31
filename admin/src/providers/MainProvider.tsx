@@ -1,6 +1,6 @@
 'use client';
 
-import { User } from '@/types/user/user.types';
+import { User } from '@shared/types';
 import { PropsWithChildren } from 'react';
 import { AuthProvider } from './AuthProvider';
 import { NuqsProvider } from './NuqsProvider';

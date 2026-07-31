@@ -1,4 +1,4 @@
-import { components } from '@/types/schema';
+import { components } from '../../../schema';
 
 type SwaggerItemRarity = components['schemas']['ItemRarity'];
 

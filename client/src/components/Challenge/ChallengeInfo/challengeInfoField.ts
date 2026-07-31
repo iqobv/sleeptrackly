@@ -1,5 +1,4 @@
-import { Challenge } from '@/types/challenge/challenge.types';
-import { capitalize } from '@shared/utils';
+import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { formatDate } from '@shared/utils/formatDateTime.util';
 
 export interface ChallengeInfoField {
@@ -8,30 +7,14 @@ export interface ChallengeInfoField {
 }
 
 export const CHALLENGE_INFO_FIELDS = (
-	data: Challenge,
+	data: ChallengeFull,
 ): ChallengeInfoField[] => [
 	{
 		name: 'Start date',
-		value: formatDate(new Date(data.startDate)),
+		value: formatDate(data.availableFrom ? new Date(data.availableFrom) : ''),
 	},
 	{
 		name: 'End date',
-		value: formatDate(new Date(data.endDate)),
-	},
-	{
-		name: 'Frequency',
-		value: (() => {
-			const freq = data?.frequency ?? '';
-			if (!freq) return '';
-			return capitalize(freq);
-		})(),
-	},
-	{
-		name: 'Started',
-		value: data?.isStarted ? 'Yes' : 'No',
-	},
-	{
-		name: 'Completed',
-		value: data?.isCompleted ? 'Yes' : 'No',
+		value: formatDate(data.availableTo ? new Date(data.availableTo) : ''),
 	},
 ];

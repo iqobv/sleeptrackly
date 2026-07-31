@@ -25,7 +25,9 @@
 			"@shared/utils": ["../shared/utils/src/index.ts"],
 			"@shared/utils/*": ["../shared/utils/src/*"],
 			"@shared/tables": ["../shared/tables/src/index.ts"],
-			"@shared/tables/*": ["../shared/tables/src/*"]
+			"@shared/tables/*": ["../shared/tables/src/*"],
+			"@shared/types": ["../shared/types/src/index.ts"],
+			"@shared/types/*": ["../shared/types/src/*"]
 		}
 	},
 	"include": [

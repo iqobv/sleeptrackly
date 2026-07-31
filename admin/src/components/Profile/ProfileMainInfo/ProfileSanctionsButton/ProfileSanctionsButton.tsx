@@ -1,7 +1,7 @@
 'use client';
 
 import { ReportSanctionForm } from '@/components/Report/Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
-import { Profile } from '@/types/profile/profile.types';
+import { Profile } from '@shared/types';
 import {
 	Button,
 	Modal,

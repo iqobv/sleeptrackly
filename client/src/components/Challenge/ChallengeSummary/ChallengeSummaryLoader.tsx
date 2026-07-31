@@ -7,13 +7,5 @@ export const ChallengeSummaryLoader = () => (
 			<SkeletonLoader width={160} height={38} />
 			<SkeletonLoader width={120} height={24} />
 		</div>
-		<div className={styles.buttons}>
-			<div className={styles.button}>
-				<SkeletonLoader width="100%" height="100%" />
-			</div>
-			<div className={styles.button}>
-				<SkeletonLoader width="100%" height="100%" />
-			</div>
-		</div>
 	</div>
 );

@@ -4,7 +4,7 @@ import {
 	UpdateProductDto,
 } from '@/dto/customization/product.dto';
 import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 
 type GetAllProductsResponse =
 	paths['/v1/products']['get']['responses']['200']['content']['application/json'];

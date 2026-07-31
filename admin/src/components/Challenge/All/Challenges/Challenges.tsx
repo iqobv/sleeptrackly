@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { ChallengesTable } from './ChallengesTable/ChallengesTable';
 import { ChallengesTableFilters } from './ChallengesTable/ChallengesTableFilters';
+import { ChallengesTableLoader } from './ChallengesTable/ChallengesTableLoader';
 import { useChallengeFilters } from './useChallengeFilters.hook';
 
 export const Challenges = () => {
@@ -20,7 +21,7 @@ export const Challenges = () => {
 		[filters],
 	);
 
-	const { data, isFetched } = useQuery({
+	const { data, isLoading, isFetched } = useQuery({
 		queryKey: QUERY_KEYS.challenge.list(validatedParams),
 		queryFn: () => getAllChallenges(validatedParams),
 	});
@@ -34,6 +35,7 @@ export const Challenges = () => {
 			href={PAGES.CHALLENGE_NEW}
 		>
 			<ChallengesTableFilters />
+			{isLoading && <ChallengesTableLoader />}
 			{data && data.meta.total > 0 && (
 				<ChallengesTable
 					challenges={data.items}

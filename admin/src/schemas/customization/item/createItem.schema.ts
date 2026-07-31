@@ -1,6 +1,5 @@
 import { translationSchema } from '@/schemas/translation/translation.schema';
-import { ItemRarity } from '@/types/customization/item/itemRarity.types';
-import { ItemType } from '@/types/customization/item/itemType.types';
+import { ItemRarity, ItemType } from '@shared/types';
 import z from 'zod';
 
 export const createItemSchema = z.object({

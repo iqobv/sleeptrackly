@@ -1,5 +1,5 @@
 import { DashboardQueryDto } from '@/dto/dashboard/dashboard.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient, apiServer } from '../axios';
 
 type GetDashboadResponse =

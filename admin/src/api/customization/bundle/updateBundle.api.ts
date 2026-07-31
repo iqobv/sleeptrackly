@@ -1,7 +1,7 @@
 import { apiClient } from '@/api/axios';
 import { UpdateBundleDto } from '@/dto/customization/bundle.dto';
-import { paths } from '@/types/schema';
 import { getFormData } from '@/utils/getFormData.util';
+import { paths } from '@shared/types';
 
 type UpdateBundleResponse =
 	paths['/v1/bundles/{id}']['patch']['responses']['200']['content']['application/json'];

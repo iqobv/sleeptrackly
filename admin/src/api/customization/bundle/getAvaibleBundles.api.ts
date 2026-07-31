@@ -1,6 +1,6 @@
 import { apiClient } from '@/api/axios';
 import { PaginationDto } from '@/dto/query/pagination.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 
 type GetAllAvailableBundlesResponse =
 	paths['/v1/bundles/available']['get']['responses']['200']['content']['application/json'];

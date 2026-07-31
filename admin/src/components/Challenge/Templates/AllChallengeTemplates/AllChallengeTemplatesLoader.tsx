@@ -1,5 +1,12 @@
-import React from 'react';
+import { PageWrapperLoader } from '@/components/UI';
+import { ChallengeTemplatesTableFiltersLoader } from './ChallengeTemplatesTable/ChallengeTemplatesTableFiltersLoader';
+import { ChallengeTemplatesTableLoader } from './ChallengeTemplatesTable/ChallengeTemplatesTableLoader';
 
 export const AllChallengeTemplatesLoader = () => {
-  return <div>AllChallengeTemplatesLoader</div>;
+	return (
+		<PageWrapperLoader>
+			<ChallengeTemplatesTableFiltersLoader />
+			<ChallengeTemplatesTableLoader />
+		</PageWrapperLoader>
+	);
 };

@@ -1,6 +1,6 @@
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 import { ReportStatus } from '@/types/report/reportStatus.types';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type GetReportsResponse =
