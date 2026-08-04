@@ -17,13 +17,13 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { CreateUserDto } from './dto/create-user.dto';
-import { FullUserDto, FullUserWithPasswordDto } from './dto/full-user.dto';
-import { PasswordRecoveryDto } from './dto/password.dto';
-import { UpdateUserTimezoneDto } from './dto/update-user-timezone.dto';
-import { InternalUpdateUserDto } from './dto/update-user.dto';
-import { UserDto, UserWithPasswordDto } from './dto/user-response.dto';
-import { UsersSearchResultDto } from './dto/users-search-result.dto';
+import { CreateUserDto } from '../dto/create-user.dto';
+import { FullUserDto, FullUserWithPasswordDto } from '../dto/full-user.dto';
+import { PasswordRecoveryDto } from '../dto/password.dto';
+import { UpdateUserTimezoneDto } from '../dto/update-user-timezone.dto';
+import { InternalUpdateUserDto } from '../dto/update-user.dto';
+import { UserDto, UserWithPasswordDto } from '../dto/user-response.dto';
+import { UsersSearchResultDto } from '../dto/users-search-result.dto';
 
 @Injectable()
 export class UserService {

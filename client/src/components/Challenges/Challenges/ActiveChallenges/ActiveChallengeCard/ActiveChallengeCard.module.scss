@@ -1,0 +1,16 @@
+.card {
+	padding: 1rem;
+	border-radius: var(--border-radius);
+	display: flex;
+	flex-direction: column;
+	background-color: var(--challenge-card-bg);
+	border: 1px solid var(--challenge-card-border);
+	gap: 1rem;
+
+	.tags {
+		display: inline-flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+}

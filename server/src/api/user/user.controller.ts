@@ -16,7 +16,7 @@ import { UpdateUserTimezoneDto } from './dto/update-user-timezone.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user-response.dto';
 import { UsersSearchResultDto } from './dto/users-search-result.dto';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 
 @Auth()
 @ApiTags('User')

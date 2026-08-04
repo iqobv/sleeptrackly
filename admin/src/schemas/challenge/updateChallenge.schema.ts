@@ -23,12 +23,4 @@ export const updateChallengeSchema = z
 				});
 			}
 		}
-
-		if (availableFrom && availableFrom < new Date()) {
-			ctx.addIssue({
-				code: 'custom',
-				message: 'Available from date must be in the future',
-				path: ['availableFrom'],
-			});
-		}
 	});

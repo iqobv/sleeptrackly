@@ -1,11 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserCleanupService } from './user-cleanup.service';
+import { UserChallengeRecoveryCronService } from './services/user-challenge-recovery-cron.service';
+import { UserCleanupService } from './services/user-cleanup.service';
+import { UserService } from './services/user.service';
 import { UserController } from './user.controller';
-import { UserService } from './user.service';
 
 @Module({
 	exports: [UserService],
-	providers: [UserService, UserCleanupService],
+	providers: [
+		UserService,
+		UserCleanupService,
+		UserChallengeRecoveryCronService,
+	],
 	controllers: [UserController],
 })
 export class UserModule {}

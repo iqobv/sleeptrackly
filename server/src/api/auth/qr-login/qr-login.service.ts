@@ -1,5 +1,5 @@
 import { TokenService } from '@api/token/token.service';
-import { UserService } from '@api/user/user.service';
+import { UserService } from '@api/user/services/user.service';
 import { TokenType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';

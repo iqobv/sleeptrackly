@@ -1,6 +1,6 @@
 import { NotificationService } from '@api/notification/notification.service';
 import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
-import { UserService } from '@api/user/user.service';
+import { UserService } from '@api/user/services/user.service';
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';

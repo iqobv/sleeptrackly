@@ -1,3 +1,4 @@
+import { ShopProductDto } from '@api/shop/dto/shop-product.dto';
 import {
 	ChallengeTier,
 	ChallengeType,
@@ -92,4 +93,8 @@ export class ChallengeEntityDto extends DefaultFieldsDto {
 	@Type(() => ChallengeTranslationEntityDto)
 	@Expose()
 	translations: ChallengeTranslationEntityDto[];
+
+	@Type(() => ShopProductDto)
+	@Expose()
+	product: ShopProductDto | null;
 }

@@ -5,7 +5,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import dayjs from 'dayjs';
 import { NotificationService } from '../notification/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 import { UserSanctionService } from './user-sanction.service';
 
 type PrismaMock = {

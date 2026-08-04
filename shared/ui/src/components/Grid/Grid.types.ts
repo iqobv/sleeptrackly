@@ -12,6 +12,7 @@ export interface GridProps extends HTMLAttributes<HTMLElement> {
 	className?: string;
 	isInline?: boolean;
 	oneColumnOnMobile?: boolean;
+	stretchLastOdd?: boolean;
 }
 
 export interface GridItemProps extends HTMLAttributes<HTMLElement> {

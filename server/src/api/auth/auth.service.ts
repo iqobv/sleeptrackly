@@ -6,7 +6,7 @@ import {
 	UserDto,
 	UserWithPasswordDto,
 } from '@api/user/dto/user-response.dto';
-import { UserService } from '@api/user/user.service';
+import { UserService } from '@api/user/services/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';

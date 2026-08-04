@@ -2578,6 +2578,67 @@ export interface components {
         ChallengeTier: "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4";
         /** @enum {string} */
         ChallengeVisibility: "DRAFT" | "PUBLISHED";
+        ShopItemDto: {
+            type: components["schemas"]["ProfileItemType"];
+            rarity: components["schemas"]["ItemRarity"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+            isExclusive: boolean;
+            isAnimated: boolean;
+            basePrice: number;
+            mediaUrl: string;
+            previewUrl: string;
+            translation: components["schemas"]["TranslationDto"];
+        };
+        ShopBundleItemDto: {
+            item: components["schemas"]["ShopItemDto"];
+            itemId: string;
+            bundleId: string;
+        };
+        ShopBundleDto: {
+            translation: components["schemas"]["TranslationDto"];
+            items: components["schemas"]["ShopBundleItemDto"][];
+            basePrice: number;
+            isExclusive: boolean;
+            discountPercentage: number;
+            mediaUrl: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        ShopProductDto: {
+            type: components["schemas"]["ProductType"];
+            itemType: components["schemas"]["ProfileItemType"] | null;
+            isOwned: boolean;
+            item: components["schemas"]["ShopItemDto"] | null;
+            bundle: components["schemas"]["ShopBundleDto"] | null;
+            bundleId: string | null;
+            itemId: string | null;
+            isNew: boolean;
+            isPopular: boolean;
+            isExclusive: boolean;
+            isShowInStore: boolean;
+            isLimited: boolean;
+            price: number;
+            discountedPrice: number | null;
+            maxStock: number | null;
+            soldCount: number;
+            /** Format: date-time */
+            expiresAt: string | null;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
         ChallengeTranslationDto: {
             language: string;
             title: string;
@@ -2604,6 +2665,7 @@ export interface components {
             rewardCoins: number;
             dailyRewardCoins: number;
             rewardProductId: string | null;
+            product: components["schemas"]["ShopProductDto"] | null;
             translation: components["schemas"]["ChallengeTranslationDto"];
         };
         FullUserChallengeDto: {
@@ -2683,6 +2745,7 @@ export interface components {
             rewardCoins: number;
             dailyRewardCoins: number;
             rewardProductId: string | null;
+            product: components["schemas"]["ShopProductDto"] | null;
             translation: components["schemas"]["ChallengeTranslationDto"];
             isParticipating: boolean;
             userChallenge: components["schemas"]["UserChallengeDto"] | null;
@@ -2756,6 +2819,7 @@ export interface components {
             dailyRewardCoins: number;
             rewardProductId: string | null;
             translations: components["schemas"]["ChallengeTranslationEntityDto"][];
+            product: components["schemas"]["ShopProductDto"] | null;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -3289,67 +3353,6 @@ export interface components {
             productIds?: string[];
             accentColor?: string;
         };
-        ShopItemDto: {
-            type: components["schemas"]["ProfileItemType"];
-            rarity: components["schemas"]["ItemRarity"];
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            isExclusive: boolean;
-            isAnimated: boolean;
-            basePrice: number;
-            mediaUrl: string;
-            previewUrl: string;
-            translation: components["schemas"]["TranslationDto"];
-        };
-        ShopBundleItemDto: {
-            item: components["schemas"]["ShopItemDto"];
-            itemId: string;
-            bundleId: string;
-        };
-        ShopBundleDto: {
-            translation: components["schemas"]["TranslationDto"];
-            items: components["schemas"]["ShopBundleItemDto"][];
-            basePrice: number;
-            isExclusive: boolean;
-            discountPercentage: number;
-            mediaUrl: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        ShopProductDto: {
-            type: components["schemas"]["ProductType"];
-            itemType: components["schemas"]["ProfileItemType"] | null;
-            isOwned: boolean;
-            item: components["schemas"]["ShopItemDto"] | null;
-            bundle: components["schemas"]["ShopBundleDto"] | null;
-            bundleId: string | null;
-            itemId: string | null;
-            isNew: boolean;
-            isPopular: boolean;
-            isExclusive: boolean;
-            isShowInStore: boolean;
-            isLimited: boolean;
-            price: number;
-            discountedPrice: number | null;
-            maxStock: number | null;
-            soldCount: number;
-            /** Format: date-time */
-            expiresAt: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
         ShopCollectionProductDto: {
             collectionId: string;
             productId: string;
@@ -3548,7 +3551,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-01T12:06:19.237Z
+             * @example 2026-08-05T14:25:07.699Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3579,7 +3582,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-01T12:06:19.237Z
+             * @example 2026-08-05T14:25:07.699Z
              */
             expiresAt?: string;
             /** @example 0 */

@@ -64,9 +64,18 @@ html.dark {
 	--theme-btn-color: #fff;
 
 	/* Challenges */
-	--challenge-list-item-bg: #333;
+	--challenge-list-item-bg: #141313;
 	--challenge-list-item-color: #fff;
 	--challenge-list-item-border: #333;
+	--challenge-card-bg: #141313;
+	--challenge-card-border: #444748;
+	--challenge-card-secondary-bg: #0e0e0e;
+	--challenge-tag-bg: #201f1f;
+	--challenge-tag-border: #2a2a2a;
+	--challenge-tag-color: #fff;
+	--challenge-tag-frozen-bg: rgba(147, 0, 10, 0.2);
+	--challenge-tag-frozen-border: rgba(255, 179, 171, 0.3);
+	--challenge-tag-frozen-color: #ffb4ab;
 
 	/* Calendar */
 	--calendar-accent: #e8edf2;

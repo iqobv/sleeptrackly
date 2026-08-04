@@ -1,6 +1,6 @@
 import { TokenService } from '@api/token/token.service';
 import { PasswordRecoveryDto } from '@api/user/dto/password.dto';
-import { UserService } from '@api/user/user.service';
+import { UserService } from '@api/user/services/user.service';
 import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';

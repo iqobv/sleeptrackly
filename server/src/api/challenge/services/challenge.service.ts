@@ -9,7 +9,9 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { transformProduct } from '@libs/mappers/translation-products.mapper';
 import { challengeTranslationSelect } from '@libs/prisma/challenge-translation.select.prisma';
+import { productInclude } from '@libs/prisma/product.include.prisma';
 import {
 	BadRequestException,
 	ConflictException,
@@ -38,14 +40,19 @@ export class ChallengeService {
 			where: { userId, status: ChallengeStatus.ACTIVE },
 			include: {
 				challenge: {
-					include: challengeTranslationSelect(language),
+					include: {
+						...challengeTranslationSelect(language),
+						product: {
+							include: productInclude(language),
+						},
+					},
 				},
 			},
 		});
 
 		const result = challenges.map(
 			({
-				challenge: { translations, metadata, ...restChallenge },
+				challenge: { translations, metadata, product, ...restChallenge },
 				...rest
 			}) => ({
 				...rest,
@@ -56,6 +63,7 @@ export class ChallengeService {
 						language: 'en',
 					},
 					metadata,
+					product: product ? transformProduct(product, language) : null,
 					...restChallenge,
 				},
 			}),
@@ -82,17 +90,23 @@ export class ChallengeService {
 					},
 				},
 			},
-			include: challengeTranslationSelect(language),
+			include: {
+				...challengeTranslationSelect(language),
+				product: {
+					include: productInclude(language),
+				},
+			},
 		});
 
 		const result: ChallengeDto[] = challenges.map(
-			({ translations, metadata, ...rest }) => ({
+			({ translations, metadata, product, ...rest }) => ({
 				translation: pickTranslation(translations, language) || {
 					title: '',
 					description: '',
 					language: 'en',
 				},
 				metadata,
+				product: product ? transformProduct(product, language) : null,
 				...rest,
 			}),
 		) as ChallengeDto[];
@@ -110,14 +124,21 @@ export class ChallengeService {
 			include: {
 				...challengeTranslationSelect(language),
 				participants: { where: { userId }, include: { challengeTasks: true } },
+				product: { include: productInclude(language) },
 			},
 		});
 
 		if (!challenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		const { participants, translations, availableFrom, availableTo, ...rest } =
-			challenge;
+		const {
+			participants,
+			translations,
+			availableFrom,
+			availableTo,
+			product,
+			...rest
+		} = challenge;
 
 		const isParticipating = participants.length > 0;
 
@@ -134,6 +155,7 @@ export class ChallengeService {
 			},
 			availableFrom,
 			availableTo,
+			product: product ? transformProduct(product, language) : null,
 			isParticipating: !!userChallenge,
 			userChallenge: userChallenge
 				? {

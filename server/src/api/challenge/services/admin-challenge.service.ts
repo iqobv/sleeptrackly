@@ -1,6 +1,8 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { transformProduct } from '@libs/mappers/translation-products.mapper';
+import { productInclude } from '@libs/prisma/product.include.prisma';
 import { paginate } from '@libs/utils/pagination.util';
 import { validateChallengeMetadata } from '@libs/utils/validate-challenge-metadata.util';
 import {
@@ -67,13 +69,20 @@ export class AdminChallengeService {
 	public async findById(id: string): Promise<FullChallengeDto> {
 		const challenge = await this.prismaService.challenge.findUnique({
 			where: { id },
-			include: { translations: true },
+			include: { translations: true, product: { include: productInclude() } },
 		});
 
 		if (!challenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		return plainToInstance(FullChallengeDto, challenge);
+		const { product, ...rest } = challenge;
+
+		const mappedChallenge = {
+			...rest,
+			product: product ? transformProduct(product, 'en') : null,
+		} as FullChallengeDto;
+
+		return plainToInstance(FullChallengeDto, mappedChallenge);
 	}
 
 	public async create(dto: CreateChallengeDto): Promise<FullChallengeDto> {
@@ -95,10 +104,17 @@ export class AdminChallengeService {
 					},
 				},
 			},
-			include: { translations: true },
+			include: { translations: true, product: { include: productInclude() } },
 		});
 
-		return plainToInstance(FullChallengeDto, challenge);
+		const { product, ...restChallenge } = challenge;
+
+		const mappedChallenge = {
+			...restChallenge,
+			product: product ? transformProduct(product, 'en') : null,
+		} as FullChallengeDto;
+
+		return plainToInstance(FullChallengeDto, mappedChallenge);
 	}
 
 	public async update(
@@ -154,10 +170,17 @@ export class AdminChallengeService {
 				...(metadata ? { metadata } : {}),
 				...translationsUpdate,
 			},
-			include: { translations: true },
+			include: { translations: true, product: { include: productInclude() } },
 		});
 
-		return plainToInstance(FullChallengeDto, updated);
+		const { product, ...restChallenge } = updated;
+
+		const mappedChallenge = {
+			...restChallenge,
+			product: product ? transformProduct(product, 'en') : null,
+		} as FullChallengeDto;
+
+		return plainToInstance(FullChallengeDto, mappedChallenge);
 	}
 
 	public async delete(id: string): Promise<void> {

@@ -11,6 +11,7 @@ export class FullChallengeDto extends ChallengeEntityDto {}
 
 export class BaseChallengeDto extends OmitType(ChallengeEntityDto, [
 	'translations',
+	'product',
 ] as const) {
 	@Expose()
 	@Transform(transformMetadata)

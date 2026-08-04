@@ -1,0 +1,19 @@
+.tag {
+	padding: 0.3rem 0.7rem;
+	display: inline-flex;
+	gap: 0.3rem;
+	align-items: center;
+	color: var(--challenge-tag-color);
+	background-color: var(--challenge-tag-bg);
+	border: 1px solid var(--challenge-tag-border);
+	text-transform: uppercase;
+	border-radius: var(--border-radius);
+	user-select: none;
+	font-size: clamp(0.7rem, 1vw, 0.8rem);
+
+	&.frozen {
+		color: var(--challenge-tag-frozen-color);
+		background-color: var(--challenge-tag-frozen-bg);
+		border-color: var(--challenge-tag-frozen-border);
+	}
+}

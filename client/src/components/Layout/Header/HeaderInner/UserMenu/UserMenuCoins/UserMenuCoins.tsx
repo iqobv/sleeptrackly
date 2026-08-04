@@ -11,6 +11,10 @@ export const UserMenuCoins = () => {
 		queryKey: QUERY_KEYS.coin.userCoin,
 	});
 
+	const formatter = new Intl.NumberFormat(undefined, {
+		notation: 'standard',
+	});
+
 	return (
 		<div className={styles.coins}>
 			{isLoading && <UserMenuCoinsLoader />}
@@ -26,7 +30,7 @@ export const UserMenuCoins = () => {
 								fill="var(--color-main-text)"
 							/>
 							<p className={styles.amount}>
-								{userCoins.amount ? userCoins.amount : 0}
+								{userCoins.amount ? formatter.format(userCoins.amount) : 0}
 							</p>
 						</div>
 					</>

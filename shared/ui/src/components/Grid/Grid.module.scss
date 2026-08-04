@@ -16,9 +16,17 @@
 	grid-template-columns: var(--grid-columns);
 
 	&.oneColumnOnMobile {
+		grid-template-columns: 1fr;
+
 		@include respond-to(md) {
-			@supports (--grid-columns: 1) {
-				grid-template-columns: var(--grid-columns);
+			grid-template-columns: var(--grid-columns);
+		}
+	}
+
+	&.stretchLastOdd {
+		> * {
+			&:last-child:nth-child(odd) {
+				grid-column: 1 / -1;
 			}
 		}
 	}
