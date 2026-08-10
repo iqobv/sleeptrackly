@@ -11,7 +11,6 @@ import { AdminChallengeService } from './services/admin-challenge.service';
 import { ChallengeCronService } from './services/challenge-cron.service';
 import { ChallengeGeneratorService } from './services/challenge-generator.service';
 import { ChallengePublisherService } from './services/challenge-publisher.service';
-import { ChallengeRecoveryService } from './services/challenge-recovery.service';
 import { ChallengeService } from './services/challenge.service';
 
 @Module({
@@ -32,7 +31,6 @@ import { ChallengeService } from './services/challenge.service';
 		ChallengeGeneratorService,
 		ChallengePublisherService,
 		ChallengeProcessor,
-		ChallengeRecoveryService,
 	],
 })
 export class ChallengeModule {}

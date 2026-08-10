@@ -9,6 +9,8 @@ export type { Profile, ProfileStatistics } from './types/profile/profile.types';
 
 // Challenge
 export { ChallengeSortBy } from './types/challenge/sortBy.types';
+export { ChallengeStatus } from './types/challenge/status.types';
+export { ChallengeTaskStatus } from './types/challenge/taskType.types';
 export { ChallengeTier } from './types/challenge/tier.types';
 export { ChallengeType } from './types/challenge/type.types';
 export { ChallengeVisibility } from './types/challenge/visibility.types';

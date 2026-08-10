@@ -962,6 +962,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/challenges/{id}/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore frozen challenge */
+        post: operations["ChallengeController_restoreChallenge_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/challenges/{id}/participate": {
         parameters: {
             query?: never;
@@ -1954,6 +1971,9 @@ export interface components {
             username: string;
             emailVerified: boolean;
             timezone: string;
+            challengeRecoveries: number;
+            /** Format: date-time */
+            challengeRecoveriesUpdatedAt: string | null;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
@@ -2008,6 +2028,9 @@ export interface components {
             username: string;
             emailVerified: boolean;
             timezone: string;
+            challengeRecoveries: number;
+            /** Format: date-time */
+            challengeRecoveriesUpdatedAt: string | null;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
@@ -2808,6 +2831,12 @@ export interface components {
             tier: components["schemas"]["ChallengeTier"];
             visibility: components["schemas"]["ChallengeVisibility"];
             metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
             /** Format: date-time */
             availableFrom: string | null;
             /** Format: date-time */
@@ -2819,13 +2848,7 @@ export interface components {
             dailyRewardCoins: number;
             rewardProductId: string | null;
             translations: components["schemas"]["ChallengeTranslationEntityDto"][];
-            product: components["schemas"]["ShopProductDto"] | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
+            product: components["schemas"]["FullProductDto"] | null;
         };
         CreateChallengeTranslationDto: {
             language: string;
@@ -2854,10 +2877,6 @@ export interface components {
             type?: components["schemas"]["ChallengeType"];
             tier?: components["schemas"]["ChallengeTier"];
             visibility?: components["schemas"]["ChallengeVisibility"];
-            /** Format: date-time */
-            availableFrom?: string | null;
-            /** Format: date-time */
-            availableTo?: string | null;
             durationDays?: number;
             targetValue?: number;
             maxRecoveries?: number;
@@ -2867,6 +2886,10 @@ export interface components {
             rewardProductId?: string | null;
             translations?: components["schemas"]["CreateChallengeTranslationDto"][];
             metadata?: components["schemas"]["SleepDurationMetadataDto"] | components["schemas"]["TimeConsistencyMetadataDto"] | components["schemas"]["BedtimeVarianceMetadataDto"];
+            /** Format: date-time */
+            availableFrom?: string | null;
+            /** Format: date-time */
+            availableTo?: string | null;
         };
         BaseUserPrivacySettingsDto: {
             userId: string;
@@ -3551,7 +3574,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-05T14:25:07.699Z
+             * @example 2026-08-11T17:30:27.926Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3582,7 +3605,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-05T14:25:07.699Z
+             * @example 2026-08-11T17:30:27.926Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -6126,6 +6149,75 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ChallengeWithUserStatusDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeController_restoreChallenge_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenge has been successfully recovered | Challenge task has been successfully recovered, but challenge is still frozen */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge is not frozen | Only failed challenge tasks can be recovered | You have reached the maximum number of recoveries for this challenge | You do not have enough recoveries left */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
                 };
             };
             /** @description Unauthorized */

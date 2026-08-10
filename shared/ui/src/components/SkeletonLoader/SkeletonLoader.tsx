@@ -1,5 +1,4 @@
 import Skeleton, { SkeletonProps } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 import { pxToRem } from '../../utils/fromPxToRem.util';
 
 export const SkeletonLoader = ({

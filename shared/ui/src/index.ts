@@ -14,6 +14,8 @@ export type {
 export { BackButton } from './components/BackButton/BackButton';
 export type { BackButtonProps } from './components/BackButton/BackButton.types';
 
+export { Container } from './components/Container/Container';
+
 export { Checkbox } from './components/Checkbox/Checkbox';
 
 export { ConfirmModal } from './components/ConfirmModal/ConfirmModal';

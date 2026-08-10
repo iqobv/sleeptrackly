@@ -1,0 +1,10 @@
+.tokens {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	background-color: var(--challenge-token-bg);
+	border: 1px solid var(--challenge-token-border);
+	padding: 0.5rem 1rem;
+	border-radius: var(--border-radius);
+	width: 100%;
+}

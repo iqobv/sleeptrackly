@@ -1,23 +1,37 @@
+@use '../../../../styles/mixins' as *;
+
 .calendar {
 	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: 1.875rem;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+	text-align: center;
+	gap: 0.5rem;
+
+	@include respond-to(md) {
+		grid-template-columns: repeat(7, 1fr);
+	}
 }
 
-.container {
-	width: 100%;
+.day {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+	gap: var(--gap);
+}
+
+.radial {
+	width: 3.25rem;
+	height: 3.25rem;
+	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 50%;
+	border: 1px solid var(--challenge-calendar-border);
+	background-color: var(--challenge-calendar-bg);
 }
 
-.header {
+.title {
 	display: flex;
-	flex-direction: row;
 	justify-content: space-between;
-	width: 100%;
-	max-width: 19.25rem;
-	padding-bottom: 0.25rem;
+	flex-direction: row;
 }

@@ -1,5 +1,5 @@
 import { paths } from '@shared/types';
-import { apiClient } from '../axios';
+import { apiClient, apiServer } from '../axios';
 
 type GetChallengeByIdResponse =
 	paths['/v1/admin/challenges/{id}']['get']['responses']['200']['content']['application/json'];
@@ -7,3 +7,6 @@ type GetChallengeByIdResponse =
 export const getChallengeById = async (id: string) =>
 	(await apiClient.get<GetChallengeByIdResponse>(`/v1/admin/challenges/${id}`))
 		.data;
+
+export const getServerChallengeById = async (id: string) =>
+	(await apiServer.get<GetChallengeByIdResponse>(`/v1/challenges/${id}`)).data;

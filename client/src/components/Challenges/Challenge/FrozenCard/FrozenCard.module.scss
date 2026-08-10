@@ -1,0 +1,25 @@
+@use '../../../../styles/mixins' as *;
+
+.card {
+	background-color: var(--challenge-detail-error-bg);
+	border-color: var(--challenge-detail-error-border);
+
+	.button {
+		width: 100%;
+		@include respond-to(md) {
+			width: auto;
+		}
+	}
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	@include respond-to(md) {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+}

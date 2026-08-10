@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { CustomCSSProperties } from '../../types/customCSS.types';
 import { pxToRem } from '../../utils/fromPxToRem.util';
 import { Typography } from '../Typography/Typography';
 import styles from './SectionHeader.module.scss';
@@ -15,6 +16,9 @@ export const SectionHeader = ({
 	textAlign = 'start',
 	leftSlot,
 	rightSlot,
+	leftSlotClassName,
+	rightSlotClassName,
+	wrapperClassName,
 }: SectionHeaderProps) => {
 	const {
 		variant: titleVariant = 'h1',
@@ -28,19 +32,23 @@ export const SectionHeader = ({
 		...restDescriptionProps
 	} = descriptionProps || {};
 
+	const customStyles: CustomCSSProperties = {
+		...(padding !== undefined && { '--padding': pxToRem(padding) }),
+		...(gap !== undefined && { '--gap': pxToRem(gap) }),
+		...(textAlign !== undefined && { '--text-align': textAlign }),
+	};
+
 	return (
 		<div
 			className={clsx(styles.header, containerClassName)}
-			style={
-				{
-					'--padding': padding !== undefined ? pxToRem(padding) : undefined,
-					'--gap': gap !== undefined ? pxToRem(gap) : undefined,
-					'--text-align': textAlign,
-				} as React.CSSProperties
-			}
+			style={customStyles}
 		>
-			{leftSlot && <div className={styles.leftSlot}>{leftSlot}</div>}
-			<div className={styles.wrapper}>
+			{leftSlot && (
+				<div className={clsx(styles.leftSlot, leftSlotClassName)}>
+					{leftSlot}
+				</div>
+			)}
+			<div className={clsx(styles.wrapper, wrapperClassName)}>
 				<div className={styles.content}>
 					{!!title && (
 						<Typography
@@ -61,7 +69,11 @@ export const SectionHeader = ({
 						</Typography>
 					)}
 				</div>
-				{rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
+				{rightSlot && (
+					<div className={clsx(styles.rightSlot, rightSlotClassName)}>
+						{rightSlot}
+					</div>
+				)}
 			</div>
 		</div>
 	);

@@ -69,20 +69,33 @@ export class AdminChallengeService {
 	public async findById(id: string): Promise<FullChallengeDto> {
 		const challenge = await this.prismaService.challenge.findUnique({
 			where: { id },
-			include: { translations: true, product: { include: productInclude() } },
+			include: {
+				translations: true,
+				product: {
+					include: {
+						item: {
+							include: {
+								translations: {
+									select: { language: true, name: true, id: true },
+								},
+							},
+						},
+						bundle: {
+							include: {
+								translations: {
+									select: { language: true, name: true, id: true },
+								},
+							},
+						},
+					},
+				},
+			},
 		});
 
 		if (!challenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		const { product, ...rest } = challenge;
-
-		const mappedChallenge = {
-			...rest,
-			product: product ? transformProduct(product, 'en') : null,
-		} as FullChallengeDto;
-
-		return plainToInstance(FullChallengeDto, mappedChallenge);
+		return plainToInstance(FullChallengeDto, challenge);
 	}
 
 	public async create(dto: CreateChallengeDto): Promise<FullChallengeDto> {

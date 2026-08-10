@@ -62,18 +62,28 @@
 	--profile-stat-card-border: #e1e1e1;
 
 	/* Challenges */
-	--challenge-list-item-bg: #e1e1e1;
+	--challenge-list-item-bg: #efefef;
 	--challenge-list-item-color: #000000;
 	--challenge-list-item-border: #e1e1e1;
-	--challenge-card-bg: #dcd9d8;
-	--challenge-card-border: #c4c7c8;
+	--challenge-card-bg: #eeeeee;
+	--challenge-card-border: #cecece;
 	--challenge-card-secondary-bg: #ffffff;
-	--challenge-tag-bg: #f0edec;
-	--challenge-tag-border: #eae8e6;
-	--challenge-tag-color: #5d5e5f;
+	--challenge-tag-bg: #d5d4d4;
+	--challenge-tag-border: #757575;
+	--challenge-tag-color: #000000;
 	--challenge-tag-frozen-bg: rgba(255, 218, 214, 0.2);
 	--challenge-tag-frozen-border: rgba(186, 26, 26, 0.3);
 	--challenge-tag-frozen-color: #ba1a1a;
+	--challenge-progress-bg: #c7c7c7;
+	--challenge-progress-border: #c6c6c6;
+	--challenge-progress-line-bg: #272727;
+	--challenge-progress-line-bg-frozen: #ba1a1a;
+	--challenge-token-bg: #e1e1e1;
+	--challenge-token-border: #c1c1c1;
+	--challenge-detail-bg: #eeeeee;
+	--challenge-detail-border: #e1e1e1;
+	--challenge-detail-error-bg: rgba(248, 215, 218, 0.25);
+	--challenge-detail-error-border: #e67a85;
 
 	/* Calendar */
 	--calendar-accent: #0d141c;

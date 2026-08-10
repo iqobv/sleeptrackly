@@ -11,6 +11,11 @@
 	user-select: none;
 	font-size: clamp(0.7rem, 1vw, 0.8rem);
 
+	&.duration {
+		text-transform: capitalize;
+		font-size: clamp(0.7rem, 1vw, 0.9rem);
+	}
+
 	&.frozen {
 		color: var(--challenge-tag-frozen-color);
 		background-color: var(--challenge-tag-frozen-bg);

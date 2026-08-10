@@ -1,23 +1,26 @@
-import { SectionHeaderLoader } from '@shared/ui';
 import { CalendarLoader } from '../Calendar/CalendarLoader';
-import { ChallengeInfoLoader } from '../ChallengeInfo/ChallengeInfoLoader';
+import { ChallengeObjectiveLoader } from '../ChallengeObjective/ChallengeObjectiveLoader';
+import { ChallengePrizeLoader } from '../ChallengePrize/ChallengePrizeLoader';
+import { ChallengeRulesLoader } from '../ChallengeRules/ChallengeRulesLoader';
 import { ChallengeSummaryLoader } from '../ChallengeSummary/ChallengeSummaryLoader';
+import styles from './Challenge.module.scss';
 
 export const ChallengeLoader = () => (
-	<div>
-		<ChallengeSummaryLoader />
-		<CalendarLoader />
-		<ChallengeInfoLoader />
+	<div className={styles.container}>
+		<div className={styles.details}>
+			<ChallengeObjectiveLoader />
+			<ChallengeRulesLoader />
+			<CalendarLoader />
+		</div>
+		<div className={styles.prize}>
+			<ChallengePrizeLoader />
+		</div>
 	</div>
 );
 
 export const ChallengePageLoader = () => (
-	<div className="container">
-		<SectionHeaderLoader
-			titleWidth={220}
-			descriptionWidth={180}
-			hasDescription
-		/>
+	<>
+		<ChallengeSummaryLoader />
 		<ChallengeLoader />
-	</div>
+	</>
 );

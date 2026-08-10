@@ -6,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChallengesPage() {
-	return (
-		<div className="container">
-			<Challenges />
-		</div>
-	);
+	return <Challenges />;
 }

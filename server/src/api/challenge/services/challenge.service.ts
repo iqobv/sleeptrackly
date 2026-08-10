@@ -8,10 +8,12 @@ import {
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
 import { transformProduct } from '@libs/mappers/translation-products.mapper';
 import { challengeTranslationSelect } from '@libs/prisma/challenge-translation.select.prisma';
 import { productInclude } from '@libs/prisma/product.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	ConflictException,
@@ -37,7 +39,10 @@ export class ChallengeService {
 		language: string = 'en',
 	): Promise<FullUserChallengeDto[]> {
 		const challenges = await this.prismaService.userChallenge.findMany({
-			where: { userId, status: ChallengeStatus.ACTIVE },
+			where: {
+				userId,
+				status: { in: [ChallengeStatus.ACTIVE, ChallengeStatus.FROZEN] },
+			},
 			include: {
 				challenge: {
 					include: {
@@ -84,10 +89,7 @@ export class ChallengeService {
 				availableFrom: { lte: now },
 				OR: [{ availableTo: { gte: now } }, { availableTo: null }],
 				participants: {
-					none: {
-						userId,
-						status: { in: [ChallengeStatus.ACTIVE, ChallengeStatus.COMPLETED] },
-					},
+					none: { userId },
 				},
 			},
 			include: {
@@ -123,7 +125,10 @@ export class ChallengeService {
 			where: { id },
 			include: {
 				...challengeTranslationSelect(language),
-				participants: { where: { userId }, include: { challengeTasks: true } },
+				participants: {
+					where: { userId },
+					include: { challengeTasks: { orderBy: { date: 'asc' } } },
+				},
 				product: { include: productInclude(language) },
 			},
 		});
@@ -239,6 +244,79 @@ export class ChallengeService {
 				skipDuplicates: true,
 			});
 		});
+	}
+
+	public async restoreChallenge(
+		challengeId: string,
+		userId: string,
+	): Promise<MessageResponse> {
+		const userChallenge = await this.prismaService.userChallenge.findUnique({
+			where: { userId_challengeId: { userId, challengeId } },
+			include: {
+				challenge: true,
+				user: { select: { id: true, challengeRecoveries: true } },
+				challengeTasks: { orderBy: { date: 'asc' } },
+			},
+		});
+
+		if (!userChallenge)
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
+
+		if (userChallenge.status !== ChallengeStatus.FROZEN)
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.NOT_FROZEN);
+
+		const failedTasks = userChallenge.challengeTasks.filter(
+			(task) => task.status === ChallengeTaskStatus.FAILED,
+		);
+
+		if (failedTasks.length === 0)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.ONLY_FAILED_TASKS_CAN_BE_RECOVERED,
+			);
+
+		if (userChallenge.usedRecoveries >= userChallenge.challenge.maxRecoveries)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.RECOVERY_LIMIT_REACHED,
+			);
+
+		if (userChallenge.user.challengeRecoveries <= 0)
+			throw new BadRequestException(
+				ERROR_MESSAGES.CHALLENGE.NOT_ENOUGH_RECOVERIES_LEFT,
+			);
+
+		const isOneTask = failedTasks.length === 1;
+
+		await this.prismaService.$transaction(async (tx) => {
+			await tx.userChallenge.update({
+				where: { id: userChallenge.id },
+				data: {
+					status: isOneTask ? ChallengeStatus.ACTIVE : ChallengeStatus.FROZEN,
+					...(isOneTask && { frozenAt: null }),
+					usedRecoveries: { increment: 1 },
+				},
+			});
+
+			await tx.challengeTask.update({
+				where: {
+					id: failedTasks[0].id,
+				},
+				data: {
+					status: ChallengeTaskStatus.RECOVERED,
+					completedAt: new Date(),
+				},
+			});
+
+			await tx.user.update({
+				where: { id: userId },
+				data: {
+					challengeRecoveries: { decrement: 1 },
+				},
+			});
+		});
+
+		if (isOneTask) return SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_RECOVERED;
+
+		return SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_TASK_RECOVERED;
 	}
 
 	public async declineChallengeParticipation(

@@ -1,11 +1,9 @@
-import { SkeletonLoader } from '@shared/ui';
+import { SectionHeaderLoader } from '@shared/ui';
+import { ChallengeTagLoader } from '../../ChallengeTag/ChallengeTagLoader';
 import styles from './ChallengeSummary.module.scss';
 
 export const ChallengeSummaryLoader = () => (
 	<div className={styles.summary}>
-		<div className={styles.header}>
-			<SkeletonLoader width={160} height={38} />
-			<SkeletonLoader width={120} height={24} />
-		</div>
+		<SectionHeaderLoader gap={5} leftSlot={<ChallengeTagLoader />} />
 	</div>
 );

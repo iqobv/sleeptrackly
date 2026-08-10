@@ -14,6 +14,8 @@ export class UserEntityDto extends DefaultFieldsDto {
 	@Expose() emailVerified: boolean;
 	@Expose() password: string | null;
 	@Expose() timezone: string;
+	@Expose() challengeRecoveries: number;
+	@Expose() challengeRecoveriesUpdatedAt: Date | null;
 
 	@Expose()
 	@ApiProperty({ enum: UserRole, enumName: 'UserRole' })

@@ -18,17 +18,13 @@ import {
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ChallengeDto, ChallengeWithUserStatusDto } from '../dto/challenge.dto';
 import { FullUserChallengeDto } from '../dto/user-challenge.dto';
-import { ChallengeRecoveryService } from '../services/challenge-recovery.service';
 import { ChallengeService } from '../services/challenge.service';
 
 @Auth()
 @ApiTags('Challenge')
 @Controller('challenges')
 export class ChallengeController {
-	constructor(
-		private readonly challengeService: ChallengeService,
-		private readonly challengeRecoveryService: ChallengeRecoveryService,
-	) {}
+	constructor(private readonly challengeService: ChallengeService) {}
 
 	/** Get all challenges for the current user */
 	@Get()
@@ -57,6 +53,27 @@ export class ChallengeController {
 		@Authorized('id') userId: string,
 	): Promise<ChallengeWithUserStatusDto> {
 		return await this.challengeService.findFullChallengeById(id, userId);
+	}
+
+	/** Restore frozen challenge */
+	@Post(':id/restore')
+	@ApiSuccessResponse(HttpStatus.OK, [
+		SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_RECOVERED,
+		SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_TASK_RECOVERED,
+	])
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.CHALLENGE.NOT_FROZEN,
+		ERROR_MESSAGES.CHALLENGE.ONLY_FAILED_TASKS_CAN_BE_RECOVERED,
+		ERROR_MESSAGES.CHALLENGE.RECOVERY_LIMIT_REACHED,
+		ERROR_MESSAGES.CHALLENGE.NOT_ENOUGH_RECOVERIES_LEFT,
+	])
+	@HttpCode(HttpStatus.OK)
+	public async restoreChallenge(
+		@Param('id') id: string,
+		@Authorized('id') userId: string,
+	): Promise<MessageResponse> {
+		return await this.challengeService.restoreChallenge(id, userId);
 	}
 
 	/** Participate in a specific challenge by ID */

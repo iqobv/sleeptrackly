@@ -173,7 +173,12 @@ export class ChallengeProcessor extends WorkerHost {
 		await this.prismaService.$transaction(async (tx) => {
 			await tx.challengeTask.update({
 				where: { id: taskId },
-				data: { status: 'COMPLETED', sleepEntryId },
+				data: { status: ChallengeStatus.COMPLETED, sleepEntryId },
+			});
+
+			await tx.userChallenge.update({
+				where: { id: userChallenge.id },
+				data: { progress: { increment: 1 } },
 			});
 
 			if (userChallenge.challenge.dailyRewardCoins > 0) {
@@ -186,13 +191,16 @@ export class ChallengeProcessor extends WorkerHost {
 			}
 
 			const pendingTasks = await tx.challengeTask.findMany({
-				where: { userChallengeId: userChallenge.id, status: 'PENDING' },
+				where: {
+					userChallengeId: userChallenge.id,
+					status: ChallengeTaskStatus.PENDING,
+				},
 			});
 
 			if (pendingTasks.length === 0) {
 				await tx.userChallenge.update({
 					where: { id: userChallenge.id },
-					data: { status: 'COMPLETED' },
+					data: { status: ChallengeStatus.COMPLETED },
 				});
 
 				if (userChallenge.challenge.rewardCoins > 0) {

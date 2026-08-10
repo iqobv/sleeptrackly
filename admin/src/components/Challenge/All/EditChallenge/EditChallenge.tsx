@@ -21,6 +21,7 @@ import { toast } from 'react-toastify';
 import { ChallengeForm } from '../ChallengeForm/ChallengeForm';
 import { CHALLENGE_DEFAULT_VALUES } from '../ChallengeForm/challengeDefaultValues';
 import { DeleteChallenge } from '../DeleteChallenge/DeleteChallenge';
+import { EditChallengeLoader } from './EditChallengeLoader';
 
 export const EditChallenge = () => {
 	const { id } = useParams<{ id: string }>();
@@ -31,7 +32,7 @@ export const EditChallenge = () => {
 		mutationFn: (data: UpdateChallengeDto) => updateChallenge(id, data),
 	});
 
-	const { data } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.challenge.detail(id),
 		queryFn: id ? () => getChallengeById(id) : skipToken,
 	});
@@ -47,6 +48,8 @@ export const EditChallenge = () => {
 					: undefined,
 			} as UpdateChallengeDto)
 		: undefined;
+
+	if (isLoading) return <EditChallengeLoader />;
 
 	return (
 		<PageWrapper
@@ -79,7 +82,11 @@ export const EditChallenge = () => {
 					})
 				}
 			>
-				<ChallengeForm isEditing isLoading={isPending} />
+				<ChallengeForm
+					isEditing
+					isLoading={isPending}
+					initProduct={data && data.product ? data?.product : null}
+				/>
 			</Form>
 		</PageWrapper>
 	);
