@@ -22,8 +22,9 @@ model Challenge {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  participants UserChallenge[]
-  translations ChallengeTranslation[]
+  participants  UserChallenge[]
+  translations  ChallengeTranslation[]
+  notifications Notification[]
 
   product Product? @relation(fields: [rewardProductId], references: [id], onDelete: SetNull)
 

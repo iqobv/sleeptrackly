@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AchievementModule } from './achievement/achievement.module';
 import { AuthModule } from './auth/auth.module';
 import { BundleModule } from './bundle/bundle.module';
-import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
 import { ChallengeTemplateModule } from './challenge-template/challenge-template.module';
 import { ChallengeModule } from './challenge/challenge.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
@@ -60,7 +59,6 @@ import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 		ShopModule,
 		AchievementModule,
 		ChallengeModule,
-		ChallengeTaskModule,
 		ChallengeTemplateModule,
 		PurchaseHistoryModule,
 		PromotionModule,

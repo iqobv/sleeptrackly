@@ -5,6 +5,7 @@ import { Coin } from '@/components/Icons/Coin';
 import { AUTH_PAGES } from '@/config/authPages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useAuth } from '@/hooks/useAuth.hook';
+import { formatNumber } from '@/utils/numberFormatter.util';
 import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -65,18 +66,20 @@ export const FeaturedShopCarouselBuyButton = ({
 	};
 
 	return (
-		<div className={styles['buy-button-container']}>
-			<div className={styles['buy-button-content']}>
+		<div className={styles.container}>
+			<div className={styles.content}>
 				<Button
 					onClick={handleClick}
 					loading={isPending}
-					className={styles['buy-button']}
+					className={styles.buyButton}
 				>
 					Buy Now |{' '}
-					<div className={styles['price-info']}>
-						<span className={styles['price']}>{basePrice || price}</span>
-						<span className={styles['discounted-price']}>
-							{Math.round(discountedPrice || price)}
+					<div className={styles.info}>
+						<span className={styles.price}>
+							{formatNumber(basePrice || price)}
+						</span>
+						<span className={styles.discountedPrice}>
+							{formatNumber(discountedPrice || price)}
 						</span>
 					</div>
 					<Coin width={26} height={26} />
@@ -86,7 +89,7 @@ export const FeaturedShopCarouselBuyButton = ({
 				)}
 			</div>
 			{finalDiscountPercentage > 0 && (
-				<div className={styles['discount-badge']}>
+				<div className={styles.badge}>
 					Buy now and save {Math.round(finalDiscountPercentage)}%
 				</div>
 			)}

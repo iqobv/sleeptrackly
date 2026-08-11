@@ -1,4 +1,4 @@
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import {
 	FriendshipStatus,
 	NotificationType,
@@ -40,7 +40,7 @@ const selectFriendshipFields = {
 export class FriendshipService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	public async sendFriendshipRequest(
@@ -80,15 +80,10 @@ export class FriendshipService {
 		}
 
 		if (addressee.notificationSettings?.isFriendRequestsEnabled) {
-			await this.notificationService.create({
+			await this.notificationPublisherService.dispatchCreate({
 				userId: addressee.id,
 				title: 'New Friend Request',
 				body: `You have a new friend request from ${newFriendship.requester.username}`,
-				isEmail: false,
-				isGlobal: false,
-				isPush: false,
-				showInApp: true,
-				redirectUrl: `/friends/pending`,
 				type: NotificationType.FRIEND_REQUEST,
 			});
 		}

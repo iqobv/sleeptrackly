@@ -11,18 +11,11 @@ export const FeaturedShopCarouselIncludes = ({
 	items,
 }: FeaturedShopCarouselIncludesProps) => {
 	return (
-		<div className={styles['featured-shop-carousel-includes']}>
-			<p className={styles['featured-shop-carousel-includes__bundle-info']}>
-				Bundle includes {items.length} items:
-			</p>
-			<ul className={styles['featured-shop-carousel-includes__item-list']}>
+		<div className={styles.includes}>
+			<p className={styles.bundleInfo}>Bundle includes {items.length} items:</p>
+			<ul className={styles.list}>
 				{items.map((bundleItem) => (
-					<li
-						className={
-							styles['featured-shop-carousel-includes__item-list-item']
-						}
-						key={bundleItem.item.id}
-					>
+					<li className={styles.item} key={bundleItem.item.id}>
 						{bundleItem.item.translation.name}
 					</li>
 				))}

@@ -1,6 +1,7 @@
 import { getUserCoins } from '@/api/coin/userCoins.api';
 import { Coin } from '@/components/Icons/Coin';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { formatNumber } from '@/utils/numberFormatter.util';
 import { useQuery } from '@tanstack/react-query';
 import styles from './UserMenuCoins.module.scss';
 import { UserMenuCoinsLoader } from './UserMenuCoinsLoader';
@@ -9,10 +10,6 @@ export const UserMenuCoins = () => {
 	const { data: userCoins, isLoading } = useQuery({
 		queryFn: () => getUserCoins(),
 		queryKey: QUERY_KEYS.coin.userCoin,
-	});
-
-	const formatter = new Intl.NumberFormat(undefined, {
-		notation: 'standard',
 	});
 
 	return (
@@ -30,7 +27,7 @@ export const UserMenuCoins = () => {
 								fill="var(--color-main-text)"
 							/>
 							<p className={styles.amount}>
-								{userCoins.amount ? formatter.format(userCoins.amount) : 0}
+								{formatNumber(userCoins.amount || 0)}
 							</p>
 						</div>
 					</>

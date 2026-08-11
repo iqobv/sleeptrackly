@@ -1,4 +1,4 @@
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { Prisma } from '@generated/prisma/client';
 import { NotificationType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -24,7 +24,7 @@ dayjs.extend(tz);
 export class WeeklySummaryService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	public async processRecalculation(
@@ -200,7 +200,7 @@ export class WeeklySummaryService {
 				},
 			});
 
-			await this.notificationService.create({
+			await this.notificationPublisherService.dispatchCreate({
 				userId,
 				weeklySleepSummaryId: summary.id,
 				title: 'Your Weekly Sleep Summary is here!',

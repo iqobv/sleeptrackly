@@ -24,3 +24,9 @@ export { AchievementType } from './types/achievement/type.types';
 export type { FullItem, Item } from './types/customization/item/item.types';
 export { ItemRarity } from './types/customization/item/rarity.types';
 export { ItemType } from './types/customization/item/type.types';
+
+// Product
+export { ProductType } from './types/customization/product/type.types';
+
+// Notification
+export { NotificationType } from './types/notification/type.types';

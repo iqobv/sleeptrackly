@@ -7,7 +7,7 @@ import { ProductImage } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { CHALLENGE_TIERS } from '@/constants/challengeTier.constants';
 import { Challenge } from '@/types/challenge/challenge.types';
-import { ProductType } from '@/types/product/productType.types';
+import { ProductType } from '@shared/types';
 import { Typography } from '@shared/ui';
 import clsx from 'clsx';
 import Link from 'next/link';

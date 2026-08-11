@@ -2,7 +2,7 @@ import { NotificationType } from '@generated/prisma/enums';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './services/notification.service';
 
 type PrismaMock = {
 	notification: {

@@ -7,8 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "oxlint . && eslint .",
-		"lint:fix": "eslint . --fix",
-		"generate": "pnpm openapi-typescript http://localhost:5000/docs-json -o src/types/schema.d.ts"
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "catalog:",
@@ -42,8 +41,5 @@
 		"swiper": "^12.0.3",
 		"zod": "catalog:",
 		"zustand": "catalog:"
-	},
-	"devDependencies": {
-		"openapi-typescript": "catalog:"
 	}
 }

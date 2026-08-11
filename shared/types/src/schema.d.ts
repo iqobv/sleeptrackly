@@ -1782,23 +1782,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/v1/challenge-tasks/{id}/recover": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Recover a failed challenge task for the current user */
-        post: operations["ChallengeTaskController_recoverChallengeTask_v1"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/v1/challenge-templates": {
         parameters: {
             query?: never;
@@ -2234,7 +2217,7 @@ export interface components {
             updatedAt: string;
         };
         /** @enum {string} */
-        NotificationType: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "OTHER";
+        NotificationType: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "CHALLENGE_COMPLETED" | "CHALLENGE_FAILED" | "CHALLENGE_FROZEN" | "CHALLENGE_EXPIRED" | "CHALLENGE_INVITATION" | "CHALLENGE_RESTORED" | "OTHER";
         CreateNotificationDto: {
             type: components["schemas"]["NotificationType"];
             /** Format: uuid */
@@ -2253,11 +2236,15 @@ export interface components {
             weeklySleepSummaryId?: string;
             /** Format: uuid */
             achievementId?: string;
+            /** Format: uuid */
+            challengeId?: string;
         };
         NotificationDto: {
             type: components["schemas"]["NotificationType"];
             userId?: string | null;
             weeklySleepSummaryId?: string | null;
+            achievementId?: string | null;
+            challengeId?: string | null;
             isGlobal: boolean;
             isRead: boolean;
             isPush: boolean;
@@ -3574,7 +3561,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-11T17:30:27.926Z
+             * @example 2026-08-12T15:25:27.245Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3605,7 +3592,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-11T17:30:27.926Z
+             * @example 2026-08-12T15:25:27.245Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -9171,75 +9158,6 @@ export interface operations {
             };
             /** @description Unauthorized */
             401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-        };
-    };
-    ChallengeTaskController_recoverChallengeTask_v1: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Challenge task recovered successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Only failed challenge tasks can be recovered | You cannot recover this challenge task at the moment | You have reached the maximum number of recoveries for this challenge | You do not have enough recoveries left */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["MessageResponseDto"] & {
-                        /** @description The name of the field that caused the validation error */
-                        field?: string;
-                        /** @description Additional dynamic metadata for the response context */
-                        meta?: Record<string, never>;
-                    };
-                };
-            };
-            /** @description Challenge task not found */
-            404: {
                 headers: {
                     [name: string]: unknown;
                 };

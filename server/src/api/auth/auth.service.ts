@@ -185,7 +185,11 @@ export class AuthService {
 					tx,
 				);
 				if (avatarUrl && user)
-					await this.userAvatarService.uploadProviderAvatar(avatarUrl, user.id);
+					await this.userAvatarService.uploadProviderAvatar(
+						avatarUrl,
+						user.id,
+						tx,
+					);
 			} else {
 				this.validateAccountStatus(user);
 			}

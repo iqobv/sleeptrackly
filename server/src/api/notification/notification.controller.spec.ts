@@ -1,7 +1,7 @@
 import { NotificationType } from '@generated/prisma/enums';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationController } from './notification.controller';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './services/notification.service';
 
 type NotificationServiceMock = {
 	create: jest.Mock;

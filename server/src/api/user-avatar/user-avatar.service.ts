@@ -27,8 +27,11 @@ export class UserAvatarService {
 	public async upload(
 		file: Express.Multer.File,
 		userId: string,
+		tx?: Prisma.TransactionClient,
 	): Promise<UserAvatarDto> {
-		const user = await this.prismaService.user.findUnique({
+		const prisma = tx || this.prismaService;
+
+		const user = await prisma.user.findUnique({
 			where: { id: userId, deletedAt: null },
 			select: {
 				avatar: true,
@@ -60,7 +63,7 @@ export class UserAvatarService {
 
 		let avatar = user.avatar;
 		if (!avatar) {
-			avatar = await this.prismaService.userAvatar.create({
+			avatar = await prisma.userAvatar.create({
 				data: { user: { connect: { id: userId } } },
 			});
 		}
@@ -73,12 +76,13 @@ export class UserAvatarService {
 			options: { width: 800, height: 800, quality: 100 },
 		});
 
-		return await this.update(avatar.id, uploadResult.url);
+		return await this.update(avatar.id, uploadResult.url, tx);
 	}
 
 	public async uploadProviderAvatar(
 		avatarUrl: string,
 		userId: string,
+		tx?: Prisma.TransactionClient,
 	): Promise<void> {
 		const response = await firstValueFrom(
 			this.httpService.get<ArrayBuffer>(avatarUrl, {
@@ -101,7 +105,7 @@ export class UserAvatarService {
 			stream: Readable.from(buffer),
 		};
 
-		await this.upload(file, userId);
+		await this.upload(file, userId, tx);
 	}
 
 	public async create(
@@ -141,8 +145,14 @@ export class UserAvatarService {
 		return plainToInstance(UserAvatarDto, avatar);
 	}
 
-	private async update(id: string, url: string): Promise<UserAvatarDto> {
-		const avatar = await this.prismaService.userAvatar.update({
+	private async update(
+		id: string,
+		url: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserAvatarDto> {
+		const prisma = tx || this.prismaService;
+
+		const avatar = await prisma.userAvatar.update({
 			where: { id },
 			data: { url, isDefault: !!url.includes(DEFAULT_URLS.AVATAR) },
 		});

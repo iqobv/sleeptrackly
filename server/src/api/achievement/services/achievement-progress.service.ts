@@ -1,5 +1,5 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import {
 	AchievementType,
@@ -17,7 +17,7 @@ export class AchievementProgressService {
 		private readonly prismaService: PrismaService,
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly userInventoryService: UserInventoryService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	public async checkProgress(
@@ -163,7 +163,7 @@ export class AchievementProgressService {
 				});
 
 			if (userSettings && userSettings.isAchievementUnlockedEnabled) {
-				await this.notificationService.create({
+				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					achievementId,
 					title: 'Achievement Unlocked!',

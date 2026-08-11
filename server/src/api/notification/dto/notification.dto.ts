@@ -6,6 +6,8 @@ import { Expose } from 'class-transformer';
 export class NotificationDto extends DefaultFieldsDto {
 	@Expose() userId?: string | null;
 	@Expose() weeklySleepSummaryId?: string | null;
+	@Expose() achievementId?: string | null;
+	@Expose() challengeId?: string | null;
 
 	@Expose()
 	@ApiProperty({ enum: NotificationType, enumName: 'NotificationType' })

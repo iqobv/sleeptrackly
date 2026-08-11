@@ -3,7 +3,7 @@
 import { Coin } from '@/components/Icons/Coin';
 import { ProductImage } from '@/components/UI';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
-import { ProductType } from '@/types/product/productType.types';
+import { ProductType } from '@shared/types';
 import { Divider, Typography } from '@shared/ui';
 import { AcceptChallenge } from '../../AcceptChallenge/AcceptChallenge';
 import { ChallengeCardContainer } from '../ChallengeCardContainer/ChallengeCardContainer';

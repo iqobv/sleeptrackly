@@ -10,12 +10,13 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
 import { filter, map, Observable, Subject } from 'rxjs';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-import { NotificationDto } from './dto/notification.dto';
-import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
-import { SignalPayload, SseSignalEvent } from './interfaces/signal.interface';
-import { getNotificationsForUserSql } from './sql/get-all-notifications.sql';
+import { CreateDirectPushDto } from '../dto/create-direct-push.dto';
+import { CreateNotificationDto } from '../dto/create-notification.dto';
+import { NotificationDto } from '../dto/notification.dto';
+import { PaginatedNotificationDto } from '../dto/paginated-notification.dto';
+import { UpdateNotificationDto } from '../dto/update-notification.dto';
+import { SignalPayload, SseSignalEvent } from '../interfaces/signal.interface';
+import { getNotificationsForUserSql } from '../sql/get-all-notifications.sql';
 
 @Injectable()
 export class NotificationService {
@@ -197,12 +198,9 @@ export class NotificationService {
 		await this.sendPushNotification();
 	}
 
-	public async sendDirectPush(
-		tokens: string[],
-		title: string,
-		body: string,
-		redirectUrl: string,
-	): Promise<void> {
+	public async sendDirectPush(dto: CreateDirectPushDto): Promise<void> {
+		const { tokens, body, redirectUrl, title } = dto;
+
 		if (tokens.length === 0) return;
 
 		await this.fcmService.sendNotification(tokens, {

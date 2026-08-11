@@ -1,6 +1,6 @@
 import { Item } from '@/types/item/item.types';
 import { Product } from '@/types/product/product.types';
-import { ProductType } from '@/types/product/productType.types';
+import { ProductType } from '@shared/types';
 import { CDNImage } from '../CDNImage/CDNImage';
 import styles from './ProductImage.module.scss';
 

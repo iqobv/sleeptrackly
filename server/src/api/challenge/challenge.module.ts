@@ -1,5 +1,6 @@
 import { AchievementModule } from '@api/achievement/achievement.module';
 import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
+import { NotificationModule } from '@api/notification/notification.module';
 import { RewardModule } from '@api/reward/reward.module';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { BullModule } from '@nestjs/bullmq';
@@ -21,6 +22,7 @@ import { ChallengeService } from './services/challenge.service';
 		BullModule.registerQueue({
 			name: QUEUE_NAME.CHALLENGES,
 		}),
+		NotificationModule,
 	],
 	controllers: [ChallengeController, AdminChallengeController],
 	exports: [ChallengeService, ChallengePublisherService],

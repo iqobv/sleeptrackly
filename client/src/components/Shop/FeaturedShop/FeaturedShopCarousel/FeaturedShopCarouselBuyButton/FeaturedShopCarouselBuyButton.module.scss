@@ -1,17 +1,17 @@
-.buy-button-container {
+.container {
 	display: flex;
 	flex-direction: column;
 	gap: 0.625rem;
 }
 
-.buy-button-content {
+.content {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	gap: 0.9375rem;
 }
 
-.buy-button {
+.buyButton {
 	background-color: var(--featured-button-bg);
 	color: var(--featured-button-color);
 
@@ -20,10 +20,10 @@
 	}
 }
 
-.price-info {
+.info {
 	position: relative;
 
-	&:has(.discounted-price) {
+	&:has(.discountedPrice) {
 		.price {
 			text-decoration: line-through;
 			color: var(--featured-through-price-color);
@@ -35,7 +35,7 @@
 	}
 }
 
-.discounted-price {
+.discountedPrice {
 	font-weight: 700;
 	color: var(--primary-color);
 }

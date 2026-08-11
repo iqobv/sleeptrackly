@@ -28,7 +28,7 @@ import { NotificationDto } from './dto/notification.dto';
 import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { SseSignalEvent } from './interfaces/signal.interface';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './services/notification.service';
 
 @ApiTags('Notification')
 @Controller('notifications')

@@ -1,4 +1,4 @@
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { Injectable } from '@nestjs/common';
@@ -14,7 +14,7 @@ dayjs.extend(timezone);
 export class UserNotificationSettingsCronService {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	private async sendReminderNotifications(): Promise<void> {
@@ -59,12 +59,12 @@ export class UserNotificationSettingsCronService {
 				const fcmTokens = userFcmTokens.map((t) => t.token);
 
 				if (fcmTokens.length > 0) {
-					await this.notificationService.sendDirectPush(
-						fcmTokens,
-						'Timer Reminder',
-						"The sleep timer has started. Don't forget to turn it off when you wake up!",
-						'/timer',
-					);
+					await this.notificationPublisherService.dispatchDirectPush({
+						tokens: fcmTokens,
+						title: 'Timer Reminder',
+						body: "The sleep timer has started. Don't forget to turn it off when you wake up!",
+						redirectUrl: '/timer',
+					});
 				}
 			}
 		}

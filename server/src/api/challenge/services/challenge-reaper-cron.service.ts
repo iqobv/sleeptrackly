@@ -1,5 +1,10 @@
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { Prisma } from '@generated/prisma/client';
-import { ChallengeStatus, ChallengeTaskStatus } from '@generated/prisma/enums';
+import {
+	ChallengeStatus,
+	ChallengeTaskStatus,
+	NotificationType,
+} from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -15,7 +20,7 @@ const challengeTaskInclude = {
 		userChallenge: {
 			include: {
 				user: { select: { id: true, timezone: true } },
-				challenge: true,
+				challenge: { include: { translations: { where: { language: 'en' } } } },
 			},
 		},
 	},
@@ -25,7 +30,10 @@ const challengeTaskInclude = {
 export class ChallengeReaperCronService {
 	private readonly logger = new Logger(ChallengeReaperCronService.name);
 
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly notificationPublisherService: NotificationPublisherService,
+	) {}
 
 	@Cron(CronExpression.EVERY_HOUR)
 	public async failExpiredTasks(): Promise<void> {
@@ -61,10 +69,26 @@ export class ChallengeReaperCronService {
 
 			if (frozenChallenges.length === 0) return;
 
-			await this.prismaService.userChallenge.updateMany({
-				where: { id: { in: frozenChallenges.map((c) => c.id) } },
-				data: { status: ChallengeStatus.FAILED, frozenAt: null },
-			});
+			const userChallenges =
+				await this.prismaService.userChallenge.updateManyAndReturn({
+					where: { id: { in: frozenChallenges.map((c) => c.id) } },
+					data: { status: ChallengeStatus.FAILED, frozenAt: null },
+					include: {
+						challenge: {
+							select: { id: true, translations: { where: { language: 'en' } } },
+						},
+					},
+				});
+
+			for (const userChallenge of userChallenges) {
+				await this.notificationPublisherService.dispatchCreate({
+					userId: userChallenge.userId,
+					type: NotificationType.CHALLENGE_FAILED,
+					title: 'Challenge Failed',
+					body: `Challenge "${userChallenge.challenge.translations[0].title}" has failed because it was frozen for more than 48 hours.`,
+					challengeId: userChallenge.challengeId,
+				});
+			}
 
 			this.logger.log(
 				`Closed ${frozenChallenges.length} frozen challenges that exceeded the 48-hour limit.`,
@@ -90,7 +114,7 @@ export class ChallengeReaperCronService {
 		if (userNow.isBefore(taskDeadline)) return;
 
 		await this.prismaService.$transaction(async (tx) => {
-			await this.prismaService.challengeTask.update({
+			await tx.challengeTask.update({
 				where: { id: task.id },
 				data: { status: ChallengeTaskStatus.FAILED },
 			});
@@ -102,12 +126,28 @@ export class ChallengeReaperCronService {
 			if (hasRecoveriesLeft) {
 				await tx.userChallenge.update({
 					where: { id: task.userChallengeId },
-					data: { status: ChallengeStatus.FAILED, frozenAt: null },
+					data: { status: ChallengeStatus.FROZEN, frozenAt: new Date() },
+				});
+
+				await this.notificationPublisherService.dispatchCreate({
+					userId: task.userChallenge.userId,
+					type: NotificationType.CHALLENGE_FROZEN,
+					title: 'Challenge Frozen',
+					body: `Your challenge "${task.userChallenge.challenge.translations[0].title}" has been frozen because you missed a task. You have ${task.userChallenge.challenge.maxRecoveries - task.userChallenge.usedRecoveries} recoveries left.`,
+					challengeId: task.userChallenge.challengeId,
 				});
 			} else {
 				await tx.userChallenge.update({
 					where: { id: task.userChallengeId },
-					data: { status: ChallengeStatus.FROZEN, frozenAt: new Date() },
+					data: { status: ChallengeStatus.FAILED, frozenAt: null },
+				});
+
+				await this.notificationPublisherService.dispatchCreate({
+					userId: task.userChallenge.userId,
+					type: NotificationType.CHALLENGE_FAILED,
+					title: 'Challenge Failed',
+					body: `Your challenge "${task.userChallenge.challenge.translations[0].title}" has failed because you missed a task and have no recoveries left.`,
+					challengeId: task.userChallenge.challengeId,
 				});
 			}
 		});

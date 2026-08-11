@@ -1,4 +1,4 @@
-import { components } from '@shared/types';
+import { components } from '../../schema';
 
 type SwaggerNotificationType = components['schemas']['NotificationType'];
 
@@ -13,6 +13,12 @@ export const NotificationType = {
 	PERSONAL_MESSAGE: 'PERSONAL_MESSAGE',
 	SANCTION: 'SANCTION',
 	UPDATE: 'UPDATE',
+	CHALLENGE_COMPLETED: 'CHALLENGE_COMPLETED',
+	CHALLENGE_EXPIRED: 'CHALLENGE_EXPIRED',
+	CHALLENGE_FAILED: 'CHALLENGE_FAILED',
+	CHALLENGE_FROZEN: 'CHALLENGE_FROZEN',
+	CHALLENGE_INVITATION: 'CHALLENGE_INVITATION',
+	CHALLENGE_RESTORED: 'CHALLENGE_RESTORED',
 } as const satisfies Record<SwaggerNotificationType, SwaggerNotificationType>;
 
 export type NotificationType =

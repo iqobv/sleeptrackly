@@ -99,3 +99,5 @@ export { typographyVariants } from './components/Typography/typographyVariants';
 
 export { pxToRem } from './utils/fromPxToRem.util';
 export { getPaginationRange } from './utils/paginationRange.util';
+
+export type { CustomCSSProperties } from './types/customCSS.types';
