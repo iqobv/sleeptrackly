@@ -56,14 +56,10 @@ export const TimerEnd = ({
 
 		if (!sleepEnd) return;
 
-		const isEdited =
-			sleepStart !== defaultSleepStart || sleepEnd !== defaultSleepEnd;
-
 		const payload: UpdateSleepEntryDto = {
 			...rest,
 			sleepStart: sleepStart !== defaultSleepStart ? sleepStart : undefined,
 			sleepEnd,
-			isEdited,
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		};
 
@@ -100,7 +96,7 @@ export const TimerEnd = ({
 							) : (
 								<>
 									<FormSubmit>Save Sleep Record</FormSubmit>
-									<ModalClose asChild onClick={resumeTimer}>
+									<ModalClose asChild>
 										<Button variant="text" color="secondary" size="sm">
 											Resume Timer
 										</Button>
