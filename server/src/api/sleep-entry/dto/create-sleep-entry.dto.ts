@@ -1,8 +1,10 @@
 import { IsChartDate } from '@libs/validators/is-chart-date.validator';
 import { Type } from 'class-transformer';
 import {
+	IsBoolean,
 	IsDate,
 	IsNumber,
+	IsOptional,
 	IsString,
 	IsTimeZone,
 	Max,
@@ -30,4 +32,10 @@ export class CreateSleepEntryDto {
 	@IsString()
 	@IsTimeZone()
 	timezone: string;
+}
+
+export class InternalCreateSleepEntryDto extends CreateSleepEntryDto {
+	@IsOptional()
+	@IsBoolean()
+	isVerified: boolean;
 }

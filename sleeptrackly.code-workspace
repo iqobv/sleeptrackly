@@ -1,8 +1,8 @@
 {
 	"folders": [
 		{
-			"name": "Root (Configs)",
-			"path": ".",
+			"name": "Server",
+			"path": "server",
 		},
 		{
 			"name": "Client",
@@ -11,10 +11,6 @@
 		{
 			"name": "Admin",
 			"path": "admin",
-		},
-		{
-			"name": "Server",
-			"path": "server",
 		},
 		{
 			"name": "Shared: UI",
@@ -32,8 +28,31 @@
 			"name": "Shared: Form",
 			"path": "shared/form",
 		},
+		{
+			"name": "Shared: Tables",
+			"path": "shared/tables",
+		},
+		{
+			"name": "Shared: Types",
+			"path": "shared/types",
+		},
+		{
+			"name": "Root (Configs)",
+			"path": ".",
+		},
 	],
 	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			"admin": true,
+			"client": true,
+			"server": true,
+			"shared": true,
+		},
 		"eslint.workingDirectories": [
 			{ "pattern": "client" },
 			{ "pattern": "admin" },
@@ -50,6 +69,10 @@
 		"editor.formatOnSave": true,
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit",
+		},
+		"[prisma]": {
+			"editor.defaultFormatter": "Prisma.prisma",
+			"editor.formatOnSave": true,
 		},
 	},
 }

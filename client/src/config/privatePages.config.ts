@@ -4,8 +4,6 @@ export const PRIVATE_PAGES = {
 	CHALLENGES: {
 		ALL: '/challenges',
 		BY_ID: (id: string) => `/challenges/${id}`,
-		NEW: '/challenges/new',
-		EDIT: (id: string) => `/challenges/${id}/edit`,
 	},
 	DASHBOARD: '/dashboard',
 	SETTINGS_BASE: '/settings',

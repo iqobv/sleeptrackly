@@ -1,6 +1,6 @@
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
-import { UserService } from '@api/user/user.service';
+import { UserService } from '@api/user/services/user.service';
 import { UserSanction } from '@generated/prisma/client';
 import { NotificationType, UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -24,7 +24,7 @@ export class UserSanctionService {
 		private readonly prismaService: PrismaService,
 		private readonly userService: UserService,
 		private readonly userAvatarService: UserAvatarService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	public async findByUserId(userId: string): Promise<UserSanctionDto[]> {
@@ -119,16 +119,12 @@ export class UserSanctionService {
 				await this.userAvatarService.deleteAvatar(targetUserId);
 		}
 
-		await this.notificationService.create({
+		await this.notificationPublisherService.dispatchCreate({
 			userId: targetUserId,
 			title: 'New Sanction Applied',
 			body: `You have been sanctioned with a ${type.replace(/_/g, ' ')} until ${dayjs(
 				endDate,
 			).format('DD.MM.YYYY HH:mm')}.`,
-			isEmail: false,
-			isPush: false,
-			isGlobal: false,
-			showInApp: true,
 			type: NotificationType.SANCTION,
 		});
 

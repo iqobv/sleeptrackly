@@ -14,6 +14,8 @@ export type {
 export { BackButton } from './components/BackButton/BackButton';
 export type { BackButtonProps } from './components/BackButton/BackButton.types';
 
+export { Container } from './components/Container/Container';
+
 export { Checkbox } from './components/Checkbox/Checkbox';
 
 export { ConfirmModal } from './components/ConfirmModal/ConfirmModal';
@@ -97,3 +99,5 @@ export { typographyVariants } from './components/Typography/typographyVariants';
 
 export { pxToRem } from './utils/fromPxToRem.util';
 export { getPaginationRange } from './utils/paginationRange.util';
+
+export type { CustomCSSProperties } from './types/customCSS.types';

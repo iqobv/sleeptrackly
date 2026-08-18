@@ -17,6 +17,7 @@ export const Grid = ({
 	isInline = false,
 	style,
 	oneColumnOnMobile = true,
+	stretchLastOdd = false,
 	...rest
 }: GridProps) => {
 	const Component = as;
@@ -38,6 +39,7 @@ export const Grid = ({
 			className={clsx(
 				isInline ? styles.inlineGrid : styles.grid,
 				oneColumnOnMobile && styles.oneColumnOnMobile,
+				stretchLastOdd && styles.stretchLastOdd,
 				className,
 			)}
 			style={gridStyle}

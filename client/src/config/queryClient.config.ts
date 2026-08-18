@@ -13,7 +13,9 @@ export const QUERY_KEYS = {
 	},
 	challenges: {
 		all: ['challenges'] as const,
-		list: () => ['challenges', 'list'] as const,
+		lists: () => ['challenges', 'list'] as const,
+		active: () => ['challenges', 'active'] as const,
+		available: () => ['challenges', 'available'] as const,
 		details: () => ['challenges', 'detail'] as const,
 		detail: (id: string) => ['challenges', 'detail', id] as const,
 	},

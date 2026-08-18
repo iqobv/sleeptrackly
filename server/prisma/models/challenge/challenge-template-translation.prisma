@@ -1,0 +1,19 @@
+model ChallengeTemplateTranslation {
+  id String @id @default(uuid())
+
+  challengeTemplateId String @map("challenge_template_id")
+
+  language String
+
+  title       String
+  description String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  challengeTemplate ChallengeTemplate @relation(fields: [challengeTemplateId], references: [id], onDelete: Cascade)
+
+  @@unique([challengeTemplateId, language])
+  @@index([language])
+  @@map("challenge_template_translations")
+}

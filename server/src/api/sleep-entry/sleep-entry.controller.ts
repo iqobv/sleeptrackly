@@ -30,7 +30,7 @@ export class SleepEntryController {
 	constructor(private readonly sleepEntryService: SleepEntryService) {}
 
 	/** Get sleep entries for week */
-	@Get('/me')
+	@Get('me')
 	@ApiOkResponse({ type: SleepDashboardDto })
 	public async getSleepsEntryForWeek(
 		@Authorized('id') userId: string,
@@ -46,7 +46,10 @@ export class SleepEntryController {
 		@Authorized('id') userId: string,
 		@Body() dto: CreateSleepEntryDto,
 	): Promise<SleepEntryDto> {
-		return await this.sleepEntryService.createSleepEntry(userId, dto);
+		return await this.sleepEntryService.createSleepEntry(userId, {
+			...dto,
+			isVerified: false,
+		});
 	}
 
 	/** Update sleep entry */

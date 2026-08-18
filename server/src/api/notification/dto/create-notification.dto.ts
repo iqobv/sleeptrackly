@@ -60,4 +60,8 @@ export class CreateNotificationDto {
 	@IsUUID('4')
 	@IsOptional()
 	achievementId?: string;
+
+	@IsUUID('4')
+	@IsOptional()
+	challengeId?: string;
 }

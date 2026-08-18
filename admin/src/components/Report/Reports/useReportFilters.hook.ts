@@ -1,6 +1,7 @@
 'use client';
 
-import { SortBy, SortOrder } from '@/types/report/reportFilters.types';
+import { SortOrder } from '@/types/api/sortOrder.types';
+import { SortBy } from '@/types/report/reportFilters.types';
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 import { ReportStatus } from '@/types/report/reportStatus.types';
 import { ReportType } from '@/types/report/reportType.types';

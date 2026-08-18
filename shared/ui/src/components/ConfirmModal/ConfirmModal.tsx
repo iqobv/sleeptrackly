@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '../Button/Button';
-import { Modal, ModalClose } from '../Modal/Modal';
+import { Modal, ModalClose, ModalTrigger } from '../Modal/Modal';
 import { ModalContent } from '../Modal/ModalContent/ModalContent';
 import { ModalBody } from '../Modal/ModalParts/ModalBody';
 import { ModalFooter } from '../Modal/ModalParts/ModalFooter';
@@ -10,14 +10,14 @@ import styles from './ConfirmModal.module.scss';
 import { ConfirmModalProps } from './ConfirmModal.types';
 
 export const ConfirmModal = ({
+	children,
 	title,
 	text,
-	isOpen,
-	onClose,
 	onConfirm,
 }: ConfirmModalProps) => {
 	return (
-		<Modal open={isOpen} onOpenChange={onClose}>
+		<Modal>
+			<ModalTrigger asChild>{children}</ModalTrigger>
 			<ModalContent className={styles.confirmModal}>
 				<ModalHeader>{title}</ModalHeader>
 				<ModalBody>{text}</ModalBody>

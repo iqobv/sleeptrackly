@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 export default function FriendsPage() {
 	return (
-		<div className="container page">
+		<>
 			<SectionHeader title="Friends" />
 			<Friends />
-		</div>
+		</>
 	);
 }

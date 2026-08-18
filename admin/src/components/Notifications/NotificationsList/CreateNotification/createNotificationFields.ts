@@ -1,6 +1,6 @@
 import { CreateNotificationDto } from '@/dto/notification/notification.dto';
-import { NotificationType } from '@/types/notification/notification.types';
 import { Field } from '@/types/ui/field.types';
+import { NotificationType } from '@shared/types';
 import { capitalize } from '@shared/utils';
 
 export const FIELDS: Field<CreateNotificationDto>[] = [

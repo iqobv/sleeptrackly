@@ -1,5 +1,5 @@
 import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type GetUserPrivacySettingsResponse =

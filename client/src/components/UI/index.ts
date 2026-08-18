@@ -4,4 +4,5 @@ export { ClientDate } from './ClientDate/ClientDate';
 export { ClientDateRange } from './ClientDateRange/ClientDateRange';
 export { NavigationBackButton } from './NavigationBackButton/NavigationBackButton';
 export { NavLogo } from './NavLogo/NavLogo';
+export { ProductImage } from './ProductImage/ProductImage';
 export { UserAvatar } from './UserAvatar/UserAvatar';

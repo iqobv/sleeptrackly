@@ -1,0 +1,21 @@
+model ChallengeTask {
+  id String @id @default(uuid())
+
+  userChallengeId String @map("user_challenge_id")
+
+  date String
+
+  status ChallengeTaskStatus @default(PENDING)
+
+  sleepEntryId String? @map("sleep_entry_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  completedAt DateTime? @map("completed_at")
+
+  userChallenge UserChallenge @relation(fields: [userChallengeId], references: [id], onDelete: Cascade)
+  sleepEntry    SleepEntry?   @relation(fields: [sleepEntryId], references: [id], onDelete: SetNull)
+
+  @@map("challenge_tasks")
+}

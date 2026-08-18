@@ -1,4 +1,4 @@
-import { components } from '../schema';
+import { components } from '@shared/types';
 
 export type PaginatedMetaData = components['schemas']['PaginatedMetaDto'];
 

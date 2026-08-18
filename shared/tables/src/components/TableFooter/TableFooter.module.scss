@@ -1,0 +1,9 @@
+.tableFooter {
+	.row {
+		background-color: var(--table-header-bg);
+
+		& th {
+			border-top: 1px solid var(--table-border);
+		}
+	}
+}

@@ -1,8 +1,8 @@
+import { ReactNode } from 'react';
+
 export interface ConfirmModalProps {
-	trigger?: React.ReactNode;
-	title: React.ReactNode | string;
-	text: React.ReactNode | string;
-	isOpen: boolean;
-	onClose: () => void;
+	children: ReactNode;
+	title: ReactNode | string;
+	text: ReactNode | string;
 	onConfirm: () => void;
 }

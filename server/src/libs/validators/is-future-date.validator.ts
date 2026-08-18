@@ -9,6 +9,8 @@ import {
 @ValidatorConstraint({ name: 'isFutureDate', async: false })
 export class IsFutureDateConstraint implements ValidatorConstraintInterface {
 	public validate(date: Date): boolean {
+		if (!date || !(date instanceof Date)) return true;
+
 		return date instanceof Date && date.getTime() > Date.now();
 	}
 

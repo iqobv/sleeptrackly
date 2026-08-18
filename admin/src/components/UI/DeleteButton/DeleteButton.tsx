@@ -1,18 +1,18 @@
 'use client';
 
-import { Button, ConfirmModal } from '@shared/ui';
+import { Button, ButtonProps, ConfirmModal } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { MdDeleteOutline } from 'react-icons/md';
 
 interface DeleteButtonProps {
 	id: string;
 	mutationFn: (id: string) => Promise<unknown>;
-	onSuccessNavigateTo: string;
+	onSuccessNavigateTo?: string;
 	queryInvalidateKey: unknown[] | readonly unknown[];
 	text: string;
 	title: string;
+	buttonProps?: Omit<ButtonProps, 'onClick' | 'children'>;
 }
 
 export const DeleteButton = ({
@@ -22,41 +22,38 @@ export const DeleteButton = ({
 	queryInvalidateKey,
 	text,
 	title,
+	buttonProps,
 }: DeleteButtonProps) => {
 	const router = useRouter();
 	const queryClient = useQueryClient();
 
-	const [open, setOpen] = useState(false);
+	const {
+		variant = 'text',
+		color = 'danger',
+		isIcon = true,
+		isRounded = true,
+		...restButtonProps
+	} = buttonProps || {};
 
 	const { mutate } = useMutation({
 		mutationFn: () => mutationFn(id),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: queryInvalidateKey });
-			handleClose();
-			router.push(onSuccessNavigateTo);
+			if (onSuccessNavigateTo) router.push(onSuccessNavigateTo);
 		},
 	});
 
-	const handleClose = () => setOpen((prev) => !prev);
-
 	return (
-		<>
+		<ConfirmModal onConfirm={mutate} text={text} title={title}>
 			<Button
-				onClick={handleClose}
-				variant="text"
-				color="danger"
-				isIcon
-				isRounded
+				variant={variant}
+				color={color}
+				isIcon={isIcon}
+				isRounded={isRounded}
+				{...restButtonProps}
 			>
 				<MdDeleteOutline size={22} />
 			</Button>
-			<ConfirmModal
-				isOpen={open}
-				onClose={handleClose}
-				onConfirm={mutate}
-				text={text}
-				title={title}
-			/>
-		</>
+		</ConfirmModal>
 	);
 };

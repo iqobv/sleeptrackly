@@ -1,6 +1,7 @@
+import { SortOrder } from '../api/sortOrder.types';
+import { SortBy } from './reportFilters.types';
 import { ReportStatus } from './reportStatus.types';
 import { ReportType } from './reportType.types';
-import { SortBy, SortOrder } from './reportFilters.types';
 
 export interface ReportPaginationQuery {
 	page: number;

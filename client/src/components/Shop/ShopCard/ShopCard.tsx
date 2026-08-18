@@ -2,16 +2,17 @@
 
 import { makePurchase } from '@/api/shop/shop.api';
 import { Coin } from '@/components/Icons/Coin';
-import { CDNImage } from '@/components/UI';
+import { ProductImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Item } from '@/types/item/item.types';
 import { Product } from '@/types/product/product.types';
-import { ProductType } from '@/types/product/productType.types';
+import { formatNumber } from '@/utils/numberFormatter.util';
 import { Button, Typography } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
+import { ProductType } from '@shared/types';
 
 interface ShopCardProps {
 	product: Product;
@@ -50,24 +51,7 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 	return (
 		<div className={styles.card}>
 			<div className={styles.imageWrapper}>
-				{product.item?.isAnimated ? (
-					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
-						loop
-						autoPlay
-						muted
-						width={160}
-						height={160}
-						className={styles.video}
-					/>
-				) : (
-					<CDNImage
-						path={url}
-						alt={key?.translation.name || 'Product Image'}
-						width={160}
-						height={160}
-					/>
-				)}
+				<ProductImage product={product} height={160} width={160} />
 			</div>
 			<div>
 				<Typography variant="h4" className={styles.title}>
@@ -76,10 +60,12 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 			</div>
 			<div className={styles.actions}>
 				<div className={styles.price}>
-					<span className={styles.priceOriginal}>{product.price}</span>
+					<span className={styles.priceOriginal}>
+						{formatNumber(product.price)}
+					</span>
 					{product.discountedPrice && (
 						<span className={styles.priceDiscounted}>
-							{product.discountedPrice}
+							{formatNumber(product.discountedPrice)}
 						</span>
 					)}
 					<Coin width={26} height={26} />

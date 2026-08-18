@@ -1,5 +1,5 @@
 import { getDashboard } from '@/api/dashboard/dashboard.api';
-import { components } from '../schema';
+import { components } from '@shared/types';
 
 export type Dashboard = Awaited<ReturnType<typeof getDashboard>>;
 export type DashboardDay = Dashboard['days'][number];

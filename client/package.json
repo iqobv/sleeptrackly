@@ -7,13 +7,13 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "oxlint . && eslint .",
-		"lint:fix": "eslint . --fix",
-		"generate": "pnpm openapi-typescript http://localhost:5000/docs-json -o src/types/schema.d.ts"
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "catalog:",
 		"@shared/form": "workspace:",
 		"@shared/hooks": "workspace:",
+		"@shared/types": "workspace:*",
 		"@shared/ui": "workspace:",
 		"@shared/utils": "workspace:",
 		"@tanstack/react-query": "catalog:",
@@ -39,10 +39,6 @@
 		"recharts": "^3.2.0",
 		"sass": "catalog:",
 		"swiper": "^12.0.3",
-		"zod": "catalog:",
-		"zustand": "catalog:"
-	},
-	"devDependencies": {
-		"openapi-typescript": "catalog:"
+		"zod": "catalog:"
 	}
 }

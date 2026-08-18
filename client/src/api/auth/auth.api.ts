@@ -1,5 +1,5 @@
 import { LoginDto, RegisterDto } from '@/dto/auth/auth.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type LoginResponse =

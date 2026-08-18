@@ -57,7 +57,7 @@ export const UpdateBundle = ({ id }: UpdateBundleProps) => {
 								queryKey: QUERY_KEYS.customization.bundle.detail(id),
 							});
 							queryClient.invalidateQueries({
-								queryKey: QUERY_KEYS.customization.bundle.lists,
+								queryKey: QUERY_KEYS.customization.bundle.lists(),
 							});
 							toast.success('Bundle updated successfully');
 						},

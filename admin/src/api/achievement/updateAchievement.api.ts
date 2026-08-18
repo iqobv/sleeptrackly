@@ -1,6 +1,6 @@
 import { UpdateAchievementDto } from '@/dto/achievement/achievement.dto';
-import { paths } from '@/types/schema';
 import { getFormData } from '@/utils/getFormData.util';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type UpdateAchievementResponse =

@@ -1,38 +1,62 @@
-import { Challenge } from '@/components/Challenge/Challenge/Challenge';
-import { SectionHeader } from '@shared/ui';
-import { cookies } from 'next/headers';
+import { getServerChallengeById } from '@/api/challenge/getChallengeById.api';
+import { Challenge } from '@/components/Challenges/Challenge/Challenge/Challenge';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import {
+	dehydrate,
+	HydrationBoundary,
+	QueryClient,
+} from '@tanstack/react-query';
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { cache } from 'react';
 
 interface ChallengePageProps {
 	params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: ChallengePageProps) {
+const getCachedChallenge = cache(async (id: string) => {
+	return await getServerChallengeById(id);
+});
+
+export async function generateMetadata({
+	params,
+}: ChallengePageProps): Promise<Metadata> {
 	const { id } = await params;
-	const cookiesStore = await cookies();
-	const allCookies = cookiesStore.toString();
 
-	const challenge = await fetch(`${process.env.API_URL}/v1/challenges/${id}`, {
-		headers: {
-			'Content-Type': 'application/json',
-			cookie: allCookies,
-		},
-	}).then((res) => res.json());
+	try {
+		const challenge = await getCachedChallenge(id);
 
-	return {
-		title: challenge.title || 'Challenge',
-	};
+		return {
+			title: challenge.translation.title || 'Challenge',
+		};
+	} catch {
+		return {
+			title: 'Challenge',
+		};
+	}
 }
 
 export default async function ChallengePage({ params }: ChallengePageProps) {
 	const { id } = await params;
 
-	return (
-		<div className="container">
-			<SectionHeader
-				title="Challenge Details"
-				description="View the details of your current challenge."
-			/>
-			<Challenge id={id} />
-		</div>
-	);
+	try {
+		const challenge = await getCachedChallenge(id);
+
+		if (!challenge) notFound();
+
+		const queryClient = new QueryClient();
+
+		await queryClient.prefetchQuery({
+			queryKey: QUERY_KEYS.challenges.detail(id),
+			queryFn: () => getCachedChallenge(id),
+		});
+
+		return (
+			<HydrationBoundary state={dehydrate(queryClient)}>
+				<Challenge id={id} />
+			</HydrationBoundary>
+		);
+	} catch {
+		notFound();
+	}
 }

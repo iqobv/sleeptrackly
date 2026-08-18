@@ -1,6 +1,12 @@
 'use client';
 
-import { getSleepStatus, updateSleepStatus } from '@/api/user/sleepStatus.api';
+import {
+	resetTimer as apiResetTimer,
+	resumeTimer as apiResumeTimer,
+	stopTimer as apiStopTimer,
+	getSleepStatus,
+	updateSleepStatus,
+} from '@/api/user/sleepStatus.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { CHART_DATE_FORMAT } from '@/constants/dateFormat.constants';
 import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
@@ -21,6 +27,16 @@ export const useTimer = () => {
 		queryKey,
 		queryFn: getSleepStatus,
 		retry: false,
+	});
+
+	const { mutate: handleStopTimer } = useMutation({
+		mutationFn: apiStopTimer,
+	});
+	const { mutate: handleResumeTimer } = useMutation({
+		mutationFn: apiResumeTimer,
+	});
+	const { mutate: handleResetTimer } = useMutation({
+		mutationFn: apiResetTimer,
 	});
 
 	const [isFinished, setIsFinished] = useState(false);
@@ -88,8 +104,12 @@ export const useTimer = () => {
 	};
 
 	const stopTimer = () => {
-		queryClient.invalidateQueries({
-			queryKey: QUERY_KEYS.timer.one,
+		if (!isSleeping) return;
+
+		handleStopTimer(undefined, {
+			onSuccess: (data) => {
+				queryClient.setQueryData(queryKey, data);
+			},
 		});
 
 		setIsFinished(true);
@@ -98,11 +118,24 @@ export const useTimer = () => {
 
 	const resumeTimer = () => {
 		if (isSleeping || !initialTime) return;
+
+		handleResumeTimer(undefined, {
+			onSuccess: (data) => {
+				queryClient.setQueryData(queryKey, data);
+			},
+		});
+
 		setIsFinished(false);
 		setFinishTime(null);
 	};
 
 	const resetTimer = () => {
+		handleResetTimer(undefined, {
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey });
+			},
+		});
+
 		setIsFinished(false);
 		setFinishedSleep(null);
 		setFinishTime(null);
@@ -110,7 +143,7 @@ export const useTimer = () => {
 	};
 
 	const handleSaveSleep = (dto: UpdateSleepEntryDto) => {
-		const { sleepEnd, rating, sleepStart, timezone, isEdited } = dto;
+		const { sleepEnd, rating, sleepStart, timezone } = dto;
 		const dateForChart = sleepEnd
 			? dayjs(sleepEnd).format(CHART_DATE_FORMAT)
 			: finishTime
@@ -124,7 +157,6 @@ export const useTimer = () => {
 				sleepEnd || finishTime?.toISOString() || new Date().toISOString(),
 			dateForChart,
 			timezone,
-			isEdited,
 		};
 
 		update(finalDto);

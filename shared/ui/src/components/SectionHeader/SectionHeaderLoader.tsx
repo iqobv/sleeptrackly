@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CSSProperties } from 'react';
+import { CustomCSSProperties } from '../../types/customCSS.types';
 import { pxToRem } from '../../utils/fromPxToRem.util';
 import { SkeletonLoader } from '../SkeletonLoader/SkeletonLoader';
 import styles from './SectionHeader.module.scss';
@@ -21,16 +21,16 @@ export const SectionHeaderLoader = ({
 	const transformSize = (size: string | number) =>
 		typeof size === 'number' ? pxToRem(size) : size;
 
+	const customStyles: CustomCSSProperties = {
+		...(padding !== undefined && { '--padding': pxToRem(padding) }),
+		...(gap !== undefined && { '--gap': pxToRem(gap) }),
+		...(textAlign !== undefined && { '--text-align': textAlign }),
+	};
+
 	return (
 		<div
 			className={clsx(styles.header, containerClassName)}
-			style={
-				{
-					'--padding': padding !== undefined ? pxToRem(padding) : undefined,
-					'--gap': gap !== undefined ? pxToRem(gap) : undefined,
-					'--text-align': textAlign,
-				} as CSSProperties
-			}
+			style={customStyles}
 		>
 			{leftSlot && <div className={styles.leftSlot}>{leftSlot}</div>}
 			<div className={styles.wrapper}>

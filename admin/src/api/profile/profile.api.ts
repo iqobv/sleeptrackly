@@ -1,4 +1,4 @@
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient, apiServer } from '../axios';
 
 type GetProfileResponse =

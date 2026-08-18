@@ -1,7 +1,11 @@
 import { CSSProperties, ElementType, ReactNode } from 'react';
 import { TypographyProps } from '../Typography/Typography.types';
 
-type ElementProps = Partial<Omit<TypographyProps<ElementType>, 'children'>>;
+type ElementProps = Partial<
+	Omit<TypographyProps<'span'>, 'children' | 'as'>
+> & {
+	as?: ElementType;
+};
 
 export interface SectionHeaderProps {
 	title: ReactNode;
@@ -14,6 +18,9 @@ export interface SectionHeaderProps {
 	textAlign?: CSSProperties['textAlign'];
 	leftSlot?: ReactNode;
 	rightSlot?: ReactNode;
+	wrapperClassName?: string;
+	rightSlotClassName?: string;
+	leftSlotClassName?: string;
 }
 
 export interface SectionHeaderLoaderProps extends Pick<

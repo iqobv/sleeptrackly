@@ -1,6 +1,6 @@
 'use client';
 
-import { ProductType } from '@/types/customization/product/productType.types';
+import { ProductType } from '@shared/types';
 import {
 	Button,
 	Modal,

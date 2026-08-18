@@ -1,6 +1,6 @@
 import { apiClient } from '@/api/axios';
 import { PaginationDto } from '@/dto/query/pagination.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 
 type GetAllCollectionsResponse =
 	paths['/v1/collections/all']['get']['responses']['200']['content']['application/json'];

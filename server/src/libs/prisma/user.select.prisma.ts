@@ -10,6 +10,8 @@ export const userSelect = {
 	createdAt: true,
 	updatedAt: true,
 	deletedAt: true,
+	challengeRecoveries: true,
+	challengeRecoveriesUpdatedAt: true,
 	avatar: {
 		select: {
 			url: true,

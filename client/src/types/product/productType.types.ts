@@ -1,11 +1,6 @@
-import { components } from '../schema';
+import { components, ProductType } from '@shared/types';
 
 type SwaggerProductType = components['schemas']['ProductType'];
-
-export const ProductType = {
-	ITEM: 'ITEM',
-	BUNDLE: 'BUNDLE',
-} as const satisfies Record<SwaggerProductType, SwaggerProductType>;
 
 export const FilterProductType = {
 	ALL: 'ALL',
@@ -15,6 +10,5 @@ export const FilterProductType = {
 	'ALL' | SwaggerProductType
 >;
 
-export type ProductType = (typeof ProductType)[keyof typeof ProductType];
 export type FilterProductType =
 	(typeof FilterProductType)[keyof typeof FilterProductType];

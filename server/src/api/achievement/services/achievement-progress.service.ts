@@ -1,5 +1,5 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
-import { NotificationService } from '@api/notification/notification.service';
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import {
 	AchievementType,
@@ -17,7 +17,7 @@ export class AchievementProgressService {
 		private readonly prismaService: PrismaService,
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly userInventoryService: UserInventoryService,
-		private readonly notificationService: NotificationService,
+		private readonly notificationPublisherService: NotificationPublisherService,
 	) {}
 
 	public async checkProgress(
@@ -58,7 +58,7 @@ export class AchievementProgressService {
 		switch (type) {
 			case AchievementType.SLEEP_COUNT:
 				return await this.prismaService.sleepEntry.count({
-					where: { userId },
+					where: { userId, isVerified: true },
 				});
 			case AchievementType.ITEMS_PURCHASED:
 				return await this.prismaService.purchaseHistory.count({
@@ -72,12 +72,12 @@ export class AchievementProgressService {
 					},
 				});
 			case AchievementType.CHALLENGES_COMPLETED:
-				return await this.prismaService.challenge.count({
-					where: { userId, isCompleted: true },
+				return await this.prismaService.userChallenge.count({
+					where: { userId, status: 'COMPLETED' },
 				});
 			case AchievementType.CHALLENGES_TASKS_COMPLETED:
-				return await this.prismaService.challengeTask.count({
-					where: { challenge: { userId }, isCompleted: true },
+				return await this.prismaService.userChallenge.count({
+					where: { userId, challengeTasks: { every: { status: 'COMPLETED' } } },
 				});
 			default:
 				return 0;
@@ -163,7 +163,7 @@ export class AchievementProgressService {
 				});
 
 			if (userSettings && userSettings.isAchievementUnlockedEnabled) {
-				await this.notificationService.create({
+				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					achievementId,
 					title: 'Achievement Unlocked!',

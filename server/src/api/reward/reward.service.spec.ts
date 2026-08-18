@@ -1,7 +1,7 @@
 import { CoinTransactionType } from '@generated/prisma/enums';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
-import { RewardService } from './reward.service';
+import { RewardService } from './services/reward.service';
 
 type CoinTransactionServiceMock = {
 	getLastTransactionToday: jest.Mock;

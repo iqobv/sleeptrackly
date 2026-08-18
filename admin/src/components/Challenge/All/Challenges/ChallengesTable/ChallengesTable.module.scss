@@ -1,0 +1,25 @@
+@use '../../../../../styles/mixins' as *;
+
+.actionsCell {
+	display: inline-flex;
+	align-items: center;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: end;
+	width: 100%;
+}
+
+.filters {
+	display: flex;
+	align-items: center;
+	gap: var(--gap);
+	flex-direction: column;
+	width: 100%;
+
+	@include respond-to(md) {
+		width: 80%;
+		flex-direction: row;
+	}
+}

@@ -23,7 +23,9 @@
 			"@shared/form": ["../shared/form/src/index.ts"],
 			"@shared/form/*": ["../shared/form/src/*"],
 			"@shared/utils": ["../shared/utils/src/index.ts"],
-			"@shared/utils/*": ["../shared/utils/src/*"]
+			"@shared/utils/*": ["../shared/utils/src/*"],
+			"@shared/types": ["../shared/types/src/index.ts"],
+			"@shared/types/*": ["../shared/types/src/*"]
 		}
 	},
 	"include": [

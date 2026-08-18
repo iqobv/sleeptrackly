@@ -1,0 +1,6 @@
+enum ChallengeTaskStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  RECOVERED
+}

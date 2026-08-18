@@ -1,0 +1,26 @@
+@use '../../../../styles/mixins' as *;
+
+.summary {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: var(--gap);
+	padding: 0.625rem 0;
+
+	@include respond-to(md) {
+		align-items: center;
+		flex-direction: row;
+	}
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+}
+
+.tags {
+	display: inline-flex;
+	gap: 0.3rem;
+	align-items: center;
+}

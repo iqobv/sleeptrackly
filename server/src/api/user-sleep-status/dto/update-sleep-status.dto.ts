@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 
 export class UpdateUserSleepStatusDto {
-	/** @example '2026-05-2@Min(0)2' */
+	/** @example '2026-05-22' */
 	@IsString()
 	@IsOptional()
 	dateForChart?: string;

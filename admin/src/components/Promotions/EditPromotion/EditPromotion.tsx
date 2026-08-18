@@ -71,7 +71,7 @@ export const EditPromotion = () => {
 								queryKey: QUERY_KEYS.promotion.detail(id),
 							});
 							queryClient.invalidateQueries({
-								queryKey: QUERY_KEYS.promotion.lists,
+								queryKey: QUERY_KEYS.promotion.lists(),
 							});
 						},
 						onError: (e) => {

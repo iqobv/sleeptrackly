@@ -48,7 +48,7 @@ export const ItemCard = ({ product, actions }: ItemCardProps) => {
 					/>
 				)}
 			</div>
-			<div>
+			<div className={styles.details}>
 				<h3>{translation}</h3>
 				<p>Product Type: {product.type}</p>
 				{(finalProduct as Item).type && (

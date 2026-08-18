@@ -1,6 +1,8 @@
 export { ACHIEVEMENT_SUCCESS_MESSAGES } from './achievement.constants';
 export { AUTH_SUCCESS_MESSAGES } from './auth.constants';
 export { BUNDLE_SUCCESS_MESSAGES } from './bundle.constants';
+export { CHALLENGE_TASK_SUCCESS_MESSAGES } from './challenge-task.constants';
+export { CHALLENGE_TEMPLATE_SUCCESS_MESSAGES } from './challenge-template.constants';
 export { CHALLENGE_SUCCESS_MESSAGES } from './challenge.constants';
 export { COLLECTION_SUCCESS_MESSAGES } from './collection.constants';
 export { EMAIL_CONFIRMATION_SUCCESS_MESSAGES } from './email-confirmation.constants';

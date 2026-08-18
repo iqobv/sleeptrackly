@@ -53,6 +53,30 @@ export class UserSleepStatusController {
 		return await this.userSleepStatusService.updateSleepStatus(userId, dto);
 	}
 
+	/** Stop sleep timer and save sleep end time */
+	@Patch('wake-up')
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.SLEEP_ENTRY.INVALID_TIME_RANGE,
+	)
+	@HttpCode(HttpStatus.OK)
+	public async wakeUp(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto> {
+		return await this.userSleepStatusService.stopTimer(userId);
+	}
+
+	/** Resume sleep timer (set sleepEnd to null) */
+	@Patch('resume')
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	@HttpCode(HttpStatus.OK)
+	public async resumeSleepTimer(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto> {
+		return await this.userSleepStatusService.resumeTimer(userId);
+	}
+
 	/** Reset user sleep status (set isSleeping to false and sleepStart to null) */
 	@Patch('reset')
 	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.USER_SLEEP_STATUS.RESET)

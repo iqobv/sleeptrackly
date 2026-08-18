@@ -1,6 +1,26 @@
+@use '../../../styles/mixins' as *;
+
 .challenges {
 	display: flex;
 	flex-direction: column;
 	gap: 1.25rem;
 	padding-bottom: 3.75rem;
+}
+
+.header {
+	align-items: start;
+	flex-direction: column;
+
+	@include respond-to(md) {
+		flex-direction: row;
+		align-items: center;
+	}
+
+	.rightSlot {
+		width: 100%;
+
+		@include respond-to(md) {
+			width: auto;
+		}
+	}
 }

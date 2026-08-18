@@ -38,7 +38,7 @@ export const UpdateProduct = ({ id }: UpdateProductProps) => {
 				queryKey: QUERY_KEYS.customization.product.detail(id),
 			});
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.customization.product.lists,
+				queryKey: QUERY_KEYS.customization.product.lists(),
 			});
 		},
 		onError: (e) => toast.error(e.message || 'Failed to update product'),

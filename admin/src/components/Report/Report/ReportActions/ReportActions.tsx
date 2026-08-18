@@ -23,7 +23,7 @@ export const ReportActions = ({ report }: ReportActionsProps) => {
 				queryKey: QUERY_KEYS.report.detail(report.id),
 			});
 			queryCliet.invalidateQueries({
-				queryKey: QUERY_KEYS.report.lists,
+				queryKey: QUERY_KEYS.report.lists(),
 			});
 		},
 	});

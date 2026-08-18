@@ -9,13 +9,11 @@ import styles from './AuthButtons.module.scss';
 import { AuthButtonsLoader } from './AuthButtonsLoader';
 
 export const AuthButtons = () => {
-	const { user, isloading } = useAuth();
-
-	console.log(isloading);
+	const { user, isLoading } = useAuth();
 
 	return (
 		<div className={styles.authButtons}>
-			{isloading ? (
+			{isLoading ? (
 				<AuthButtonsLoader />
 			) : (
 				<>

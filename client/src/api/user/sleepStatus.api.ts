@@ -1,5 +1,5 @@
 import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
-import { paths } from '@/types/schema';
+import { paths } from '@shared/types';
 import { apiClient } from '../axios';
 
 type GetSleepStatusResponse =
@@ -7,6 +7,12 @@ type GetSleepStatusResponse =
 type UpdateSleepStatusResponse =
 	paths['/v1/sleep']['patch']['responses']['200']['content']['application/json'];
 type ResetSleepStatusResponse =
+	paths['/v1/sleep/reset']['patch']['responses']['200']['content']['application/json'];
+type StopTimerResponse =
+	paths['/v1/sleep/wake-up']['patch']['responses']['200']['content']['application/json'];
+type ResumeTimerResponse =
+	paths['/v1/sleep/resume']['patch']['responses']['200']['content']['application/json'];
+type ResetTimerResponse =
 	paths['/v1/sleep/reset']['patch']['responses']['200']['content']['application/json'];
 
 export const getSleepStatus = async () =>
@@ -17,3 +23,12 @@ export const updateSleepStatus = async (dto?: UserSleepStatusDto) =>
 
 export const resetSleepStatus = async () =>
 	(await apiClient.patch<ResetSleepStatusResponse>('/v1/sleep/reset')).data;
+
+export const stopTimer = async () =>
+	(await apiClient.patch<StopTimerResponse>('/v1/sleep/wake-up')).data;
+
+export const resumeTimer = async () =>
+	(await apiClient.patch<ResumeTimerResponse>('/v1/sleep/resume')).data;
+
+export const resetTimer = async () =>
+	(await apiClient.patch<ResetTimerResponse>('/v1/sleep/reset')).data;
