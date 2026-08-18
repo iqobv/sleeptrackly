@@ -29,7 +29,7 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 				navigation
 				pagination={{ clickable: true }}
 				autoplay={{
-					delay: 5000,
+					delay: 50000000,
 					pauseOnMouseEnter: true,
 					disableOnInteraction: false,
 				}}
@@ -38,6 +38,8 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 			>
 				{validSlides.map((item) => {
 					if (!item.bundle) return null;
+
+					console.log(item.bundle);
 
 					return (
 						<SwiperSlide key={item.id} className={styles.item}>

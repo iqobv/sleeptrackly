@@ -2,6 +2,9 @@
 	"name": "sleeptrackly",
 	"private": true,
 	"packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620",
+	"engines": {
+		"node": ">=24.0.0"
+	},
 	"scripts": {
 		"dev:client": "pnpm --filter client dev",
 		"dev:admin": "pnpm --filter admin dev",
@@ -39,6 +42,7 @@
 		"retry-request": "^7.0.2",
 		"path-to-regexp": "^8.3.2",
 		"@hono/node-server": "^1.19.13",
-		"uuid": "^14.0.0"
+		"uuid": "^14.0.0",
+		"deepmerge-ts": "^8.0.0"
 	}
 }
