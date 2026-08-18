@@ -3,15 +3,21 @@
 import { Coin } from '@/components/Icons/Coin';
 import { ProductImage } from '@/components/UI';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
-import { ProductType } from '@shared/types';
+import { ChallengeStatus, ProductType } from '@shared/types';
 import { Divider, Typography } from '@shared/ui';
 import { AcceptChallenge } from '../../AcceptChallenge/AcceptChallenge';
+import { LeaveChallenge } from '../../LeaveChallenge/LeaveChallenge';
 import { ChallengeCardContainer } from '../ChallengeCardContainer/ChallengeCardContainer';
 import styles from './ChallengePrize.module.scss';
 
 interface ChallengePrizeProps {
 	challenge: ChallengeFull;
 }
+
+const activeStatuses: ChallengeStatus[] = [
+	ChallengeStatus.ACTIVE,
+	ChallengeStatus.FROZEN,
+];
 
 export const ChallengePrize = ({ challenge }: ChallengePrizeProps) => {
 	const product = challenge.product;
@@ -48,6 +54,13 @@ export const ChallengePrize = ({ challenge }: ChallengePrizeProps) => {
 					<AcceptChallenge id={challenge.id} />
 				</>
 			)}
+			{challenge.userChallenge &&
+				activeStatuses.includes(challenge.userChallenge.status) && (
+					<>
+						<Divider />
+						<LeaveChallenge id={challenge.id} />
+					</>
+				)}
 		</ChallengeCardContainer>
 	);
 };

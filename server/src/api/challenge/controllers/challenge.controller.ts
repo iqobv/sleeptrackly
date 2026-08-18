@@ -9,6 +9,7 @@ import { Authorized } from '@libs/decorators/authorized.decorator';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Controller,
+	Delete,
 	Get,
 	HttpCode,
 	HttpStatus,
@@ -103,5 +104,25 @@ export class ChallengeController {
 		await this.challengeService.participateInChallenge(id, userId);
 
 		return SUCCESS_MESSAGES.CHALLENGE.PARTICIPATION_STARTED;
+	}
+
+	@Delete(':id/participate')
+	@ApiSuccessResponse(
+		HttpStatus.OK,
+		SUCCESS_MESSAGES.CHALLENGE.PARTICIPATION_DECLINED,
+	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.CHALLENGE.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.CHALLENGE.NOT_PARTICIPATING,
+		ERROR_MESSAGES.CHALLENGE.ALREADY_ENDED,
+	])
+	@HttpCode(HttpStatus.OK)
+	public async declineChallengeParticipation(
+		@Param('id') id: string,
+		@Authorized('id') userId: string,
+	): Promise<MessageResponse> {
+		await this.challengeService.declineChallengeParticipation(id, userId);
+
+		return SUCCESS_MESSAGES.CHALLENGE.PARTICIPATION_DECLINED;
 	}
 }

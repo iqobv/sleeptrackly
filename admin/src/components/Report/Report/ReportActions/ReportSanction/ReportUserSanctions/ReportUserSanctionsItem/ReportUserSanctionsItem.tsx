@@ -9,7 +9,6 @@ import { capitalize } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { useState } from 'react';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import styles from './ReportUserSanctionsItem.module.scss';
 
@@ -26,8 +25,6 @@ export const ReportUserSanctionsItem = ({
 }: ReportUserSanctionsItemProps) => {
 	const queryClient = useQueryClient();
 
-	const [openModal, setOpenModal] = useState<boolean>(false);
-
 	const { mutate } = useMutation({
 		mutationFn: (id: string) => removeUserSanction(id),
 		onSuccess: () =>
@@ -38,8 +35,6 @@ export const ReportUserSanctionsItem = ({
 
 	const handleClick = () => mutate(sanction.id);
 
-	const handleOpenModal = () => setOpenModal(!openModal);
-
 	return (
 		<div key={sanction.id} className={styles.item}>
 			<div className={styles.header}>
@@ -49,16 +44,15 @@ export const ReportUserSanctionsItem = ({
 						variant: 'h3',
 					}}
 				/>
-				<Button isIcon size="sm" variant="text" onClick={handleOpenModal}>
-					<MdOutlineDeleteOutline size={25} />
-				</Button>
 				<ConfirmModal
-					isOpen={openModal}
 					title="Delete sanction"
 					text="Are you sure you want to delete this sanction?"
-					onClose={handleOpenModal}
 					onConfirm={handleClick}
-				/>
+				>
+					<Button isIcon size="sm" variant="text">
+						<MdOutlineDeleteOutline size={25} />
+					</Button>
+				</ConfirmModal>
 			</div>
 			<div className={styles.user}>
 				<p>User: </p>

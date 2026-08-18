@@ -1,5 +1,6 @@
 import { PendingsList } from '@/components/Friends/PendingsList/PendingsList';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
 	title: 'Pending Friends',
@@ -7,8 +8,8 @@ export const metadata: Metadata = {
 
 export default function FriendsPendingPage() {
 	return (
-		<div className="container page">
+		<Suspense fallback={null}>
 			<PendingsList />
-		</div>
+		</Suspense>
 	);
 }

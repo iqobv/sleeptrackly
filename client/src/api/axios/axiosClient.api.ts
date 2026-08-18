@@ -1,7 +1,6 @@
 'use client';
 
 import { AUTH_PAGES } from '@/config/authPages.config';
-import { useUserStore } from '@/store/useUser.store';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
@@ -76,10 +75,10 @@ apiClient.interceptors.response.use(
 			} catch (refreshError) {
 				processQueue(refreshError as MessageApiResponse);
 
-				useUserStore.getState().logout();
 				if (typeof window !== 'undefined') {
 					window.location.href = AUTH_PAGES.LOGIN;
 				}
+
 				return Promise.reject(refreshError);
 			} finally {
 				isRefreshing = false;

@@ -990,7 +990,7 @@ export interface paths {
         put?: never;
         /** Participate in a specific challenge by ID */
         post: operations["ChallengeController_participateInChallenge_v1"];
-        delete?: never;
+        delete: operations["ChallengeController_declineChallengeParticipation_v1"];
         options?: never;
         head?: never;
         patch?: never;
@@ -3561,7 +3561,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-12T15:25:27.245Z
+             * @example 2026-08-19T13:45:29.076Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3592,7 +3592,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-12T15:25:27.245Z
+             * @example 2026-08-19T13:45:29.076Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -6306,6 +6306,75 @@ export interface operations {
             };
             /** @description You are already participating in this challenge */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeController_declineChallengeParticipation_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenge participation declined successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description You are not participating in this challenge | Challenge has already ended */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Challenge not found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

@@ -39,7 +39,6 @@
 		"recharts": "^3.2.0",
 		"sass": "catalog:",
 		"swiper": "^12.0.3",
-		"zod": "catalog:",
-		"zustand": "catalog:"
+		"zod": "catalog:"
 	}
 }

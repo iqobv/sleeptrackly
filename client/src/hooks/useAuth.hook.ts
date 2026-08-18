@@ -1,33 +1,39 @@
 'use client';
 
-import { logout as apiLogout } from '@/api/auth/auth.api';
-import { useUserStore } from '@/store/useUser.store';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { logout as apiLogout, getUser } from '@/api/auth/auth.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { User } from '@shared/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export const useAuth = () => {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	const user = useUserStore((state) => state.user);
-	const setUser = useUserStore((state) => state.setUser);
-	const storeLogout = useUserStore((state) => state.logout);
+	const { data: user, isLoading } = useQuery({
+		queryKey: QUERY_KEYS.user.me(),
+		queryFn: getUser,
+		retry: false,
+		staleTime: 1000 * 60 * 5,
+	});
 
 	const isAuthenticated = !!user?.id;
-	const isloading = user === undefined;
 
 	const { mutate: logout } = useMutation({
 		mutationFn: apiLogout,
 		onSuccess: () => {
-			storeLogout();
-			router.refresh();
 			queryClient.clear();
+			router.refresh();
 		},
 	});
 
+	const setUser = (user: User) => {
+		queryClient.setQueryData(QUERY_KEYS.user.me(), user);
+	};
+
 	return {
 		isAuthenticated,
-		isloading,
+		isLoading,
 		user,
 		setUser,
 		logout,

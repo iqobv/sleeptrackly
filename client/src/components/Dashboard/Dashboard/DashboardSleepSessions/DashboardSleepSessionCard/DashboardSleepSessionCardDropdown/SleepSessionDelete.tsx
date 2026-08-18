@@ -6,7 +6,6 @@ import { SleepEntry } from '@/types/dashboard/dashboard.types';
 import { Button, ConfirmModal, Typography } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './DashboardSleepSessionCardDropdown.module.scss';
 import { SleepSessionFormModalProps } from './SleepSessionFormModal.types';
@@ -23,8 +22,6 @@ export const SleepSessionDelete = ({
 	date,
 }: SleepSessionDeleteProps) => {
 	const queryClient = useQueryClient();
-
-	const [isOpen, setIsOpen] = useState(false);
 
 	const id = sleepEntry.id;
 
@@ -45,26 +42,9 @@ export const SleepSessionDelete = ({
 		},
 	});
 
-	const onClose = () => setIsOpen((prev) => !prev);
-
-	const handleDelete = () => {
-		mutate();
-		onClose();
-	};
-
 	return (
 		<>
-			<Button
-				variant="text"
-				color="danger"
-				className={styles.button}
-				onClick={onClose}
-			>
-				Delete Sleep Session
-			</Button>
 			<ConfirmModal
-				isOpen={isOpen}
-				onClose={onClose}
 				text={
 					<Typography>
 						You are about to delete the sleep session for{' '}
@@ -72,9 +52,13 @@ export const SleepSessionDelete = ({
 						sure you want to proceed?
 					</Typography>
 				}
-				onConfirm={handleDelete}
+				onConfirm={() => mutate()}
 				title="Delete Sleep Session"
-			/>
+			>
+				<Button variant="text" color="danger" className={styles.button}>
+					Delete Sleep Session
+				</Button>
+			</ConfirmModal>
 		</>
 	);
 };

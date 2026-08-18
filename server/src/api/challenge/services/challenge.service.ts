@@ -330,8 +330,22 @@ export class ChallengeService {
 		if (!userChallenge)
 			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE.NOT_FOUND);
 
-		if (userChallenge.status !== ChallengeStatus.ACTIVE)
+		const endedStatuses: ChallengeStatus[] = [
+			ChallengeStatus.COMPLETED,
+			ChallengeStatus.FAILED,
+			ChallengeStatus.EXPIRED,
+		];
+
+		const activeStatuses: ChallengeStatus[] = [
+			ChallengeStatus.ACTIVE,
+			ChallengeStatus.FROZEN,
+		];
+
+		if (!activeStatuses.includes(userChallenge.status))
 			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.NOT_PARTICIPATING);
+
+		if (endedStatuses.includes(userChallenge.status))
+			throw new BadRequestException(ERROR_MESSAGES.CHALLENGE.ALREADY_ENDED);
 
 		await this.prismaService.userChallenge.delete({
 			where: { id: userChallenge.id },

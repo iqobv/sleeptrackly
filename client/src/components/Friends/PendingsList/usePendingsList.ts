@@ -7,13 +7,14 @@ import {
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { FriendStatus } from '@/types/friend/friendStatus.types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export const usePendingsList = () => {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
-	const { data, refetch } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryFn: getPendingFriendRequests,
 		queryKey: QUERY_KEYS.friends.pendings(),
 		staleTime: 0,
@@ -23,7 +24,9 @@ export const usePendingsList = () => {
 		mutationFn: ({ status }: { status: FriendStatus }) =>
 			updateManyPendingRequests(status),
 		onSuccess: () => {
-			refetch();
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.friends.pendings(),
+			});
 			router.push(PRIVATE_PAGES.FRIENDS.ALL);
 		},
 	});
@@ -34,6 +37,7 @@ export const usePendingsList = () => {
 
 	return {
 		data,
+		isLoading,
 		handleUpdateMany,
 	};
 };

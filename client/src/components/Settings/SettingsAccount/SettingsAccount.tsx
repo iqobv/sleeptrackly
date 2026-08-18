@@ -12,13 +12,13 @@ import { SettingsAccountLoader } from './SettingsAccountLoader';
 type UpdatedAccount = Awaited<ReturnType<typeof updateUser>>;
 
 export const SettingsAccount = () => {
-	const { user, isloading } = useAuth();
+	const { user, isLoading } = useAuth();
 
 	return (
 		<div className={styles.settingsAccount}>
 			<UploadAvatar />
-			{isloading && <SettingsAccountLoader />}
-			{!isloading && user && (
+			{isLoading && <SettingsAccountLoader />}
+			{!isLoading && user && (
 				<SettingsForm<SettingsAccountDto, UpdatedAccount>
 					fields={ACCOUNT_FIELDS}
 					mutationFn={updateUser}
