@@ -6,12 +6,16 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
 import { ApiModule } from './api/api.module';
 import { AppController } from './app.controller';
+import { validate } from './config/env.validation';
 import { InfraModule } from './infra/infra.module';
 
 @Module({
 	imports: [
 		SentryModule.forRoot(),
-		ConfigModule.forRoot({ isGlobal: true }),
+		ConfigModule.forRoot({
+			isGlobal: true,
+			validate,
+		}),
 		ScheduleModule.forRoot(),
 		ThrottlerModule.forRoot([
 			{

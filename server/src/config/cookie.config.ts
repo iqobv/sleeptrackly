@@ -1,20 +1,16 @@
-import { parseBoolean } from '@libs/utils/parse-boolean.util';
-import { ConfigService } from '@nestjs/config';
+import { AuthConfig } from '@config/schemas/auth.schema';
 import { CookieOptions } from 'express';
 import ms, { StringValue } from 'ms';
 
 export const getCookieConfig = (
-	config: ConfigService,
+	config: AuthConfig,
 	maxAge: StringValue | number,
 ): CookieOptions => {
 	return {
-		domain: config.getOrThrow<string>('COOKIE_DOMAIN'),
+		domain: config.COOKIE_DOMAIN,
 		maxAge: typeof maxAge === 'string' ? ms(maxAge) : maxAge,
-		httpOnly: parseBoolean(config.getOrThrow<string>('COOKIE_HTTP_ONLY')),
-		secure: parseBoolean(config.getOrThrow<string>('COOKIE_SECURE')),
-		sameSite: config.getOrThrow<string>('COOKIE_SAME_SITE') as
-			| 'lax'
-			| 'strict'
-			| 'none',
+		httpOnly: config.COOKIE_HTTP_ONLY,
+		secure: config.COOKIE_SECURE,
+		sameSite: config.COOKIE_SAME_SITE,
 	};
 };

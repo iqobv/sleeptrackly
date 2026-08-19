@@ -1,17 +1,20 @@
+import { EnvService } from '@infra/env/env.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { authEnvSchema } from '../../../config/schemas/auth.schema';
 import { OAuthDto } from '../dto/o-auth.dto';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-	constructor(private readonly configService: ConfigService) {
+	constructor(private readonly envService: EnvService) {
+		const config = envService.getGroup(authEnvSchema);
+
 		super({
-			clientID: configService.getOrThrow<string>('GOOGLE_CLIENT_ID'),
-			clientSecret: configService.getOrThrow<string>('GOOGLE_CLIENT_SECRET'),
-			callbackURL: configService.getOrThrow<string>('GOOGLE_REDIRECT'),
+			clientID: config.GOOGLE_CLIENT_ID,
+			clientSecret: config.GOOGLE_CLIENT_SECRET,
+			callbackURL: config.GOOGLE_REDIRECT,
 			scope: ['email', 'profile'],
 		});
 	}

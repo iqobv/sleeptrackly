@@ -1,6 +1,8 @@
 import { getApiVersioningConfig } from '@config/api-versioning.config';
 import { getCorsConfig } from '@config/cors.config';
+import { appEnvSchema } from '@config/schemas/app.schema';
 import { getValidationPipeConfig } from '@config/validation-pipe.config';
+import { EnvService } from '@infra/env/env.service';
 import { CustomExceptionFilter } from '@libs/filters/custom-exception.filter';
 import { isDev } from '@libs/utils/is-dev.util';
 import { setupSwagger } from '@libs/utils/swagger.util';
@@ -19,6 +21,9 @@ async function bootstrap(): Promise<void> {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
 	const config = app.get(ConfigService);
+	const envService = app.get(EnvService);
+	const appConfig = envService.getGroup(appEnvSchema);
+
 	const isProd = !isDev(config);
 
 	app.use(
@@ -61,7 +66,7 @@ async function bootstrap(): Promise<void> {
 
 	app.set('trust proxy', true);
 
-	app.enableCors(getCorsConfig(config));
+	app.enableCors(getCorsConfig(appConfig));
 
 	app.use(json({ limit: '1mb' }));
 	app.use(urlencoded({ extended: true, limit: '1mb' }));
@@ -76,8 +81,7 @@ async function bootstrap(): Promise<void> {
 			basicAuth({
 				challenge: true,
 				users: {
-					[config.getOrThrow<string>('SWAGGER_USER')]:
-						config.getOrThrow<string>('SWAGGER_PASSWORD'),
+					[appConfig.SWAGGER_USER]: appConfig.SWAGGER_PASSWORD,
 				},
 			}),
 		);
@@ -94,7 +98,7 @@ async function bootstrap(): Promise<void> {
 
 	setupSwagger(app);
 
-	await app.listen(process.env.PORT ?? 5000, '0.0.0.0');
+	await app.listen(appConfig.PORT, '0.0.0.0');
 }
 
 bootstrap().catch((err): void => {

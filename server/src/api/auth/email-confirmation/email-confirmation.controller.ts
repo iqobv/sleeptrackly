@@ -7,7 +7,6 @@ import {
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
-import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -16,9 +15,9 @@ import {
 	Post,
 	Res,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
+import { CookieService } from '../cookie/cookie.service';
 import { ConfirmationDto } from './dto/confirmation.dto';
 import { ResendEmailDto } from './dto/resend-email.dto';
 import { EmailConfirmationService } from './email-confirmation.service';
@@ -28,7 +27,7 @@ import { EmailConfirmationService } from './email-confirmation.service';
 export class EmailConfirmationController {
 	constructor(
 		private readonly emailConfirmationService: EmailConfirmationService,
-		private readonly configService: ConfigService,
+		private readonly cookieService: CookieService,
 	) {}
 
 	/** Verify Email */
@@ -51,7 +50,7 @@ export class EmailConfirmationController {
 		const { accessToken, refreshToken } =
 			await this.emailConfirmationService.verifyEmail(dto, clientInfo);
 
-		setAuthCookies(res, accessToken, refreshToken, this.configService);
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
 		return SUCCESS_MESSAGES.EMAIL_CONFIRMATION.VERIFIED;
 	}

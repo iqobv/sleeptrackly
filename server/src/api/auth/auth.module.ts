@@ -13,6 +13,7 @@ import { RestoreModule } from './restore/restore.module';
 import { SessionModule } from './session/session.module';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { CookieModule } from './cookie/cookie.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 		QrLoginModule,
 		OauthModule,
 		RestoreModule,
+		CookieModule,
 	],
 	exports: [AuthService],
 	controllers: [AuthController],

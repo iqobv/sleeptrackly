@@ -13,7 +13,6 @@ import { Cookie } from '@libs/decorators/cookie.decorator';
 import { OptionalAuth } from '@libs/decorators/optional-auth.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
-import { clearAuthCookies, setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -25,12 +24,12 @@ import {
 	Res,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
 import type { Response } from 'express';
 import { UserService } from '../user/services/user.service';
 import { AuthService } from './auth.service';
+import { CookieService } from './cookie/cookie.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 
@@ -40,7 +39,7 @@ export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly userService: UserService,
-		private readonly configService: ConfigService,
+		private readonly cookieService: CookieService,
 	) {}
 
 	/** Login with email and password */
@@ -65,7 +64,8 @@ export class AuthController {
 			dto,
 			clientInfo,
 		);
-		setAuthCookies(res, accessToken, refreshToken, this.configService);
+
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
 		return user;
 	}
@@ -109,7 +109,7 @@ export class AuthController {
 
 		await this.authService.logout(rawRefreshToken, userId);
 
-		clearAuthCookies(res, this.configService);
+		this.cookieService.clearAuthCookies(res);
 
 		return SUCCESS_MESSAGES.AUTH.LOGOUT_SUCCESS;
 	}
@@ -136,9 +136,9 @@ export class AuthController {
 		try {
 			const { accessToken, refreshToken } =
 				await this.authService.refreshTokens(rawRefreshToken, clientInfo);
-			setAuthCookies(res, accessToken, refreshToken, this.configService);
+			this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 		} catch (error) {
-			clearAuthCookies(res, this.configService);
+			this.cookieService.clearAuthCookies(res);
 			throw error;
 		}
 
@@ -169,7 +169,7 @@ export class AuthController {
 	): Promise<MessageResponse> {
 		await this.userService.remove(userId);
 
-		clearAuthCookies(res, this.configService);
+		this.cookieService.clearAuthCookies(res);
 
 		return SUCCESS_MESSAGES.AUTH.USER_DELETED;
 	}

@@ -1,20 +1,20 @@
-import { isDev } from '@libs/utils/is-dev.util';
-import { ConfigService } from '@nestjs/config';
+import { SmtpConfig } from '@config/schemas/smtp.schema';
+import { IS_PROD_ENV } from '@libs/utils/is-dev.util';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const getMailerConfig = (
-	confgigService: ConfigService,
+	config: SmtpConfig,
 ): nodemailer.Transporter<
 	SMTPTransport.SentMessageInfo,
 	SMTPTransport.Options
 > =>
 	nodemailer.createTransport({
-		host: confgigService.getOrThrow<string>('MAIL_HOST'),
-		secure: !!isDev(confgigService),
-		port: confgigService.getOrThrow<number>('MAIL_PORT'),
+		host: config.MAIL_HOST,
+		secure: IS_PROD_ENV,
+		port: config.MAIL_PORT,
 		auth: {
-			user: confgigService.getOrThrow<string>('MAIL_USER'),
-			pass: confgigService.getOrThrow<string>('MAIL_PASSWORD'),
+			user: config.MAIL_USER,
+			pass: config.MAIL_PASSWORD,
 		},
 	});
