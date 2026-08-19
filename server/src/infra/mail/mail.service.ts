@@ -1,9 +1,10 @@
 import { getMailerConfig } from '@config/mailer.config';
+import { EnvService } from '@infra/env/env.service';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { pretty, render } from '@react-email/render';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { SmtpConfig, smtpEnvSchema } from '../../config/schemas/smtp.schema';
 import { SendEmailDto } from './dto/send-email.dto';
 import { ConfirmationTemplate } from './templates/confirmation.template';
 import { ResetPasswordTemplate } from './templates/reset-password.template';
@@ -17,10 +18,13 @@ type SendNotificationResponse = Promise<
 export class MailService {
 	private readonly domain: string;
 	private readonly transport: ReturnType<typeof getMailerConfig>;
+	private readonly mailConfig: SmtpConfig;
 
-	constructor(private readonly configService: ConfigService) {
-		this.transport = getMailerConfig(configService);
-		this.domain = this.configService.getOrThrow<string>('CLIENT_URL');
+	constructor(private readonly envService: EnvService) {
+		this.mailConfig = envService.getGroup(smtpEnvSchema);
+
+		this.transport = getMailerConfig(this.mailConfig);
+		this.domain = envService.get('CLIENT_URL');
 	}
 
 	public async sendVerificationEmail(
@@ -74,7 +78,7 @@ export class MailService {
 		const options: Mail.Options = {
 			from:
 				from ??
-				`"${this.configService.getOrThrow<string>('MAIL_FROM_NAME')}" <${this.configService.getOrThrow<string>('MAIL_FROM_ADDRESS')}>`,
+				`"${this.mailConfig.MAIL_FROM_NAME}" <${this.mailConfig.MAIL_FROM_ADDRESS}>`,
 			to: [...recipients],
 			subject,
 			html,

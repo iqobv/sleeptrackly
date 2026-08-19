@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@/env';
 import { useUserStore } from '@/store/useUser.store';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
@@ -8,8 +9,10 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 	_retry?: boolean;
 }
 
+const url = env.NEXT_PUBLIC_API_URL;
+
 const apiClient = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	baseURL: url,
 	withCredentials: true,
 	headers: {
 		'Content-Type': 'application/json',
@@ -56,7 +59,7 @@ apiClient.interceptors.response.use(
 
 			try {
 				await axios.post(
-					`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
+					`${url}/v1/auth/refresh`,
 					{},
 					{ withCredentials: true },
 				);
@@ -69,7 +72,7 @@ apiClient.interceptors.response.use(
 				useUserStore.getState().logout();
 				if (typeof window !== 'undefined') {
 					window.location.href =
-						process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+						env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 				}
 				return Promise.reject(refreshError);
 			} finally {

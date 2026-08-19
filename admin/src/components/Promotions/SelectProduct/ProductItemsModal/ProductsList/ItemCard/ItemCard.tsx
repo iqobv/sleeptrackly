@@ -1,6 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
+import { env } from '@/env';
 import { Item } from '@/types/customization/item/item.types';
 import { Product } from '@/types/customization/product/product.types';
 import styles from './ItemCard.module.scss';
@@ -32,7 +33,7 @@ export const ItemCard = ({ product, actions }: ItemCardProps) => {
 			<div className={styles.media}>
 				{isItemImage && (finalProduct as Item).isAnimated ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
+						src={`${env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
 						loop
 						autoPlay
 						muted

@@ -10,7 +10,6 @@ import { Authorized } from '@libs/decorators/authorized.decorator';
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
-import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -20,9 +19,9 @@ import {
 	Post,
 	Res,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
+import { CookieService } from '../cookie/cookie.service';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { SendEmailDto } from './dto/send-email.dto';
 import { PasswordRecoveryService } from './password-recovery.service';
@@ -32,7 +31,7 @@ import { PasswordRecoveryService } from './password-recovery.service';
 export class PasswordRecoveryController {
 	constructor(
 		private readonly passwordRecoveryService: PasswordRecoveryService,
-		private readonly configService: ConfigService,
+		private readonly cookieService: CookieService,
 	) {}
 
 	/** Send email for reset password */
@@ -75,7 +74,7 @@ export class PasswordRecoveryController {
 		const { accessToken, refreshToken } =
 			await this.passwordRecoveryService.resetPassword(dto, clientInfo);
 
-		setAuthCookies(res, accessToken, refreshToken, this.configService);
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
 		return SUCCESS_MESSAGES.PASSWORD_RECOVERY.RESET_SUCCESS;
 	}

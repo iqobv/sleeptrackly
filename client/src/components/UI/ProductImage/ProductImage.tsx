@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import { Item } from '@/types/item/item.types';
 import { Product } from '@/types/product/product.types';
 import { ProductType } from '@shared/types';
@@ -10,7 +11,7 @@ interface ProductImageProps {
 	height?: number;
 }
 
-const CDN_URL = process.env.NEXT_PUBLIC_CDN_URL;
+const CDN_URL = env.NEXT_PUBLIC_CDN_URL;
 
 export const ProductImage = ({ product, height, width }: ProductImageProps) => {
 	const key = product.type === ProductType.ITEM ? product.item : product.bundle;

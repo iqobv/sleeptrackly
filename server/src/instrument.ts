@@ -1,10 +1,11 @@
-import { IS_DEV_ENV } from '@libs/utils/is-dev.util';
+import { validate } from '@config/env.validation';
+import { IS_PROD_ENV } from '@libs/utils/is-dev.util';
 import * as Sentry from '@sentry/nestjs';
 
-const isProd = !IS_DEV_ENV;
+const config = validate(process.env);
 
 Sentry.init({
-	dsn: process.env.SENTRY_DNS,
+	dsn: config.SENTRY_DNS,
 	sendDefaultPii: true,
-	enabled: isProd,
+	enabled: IS_PROD_ENV,
 });

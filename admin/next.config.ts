@@ -1,4 +1,5 @@
 import type { NextConfig } from 'next';
+import './src/env';
 
 const nextConfig: NextConfig = {
 	images: {
@@ -22,6 +23,8 @@ const nextConfig: NextConfig = {
 		'@shared/utils',
 		'@shared/types',
 		'@shared/hooks',
+		'@shared/tables',
+		'@shared/forms',
 	],
 };
 

@@ -10,7 +10,6 @@ import { Authorized } from '@libs/decorators/authorized.decorator';
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
-import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -22,10 +21,10 @@ import {
 	Res,
 	Sse,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import type { Response } from 'express';
 import { Observable } from 'rxjs';
+import { CookieService } from '../cookie/cookie.service';
 import { QrIdDto } from './dto/qr-id.dto';
 import { QrStatusDto } from './dto/qr-status.dto';
 import { QrLoginService } from './qr-login.service';
@@ -36,7 +35,7 @@ import { QrSseEvent } from './types/qr-sse.types';
 export class QrLoginController {
 	constructor(
 		private readonly qrLoginService: QrLoginService,
-		private readonly configService: ConfigService,
+		private readonly cookieService: CookieService,
 	) {}
 
 	/**
@@ -94,7 +93,7 @@ export class QrLoginController {
 
 		if (status === 'success') {
 			if (accessToken && refreshToken) {
-				setAuthCookies(res, accessToken, refreshToken, this.configService);
+				this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 			}
 
 			return { status: 'success' };

@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import { Avatar } from '@shared/ui';
 
 interface UserAvatarProps {
@@ -11,7 +12,7 @@ export const UserAvatar = ({
 	size = 40,
 	isAnimated,
 }: UserAvatarProps) => {
-	const cdnUrl = process.env.NEXT_PUBLIC_CDN_URL as string;
+	const cdnUrl = env.NEXT_PUBLIC_CDN_URL;
 	const path = avatarPath || 'defaults/default-avatar.png';
 	const fullSrc = `${cdnUrl}/${path}`;
 

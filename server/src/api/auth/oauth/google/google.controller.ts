@@ -1,11 +1,12 @@
+import { CookieService } from '@api/auth/cookie/cookie.service';
 import { GoogleAuth } from '@api/auth/decorators/google-auth.decorator';
 import { OAuthDto } from '@api/auth/dto/o-auth.dto';
+import { EnvService } from '@infra/env/env.service';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { ApiSuccessResponse } from '@libs/decorators/api-response.decorator';
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
-import { setAuthCookies } from '@libs/utils/cookie.util';
 import {
 	Body,
 	Controller,
@@ -18,7 +19,6 @@ import {
 	Req,
 	Res,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import type { Request, Response } from 'express';
 import { AuthService } from '../../auth.service';
@@ -32,13 +32,12 @@ export class GoogleController {
 
 	constructor(
 		private readonly googleService: GoogleService,
-		private readonly configService: ConfigService,
 		@Inject(forwardRef(() => AuthService))
 		private readonly authService: AuthService,
+		private readonly cookieService: CookieService,
+		private readonly envService: EnvService,
 	) {
-		this.targetOrigin = this.configService.getOrThrow<string>(
-			'OAUTH_REDIRECT_ORIGIN',
-		);
+		this.targetOrigin = envService.get('OAUTH_REDIRECT_ORIGIN');
 	}
 
 	/** Initiate Google OAuth flow */
@@ -59,7 +58,7 @@ export class GoogleController {
 		const { accessToken, refreshToken } =
 			await this.authService.validateOAuthLogin(user, clientInfo);
 
-		setAuthCookies(res, accessToken, refreshToken, this.configService);
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
 		res.send(`
 			<script>
@@ -83,7 +82,7 @@ export class GoogleController {
 		const { accessToken, refreshToken } =
 			await this.googleService.verifyOneTapToken(dto.credential, clientInfo);
 
-		setAuthCookies(res, accessToken, refreshToken, this.configService);
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
 		return SUCCESS_MESSAGES.AUTH.GOOGLE_ONE_TAP_LOGIN_SUCCESS;
 	}

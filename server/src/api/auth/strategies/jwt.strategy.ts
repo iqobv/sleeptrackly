@@ -1,8 +1,8 @@
+import { EnvService } from '@infra/env/env.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { JwtPayload } from '@libs/types/jwt-payload.types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import type { Request } from 'express';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -10,8 +10,8 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 	constructor(
-		private readonly configService: ConfigService,
 		private readonly prismaService: PrismaService,
+		private readonly envService: EnvService,
 	) {
 		super({
 			jwtFromRequest: ExtractJwt.fromExtractors([
@@ -20,7 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 					return token || null;
 				},
 			]),
-			secretOrKey: configService.getOrThrow<string>('JWT_ACCESS_SECRET'),
+			secretOrKey: envService.get('JWT_ACCESS_SECRET'),
 		});
 	}
 

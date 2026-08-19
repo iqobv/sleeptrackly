@@ -1,3 +1,4 @@
+import { validate } from '@config/env.validation';
 import { Prisma, PrismaClient } from '@generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import dayjs from 'dayjs';
@@ -9,8 +10,10 @@ import { Pool } from 'pg';
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
 
-const connectionString = process.env.POSTGRES_URI;
-const caCert = process.env.DB_CA_CERT;
+const config = validate(process.env);
+
+const connectionString = config.POSTGRES_URI;
+const caCert = config.DB_CA_CERT_BASE64;
 
 if (!connectionString) {
 	throw new Error(
@@ -30,7 +33,7 @@ const pool = new Pool({
 	connectionString: cleanConnectionString,
 	// ssl: false,
 	ssl: {
-		ca: caCert.replace(/\\n/g, '\n'),
+		ca: caCert,
 		rejectUnauthorized: true,
 	},
 });

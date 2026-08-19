@@ -9,7 +9,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { ChallengeTemplatesTable } from './ChallengeTemplatesTable/ChallengeTemplatesTable';
 import { ChallengeTemplatesTableFilters } from './ChallengeTemplatesTable/ChallengeTemplatesTableFilters';
-import { ChallengeTemplatesTableFiltersLoader } from './ChallengeTemplatesTable/ChallengeTemplatesTableFiltersLoader';
 import { useChallengeTemplatesFilters } from './useChallengeTemplatesFilters.hook';
 
 export const AllChallengeTemplates = () => {
@@ -34,7 +33,6 @@ export const AllChallengeTemplates = () => {
 			href={PAGES.CHALLENGE_TEMPLATE_NEW}
 		>
 			<ChallengeTemplatesTableFilters />
-			<ChallengeTemplatesTableFiltersLoader />
 			{data && data.meta.total > 0 && (
 				<ChallengeTemplatesTable
 					templates={data.items}

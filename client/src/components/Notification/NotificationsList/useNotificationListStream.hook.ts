@@ -1,12 +1,13 @@
 'use client';
 
+import { env } from '@/env';
 import { SseSignalPayload } from '@/types/api/sseSignalPayload.types';
 import { useEffect } from 'react';
 
 export const useNotificationStream = (refetch: () => void) => {
 	useEffect(() => {
 		const eventSource = new EventSource(
-			`${process.env.NEXT_PUBLIC_API_URL}/v1/notifications/me/stream`,
+			`${env.NEXT_PUBLIC_API_URL}/v1/notifications/me/stream`,
 			{
 				withCredentials: true,
 			},

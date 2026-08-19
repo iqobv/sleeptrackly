@@ -1,4 +1,5 @@
 import { TokensDto } from '@api/auth/dto/tokens.dto';
+import { EnvService } from '@infra/env/env.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import {
@@ -7,7 +8,6 @@ import {
 	Injectable,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { OAuth2Client } from 'google-auth-library';
 import { AuthService } from '../../auth.service';
 
@@ -19,10 +19,9 @@ export class GoogleService {
 	constructor(
 		@Inject(forwardRef(() => AuthService))
 		private readonly authService: AuthService,
-		private readonly configService: ConfigService,
+		private readonly envService: EnvService,
 	) {
-		this.googleClientId =
-			this.configService.getOrThrow<string>('GOOGLE_CLIENT_ID');
+		this.googleClientId = envService.get('GOOGLE_CLIENT_ID');
 		this.googleClient = new OAuth2Client(this.googleClientId);
 	}
 

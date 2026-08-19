@@ -8,6 +8,7 @@ import {
 } from '@api/user/dto/user-response.dto';
 import { UserService } from '@api/user/services/user.service';
 import { Prisma } from '@generated/prisma/client';
+import { EnvService } from '@infra/env/env.service';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -23,7 +24,6 @@ import {
 	Injectable,
 	UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
 import { LoginServiceResponseDto } from './dto/login-response.dto';
@@ -39,7 +39,6 @@ export class AuthService {
 
 	constructor(
 		private readonly userService: UserService,
-		private readonly configService: ConfigService,
 		private readonly userProviderService: UserProviderService,
 		private readonly userAvatarService: UserAvatarService,
 		private readonly emailConfirmationService: EmailConfirmationService,
@@ -47,9 +46,9 @@ export class AuthService {
 		private readonly jwtService: JwtService,
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
+		private readonly envService: EnvService,
 	) {
-		this.JWT_ACCESS_SECRET =
-			this.configService.getOrThrow<string>('JWT_ACCESS_SECRET');
+		this.JWT_ACCESS_SECRET = envService.get('JWT_ACCESS_SECRET');
 	}
 
 	public async validateUser(

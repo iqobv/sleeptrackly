@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@/env';
 import { InventoryItem } from '@/types/inventory/inventory.types';
 import { ItemType } from '@/types/item/itemType.types';
 import { Button } from '@shared/ui';
@@ -12,6 +13,8 @@ interface InventoryListItemProps {
 	onEquip: () => void;
 }
 
+const cdnUrl = env.NEXT_PUBLIC_CDN_URL;
+
 export const InventoryListItem = ({
 	item,
 	onEquip,
@@ -23,7 +26,7 @@ export const InventoryListItem = ({
 			<div className={styles.imageContainer}>
 				{item.item.type === ItemType.ANIMATED_AVATAR ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.item.mediaUrl}`}
+						src={`${cdnUrl}/${item.item.mediaUrl}`}
 						loop
 						autoPlay
 						muted
@@ -33,7 +36,7 @@ export const InventoryListItem = ({
 					/>
 				) : (
 					<Image
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${item.item.mediaUrl}`}
+						src={`${cdnUrl}/${item.item.mediaUrl}`}
 						alt={item.item.translation.name}
 						width={150}
 						height={150}

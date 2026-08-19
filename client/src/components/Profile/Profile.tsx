@@ -2,6 +2,7 @@
 
 import { getProfile } from '@/api/profile/profile.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { env } from '@/env';
 import { useQuery } from '@tanstack/react-query';
 import styles from './Profile.module.scss';
 import { ProfileMainInfo } from './ProfileMainInfo/ProfileMainInfo';
@@ -30,7 +31,7 @@ export const Profile = ({ username }: ProfileProps) => {
 			style={
 				backgroundItem
 					? {
-							backgroundImage: `url(${process.env.NEXT_PUBLIC_CDN_URL}/${backgroundItem.item.mediaUrl})`,
+							backgroundImage: `url(${env.NEXT_PUBLIC_CDN_URL}/${backgroundItem.item.mediaUrl})`,
 						}
 					: {}
 			}
