@@ -35,7 +35,7 @@ jobs:
 
       - name: Load Mock Env
         run: cp .env.mock .env
-        working-directory: apps/${{ matrix.app }}
+        working-directory: ${{ matrix.app }}
 
       - name: Generate Prisma Client
         if: ${{ matrix.app == 'server' }}
