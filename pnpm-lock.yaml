@@ -61,7 +61,7 @@ catalogs:
       specifier: ^17.4.0
       version: 17.11.0
     next:
-      specifier: ^16.2.2
+      specifier: ^16.2.11
       version: 16.3.1
     next-themes:
       specifier: ^0.4.6
