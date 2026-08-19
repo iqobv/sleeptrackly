@@ -1,5 +1,6 @@
 'use client';
 
+import { env } from '@/env';
 import { useNavMenuStore } from '@/store/navMenu.store';
 import { useMounted } from '@shared/hooks';
 import { Button } from '@shared/ui';
@@ -31,7 +32,7 @@ export const Header = () => {
 					)}
 				</Button>
 				<Button variant="outlined" asChild>
-					<Link href={process.env.NEXT_PUBLIC_SITE_URL!} prefetch={false}>
+					<Link href={env.NEXT_PUBLIC_SITE_URL} prefetch={false}>
 						Open Site
 					</Link>
 				</Button>

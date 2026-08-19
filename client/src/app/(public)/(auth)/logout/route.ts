@@ -1,4 +1,5 @@
 import { AUTH_PAGES } from '@/config/authPages.config';
+import { env } from '@/env';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
 	let backendSetCookies: string[] = [];
 
 	try {
-		const apiResponse = await fetch(`${process.env.API_URL}/v1/auth/logout`, {
+		const apiResponse = await fetch(`${env.API_URL}/v1/auth/logout`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

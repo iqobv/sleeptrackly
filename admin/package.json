@@ -17,6 +17,7 @@
 		"@shared/types": "workspace:",
 		"@shared/ui": "workspace:",
 		"@shared/utils": "workspace:",
+		"@t3-oss/env-nextjs": "catalog:",
 		"@tanstack/react-query": "catalog:",
 		"axios": "catalog:",
 		"clsx": "catalog:",

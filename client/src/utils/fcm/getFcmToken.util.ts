@@ -1,4 +1,5 @@
-import { getToken } from 'firebase/messaging';
+import { env } from '@/env';
+import { register } from 'firebase/messaging';
 import { getFirebaseMessaging } from '../firabase.util';
 import { ensureSw } from './ensureSw.util';
 
@@ -9,8 +10,8 @@ export const getFcmToken = async () => {
 	const reg = await ensureSw();
 	if (!reg) return null;
 
-	return getToken(messaging, {
-		vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+	return register(messaging, {
+		vapidKey: env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
 		serviceWorkerRegistration: reg,
 	});
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
+import { env } from '@/env';
 import { Field, Input } from '@shared/ui';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -52,7 +53,7 @@ export const FileForm = <T extends FieldValues>({
 				<>
 					{isAnimated ? (
 						<video width={width} height={height} muted autoPlay loop>
-							<source src={`${process.env.NEXT_PUBLIC_CDN_URL}${mediaUrl}`} />
+							<source src={`${env.NEXT_PUBLIC_CDN_URL}${mediaUrl}`} />
 							Your browser does not support the video tag.
 						</video>
 					) : (

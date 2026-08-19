@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AUTH_PAGES } from './config/authPages.config';
 import { PRIVATE_PAGES } from './config/privatePages.config';
+import { env } from './env';
 
 export async function proxy(request: NextRequest) {
 	const ip =
@@ -18,19 +19,16 @@ export async function proxy(request: NextRequest) {
 
 	if (!accessToken && refreshToken) {
 		try {
-			const res = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
-				{
-					method: 'POST',
-					headers: {
-						Cookie: `refreshToken=${refreshToken}`,
-						'X-Forwarded-For': ip,
-						'User-Agent': userAgent,
-						'Content-Type': 'application/json',
-					},
-					cache: 'no-store',
+			const res = await fetch(`${env.API_URL}/v1/auth/refresh`, {
+				method: 'POST',
+				headers: {
+					Cookie: `refreshToken=${refreshToken}`,
+					'X-Forwarded-For': ip,
+					'User-Agent': userAgent,
+					'Content-Type': 'application/json',
 				},
-			);
+				cache: 'no-store',
+			});
 
 			if (res.ok) {
 				isAuthenticated = true;

@@ -1,8 +1,9 @@
 import { UserRole } from '@shared/types';
 import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
+import { env } from './env';
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
+const JWT_SECRET = new TextEncoder().encode(env.JWT_SECRET);
 
 interface JwtPayload {
 	id: string;
@@ -42,17 +43,14 @@ export async function proxy(request: NextRequest) {
 
 	if (!isAuthenticated && refreshToken) {
 		try {
-			const res = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
-				{
-					method: 'POST',
-					headers: {
-						Cookie: `refreshToken=${refreshToken}`,
-						'Content-Type': 'application/json',
-					},
-					cache: 'no-store',
+			const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`, {
+				method: 'POST',
+				headers: {
+					Cookie: `refreshToken=${refreshToken}`,
+					'Content-Type': 'application/json',
 				},
-			);
+				cache: 'no-store',
+			});
 
 			if (res.ok) {
 				isAuthenticated = true;
@@ -91,7 +89,7 @@ export async function proxy(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+		const siteUrl = env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 		const response = NextResponse.redirect(new URL(siteUrl));
 
 		if (!isAuthenticated) {

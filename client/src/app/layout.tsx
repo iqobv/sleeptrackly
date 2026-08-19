@@ -1,4 +1,5 @@
 import { TermlyCMP } from '@/components/TermlyCMP';
+import { env } from '@/env';
 import { MainProvider } from '@/providers/MainProvider';
 import '@shared/ui/styles/global.scss';
 import { Analytics } from '@vercel/analytics/next';
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 	description: 'Sleep Tracker',
 };
 
-const WEBSITE_UUID = process.env.WEBSITE_UUID;
+const WEBSITE_UUID = env.WEBSITE_UUID;
 
 export default async function RootLayout({
 	children,

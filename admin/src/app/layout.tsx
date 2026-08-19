@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import { MainProvider } from '@/providers/MainProvider';
 import '@shared/tables/styles/index.css';
 import { User } from '@shared/types';
@@ -19,6 +20,8 @@ export const metadata: Metadata = {
 	},
 };
 
+const url = env.API_URL;
+
 export default async function RootLayout({
 	children,
 }: Readonly<{
@@ -31,7 +34,7 @@ export default async function RootLayout({
 	let user = null;
 
 	const getUser = async () => {
-		const res = await fetch(`${process.env.API_URL}/v1/auth/me`, {
+		const res = await fetch(`${url}/v1/auth/me`, {
 			headers: {
 				'Content-Type': 'application/json',
 				cookie: allCookies,
@@ -49,7 +52,7 @@ export default async function RootLayout({
 		if (res?.id && res.role === 'ADMIN') {
 			user = res;
 		} else {
-			await fetch(`${process.env.API_URL}/v1/auth/logout`, {
+			await fetch(`${url}/v1/auth/logout`, {
 				headers: {
 					'Content-Type': 'application/json',
 					cookie: allCookies,

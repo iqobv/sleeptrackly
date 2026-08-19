@@ -2,6 +2,7 @@
 
 import { getQrStatus, initiateQrCode } from '@/api/auth/qr.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { env } from '@/env';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -55,7 +56,7 @@ export const useQrCodeModal = () => {
 		);
 
 		const eventSource = new EventSource(
-			`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/qr/stream?qrId=${qrId}`,
+			`${env.NEXT_PUBLIC_API_URL}/v1/auth/qr/stream?qrId=${qrId}`,
 		);
 
 		eventSource.addEventListener(

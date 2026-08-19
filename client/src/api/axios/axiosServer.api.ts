@@ -1,13 +1,16 @@
 'use server';
 
 import { AUTH_PAGES } from '@/config/authPages.config';
+import { env } from '@/env';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
+const url = env.NEXT_PUBLIC_API_URL;
+
 const apiServer = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	baseURL: url,
 	withCredentials: true,
 });
 

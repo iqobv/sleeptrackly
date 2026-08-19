@@ -2,6 +2,7 @@
 
 import { CDNImage } from '@/components/UI';
 import { PAGES } from '@/config/pages.config';
+import { env } from '@/env';
 import { Product } from '@/types/customization/product/product.types';
 import { Button } from '@shared/ui';
 import Link from 'next/link';
@@ -23,7 +24,7 @@ export const ProductCard = ({ product, children }: ProductCardProps) => {
 			<div className={styles.media}>
 				{product.item?.isAnimated ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${product.item.mediaUrl}`}
+						src={`${env.NEXT_PUBLIC_CDN_URL}/${product.item.mediaUrl}`}
 						loop
 						autoPlay
 						muted

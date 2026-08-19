@@ -1,12 +1,13 @@
 'use server';
 
+import { env } from '@/env';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 const apiServer = axios.create({
-	baseURL: process.env.NEXT_PUBLIC_API_URL,
+	baseURL: env.NEXT_PUBLIC_API_URL,
 	withCredentials: true,
 });
 
@@ -30,7 +31,7 @@ apiServer.interceptors.response.use(
 	(response) => response,
 	(error: AxiosError<MessageApiResponse>) => {
 		if (error.response?.status === 401) {
-			redirect(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
+			redirect(env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000');
 		}
 
 		if (error.response?.data?.message) {
