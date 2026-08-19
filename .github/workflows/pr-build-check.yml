@@ -20,6 +20,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v7
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
       - name: Install pnpm
         uses: pnpm/setup@v2
         with:
@@ -27,6 +32,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma Client
+        if: ${{ matrix.app == 'server' }}
+        run: pnpm --filter server exec prisma generate
+
+      - name: Load Mock Env
+        if: ${{ matrix.app != 'server' }}
+        run: cp .env.mock .env
+        working-directory: apps/${{ matrix.app }}
 
       - name: Build ${{ matrix.app }}
         run: pnpm --filter ${{ matrix.app }} build
