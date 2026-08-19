@@ -33,14 +33,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Load Mock Env
+        run: cp .env.mock .env
+        working-directory: apps/${{ matrix.app }}
+
       - name: Generate Prisma Client
         if: ${{ matrix.app == 'server' }}
         run: pnpm --filter server exec prisma generate
-
-      - name: Load Mock Env
-        if: ${{ matrix.app != 'server' }}
-        run: cp .env.mock .env
-        working-directory: apps/${{ matrix.app }}
 
       - name: Build ${{ matrix.app }}
         run: pnpm --filter ${{ matrix.app }} build
