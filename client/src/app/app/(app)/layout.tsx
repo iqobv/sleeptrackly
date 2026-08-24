@@ -1,9 +1,9 @@
-import { MainHeader } from '@/components/Layout/Header/MainHeader/MainHeader';
+import { DashboardHeader } from '@/components/Layout/Header/DashboardHeader/DashboardHeader';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<>
-			<MainHeader />
+			<DashboardHeader />
 			<main>{children}</main>
 		</>
 	);

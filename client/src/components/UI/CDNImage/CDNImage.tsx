@@ -10,7 +10,5 @@ export const CDNImage = ({ path, ...props }: CDNImageProps) => {
 	const cleanPath = path.startsWith('/') ? path.slice(1) : path;
 	const fullSrc = `${cdnUrl}/${cleanPath}`;
 
-	console.log(cdnUrl, fullSrc);
-
 	return <BaseImage src={fullSrc} {...props} />;
 };

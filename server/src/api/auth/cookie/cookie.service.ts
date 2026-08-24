@@ -11,8 +11,11 @@ export class CookieService {
 	private getCookieOptions(maxAge: StringValue | number): CookieOptions {
 		const config = this.envService.getGroup(authEnvSchema);
 
+		const domain =
+			config.COOKIE_DOMAIN === 'localhost' ? undefined : config.COOKIE_DOMAIN;
+
 		return {
-			domain: config.COOKIE_DOMAIN,
+			domain,
 			maxAge: typeof maxAge === 'string' ? ms(maxAge) : maxAge,
 			httpOnly: config.COOKIE_HTTP_ONLY,
 			secure: config.COOKIE_SECURE,

@@ -1,10 +1,11 @@
 'use server';
 
 import { AUTH_PAGES } from '@/config/authPages.config';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import { env } from '@/env';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 const url = env.NEXT_PUBLIC_API_URL;
@@ -32,7 +33,7 @@ apiServer.interceptors.request.use(
 
 apiServer.interceptors.response.use(
 	(response) => response,
-	(error: AxiosError<MessageApiResponse>) => {
+	async (error: AxiosError<MessageApiResponse>) => {
 		const requestUrl = error.config?.url || '';
 
 		const isAuthEndpoint = Object.values(AUTH_PAGES).some((path) =>
@@ -40,7 +41,20 @@ apiServer.interceptors.response.use(
 		);
 
 		if (error.response?.status === 401 && !isAuthEndpoint) {
-			redirect(AUTH_PAGES.LOGIN);
+			let callbackUrl = '';
+
+			try {
+				const headersList = await headers();
+				const currentPath = headersList.get('x-current-path');
+
+				if (currentPath) {
+					callbackUrl = `?callbackUrl=${encodeURIComponent(currentPath)}`;
+				}
+			} catch (error) {
+				void error;
+			}
+
+			redirect(`${CROSS_DOMAIN_ROUTES.APP_LOGIN}${callbackUrl}`);
 		}
 
 		if (error.response?.data?.message) {

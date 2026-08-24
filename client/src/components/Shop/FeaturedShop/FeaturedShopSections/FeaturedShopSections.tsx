@@ -15,10 +15,14 @@ interface FeaturedShopSectionsProps {
 export const FeaturedShopSections = ({
 	sections,
 }: FeaturedShopSectionsProps) => {
+	if (!sections || !Array.isArray(sections)) {
+		return null;
+	}
+
 	return (
 		<div className={styles.sections}>
 			{sections.map((s) => {
-				const section = FEATURED_SHOP_SECTIONS_ITEMS.find(
+				const section = FEATURED_SHOP_SECTIONS_ITEMS?.find(
 					(item) => item.type === s.itemType,
 				);
 
@@ -40,7 +44,7 @@ export const FeaturedShopSections = ({
 							oneColumnOnMobile={false}
 							columns="repeat(auto-fit, minmax(250px, 1fr))"
 						>
-							{s.items.map((item) => (
+							{s?.items?.map((item) => (
 								<GridItem key={item.id}>
 									<ShopCard product={item} />
 								</GridItem>

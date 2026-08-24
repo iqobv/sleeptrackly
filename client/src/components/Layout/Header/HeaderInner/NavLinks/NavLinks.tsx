@@ -2,10 +2,12 @@
 
 import { useAuth } from '@/hooks/useAuth.hook';
 import { List } from '@shared/ui';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LINKS } from './links';
 import styles from './NavLinks.module.scss';
+import { NavLinksLoader } from './NavLinksLoader';
 
 interface NavLinksProps {
 	closeMenu?: () => void;
@@ -18,26 +20,21 @@ export const NavLinks = ({
 	className,
 	rowDirectionOnLg = false,
 }: NavLinksProps) => {
-	const { user } = useAuth();
+	const { user, isLoading } = useAuth();
 	const pathname = usePathname();
 
-	if (!user && LINKS.some((link) => link.isAuth)) {
-		return null;
-	}
-
-	const listClassNames = [
-		styles.list,
-		rowDirectionOnLg ? styles.lg : '',
-		className,
-	]
-		.filter(Boolean)
-		.join(' ')
-		.trim();
+	if (isLoading)
+		return (
+			<NavLinksLoader
+				rowDirectionOnLg={rowDirectionOnLg}
+				className={className}
+			/>
+		);
 
 	return (
 		<List
 			items={LINKS}
-			className={listClassNames}
+			className={clsx(styles.list, rowDirectionOnLg && styles.lg, className)}
 			listComponent="ul"
 			gap={20}
 			renderItem={(link) => {
@@ -47,9 +44,10 @@ export const NavLinks = ({
 					<li key={link.name} className={styles.item}>
 						<Link
 							href={link.path}
-							className={`${styles.link} ${
-								pathname.startsWith(link.path) ? styles.active : ''
-							}`}
+							className={clsx(
+								styles.link,
+								pathname.startsWith(link.path) && styles.active,
+							)}
 							onClick={closeMenu}
 						>
 							{link.label}

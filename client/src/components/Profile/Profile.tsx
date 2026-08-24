@@ -3,7 +3,7 @@
 import { getProfile } from '@/api/profile/profile.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { env } from '@/env';
-import { useQuery } from '@tanstack/react-query';
+import { skipToken, useQuery } from '@tanstack/react-query';
 import styles from './Profile.module.scss';
 import { ProfileMainInfo } from './ProfileMainInfo/ProfileMainInfo';
 import { ProfileSkeleton } from './ProfileSkeleton/ProfileSkeleton';
@@ -15,9 +15,8 @@ interface ProfileProps {
 
 export const Profile = ({ username }: ProfileProps) => {
 	const { data, isLoading } = useQuery({
-		queryFn: () => getProfile(username),
+		queryFn: username ? () => getProfile(username) : skipToken,
 		queryKey: QUERY_KEYS.profile.username(username),
-		enabled: !!username,
 		retry: false,
 	});
 

@@ -1,4 +1,3 @@
-import { PAGES } from '@/config/pages.config';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { User } from '@/types/user/user.types';
 import { IconBaseProps } from 'react-icons';
@@ -25,7 +24,7 @@ export const USER_MAIN_LINKS = (user: User): Link[] => [
 	{
 		name: 'profile',
 		label: 'Profile',
-		path: PAGES.PROFILE(user.username),
+		path: PRIVATE_PAGES.PROFILE(user.username),
 		icon: <MdOutlinePerson {...iconProps} />,
 	},
 	{

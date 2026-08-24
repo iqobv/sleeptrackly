@@ -2,6 +2,7 @@
 
 import { NavLogo } from '@/components/UI';
 import { Breakpoint } from '@/types/ui/breakpoint.types';
+import clsx from 'clsx';
 import { MenuButton } from '../MenuButton/MenuButton';
 import styles from './NavContainer.module.scss';
 import { NavMenu } from './NavMenu/NavMenu';
@@ -49,7 +50,7 @@ export const NavContainer = ({
 					)}
 				</>
 			)}
-			<div className={`${styles.container} ${className || ''}`}>{children}</div>
+			<div className={clsx(styles.container, className)}>{children}</div>
 			{withMenu && show && !renderLogoInsteadOfMenu && (
 				<NavMenu
 					isOpen={isOpen}

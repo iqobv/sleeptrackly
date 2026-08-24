@@ -2,20 +2,22 @@
 
 import { NotificationsButton } from '@/components/Notification/NotificationsButton/NotificationsButton';
 import { UserAvatar } from '@/components/UI';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Dropdown, DropdownTrigger } from '@shared/ui';
 import styles from './UserMenu.module.scss';
 import { UserMenuDropdown } from './UserMenuDropdown/UserMenuDropdown';
-import { useUserMenu } from './useUserMenu';
+import { UserMenuLoader } from './UserMenuLoader';
 
 export const UserMenu = () => {
-	const { user, handleLogout } = useUserMenu();
+	const { logout, user, isLoading } = useAuth();
+
+	if (isLoading && !user) return <UserMenuLoader />;
+	if (!user) return null;
 
 	const avatar =
-		user?.equippedItems.find(
+		user.equippedItems?.find(
 			(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
 		) || null;
-
-	if (!user) return null;
 
 	return (
 		<div className={styles.controls}>
@@ -30,7 +32,7 @@ export const UserMenu = () => {
 						/>
 					</button>
 				</DropdownTrigger>
-				<UserMenuDropdown handleLogout={handleLogout} user={user} />
+				<UserMenuDropdown handleLogout={logout} user={user} />
 			</Dropdown>
 		</div>
 	);

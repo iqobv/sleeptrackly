@@ -20,6 +20,7 @@ interface FeaturedShopCarouselBuyButtonProps {
 	productId: string;
 	basePrice: number;
 	expiresAt: Date | null;
+	isOwned?: boolean;
 }
 
 export const FeaturedShopCarouselBuyButton = ({
@@ -29,6 +30,7 @@ export const FeaturedShopCarouselBuyButton = ({
 	discountPercentage,
 	basePrice,
 	expiresAt,
+	isOwned,
 }: FeaturedShopCarouselBuyButtonProps) => {
 	const queryClient = useQueryClient();
 
@@ -68,22 +70,28 @@ export const FeaturedShopCarouselBuyButton = ({
 	return (
 		<div className={styles.container}>
 			<div className={styles.content}>
-				<Button
-					onClick={handleClick}
-					loading={isPending}
-					className={styles.buyButton}
-				>
-					Buy Now |{' '}
-					<div className={styles.info}>
-						<span className={styles.price}>
-							{formatNumber(basePrice || price)}
-						</span>
-						<span className={styles.discountedPrice}>
-							{formatNumber(discountedPrice || price)}
-						</span>
-					</div>
-					<Coin width={26} height={26} />
-				</Button>
+				{isOwned ? (
+					<Button disabled className={styles.buyButton}>
+						Owned
+					</Button>
+				) : (
+					<Button
+						onClick={handleClick}
+						loading={isPending}
+						className={styles.buyButton}
+					>
+						Buy Now |{' '}
+						<div className={styles.info}>
+							<span className={styles.price}>
+								{formatNumber(basePrice || price)}
+							</span>
+							<span className={styles.discountedPrice}>
+								{formatNumber(discountedPrice || price)}
+							</span>
+						</div>
+						<Coin width={26} height={26} />
+					</Button>
+				)}
 				{expiresAt && (
 					<FeaturedShopCarouselCountdown endDate={new Date(expiresAt)} />
 				)}

@@ -30,6 +30,9 @@ export const env = createEnv({
 		NEXT_PUBLIC_FIREBASE_VAPID_KEY: z
 			.string()
 			.nonempty('NEXT_PUBLIC_FIREBASE_VAPID_KEY is required'),
+		NEXT_PUBLIC_ROOT_DOMAIN: z
+			.string()
+			.nonempty('NEXT_PUBLIC_ROOT_DOMAIN is required'),
 	},
 	runtimeEnv: {
 		API_URL: process.env.API_URL,
@@ -47,5 +50,6 @@ export const env = createEnv({
 			process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 		NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 		NEXT_PUBLIC_FIREBASE_VAPID_KEY: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+		NEXT_PUBLIC_ROOT_DOMAIN: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
 	},
 });

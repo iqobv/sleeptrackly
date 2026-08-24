@@ -1,9 +1,9 @@
 import { NavLogo } from '@/components/UI';
 import { Header } from '../Header';
-import { AuthButtons } from '../HeaderInner/AuthButtons/AuthButtons';
 import { NavContainer } from '../HeaderInner/NavContainer/NavContainer';
 import { NavLinks } from '../HeaderInner/NavLinks/NavLinks';
 import { ShopBalance } from '../HeaderInner/ShopBalance/ShopBalance';
+import { UserMenu } from '../HeaderInner/UserMenu/UserMenu';
 import styles from './ShopHeader.module.scss';
 
 export const ShopHeader = () => (
@@ -22,7 +22,7 @@ export const ShopHeader = () => (
 			</nav>
 			<div className={styles.auth}>
 				<ShopBalance />
-				<AuthButtons />
+				<UserMenu />
 			</div>
 		</NavContainer>
 	</Header>

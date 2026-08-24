@@ -2,6 +2,7 @@
 
 import { registerWithPassword } from '@/api/auth/auth.api';
 import { AUTH_PAGES } from '@/config/authPages.config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
 import { useAuth } from '@/hooks/useAuth.hook';
 import { AuthField } from '@/types/auth/authField.types';
@@ -10,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import {
 	DefaultValues,
@@ -54,6 +55,7 @@ export const AuthForm = <T extends FieldValues, R>({
 
 	const { setUser } = useAuth();
 	const router = useRouter();
+	const searchParams = useSearchParams();
 
 	const resolver = schema ? zodResolver(schema) : undefined;
 
@@ -69,6 +71,12 @@ export const AuthForm = <T extends FieldValues, R>({
 		resolver,
 		defaultValues,
 	});
+
+	const handleLoginSuccess = () => {
+		const callbackUrl =
+			searchParams.get('callbackUrl') || PRIVATE_PAGES.DASHBOARD;
+		window.location.href = callbackUrl;
+	};
 
 	const { mutate, isPending } = useMutation({
 		mutationFn,
@@ -88,7 +96,7 @@ export const AuthForm = <T extends FieldValues, R>({
 				reset();
 				onSuccess?.(data);
 				setUser(data as User);
-				router.refresh();
+				handleLoginSuccess();
 			}
 		},
 		onError: (error) => {

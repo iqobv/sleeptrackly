@@ -3,7 +3,7 @@ import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.int
 
 export const getCorsConfig = (config: AppConfig): CorsOptions => {
 	return {
-		origin: config.ALLOWED_ORIGIN,
+		origin: [config.MAIN_URL, config.APP_URL, config.ADMIN_URL],
 		credentials: true,
 		allowedHeaders: [
 			'Content-Type',

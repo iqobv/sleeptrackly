@@ -1,36 +1,18 @@
 'use client';
 
-import { AUTH_PAGES } from '@/config/authPages.config';
-import { useAuth } from '@/hooks/useAuth.hook';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import { Button } from '@shared/ui';
-import Link from 'next/link';
-import { UserMenu } from '../UserMenu/UserMenu';
 import styles from './AuthButtons.module.scss';
-import { AuthButtonsLoader } from './AuthButtonsLoader';
 
 export const AuthButtons = () => {
-	const { user, isLoading } = useAuth();
-
 	return (
 		<div className={styles.authButtons}>
-			{isLoading ? (
-				<AuthButtonsLoader />
-			) : (
-				<>
-					{user ? (
-						<UserMenu />
-					) : (
-						<>
-							<Button variant="link" color="primary" asChild>
-								<Link href={AUTH_PAGES.LOGIN}>Login</Link>
-							</Button>
-							<Button asChild>
-								<Link href={AUTH_PAGES.REGISTER}>Register</Link>
-							</Button>
-						</>
-					)}
-				</>
-			)}
+			<Button variant="link" color="primary" asChild>
+				<a href={CROSS_DOMAIN_ROUTES.APP_LOGIN}>Login</a>
+			</Button>
+			<Button asChild>
+				<a href={CROSS_DOMAIN_ROUTES.APP_REGISTER}>Register</a>
+			</Button>
 		</div>
 	);
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import { UserAvatar } from '@/components/UI';
-import { PAGES } from '@/config/pages.config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { Friend } from '@/types/friend/friend.types';
 import Link from 'next/link';
 import styles from './FriendItemInfo.module.scss';
@@ -17,7 +17,7 @@ export const FriendItemInfo = ({ friend }: FriendItemProps) => {
 			<div>
 				<Link
 					className={styles.username}
-					href={PAGES.PROFILE(friend.user.username)}
+					href={PRIVATE_PAGES.PROFILE(friend.user.username)}
 				>
 					{friend.user.username}
 				</Link>
