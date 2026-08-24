@@ -1,7 +1,6 @@
 import { Logo, LogoProps } from '@/components/Icons/Logo';
-import { PAGES } from '@/config/pages.config';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import clsx from 'clsx';
-import Link from 'next/link';
 import styles from './NavLogo.module.scss';
 
 interface NavLogoProps {
@@ -12,13 +11,13 @@ interface NavLogoProps {
 
 export const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
 	return (
-		<Link
-			href={PAGES.HOME}
+		<a
+			href={CROSS_DOMAIN_ROUTES.HOME}
 			className={clsx(styles.logoLink, className)}
 			onClick={onClick}
 		>
 			<Logo {...logoProps} />
 			<span>Sleeptrackly</span>
-		</Link>
+		</a>
 	);
 };

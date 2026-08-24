@@ -1,9 +1,20 @@
 import { z } from 'zod';
 
+const envBoolean = (
+	defaultValue: boolean,
+): z.ZodDefault<z.ZodPreprocess<z.ZodBoolean>> =>
+	z
+		.preprocess((val) => {
+			if (typeof val === 'string') return val === 'true';
+			if (typeof val === 'boolean') return val;
+			return defaultValue;
+		}, z.boolean())
+		.default(defaultValue);
+
 export const authEnvSchema = z.object({
 	COOKIE_DOMAIN: z.string().nonempty('COOKIE_DOMAIN is required'),
-	COOKIE_HTTP_ONLY: z.coerce.boolean().default(true),
-	COOKIE_SECURE: z.coerce.boolean().default(true),
+	COOKIE_HTTP_ONLY: envBoolean(true),
+	COOKIE_SECURE: envBoolean(true),
 	COOKIE_SAME_SITE: z.enum(['strict', 'lax', 'none']).default('strict'),
 	JWT_ACCESS_SECRET: z.string().nonempty('JWT_ACCESS_SECRET is required'),
 	REFRESH_TOKEN_SECRET: z.string().nonempty('REFRESH_TOKEN_SECRET is required'),

@@ -2,7 +2,7 @@
 
 import { changeRequestStatus } from '@/api/friend/friend.api';
 import { UserAvatar } from '@/components/UI';
-import { PAGES } from '@/config/pages.config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { FriendRequest } from '@/types/friend/friend.types';
 import { FriendStatus } from '@/types/friend/friendStatus.types';
@@ -39,7 +39,7 @@ export const PendingsItem = ({ friend }: PendingsItemProps) => {
 		<div key={friend.id} className={styles.item}>
 			<div className={styles.user}>
 				<UserAvatar avatarPath={friend.user?.avatar} size={45} />
-				<Link href={PAGES.PROFILE(friend.user.username)}>
+				<Link href={PRIVATE_PAGES.PROFILE(friend.user.username)}>
 					{friend.user.username}
 				</Link>
 			</div>

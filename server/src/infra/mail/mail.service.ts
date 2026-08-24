@@ -24,7 +24,7 @@ export class MailService {
 		this.mailConfig = envService.getGroup(smtpEnvSchema);
 
 		this.transport = getMailerConfig(this.mailConfig);
-		this.domain = envService.get('CLIENT_URL');
+		this.domain = envService.get('APP_URL');
 	}
 
 	public async sendVerificationEmail(

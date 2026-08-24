@@ -29,7 +29,7 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 				navigation
 				pagination={{ clickable: true }}
 				autoplay={{
-					delay: 50000000,
+					delay: 5000,
 					pauseOnMouseEnter: true,
 					disableOnInteraction: false,
 				}}
@@ -38,8 +38,6 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 			>
 				{validSlides.map((item) => {
 					if (!item.bundle) return null;
-
-					console.log(item.bundle);
 
 					return (
 						<SwiperSlide key={item.id} className={styles.item}>
@@ -60,6 +58,7 @@ export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 									discountPercentage={item.bundle.discountPercentage}
 									basePrice={item.bundle.basePrice}
 									expiresAt={item.expiresAt ? new Date(item.expiresAt) : null}
+									isOwned={item.isOwned}
 								/>
 							</div>
 							<div className={styles.imageWrapper}>

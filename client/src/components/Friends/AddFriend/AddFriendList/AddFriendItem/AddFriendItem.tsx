@@ -2,7 +2,7 @@
 
 import { sendFriendRequest } from '@/api/friend/friend.api';
 import { UserAvatar } from '@/components/UI';
-import { PAGES } from '@/config/pages.config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { SearchUser } from '@/types/user/user.types';
 import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
@@ -31,7 +31,10 @@ export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 		<div className={styles.item}>
 			<div className={styles.info}>
 				<UserAvatar avatarPath={user?.avatar?.url} size={50} />
-				<Link href={PAGES.PROFILE(user.username)} className={styles.username}>
+				<Link
+					href={PRIVATE_PAGES.PROFILE(user.username)}
+					className={styles.username}
+				>
 					{user.username}
 				</Link>
 			</div>

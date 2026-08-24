@@ -1,8 +1,18 @@
+'use client';
+
+import { NavLogo } from '@/components/UI';
 import { Header } from '../Header';
-import { MainHeaderNav } from '../HeaderInner/MainHeaderNav/MainHeaderNav';
+import { AuthButtons } from '../HeaderInner/AuthButtons/AuthButtons';
+import { NavContainer } from '../HeaderInner/NavContainer/NavContainer';
+import styles from './MainHeader.module.scss';
 
 export const MainHeader = () => (
 	<Header>
-		<MainHeaderNav />
+		<NavContainer withMenu={false} renderLogoInsteadOfMenu>
+			<div className={styles.logo}>
+				<NavLogo />
+			</div>
+			<AuthButtons />
+		</NavContainer>
 	</Header>
 );

@@ -1,9 +1,15 @@
 'use client';
 
 import { AUTH_PAGES } from '@/config/authPages.config';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
+import { SUBDOMAINS } from '@/config/subdomains.config';
 import { env } from '@/env';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+	AxiosError,
+	InternalAxiosRequestConfig,
+	isAxiosError,
+} from 'axios';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 	_retry?: boolean;
@@ -76,10 +82,34 @@ apiClient.interceptors.response.use(
 				processQueue(null);
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				processQueue(refreshError as MessageApiResponse);
+				if (isAxiosError(refreshError)) {
+					processQueue(refreshError.response?.data);
+				}
 
 				if (typeof window !== 'undefined') {
-					window.location.href = AUTH_PAGES.LOGIN;
+					const currentHost = window.location.hostname;
+					const currentPath = window.location.pathname;
+					const currentSearch = window.location.search;
+
+					const isAppSubdomain = currentHost.startsWith(`${SUBDOMAINS.APP}.`);
+
+					const isCurrentPageAuth = Object.values(AUTH_PAGES).some((path) =>
+						currentPath.startsWith(path),
+					);
+
+					if (isAppSubdomain && !isCurrentPageAuth) {
+						const loginUrl = new URL(
+							CROSS_DOMAIN_ROUTES.APP_LOGIN,
+							window.location.origin,
+						);
+
+						loginUrl.searchParams.set(
+							'callbackUrl',
+							currentPath + currentSearch,
+						);
+
+						window.location.href = loginUrl.toString();
+					}
 				}
 
 				return Promise.reject(refreshError);

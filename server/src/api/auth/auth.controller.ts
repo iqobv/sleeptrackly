@@ -128,14 +128,15 @@ export class AuthController {
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
 	): Promise<MessageResponse> {
-		if (!rawRefreshToken)
-			throw new UnauthorizedException(
-				ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
-			);
-
 		try {
+			if (!rawRefreshToken)
+				throw new UnauthorizedException(
+					ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+				);
+
 			const { accessToken, refreshToken } =
 				await this.authService.refreshTokens(rawRefreshToken, clientInfo);
+
 			this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 		} catch (error) {
 			this.cookieService.clearAuthCookies(res);

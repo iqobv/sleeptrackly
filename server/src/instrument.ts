@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/nestjs';
 const config = validate(process.env);
 
 Sentry.init({
-	dsn: config.SENTRY_DNS,
+	dsn: config.SENTRY_DSN,
 	sendDefaultPii: true,
 	enabled: IS_PROD_ENV,
 });

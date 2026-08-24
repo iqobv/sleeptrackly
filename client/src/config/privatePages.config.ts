@@ -27,4 +27,5 @@ export const PRIVATE_PAGES = {
 	},
 	PROMO: '/promo',
 	ACHIEVEMENTS: '/achievements',
+	PROFILE: (username: string) => `/u/${username}`,
 } as const;

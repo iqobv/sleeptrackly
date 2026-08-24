@@ -5,18 +5,10 @@ export const appEnvSchema = z.object({
 	NODE_ENV: z
 		.enum(['development', 'production', 'test'])
 		.default('development'),
-	SERVER_URL: z.url().nonempty('SERVER_URL is required'),
-	CLIENT_URL: z.url().nonempty('CLIENT_URL is required'),
-	ALLOWED_ORIGIN: z
-		.string()
-		.nonempty('ALLOWED_ORIGIN is required')
-		.transform((value) => value.split(',').map((origin) => origin.trim()))
-		.pipe(
-			z
-				.array(z.url('ALLOWED_ORIGIN must be a valid URL'))
-				.min(1, 'ALLOWED_ORIGIN must contain at least one valid URL'),
-		),
-	SENTRY_DNS: z.url().nonempty('SENTRY_DNS is required'),
+	MAIN_URL: z.url().nonempty('MAIN_URL is required'),
+	APP_URL: z.url().nonempty('APP_URL is required'),
+	ADMIN_URL: z.url().nonempty('ADMIN_URL is required'),
+	SENTRY_DSN: z.url().nonempty('SENTRY_DSN is required'),
 	SWAGGER_USER: z.string().nonempty('SWAGGER_USER is required'),
 	SWAGGER_PASSWORD: z.string().nonempty('SWAGGER_PASSWORD is required'),
 });
