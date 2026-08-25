@@ -22,13 +22,14 @@ import {
 	Sse,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { plainToInstance } from 'class-transformer';
 import type { Response } from 'express';
 import { Observable } from 'rxjs';
 import { CookieService } from '../cookie/cookie.service';
 import { QrIdDto } from './dto/qr-id.dto';
 import { QrStatusDto } from './dto/qr-status.dto';
 import { QrLoginService } from './qr-login.service';
-import { QrSseEvent } from './types/qr-sse.types';
+import { QrSseEventDto } from './types/qr-sse.types';
 
 @ApiTags('QR Login')
 @Controller('auth/qr')
@@ -55,7 +56,9 @@ export class QrLoginController {
 	 * @remarks Streams real-time updates on the status of a QR login attempt. Clients can subscribe to this endpoint using Server-Sent Events (SSE) to receive updates on whether the QR login has been approved, expired, or is still pending.
 	 */
 	@Sse('stream')
-	public streamQrStatus(@Query('qrId') qrId: string): Observable<QrSseEvent> {
+	public streamQrStatus(
+		@Query('qrId') qrId: string,
+	): Observable<QrSseEventDto> {
 		return this.qrLoginService.subscribeToQrStatus(qrId);
 	}
 
@@ -96,9 +99,9 @@ export class QrLoginController {
 				this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 			}
 
-			return { status: 'success' };
+			return plainToInstance(QrStatusDto, { status: 'success' });
 		}
 
-		return { status };
+		return plainToInstance(QrStatusDto, { status });
 	}
 }

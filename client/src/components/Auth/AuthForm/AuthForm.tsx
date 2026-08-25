@@ -73,9 +73,9 @@ export const AuthForm = <T extends FieldValues, R>({
 	});
 
 	const handleLoginSuccess = () => {
-		const callbackUrl =
-			searchParams.get('callbackUrl') || PRIVATE_PAGES.DASHBOARD;
-		window.location.href = callbackUrl;
+		const redirectUrl =
+			searchParams.get('redirectUrl') || PRIVATE_PAGES.DASHBOARD;
+		window.location.href = redirectUrl;
 	};
 
 	const { mutate, isPending } = useMutation({

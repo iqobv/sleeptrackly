@@ -1,4 +1,6 @@
+import { Expose } from 'class-transformer';
+
 export class QrIdDto {
-	qrId: string;
-	expiresAt: Date;
+	@Expose() qrId: string;
+	@Expose() expiresAt: Date;
 }

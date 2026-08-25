@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
 		'localhost',
 		'sleeptrackly.local',
 		'app.sleeptrackly.local',
+		'local.sleeptrackly.com',
+		'app.local.sleeptrackly.com',
 	],
 	images: {
 		remotePatterns: [

@@ -122,7 +122,7 @@ export class UserService {
 
 		const finalUser: FullUserDto | FullUserWithPasswordDto = {
 			...dataUser,
-			equippedItems: inventory,
+			equippedItems: inventory || [],
 		};
 
 		return plainToInstance(

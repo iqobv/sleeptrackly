@@ -6,12 +6,18 @@ import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
 import { Observable, Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { QrIdDto } from './dto/qr-id.dto';
-import { QrSseEvent, QrSsePayload } from './types/qr-sse.types';
-import { QrLoginStatus, QrLoginStatusResult } from './types/qr-status.types';
+import { FinalizeQrLoginResponseDto } from './dto/qr-login-result.dto';
+import { QrSseEventDto, QrSsePayload } from './types/qr-sse.types';
+import {
+	QrLoginStatus,
+	QrLoginStatusResponse,
+	QrLoginStatusResult,
+} from './types/qr-status.types';
 
 @Injectable()
 export class QrLoginService {
@@ -25,15 +31,17 @@ export class QrLoginService {
 		private readonly prismaService: PrismaService,
 	) {}
 
-	public subscribeToQrStatus(qrId: string): Observable<QrSseEvent> {
+	public subscribeToQrStatus(qrId: string): Observable<QrSseEventDto> {
 		return this.qrSubject.asObservable().pipe(
 			filter((payload: QrSsePayload) => payload.qrId === qrId),
-			map((payload: QrSsePayload) => ({
-				data: {
-					status: payload.status,
-				},
-				type: 'qr_status_signal',
-			})),
+			map((payload: QrSsePayload) => {
+				return plainToInstance(QrSseEventDto, {
+					data: {
+						status: payload.status,
+					},
+					type: 'qr_status_signal',
+				});
+			}),
 		);
 	}
 
@@ -46,10 +54,10 @@ export class QrLoginService {
 			expiresAt,
 		});
 
-		return {
+		return plainToInstance(QrIdDto, {
 			qrId: qrToken.token,
 			expiresAt: expiresAt,
-		};
+		});
 	}
 
 	public async approveQrLogin(
@@ -61,7 +69,7 @@ export class QrLoginService {
 			.catch((e) => {
 				this.qrSubject.next({
 					qrId,
-					status: 'expired',
+					status: QrLoginStatus.EXPIRED,
 				});
 
 				throw e;
@@ -74,7 +82,7 @@ export class QrLoginService {
 
 		this.qrSubject.next({
 			qrId,
-			status: 'approved',
+			status: QrLoginStatus.APPROVED,
 		});
 
 		return SUCCESS_MESSAGES.AUTH.QR_LOGIN_APPROVED;
@@ -86,18 +94,18 @@ export class QrLoginService {
 
 			if (token.userId) {
 				return {
-					status: 'approved',
+					status: QrLoginStatus.APPROVED,
 					userId: token.userId,
 					tokenId: token.id,
 				};
 			}
 
-			return { status: 'pending' };
+			return { status: QrLoginStatus.PENDING };
 		} catch (err) {
 			const errorMessage = err instanceof Error ? err.message : 'Unknown error';
 
 			return {
-				status: 'expired',
+				status: QrLoginStatus.EXPIRED,
 				error: errorMessage,
 			};
 		}
@@ -106,14 +114,10 @@ export class QrLoginService {
 	public async finalizeQrLogin(
 		qrId: string,
 		clientInfo: ClientInfoDto,
-	): Promise<{
-		status: QrLoginStatus | 'success';
-		accessToken?: string;
-		refreshToken?: string;
-	}> {
+	): Promise<FinalizeQrLoginResponseDto> {
 		const result = await this.getQrLoginStatus(qrId);
 
-		if (result.status === 'approved' && result.userId) {
+		if (result.status === QrLoginStatus.APPROVED && result.userId) {
 			const user = await this.userService.findById(result.userId);
 
 			if (user) {
@@ -122,10 +126,16 @@ export class QrLoginService {
 					clientInfo,
 				);
 				await this.tokenService.deleteToken(result.tokenId);
-				return { status: 'success', ...tokens };
+
+				return plainToInstance(FinalizeQrLoginResponseDto, {
+					status: QrLoginStatusResponse.SUCCESS,
+					...tokens,
+				});
 			}
 		}
 
-		return { status: result.status };
+		return plainToInstance(FinalizeQrLoginResponseDto, {
+			status: result.status,
+		});
 	}
 }

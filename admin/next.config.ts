@@ -2,6 +2,11 @@ import type { NextConfig } from 'next';
 import './src/env';
 
 const nextConfig: NextConfig = {
+	allowedDevOrigins: [
+		'local.sleeptrackly.com',
+		'app.local.sleeptrackly.com',
+		'admin.local.sleeptrackly.com',
+	],
 	images: {
 		remotePatterns: [
 			{
