@@ -44,9 +44,11 @@ export class UserNotificationSettingsService {
 	): Promise<UserNotificationSettingsDto> {
 		const existingSettings = await this.findOrCreate(userId);
 
-		return await this.prismaService.userNotificationSettings.update({
+		const updated = await this.prismaService.userNotificationSettings.update({
 			where: { userId: existingSettings.userId },
 			data: dto,
 		});
+
+		return plainToInstance(UserNotificationSettingsDto, updated);
 	}
 }

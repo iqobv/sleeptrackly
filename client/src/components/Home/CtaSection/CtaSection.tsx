@@ -1,24 +1,26 @@
-import { AUTH_PAGES } from '@/config/authPages.config';
-import { Button, SectionHeader } from '@shared/ui';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
+import { Button, Container, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './CtaSection.module.scss';
 
 export const CtaSection = () => {
 	return (
-		<div className={styles.cta}>
-			<div className={`${styles.container} container`}>
+		<section className={styles.cta}>
+			<Container className={styles.container}>
 				<SectionHeader
-					title="Ready to take control of your sleep?"
+					title="Initiate Tracking"
 					titleProps={{
 						variant: 'h2',
+						textTransform: 'uppercase',
 					}}
-					description="Sign up now and take control of your sleep."
+					description="Discipline requires action. Create your profile and log your first interval today."
 					padding={0}
+					textAlign="center"
 				/>
-				<Button asChild>
-					<Link href={AUTH_PAGES.REGISTER}>Sign Up For Free</Link>
+				<Button asChild textTransform="uppercase" size="lg">
+					<Link href={CROSS_DOMAIN_ROUTES.APP_REGISTER}>Create Account</Link>
 				</Button>
-			</div>
-		</div>
+			</Container>
+		</section>
 	);
 };

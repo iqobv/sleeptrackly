@@ -7,9 +7,15 @@ interface NavLogoProps {
 	className?: string;
 	onClick?: () => void;
 	logoProps?: LogoProps;
+	hideTextOnMobile?: boolean;
 }
 
-export const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
+export const NavLogo = ({
+	className,
+	onClick,
+	logoProps,
+	hideTextOnMobile = false,
+}: NavLogoProps) => {
 	return (
 		<a
 			href={CROSS_DOMAIN_ROUTES.HOME}
@@ -17,7 +23,9 @@ export const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
 			onClick={onClick}
 		>
 			<Logo {...logoProps} />
-			<span>Sleeptrackly</span>
+			<span className={clsx(styles.text, hideTextOnMobile && styles.hidden)}>
+				Sleeptrackly
+			</span>
 		</a>
 	);
 };

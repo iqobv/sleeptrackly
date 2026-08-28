@@ -1,24 +1,35 @@
 import { AUTH_PAGES } from '@/config/authPages.config';
-import { Button } from '@shared/ui';
+import { Button, Container, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './Hero.module.scss';
+import { HeroChart } from './HeroChart/HeroChart';
 
 export const Hero = () => {
 	return (
-		<div className={`${styles.hero}`}>
-			<div className={`${styles.container} container`}>
-				<h1 className={styles.title}>
-					Take Control of Your Sleep, One Night at a Time.
-				</h1>
-				<p className={styles.description}>
-					Track your sleep, analyze weekly patterns, and build better habits
-					with personalized challenges. Your journey to restful nights starts
-					now.
-				</p>
-				<Button className={styles.button} asChild>
-					<Link href={AUTH_PAGES.REGISTER}>Join Now</Link>
+		<Container as="section" className={styles.hero}>
+			<div className={styles.content}>
+				<SectionHeader
+					title="INTENTIONAL SLEEP TRACKING"
+					description="No wearables. No AI guesswork. Just manual logs and pure data. Take conscious control of your schedule."
+					padding={0}
+					containerClassName={styles.headerContainer}
+					titleProps={{
+						className: styles.title,
+					}}
+					descriptionProps={{
+						className: styles.description,
+					}}
+				/>
+				<Button
+					className={styles.button}
+					asChild
+					textTransform="uppercase"
+					size="lg"
+				>
+					<Link href={AUTH_PAGES.REGISTER}>Start Logging</Link>
 				</Button>
 			</div>
-		</div>
+			<HeroChart />
+		</Container>
 	);
 };

@@ -2,9 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import admin from 'firebase-admin';
 import { FIREBASE_ADMIN } from './fcm.admin';
 
-type SendNotificationResult =
-	| void
-	| (admin.messaging.BatchResponse & { tokensToRemove: string[] });
+export type SendNotificationResult =
+	void | (admin.messaging.BatchResponse & { tokensToRemove: string[] });
 
 @Injectable()
 export class FcmService {
@@ -27,14 +26,17 @@ export class FcmService {
 			const tokensToRemove: string[] = [];
 
 			res.responses.forEach((response, idx) => {
-				if (
-					!response.success &&
-					response.error &&
-					/registration-token-not-registered|invalid-registration-token/.test(
-						response.error.code,
-					)
-				) {
-					tokensToRemove.push(tokens[idx]);
+				if (!response.success && response.error) {
+					const errorCode = response.error.code;
+
+					if (
+						errorCode.includes('registration-token-not-registered') ||
+						errorCode.includes('invalid-registration-token') ||
+						errorCode.includes('sender-id-mismatch') ||
+						errorCode.includes('mismatched-credential')
+					) {
+						tokensToRemove.push(tokens[idx]);
+					}
 				}
 			});
 

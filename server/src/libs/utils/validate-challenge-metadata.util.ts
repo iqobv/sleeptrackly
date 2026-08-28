@@ -16,6 +16,8 @@ export const validateChallengeMetadata = (
 			MetadataClass = SleepDurationMetadataDto;
 			break;
 		case ChallengeType.BEDTIME_CONSISTENCY:
+			MetadataClass = TimeConsistencyMetadataDto;
+			break;
 		case ChallengeType.WAKE_TIME_CONSISTENCY:
 			MetadataClass = TimeConsistencyMetadataDto;
 			break;

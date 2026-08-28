@@ -1,3 +1,5 @@
+@use '../../../styles/mixins' as *;
+
 .logoLink {
 	display: flex;
 	align-items: center;
@@ -5,4 +7,16 @@
 	font-size: 1.1rem;
 	font-weight: 600;
 	text-align: center;
+}
+
+.text {
+	display: block;
+
+	&.hidden {
+		display: none;
+
+		@include respond-to(md) {
+			display: block;
+		}
+	}
 }

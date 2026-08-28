@@ -16,6 +16,7 @@ export const Typography = <C extends ElementType = 'p'>({
 	maxLines,
 	className,
 	style,
+	textTransform = 'none',
 	...rest
 }: TypographyProps<C>) => {
 	const Component = (as ||
@@ -38,6 +39,7 @@ export const Typography = <C extends ElementType = 'p'>({
 					align,
 					color,
 					truncate,
+					textTransform,
 				}),
 				maxLines && styles.lineClamp,
 				className,

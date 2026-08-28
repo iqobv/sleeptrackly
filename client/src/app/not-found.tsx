@@ -8,6 +8,7 @@ export default function NotFound() {
 			<SectionHeader
 				title="404 - Page Not Found"
 				description="The page you are looking for does not exist."
+				textAlign="center"
 			/>
 			<Button asChild>
 				<a href={CROSS_DOMAIN_ROUTES.HOME}>Back to Home</a>
