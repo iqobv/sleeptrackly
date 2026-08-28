@@ -33,10 +33,7 @@ export const QrScan = () => {
 				<Scanner
 					sound={false}
 					constraints={{
-						backgroundBlur: true,
-						aspectRatio: 1,
 						facingMode: 'environment',
-						sampleSize: 0.5,
 					}}
 					styles={{
 						container: {

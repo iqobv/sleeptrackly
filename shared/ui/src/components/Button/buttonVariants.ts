@@ -39,6 +39,12 @@ export const buttonVariants = cva(baseStyles.button, {
 			false: null,
 			true: buttonProperties.rounded,
 		},
+		textTransform: {
+			none: null,
+			uppercase: buttonProperties.uppercase,
+			lowercase: buttonProperties.lowercase,
+			capitalize: buttonProperties.capitalize,
+		},
 	},
 	compoundVariants: [
 		{ isIcon: false, size: 'sm', className: sizeStyles.paddingSm },
@@ -56,5 +62,6 @@ export const buttonVariants = cva(baseStyles.button, {
 		isIcon: false,
 		disabled: false,
 		isRounded: false,
+		textTransform: 'none',
 	},
 });

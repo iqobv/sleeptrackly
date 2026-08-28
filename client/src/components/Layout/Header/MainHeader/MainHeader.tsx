@@ -1,18 +1,16 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
+import { Container } from '@shared/ui';
 import { Header } from '../Header';
 import { AuthButtons } from '../HeaderInner/AuthButtons/AuthButtons';
-import { NavContainer } from '../HeaderInner/NavContainer/NavContainer';
 import styles from './MainHeader.module.scss';
 
 export const MainHeader = () => (
 	<Header>
-		<NavContainer withMenu={false} renderLogoInsteadOfMenu>
-			<div className={styles.logo}>
-				<NavLogo />
-			</div>
+		<Container className={styles.container}>
+			<NavLogo hideTextOnMobile logoProps={{ width: 36, height: 36 }} />
 			<AuthButtons />
-		</NavContainer>
+		</Container>
 	</Header>
 );

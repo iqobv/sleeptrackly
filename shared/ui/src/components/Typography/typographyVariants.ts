@@ -42,6 +42,12 @@ export const typographyVariants = cva(styles.typography, {
 		truncate: {
 			true: styles.truncate,
 		},
+		textTransform: {
+			none: null,
+			uppercase: styles.uppercase,
+			lowercase: styles.lowercase,
+			capitalize: styles.capitalize,
+		},
 	},
 	defaultVariants: {
 		variant: 'body1',

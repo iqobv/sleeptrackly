@@ -2100,12 +2100,11 @@ export interface components {
             /** Format: date-time */
             expiresAt: string;
         };
+        QrSseEventDto: Record<string, never>;
+        /** @enum {string} */
+        QrLoginStatusResponse: "pending" | "approved" | "expired" | "success";
         QrStatusDto: {
-            /**
-             * @example SUCCESS
-             * @enum {string}
-             */
-            status: "pending" | "approved" | "expired" | "success";
+            status: components["schemas"]["QrLoginStatusResponse"];
         };
         GoogleOneTapDto: {
             credential: string;
@@ -3561,7 +3560,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-19T13:45:29.076Z
+             * @example 2026-08-26T16:13:01.553Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3592,7 +3591,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-19T13:45:29.076Z
+             * @example 2026-08-26T16:13:01.553Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -4627,7 +4626,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["QrSseEventDto"];
                 };
             };
         };

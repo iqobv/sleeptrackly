@@ -1,0 +1,26 @@
+local.sleeptrackly.com {
+    tls internal
+    reverse_proxy localhost:3000
+}
+
+api.local.sleeptrackly.com {
+    tls internal
+    reverse_proxy localhost:5000 {
+        flush_interval -1
+
+        transport http {
+            read_timeout 1h
+            write_timeout 1h
+        }
+    }
+}
+
+app.local.sleeptrackly.com {
+    tls internal
+    reverse_proxy localhost:3000
+}
+
+admin.local.sleeptrackly.com {
+    tls internal
+    reverse_proxy localhost:3001
+}

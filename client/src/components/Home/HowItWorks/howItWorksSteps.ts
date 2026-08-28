@@ -5,17 +5,18 @@ export interface HowItWorksStep {
 
 export const HOW_IT_WORKS: HowItWorksStep[] = [
 	{
-		title: 'Sign Up',
-		description: 'Sign up for an account and create a profile.',
+		title: 'Record the interval',
+		description:
+			'Wake up and manually input your sleep times. No false triggers, just your conscious input.',
 	},
 	{
-		title: 'Start the Timer',
+		title: 'Face your data',
 		description:
-			'Track your sleep duration by starting and stopping the timer.',
+			'Analyze clean, uncompromising statistics of your actual consistency.',
 	},
 	{
-		title: 'Analyze Your Data',
+		title: 'Build the streak',
 		description:
-			'Visualize your sleep duration with clear, informative charts.',
+			'Turn daily logging into a strict habit and track your progress over time.',
 	},
 ];

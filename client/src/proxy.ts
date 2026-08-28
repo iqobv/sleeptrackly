@@ -47,7 +47,7 @@ export function proxy(request: NextRequest) {
 
 	if (!isAuthenticated && isProtectedRoute) {
 		const loginUrl = new URL(AUTH_PAGES.LOGIN, request.url);
-		loginUrl.searchParams.set('callbackUrl', path + request.nextUrl.search);
+		loginUrl.searchParams.set('redirect', path + request.nextUrl.search);
 
 		const response = NextResponse.redirect(loginUrl);
 		response.headers.set('x-middleware-cache', 'no-cache');
@@ -55,11 +55,10 @@ export function proxy(request: NextRequest) {
 	}
 
 	if (isAuthenticated && isAuthRoute) {
-		const callbackUrl =
-			request.nextUrl.searchParams.get('callbackUrl') ||
-			PRIVATE_PAGES.DASHBOARD;
+		const redirectUrl =
+			request.nextUrl.searchParams.get('redirect') || PRIVATE_PAGES.DASHBOARD;
 
-		const response = NextResponse.redirect(new URL(callbackUrl, request.url));
+		const response = NextResponse.redirect(new URL(redirectUrl, request.url));
 		response.headers.set('x-middleware-cache', 'no-cache');
 		return response;
 	}

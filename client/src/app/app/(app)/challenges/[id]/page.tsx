@@ -46,10 +46,12 @@ export default async function ChallengePage({ params }: ChallengePageProps) {
 
 		const queryClient = new QueryClient();
 
-		await queryClient.prefetchQuery({
-			queryKey: QUERY_KEYS.challenges.detail(id),
-			queryFn: () => getCachedChallenge(id),
-		});
+		await queryClient
+			.query({
+				queryKey: QUERY_KEYS.challenges.detail(id),
+				queryFn: () => getCachedChallenge(id),
+			})
+			.catch(() => {});
 
 		return (
 			<HydrationBoundary state={dehydrate(queryClient)}>

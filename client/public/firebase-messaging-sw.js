@@ -11,14 +11,16 @@ self.addEventListener('install', () => {
 	self.skipWaiting();
 });
 
+const params = new URL(location).searchParams;
+
 firebase.initializeApp({
-	apiKey: 'AIzaSyBBG7HyB2c3AHDb-my3Ix-rMR0KwZsVCsU',
-	authDomain: 'sleeptrackly.firebaseapp.com',
-	projectId: 'sleeptrackly',
-	storageBucket: 'sleeptrackly.appspot.com',
-	messagingSenderId: '567224368591',
-	appId: '1:567224368591:web:79db3442de95cb933026ba',
-	measurementId: 'G-JDKRG6XN5C',
+	apiKey: params.get('apiKey'),
+	authDomain: params.get('authDomain'),
+	projectId: params.get('projectId'),
+	storageBucket: params.get('storageBucket'),
+	messagingSenderId: params.get('messagingSenderId'),
+	appId: params.get('appId'),
+	measurementId: params.get('measurementId'),
 });
 
 const messaging = firebase.messaging();

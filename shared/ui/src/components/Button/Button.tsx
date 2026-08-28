@@ -24,6 +24,7 @@ export const Button = ({
 	ref,
 	asChild = false,
 	onClick,
+	textTransform = 'none',
 	...props
 }: ButtonProps) => {
 	const isDisabled = disabled || loading;
@@ -37,6 +38,7 @@ export const Button = ({
 		isIcon,
 		disabled: isDisabled,
 		isRounded,
+		textTransform,
 	});
 
 	const handleClick = (e: React.MouseEvent<HTMLElement>) => {

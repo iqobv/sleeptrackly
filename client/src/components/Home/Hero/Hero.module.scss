@@ -3,81 +3,68 @@
 .hero {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	min-height: calc(100dvh - var(--header-height));
-	background-image: url('/hero-bg.jpeg');
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
 	position: relative;
-	backdrop-filter: blur(3px);
+	justify-content: center;
+	gap: 5rem;
 
-	&::after {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		height: 20%;
-		background: linear-gradient(
-			to top,
-			rgba(0, 0, 0, 0.7) 0%,
-			rgba(0, 0, 0, 0.6) 25%,
-			rgba(0, 0, 0, 0) 100%
-		);
-		content: '';
-		z-index: 1;
-	}
-
-	@include respond-to(md) {
+	@include respond-to(lg) {
 		padding-top: unset;
 		flex-direction: row;
+		justify-content: space-between;
 	}
 }
 
-.container {
+.content {
+	// flex: 0 1 50%;
+	width: 100%;
 	display: flex;
-	align-items: center;
 	flex-direction: column;
-	gap: 20px;
-	z-index: 2;
+	gap: 1rem;
+
+	@include respond-to(lg) {
+		width: 50%;
+	}
+
+	// @include respond-to(lg) {
+	// 	flex: 0 1 40%;
+	// }
+}
+
+.headerContainer {
+	justify-content: center;
+	align-items: center;
+
+	@include respond-to(lg) {
+		justify-content: flex-start;
+	}
 }
 
 .title {
-	font-size: clamp(2.6rem, 6vw, 4.2rem);
+	font-size: clamp(2rem, 6vw, 3.2rem);
+	color: var(--color-main-text);
 	text-align: center;
-	color: #f3f7ff;
-	max-width: 950px;
-	text-shadow: 12px 8px 8px rgba(0, 0, 0, 0.7);
+
+	@include respond-to(lg) {
+		text-align: left;
+	}
 }
 
 .description {
-	font-size: clamp(1.1rem, 2vw, 1.3rem);
+	font-size: clamp(1rem, 2vw, 1.1rem);
+	color: var(--color-main-text);
 	text-align: center;
-	color: #f3f7ff;
-	max-width: 950px;
-	text-shadow: 12px 8px 8px rgba(0, 0, 0, 0.7);
+
+	@include respond-to(lg) {
+		text-align: left;
+	}
 }
 
 .button {
-	box-shadow: 3px 2px 8px 1px rgba(255, 255, 255, 0.2);
-}
+	margin: 0 auto;
 
-.image-container {
-	flex: 1 0 50%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-}
-
-.image {
-	height: auto;
-	max-width: 230px;
-	user-select: none;
-	filter: drop-shadow(0px 10px 30px rgba(219, 222, 239, 0.05));
-
-	@include respond-to(md) {
-		max-width: 450px;
+	@include respond-to(lg) {
+		margin: 0;
 	}
 }

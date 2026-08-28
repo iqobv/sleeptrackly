@@ -35,10 +35,12 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 
 		if (!profile) notFound();
 
-		queryClient.prefetchQuery({
-			queryKey: QUERY_KEYS.profile.username(username),
-			queryFn: () => getCachedProfile(username),
-		});
+		await queryClient
+			.query({
+				queryKey: QUERY_KEYS.profile.username(username),
+				queryFn: () => getCachedProfile(username),
+			})
+			.catch(() => {});
 	} catch {
 		notFound();
 	}

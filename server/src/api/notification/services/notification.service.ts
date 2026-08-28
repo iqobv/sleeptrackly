@@ -203,13 +203,19 @@ export class NotificationService {
 
 		if (tokens.length === 0) return;
 
-		await this.fcmService.sendNotification(tokens, {
+		const result = await this.fcmService.sendNotification(tokens, {
 			data: {
 				title,
 				body: body || '',
 				url: redirectUrl ?? '/',
 			},
 		});
+
+		if (result && result.tokensToRemove.length > 0) {
+			await this.prismaService.userFcmToken.deleteMany({
+				where: { token: { in: result.tokensToRemove } },
+			});
+		}
 	}
 
 	private async findById(id: string): Promise<NotificationDto> {
