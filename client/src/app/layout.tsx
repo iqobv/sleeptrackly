@@ -1,11 +1,9 @@
-import { TermlyCMP } from '@/components/TermlyCMP';
+import { AnalyticsWrapper } from '@/components/Analytics/AnalyticsWrapper';
 import { env } from '@/env';
 import { MainProvider } from '@/providers/MainProvider';
 import '@shared/ui/styles/global.scss';
-import { Analytics } from '@vercel/analytics/next';
 import type { Metadata, Viewport } from 'next';
 import { Geist } from 'next/font/google';
-import { Suspense } from 'react';
 import './index.scss';
 
 const geistSans = Geist({
@@ -14,7 +12,6 @@ const geistSans = Geist({
 });
 
 const baseUrl = env.NEXT_PUBLIC_CLIENT_URL;
-const websiteUUID = env.WEBSITE_UUID;
 
 export const viewport: Viewport = {
 	themeColor: '#0b0b0b',
@@ -77,11 +74,8 @@ export default async function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${geistSans.variable}`}>
-				<Analytics />
-				<Suspense fallback={null}>
-					{websiteUUID && <TermlyCMP websiteUUID={websiteUUID} />}
-				</Suspense>
 				<MainProvider>{children}</MainProvider>
+				<AnalyticsWrapper />
 			</body>
 		</html>
 	);

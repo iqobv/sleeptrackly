@@ -12,7 +12,7 @@ const apiServer = axios.create({
 	baseURL: url,
 	withCredentials: true,
 	httpsAgent: new https.Agent({
-		rejectUnauthorized: process.env.NODE_ENV !== 'development',
+		rejectUnauthorized: env.NODE_ENV !== 'development',
 	}),
 });
 

@@ -18,12 +18,12 @@ export const pagesMetadata: Partial<Record<PageRoute, RouteMetadata>> = {
 	},
 	[PAGES.PRIVACY_POLICY]: {
 		changeFrequency: 'yearly',
-		lastModified: '2026-03-31',
+		lastModified: '2026-09-01',
 		priority: 0.5,
 	},
 	[PAGES.COOKIES]: {
 		changeFrequency: 'yearly',
-		lastModified: '2026-03-31',
+		lastModified: '2026-09-01',
 		priority: 0.5,
 	},
 };

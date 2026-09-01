@@ -254,6 +254,9 @@ importers:
       '@next/mdx':
         specifier: ^16.3.3
         version: 16.3.3(@mdx-js/loader@3.1.1(webpack@5.106.2))(@mdx-js/react@3.1.1(@types/react@19.2.18)(react@19.2.8))
+      '@next/third-parties':
+        specifier: ^16.3.3
+        version: 16.3.3(next@16.3.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.103.1))(react@19.2.8)
       '@shared/form':
         specifier: 'workspace:'
         version: link:../shared/form
@@ -347,6 +350,9 @@ importers:
       swiper:
         specifier: ^12.0.3
         version: 12.2.0
+      vanilla-cookieconsent:
+        specifier: ^3.1.0
+        version: 3.1.0
       zod:
         specifier: 'catalog:'
         version: 4.4.3
@@ -2456,6 +2462,12 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
+
+  '@next/third-parties@16.3.3':
+    resolution: {integrity: sha512-a7zWBqivPou6cn9vQFcw3V7h7GNsZBKLwC1EOLexBDOwabQ0wO2O9Mi1G8HtCseYvD3z1zcVqN+Ld2gfaZxN1Q==}
+    peerDependencies:
+      next: ^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0-beta.0
+      react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
 
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
@@ -8357,6 +8369,9 @@ packages:
   text-decoder@1.2.7:
     resolution: {integrity: sha512-vlLytXkeP4xvEq2otHeJfSQIRyWxo/oZGEbXrtEEF9Hnmrdly59sUbzZ/QgyWuLYHctCHxFF4tRQZNQ9k60ExQ==}
 
+  third-party-capital@1.0.20:
+    resolution: {integrity: sha512-oB7yIimd8SuGptespDAZnNkzIz+NWaJCu2RMsbs4Wmp9zSDUM8Nhi3s2OOcqYuv3mN4hitXc8DVx+LyUmbUDiA==}
+
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
 
@@ -8704,6 +8719,9 @@ packages:
   validator@13.15.35:
     resolution: {integrity: sha512-TQ5pAGhd5whStmqWvYF4OjQROlmv9SMFVt37qoCBdqRffuuklWYQlCNnEs2ZaIBD1kZRNnikiZOS1eqgkar0iw==}
     engines: {node: '>= 0.10'}
+
+  vanilla-cookieconsent@3.1.0:
+    resolution: {integrity: sha512-/McNRtm/3IXzb9dhqMIcbquoU45SzbN2VB+To4jxEPqMmp7uVniP6BhGLjU8MC7ZCDsNQVOp27fhQTM/ruIXAA==}
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -10823,6 +10841,12 @@ snapshots:
 
   '@next/swc-win32-x64-msvc@16.3.2':
     optional: true
+
+  '@next/third-parties@16.3.3(next@16.3.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.103.1))(react@19.2.8)':
+    dependencies:
+      next: 16.3.2(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@25.9.5)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.103.1)
+      react: 19.2.8
+      third-party-capital: 1.0.20
 
   '@noble/hashes@1.8.0': {}
 
@@ -17732,6 +17756,8 @@ snapshots:
     transitivePeerDependencies:
       - react-native-b4a
 
+  third-party-capital@1.0.20: {}
+
   through@2.3.8: {}
 
   time-span@5.1.0:
@@ -18096,6 +18122,8 @@ snapshots:
       typescript: 5.9.3
 
   validator@13.15.35: {}
+
+  vanilla-cookieconsent@3.1.0: {}
 
   vary@1.1.2: {}
 

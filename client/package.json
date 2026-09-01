@@ -14,6 +14,7 @@
 		"@mdx-js/loader": "^3.1.1",
 		"@mdx-js/react": "^3.1.1",
 		"@next/mdx": "^16.3.3",
+		"@next/third-parties": "^16.3.3",
 		"@shared/form": "workspace:",
 		"@shared/hooks": "workspace:",
 		"@shared/types": "workspace:*",
@@ -45,6 +46,7 @@
 		"remark-gfm": "^4.0.1",
 		"sass": "catalog:",
 		"swiper": "^12.0.3",
+		"vanilla-cookieconsent": "^3.1.0",
 		"zod": "catalog:"
 	}
 }
