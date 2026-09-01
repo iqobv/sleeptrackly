@@ -7,6 +7,9 @@ export const env = createEnv({
 		WEBSITE_UUID: z.uuidv4().nonempty('WEBSITE_UUID is required'),
 	},
 	client: {
+		NEXT_PUBLIC_CLIENT_URL: z
+			.url()
+			.nonempty('NEXT_PUBLIC_CLIENT_URL is required'),
 		NEXT_PUBLIC_API_URL: z.url().nonempty('NEXT_PUBLIC_API_URL is required'),
 		NEXT_PUBLIC_CDN_URL: z.url().nonempty('NEXT_PUBLIC_CDN_URL is required'),
 		NEXT_PUBLIC_FIREBASE_API_KEY: z
@@ -40,6 +43,7 @@ export const env = createEnv({
 	runtimeEnv: {
 		API_URL: process.env.API_URL,
 		WEBSITE_UUID: process.env.WEBSITE_UUID,
+		NEXT_PUBLIC_CLIENT_URL: process.env.NEXT_PUBLIC_CLIENT_URL,
 		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
 		NEXT_PUBLIC_CDN_URL: process.env.NEXT_PUBLIC_CDN_URL,
 		NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
