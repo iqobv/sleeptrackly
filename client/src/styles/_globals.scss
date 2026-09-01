@@ -84,6 +84,14 @@ select:-webkit-autofill:focus {
 	outline: revert;
 }
 
+.toggle__icon-circle span svg {
+	display: none !important;
+}
+
+.pm__section-arrow {
+	background: var(--cc-bg) !important;
+}
+
 @keyframes fadeIn {
 	to {
 		opacity: 1;

@@ -1,3 +1,4 @@
+import createMDX from '@next/mdx';
 import type { NextConfig } from 'next';
 import './src/env';
 
@@ -38,6 +39,14 @@ const nextConfig: NextConfig = {
 		'@shared/tables',
 		'@shared/forms',
 	],
+	pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 };
 
-export default nextConfig;
+const withMDX = createMDX({
+	options: {
+		remarkPlugins: [['remark-gfm', { strict: true, throwOnError: true }]],
+		rehypePlugins: [],
+	},
+});
+
+export default withMDX(nextConfig);

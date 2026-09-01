@@ -1,0 +1,17 @@
+.item {
+	display: list-item;
+	list-style-type: square;
+	margin-bottom: 0.5rem;
+	color: var(--text-secondary);
+
+	&::marker {
+		color: var(--legal-list-marker);
+		font-size: 0.875rem;
+		unicode-bidi: isolate;
+		font-variant-numeric: tabular-nums;
+		text-transform: none;
+		text-indent: 0px;
+		text-align: start;
+		text-align-last: auto;
+	}
+}
