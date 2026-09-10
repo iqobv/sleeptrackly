@@ -60,7 +60,7 @@
 		"redis": "^5.11.0",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.2",
-		"sharp": "^0.34.5",
+		"sharp": "^0.35.4",
 		"ua-parser-js": "^2.0.9",
 		"uuid": "^14.0.0"
 	},
