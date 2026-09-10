@@ -1,13 +1,15 @@
 'use client';
 
 import { getAllChallenges } from '@/api/challenge/getAllChallenges.api';
-import { PageWrapper } from '@/components/UI';
+import { AddButton, PageWrapper } from '@/components/UI';
 import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { challengesQuerySchema } from '@/schemas/challenge/challengesQuery.schema';
-import { Typography } from '@shared/ui';
+import { Button, Typography } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
+import { ChallengeDropdown } from './ChallengeDropdown';
+import styles from './Challenges.module.scss';
 import { ChallengesTable } from './ChallengesTable/ChallengesTable';
 import { ChallengesTableFilters } from './ChallengesTable/ChallengesTableFilters';
 import { ChallengesTableLoader } from './ChallengesTable/ChallengesTableLoader';
@@ -31,8 +33,14 @@ export const Challenges = () => {
 			title="Challenges"
 			description="Manage challenges. Creaete, edit, and delete to customize challenges for users."
 			showBackButton={false}
-			buttonText="Create Challenge"
-			href={PAGES.CHALLENGE_NEW}
+			customRightSlot={
+				<div className={styles.actions}>
+					<Button isIcon>
+						<AddButton href={PAGES.CHALLENGE_NEW}>Create Challenge</AddButton>
+					</Button>
+					<ChallengeDropdown />
+				</div>
+			}
 		>
 			<ChallengesTableFilters />
 			{isLoading && <ChallengesTableLoader />}

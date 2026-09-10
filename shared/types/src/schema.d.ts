@@ -1034,6 +1034,23 @@ export interface paths {
         patch: operations["AdminChallengeController_update_v1"];
         trace?: never;
     };
+    "/v1/admin/challenges/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate weeekly challenges */
+        post: operations["AdminChallengeController_generateChallenges_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/admin/challenges/{id}/regenerate": {
         parameters: {
             query?: never;
@@ -3581,7 +3598,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-05T12:20:11.306Z
+             * @example 2026-09-11T10:36:56.210Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3612,7 +3629,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-05T12:20:11.306Z
+             * @example 2026-09-11T10:36:56.210Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3774,7 +3791,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description Refresh token is missing */
+            /** @description Refresh token is missing | Session has expired */
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -6645,6 +6662,45 @@ export interface operations {
             };
             /** @description Challenge not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    AdminChallengeController_generateChallenges_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Challenges generated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
