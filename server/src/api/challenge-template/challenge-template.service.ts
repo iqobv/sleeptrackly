@@ -8,6 +8,7 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
+import { BulkCreateChallengeTemplateDto } from './dto/bulk-create-challenge-template.dto';
 import { ChallengeTemplateDto } from './dto/challenge-template.dto';
 import { ChallengeTemplateQueryDto } from './dto/challenge-templates-query.dto';
 import { CreateChallengeTemplateDto } from './dto/create-challenge-template.dto';
@@ -92,6 +93,40 @@ export class ChallengeTemplateService {
 		});
 
 		return plainToInstance(ChallengeTemplateDto, created);
+	}
+
+	public async bulkCreate(
+		dto: BulkCreateChallengeTemplateDto,
+	): Promise<ChallengeTemplateDto[]> {
+		const { templates } = dto;
+
+		const operations = templates.map((dto) => {
+			const { generationRules, translations, ...rest } = dto;
+
+			return this.prismaService.challengeTemplate.create({
+				data: {
+					...rest,
+					generationRules: generationRules as unknown as Prisma.JsonObject,
+					translations: {
+						createMany: {
+							data: translations.map((translation) => ({
+								...translation,
+							})),
+							skipDuplicates: true,
+						},
+					},
+				},
+				include: {
+					translations: true,
+				},
+			});
+		});
+
+		const created = await this.prismaService.$transaction(operations);
+
+		return created.map((created) =>
+			plainToInstance(ChallengeTemplateDto, created),
+		);
 	}
 
 	public async update(

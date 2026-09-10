@@ -106,6 +106,7 @@ export class ChallengeController {
 		return SUCCESS_MESSAGES.CHALLENGE.PARTICIPATION_STARTED;
 	}
 
+	/** Decline participation in a specific challenge by ID */
 	@Delete(':id/participate')
 	@ApiSuccessResponse(
 		HttpStatus.OK,

@@ -12,7 +12,8 @@
 		"start:all": "pnpm -r --parallel start",
 		"build:all": "pnpm -r build",
 		"lint:all": "pnpm -r lint",
-		"generate:api": "npx openapi-typescript http://localhost:5000/docs-json -o shared/types/src/schema.d.ts"
+		"generate:api": "npx openapi-typescript http://localhost:5000/docs-json -o shared/types/src/schema.d.ts",
+		"caddy:run": "caddy run --config ./Caddyfile"
 	},
 	"devDependencies": {
 		"@eslint/eslintrc": "catalog:",

@@ -2,6 +2,11 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
 export const env = createEnv({
+	shared: {
+		NODE_ENV: z
+			.enum(['development', 'test', 'production'])
+			.default('development'),
+	},
 	server: {
 		API_URL: z.url().nonempty('API_URL is required'),
 		JWT_SECRET: z.string().nonempty('JWT_SECRET is required'),
@@ -12,6 +17,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_SITE_URL: z.url().nonempty('NEXT_PUBLIC_SITE_URL is required'),
 	},
 	runtimeEnv: {
+		NODE_ENV: process.env.NODE_ENV,
 		API_URL: process.env.API_URL,
 		JWT_SECRET: process.env.JWT_SECRET,
 		NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,

@@ -10,6 +10,7 @@ interface FormContentProps {
 	isEdit?: boolean;
 	children: React.ReactNode;
 	isLoading?: boolean;
+	hideActions?: boolean;
 }
 
 export const FormContent = <T extends FieldValues>({
@@ -17,6 +18,7 @@ export const FormContent = <T extends FieldValues>({
 	isEdit = false,
 	children,
 	isLoading = false,
+	hideActions = false,
 }: FormContentProps) => {
 	const {
 		formState: { errors },
@@ -28,19 +30,21 @@ export const FormContent = <T extends FieldValues>({
 				<Typography color="error">{errors.root.message}</Typography>
 			)}
 			{children}
-			<FormActions className={styles.buttons}>
-				{isEdit && (
-					<FormReset disabledOnEmpty buttonProps={{ loading: isLoading }}>
-						Reset
-					</FormReset>
-				)}
-				<FormSubmit
-					disabledOnEmpty={isEdit}
-					buttonProps={{ loading: isLoading }}
-				>
-					{buttonLabel}
-				</FormSubmit>
-			</FormActions>
+			{!hideActions && (
+				<FormActions className={styles.buttons}>
+					{isEdit && (
+						<FormReset disabledOnEmpty buttonProps={{ loading: isLoading }}>
+							Reset
+						</FormReset>
+					)}
+					<FormSubmit
+						disabledOnEmpty={isEdit}
+						buttonProps={{ loading: isLoading }}
+					>
+						{buttonLabel}
+					</FormSubmit>
+				</FormActions>
+			)}
 		</div>
 	);
 };

@@ -1,9 +1,12 @@
 'use client';
 
 import { env } from '@/env';
-import { useUserStore } from '@/store/useUser.store';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
-import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import axios, {
+	AxiosError,
+	InternalAxiosRequestConfig,
+	isAxiosError,
+} from 'axios';
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 	_retry?: boolean;
@@ -67,13 +70,14 @@ apiClient.interceptors.response.use(
 				processQueue(null);
 				return apiClient(originalRequest);
 			} catch (refreshError) {
-				processQueue(refreshError as MessageApiResponse);
-
-				useUserStore.getState().logout();
-				if (typeof window !== 'undefined') {
-					window.location.href =
-						env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+				if (isAxiosError(refreshError)) {
+					processQueue(refreshError.response?.data);
 				}
+
+				if (typeof window !== 'undefined') {
+					window.dispatchEvent(new Event('auth:unauthorized'));
+				}
+
 				return Promise.reject(refreshError);
 			} finally {
 				isRefreshing = false;

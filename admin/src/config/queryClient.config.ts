@@ -7,6 +7,9 @@ import {
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 
 export const QUERY_KEYS = {
+	user: {
+		me: () => ['user', 'me'] as const,
+	},
 	profile: {
 		all: ['profile'],
 		username: (username: string) =>

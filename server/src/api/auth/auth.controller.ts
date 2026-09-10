@@ -117,10 +117,10 @@ export class AuthController {
 	/** Refresh access and refresh tokens */
 	@OptionalAuth()
 	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.TOKENS_REFRESHED)
-	@ApiErrorResponse(
-		HttpStatus.UNAUTHORIZED,
+	@ApiErrorResponse(HttpStatus.UNAUTHORIZED, [
 		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
-	)
+		ERROR_MESSAGES.SESSION.EXPIRED,
+	])
 	@HttpCode(HttpStatus.OK)
 	@Post('refresh')
 	public async refreshTokens(

@@ -3,112 +3,81 @@ import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 import { env } from './env';
 
-const JWT_SECRET = new TextEncoder().encode(env.JWT_SECRET);
-
-interface JwtPayload {
-	id: string;
-	email: string;
-	role: UserRole;
-	sessionId: string;
-	createdAt: string;
-}
+const ACCESS_TOKEN_KEY = 'accessToken';
+const REFRESH_TOKEN_KEY = 'refreshToken';
 
 export async function proxy(request: NextRequest) {
-	const accessToken = request.cookies.get('accessToken')?.value;
-	const refreshToken = request.cookies.get('refreshToken')?.value;
+	const accessToken = request.cookies.get(ACCESS_TOKEN_KEY)?.value;
+	const refreshToken = request.cookies.get(REFRESH_TOKEN_KEY)?.value;
 
-	const isDataRequest =
-		request.headers.get('rsc') === '1' ||
-		request.headers.get('next-router-prefetch') === '1' ||
-		request.headers.get('purpose') === 'prefetch' ||
-		request.nextUrl.searchParams.has('_rsc');
+	const mainSiteUrl = new URL(env.NEXT_PUBLIC_SITE_URL);
 
-	let isAuthenticated = false;
-	let haveAccess = false;
-	let refreshedCookies: string[] = [];
+	if (!accessToken && !refreshToken) return NextResponse.redirect(mainSiteUrl);
+
+	const secret = new TextEncoder().encode(env.JWT_SECRET);
 
 	if (accessToken) {
-		try {
-			const { payload } = await jwtVerify(accessToken, JWT_SECRET);
-			const data = payload as unknown as JwtPayload;
+		const payload = await jwtVerify(accessToken, secret)
+			.then((res) => res.payload)
+			.catch(() => null);
 
-			isAuthenticated = true;
-			if (data.role && data.role.includes(UserRole.ADMIN)) {
-				haveAccess = true;
-			}
-		} catch {
-			isAuthenticated = false;
+		if (payload) {
+			if (payload.role === UserRole.ADMIN) return NextResponse.next();
+
+			return NextResponse.redirect(mainSiteUrl);
 		}
 	}
 
-	if (!isAuthenticated && refreshToken) {
+	if (refreshToken) {
 		try {
-			const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`, {
-				method: 'POST',
-				headers: {
-					Cookie: `refreshToken=${refreshToken}`,
-					'Content-Type': 'application/json',
+			const refreshResponse = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/refresh`,
+				{
+					method: 'POST',
+					headers: {
+						Cookie: `${REFRESH_TOKEN_KEY}=${refreshToken}`,
+					},
 				},
-				cache: 'no-store',
-			});
+			);
 
-			if (res.ok) {
-				isAuthenticated = true;
-				refreshedCookies = res.headers.getSetCookie();
+			if (!refreshResponse.ok) return NextResponse.redirect(mainSiteUrl);
 
-				const newAccessToken = refreshedCookies
-					.find((c) => c.startsWith('accessToken='))
-					?.split(';')[0]
-					?.split('=')[1];
+			const responseCookies = refreshResponse.headers.getSetCookie();
 
-				if (newAccessToken) {
-					const { payload } = await jwtVerify(newAccessToken, JWT_SECRET);
-					const data = payload as unknown as JwtPayload;
+			let newAccessToken: string | null = null;
 
-					if (data.role && data.role.includes(UserRole.ADMIN)) {
-						haveAccess = true;
-					}
+			for (const cookieStr of responseCookies) {
+				const match = cookieStr.match(
+					new RegExp(`(?:^|;\\s*)${ACCESS_TOKEN_KEY}=([^;]*)`),
+				);
+				if (match) {
+					newAccessToken = decodeURIComponent(match[1]);
+					break;
 				}
+			}
 
-				refreshedCookies.forEach((cookie) => {
-					const [cookiePair] = cookie.split(';');
-					const [name, ...rest] = cookiePair.split('=');
-					const value = rest.join('=');
-					if (name && value) {
-						request.cookies.set(name.trim(), value.trim());
-					}
+			if (!newAccessToken) return NextResponse.redirect(mainSiteUrl);
+
+			const { payload: newPayload } = await jwtVerify(newAccessToken, secret);
+
+			if (newPayload.role === UserRole.ADMIN) {
+				const response = NextResponse.next();
+				const setCookieHeaders = refreshResponse.headers.getSetCookie();
+
+				setCookieHeaders.forEach((cookie) => {
+					response.headers.append('Set-Cookie', cookie);
 				});
+
+				return response;
+			} else {
+				return NextResponse.redirect(mainSiteUrl);
 			}
 		} catch {
-			isAuthenticated = false;
+			return NextResponse.redirect(mainSiteUrl);
 		}
 	}
 
-	if (!isAuthenticated || !haveAccess) {
-		if (isDataRequest) {
-			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-		}
-
-		const siteUrl = env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-		const response = NextResponse.redirect(new URL(siteUrl));
-
-		if (!isAuthenticated) {
-			response.cookies.delete('accessToken');
-			response.cookies.delete('refreshToken');
-		}
-
-		return response;
-	}
-
-	const response = NextResponse.next();
-
-	if (refreshedCookies.length > 0) {
-		refreshedCookies.forEach((cookie) => {
-			response.headers.append('Set-Cookie', cookie);
-		});
-	}
-
-	return response;
+	return NextResponse.redirect(mainSiteUrl);
 }
 
 export const config = {

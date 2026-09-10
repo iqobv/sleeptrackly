@@ -1,4 +1,5 @@
 import { baseGenerationMetadataSchema } from '@/schemas/challenge/templates/baseChallengeTemplate.schema';
+import { bulkCreateChallengeTemplatesSchema } from '@/schemas/challenge/templates/bulkCreateChallengeTemplate.schema';
 import { challengeTemplatesQuerySchema } from '@/schemas/challenge/templates/challengeTemplatesQuery.schema';
 import { challengeTemplateTranslationSchema } from '@/schemas/challenge/templates/challengeTemplateTranslation.schema';
 import { createChallengeTemplateSchema } from '@/schemas/challenge/templates/createChallengeTemplate.schema';
@@ -20,6 +21,9 @@ export type ChallengeTemplatesQueryDto = z.infer<
 >;
 export type BaseGenerationRulesMetadataDto = z.infer<
 	typeof baseGenerationMetadataSchema
+>;
+export type BulkCreateChallengeTemplateDto = z.infer<
+	typeof bulkCreateChallengeTemplatesSchema
 >;
 
 export type SleepDurationMetadataDto = Extract<

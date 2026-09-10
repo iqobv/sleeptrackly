@@ -1,7 +1,7 @@
 'use client';
 
 import { usePrimitiveArrayField } from '@/hooks/usePrimitiveArrayField.hook';
-import { Button, Field, Input } from '@shared/ui';
+import { Button, Field, Input, Typography } from '@shared/ui';
 import {
 	FieldErrors,
 	FieldValues,
@@ -89,20 +89,18 @@ export const PrimitiveArrayField = <
 					);
 				})}
 			</div>
-
 			{arrayLevelErrorMessage && (
-				<span
+				<Typography
+					color="error"
+					as="span"
 					style={{
-						color: 'var(--error-color, red)',
-						fontSize: '12px',
 						display: 'block',
 						marginBottom: '8px',
 					}}
 				>
 					{arrayLevelErrorMessage}
-				</span>
+				</Typography>
 			)}
-
 			<Button type="button" onClick={append}>
 				{addButtonLabel}
 			</Button>

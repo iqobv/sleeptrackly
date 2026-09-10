@@ -1,4 +1,5 @@
 import { AnalyticsWrapper } from '@/components/Analytics/AnalyticsWrapper';
+import { titleConfig } from '@/config/title.config';
 import { env } from '@/env';
 import { MainProvider } from '@/providers/MainProvider';
 import '@shared/ui/styles/global.scss';
@@ -24,8 +25,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
 	metadataBase: new URL(baseUrl),
 	title: {
-		default: 'Sleeptrackly',
-		template: '%s - Sleeptrackly',
+		default: titleConfig.name,
+		template: `%s ${titleConfig.separator} ${titleConfig.name}`,
 	},
 	description:
 		'Track your sleep patterns and improve your sleep quality with Sleeptrackly.',

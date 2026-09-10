@@ -990,6 +990,7 @@ export interface paths {
         put?: never;
         /** Participate in a specific challenge by ID */
         post: operations["ChallengeController_participateInChallenge_v1"];
+        /** Decline participation in a specific challenge by ID */
         delete: operations["ChallengeController_declineChallengeParticipation_v1"];
         options?: never;
         head?: never;
@@ -1817,6 +1818,23 @@ export interface paths {
         head?: never;
         /** Update a challenge template by ID */
         patch: operations["ChallengeTemplateController_update_v1"];
+        trace?: never;
+    };
+    "/v1/challenge-templates/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Bulk create a new challenge templates */
+        post: operations["ChallengeTemplateController_bulkCreate_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/v1/promotions": {
@@ -3546,6 +3564,9 @@ export interface components {
             generationRules: components["schemas"]["GenerationRulesDto"];
             translations: components["schemas"]["CreateChallengeTemplateTranslationDto"][];
         };
+        BulkCreateChallengeTemplateDto: {
+            templates: components["schemas"]["CreateChallengeTemplateDto"][];
+        };
         UpdateChallengeTemplateDto: {
             tier?: components["schemas"]["ChallengeTier"];
             type?: components["schemas"]["ChallengeType"];
@@ -3560,7 +3581,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-26T16:13:01.553Z
+             * @example 2026-09-05T12:20:11.306Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3591,7 +3612,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-08-26T16:13:01.553Z
+             * @example 2026-09-05T12:20:11.306Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -9475,6 +9496,43 @@ export interface operations {
             };
             /** @description Challenge template not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    ChallengeTemplateController_bulkCreate_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkCreateChallengeTemplateDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChallengeTemplateDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

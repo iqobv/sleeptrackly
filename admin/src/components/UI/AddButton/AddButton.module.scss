@@ -1,0 +1,16 @@
+@use '../../../styles/mixins' as *;
+
+.content {
+	display: flex;
+	flex-direction: row;
+	gap: 0.3rem;
+	align-items: center;
+}
+
+.text {
+	display: none;
+
+	@include respond-to(md) {
+		display: block;
+	}
+}

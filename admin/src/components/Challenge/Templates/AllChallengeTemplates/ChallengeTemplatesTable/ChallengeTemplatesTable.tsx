@@ -7,6 +7,7 @@ import {
 	useTablePagination,
 	useTableSorting,
 } from '@shared/tables';
+import { Pagination } from '@shared/ui';
 import { useChallengeTemplatesFilters } from '../useChallengeTemplatesFilters.hook';
 import { CHALLENGE_TEMPLATES_TABLE_COLUMNS } from './challengeTemplatesTableColumns';
 
@@ -36,19 +37,26 @@ export const ChallengeTemplatesTable = ({
 	});
 
 	return (
-		<Table
-			columns={CHALLENGE_TEMPLATES_TABLE_COLUMNS}
-			data={templates}
-			manualPagination
-			manualSorting
-			state={{
-				pagination,
-				sorting,
-			}}
-			onPaginationChange={handlePaginationChange}
-			onSortingChange={handleSortingChange}
-			pageCount={totalPages}
-			getCoreRowModel={getCoreRowModel()}
-		/>
+		<>
+			<Table
+				columns={CHALLENGE_TEMPLATES_TABLE_COLUMNS}
+				data={templates}
+				manualPagination
+				manualSorting
+				state={{
+					pagination,
+					sorting,
+				}}
+				onPaginationChange={handlePaginationChange}
+				onSortingChange={handleSortingChange}
+				pageCount={totalPages}
+				getCoreRowModel={getCoreRowModel()}
+			/>
+			<Pagination
+				currentPage={page + 1}
+				onPageChange={(newPage) => setFilters({ page: newPage - 1 })}
+				totalPages={totalPages}
+			/>
+		</>
 	);
 };

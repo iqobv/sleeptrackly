@@ -1,6 +1,5 @@
 import { Button, SectionHeader } from '@shared/ui';
-import Link from 'next/link';
-import { MdAdd } from 'react-icons/md';
+import { AddButton } from '../AddButton/AddButton';
 import { NavigationBackButton } from '../NavigationBackButton/NavigationBackButton';
 import styles from './PageHeader.module.scss';
 import { PageHeaderProps } from './PageHeader.types';
@@ -34,10 +33,7 @@ export const PageHeader = ({
 						{customButton ? (
 							customButton
 						) : (
-							<Link href={href}>
-								<MdAdd size={24} />
-								<span className={styles.text}>{buttonText}</span>
-							</Link>
+							<AddButton href={href}>{buttonText}</AddButton>
 						)}
 					</Button>
 				)}
