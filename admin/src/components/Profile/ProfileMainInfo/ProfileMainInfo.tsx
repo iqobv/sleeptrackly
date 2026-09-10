@@ -1,7 +1,7 @@
 'use client';
 
 import { UserAvatar } from '@/components/UI/UserAvatar/UserAvatar';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { Profile } from '@shared/types';
 import { SectionHeader } from '@shared/ui';
 import styles from './ProfileMainInfo.module.scss';

@@ -2,13 +2,22 @@
 
 import { CreateChallengeTemplateDto } from '@/dto/challenge/challengeTemplate.dto';
 import { usePrimitiveArrayField } from '@/hooks/usePrimitiveArrayField.hook';
+import { createPrefixBuilder } from '@/utils/prefixBuilder.util';
 import { Button, Field, Input } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
 import { DeleteButton } from '../../PrimitiveArrayField/DeleteButton';
 import styles from './ChallengeTemplateForm.module.scss';
 import { ChallengeTemplateGenerationMetadata } from './ChallengeTemplateGenerationMetadata/ChallengeTemplateGenerationMetadata';
 
-export const ChallengeTemplateGenerationForm = () => {
+interface ChallengeTemplateGenerationFormProps {
+	prefix?: string;
+}
+
+export const ChallengeTemplateGenerationForm = ({
+	prefix,
+}: ChallengeTemplateGenerationFormProps) => {
+	const { p } = createPrefixBuilder<CreateChallengeTemplateDto>(prefix);
+
 	const {
 		register,
 		formState: { errors },
@@ -19,7 +28,7 @@ export const ChallengeTemplateGenerationForm = () => {
 		CreateChallengeTemplateDto
 	>({
 		defaultValue: 1,
-		name: 'generationRules.durations',
+		name: p('generationRules.durations'),
 		minLength: 1,
 	});
 
@@ -37,7 +46,7 @@ export const ChallengeTemplateGenerationForm = () => {
 								<Input
 									placeholder="Duration (days)"
 									type="number"
-									{...register(`generationRules.durations.${index}`, {
+									{...register(p(`generationRules.durations.${index}`), {
 										valueAsNumber: true,
 									})}
 									error={!!errors.generationRules?.durations?.[index]}
@@ -54,7 +63,7 @@ export const ChallengeTemplateGenerationForm = () => {
 					Add New Duration
 				</Button>
 			</fieldset>
-			<ChallengeTemplateGenerationMetadata />
+			<ChallengeTemplateGenerationMetadata prefix={prefix} />
 		</div>
 	);
 };

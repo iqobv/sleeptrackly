@@ -13,6 +13,7 @@ import {
 	ForbiddenException,
 	Injectable,
 	NotFoundException,
+	UnauthorizedException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
@@ -144,10 +145,16 @@ export class SessionService {
 		token: string,
 	): Promise<Session> {
 		const session = await this.prismaService.session.findFirst({
-			where: { AND: [{ id: sessionId }, { hashToken: token }] },
+			where: {
+				id: sessionId,
+				hashToken: token,
+			},
 		});
 
 		if (!session) throw new NotFoundException(ERROR_MESSAGES.SESSION.NOT_FOUND);
+
+		if (session.expiresAt < new Date())
+			throw new UnauthorizedException(ERROR_MESSAGES.SESSION.EXPIRED);
 
 		return session;
 	}

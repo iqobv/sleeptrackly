@@ -30,7 +30,7 @@ export const Pagination = ({
 					key={i}
 					onClick={() => typeof p === 'number' && onPageChange(p)}
 					className={p === '...' ? styles.ellipsis : ''}
-					variant={p === '...' ? 'contained' : 'text'}
+					variant={p === '...' ? 'text' : 'contained'}
 					color={p === currentPage ? 'primary' : 'secondary'}
 				>
 					{p}

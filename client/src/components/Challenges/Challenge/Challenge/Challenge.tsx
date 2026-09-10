@@ -2,6 +2,7 @@
 
 import { getChallengeById } from '@/api/challenge/getChallengeById.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { usePageTitle } from '@/hooks/usePageTitle.hook';
 import { ChallengeStatus } from '@shared/types';
 import { skipToken, useQuery } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
@@ -23,6 +24,8 @@ export const Challenge = ({ id }: ChallengeProps) => {
 		queryKey: QUERY_KEYS.challenges.detail(id),
 		queryFn: id ? () => getChallengeById(id) : skipToken,
 	});
+
+	usePageTitle(challenge?.translation.title);
 
 	if (isLoading) return <ChallengePageLoader />;
 	if (!challenge) notFound();

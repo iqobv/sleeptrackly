@@ -1,3 +1,4 @@
+export { AddButton } from './AddButton/AddButton';
 export { CDNImage } from './CDNImage/CDNImage';
 export { DeleteButton } from './DeleteButton/DeleteButton';
 export { FormContent } from './FormContent/FormContent';

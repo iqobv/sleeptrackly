@@ -18,8 +18,14 @@ import {
 	Post,
 	Query,
 } from '@nestjs/common';
-import { ApiExtraModels, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBody,
+	ApiExtraModels,
+	ApiOkResponse,
+	ApiTags,
+} from '@nestjs/swagger';
 import { ChallengeTemplateService } from './challenge-template.service';
+import { BulkCreateChallengeTemplateDto } from './dto/bulk-create-challenge-template.dto';
 import { ChallengeTemplateDto } from './dto/challenge-template.dto';
 import { ChallengeTemplateQueryDto } from './dto/challenge-templates-query.dto';
 import { CreateChallengeTemplateDto } from './dto/create-challenge-template.dto';
@@ -71,6 +77,16 @@ export class ChallengeTemplateController {
 		@Body() dto: CreateChallengeTemplateDto,
 	): Promise<ChallengeTemplateDto> {
 		return await this.challengeTemplateService.create(dto);
+	}
+
+	/** Bulk create a new challenge templates */
+	@Post('bulk')
+	@ApiBody({ type: BulkCreateChallengeTemplateDto })
+	@ApiOkResponse({ type: [ChallengeTemplateDto] })
+	public async bulkCreate(
+		@Body() dto: BulkCreateChallengeTemplateDto,
+	): Promise<ChallengeTemplateDto[]> {
+		return await this.challengeTemplateService.bulkCreate(dto);
 	}
 
 	/** Update a challenge template by ID */

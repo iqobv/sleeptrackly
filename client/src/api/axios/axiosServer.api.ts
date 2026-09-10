@@ -4,7 +4,7 @@ import { env } from '@/env';
 import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import https from 'https';
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 
 const url = env.NEXT_PUBLIC_API_URL;
 
@@ -18,8 +18,8 @@ const apiServer = axios.create({
 
 apiServer.interceptors.request.use(
 	async (config: InternalAxiosRequestConfig) => {
-		const cookieStore = await cookies();
-		const cookieHeader = cookieStore.toString();
+		const headersList = await headers();
+		const cookieHeader = headersList.get('cookie');
 
 		if (cookieHeader) {
 			config.headers.set('Cookie', cookieHeader);

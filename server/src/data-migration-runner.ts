@@ -15,18 +15,6 @@ const config = validate(process.env);
 const connectionString = config.POSTGRES_URI;
 const caCert = config.DB_CA_CERT_BASE64;
 
-if (!connectionString) {
-	throw new Error(
-		'Missing required environment variable: POSTGRES_URI. Set it before running data-migration-runner.',
-	);
-}
-
-if (!caCert) {
-	throw new Error(
-		'Missing required environment variable: DB_CA_CERT. Set it before running data-migration-runner.',
-	);
-}
-
 const cleanConnectionString = connectionString.split('?')[0];
 
 const pool = new Pool({

@@ -35,7 +35,11 @@ export const TypeSelector = <
 	selectName,
 	defaultMetadataMap,
 }: TypeSelectorProps<D, TMetadataMap>) => {
-	const { control, setValue } = useFormContext<D>();
+	const {
+		control,
+		setValue,
+		formState: { errors },
+	} = useFormContext<D>();
 
 	const handleTypeChange = (
 		newType: ChallengeType,
@@ -53,13 +57,21 @@ export const TypeSelector = <
 		});
 	};
 
+	const errorObj = selectName.split('.').reduce<unknown>((acc, part) => {
+		return acc && typeof acc === 'object' && acc !== null
+			? (acc as Record<string, unknown>)[part]
+			: undefined;
+	}, errors) as Record<string, unknown> | undefined;
+
+	const errorMessage = errorObj?.message as string | undefined;
+
 	return (
 		<Controller
 			control={control}
 			name={selectName}
-			render={({ field, formState: { errors } }) => (
+			render={({ field }) => (
 				<Field
-					error={errors[selectName]?.message as string | undefined}
+					error={errorMessage}
 					label="Challenge Type"
 					id="type"
 					required={!isEditing}

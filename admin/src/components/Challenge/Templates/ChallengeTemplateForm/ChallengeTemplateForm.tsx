@@ -3,6 +3,7 @@
 import { FormContent, FormFields, TranslationForm } from '@/components/UI';
 import { CreateChallengeTemplateDto } from '@/dto/challenge/challengeTemplate.dto';
 import { ChallengeType } from '@/types/challenge/challengeType.types';
+import { createPrefixBuilder } from '@/utils/prefixBuilder.util';
 import { TypeSelector } from '../../TypeSelector/TypeSelector';
 import { CHALLENGE_TEMPLATE_FIELDS } from './challengeTemplateFields';
 import { ChallengeTemplateGenerationForm } from './ChallengeTemplateGenerationForm';
@@ -11,6 +12,8 @@ interface ChallengeTemplateFormProps {
 	children?: React.ReactNode;
 	isEditing?: boolean;
 	isLoading?: boolean;
+	index?: number;
+	isBulk?: boolean;
 }
 
 type ChallengeTemplateMetadataMap = {
@@ -37,43 +40,50 @@ export const ChallengeTemplateForm = ({
 	children,
 	isLoading,
 	isEditing,
+	index,
+	isBulk = false,
 }: ChallengeTemplateFormProps) => {
+	const prefix = typeof index === 'number' ? `templates.${index}.` : '';
+
+	const { p, ap } = createPrefixBuilder<CreateChallengeTemplateDto>(prefix);
+
 	return (
 		<FormContent
 			isLoading={isLoading}
 			buttonLabel={isEditing ? 'Update' : 'Create'}
 			isEdit={isEditing}
+			hideActions={isBulk}
 		>
-			<FormFields fields={CHALLENGE_TEMPLATE_FIELDS(!isEditing)} />
+			<FormFields fields={CHALLENGE_TEMPLATE_FIELDS(!isEditing, prefix)} />
 			<TypeSelector<CreateChallengeTemplateDto, ChallengeTemplateMetadataMap>
-				metadataName="generationRules.metadata"
-				selectName="type"
+				metadataName={p('generationRules.metadata')}
+				selectName={p('type')}
 				isEditing={isEditing}
 				defaultMetadataMap={CHALLENGE_TEMPLATE_DEFAULT_METADATA}
 			/>
-			<ChallengeTemplateGenerationForm />
+			<ChallengeTemplateGenerationForm prefix={prefix} />
 			<TranslationForm<CreateChallengeTemplateDto>
-				fields={(index) => [
+				fields={(i) => [
 					{
-						name: `translations.${index}.language`,
+						name: p(`translations.${i}.language`),
 						label: 'Language',
 						type: 'text',
 						placeholder: 'en, fr, es, etc.',
 					},
 					{
-						name: `translations.${index}.title`,
+						name: p(`translations.${i}.title`),
 						label: 'Title',
 						type: 'text',
 						placeholder: 'Challenge Title',
 					},
 					{
-						name: `translations.${index}.description`,
+						name: p(`translations.${i}.description`),
 						label: 'Description',
 						type: 'textarea',
 						placeholder: 'Challenge Description',
 					},
 				]}
-				name="translations"
+				name={ap('translations')}
 				defaultValues={[
 					{
 						language: '',

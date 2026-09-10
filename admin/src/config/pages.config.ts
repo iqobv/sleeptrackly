@@ -32,4 +32,5 @@ export const PAGES = {
 	CHALLENGE_TEMPLATES: '/challenges/templates',
 	CHALLENGE_TEMPLATE: (id: string) => `/challenges/templates/${id}`,
 	CHALLENGE_TEMPLATE_NEW: '/challenges/templates/new',
+	CHALLENGE_TEMPLATE_NEW_BULK: '/challenges/templates/new/bulk',
 } as const;

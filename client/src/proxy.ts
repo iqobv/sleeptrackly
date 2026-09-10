@@ -3,10 +3,14 @@ import { AUTH_PAGES } from './config/authPages.config';
 import { PRIVATE_PAGES } from './config/privatePages.config';
 import { SUBDOMAINS } from './config/subdomains.config';
 
-export function proxy(request: NextRequest) {
+const ACCESS_TOKEN_KEY = 'accessToken';
+const REFRESH_TOKEN_KEY = 'refreshToken';
+
+export async function proxy(request: NextRequest) {
 	const url = request.nextUrl.clone();
 	const hostname = request.headers.get('host') || '';
 	const path = url.pathname;
+	const requestHeaders = new Headers(request.headers);
 
 	const isAppSubdomain = hostname.startsWith(`${SUBDOMAINS.APP}.`);
 
@@ -15,57 +19,53 @@ export function proxy(request: NextRequest) {
 			url.pathname = '/404';
 			return NextResponse.rewrite(url);
 		}
+
 		return NextResponse.next();
 	}
 
 	if (!isAppSubdomain) return NextResponse.next();
 
-	const accessToken = request.cookies.get('accessToken')?.value;
-	const refreshToken = request.cookies.get('refreshToken')?.value;
+	const accessToken = request.cookies.get(ACCESS_TOKEN_KEY)?.value;
+	const refreshToken = request.cookies.get(REFRESH_TOKEN_KEY)?.value;
+
 	const isAuthenticated = !!accessToken || !!refreshToken;
 
-	if (path === '/') {
-		url.pathname = isAuthenticated ? PRIVATE_PAGES.DASHBOARD : AUTH_PAGES.LOGIN;
-		const response = NextResponse.redirect(url);
-		response.headers.set('x-middleware-cache', 'no-cache');
-		return response;
-	}
+	let response: NextResponse;
 
 	const protectedRoutes = Object.values(PRIVATE_PAGES).filter(
 		(route) => typeof route === 'string',
 	);
-
 	const authRoutes = Object.values(AUTH_PAGES).filter(
 		(route) => typeof route === 'string',
 	);
-
 	const isProtectedRoute = protectedRoutes.some((route) =>
 		path.startsWith(route),
 	);
-
 	const isAuthRoute = authRoutes.some((route) => path.startsWith(route));
 
-	if (!isAuthenticated && isProtectedRoute) {
+	if (path === '/') {
+		url.pathname = isAuthenticated ? PRIVATE_PAGES.DASHBOARD : AUTH_PAGES.LOGIN;
+		response = NextResponse.redirect(url);
+	} else if (!isAuthenticated && isProtectedRoute) {
 		const loginUrl = new URL(AUTH_PAGES.LOGIN, request.url);
 		loginUrl.searchParams.set('redirect', path + request.nextUrl.search);
-
-		const response = NextResponse.redirect(loginUrl);
-		response.headers.set('x-middleware-cache', 'no-cache');
-		return response;
-	}
-
-	if (isAuthenticated && isAuthRoute) {
+		response = NextResponse.redirect(loginUrl);
+	} else if (isAuthenticated && isAuthRoute) {
 		const redirectUrl =
 			request.nextUrl.searchParams.get('redirect') || PRIVATE_PAGES.DASHBOARD;
-
-		const response = NextResponse.redirect(new URL(redirectUrl, request.url));
-		response.headers.set('x-middleware-cache', 'no-cache');
-		return response;
+		response = NextResponse.redirect(new URL(redirectUrl, request.url));
+	} else {
+		const rewriteUrl = request.nextUrl.clone();
+		rewriteUrl.pathname = `/${SUBDOMAINS.APP}${path}`;
+		response = NextResponse.rewrite(rewriteUrl, {
+			request: { headers: requestHeaders },
+		});
 	}
 
-	const rewriteUrl = request.nextUrl.clone();
-	rewriteUrl.pathname = `/${SUBDOMAINS.APP}${path}`;
-	return NextResponse.rewrite(rewriteUrl);
+	response.headers.set('x-middleware-cache', 'no-cache');
+	response.headers.set('Cache-Control', 'no-store, max-age=0');
+
+	return response;
 }
 
 export const config = {
