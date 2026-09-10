@@ -6,4 +6,5 @@ export const CHALLENGE_SUCCESS_MESSAGES = {
 	CHALLENGE_TASK_RECOVERED:
 		'Challenge task has been successfully recovered, but challenge is still frozen',
 	PARTICIPATION_DECLINED: 'Challenge participation declined successfully',
+	GENERATED: 'Challenges generated successfully',
 } as const;

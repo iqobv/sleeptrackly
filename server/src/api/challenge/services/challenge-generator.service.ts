@@ -1,9 +1,8 @@
 import { GenerationRulesDto } from '@api/challenge-template/dto/generation-rules.dto';
+import { ChallengeTier } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
-import {
-	CHALLENGE_ERROR_MESSAGES,
-	CHALLENGE_TEMPLATE_ERROR_MESSAGES,
-} from '@libs/constants/error-messages';
+import { CHALLENGE_ERROR_MESSAGES } from '@libs/constants/error-messages';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import {
 	GenerateChallengeDto,
@@ -31,7 +30,7 @@ export class ChallengeGeneratorService {
 		});
 
 		if (!template)
-			throw new NotFoundException(CHALLENGE_TEMPLATE_ERROR_MESSAGES.NOT_FOUND);
+			throw new NotFoundException(ERROR_MESSAGES.CHALLENGE_TEMPLATE.NOT_FOUND);
 
 		const rules = template.generationRules as unknown as GenerationRulesDto;
 
@@ -140,6 +139,46 @@ export class ChallengeGeneratorService {
 		const { availableFrom, availableTo } = generateRange();
 
 		await this.generateChallengeForTier({ tier, availableFrom, availableTo });
+	}
+
+	public async generateChallenges(currentWeek: boolean = false): Promise<void> {
+		const { availableFrom, availableTo } = generateRange(currentWeek);
+
+		const loadout = this.generateWeeklyLoadout();
+		this.logger.log(`Weekly loadout selected: ${loadout.join(', ')}`);
+
+		const usedTemplateIds: string[] = [];
+
+		for (const tier of loadout) {
+			await this.generateChallengeForTier({
+				tier,
+				availableFrom,
+				availableTo,
+				usedTemplateIds,
+			});
+		}
+	}
+
+	private generateWeeklyLoadout(): ChallengeTier[] {
+		const loadout: ChallengeTier[] = [
+			ChallengeTier.TIER_1,
+			ChallengeTier.TIER_2,
+		];
+
+		const eligibleTiers = Object.values(ChallengeTier).filter(
+			(tier) => tier !== ChallengeTier.TIER_4,
+		);
+
+		const hasFourthSlot = Math.random() > 0.5;
+		const totalSlots = hasFourthSlot ? 4 : 3;
+
+		for (let i = 2; i < totalSlots; i++) {
+			const randomTier =
+				eligibleTiers[Math.floor(Math.random() * eligibleTiers.length)];
+			loadout.push(randomTier);
+		}
+
+		return loadout;
 	}
 
 	private getRandomItem<T>(items: T[]): T {

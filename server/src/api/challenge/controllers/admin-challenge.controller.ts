@@ -86,6 +86,16 @@ export class AdminChallengeController {
 		return await this.adminChallengeService.update(id, dto);
 	}
 
+	/** Generate weeekly challenges */
+	@Post('generate')
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.GENERATED)
+	@HttpCode(HttpStatus.OK)
+	public async generateChallenges(): Promise<MessageResponse> {
+		await this.challengeGeneratorService.generateChallenges(true);
+
+		return SUCCESS_MESSAGES.CHALLENGE.GENERATED;
+	}
+
 	/** Regenerate challenge */
 	@Post(':id/regenerate')
 	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.REGENERATED)
