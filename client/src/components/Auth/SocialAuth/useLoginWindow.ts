@@ -34,7 +34,7 @@ export const useLoginWindow = (url: string) => {
 				return;
 			}
 			if (event.data?.success) {
-				router.refresh();
+				window.reload();
 				window.removeEventListener('message', messageListener);
 			}
 		};
