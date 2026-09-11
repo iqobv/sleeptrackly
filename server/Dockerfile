@@ -25,7 +25,7 @@ RUN pnpm run build
 
 WORKDIR /app
 
-RUN pnpm deploy --filter server --prod /app/prod-out
+RUN pnpm deploy --filter server --prod --legacy /app/prod-out
 
 WORKDIR /app/prod-out
 
