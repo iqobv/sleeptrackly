@@ -1,12 +1,11 @@
 'use client';
 
-import { changePassword, needOldPassword } from '@/api';
-import { Button, Loader, TextField } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { ChangePasswordDto } from '@/dto';
-import { useAuth } from '@/hooks';
-import { changePasswordSchema } from '@/schemas';
+import { changePassword, needOldPassword } from '@/api/auth/password.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { ChangePasswordDto } from '@/dto/auth/password.dto';
+import { changePasswordSchema } from '@/schemas/auth/changePassword.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input, Loader } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -15,11 +14,12 @@ import styles from './ChangePasswordForm.module.scss';
 import { CHANGE_PASSWORD_FIELD } from './changePasswordFields';
 
 interface ChangePasswordFormProps {
-	handleCLose: () => void;
+	handleClose: () => void;
 }
 
-const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
-	const { user } = useAuth();
+export const ChangePasswordForm = ({
+	handleClose,
+}: ChangePasswordFormProps) => {
 	const router = useRouter();
 
 	const {
@@ -37,19 +37,18 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 
 	const { data, isFetched, isLoading } = useQuery<boolean>({
 		queryFn: needOldPassword,
-		queryKey: QUERY_KEYS.auth.needOldPassword(user?.id || ''),
-		enabled: !!user?.id,
+		queryKey: QUERY_KEYS.auth.needOldPassword(),
+		staleTime: 0,
 	});
 
 	const { mutate } = useMutation({
 		mutationFn: ({ oldPassword, newPassword }: ChangePasswordDto) =>
 			changePassword({ oldPassword, newPassword }),
-		mutationKey: QUERY_KEYS.auth.changePassword(user?.id || ''),
 		onSuccess() {
 			reset();
 			toast.success('Password changed');
 			router.refresh();
-			handleCLose();
+			handleClose();
 		},
 		onError(error) {
 			toast.error(error.message);
@@ -59,34 +58,32 @@ const ChangePasswordForm = ({ handleCLose }: ChangePasswordFormProps) => {
 	const onSubmit = (data: ChangePasswordDto) => mutate(data);
 
 	return (
-		<form
-			className={styles['change-password-form']}
-			onSubmit={handleSubmit(onSubmit)}
-		>
+		<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 			{isLoading && <Loader />}
 			{isFetched && (
 				<>
 					{CHANGE_PASSWORD_FIELD.map((f) => {
 						if (!data && f.name === 'oldPassword') return null;
 						return (
-							<TextField
+							<Field
 								key={f.name}
-								placeholder={f.placeholder}
-								type={f.type}
+								error={errors[f.name]?.message}
 								label={f.label}
-								autoComplete={f.autocomplete}
-								error={errors[f.name]?.message as string}
-								{...register(f.name)}
-							/>
+							>
+								<Input
+									placeholder={f.placeholder}
+									type={f.type}
+									autoComplete={f.autoComplete}
+									{...register(f.name)}
+								/>
+							</Field>
 						);
 					})}
 				</>
 			)}
-			<Button type="submit" className={styles['change-password-form__button']}>
+			<Button type="submit" className={styles.button}>
 				Change password
 			</Button>
 		</form>
 	);
 };
-
-export default ChangePasswordForm;

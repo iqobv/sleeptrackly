@@ -1,4 +1,8 @@
-import { IUserCoin } from '@/types';
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
 
-export const getUserCoins = async () => await fetcher<IUserCoin>(`/v1/coins`);
+type GetUserCoinsResponse =
+	paths['/v1/coins']['get']['responses']['200']['content']['application/json'];
+
+export const getUserCoins = async () =>
+	(await apiClient.get<GetUserCoinsResponse>(`/v1/coins`)).data;

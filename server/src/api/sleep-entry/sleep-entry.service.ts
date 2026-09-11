@@ -1,136 +1,268 @@
-import { Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
+import { WeeklySummaryPublisherService } from '@api/weekly-summary/services/weekly-summary-publisher.service';
+import { Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { DATE_FORMAT } from '@libs/constants/date-format.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { calculateSleepDuration } from '@libs/utils/calculate-sleep-duration.util';
+import {
+	ConflictException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import utc from 'dayjs/plugin/utc';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { QueryDto, SleepEntryDto } from './dto';
-import { GroupedByWeek } from './interfaces';
+import { InternalCreateSleepEntryDto } from './dto/create-sleep-entry.dto';
+import { QueryDto } from './dto/query.dto';
+import { SleepDashboardDto } from './dto/sleep-dashboard.dto';
+import { SleepDayDto } from './dto/sleep-day.dto';
+import { SleepEntryDto } from './dto/sleep-entry.dto';
+import { SleepStatisticsDto } from './dto/statistics.dto';
+import { UpdateSleepEntryDto } from './dto/update-sleep-entry.dto';
+import { NoOverlapParams } from './interfaces/no-overlap-params.interface';
 
 dayjs.extend(isoWeek);
 dayjs.extend(utc);
 
 @Injectable()
 export class SleepEntryService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly weeklySummaryPublisherService: WeeklySummaryPublisherService,
+	) {}
 
-	async findByUserId(userId: string) {
-		return await this.prismaService.sleepEntry.findMany({ where: { userId } });
-	}
-
-	private getGroupedByWeek(sleepEntries: SleepEntryDto[]) {
-		return sleepEntries.reduce((acc, entry) => {
-			const date = dayjs(entry.dateForChart, 'YYYY-MM-DD');
-			const key = `${date.year()}-W${date.isoWeek()}`;
-			if (!acc[key]) acc[key] = [];
-			acc[key].push(entry);
-			return acc;
-		}, {} as GroupedByWeek);
-	}
-
-	private getSortedWeeks(groupedByWeek: GroupedByWeek) {
-		return Object.keys(groupedByWeek).sort((a, b) => {
-			const [yearA, weekA] = a.split('-W').map(Number);
-			const [yearB, weekB] = b.split('-W').map(Number);
-			return (
-				dayjs().isoWeek(weekB).year(yearB).startOf('isoWeek').valueOf() -
-				dayjs().isoWeek(weekA).year(yearA).startOf('isoWeek').valueOf()
-			);
+	public async findByUserId(userId: string): Promise<SleepEntryDto[]> {
+		const sleepEntries = await this.prismaService.sleepEntry.findMany({
+			where: { userId },
 		});
-	}
 
-	private getCurrentWeekKey() {
-		const now = dayjs();
-		return `${now.year()}-W${now.isoWeek()}`;
+		return plainToInstance(SleepEntryDto, sleepEntries);
 	}
 
 	private buildDaysForWeek(
-		year: number,
-		weekNumber: number,
+		startOfWeek: Dayjs,
 		entries: SleepEntryDto[],
-	): { day: string; data: SleepEntryDto | null }[] {
-		const startOfWeek = dayjs()
-			.year(year)
-			.isoWeek(weekNumber)
-			.startOf('isoWeek');
+	): SleepDayDto[] {
 		return Array.from({ length: 7 }, (_, i) => {
-			const day = startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD');
-			const data = entries.find((entry) => entry.dateForChart === day) || null;
-			return { day, data };
+			const day = startOfWeek.add(i, 'day').format(DATE_FORMAT);
+			const data = entries.filter((entry) => entry.dateForChart === day);
+			const sleepDuration = data.reduce(
+				(acc, entry) => acc + entry.sleepDuration,
+				0,
+			);
+
+			return { day, sleepDuration, data };
 		});
 	}
 
-	private calculateStatistics(
-		weekNumber: number,
-		days: { day: string; data: SleepEntryDto | null }[],
-	) {
-		const totalSleepDuration = days.reduce(
-			(acc, d) => acc + (d.data?.sleepDuration || 0),
+	public async getSleepsEntryForWeek(
+		userId: string,
+		query: QueryDto,
+	): Promise<SleepDashboardDto> {
+		const { date } = query;
+
+		const startOfWeek = dayjs(date, DATE_FORMAT).startOf('isoWeek');
+		const endOfWeek = dayjs(date, DATE_FORMAT).endOf('isoWeek');
+		const startDate = startOfWeek.format(DATE_FORMAT);
+		const endDate = endOfWeek.format(DATE_FORMAT);
+
+		const sleepEntries = await this.prismaService.sleepEntry.findMany({
+			where: {
+				userId,
+				dateForChart: {
+					gte: startDate,
+					lte: endDate,
+				},
+			},
+		});
+
+		const mappedEntries = plainToInstance(SleepEntryDto, sleepEntries);
+		const days = this.buildDaysForWeek(startOfWeek, mappedEntries);
+
+		const entriesCount = sleepEntries.length;
+		const totalSleepDuration = sleepEntries.reduce(
+			(acc, s) => acc + s.sleepDuration,
 			0,
 		);
-		const daysWithData = days.filter((d) => d.data).length;
+		const totalRating = sleepEntries.reduce((acc, s) => acc + s.rating, 0);
 
-		return {
-			weekNumber,
+		const mappedStatistics: SleepStatisticsDto = {
 			totalSleepDuration,
-			averageSleepDurationByData: daysWithData
-				? totalSleepDuration / daysWithData
-				: 0,
-			averageSleepDurationForWeek: totalSleepDuration / 7,
+			averageSleepDuration:
+				entriesCount > 0 ? Math.round(totalSleepDuration / entriesCount) : 0,
+			averageSleepRating: entriesCount > 0 ? totalRating / entriesCount : 0,
 		};
+
+		const moreRecord = await this.prismaService.sleepEntry.findFirst({
+			where: {
+				userId,
+				dateForChart: {
+					lt: startDate,
+				},
+			},
+		});
+
+		const result: SleepDashboardDto = {
+			statistics: mappedStatistics,
+			days,
+			hasMore: !!moreRecord,
+		};
+
+		return plainToInstance(SleepDashboardDto, result);
 	}
 
-	async getSleepsEntryForWeek(userId: string, query: QueryDto) {
-		const { week = 0 } = query;
-		const sleepEntries = await this.findByUserId(userId);
+	public async findById(
+		id: string,
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<SleepEntryDto> {
+		const prisma = tx ?? this.prismaService;
 
-		const groupedByWeek = this.getGroupedByWeek(sleepEntries);
-		const sortedWeeks = this.getSortedWeeks(groupedByWeek);
+		const sleepEntry = await prisma.sleepEntry.findUnique({
+			where: { id, userId },
+		});
 
-		let year: number, weekNumber: number, entriesForWeek: SleepEntryDto[];
+		if (!sleepEntry)
+			throw new NotFoundException(ERROR_MESSAGES.SLEEP_ENTRY.NOT_FOUND);
 
-		if (week === 0) {
-			const now = dayjs();
-			year = now.year();
-			weekNumber = now.isoWeek();
-			entriesForWeek = groupedByWeek[this.getCurrentWeekKey()] || [];
-		} else {
-			const selectedKey = sortedWeeks[week];
-			if (!selectedKey) {
-				const now = dayjs();
-				year = now.year();
-				weekNumber = now.isoWeek();
-				const startOfWeek = now.startOf('isoWeek');
+		return plainToInstance(SleepEntryDto, sleepEntry);
+	}
 
-				const days = Array.from({ length: 7 }, (_, i) => ({
-					day: startOfWeek.clone().add(i, 'day').format('YYYY-MM-DD'),
-					data: null,
-				}));
+	public async createSleepEntry(
+		userId: string,
+		dto: InternalCreateSleepEntryDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<SleepEntryDto> {
+		const { sleepStart, sleepEnd, dateForChart, ...rest } = dto;
 
-				return {
-					statistics: {
-						weekNumber,
-						totalSleepDuration: 0,
-						averageSleepDurationByData: 0,
-						averageSleepDurationForWeek: 0,
-					},
-					days,
-					totalWeeks: 1,
-				};
-			}
+		const prisma = tx ?? this.prismaService;
 
-			const [yearStr, weekStr] = selectedKey.split('-W');
-			year = Number(yearStr);
-			weekNumber = Number(weekStr);
-			entriesForWeek = groupedByWeek[selectedKey];
+		const start = new Date(sleepStart);
+		const end = new Date(sleepEnd);
+
+		await this.ensureNoOverlap({ userId, start, end }, prisma);
+
+		const { sleepDuration } = calculateSleepDuration(sleepStart, sleepEnd);
+
+		const created = await prisma.sleepEntry.create({
+			data: {
+				...rest,
+				sleepDuration,
+				dateForChart: dateForChart,
+				sleepEnd: new Date(sleepEnd),
+				sleepStart: new Date(sleepStart),
+				user: { connect: { id: userId } },
+			},
+		});
+
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart,
+			isManual: true,
+		});
+
+		return plainToInstance(SleepEntryDto, created);
+	}
+
+	public async updateSleepEntry(
+		id: string,
+		userId: string,
+		dto: UpdateSleepEntryDto,
+		tx?: Prisma.TransactionClient,
+	): Promise<SleepEntryDto> {
+		const { dateForChart, sleepEnd, sleepStart, ...rest } = dto;
+
+		const prisma = tx ?? this.prismaService;
+
+		const sleepEntry = await this.findById(id, userId, prisma);
+
+		const targetStart = sleepStart
+			? new Date(sleepStart)
+			: sleepEntry.sleepStart;
+		const targetEnd = sleepEnd ? new Date(sleepEnd) : sleepEntry.sleepEnd;
+
+		if (sleepStart || sleepEnd) {
+			await this.ensureNoOverlap(
+				{
+					userId,
+					start: targetStart,
+					end: targetEnd,
+					excludeEntryId: id,
+				},
+				prisma,
+			);
 		}
 
-		const days = this.buildDaysForWeek(year, weekNumber, entriesForWeek);
-		const statistics = this.calculateStatistics(weekNumber, days);
+		const { sleepDuration, dateForChart: generatedDateForChart } =
+			calculateSleepDuration(targetStart, targetEnd);
 
-		return {
-			statistics,
-			days,
-			totalWeeks: sortedWeeks.length,
-		};
+		const updated = await this.prismaService.sleepEntry.update({
+			where: { id, userId },
+			data: {
+				...rest,
+				sleepDuration,
+				dateForChart:
+					dateForChart ?? sleepEntry.dateForChart ?? generatedDateForChart,
+				sleepEnd: targetEnd,
+				sleepStart: targetStart,
+				isVerified: false,
+			},
+		});
+
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart: updated.dateForChart,
+			isManual: true,
+		});
+
+		return plainToInstance(SleepEntryDto, updated);
+	}
+
+	public async deleteSleepEntry(
+		id: string,
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<MessageResponse> {
+		const prisma = tx ?? this.prismaService;
+
+		const sleepEntry = await this.findById(id, userId, prisma);
+
+		await prisma.sleepEntry.delete({
+			where: { id, userId },
+		});
+
+		await this.weeklySummaryPublisherService.dispatchRecalculation({
+			userId,
+			dateForChart: sleepEntry.dateForChart,
+			isManual: true,
+		});
+
+		return SUCCESS_MESSAGES.SLEEP_ENTRY.DELETED;
+	}
+
+	private async ensureNoOverlap(
+		params: NoOverlapParams,
+		tx?: Prisma.TransactionClient,
+	): Promise<void> {
+		const { userId, start, end, excludeEntryId } = params;
+
+		const prisma = tx ?? this.prismaService;
+
+		const overlappingEntry = await prisma.sleepEntry.findFirst({
+			where: {
+				userId,
+				id: excludeEntryId ? { not: excludeEntryId } : undefined,
+				sleepStart: { lt: end },
+				sleepEnd: { gt: start },
+			},
+			select: { id: true },
+		});
+
+		if (overlappingEntry) {
+			throw new ConflictException(ERROR_MESSAGES.SLEEP_ENTRY.OVERLAPPING_TIME);
+		}
 	}
 }

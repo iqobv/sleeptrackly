@@ -1,18 +1,22 @@
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Controller, Get } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { UserSanctionDto } from './dto';
+import { UserSanctionDto } from './dto/user-sanction.dto';
 import { UserSanctionService } from './user-sanction.service';
 
+@Auth()
 @ApiTags('User Sanction')
 @Controller('user-sanctions')
 export class UserSanctionController {
 	constructor(private readonly userSanctionService: UserSanctionService) {}
 
-	@Auth()
-	@ApiOkResponse({ type: [UserSanctionDto] })
+	/** Get all sanctions for the authenticated user */
 	@Get('me')
-	async getUserSanctions(@Authorized('id') userId: string) {
+	@ApiOkResponse({ type: [UserSanctionDto] })
+	public async getUserSanctions(
+		@Authorized('id') userId: string,
+	): Promise<UserSanctionDto[]> {
 		return await this.userSanctionService.findByUserId(userId);
 	}
 }

@@ -1,7 +1,13 @@
-import { IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type LogoutResponse =
+	paths['/v1/auth/logout']['post']['responses']['200']['content']['application/json'];
+type GetUserResponse =
+	paths['/v1/auth/me']['get']['responses']['200']['content']['application/json'];
 
 export const logout = async () =>
-	await fetcher<boolean>('/api/v1/auth/logout', { method: 'POST' });
+	(await apiClient.post<LogoutResponse>('/v1/auth/logout')).data;
 
-export const getUser = async () => await fetcher<IUser>('/api/v1/auth/me');
+export const getUser = async () =>
+	(await apiClient.get<GetUserResponse>('/v1/auth/me')).data;

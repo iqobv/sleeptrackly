@@ -1,12 +1,13 @@
 'use client';
 
-import { Avatar, SectionHeader, TextField } from '@/components/UI';
+import { UserAvatar } from '@/components/UI';
+import { Input, SectionHeader } from '@shared/ui';
 import styles from './UploadAvatar.module.scss';
-import UploadAvatarLoader from './UploadAvatarLoader';
-import UploadModal from './UploadModal/UploadModal';
+import { UploadAvatarLoader } from './UploadAvatarLoader';
+import { UploadModal } from './UploadModal/UploadModal';
 import { ACCEPTED_IMAGE_TYPES, useUploadAvatar } from './useUploadAvatar';
 
-const UploadAvatar = () => {
+export const UploadAvatar = () => {
 	const {
 		inputRef,
 		user,
@@ -18,30 +19,32 @@ const UploadAvatar = () => {
 	} = useUploadAvatar();
 
 	return (
-		<div className={styles['avatar']}>
+		<div>
 			{isPending || !user ? (
 				<UploadAvatarLoader />
 			) : (
-				<div className={styles['avatar__container']}>
+				<div className={styles.container}>
 					<SectionHeader
 						title="Avatar"
 						description="To change your avatar, click on avatar and select a new one."
-						titleComponent="h3"
+						titleProps={{
+							variant: 'h3',
+						}}
 					/>
 					<button
 						onClick={() => inputRef.current?.click()}
-						className={styles['avatar__wrapper']}
+						className={styles.wrapper}
 					>
-						<Avatar avatar={user.avatar?.url} size={250} />
+						<UserAvatar avatarPath={user.avatar?.url} size={250} />
 					</button>
-					<div className={styles['avatar__input-container']}>
-						<TextField
+					<div className={styles.inputContainer}>
+						<Input
 							ref={inputRef}
 							type="file"
 							id="avatar"
 							hidden
 							accept={ACCEPTED_IMAGE_TYPES.join(', ')}
-							className={styles['avatar__input']}
+							className={styles.input}
 							onChange={handleUpload}
 						/>
 					</div>
@@ -57,5 +60,3 @@ const UploadAvatar = () => {
 		</div>
 	);
 };
-
-export default UploadAvatar;

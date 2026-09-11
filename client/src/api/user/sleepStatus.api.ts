@@ -1,23 +1,34 @@
-import { ISleepEntry, ISleepStatus } from '@/types';
-import { fetcher } from '@/utils';
+import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
 
-interface UpdateSleepResponse {
-	userSleepStatus: ISleepStatus;
-	sleepEntry: ISleepEntry;
-	reward: {
-		rewarded: boolean;
-		amount: number;
-	} | null;
-}
+type GetSleepStatusResponse =
+	paths['/v1/sleep']['get']['responses']['200']['content']['application/json'];
+type UpdateSleepStatusResponse =
+	paths['/v1/sleep']['patch']['responses']['200']['content']['application/json'];
+type ResetSleepStatusResponse =
+	paths['/v1/sleep/reset']['patch']['responses']['200']['content']['application/json'];
+type StopTimerResponse =
+	paths['/v1/sleep/wake-up']['patch']['responses']['200']['content']['application/json'];
+type ResumeTimerResponse =
+	paths['/v1/sleep/resume']['patch']['responses']['200']['content']['application/json'];
+type ResetTimerResponse =
+	paths['/v1/sleep/reset']['patch']['responses']['200']['content']['application/json'];
 
 export const getSleepStatus = async () =>
-	await fetcher<ISleepStatus>('/v1/sleep/me');
+	(await apiClient.get<GetSleepStatusResponse>('/v1/sleep')).data;
 
-export const updateSleepStatus = async () => {
-	const clickedBy = new Date().toISOString();
+export const updateSleepStatus = async (dto?: UserSleepStatusDto) =>
+	(await apiClient.patch<UpdateSleepStatusResponse>('/v1/sleep', dto)).data;
 
-	return await fetcher<UpdateSleepResponse>('/v1/sleep/me', {
-		method: 'PATCH',
-		body: JSON.stringify({ clickedBy }),
-	});
-};
+export const resetSleepStatus = async () =>
+	(await apiClient.patch<ResetSleepStatusResponse>('/v1/sleep/reset')).data;
+
+export const stopTimer = async () =>
+	(await apiClient.patch<StopTimerResponse>('/v1/sleep/wake-up')).data;
+
+export const resumeTimer = async () =>
+	(await apiClient.patch<ResumeTimerResponse>('/v1/sleep/resume')).data;
+
+export const resetTimer = async () =>
+	(await apiClient.patch<ResetTimerResponse>('/v1/sleep/reset')).data;

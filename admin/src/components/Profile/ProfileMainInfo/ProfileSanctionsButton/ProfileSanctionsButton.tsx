@@ -1,38 +1,47 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import { IProfile } from '@/types';
-import { useState } from 'react';
+import { ReportSanctionForm } from '@/components/Report/Report/ReportActions/ReportSanction/ReportSanctionForm/ReportSanctionForm';
+import { Profile } from '@shared/types';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@shared/ui';
 import { MdReportGmailerrorred } from 'react-icons/md';
-import ProfileSanctionsModal from './ProfileSanctionsModal/ProfileSanctionsModal';
 
 interface ProfileSanctionsButtonProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
-const ProfileSanctionsButton = ({ profile }: ProfileSanctionsButtonProps) => {
-	const [open, setOpen] = useState(false);
-
-	const handleOpen = () => setOpen(!open);
-
+export const ProfileSanctionsButton = ({
+	profile,
+}: ProfileSanctionsButtonProps) => {
 	return (
-		<>
-			<Button
-				isIcon
-				size="sm"
-				variant="secondary"
-				onClick={handleOpen}
-				title="Send Report"
-			>
-				<MdReportGmailerrorred size={30} />
-			</Button>
-			<ProfileSanctionsModal
-				isOpen={open}
-				onClose={handleOpen}
-				userId={profile.id}
-			/>
-		</>
+		<Modal>
+			<ModalTrigger asChild>
+				<Button
+					isIcon
+					size="sm"
+					variant="contained"
+					color="secondary"
+					title="Send Report"
+				>
+					<MdReportGmailerrorred size={30} />
+				</Button>
+			</ModalTrigger>
+			<ModalContent>
+				<ModalHeader>Select Sanction</ModalHeader>
+				<ModalBody>
+					<ReportSanctionForm
+						defaultValues={{
+							targetUserId: profile.id,
+						}}
+					/>
+				</ModalBody>
+			</ModalContent>
+		</Modal>
 	);
 };
-
-export default ProfileSanctionsButton;

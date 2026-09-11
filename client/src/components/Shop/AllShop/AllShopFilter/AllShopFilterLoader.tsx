@@ -1,11 +1,7 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
-const AllShopFilterLoader = () => {
-	return (
-		<div style={{ flex: '0 0 300px' }}>
-			<SkeletonLoader height={320} width="100%" />
-		</div>
-	);
-};
-
-export default AllShopFilterLoader;
+export const AllShopFilterLoader = () => (
+	<div style={{ flex: '0 0 18.75rem' }}>
+		<SkeletonLoader height={320} width="100%" />
+	</div>
+);

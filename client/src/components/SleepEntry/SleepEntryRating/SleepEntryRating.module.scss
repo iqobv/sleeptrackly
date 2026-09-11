@@ -1,0 +1,27 @@
+.rating {
+	padding: 1rem 0;
+}
+
+.stars {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 2.5rem;
+	justify-content: center;
+}
+
+.starButton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: 0;
+	background-color: transparent;
+	cursor: pointer;
+
+	&:focus-visible {
+		transform: scale(1.2);
+	}
+}

@@ -1,20 +1,18 @@
-import { INotification, TNotificationPaginated } from '@/types';
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type GetAllNotificationsResponse =
+	paths['/v1/notifications/me']['get']['responses']['200']['content']['application/json'];
+type MarkAllNotificationsAsReadResponse =
+	paths['/v1/notifications/read-all']['patch']['responses']['200']['content']['application/json'];
 
 export const getNotifications = async () =>
-	await fetcher<TNotificationPaginated>(
-		'/v1/notifications/me',
-		{
-			method: 'GET',
-		},
-		true,
-	);
+	(await apiClient.get<GetAllNotificationsResponse>('/v1/notifications/me'))
+		.data;
 
 export const markAllNotificationsAsRead = async () =>
-	await fetcher<INotification[]>(
-		'/v1/notifications/read-all',
-		{
-			method: 'PATCH',
-		},
-		true,
-	);
+	(
+		await apiClient.patch<MarkAllNotificationsAsReadResponse>(
+			'/v1/notifications/read-all',
+		)
+	).data;

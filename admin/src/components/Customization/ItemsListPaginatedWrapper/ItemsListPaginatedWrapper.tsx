@@ -1,49 +1,63 @@
 'use client';
 
-import { Pagination } from '@/components/UI';
-import { PaginationDto } from '@/dto';
-import { usePagination } from '@/hooks';
-import { IPaginatedDataResponse } from '@/types';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
+import { PaginatedDataResponse } from '@/types/api/paginatedData.types';
+import { usePagination, usePaginationBounds } from '@shared/hooks';
+import { Pagination } from '@shared/ui';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
+import clsx from 'clsx';
 import React from 'react';
-import ItemsListWrapper from '../ItemsListWrapper/ItemsListWrapper';
+import { ItemsListWrapper } from '../ItemsListWrapper/ItemsListWrapper';
 import styles from './ItemsListPaginatedWrapper.module.scss';
 
 interface ItemsListPaginatedWrapperProps<T> {
-	queryFn: (query: PaginationDto) => Promise<IPaginatedDataResponse<T>>;
-	queryKey: (query: PaginationDto) => unknown[];
+	queryFn: (
+		query: PaginationWithLanguageDto,
+	) => Promise<PaginatedDataResponse<T>>;
+	queryKey: (
+		query: PaginationWithLanguageDto,
+	) => unknown[] | readonly unknown[];
 	queryOptions?: Omit<
-		UseQueryOptions<IPaginatedDataResponse<T>, Error>,
+		UseQueryOptions<PaginatedDataResponse<T>, Error>,
 		'queryKey' | 'queryFn'
 	>;
 	itemCard: (item: T) => React.ReactNode;
+	className?: string;
+	isModal?: boolean;
+	loader?: React.ReactNode;
 }
 
-const ItemsListPaginatedWrapper = <T,>({
+export const ItemsListPaginatedWrapper = <T,>({
 	itemCard,
 	queryOptions,
 	queryFn,
 	queryKey,
+	className = '',
+	isModal = false,
+	loader,
 }: ItemsListPaginatedWrapperProps<T>) => {
-	const searchParams = useSearchParams();
-	const pageFromUrl = Number(searchParams.get('page')) || 1;
+	const { currentPage, setPage } = usePagination();
 
-	const params: PaginationDto = {
-		page: pageFromUrl,
+	const params: PaginationWithLanguageDto = {
+		page: currentPage,
 		limit: 20,
+		language: 'en',
 	};
 
-	const { data } = useQuery<IPaginatedDataResponse<T>, Error>({
+	const { data, isLoading } = useQuery<PaginatedDataResponse<T>, Error>({
 		queryFn: () => queryFn(params),
 		queryKey: queryKey(params),
 		...queryOptions,
 	});
 
-	const { currentPage, setPage } = usePagination(data?.meta.totalPages || 1);
+	usePaginationBounds(currentPage, setPage, data?.meta.totalPages);
+
+	const classNames = clsx(styles.wrapper, isModal && styles.isModal, className);
+
+	if (isLoading && loader) return loader;
 
 	return (
-		<div className={styles['items-list-wrapper']}>
+		<div className={classNames}>
 			{data ? (
 				<>
 					<ItemsListWrapper items={data.items} itemCard={itemCard} />
@@ -59,5 +73,3 @@ const ItemsListPaginatedWrapper = <T,>({
 		</div>
 	);
 };
-
-export default ItemsListPaginatedWrapper;

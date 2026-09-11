@@ -1,40 +1,26 @@
 'use client';
 
-import { deleteProduct } from '@/api';
-import { PAGES } from '@/config';
-import { FieldValues } from 'react-hook-form';
-import DeleteButton from '../../DeleteButton/DeleteButton';
-import FormContent from '../../FormContent/FormContent';
-import FormFields from '../../FormFields/FormFields';
-import { getProductsFields } from './productFields';
-import ProductItemModal from './ProductItemsModal/ProductItemsModal';
+import { FormContent, FormFields } from '@/components/UI';
+import { ProductItemModal } from './ProductItemsModal/ProductItemsModal';
+import { PRODUCTS_FIELDS } from './productFields';
 
 interface ProductFormProps {
-	buttonLabel?: string;
 	isEdit?: boolean;
-	id?: string;
+	isLoading?: boolean;
 }
 
-const ProductForm = <T extends FieldValues>({
-	buttonLabel,
+export const ProductForm = ({
 	isEdit,
-	id,
+	isLoading = false,
 }: ProductFormProps) => {
-	const fields = getProductsFields<T>();
-
 	return (
-		<FormContent buttonLabel={buttonLabel} isEdit={isEdit}>
-			{isEdit && id && (
-				<DeleteButton
-					id={id}
-					mutationFn={deleteProduct}
-					onSuccessNavigateTo={PAGES.PRODUCTS}
-				/>
-			)}
+		<FormContent
+			buttonLabel={isEdit ? 'Update Product' : 'Create Product'}
+			isEdit={isEdit}
+			isLoading={isLoading}
+		>
 			<ProductItemModal />
-			<FormFields fields={fields} />
+			<FormFields fields={PRODUCTS_FIELDS} />
 		</FormContent>
 	);
 };
-
-export default ProductForm;

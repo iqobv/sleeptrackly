@@ -1,18 +1,18 @@
 'use client';
 
-import { sendEmailForResetPassword } from '@/api';
-import { Button, TextField } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { EmailDto } from '@/dto';
-import { emailSchema } from '@/schemas';
+import { sendEmailForResetPassword } from '@/api/auth/password.api';
+import { EmailDto } from '@/dto/auth/password.dto';
+import { emailSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
-import ResetForm from '../ResetForm/ResetForm';
+import { ResetForm } from '../ResetForm/ResetForm';
 import styles from './EmailField.module.scss';
 
-const EmailField = () => {
+export const EmailField = () => {
 	const {
 		register,
 		handleSubmit,
@@ -26,22 +26,23 @@ const EmailField = () => {
 
 	const { mutate, isSuccess, isPending } = useMutation({
 		mutationFn: ({ email }: EmailDto) => sendEmailForResetPassword(email),
-		mutationKey: QUERY_KEYS.auth.sendEmailForResetPassword,
 	});
 
 	const onSubmit = (data: EmailDto) => mutate(data);
 
 	return (
-		<div className={styles['email-field']}>
+		<div className={styles.field}>
 			{isSuccess && (
-				<div className={styles['email-field__success']}>
+				<div className={styles.success}>
 					<p>
 						Reset link was sent to your email. Please check your inbox. If you
 						didn&apos;t receive an email, please check your spam folder.
 					</p>
-					<Button variant="outlined" href="https://gmail.com" target="_blank">
-						<FcGoogle />
-						Gmail
+					<Button variant="outlined" asChild>
+						<Link href="https://gmail.com" target="_blank">
+							<FcGoogle />
+							Gmail
+						</Link>
 					</Button>
 				</div>
 			)}
@@ -50,15 +51,10 @@ const EmailField = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				isPending={isPending}
 			>
-				<TextField
-					label="Enter your email"
-					placeholder="email@gmail.com"
-					error={errors.email?.message}
-					{...register('email')}
-				/>
+				<Field label="Enter your email" error={errors.email?.message} required>
+					<Input placeholder="email@example.com" {...register('email')} />
+				</Field>
 			</ResetForm>
 		</div>
 	);
 };
-
-export default EmailField;

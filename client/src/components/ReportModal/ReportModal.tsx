@@ -1,93 +1,102 @@
 'use client';
 
-import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
-import { IOption } from '@/types';
-import { Controller } from 'react-hook-form';
-import { Button, Modal, SectionHeader, Select, TextField } from '../UI';
+import { ReportType } from '@/types/report/reportType.types';
+import { Option } from '@/types/ui/option.types';
+import { FormSelect } from '@shared/form';
+import {
+	Button,
+	Field,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+	SelectItem,
+	Textarea,
+} from '@shared/ui';
+import { MdReportGmailerrorred } from 'react-icons/md';
 import styles from './ReportModal.module.scss';
 import { REPORT_TITLES_OPTIONS } from './reportTitleOptions';
 import { useReportModal } from './useReportModal';
 
 interface ReportModalProps {
-	isOpen: boolean;
-	modalTitle: string;
-	onClose: () => void;
 	reportedId?: string;
-	reportType?: (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
+	reportType?: ReportType;
 }
 
-const ReportModal = ({
-	isOpen,
-	onClose,
+export const ReportModal = ({
 	reportedId,
-	modalTitle,
 	reportType = 'USER',
 }: ReportModalProps) => {
 	const {
+		isOpen,
+		handleOpenChange,
 		errors,
 		control,
-		selectedTitle,
-		setSelectedTitle,
+		isOtherTitle,
 		handleSubmit,
 		onSubmit,
 		register,
-	} = useReportModal({ reportedId, reportType, onClose });
+	} = useReportModal({ reportedId, reportType });
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={onClose}
-			containerClassName={styles['report-modal']}
-		>
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className={styles['report-modal__form']}
-			>
-				<SectionHeader title={modalTitle} titleComponent="h2" padding={5} />
-				<input type="hidden" {...register('reportedId')} />
-				<Select
-					options={REPORT_TITLES_OPTIONS as IOption[]}
-					label="Select a report title"
-					placeholder="Select a report title"
-					error={
-						selectedTitle?.value !== REPORT_TITLES.OTHER
-							? errors.title?.message
-							: ''
-					}
-					value={selectedTitle?.value || ''}
-					onChange={(value) => {
-						setSelectedTitle(
-							REPORT_TITLES_OPTIONS.find((option) => option.value === value) ||
-								null,
-						);
-					}}
-				/>
-				{selectedTitle?.value === REPORT_TITLES.OTHER ? (
-					<TextField
-						multiline
-						error={errors.title?.message}
-						label="Title"
-						required
-						{...register('title')}
-					/>
-				) : (
-					<Controller
-						name="title"
-						control={control}
-						render={({ field }) => <input type="hidden" {...field} readOnly />}
-					/>
-				)}
-				<TextField
-					multiline
-					label="Explain your report"
-					minRows={3}
-					placeholder="Explain your report. Be as detailed as possible."
-					{...register('description')}
-				/>
-				<Button type="submit">Send</Button>
-			</form>
+		<Modal open={isOpen} onOpenChange={handleOpenChange}>
+			<ModalTrigger asChild>
+				<Button
+					isIcon
+					size="sm"
+					variant="contained"
+					color="secondary"
+					title="Send Report"
+				>
+					<MdReportGmailerrorred size={30} />
+				</Button>
+			</ModalTrigger>
+			<ModalContent className={styles.modal} description="Report User">
+				<ModalHeader>Report User</ModalHeader>
+				<ModalBody>
+					<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+						<input type="hidden" {...register('reportedId')} />
+						<Field
+							label="Report Title"
+							error={!isOtherTitle ? errors.title?.message : ''}
+							required
+						>
+							<FormSelect
+								name="title"
+								control={control}
+								placeholder="Select a report title"
+							>
+								{REPORT_TITLES_OPTIONS.map((option: Option) => (
+									<SelectItem key={option.value} value={option.value}>
+										{option.label}
+									</SelectItem>
+								))}
+							</FormSelect>
+						</Field>
+						{isOtherTitle && (
+							<Field
+								label="Custom Title"
+								error={errors.customTitle?.message}
+								required
+							>
+								<Textarea
+									placeholder="Enter title"
+									{...register('customTitle')}
+								/>
+							</Field>
+						)}
+						<Field label="Description" error={errors.description?.message}>
+							<Textarea
+								minRows={3}
+								placeholder="Explain your report. Be as detailed as possible."
+								{...register('description')}
+							/>
+						</Field>
+						<Button type="submit">Send</Button>
+					</form>
+				</ModalBody>
+			</ModalContent>
 		</Modal>
 	);
 };
-
-export default ReportModal;

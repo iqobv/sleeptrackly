@@ -1,15 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { OmitType } from '@nestjs/swagger';
+import { UserAvatarEntityDto } from './user-avatar.entity.dto';
 
-export class UserAvatarDto {
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	id: string;
-
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	userId: string;
-
-	@ApiProperty({ example: 'default-avatar.png' })
-	url: string;
-
-	@ApiProperty({ example: true })
-	isDefault: boolean;
-}
+export class UserAvatarDto extends UserAvatarEntityDto {}
+export class BaseUserAvatarDto extends OmitType(UserAvatarEntityDto, [
+	'id',
+	'createdAt',
+	'updatedAt',
+	'userId',
+] as const) {}

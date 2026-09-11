@@ -1,27 +1,31 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
-import { useState } from 'react';
-
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@shared/ui';
 import styles from './ProductItemsModal.module.scss';
-import ProductsList from './ProductsList/ProductsList';
+import { ProductsList } from './ProductsList/ProductsList';
 
-const ProductItemModal = () => {
-	const [open, setOpen] = useState(false);
-
-	const handleClose = () => setOpen((prev) => !prev);
-
+export const ProductItemModal = () => {
 	return (
-		<div>
-			<Button onClick={handleClose}>Select</Button>
-			<Modal isOpen={open} onClose={handleClose}>
-				<div className={styles['product-items__tabs']}></div>
-				<div>
-					<ProductsList />
-				</div>
-			</Modal>
-		</div>
+		<Modal>
+			<ModalTrigger asChild>
+				<Button>Select</Button>
+			</ModalTrigger>
+			<ModalContent className={styles.modalContent}>
+				<ModalHeader>Select Product</ModalHeader>
+				<ModalBody>
+					<div className={styles.tabs}></div>
+					<div>
+						<ProductsList />
+					</div>
+				</ModalBody>
+			</ModalContent>
+		</Modal>
 	);
 };
-
-export default ProductItemModal;

@@ -1,13 +1,13 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
 import { PropsWithChildren } from 'react';
 
 interface SocialButtonProps {
-	onClick: () => void;
+	onClick?: () => void;
 }
 
-const SocialButton = ({
+export const SocialButton = ({
 	children,
 	onClick,
 }: PropsWithChildren<SocialButtonProps>) => {
@@ -17,5 +17,3 @@ const SocialButton = ({
 		</Button>
 	);
 };
-
-export default SocialButton;

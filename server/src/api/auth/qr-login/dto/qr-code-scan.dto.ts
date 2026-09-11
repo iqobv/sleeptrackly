@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 import { IsString } from 'class-validator';
 
 export class QrCodeScanDto {
-	@ApiProperty({ example: 'a81bc81bdead4e5dabff90865d1e13b1' })
+	@Expose()
 	@IsString({ message: 'Token is required' })
 	token: string;
 }

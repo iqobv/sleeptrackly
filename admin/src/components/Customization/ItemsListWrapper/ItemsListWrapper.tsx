@@ -1,5 +1,6 @@
 'use client';
 
+import { Grid, GridItem } from '@shared/ui';
 import React from 'react';
 import styles from './ItemsListWrapper.module.scss';
 
@@ -8,17 +9,15 @@ interface ItemsListWrapperProps<T> {
 	items: T[];
 }
 
-const ItemsListWrapper = <T,>({
+export const ItemsListWrapper = <T,>({
 	itemCard,
 	items,
 }: ItemsListWrapperProps<T>) => {
 	return (
-		<div className={styles['list-wrapper-items']}>
+		<Grid className={styles.itemsGrid}>
 			{items.map((item, index) => (
-				<React.Fragment key={index}>{itemCard(item)}</React.Fragment>
+				<GridItem key={index}>{itemCard(item)}</GridItem>
 			))}
-		</div>
+		</Grid>
 	);
 };
-
-export default ItemsListWrapper;

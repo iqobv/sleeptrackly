@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
+import { AchievementModule } from './achievement/achievement.module';
 import { AuthModule } from './auth/auth.module';
-import { ChallengeTaskModule } from './challenge-task/challenge-task.module';
+import { BundleModule } from './bundle/bundle.module';
+import { ChallengeTemplateModule } from './challenge-template/challenge-template.module';
 import { ChallengeModule } from './challenge/challenge.module';
 import { CoinTransactionModule } from './coin-transaction/coin-transaction.module';
 import { CoinModule } from './coin/coin.module';
+import { CollectionModule } from './collection/collection.module';
 import { FriendshipModule } from './friendship/friendship.module';
+import { ImageModule } from './image/image.module';
 import { ItemModule } from './item/item.module';
 import { NotificationModule } from './notification/notification.module';
 import { ProductModule } from './product/product.module';
 import { ProfileModule } from './profile/profile.module';
+import { PromotionModule } from './promotion/promotion.module';
 import { PurchaseHistoryModule } from './purchase-history/purchase-history.module';
 import { ReportModule } from './report/report.module';
 import { RewardModule } from './reward/reward.module';
@@ -24,36 +29,41 @@ import { UserProviderModule } from './user-provider/user-provider.module';
 import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
-import { PromotionModule } from './promotion/promotion.module';
+import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 
 @Module({
 	imports: [
-		UserModule,
 		AuthModule,
+		UserModule,
 		UserProviderModule,
-		SleepEntryModule,
-		UserSleepStatusModule,
-		ChallengeModule,
-		ChallengeTaskModule,
 		UserAvatarModule,
-		ProfileModule,
-		TokenModule,
-		FriendshipModule,
-		ReportModule,
+		UserSleepStatusModule,
+		UserInventoryModule,
+		UserPrivacySettingsModule,
+		UserNotificationSettingsModule,
 		UserSanctionModule,
 		UserFcmTokenModule,
+		SleepEntryModule,
+		TokenModule,
+		ProfileModule,
+		FriendshipModule,
 		NotificationModule,
-		UserNotificationSettingsModule,
-		CoinModule,
 		CoinTransactionModule,
+		ReportModule,
+		CoinModule,
 		RewardModule,
 		ItemModule,
-		UserInventoryModule,
+		BundleModule,
 		ProductModule,
-		PurchaseHistoryModule,
+		CollectionModule,
 		ShopModule,
-		UserPrivacySettingsModule,
+		AchievementModule,
+		ChallengeModule,
+		ChallengeTemplateModule,
+		PurchaseHistoryModule,
 		PromotionModule,
+		WeeklySummaryModule,
+		ImageModule,
 	],
 })
 export class ApiModule {}

@@ -1,6 +1,3 @@
-import { IEquippedItem } from './equippedItem.types';
+import { Profile } from '../profile/profile.types';
 
-export interface IEquippedItems {
-	id: string;
-	item: IEquippedItem;
-}
+export type EquippedItems = Profile['equippedItems'][number];

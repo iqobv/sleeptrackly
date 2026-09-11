@@ -1,4 +1,4 @@
-import { AUTH_ERROR_MESSAGES } from '@/constants';
+import { AUTH_ERROR_MESSAGES } from '@/constants/authErrorMessages.constants';
 import { z } from 'zod';
 
 export const emailSchema = z.object({
@@ -9,7 +9,7 @@ export const emailSchema = z.object({
 				const domain = email.split('@')[1];
 				return domain === 'gmail.com';
 			},
-			{ message: AUTH_ERROR_MESSAGES.EMAIL_ERROR_MESSAGE }
+			{ message: AUTH_ERROR_MESSAGES.EMAIL_ERROR_MESSAGE },
 		)
 		.nonempty({ error: 'Email is required' }),
 });

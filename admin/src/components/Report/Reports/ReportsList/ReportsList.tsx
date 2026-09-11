@@ -1,42 +1,45 @@
 'use client';
 
-import { getReports } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { IReportPaginationQuery } from '@/types';
+import { getReports } from '@/api/report/reports.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Pagination } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
-import { Dispatch, SetStateAction } from 'react';
-import ReportsPagination from '../ReportsPagination/ReportsPagination';
+import { ReportsChildsProps } from '../Reports';
 import styles from './ReportsList.module.scss';
-import ReportsListItem from './ReportsListItem/ReportsListItem';
-import ReportsListLoader from './ReportsListLoader';
+import { ReportsListItem } from './ReportsListItem/ReportsListItem';
+import { ReportsListLoader } from './ReportsListLoader';
 
-interface ReportsListProps {
-	filters: IReportPaginationQuery;
-	setFilters: Dispatch<SetStateAction<IReportPaginationQuery>>;
-}
+export const ReportsList = ({ filters, setFilters }: ReportsChildsProps) => {
+	const currentPage = filters.page;
 
-const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 	const { data, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.report.getReports(filters),
+		queryKey: QUERY_KEYS.report.list(filters),
 		queryFn: () => getReports(filters),
 	});
 
+	const handlePageChange = (page: number) => {
+		setFilters((prev) => ({
+			...prev,
+			page,
+		}));
+	};
+
 	return (
-		<div className={styles['reports']}>
+		<div className={styles.reports}>
 			{isLoading && <ReportsListLoader />}
 			{!isLoading && data && (
 				<>
 					{data.items.length > 0 ? (
-						<div className={styles['reports__list-wrapper']}>
-							<div className={styles['reports__list']}>
+						<div className={styles.wrapper}>
+							<div className={styles.list}>
 								{data.items.map((report) => (
 									<ReportsListItem key={report.id} report={report} />
 								))}
 							</div>
-							<ReportsPagination
-								filters={filters}
-								meta={data.meta}
-								setFilters={setFilters}
+							<Pagination
+								currentPage={currentPage}
+								onPageChange={handlePageChange}
+								totalPages={data.meta.totalPages}
 							/>
 						</div>
 					) : (
@@ -47,5 +50,3 @@ const ReportsList = ({ filters, setFilters }: ReportsListProps) => {
 		</div>
 	);
 };
-
-export default ReportsList;

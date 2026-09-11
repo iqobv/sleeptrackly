@@ -1,7 +1,7 @@
-import { CreatePromotionDto } from '@/dto';
-import { IField } from '@/types';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { Field } from '@/types/ui/field.types';
 
-export const PROMOTIONS_FIELDS: IField<CreatePromotionDto>[] = [
+export const PROMOTIONS_FIELDS: Field<CreatePromotionDto>[] = [
 	{
 		name: 'coinsReward',
 		label: 'Coins Reward',

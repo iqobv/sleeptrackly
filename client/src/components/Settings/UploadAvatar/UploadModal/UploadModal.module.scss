@@ -1,23 +1,25 @@
-.upload-modal__container {
-	max-width: 500px;
+.content {
+	max-width: 31.25rem;
 }
 
-.upload-modal {
+.body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 15px;
+	gap: 0.9375rem;
 }
 
-.upload-modal__image {
+.image {
 	user-select: none;
 }
 
-.upload-modal__buttons {
+.footer {
 	display: flex;
-	gap: 10px;
+	gap: 0.625rem;
+	justify-content: flex-end;
+	align-items: center;
 }
 
-.upload-modal__text {
+.text {
 	font-size: 1.1rem;
 }

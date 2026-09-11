@@ -1,3 +1,13 @@
-.MainHeader {
+@use '../../../../styles/mixins' as *;
 
+.container {
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logo {
+	display: flex;
 }

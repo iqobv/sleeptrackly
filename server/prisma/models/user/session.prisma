@@ -1,19 +1,23 @@
 model Session {
   id String @id @default(uuid())
 
-  sessionId String @unique @map("session_id")
-  userId    String @map("user_id")
+  userId String @map("user_id")
 
   expiresAt DateTime @map("expires_at")
+
+  hashToken     String  @unique @map("hash_token")
+  previousToken String? @unique @map("previous_token")
+
+  rotatedAt DateTime? @map("rotated_at")
 
   ipAddress String? @map("ip_address")
   userAgent String? @map("user_agent")
 
   city        String?
   region      String?
-  country     String?
   countryCode String? @map("country_code")
 
+  osName         String? @map("os_name")
   deviceType     String? @map("device_type")
   browserName    String? @map("browser_name")
   browserVersion String? @map("browser_version")

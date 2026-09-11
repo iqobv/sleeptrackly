@@ -1,10 +1,5 @@
-import {
-	mutualExclusionError,
-	mutualExclusionRefinement,
-	productBaseShape,
-} from './productBase.schema';
+import { productBaseShape } from './productBase.schema';
 
-export const updateProductSchema = productBaseShape.partial().refine((data) => {
-	if (!data.itemId && !data.bundleId) return true;
-	return mutualExclusionRefinement(data);
-}, mutualExclusionError);
+export const updateProductSchema = productBaseShape
+	.partial()
+	.transform(({ bundleId: _bId, itemId: _iId, ...rest }) => ({ ...rest }));

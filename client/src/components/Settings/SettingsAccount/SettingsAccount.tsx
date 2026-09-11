@@ -1,25 +1,25 @@
 'use client';
 
-import { updateUser } from '@/api';
-import { SettingsAccountDto } from '@/dto';
-import { useAuth } from '@/hooks';
-import { IUser } from '@/types';
-import SettingsForm from '../SettingsForm/SettingsForm';
-import UploadAvatar from '../UploadAvatar/UploadAvatar';
-import { ACCOUNT_FIELDS } from './settingsAccountFields';
-
+import { updateUser } from '@/api/user/user.api';
+import { SettingsAccountDto } from '@/dto/settings/settings.dto';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { SettingsForm } from '../SettingsForm/SettingsForm';
+import { UploadAvatar } from '../UploadAvatar/UploadAvatar';
 import styles from './SettingsAccount.module.scss';
-import SettingsAccountLoader from './SettingsAccountLoader';
+import { ACCOUNT_FIELDS } from './settingsAccountFields';
+import { SettingsAccountLoader } from './SettingsAccountLoader';
 
-const SettingsAccount = () => {
-	const { user, isloading } = useAuth();
+type UpdatedAccount = Awaited<ReturnType<typeof updateUser>>;
+
+export const SettingsAccount = () => {
+	const { user, isLoading } = useAuth();
 
 	return (
-		<div className={styles['settings-account']}>
+		<div className={styles.settingsAccount}>
 			<UploadAvatar />
-			{isloading && <SettingsAccountLoader />}
-			{!isloading && user && (
-				<SettingsForm<SettingsAccountDto, IUser>
+			{isLoading && <SettingsAccountLoader />}
+			{!isLoading && user && (
+				<SettingsForm<SettingsAccountDto, UpdatedAccount>
 					fields={ACCOUNT_FIELDS}
 					mutationFn={updateUser}
 					defaultValues={{
@@ -30,5 +30,3 @@ const SettingsAccount = () => {
 		</div>
 	);
 };
-
-export default SettingsAccount;

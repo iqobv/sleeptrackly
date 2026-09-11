@@ -1,10 +1,46 @@
 @use '../../../styles/mixins' as *;
 
-.features__list {
-	display: grid;
-	grid-template-columns: repeat(1, 1fr);
+.features {
+	width: 100%;
+}
+
+.sectionHeader {
+	margin-bottom: 4rem;
+}
+
+.wrapper {
+	border: 1px solid var(--border-color);
+	border-left: none;
+	border-right: none;
+}
+
+.row {
+	width: 100%;
+
+	&Featured {
+		border-bottom: 1px solid var(--border-color);
+	}
+}
+
+.grid {
+	--grid-columns: 1fr;
 
 	@include respond-to(md) {
-		grid-template-columns: repeat(2, 1fr);
+		--grid-columns: repeat(3, 1fr);
+	}
+}
+
+.card {
+	padding: 2rem 1.5rem;
+
+	&:not(:last-child) {
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	@include respond-to(md) {
+		&:not(:last-child) {
+			border-bottom: none;
+			border-right: 1px solid var(--border-color);
+		}
 	}
 }

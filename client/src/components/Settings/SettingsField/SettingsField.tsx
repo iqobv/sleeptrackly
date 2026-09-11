@@ -1,28 +1,26 @@
 'use client';
 
+import { MobileDirection } from '@/types/settings/settingsField.types';
 import styles from './SettingsField.module.scss';
 
-export type MobileDirection = 'row' | 'column';
 interface SettingsFieldProps {
 	label: string | React.ReactNode;
 	children?: React.ReactNode;
 	mobileDirection?: MobileDirection;
 }
 
-const SettingsField = ({
+export const SettingsField = ({
 	label,
 	children,
 	mobileDirection = 'column',
 }: SettingsFieldProps) => {
 	return (
 		<div
-			className={styles['settings-field']}
+			className={styles.field}
 			style={{ '--mobile-direction': mobileDirection } as React.CSSProperties}
 		>
-			<div className={styles['settings-field__label']}>{label}</div>
+			<div className={styles.label}>{label}</div>
 			{children && <>{children}</>}
 		</div>
 	);
 };
-
-export default SettingsField;

@@ -1,29 +1,30 @@
+import { PrismaClient } from '@generated/prisma/client';
+import { EnvService } from '@infra/env/env.service';
+import { IS_PROD_ENV } from '@libs/utils/is-dev.util';
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from 'generated/prisma/client';
 import { Pool } from 'pg';
-import { isDev } from 'src/libs/utils';
+import { databaseEnvSchema } from '../../config/schemas/database.schema';
 
 @Injectable()
 export class PrismaService
 	extends PrismaClient
 	implements OnModuleInit, OnModuleDestroy
 {
-	constructor(private readonly configService: ConfigService) {
-		const connectionString = configService.getOrThrow<string>('POSTGRES_URI');
-		const encodedCaCert = configService.getOrThrow<string>('DB_CA_CERT_BASE64');
-		const isProd = !isDev(configService);
+	constructor(private readonly envService: EnvService) {
+		const config = envService.getGroup(databaseEnvSchema);
+
+		const connectionString = config.POSTGRES_URI;
+		const caCert = config.DB_CA_CERT_BASE64;
+		const isProd = IS_PROD_ENV;
 
 		const cleanConnectionString = connectionString.split('?')[0];
-
-		const cert = Buffer.from(encodedCaCert, 'base64').toString('utf-8');
 
 		const pool = new Pool({
 			connectionString: cleanConnectionString,
 			ssl: isProd
 				? {
-						ca: cert,
+						ca: caCert,
 						rejectUnauthorized: true,
 					}
 				: undefined,
@@ -34,11 +35,11 @@ export class PrismaService
 		super({ adapter });
 	}
 
-	async onModuleInit() {
+	public async onModuleInit(): Promise<void> {
 		await this.$connect();
 	}
 
-	async onModuleDestroy() {
+	public async onModuleDestroy(): Promise<void> {
 		await this.$disconnect();
 	}
 }

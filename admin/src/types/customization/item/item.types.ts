@@ -1,17 +1,6 @@
-import { ITranslation } from '@/types/translation/translation.types';
-import { TItemRarity } from './itemRarity.types';
-import { TItemType } from './itemType.types';
+import { getAllItems, getItemById } from '@/api/customization/item/item.api';
 
-export interface IItem {
-	id: string;
-	type: TItemType;
-	isExclusive: boolean;
-	rarity: TItemRarity;
-	basePrice: number;
-	mediaUrl: string;
-	previewUrl: string;
-	createdAt: Date;
-	isAnimated: boolean;
-	updatedAt: Date;
-	translations: ITranslation[];
-}
+export type Item = NonNullable<
+	Awaited<ReturnType<typeof getAllItems>>['items'][number]
+>;
+export type FullItem = Awaited<ReturnType<typeof getItemById>>;

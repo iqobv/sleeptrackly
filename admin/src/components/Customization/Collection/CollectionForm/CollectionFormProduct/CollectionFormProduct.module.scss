@@ -1,0 +1,15 @@
+@use '../../../../../styles/mixins' as *;
+
+.modalContent {
+	width: 90vw;
+	height: 80vh;
+}
+
+.body {
+	overflow-y: auto;
+	padding: 20px;
+}
+
+.grid {
+	--grid-columns: repeat(auto-fill, minmax(15.625rem, 1fr));
+}

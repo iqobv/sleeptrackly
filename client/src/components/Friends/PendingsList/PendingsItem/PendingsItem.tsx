@@ -1,57 +1,59 @@
 'use client';
 
-import { changeRequestStatus } from '@/api';
-import { Avatar, Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { FRIEND_STATUS } from '@/constants';
-import { useAuth } from '@/hooks';
-import { IFriend, TFriendStatus } from '@/types';
+import { changeRequestStatus } from '@/api/friend/friend.api';
+import { UserAvatar } from '@/components/UI';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { FriendRequest } from '@/types/friend/friend.types';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
+import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
 import styles from './PendingsItem.module.scss';
 
 interface PendingsItemProps {
-	friend: IFriend;
+	friend: FriendRequest;
 }
 
-const PendingsItem = ({ friend }: PendingsItemProps) => {
-	const { user } = useAuth();
-
+export const PendingsItem = ({ friend }: PendingsItemProps) => {
 	const queryClient = useQueryClient();
 
 	const { mutate } = useMutation({
-		mutationFn: ({ id, status }: { id: string; status: TFriendStatus }) =>
+		mutationFn: ({ id, status }: { id: string; status: FriendStatus }) =>
 			changeRequestStatus(id, status),
-		mutationKey: QUERY_KEYS.friends.pendingsChange(user?.id || ''),
-		onSuccess: () =>
+		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
-			}),
+				queryKey: QUERY_KEYS.friends.pendings(),
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.friends.list(),
+			});
+		},
 	});
 
-	const handleUpdate = (id: string, status: TFriendStatus) => {
+	const handleUpdate = (id: string, status: FriendStatus) => {
 		if (id) mutate({ id, status });
 	};
 
 	return (
-		<div key={friend.id} className={styles['pendings-list-item']}>
-			<div className={styles['pendings-list-item__user']}>
-				<Avatar avatar={friend.user?.avatar} size={45} />
-				<Link href={PAGES.PROFILE(friend.user.username)}>
+		<div key={friend.id} className={styles.item}>
+			<div className={styles.user}>
+				<UserAvatar avatarPath={friend.user?.avatar} size={45} />
+				<Link href={PRIVATE_PAGES.PROFILE(friend.user.username)}>
 					{friend.user.username}
 				</Link>
 			</div>
-			<div className={styles['pendings-list-item__actions']}>
+			<div className={styles.actions}>
 				<Button
 					fullWidth
-					onClick={() => handleUpdate(friend.id, FRIEND_STATUS.ACCEPTED)}
+					onClick={() => handleUpdate(friend.id, FriendStatus.ACCEPTED)}
 				>
 					Accept
 				</Button>
 				<Button
 					variant="outlined"
 					fullWidth
-					onClick={() => handleUpdate(friend.id, FRIEND_STATUS.REJECTED)}
+					onClick={() => handleUpdate(friend.id, FriendStatus.REJECTED)}
 				>
 					Reject
 				</Button>
@@ -59,5 +61,3 @@ const PendingsItem = ({ friend }: PendingsItemProps) => {
 		</div>
 	);
 };
-
-export default PendingsItem;

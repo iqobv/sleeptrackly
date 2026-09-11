@@ -1,7 +1,3 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
-const FeaturedShopBannerLoader = () => {
-	return <SkeletonLoader height={120} />;
-};
-
-export default FeaturedShopBannerLoader;
+export const FeaturedShopBannerLoader = () => <SkeletonLoader height={120} />;

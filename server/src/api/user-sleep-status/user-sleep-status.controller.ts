@@ -1,13 +1,27 @@
-import { Body, Controller, Get, Patch } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
-	SleepStatusDto,
-	UpdatedSleepStatusDto,
-	UpdateUserSleepStatusDto,
-} from './dto';
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import {
+	Body,
+	Controller,
+	Get,
+	HttpCode,
+	HttpStatus,
+	Patch,
+} from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UserSleepStatusDto } from './dto/sleep-status.dto';
+import { UpdateUserSleepStatusDto } from './dto/update-sleep-status.dto';
+import { UpdatedSleepStatusDto } from './dto/updated-sleep-status.dto';
 import { UserSleepStatusService } from './user-sleep-status.service';
 
+@Auth()
 @ApiTags('User Sleep Status')
 @Controller('sleep')
 export class UserSleepStatusController {
@@ -15,27 +29,62 @@ export class UserSleepStatusController {
 		private readonly userSleepStatusService: UserSleepStatusService,
 	) {}
 
-	@ApiOperation({ summary: 'Get sleep status' })
-	@ApiOkResponse({ type: SleepStatusDto })
-	@Auth()
-	@Get('me')
-	async getSleepStatus(@Authorized('id') userId: string) {
-		return this.userSleepStatusService.getSleepStatus(userId);
+	/** Get current user sleep status */
+	@Get()
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	public async getSleepStatus(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto | null> {
+		return await this.userSleepStatusService.getSleepStatus(userId);
 	}
 
-	@ApiOperation({ summary: 'Update sleep status' })
+	/** Update user sleep status (start/stop sleep) */
+	@Patch()
 	@ApiOkResponse({ type: UpdatedSleepStatusDto })
-	@Auth()
-	@Patch('me')
-	async updateSleepStatus(
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.SLEEP_ENTRY.INVALID_TIME_RANGE,
+	)
+	@HttpCode(HttpStatus.OK)
+	public async updateSleepStatus(
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserSleepStatusDto,
-	) {
-		const { clickedBy } = dto;
+	): Promise<UpdatedSleepStatusDto> {
+		return await this.userSleepStatusService.updateSleepStatus(userId, dto);
+	}
 
-		return this.userSleepStatusService.updateSleepStatus(
-			userId,
-			clickedBy ?? new Date(),
-		);
+	/** Stop sleep timer and save sleep end time */
+	@Patch('wake-up')
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.SLEEP_ENTRY.INVALID_TIME_RANGE,
+	)
+	@HttpCode(HttpStatus.OK)
+	public async wakeUp(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto> {
+		return await this.userSleepStatusService.stopTimer(userId);
+	}
+
+	/** Resume sleep timer (set sleepEnd to null) */
+	@Patch('resume')
+	@ApiOkResponse({ type: UserSleepStatusDto })
+	@HttpCode(HttpStatus.OK)
+	public async resumeSleepTimer(
+		@Authorized('id') userId: string,
+	): Promise<UserSleepStatusDto> {
+		return await this.userSleepStatusService.resumeTimer(userId);
+	}
+
+	/** Reset user sleep status (set isSleeping to false and sleepStart to null) */
+	@Patch('reset')
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.USER_SLEEP_STATUS.RESET)
+	public async resetSleepStatus(
+		@Authorized('id') userId: string,
+	): Promise<MessageResponse> {
+		await this.userSleepStatusService.resetSleepStatus(userId);
+
+		return SUCCESS_MESSAGES.USER_SLEEP_STATUS.RESET;
 	}
 }

@@ -1,36 +1,41 @@
-import { makePurchase } from '@/api';
-import { Coin } from '@/components/Icons';
-import { Button, CDNImage } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { PRODUCT_TYPES } from '@/constants';
-import { IItem, IProduct } from '@/types';
+'use client';
+
+import { makePurchase } from '@/api/shop/shop.api';
+import { Coin } from '@/components/Icons/Coin';
+import { ProductImage } from '@/components/UI';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Product } from '@/types/product/product.types';
+import { formatNumber } from '@/utils/numberFormatter.util';
+import { ProductType } from '@shared/types';
+import { Button, Typography } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
 
 interface ShopCardProps {
-	product: IProduct;
-	isPreload: boolean;
+	product: Product;
 }
 
-const ShopCard = ({ product, isPreload }: ShopCardProps) => {
+export const ShopCard = ({ product }: ShopCardProps) => {
 	const [isOwned, setIsOwned] = useState(product.isOwned);
 	const queryClient = useQueryClient();
 
-	const key =
-		product.type === PRODUCT_TYPES.ITEM ? product.item : product.bundle;
+	const key = product.type === ProductType.ITEM ? product.item : product.bundle;
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: () => makePurchase(product.id),
-		mutationKey: QUERY_KEYS.shop.makePurchase(product.id),
 		onMutate: () => {
 			setIsOwned(true);
 		},
 		onSuccess: () => {
 			toast.success('Purchase successful!');
-			queryClient.refetchQueries({
+
+			queryClient.invalidateQueries({
 				queryKey: QUERY_KEYS.coin.userCoin,
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.shop.all,
 			});
 		},
 		onError: (error) => {
@@ -39,47 +44,24 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 		},
 	});
 
-	const url: string =
-		product.type === PRODUCT_TYPES.ITEM
-			? (key as IItem)?.previewUrl
-				? (key as IItem)?.previewUrl
-				: (key as IItem)?.mediaUrl
-			: (key?.mediaUrl ?? '');
-
 	return (
-		<div className={styles['shop-card']}>
-			<div className={styles['shop-card__image-wrapper']}>
-				{product.item?.isAnimated ? (
-					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${url}`}
-						loop
-						autoPlay
-						muted
-						width={160}
-						height={160}
-						className={styles['shop-card__video']}
-					/>
-				) : (
-					<CDNImage
-						src={url}
-						alt={key?.translation.name || 'Product Image'}
-						width={160}
-						height={160}
-						preload={isPreload}
-					/>
-				)}
+		<div className={styles.card}>
+			<div className={styles.imageWrapper}>
+				<ProductImage product={product} height={160} width={160} />
 			</div>
 			<div>
-				<h4 className={styles['shop-card__title']}>{key?.translation.name}</h4>
+				<Typography variant="h4" className={styles.title}>
+					{key?.translation.name}
+				</Typography>
 			</div>
-			<div className={styles['shop-card__actions']}>
-				<div className={styles['shop-card__price']}>
-					<span className={styles['shop-card__price-original']}>
-						{product.price}
+			<div className={styles.actions}>
+				<div className={styles.price}>
+					<span className={styles.priceOriginal}>
+						{formatNumber(product.price)}
 					</span>
 					{product.discountedPrice && (
-						<span className={styles['shop-card__price-discounted']}>
-							{product.discountedPrice}
+						<span className={styles.priceDiscounted}>
+							{formatNumber(product.discountedPrice)}
 						</span>
 					)}
 					<Coin width={26} height={26} />
@@ -88,7 +70,8 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 					onClick={() => mutate()}
 					loading={isPending}
 					disabled={isOwned}
-					variant={isOwned ? 'secondary' : 'contained'}
+					variant="contained"
+					color={isOwned ? 'secondary' : 'primary'}
 					type="button"
 				>
 					{isOwned ? 'Owned' : 'Buy Now'}
@@ -97,5 +80,3 @@ const ShopCard = ({ product, isPreload }: ShopCardProps) => {
 		</div>
 	);
 };
-
-export default ShopCard;

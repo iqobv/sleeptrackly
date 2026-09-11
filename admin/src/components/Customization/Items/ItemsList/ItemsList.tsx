@@ -1,33 +1,44 @@
 'use client';
 
-import { getAllItems } from '@/api';
-import { Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { IItem } from '@/types';
-import ItemCard from '../../ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import styles from './ItemsList.module.scss';
+import { getAllItems } from '@/api/customization/item/item.api';
+import { PageWrapper } from '@/components/UI';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
+import { Button } from '@shared/ui';
+import Link from 'next/link';
+import { ItemCard } from '../../ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemsListLoader } from './ItemsListLoader';
 
-const ItemsList = () => {
+export const ItemsList = () => {
 	return (
-		<div className={styles['items']}>
-			<Button href={PAGES.ITEM_NEW}>New Item</Button>
-			<ItemsListPaginatedWrapper<IItem>
-				queryFn={getAllItems}
-				queryKey={(params) => [...QUERY_KEYS.customization.item.getAll(params)]}
+		<PageWrapper
+			title="Items"
+			description="Manage the items available in the store"
+			buttonText="Add New Item"
+			href={PAGES.ITEM_NEW}
+			showBackButton={false}
+		>
+			<ItemsListPaginatedWrapper<Item>
+				queryFn={({ language: _l, ...params }) => getAllItems(params)}
+				queryKey={({ language: _l, ...params }) =>
+					QUERY_KEYS.customization.item.list(params)
+				}
+				loader={<ItemsListLoader />}
 				itemCard={(item) => (
 					<ItemCard
 						item={item}
 						actions={
-							<Button fullWidth variant="secondary" href={PAGES.ITEM(item.id)}>
-								View
+							<Button fullWidth variant="contained" color="secondary" asChild>
+								<Link href={PAGES.ITEM(item.id)} prefetch={false}>
+									View
+								</Link>
 							</Button>
 						}
 					/>
 				)}
 			/>
-		</div>
+		</PageWrapper>
 	);
 };
-
-export default ItemsList;

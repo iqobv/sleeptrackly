@@ -1,61 +1,52 @@
+import { ImageService } from '@api/image/image.service';
+import { Prisma } from '@generated/prisma/client';
+import { UserSanctionType } from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { DEFAULT_URLS } from '@libs/constants/default-urls.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { HttpService } from '@nestjs/axios';
 import {
-	BadGatewayException,
 	ConflictException,
 	ForbiddenException,
-	forwardRef,
-	Inject,
 	Injectable,
+	NotFoundException,
 } from '@nestjs/common';
-import dayjs from 'dayjs';
-import { Prisma } from 'generated/prisma/client';
-import { UserSanctionType } from 'generated/prisma/enums';
+import { plainToInstance } from 'class-transformer';
 import { firstValueFrom } from 'rxjs';
-import sharp from 'sharp';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { R2Service } from 'src/infra/r2/r2.service';
 import { Readable } from 'stream';
-import { v4 as uuidv4 } from 'uuid';
-import { UserService } from '../user/user.service';
+import { UserAvatarDto } from './dto/user-avatar.dto';
 
 @Injectable()
 export class UserAvatarService {
-	private readonly DEFAULT_AVATAR_PATH = 'defaults/default-avatar.png';
-
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly r2Service: R2Service,
 		private readonly httpService: HttpService,
-		@Inject(forwardRef(() => UserService))
-		private readonly userService: UserService,
+		private readonly imageService: ImageService,
 	) {}
 
-	async createForAllUsers() {
-		const allUsers = await this.prismaService.user.findMany({
-			select: { id: true },
+	public async upload(
+		file: Express.Multer.File,
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserAvatarDto> {
+		const prisma = tx || this.prismaService;
+
+		const user = await prisma.user.findUnique({
+			where: { id: userId, deletedAt: null },
+			select: {
+				avatar: true,
+				sanctions: {
+					where: {
+						type: UserSanctionType.AVATAR_CHANGE_BAN,
+						endsAt: { gt: new Date() },
+					},
+				},
+			},
 		});
 
-		const userWithAvatar = await this.prismaService.userAvatar.findMany({
-			select: { userId: true },
-		});
+		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
-		const usersWithoutAvatar = allUsers.filter(
-			({ id }) => !userWithAvatar.find(({ userId }) => userId === id),
-		);
-
-		await this.prismaService.userAvatar.createMany({
-			data: usersWithoutAvatar.map(({ id }) => ({ userId: id })),
-		});
-
-		return true;
-	}
-
-	async upload(file: Express.Multer.File, userId: string) {
-		const avatar = await this.findByUserId(userId);
-
-		const user = await this.userService.findById(userId, true);
-
-		if (user.sanctions.length > 0) {
+		if (user.sanctions && user.sanctions.length > 0) {
 			const activeBan = user.sanctions.find(
 				({ endsAt, type }) =>
 					endsAt &&
@@ -64,35 +55,35 @@ export class UserAvatarService {
 			);
 
 			if (activeBan)
-				throw new ForbiddenException(
-					`You are banned from changing avatar${activeBan.endsAt ? ` until ${dayjs(activeBan.endsAt).format('DD.MM.YYYY HH:mm')}` : '.'}`,
-				);
+				throw new ForbiddenException({
+					...ERROR_MESSAGES.AVATAR.CHANGE_BANNED,
+					meta: { endsAt: activeBan.endsAt },
+				});
 		}
 
-		const processedBuffer = await sharp(file.buffer)
-			.webp({ quality: 100 })
-			.resize(800, 800, { fit: 'cover' })
-			.toBuffer();
+		let avatar = user.avatar;
+		if (!avatar) {
+			avatar = await prisma.userAvatar.create({
+				data: { user: { connect: { id: userId } } },
+			});
+		}
 
-		const filename = uuidv4();
-		file.filename = filename;
+		const uploadResult = await this.imageService.uploadImage({
+			file,
+			folder: 'avatars',
+			oldUrl: avatar.url,
+			placeholderUrl: DEFAULT_URLS.AVATAR,
+			options: { width: 800, height: 800, quality: 100 },
+		});
 
-		if (!avatar.isDefault) await this.r2Service.delete(avatar.url);
-
-		const metadata = await this.r2Service.upload(
-			processedBuffer,
-			`avatars/${filename}.webp`,
-			'image/webp',
-		);
-
-		const url = metadata.key;
-
-		if (!metadata) throw new BadGatewayException('Error uploading image');
-
-		return this.update(avatar.id, url);
+		return await this.update(avatar.id, uploadResult.url, tx);
 	}
 
-	async uploadProviderAvatar(avatarUrl: string, userId: string) {
+	public async uploadProviderAvatar(
+		avatarUrl: string,
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<void> {
 		const response = await firstValueFrom(
 			this.httpService.get<ArrayBuffer>(avatarUrl, {
 				responseType: 'arraybuffer',
@@ -114,21 +105,25 @@ export class UserAvatarService {
 			stream: Readable.from(buffer),
 		};
 
-		await this.upload(file, userId);
+		await this.upload(file, userId, tx);
 	}
 
-	async create(userId: string, tx?: Prisma.TransactionClient) {
+	public async create(
+		userId: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserAvatarDto> {
 		const prisma = tx || this.prismaService;
 
 		const existingAvatar = await prisma.userAvatar.findUnique({
 			where: { userId },
 		});
 
-		if (existingAvatar) throw new ConflictException('Avatar already exists');
+		if (existingAvatar)
+			throw new ConflictException(ERROR_MESSAGES.AVATAR.ALREADY_EXISTS);
 
 		const newAvatar = await prisma.userAvatar.create({
 			data: {
-				url: this.DEFAULT_AVATAR_PATH,
+				url: DEFAULT_URLS.AVATAR,
 				user: { connect: { id: userId } },
 			},
 		});
@@ -136,7 +131,7 @@ export class UserAvatarService {
 		return newAvatar;
 	}
 
-	private async findByUserId(userId: string) {
+	private async findByUserId(userId: string): Promise<UserAvatarDto> {
 		let avatar = await this.prismaService.userAvatar.findUnique({
 			where: { userId },
 		});
@@ -147,40 +142,32 @@ export class UserAvatarService {
 			});
 		}
 
-		return avatar;
+		return plainToInstance(UserAvatarDto, avatar);
 	}
 
-	private async update(id: string, url: string) {
-		return await this.prismaService.userAvatar.update({
+	private async update(
+		id: string,
+		url: string,
+		tx?: Prisma.TransactionClient,
+	): Promise<UserAvatarDto> {
+		const prisma = tx || this.prismaService;
+
+		const avatar = await prisma.userAvatar.update({
 			where: { id },
-			data: { url, isDefault: !!url.includes(this.DEFAULT_AVATAR_PATH) },
+			data: { url, isDefault: !!url.includes(DEFAULT_URLS.AVATAR) },
 		});
+
+		return plainToInstance(UserAvatarDto, avatar);
 	}
 
-	async deleteAvatar(userId: string) {
+	public async deleteAvatar(userId: string): Promise<UserAvatarDto> {
 		const avatar = await this.findByUserId(userId);
 
-		if (avatar) await this.r2Service.delete(avatar.url);
-
-		return await this.update(avatar?.id, this.DEFAULT_AVATAR_PATH);
-	}
-
-	async fixAvatarUrls() {
-		const avatars = await this.prismaService.userAvatar.findMany({
-			where: {
-				isDefault: false,
-				url: { not: { startsWith: 'avatars/' } },
-			},
-		});
-
-		for (const avatar of avatars) {
-			const url = avatar.url;
-			if (!url.startsWith('avatars/')) {
-				await this.prismaService.userAvatar.update({
-					where: { id: avatar.id },
-					data: { url: `avatars/${url}` },
-				});
-			}
+		if (avatar) {
+			if (!avatar.isDefault || !avatar.url.includes(DEFAULT_URLS.AVATAR))
+				await this.imageService.deleteImage(avatar.url);
 		}
+
+		return await this.update(avatar?.id, DEFAULT_URLS.AVATAR);
 	}
 }

@@ -1,19 +1,23 @@
 'use client';
 
-import { List, SkeletonLoader } from '@/components/UI';
-import { IUser } from '@/types';
-import AddFriendItem from './AddFriendItem/AddFriendItem';
+import { SearchUser } from '@/types/user/user.types';
+import { List, SkeletonLoader } from '@shared/ui';
+import { AddFriendItem } from './AddFriendItem/AddFriendItem';
 import styles from './AddFriendList.module.scss';
 
 interface AddFriendListProps {
-	data: IUser[] | null | undefined;
+	data: SearchUser[] | null | undefined;
 	isPending: boolean;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
+export const AddFriendList = ({
+	data,
+	isPending,
+	setSearch,
+}: AddFriendListProps) => {
 	return (
-		<div className={styles['add-friend__list']}>
+		<div className={styles.list}>
 			{isPending && <SkeletonLoader width="100%" height={55} />}
 			{data ? (
 				data.length > 0 ? (
@@ -24,11 +28,9 @@ const AddFriendList = ({ data, isPending, setSearch }: AddFriendListProps) => {
 						)}
 					/>
 				) : (
-					<p className={styles['add-friend__list-empty']}>No results</p>
+					<p className={styles.empty}>No results</p>
 				)
 			) : null}
 		</div>
 	);
 };
-
-export default AddFriendList;

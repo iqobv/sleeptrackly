@@ -1,0 +1,28 @@
+@use '../../../../styles/mixins' as *;
+
+.item {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	text-align: start;
+
+	@include respond-to(md) {
+		flex-direction: row;
+	}
+}
+
+.formField {
+	width: 100%;
+}
+
+.itemContent {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.input {
+	width: 100%;
+}

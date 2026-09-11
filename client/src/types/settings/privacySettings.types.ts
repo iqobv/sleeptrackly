@@ -1,13 +1,5 @@
-import { TPrivacyVisibility } from './privacyVisibility.types';
+import { getUserPrivacySettings } from '@/api/settings/privacy.api';
 
-export interface IPrivacySettings {
-	id: string;
-	userId: string;
-	acceptFriendRequests: boolean;
-	showActivity: boolean;
-	profileVisibility: TPrivacyVisibility;
-	achievementsVisibility: TPrivacyVisibility;
-	statisticsVisibility: TPrivacyVisibility;
-	createdAt: Date;
-	updatedAt: Date;
-}
+export type PrivacySettings = Awaited<
+	ReturnType<typeof getUserPrivacySettings>
+>;

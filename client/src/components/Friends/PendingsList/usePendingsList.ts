@@ -1,40 +1,43 @@
 'use client';
 
-import { getPendingFriendRequests, updateManyPendingRequests } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { TFriendStatus } from '@/types';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+	getPendingFriendRequests,
+	updateManyPendingRequests,
+} from '@/api/friend/friend.api';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { FriendStatus } from '@/types/friend/friendStatus.types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 export const usePendingsList = () => {
 	const router = useRouter();
+	const queryClient = useQueryClient();
 
-	const { user } = useAuth();
-
-	const { data, refetch } = useQuery({
+	const { data, isLoading } = useQuery({
 		queryFn: getPendingFriendRequests,
-		queryKey: QUERY_KEYS.friends.pendings(user?.id || ''),
+		queryKey: QUERY_KEYS.friends.pendings(),
 		staleTime: 0,
-		enabled: !!user?.id,
 	});
 
 	const { mutate: mutateMany } = useMutation({
-		mutationFn: ({ status }: { status: TFriendStatus }) =>
+		mutationFn: ({ status }: { status: FriendStatus }) =>
 			updateManyPendingRequests(status),
-		mutationKey: QUERY_KEYS.friends.pendingsManyChange(user?.id || ''),
 		onSuccess: () => {
-			refetch();
-			router.push(PAGES.FRIENDS);
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.friends.pendings(),
+			});
+			router.push(PRIVATE_PAGES.FRIENDS.ALL);
 		},
 	});
 
-	const handleUpdateMany = (status: TFriendStatus) => {
-		if (data && data.length > 0) mutateMany({ status });
+	const handleUpdateMany = (status: FriendStatus) => {
+		if (data && data.countOfPendingRequests > 0) mutateMany({ status });
 	};
 
 	return {
 		data,
+		isLoading,
 		handleUpdateMany,
 	};
 };

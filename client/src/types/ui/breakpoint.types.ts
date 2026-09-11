@@ -1,3 +1,3 @@
-import { BREAKPOINTS } from '@/constants';
+import { BREAKPOINTS } from '@/constants/breakpoints.constants';
 
-export type TBreakpoint = keyof typeof BREAKPOINTS;
+export type Breakpoint = keyof typeof BREAKPOINTS;

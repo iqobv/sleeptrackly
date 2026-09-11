@@ -3,15 +3,15 @@
 .main {
 	display: flex;
 	flex-direction: row;
-	gap: 20px;
+	gap: 1.25rem;
 	min-height: calc(100dvh - var(--header-height));
 }
 
-.main__content {
+.content {
 	width: 100%;
-	padding: 0 20px;
+	padding: 0 1.25rem;
 
-	@include response(md) {
-		padding: 0 20px 0 0;
+	@include respond-to(xl) {
+		padding: 0 1.25rem 0 0;
 	}
 }

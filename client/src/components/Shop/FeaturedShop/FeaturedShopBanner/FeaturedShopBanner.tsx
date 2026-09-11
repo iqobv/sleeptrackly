@@ -1,18 +1,15 @@
-import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { Button } from '@shared/ui';
+import Link from 'next/link';
 import styles from './FeaturedShopBanner.module.scss';
 
-const FeaturedShopBanner = () => {
+export const FeaturedShopBanner = () => {
 	return (
-		<div className={styles['featured-shop-banner']}>
-			<p className={styles['featured-shop-banner__text']}>
-				Explore all customization items!
-			</p>
-			<Button href={PAGES.SHOP_CATALOG} size="lg">
-				Browse All
+		<div className={styles.banner}>
+			<p className={styles.text}>Explore all customization items!</p>
+			<Button size="lg" asChild>
+				<Link href={PRIVATE_PAGES.SHOP.CATALOG}>Browse All</Link>
 			</Button>
 		</div>
 	);
 };
-
-export default FeaturedShopBanner;

@@ -1,0 +1,18 @@
+.item {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem;
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius);
+	width: 100%;
+}
+
+.info {
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
+	align-items: center;
+	flex: 1;
+}

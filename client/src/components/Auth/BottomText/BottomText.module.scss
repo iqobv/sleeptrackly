@@ -1,11 +1,11 @@
-.bottom-text {
+.bottomText {
 	text-align: center;
-	font-size: 16px;
+	font-size: 1rem;
 	color: var(--bottom-text-color);
 }
 
-.bottom-text__link {
+.link {
 	text-decoration: underline;
-	text-underline-offset: 5px;
-	padding-left: 5px;
+	text-underline-offset: 0.3125rem;
+	padding-left: 0.3125rem;
 }

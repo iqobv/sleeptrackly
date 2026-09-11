@@ -1,0 +1,54 @@
+'use client';
+
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemCard } from '@/components/Promotions/SelectProduct/ProductItemsModal/ProductsList/ItemCard/ItemCard';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Product } from '@/types/customization/product/product.types';
+import { Button, ModalBody } from '@shared/ui';
+import { Dispatch, SetStateAction } from 'react';
+
+interface FormProductBodyProps {
+	selectedProduct: Product | null;
+	setSelectedProduct: Dispatch<SetStateAction<Product | null>>;
+}
+
+export const FormProductBody = ({
+	selectedProduct,
+	setSelectedProduct,
+}: FormProductBodyProps) => {
+	const handleSelect = (product: Product) => {
+		if (selectedProduct?.id === product.id) {
+			setSelectedProduct(null);
+		} else {
+			setSelectedProduct(product);
+		}
+	};
+
+	const productId = selectedProduct?.id;
+
+	return (
+		<ModalBody>
+			<ItemsListPaginatedWrapper<Product>
+				queryFn={(params) => getAllProducts(params)}
+				queryKey={(params) => QUERY_KEYS.customization.product.list(params)}
+				isModal
+				itemCard={(product) => (
+					<ItemCard
+						product={product}
+						actions={
+							<Button
+								variant="contained"
+								color={productId === product.id ? 'primary' : 'secondary'}
+								fullWidth
+								onClick={() => handleSelect(product)}
+							>
+								{productId === product.id ? 'Selected' : 'Select'}
+							</Button>
+						}
+					/>
+				)}
+			/>
+		</ModalBody>
+	);
+};

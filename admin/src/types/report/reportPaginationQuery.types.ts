@@ -1,11 +1,13 @@
-import { TReportStatus } from './reportStatus.types';
-import { TReportType } from './reportType.types';
+import { SortOrder } from '../api/sortOrder.types';
+import { SortBy } from './reportFilters.types';
+import { ReportStatus } from './reportStatus.types';
+import { ReportType } from './reportType.types';
 
-export interface IReportPaginationQuery {
+export interface ReportPaginationQuery {
 	page: number;
-	pageSize: number;
-	sortOrder?: 'asc' | 'desc';
-	sortBy?: 'createdAt' | 'updatedAt';
-	status?: TReportStatus;
-	reportType?: TReportType;
+	limit: number;
+	sortOrder?: SortOrder;
+	sortBy?: SortBy;
+	status?: ReportStatus;
+	reportType?: ReportType;
 }

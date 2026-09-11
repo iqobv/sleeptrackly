@@ -1,9 +1,7 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
 import styles from './InventoryListItem.module.scss';
 
-const InventoryListItemLoader = () => {
-	return <SkeletonLoader className={styles['inventory-item']} />;
+export const InventoryListItemLoader = () => {
+	return <SkeletonLoader className={styles.item} />;
 };
-
-export default InventoryListItemLoader;

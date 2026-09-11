@@ -1,14 +1,12 @@
 import { NavLogo } from '@/components/UI';
 import styles from './AuthHeader.module.scss';
 
-const AuthHeader = () => {
+export const AuthHeader = () => {
 	return (
-		<header className={styles['auth-header']}>
-			<div className={styles['auth-header__container']}>
-				<NavLogo className={styles['auth-header__logo']} />
+		<header className={styles.authHeader}>
+			<div className={styles.container}>
+				<NavLogo className={styles.logo} />
 			</div>
 		</header>
 	);
 };
-
-export default AuthHeader;

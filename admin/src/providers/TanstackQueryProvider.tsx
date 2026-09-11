@@ -3,9 +3,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { PropsWithChildren, useState } from 'react';
 
-export function TanstackQueryProvider({
+export const TanstackQueryProvider = ({
 	children,
-}: PropsWithChildren<unknown>) {
+}: PropsWithChildren<unknown>) => {
 	const [client] = useState(
 		new QueryClient({
 			defaultOptions: {
@@ -14,8 +14,8 @@ export function TanstackQueryProvider({
 					refetchOnMount: true,
 				},
 			},
-		})
+		}),
 	);
 
 	return <QueryClientProvider client={client}>{children}</QueryClientProvider>;
-}
+};

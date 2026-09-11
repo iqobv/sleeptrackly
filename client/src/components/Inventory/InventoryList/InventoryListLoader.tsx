@@ -1,11 +1,11 @@
-import { PaginationLoader } from '@/components/UI';
+import { PaginationLoader } from '@shared/ui';
 import styles from './InventoryList.module.scss';
-import InventoryListItemLoader from './InventoryListItem/InventoryListItemLoader';
+import { InventoryListItemLoader } from './InventoryListItem/InventoryListItemLoader';
 
-const InventoryListLoader = () => {
+export const InventoryListLoader = () => {
 	return (
-		<div className={styles['inventory-list']}>
-			<div className={styles['inventory-items__list']}>
+		<div className={styles.inventory}>
+			<div className={styles.list}>
 				{Array.from({ length: 20 }).map((_, index) => (
 					<InventoryListItemLoader key={index} />
 				))}
@@ -14,5 +14,3 @@ const InventoryListLoader = () => {
 		</div>
 	);
 };
-
-export default InventoryListLoader;

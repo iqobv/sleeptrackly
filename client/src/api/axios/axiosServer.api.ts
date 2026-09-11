@@ -1,0 +1,47 @@
+'use server';
+
+import { env } from '@/env';
+import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
+import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
+import https from 'https';
+import { headers } from 'next/headers';
+
+const url = env.NEXT_PUBLIC_API_URL;
+
+const apiServer = axios.create({
+	baseURL: url,
+	withCredentials: true,
+	httpsAgent: new https.Agent({
+		rejectUnauthorized: env.NODE_ENV !== 'development',
+	}),
+});
+
+apiServer.interceptors.request.use(
+	async (config: InternalAxiosRequestConfig) => {
+		const headersList = await headers();
+		const cookieHeader = headersList.get('cookie');
+
+		if (cookieHeader) {
+			config.headers.set('Cookie', cookieHeader);
+		}
+
+		return config;
+	},
+	(error: AxiosError<MessageApiResponse>) => {
+		return Promise.reject(error);
+	},
+);
+
+apiServer.interceptors.response.use(
+	(response) => response,
+	async (error: AxiosError<MessageApiResponse>) => {
+		if (error.response?.data?.message) {
+			error.message = error.response.data.message;
+			error.code = error.response.data.code;
+		}
+
+		return Promise.reject(error);
+	},
+);
+
+export default apiServer;

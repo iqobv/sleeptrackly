@@ -1,3 +1,6 @@
+import { UserRole } from '@generated/prisma/client';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { JwtPayload } from '@libs/types/jwt-payload.types';
 import {
 	CanActivate,
 	ExecutionContext,
@@ -6,14 +9,13 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { User, UserRole } from 'generated/prisma/client';
-import { ROLES_KEY } from '../decorators/roles.decortor';
+import { ROLES_KEY } from '../decorators/roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
 	constructor(private readonly reflector: Reflector) {}
 
-	canActivate(context: ExecutionContext): boolean {
+	public canActivate(context: ExecutionContext): boolean {
 		const roles = this.reflector.getAllAndOverride<UserRole[]>(ROLES_KEY, [
 			context.getHandler(),
 			context.getClass(),
@@ -23,11 +25,11 @@ export class RolesGuard implements CanActivate {
 			return true;
 		}
 
-		const req: Request = context.switchToHttp().getRequest();
-		const user = req.user as User;
+		const req = context.switchToHttp().getRequest<Request>();
+		const user = req.user as JwtPayload;
 
 		if (!user || !roles.includes(user.role)) {
-			throw new ForbiddenException('Access denied.');
+			throw new ForbiddenException(ERROR_MESSAGES.AUTH.FORBIDDEN);
 		}
 
 		return true;

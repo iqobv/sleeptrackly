@@ -1,15 +1,15 @@
 'use client';
 
-import { List } from '@/components/UI';
-import { IProfileStatistics } from '@/types';
-import ProfileStatisticsCard from './ProfileStatisticsCard/ProfileStatisticsCard';
+import type { ProfileStatistics as ProfileStatisticsType } from '@/types/profile/profile.types';
+import { List } from '@shared/ui';
+import { ProfileStatisticsCard } from './ProfileStatisticsCard/ProfileStatisticsCard';
 import { PROFILE_STATISTICS_LIST } from './profileStatisticsList';
 
 interface ProfileStatisticsProps {
-	statistics: IProfileStatistics;
+	statistics: ProfileStatisticsType;
 }
 
-const ProfileStatistics = ({ statistics }: ProfileStatisticsProps) => {
+export const ProfileStatistics = ({ statistics }: ProfileStatisticsProps) => {
 	return (
 		<List
 			items={PROFILE_STATISTICS_LIST}
@@ -28,5 +28,3 @@ const ProfileStatistics = ({ statistics }: ProfileStatisticsProps) => {
 		/>
 	);
 };
-
-export default ProfileStatistics;

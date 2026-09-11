@@ -1,48 +1,84 @@
+import { getMailerConfig } from '@config/mailer.config';
+import { EnvService } from '@infra/env/env.service';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { render } from '@react-email/components';
+import { pretty, render } from '@react-email/render';
 import Mail from 'nodemailer/lib/mailer';
-import { getMailerConfig } from 'src/config';
-import { SendEmailDto } from './dto';
-import { ConfirmationTemplate, ResetPasswordTemplate } from './templates';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { SmtpConfig, smtpEnvSchema } from '../../config/schemas/smtp.schema';
+import { SendEmailDto } from './dto/send-email.dto';
+import { ConfirmationTemplate } from './templates/confirmation.template';
+import { ResetPasswordTemplate } from './templates/reset-password.template';
+import { RestoreAccountTemplate } from './templates/restore-account.template';
+
+type SendNotificationResponse = Promise<
+	SMTPTransport.SentMessageInfo | undefined
+>;
 
 @Injectable()
 export class MailService {
+	private readonly domain: string;
 	private readonly transport: ReturnType<typeof getMailerConfig>;
+	private readonly mailConfig: SmtpConfig;
 
-	constructor(private readonly configService: ConfigService) {
-		this.transport = getMailerConfig(configService);
+	constructor(private readonly envService: EnvService) {
+		this.mailConfig = envService.getGroup(smtpEnvSchema);
+
+		this.transport = getMailerConfig(this.mailConfig);
+		this.domain = envService.get('APP_URL');
 	}
 
-	async sendVerificationEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
-		const html = await render(ConfirmationTemplate({ domain, token }));
+	public async sendVerificationEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
+		const html = await pretty(
+			await render(ConfirmationTemplate({ domain: this.domain, token })),
+		);
 
-		return this.sendEmail({
+		return await this.sendEmail({
 			recipients: [email],
 			subject: 'Confirm your email',
 			html,
 		});
 	}
 
-	async sendResetPasswordEmail(email: string, token: string) {
-		const domain = this.configService.getOrThrow<string>('CLIENT_URL');
-		const html = await render(ResetPasswordTemplate({ domain, token }));
+	public async sendResetPasswordEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
+		const html = await pretty(
+			await render(ResetPasswordTemplate({ domain: this.domain, token })),
+		);
 
-		return this.sendEmail({
+		return await this.sendEmail({
 			recipients: [email],
 			subject: 'Reset your password',
 			html,
 		});
 	}
 
-	async sendEmail(dto: SendEmailDto) {
+	public async sendRestoreAccountEmail(
+		email: string,
+		token: string,
+	): SendNotificationResponse {
+		const html = await pretty(
+			await render(RestoreAccountTemplate({ domain: this.domain, token })),
+		);
+
+		return await this.sendEmail({
+			recipients: [email],
+			subject: 'Restore your account',
+			html,
+		});
+	}
+
+	public async sendEmail(dto: SendEmailDto): SendNotificationResponse {
 		const { from, recipients, subject, html } = dto;
 
 		const options: Mail.Options = {
 			from:
 				from ??
-				`"${this.configService.getOrThrow<string>('MAIL_FROM_NAME')}" <${this.configService.getOrThrow<string>('MAIL_FROM_ADDRESS')}>`,
+				`"${this.mailConfig.MAIL_FROM_NAME}" <${this.mailConfig.MAIL_FROM_ADDRESS}>`,
 			to: [...recipients],
 			subject,
 			html,

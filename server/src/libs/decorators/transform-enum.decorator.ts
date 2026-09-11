@@ -4,7 +4,7 @@ export function TransformEnum<T>(
 	mode: 'upper' | 'lower' = 'upper',
 ): PropertyDecorator {
 	return Transform(({ value }): keyof T | Array<keyof T> => {
-		const transform = (val: unknown) => {
+		const transform = (val: unknown): unknown => {
 			if (typeof val !== 'string') return val;
 			return mode === 'upper' ? val.toUpperCase() : val.toLowerCase();
 		};

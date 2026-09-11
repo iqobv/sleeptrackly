@@ -1,27 +1,27 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './AllShop.module.scss';
-import AllShopFilterLoader from './AllShopFilter/AllShopFilterLoader';
-import AllShopFilterSearchBarLoader from './AllShopFilterSearchBar/AllShopFilterSearchBarLoader';
+import { AllShopFilterLoader } from './AllShopFilter/AllShopFilterLoader';
+import { AllShopFilterSearchBarLoader } from './AllShopFilterSearchBar/AllShopFilterSearchBarLoader';
 
 const ITEMS = Array.from({ length: 20 }).map((_, i) => (
 	<SkeletonLoader key={i} height={316} />
 ));
 
-const AllShopLoader = () => {
-	return (
-		<div className={styles['all-shop__content']}>
-			<AllShopFilterLoader />
-			<div className={styles['all-shop__items-container']}>
-				<AllShopFilterSearchBarLoader />
-				<div className={styles['all-shop__items']}>
-					<div className={styles['all-shop__items-grid']}>{ITEMS}</div>
-					<div style={{ margin: '0 auto' }}>
-						<SkeletonLoader width={250} height={44} />
-					</div>
-				</div>
-			</div>
+export const AllShopItemsLoader = () => (
+	<div className={styles.items}>
+		<div className={styles.itemsGrid}>{ITEMS}</div>
+		<div style={{ margin: '0 auto' }}>
+			<SkeletonLoader width={250} height={44} />
 		</div>
-	);
-};
+	</div>
+);
 
-export default AllShopLoader;
+export const AllShopLoader = () => (
+	<div className={styles.content}>
+		<AllShopFilterLoader />
+		<div className={styles.itemsContainer}>
+			<AllShopFilterSearchBarLoader />
+			<AllShopItemsLoader />
+		</div>
+	</div>
+);

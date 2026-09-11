@@ -1,50 +1,61 @@
-import { sendReport } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { REPORT_TITLES, REPORT_TYPES } from '@/constants';
-import { SendReportDto } from '@/dto';
-import { sendReportSchema } from '@/schemas';
-import { IOption } from '@/types';
+import { sendReport } from '@/api/report/report.api';
+import { REPORT_TITLES } from '@/constants/reportTitle.constats';
+import { SendReportDto, SendReportFormValues } from '@/dto/report/report.dto';
+import { sendReportSchema } from '@/schemas/report/report.schema';
+import { ReportType } from '@/types/report/reportType.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface ReportModalProps {
 	reportedId?: string;
-	reportType?: (typeof REPORT_TYPES)[keyof typeof REPORT_TYPES];
-	onClose: () => void;
+	reportType?: ReportType;
 }
 
 export const useReportModal = ({
 	reportedId,
 	reportType,
-	onClose,
 }: ReportModalProps) => {
-	const [selectedTitle, setSelectedTitle] = useState<IOption | null>(null);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const {
 		register,
 		control,
 		handleSubmit,
-		setValue,
+		reset,
 		formState: { errors },
-	} = useForm<SendReportDto>({
+	} = useForm<SendReportFormValues, unknown, SendReportDto>({
 		resolver: zodResolver(sendReportSchema),
 		defaultValues: {
 			reportedId: reportedId || '',
 			title: '',
+			customTitle: '',
 			description: '',
-			reportType: reportType || REPORT_TYPES.USER,
+			reportType: reportType || ReportType.USER,
 		},
 	});
 
+	const handleOpenChange = (open: boolean) => {
+		setIsOpen(open);
+		if (!open) {
+			reset();
+		}
+	};
+
+	const selectedTitle = useWatch({
+		control,
+		name: 'title',
+	});
+
+	const isOtherTitle = selectedTitle === REPORT_TITLES.OTHER;
+
 	const { mutate } = useMutation({
 		mutationFn: (data: SendReportDto) => sendReport(data),
-		mutationKey: QUERY_KEYS.report.send,
 		onSuccess: () => {
 			toast.success('Report sent');
-			onClose();
+			handleOpenChange(false);
 		},
 		onError: (error) => {
 			toast.error(error.message);
@@ -53,20 +64,12 @@ export const useReportModal = ({
 
 	const onSubmit = (data: SendReportDto) => mutate(data);
 
-	useEffect(() => {
-		setValue(
-			'title',
-			selectedTitle?.value === REPORT_TITLES.OTHER
-				? ''
-				: selectedTitle?.label || ''
-		);
-	}, [selectedTitle, setValue]);
-
 	return {
+		isOpen,
+		handleOpenChange,
 		errors,
-		selectedTitle,
 		control,
-		setSelectedTitle,
+		isOtherTitle,
 		handleSubmit,
 		onSubmit,
 		register,

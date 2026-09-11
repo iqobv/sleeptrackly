@@ -1,24 +1,14 @@
 'use client';
 
-import { getAllBundles } from '@/api';
-import BundleCard from '@/components/Customization/BundleCard/BundleCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
-import { IBundle } from '@/types';
-import { useSearchParams } from 'next/navigation';
+import { getAllBundles } from '@/api/customization/bundle/getAllBundles.api';
+import { BundleCard } from '@/components/Customization/BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Bundle } from '@/types/customization/bundle/bundle.types';
+import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-const ProductBundlesList = <T extends FieldValues>() => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationDto = {
-		page: pageFromParams,
-		limit: 20,
-	};
-
+export const ProductBundlesList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
 
 	const bundleId = watch('bundleId' as Path<T>);
@@ -29,15 +19,16 @@ const ProductBundlesList = <T extends FieldValues>() => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IBundle>
-			queryFn={() => getAllBundles(params)}
-			queryKey={() => [...QUERY_KEYS.customization.bundle.getAll(params)]}
+		<ItemsListPaginatedWrapper<Bundle>
+			queryFn={(params) => getAllBundles(params)}
+			queryKey={(params) => QUERY_KEYS.customization.bundle.list(params)}
 			itemCard={(bundle) => (
 				<BundleCard
 					bundle={bundle}
 					actions={
 						<Button
-							variant={bundleId === bundle.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={bundleId === bundle.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(bundle.id)}
 						>
@@ -49,5 +40,3 @@ const ProductBundlesList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductBundlesList;

@@ -1,7 +1,7 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import SettingsField from '../../SettingsField/SettingsField';
+import { Button } from '@shared/ui';
+import { SettingsField } from '../../SettingsField/SettingsField';
 import styles from './SettingsSecurityField.module.scss';
 
 interface SettingsSecurityFieldProps {
@@ -11,7 +11,7 @@ interface SettingsSecurityFieldProps {
 	action: () => void;
 }
 
-const SettingsSecurityField = ({
+export const SettingsSecurityField = ({
 	label,
 	isImportant,
 	buttonText,
@@ -21,13 +21,12 @@ const SettingsSecurityField = ({
 		<SettingsField label={label}>
 			<Button
 				onClick={action}
-				variant={isImportant ? 'danger' : 'outlined'}
-				className={styles['settings-security-field__button']}
+				variant="outlined"
+				color={isImportant ? 'danger' : 'primary'}
+				className={styles.button}
 			>
 				{buttonText}
 			</Button>
 		</SettingsField>
 	);
 };
-
-export default SettingsSecurityField;

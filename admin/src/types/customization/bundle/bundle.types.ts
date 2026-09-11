@@ -1,14 +1,4 @@
-import { ITranslation } from '@/types/translation/translation.types';
-import { IItemInBundle } from './itemInBundle.types';
+import { getBundleById } from '@/api/customization/bundle/getBundleById.api';
 
-export interface IBundle {
-	id: string;
-	isExclusive: false;
-	basePrice: number;
-	discountPercentage: number;
-	mediaUrl: string;
-	createdAt: Date;
-	updatedAt: Date;
-	translations: ITranslation[];
-	items: IItemInBundle[];
-}
+export type Bundle = Awaited<ReturnType<typeof getBundleById>>;
+export type ItemInBundle = Bundle['items'][number];

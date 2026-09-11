@@ -1,29 +1,31 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
-import { IProfileStatistics } from '@/types';
+import { ProfileStatistics } from '@/types/profile/profile.types';
+import { SectionHeader } from '@shared/ui';
 import { ProfileStatisticsList } from '../profileStatisticsList';
 import styles from './ProfileStatisticsCard.module.scss';
 
 interface ProfileStatisticsCardProps {
 	item: ProfileStatisticsList;
-	statistics: IProfileStatistics;
+	statistics: ProfileStatistics;
 }
 
-const ProfileStatisticsCard = ({
+export const ProfileStatisticsCard = ({
 	item,
 	statistics,
 }: ProfileStatisticsCardProps) => {
 	return (
-		<div className={styles['profile-statistics__card']}>
+		<div className={styles.card}>
 			<SectionHeader
 				title={(statistics[item.field] as number).toString()}
-				titleComponent="p"
-				titleClassName={styles['profile-statistics__card-title']}
+				titleProps={{
+					variant: 'h3',
+					as: 'p',
+					weight: 'bold',
+				}}
 				description={item.label}
+				textAlign="center"
 			/>
 		</div>
 	);
 };
-
-export default ProfileStatisticsCard;

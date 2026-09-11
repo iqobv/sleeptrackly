@@ -1,6 +1,8 @@
 'use client';
 
-import { CDNImage, TextField } from '@/components/UI';
+import { CDNImage } from '@/components/UI';
+import { env } from '@/env';
+import { Field, Input } from '@shared/ui';
 import Image from 'next/image';
 import { useState } from 'react';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
@@ -10,24 +12,28 @@ interface FileFormProps<T extends FieldValues> {
 	pathname?: Path<T>;
 	label?: string;
 	isAnimated?: boolean;
+	width?: number;
+	height?: number;
+	required?: boolean;
 }
 
-const FileForm = <T extends FieldValues>({
+export const FileForm = <T extends FieldValues>({
 	mediaUrl,
 	pathname,
 	label = 'Upload File',
 	isAnimated,
+	height = 200,
+	width = 200,
+	required = false,
 }: FileFormProps<T>) => {
 	const [previewFile, setPreviewFile] = useState<File | null>(null);
 
 	const fieldPath = pathname as Path<T>;
 
-	const methods = useFormContext<T>();
-
 	const {
 		setValue,
 		formState: { errors },
-	} = methods;
+	} = useFormContext<T>();
 
 	const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
@@ -46,12 +52,17 @@ const FileForm = <T extends FieldValues>({
 			{mediaUrl && !previewFile && (
 				<>
 					{isAnimated ? (
-						<video width="320" height="240" muted autoPlay loop>
-							<source src={`${process.env.NEXT_PUBLIC_CDN_URL}${mediaUrl}`} />
+						<video width={width} height={height} muted autoPlay loop>
+							<source src={`${env.NEXT_PUBLIC_CDN_URL}${mediaUrl}`} />
 							Your browser does not support the video tag.
 						</video>
 					) : (
-						<CDNImage src={mediaUrl} />
+						<CDNImage
+							width={width}
+							height={height}
+							path={mediaUrl}
+							alt="avatar"
+						/>
 					)}
 				</>
 			)}
@@ -61,11 +72,11 @@ const FileForm = <T extends FieldValues>({
 						<Image
 							src={URL.createObjectURL(previewFile)}
 							alt="Preview"
-							width={100}
-							height={100}
+							width={width}
+							height={height}
 						/>
 					) : previewFile.type.startsWith('video/') ? (
-						<video width="320" height="240" muted autoPlay loop>
+						<video width={width} height={height} muted autoPlay loop>
 							<source
 								src={URL.createObjectURL(previewFile)}
 								type={previewFile.type}
@@ -77,18 +88,17 @@ const FileForm = <T extends FieldValues>({
 					)}
 				</>
 			)}
-			<TextField
+			<Field
+				label={label}
+				required={required}
 				error={
 					typeof errors[fieldPath]?.message === 'string'
 						? (errors[fieldPath]?.message as string)
 						: undefined
 				}
-				type="file"
-				label={label}
-				onChange={onFileChange}
-			/>
+			>
+				<Input type="file" onChange={onFileChange} />
+			</Field>
 		</div>
 	);
 };
-
-export default FileForm;

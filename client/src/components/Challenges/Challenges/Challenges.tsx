@@ -1,36 +1,22 @@
 'use client';
 
-import { getChellenges } from '@/api';
-import { Loader } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { useQuery } from '@tanstack/react-query';
-import ActiveChallenges from '../ActiveChallenges/ActiveChallenges';
-import AllChallenges from '../AllChallenges/AllChallenges';
-import CreateChellengeButton from '../CreateChellengeButton/CreateChellengeButton';
+import { SectionHeader } from '@shared/ui';
+import { ActiveChallenges } from './ActiveChallenges/ActiveChallenges';
+import { AvailableChallenges } from './AvailableChallenges/AvailableChallenges';
+import { ChallengeRecoveriesTokens } from './ChallengeRecoveriesTokens/ChallengeRecoveriesTokens';
 import styles from './Challenges.module.scss';
 
-const Challenges = () => {
-	const { user } = useAuth();
-
-	const { data: challenges, isLoading } = useQuery({
-		queryKey: QUERY_KEYS.challenges.all(user?.id || ''),
-		queryFn: getChellenges,
-		enabled: !!user?.id,
-	});
-
+export const Challenges = () => {
 	return (
-		<div className={styles['challenges']}>
-			{isLoading && <Loader />}
-			{!isLoading && challenges && (
-				<>
-					<CreateChellengeButton />
-					<ActiveChallenges data={challenges} />
-					<AllChallenges data={challenges} />
-				</>
-			)}
+		<div className={styles.challenges}>
+			<SectionHeader
+				title="Challenges"
+				wrapperClassName={styles.header}
+				rightSlot={<ChallengeRecoveriesTokens />}
+				rightSlotClassName={styles.rightSlot}
+			/>
+			<ActiveChallenges />
+			<AvailableChallenges />
 		</div>
 	);
 };
-
-export default Challenges;

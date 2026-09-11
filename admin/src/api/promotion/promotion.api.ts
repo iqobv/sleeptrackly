@@ -1,26 +1,32 @@
-import { CreatePromotionDto } from '@/dto';
-import { IPromotion } from '@/types';
-import { fetcher } from '@/utils';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type GetAllPromotionsResponse =
+	paths['/v1/promotions']['get']['responses']['200']['content']['application/json'];
+type GetPromotionByIdResponse =
+	paths['/v1/promotions/id/{id}']['get']['responses']['200']['content']['application/json'];
+type CreatePromotionResponse =
+	paths['/v1/promotions']['post']['responses']['200']['content']['application/json'];
+type UpdatePromotionResponse =
+	paths['/v1/promotions/{id}']['patch']['responses']['200']['content']['application/json'];
+type DeletePromotionResponse =
+	paths['/v1/promotions/{id}']['delete']['responses']['200']['content']['application/json'];
 
 export const getAllPromotions = async () =>
-	await fetcher<IPromotion[]>(`/api/v1/promotions`);
+	(await apiClient.get<GetAllPromotionsResponse>(`/v1/promotions`)).data;
 
 export const getPromotionById = async (id: string) =>
-	await fetcher<IPromotion>(`/api/v1/promotions/id/${id}`);
+	(await apiClient.get<GetPromotionByIdResponse>(`/v1/promotions/id/${id}`))
+		.data;
 
 export const createPromotion = async (data: CreatePromotionDto) =>
-	await fetcher(`/api/v1/promotions`, {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.post<CreatePromotionResponse>(`/v1/promotions`, data)).data;
 
 export const updatePromotion = async (id: string, data: CreatePromotionDto) =>
-	await fetcher(`/api/v1/promotions/${id}`, {
-		method: 'PATCH',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.patch<UpdatePromotionResponse>(`/v1/promotions/${id}`, data))
+		.data;
 
 export const deletePromotion = async (id: string) =>
-	await fetcher(`/api/v1/promotions/${id}`, {
-		method: 'DELETE',
-	});
+	(await apiClient.delete<DeletePromotionResponse>(`/v1/promotions/${id}`))
+		.data;

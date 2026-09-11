@@ -1,6 +1,6 @@
 enum ReportStatus {
   PENDING
-	IN_PROGRESS
+  IN_PROGRESS
   APPROVED
   REJECTED
 }

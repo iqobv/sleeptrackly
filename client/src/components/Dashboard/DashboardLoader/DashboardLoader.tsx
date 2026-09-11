@@ -1,16 +1,14 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './DashboardLoader.module.scss';
 
-const DashboardLoader = () => {
+export const DashboardLoader = () => {
 	return (
-		<div className={styles['dashboard-loader']}>
+		<div className={styles.dashboardLoader}>
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={60} />
 			<SkeletonLoader height={500} />
 		</div>
 	);
 };
-
-export default DashboardLoader;

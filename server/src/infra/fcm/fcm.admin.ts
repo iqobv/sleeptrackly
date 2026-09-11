@@ -1,21 +1,18 @@
-import { ConfigService } from '@nestjs/config';
+import { fcmEnvSchema } from '@config/schemas/fcm.schema';
+import { EnvService } from '@infra/env/env.service';
 import * as admin from 'firebase-admin';
 
 export const FIREBASE_ADMIN = 'FIREBASE_ADMIN';
 
 export const firebaseAdminProvider = {
 	provide: FIREBASE_ADMIN,
-	inject: [ConfigService],
-	useFactory: (cfg: ConfigService) => {
-		const projectId = cfg.getOrThrow<string>('FIREBASE_PROJECT_ID');
-		const clientEmail = cfg.getOrThrow<string>('FIREBASE_CLIENT_EMAIL');
-		const encodedPrivateKey = cfg.getOrThrow<string>(
-			'FIREBASE_PRIVATE_KEY_BASE64',
-		);
+	inject: [EnvService],
+	useFactory: (envService: EnvService) => {
+		const config = envService.getGroup(fcmEnvSchema);
 
-		const privateKey = Buffer.from(encodedPrivateKey, 'base64').toString(
-			'utf-8',
-		);
+		const projectId = config.FIREBASE_PROJECT_ID;
+		const clientEmail = config.FIREBASE_CLIENT_EMAIL;
+		const privateKey = config.FIREBASE_PRIVATE_KEY_BASE64;
 
 		if (!admin.apps.length) {
 			admin.initializeApp({

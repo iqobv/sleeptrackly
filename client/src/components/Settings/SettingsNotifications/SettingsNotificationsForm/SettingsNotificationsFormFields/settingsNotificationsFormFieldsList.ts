@@ -1,4 +1,4 @@
-import { UpdateNotificationSettingsDto } from '@/dto';
+import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
 
 interface SettingsNotificationsField {
 	label: string;

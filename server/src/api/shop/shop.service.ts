@@ -1,26 +1,37 @@
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
+import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
+import { Item, Prisma } from '@generated/prisma/client';
+import {
+	AchievementType,
+	AcquiredFrom,
+	CoinTransactionType,
+	ProductType,
+	ProfileItemType,
+} from '@generated/prisma/enums';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { LanguageQueryDto } from '@libs/dto/language-query.dto';
+import { pickTranslation } from '@libs/mappers/pick-translation.mapper';
+import { transformProduct } from '@libs/mappers/translation-products.mapper';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { paginate } from '@libs/utils/pagination.util';
 import {
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-
-import { Item, Prisma, UserInventory } from 'generated/prisma/client';
-import {
-	AcquiredFrom,
-	CoinTransactionType,
-	ProductType,
-} from 'generated/prisma/enums';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { transformProduct } from 'src/libs/mappers';
-import { productInclude } from 'src/libs/prisma';
-import { ProductWithInclude } from 'src/libs/types';
-import { paginate } from 'src/libs/utils';
-import { CoinTransactionService } from '../coin-transaction/coin-transaction.service';
-import { PurchaseHistoryService } from '../purchase-history/purchase-history.service';
-import { UserInventoryService } from '../user-inventory/user-inventory.service';
-import { SHOP_SORT_BY } from './constats';
-import { FilterQueryDto } from './dto';
-import { TransformedProduct } from './types';
+import { plainToInstance } from 'class-transformer';
+import { FeaturedShopDto } from './dto/featured-shop.dto';
+import { FilterQueryDto } from './dto/filter-query.dto';
+import { FiltersDto } from './dto/filters.dto';
+import { PaginatedShopProductsDto } from './dto/paginated-products.dto';
+import { PurchaseDto } from './dto/purchase.dto';
+import { ShopProductDto } from './dto/shop-product.dto';
+import { ItemsToAdd } from './interfaces/items-to-add.interface';
+import { ShopSortBy } from './types/sort-by.types';
+import { TransformedProduct } from './types/transformed-product.types';
 
 @Injectable()
 export class ShopService {
@@ -29,15 +40,26 @@ export class ShopService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
+		private readonly achievementPublisherService: AchievementsPublisherService,
 	) {}
 
-	async getFeaturedProducts(language: string, userId?: string) {
+	public async getFeaturedProducts(
+		language: string,
+		userId?: string,
+	): Promise<FeaturedShopDto> {
+		const ownedItems = userId ? await this.getOwnedItems(userId) : [];
+
+		const bundles = await this.prismaService.product.findMany({
+			where: { isShowInStore: true, type: ProductType.BUNDLE, isNew: true },
+			take: 6,
+			orderBy: { createdAt: 'desc' },
+			include: productInclude(language),
+		});
+
 		const itemTypes = await this.prismaService.product.groupBy({
 			by: ['itemType'],
 			where: { isShowInStore: true, itemType: { not: null } },
 		});
-
-		const ownedItems = userId ? await this.getOwnedItems(userId) : [];
 
 		const sections = await Promise.all(
 			itemTypes.map(async (t) => {
@@ -49,7 +71,7 @@ export class ShopService {
 				});
 
 				let mappedProducts: TransformedProduct[] = products.map((product) =>
-					transformProduct(product as ProductWithInclude, language),
+					transformProduct(product, language),
 				);
 
 				if (userId) {
@@ -61,34 +83,75 @@ export class ShopService {
 				}
 
 				return {
-					itemType: t.itemType,
+					itemType: t.itemType as ProfileItemType,
 					items: mappedProducts,
 				};
 			}),
 		);
 
-		const bundles = await this.prismaService.product.findMany({
-			where: { isShowInStore: true, type: ProductType.BUNDLE, isNew: true },
-			take: 6,
+		const collections = await this.prismaService.collection.findMany({
+			where: { showInStore: true },
 			orderBy: { createdAt: 'desc' },
-			include: productInclude(language),
+			take: 5,
+			include: {
+				translations: {
+					where: {
+						language: {
+							in: [language, 'en'],
+						},
+					},
+					select: { language: true, name: true },
+				},
+				products: {
+					include: {
+						product: {
+							include: productInclude(language),
+						},
+					},
+				},
+			},
 		});
 
 		let mappedBundles: TransformedProduct[] = bundles.map((product) =>
-			transformProduct(product as ProductWithInclude, language),
+			transformProduct(product, language),
+		);
+
+		let mappedCollections = collections.map(
+			({ translations, products, ...rest }) => ({
+				...rest,
+				name:
+					pickTranslation(translations, language)?.name ?? 'Unnamed Collection',
+				products: products.slice(0, 4).map((cp) => ({
+					...cp,
+					product: transformProduct(cp.product, language),
+				})),
+			}),
 		);
 
 		if (userId) {
 			mappedBundles = this.markOwnedProducts(ownedItems, mappedBundles, userId);
+			mappedCollections = mappedCollections.map((collection) => ({
+				...collection,
+				products: collection.products.map((cp) => ({
+					...cp,
+					product: this.markOwnedProducts(ownedItems, [cp.product], userId)[0],
+				})),
+			}));
 		}
 
-		return {
+		const result: FeaturedShopDto = {
 			carousel: mappedBundles,
+			collections: mappedCollections,
 			sections,
 		};
+
+		return plainToInstance(FeaturedShopDto, result);
 	}
 
-	async getAllProducts(query: FilterQueryDto, userId?: string) {
+	public async getAllProducts(
+		query: FilterQueryDto,
+		userId?: string,
+	): Promise<PaginatedShopProductsDto> {
 		const {
 			language = 'en',
 			page = 1,
@@ -98,53 +161,89 @@ export class ShopService {
 			search,
 			sortBy = 'DATE',
 			sortOrder = 'desc',
+			collection,
+			maxPrice,
+			minPrice,
 		} = query;
+
+		const andConditions: Prisma.ProductWhereInput[] = [];
+
+		if (collection && collection.length > 0) {
+			andConditions.push({
+				collections: {
+					some: { collection: { showInStore: true, slug: { in: collection } } },
+				},
+			});
+		}
+
+		if (type !== 'ALL') {
+			andConditions.push({ type });
+		}
+
+		if (itemType && itemType.length > 0) {
+			if (type === 'BUNDLE') {
+				andConditions.push({
+					bundle: { items: { some: { item: { type: { in: itemType } } } } },
+				});
+			} else {
+				andConditions.push({ itemType: { in: itemType } });
+			}
+		}
+
+		if (search) {
+			andConditions.push({
+				OR: [
+					{
+						item: {
+							translations: {
+								some: { name: { contains: search, mode: 'insensitive' } },
+							},
+						},
+					},
+					{
+						bundle: {
+							translations: {
+								some: { name: { contains: search, mode: 'insensitive' } },
+							},
+						},
+					},
+				],
+			});
+		}
+
+		if (minPrice !== undefined || maxPrice !== undefined) {
+			andConditions.push({
+				OR: [
+					{
+						discountedPrice: {
+							not: null,
+							...(minPrice !== undefined ? { gte: minPrice } : {}),
+							...(maxPrice !== undefined ? { lte: maxPrice } : {}),
+						},
+					},
+					{
+						discountedPrice: null,
+						price: {
+							...(minPrice !== undefined ? { gte: minPrice } : {}),
+							...(maxPrice !== undefined ? { lte: maxPrice } : {}),
+						},
+					},
+				],
+			});
+		}
 
 		const where: Prisma.ProductWhereInput = {
 			isShowInStore: true,
-			...(type === 'ALL' ? {} : { type }),
-			...(itemType
-				? type === 'BUNDLE'
-					? {
-							bundle: {
-								items: {
-									some: {
-										item: { type: { in: itemType } },
-									},
-								},
-							},
-						}
-					: { itemType: { in: itemType } }
-				: {}),
-			...(search
-				? {
-						OR: [
-							{
-								item: {
-									translations: {
-										some: { name: { contains: search, mode: 'insensitive' } },
-									},
-								},
-							},
-							{
-								bundle: {
-									translations: {
-										some: { name: { contains: search, mode: 'insensitive' } },
-									},
-								},
-							},
-						],
-					}
-				: {}),
+			...(andConditions.length > 0 ? { AND: andConditions } : {}),
 		};
 
-		return await paginate({ page, limit }, async (limit, offset) => {
+		const result = await paginate({ page, limit }, async (limit, offset) => {
 			const [total, products] = await this.prismaService.$transaction([
 				this.prismaService.product.count({ where }),
 				this.prismaService.product.findMany({
 					where,
 					orderBy: {
-						[sortBy === SHOP_SORT_BY.DATE ? 'createdAt' : 'price']: sortOrder,
+						[sortBy === ShopSortBy.DATE ? 'createdAt' : 'price']: sortOrder,
 					},
 					skip: offset,
 					take: limit,
@@ -153,7 +252,7 @@ export class ShopService {
 			]);
 
 			let mappedProducts: TransformedProduct[] = products.map((product) =>
-				transformProduct(product as ProductWithInclude, language),
+				transformProduct(product, language),
 			);
 
 			if (userId) {
@@ -167,21 +266,32 @@ export class ShopService {
 
 			return { items: mappedProducts, total };
 		});
+
+		return plainToInstance(PaginatedShopProductsDto, result);
 	}
 
-	async getProductById(id: string, language: string = 'en') {
+	public async getProductById(
+		id: string,
+		language: string = 'en',
+	): Promise<ShopProductDto> {
 		const product = await this.prismaService.product.findFirst({
 			where: { id, isShowInStore: true },
 			include: productInclude(language),
 		});
 
-		if (!product) throw new NotFoundException('Product not found');
+		if (!product) throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
-		return transformProduct(product as ProductWithInclude, language);
+		const tranformedProduct = transformProduct(product, language);
+
+		return plainToInstance(ShopProductDto, tranformedProduct);
 	}
 
-	async purchaseProduct(userId: string, productId: string) {
-		return await this.prismaService.$transaction(async (tx) => {
+	public async purchaseProduct(
+		userId: string,
+		productId: string,
+		language: string = 'en',
+	): Promise<PurchaseDto> {
+		const result = await this.prismaService.$transaction(async (tx) => {
 			const product = await tx.product.findUnique({
 				where: { id: productId },
 				include: {
@@ -203,7 +313,8 @@ export class ShopService {
 				},
 			});
 
-			if (!product) throw new NotFoundException('Product not found');
+			if (!product)
+				throw new NotFoundException(ERROR_MESSAGES.PRODUCT.NOT_FOUND);
 
 			let items: Item[] = [];
 			const initialPrice = product.discountedPrice ?? product.price;
@@ -268,19 +379,39 @@ export class ShopService {
 					tx,
 				);
 
+			await this.achievementPublisherService.dispatchProgressCheck({
+				userId,
+				type: AchievementType.ITEMS_PURCHASED,
+			});
+
+			const translations = (purchaseHistoryResult.nameSnapshot || []) as {
+				language: string;
+				name: string;
+			}[];
+
+			const translation = pickTranslation(translations, language) ?? {
+				language,
+				name: 'Unknown Product',
+			};
+
 			return {
 				coinTransaction: coinTransactionResult,
-				purchaseHistory: purchaseHistoryResult,
+				purchaseHistory: {
+					...purchaseHistoryResult,
+					nameSnapshot: translation,
+				},
 				inventoryResults,
 			};
 		});
+
+		return result;
 	}
 
-	async getItemsToAdd(
+	public async getItemsToAdd(
 		items: Item[],
 		userId: string,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<ItemsToAdd> {
 		const itemsIds = items.map((item) => item.id);
 
 		const alreadyOwnedItems = await this.userInventoryService.getOwnedItemIds(
@@ -290,7 +421,9 @@ export class ShopService {
 		);
 
 		if (alreadyOwnedItems.length >= itemsIds.length) {
-			throw new ConflictException('You already own this product');
+			throw new ConflictException(
+				ERROR_MESSAGES.USER_INVENTORY.ITEM_ALREADY_OWNED,
+			);
 		}
 
 		const itemsToAdd = items.filter(
@@ -301,11 +434,61 @@ export class ShopService {
 		return { alreadyOwnedItems, itemsToAdd };
 	}
 
+	public async getFilters(query: LanguageQueryDto): Promise<FiltersDto> {
+		const { language = 'en' } = query;
+
+		const collections = await this.prismaService.collection.findMany({
+			where: { showInStore: true },
+			select: {
+				slug: true,
+				translations: {
+					where: { language: { in: [language, 'en'] } },
+					select: { name: true, language: true },
+				},
+			},
+		});
+
+		const mappedCollections = collections
+			.map((collection) => {
+				const translation = pickTranslation(collection.translations, language);
+
+				return {
+					slug: collection.slug,
+					name: translation?.name || 'No name',
+				};
+			})
+			.sort((a, b) => a.name.localeCompare(b.name));
+
+		const prices = await this.prismaService.product.aggregate({
+			where: { isShowInStore: true },
+			_min: { price: true, discountedPrice: true },
+			_max: { price: true, discountedPrice: true },
+		});
+
+		const minValues = [prices._min.price, prices._min.discountedPrice].filter(
+			(p) => p !== null,
+		);
+		const finalMinPrice = minValues.length > 0 ? Math.min(...minValues) : 0;
+
+		const maxValues = [prices._max.price, prices._max.discountedPrice].filter(
+			(p) => p !== null,
+		);
+		const finalMaxPrice = maxValues.length > 0 ? Math.max(...maxValues) : 0;
+
+		return plainToInstance(FiltersDto, {
+			collections: mappedCollections,
+			priceRange: {
+				min: finalMinPrice,
+				max: finalMaxPrice,
+			},
+		});
+	}
+
 	private calculateFinalPrice(
 		items: Item[],
 		initialPrice: number,
-		alreadyOwnedItems: UserInventory[],
-	) {
+		alreadyOwnedItems: { itemId: string }[],
+	): number {
 		let finalPrice = initialPrice;
 
 		const totalBasePrice = items.reduce(
@@ -328,7 +511,7 @@ export class ShopService {
 		return finalPrice;
 	}
 
-	private async getOwnedItems(userId: string) {
+	private async getOwnedItems(userId: string): Promise<{ itemId: string }[]> {
 		const ownedItems = await this.prismaService.userInventory.findMany({
 			where: { userId },
 			select: { itemId: true },
@@ -343,7 +526,7 @@ export class ShopService {
 		}[],
 		mappedProducts: TransformedProduct[],
 		userId: string,
-	) {
+	): TransformedProduct[] {
 		if (userId && ownedItems.length > 0) {
 			const ownedItemIds = ownedItems.map((oi) => oi.itemId);
 			mappedProducts.forEach((product) => {

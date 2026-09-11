@@ -1,12 +1,10 @@
-import { CreateNotificationDto } from '@/dto';
-import { fetcher } from '@/utils';
+import { CreateNotificationDto } from '@/dto/notification/notification.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type CreateNotificationResponse =
+	paths['/v1/notifications']['post']['responses']['200']['content']['application/json'];
 
 export const createNotification = async (dto: CreateNotificationDto) =>
-	await fetcher(
-		'/api/v1/notifications',
-		{
-			method: 'POST',
-			body: JSON.stringify(dto),
-		},
-		true
-	);
+	(await apiClient.post<CreateNotificationResponse>('/v1/notifications', dto))
+		.data;

@@ -1,90 +1,56 @@
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { ImageValidationPipe } from '@libs/pipes/image-validation.pipe';
 import {
 	BadRequestException,
 	Controller,
 	Delete,
 	HttpStatus,
-	ParseFilePipeBuilder,
 	Post,
 	UploadedFile,
 	UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-	ApiBadGatewayResponse,
-	ApiBody,
-	ApiConsumes,
-	ApiExcludeEndpoint,
-	ApiOkResponse,
-	ApiOperation,
-	ApiTags,
-} from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { UserAvatarDto } from './dto';
+import { ApiBody, ApiConsumes, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UploadUserAvatarDto } from './dto/upload-user-avatar.dto';
+import { UserAvatarDto } from './dto/user-avatar.dto';
 import { UserAvatarService } from './user-avatar.service';
 
+@Auth()
 @ApiTags('User Avatar')
 @Controller('user-avatar')
 export class UserAvatarController {
 	constructor(private readonly userAvatarService: UserAvatarService) {}
 
-	@ApiOperation({ summary: 'Upload user avatar' })
-	@ApiBody({ type: 'file' })
-	@ApiConsumes('multipart/form-data')
-	@ApiBody({
-		schema: {
-			type: 'object',
-			properties: {
-				avatar: {
-					type: 'file',
-					items: {
-						type: 'string',
-						format: 'binary',
-					},
-				},
-			},
-		},
-	})
-	@ApiOkResponse({ type: UserAvatarDto })
-	@ApiBadGatewayResponse({ description: 'Error uploading image' })
-	@Auth()
+	/** Upload avatar */
 	@Post('upload')
+	@ApiBody({ type: UploadUserAvatarDto })
+	@ApiConsumes('multipart/form-data')
 	@UseInterceptors(FileInterceptor('avatar'))
-	async upload(
-		@UploadedFile(
-			new ParseFilePipeBuilder()
-				.addFileTypeValidator({
-					fileType: /(jpg|jpeg|png|webp)$/,
-				})
-				.build({
-					errorHttpStatusCode: HttpStatus.UNSUPPORTED_MEDIA_TYPE,
-					fileIsRequired: true,
-				}),
-		)
-		file: Express.Multer.File,
-		@Authorized('id') userId: string,
-	) {
-		if (!file) throw new BadRequestException('File not provided');
-		return this.userAvatarService.upload(file, userId);
-	}
-
-	@ApiOperation({ summary: 'Delete user avatar' })
 	@ApiOkResponse({ type: UserAvatarDto })
-	@Auth()
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, ERROR_MESSAGES.AVATAR.UPLOAD_FAILED)
+	@ApiErrorResponse(HttpStatus.FORBIDDEN, {
+		...ERROR_MESSAGES.AVATAR.CHANGE_BANNED,
+		meta: { endsAt: new Date() },
+	})
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	public async upload(
+		@UploadedFile(ImageValidationPipe()) file: Express.Multer.File,
+		@Authorized('id') userId: string,
+	): Promise<UserAvatarDto> {
+		if (!file)
+			throw new BadRequestException(ERROR_MESSAGES.AVATAR.FILE_NOT_PROVIDED);
+
+		return await this.userAvatarService.upload(file, userId);
+	}
+
+	/** Delete avatar */
 	@Delete()
-	async deleteAvatar(@Authorized('id') userId: string) {
-		return this.userAvatarService.deleteAvatar(userId);
-	}
-
-	@Auth('ADMIN')
-	@ApiExcludeEndpoint()
-	@Post('all')
-	async createForAllUsers() {
-		return this.userAvatarService.createForAllUsers();
-	}
-
-	@Auth('ADMIN')
-	@Post('fix-urls')
-	async fixAvatarUrls() {
-		return await this.userAvatarService.fixAvatarUrls();
+	public async deleteAvatar(
+		@Authorized('id') userId: string,
+	): Promise<UserAvatarDto> {
+		return await this.userAvatarService.deleteAvatar(userId);
 	}
 }

@@ -1,34 +1,36 @@
 'use client';
 
-import { updateReport } from '@/api';
-import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { REPORT_STATUS } from '@/constants';
-import { IReportFull, TReportStatus } from '@/types';
+import { updateReport } from '@/api/report/reports.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { FullReport } from '@/types/report/report.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
+import { Button } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import styles from './ReportActions.module.scss';
-import ReportSanction from './ReportSanction/ReportSanction';
+import { ReportSanction } from './ReportSanction/ReportSanction';
 
 interface ReportActionsProps {
-	report: IReportFull;
+	report: FullReport;
 }
 
-const ReportActions = ({ report }: ReportActionsProps) => {
+export const ReportActions = ({ report }: ReportActionsProps) => {
 	const queryCliet = useQueryClient();
 
 	const { mutate } = useMutation({
-		mutationFn: ({ status }: { status?: TReportStatus }) =>
+		mutationFn: ({ status }: { status?: ReportStatus }) =>
 			updateReport(report.id, { status }),
 		onSuccess: () => {
 			queryCliet.invalidateQueries({
-				queryKey: QUERY_KEYS.report.getReport(report.id),
+				queryKey: QUERY_KEYS.report.detail(report.id),
+			});
+			queryCliet.invalidateQueries({
+				queryKey: QUERY_KEYS.report.lists(),
 			});
 		},
 	});
 
 	return (
-		<div className={styles['report-actions']}>
-			{report.status === REPORT_STATUS.PENDING && (
+		<div>
+			{report.status === ReportStatus.PENDING && (
 				<div>
 					<Button
 						type="submit"
@@ -39,7 +41,7 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 				</div>
 			)}
 			<ReportSanction report={report} />
-			{report.status === REPORT_STATUS.IN_PROGRESS && (
+			{report.status === ReportStatus.IN_PROGRESS && (
 				<div>
 					<Button onClick={() => mutate({ status: 'APPROVED' })}>
 						Close report
@@ -49,5 +51,3 @@ const ReportActions = ({ report }: ReportActionsProps) => {
 		</div>
 	);
 };
-
-export default ReportActions;

@@ -1,29 +1,31 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
-import { useState } from 'react';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@shared/ui';
 import { MdOutlineQrCodeScanner } from 'react-icons/md';
-import QrScan from './QrScan/QrScan';
+import { QrScan } from './QrScan/QrScan';
 import styles from './QrScanModal.module.scss';
 
-const QrScanModal = () => {
-	const [isOpen, setIsOpen] = useState(false);
-
+export const QrScanModal = () => {
 	return (
-		<>
-			<Button variant="text" isIcon isRounded onClick={() => setIsOpen(true)}>
-				<MdOutlineQrCodeScanner size={25} />
-			</Button>
-			<Modal
-				containerClassName={styles['qr-scan-modal']}
-				isOpen={isOpen}
-				bodyClassName={styles['qr-scan-modal__body']}
-				onClose={() => setIsOpen(false)}
-			>
-				<QrScan />
-			</Modal>
-		</>
+		<Modal>
+			<ModalTrigger asChild>
+				<Button variant="text" isIcon isRounded>
+					<MdOutlineQrCodeScanner size={25} />
+				</Button>
+			</ModalTrigger>
+			<ModalContent className={styles.modal}>
+				<ModalHeader>Scan QR code</ModalHeader>
+				<ModalBody className={styles.body}>
+					<QrScan />
+				</ModalBody>
+			</ModalContent>
+		</Modal>
 	);
 };
-
-export default QrScanModal;

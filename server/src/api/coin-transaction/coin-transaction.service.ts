@@ -1,38 +1,43 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CoinTransactionType, Prisma } from 'generated/prisma/client';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
-import { InsufficientCoinsException } from 'src/libs/exceptions';
-import { CreateCoinTransactionDto } from './dto';
+import { CoinTransactionType, Prisma } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import {
+	BadRequestException,
+	Injectable,
+	NotFoundException,
+} from '@nestjs/common';
+import { plainToInstance } from 'class-transformer';
+import { CoinTransactionDto } from './dto/coin-transaction.dto';
+import { CreateCoinTransactionDto } from './dto/create-coin-transaction.dto';
+import { CreatedCoinTransactionDto } from './dto/created-coin-transaction.dto';
 
 @Injectable()
 export class CoinTransactionService {
 	constructor(private readonly prismaService: PrismaService) {}
 
-	async createTransaction(
+	public async createTransaction(
 		dto: CreateCoinTransactionDto,
 		tx?: Prisma.TransactionClient,
-	) {
+	): Promise<CreatedCoinTransactionDto> {
 		const { amount, transactionType, userId, referenceId, meta } = dto;
 
-		const execute = async (client: Prisma.TransactionClient) => {
+		const execute = async (
+			client: Prisma.TransactionClient,
+		): Promise<CreatedCoinTransactionDto> => {
 			const userCoin = await client.userCoin.findUnique({
 				where: { userId },
 			});
 
-			if (!userCoin) throw new NotFoundException('User coin not found');
+			if (!userCoin) throw new NotFoundException(ERROR_MESSAGES.COIN.NOT_FOUND);
 
-			if (amount < 0 && userCoin.amount + amount < 0) {
-				throw new InsufficientCoinsException();
-			}
+			if (amount < 0 && userCoin.amount + amount < 0)
+				throw new BadRequestException(
+					ERROR_MESSAGES.COIN_TRANSACTION.INSUFFICIENT_FUNDS,
+				);
 
 			const updatedCoin = await client.userCoin.update({
-				where: {
-					id: userCoin.id,
-					userId,
-				},
-				data: {
-					amount: { increment: amount },
-				},
+				where: { id: userCoin.id },
+				data: { amount: { increment: amount } },
 			});
 
 			const createdTransaction = await client.coinTransaction.create({
@@ -41,7 +46,7 @@ export class CoinTransactionService {
 					balanceBefore: userCoin.amount,
 					balanceAfter: updatedCoin.amount,
 					type: transactionType,
-					meta: meta ? JSON.stringify(meta) : undefined,
+					meta: meta ? (meta as Prisma.InputJsonValue) : undefined,
 					user: { connect: { id: userId } },
 					userCoin: { connect: { id: userCoin.id } },
 					referenceId: referenceId || null,
@@ -54,41 +59,43 @@ export class CoinTransactionService {
 			};
 		};
 
-		if (tx) {
-			return execute(tx);
-		}
-
-		return this.prismaService.$transaction(async (newTx) => {
-			return execute(newTx);
-		});
+		return tx
+			? await execute(tx)
+			: await this.prismaService.$transaction(execute);
 	}
 
-	async getUserTransactions(userId: string) {
+	public async getUserTransactions(
+		userId: string,
+	): Promise<CoinTransactionDto[]> {
 		const transactions = await this.prismaService.coinTransaction.findMany({
 			where: { userId },
 			orderBy: { createdAt: 'desc' },
 		});
 
-		return transactions;
+		return plainToInstance(CoinTransactionDto, transactions);
 	}
 
-	async getLastTransactionByType(userId: string, type: CoinTransactionType) {
+	public async getLastTransactionByType(
+		userId: string,
+		type: CoinTransactionType,
+	): Promise<CoinTransactionDto | null> {
 		return await this.prismaService.coinTransaction.findFirst({
 			where: { userId, type },
 			orderBy: { createdAt: 'desc' },
 		});
 	}
 
-	async getLastTransactionToday(userId: string, type?: CoinTransactionType) {
+	public async getLastTransactionToday(
+		userId: string,
+		type?: CoinTransactionType,
+	): Promise<CoinTransactionDto[]> {
 		const startOfToday = new Date();
 		startOfToday.setHours(0, 0, 0, 0);
 
 		return await this.prismaService.coinTransaction.findMany({
 			where: {
 				userId,
-				createdAt: {
-					gte: startOfToday,
-				},
+				createdAt: { gte: startOfToday },
 				...(type ? { type } : {}),
 			},
 			orderBy: { createdAt: 'desc' },

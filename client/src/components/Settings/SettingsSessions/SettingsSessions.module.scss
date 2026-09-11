@@ -1,0 +1,22 @@
+.sessions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+	height: 100%;
+	padding-top: 1.25rem;
+}
+
+.header {
+	gap: 0.1875rem;
+}
+
+.actions {
+	display: flex;
+	justify-content: space-between;
+	gap: 0.625rem;
+	align-items: center;
+}
+
+.list {
+	flex: 1;
+}

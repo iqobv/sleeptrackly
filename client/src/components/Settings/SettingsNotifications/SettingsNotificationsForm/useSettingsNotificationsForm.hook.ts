@@ -1,38 +1,44 @@
 'use client';
 
-import { updateUserNotificationSettings } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { UpdateNotificationSettingsDto } from '@/dto';
-import { useAuth } from '@/hooks';
-import { SettingsNotificationsSchema } from '@/schemas';
-import { INotificationSettings } from '@/types';
+import { updateUserNotificationSettings } from '@/api/settings/notifications.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
+import { settingsNotificationsSchema } from '@/schemas/settings/settingsNotifications.schema';
+import { NotificationSettings } from '@/types/settings/notifications.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 interface UseSettingsNotificationsFormProps {
-	data: INotificationSettings;
+	data: NotificationSettings;
 }
 
 export const useSettingsNotificationsForm = ({
 	data,
 }: UseSettingsNotificationsFormProps) => {
 	const queryClient = useQueryClient();
-	const { user } = useAuth();
 
 	const methods = useForm({
-		resolver: zodResolver(SettingsNotificationsSchema),
-		defaultValues: data,
+		resolver: zodResolver(settingsNotificationsSchema),
+		defaultValues: {
+			isAchievementUnlockedEnabled: true,
+			isEmailNotificationsEnabled: true,
+			isFriendRequestsEnabled: true,
+			isInAppNotificationsEnabled: true,
+			isReminderEnabled: false,
+			isUpdatesEnabled: true,
+			reminderTime: undefined,
+		},
+		values: data,
 	});
 
 	const { mutate } = useMutation({
 		mutationFn: (dto: UpdateNotificationSettingsDto) =>
 			updateUserNotificationSettings(dto),
-		mutationKey: QUERY_KEYS.notifications.updateSettings(user?.id ?? ''),
-		onSuccess: (updatedSettings: INotificationSettings) => {
-			queryClient.refetchQueries({
-				queryKey: QUERY_KEYS.notifications.settings(user?.id ?? ''),
+		onSuccess: (updatedSettings: NotificationSettings) => {
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.notifications.settings(),
 			});
 			methods.reset(updatedSettings);
 		},

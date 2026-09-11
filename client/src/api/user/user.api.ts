@@ -1,12 +1,18 @@
-import { SettingsAccountDto } from '@/dto';
-import { IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { SettingsAccountDto } from '@/dto/settings/settings.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type UpdateUserResponse =
+	paths['/v1/users/me']['patch']['responses']['200']['content']['application/json'];
+type SearchByUsernameResponse =
+	paths['/v1/users/search']['get']['responses']['200']['content']['application/json'];
 
 export const updateUser = async (data: SettingsAccountDto) =>
-	await fetcher<IUser>('/v1/users/me', {
-		method: 'PATCH',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.patch<UpdateUserResponse>('/v1/users/me', data)).data;
 
 export const searchByUsername = async (username: string) =>
-	await fetcher<IUser[]>(`/v1/users/search?username=${username}`);
+	(
+		await apiClient.get<SearchByUsernameResponse>(`/v1/users/search`, {
+			params: { username },
+		})
+	).data;

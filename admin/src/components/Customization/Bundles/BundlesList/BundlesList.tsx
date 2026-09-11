@@ -1,36 +1,35 @@
 'use client';
 
-import { getAllBundles } from '@/api';
-import { Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { IBundle } from '@/types';
-import BundleCard from '../../BundleCard/BundleCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { getAllBundles } from '@/api/customization/bundle/getAllBundles.api';
+import { PAGES } from '@/config/pages.config';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Bundle } from '@/types/customization/bundle/bundle.types';
+import { Button } from '@shared/ui';
+import Link from 'next/link';
+import { BundleCard } from '../../BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { BundlesListLoader } from './BundlesListLoader';
 
-const BundlesList = () => {
+export const BundlesList = () => {
 	return (
-		<div>
-			<Button href={PAGES.BUNDLE_NEW}>New Bundle</Button>
-			<ItemsListPaginatedWrapper<IBundle>
-				queryFn={getAllBundles}
-				queryKey={(query) => [QUERY_KEYS.customization.bundle.getAll(query)]}
-				itemCard={(bundle) => (
-					<BundleCard
-						actions={
-							<Button
-								fullWidth
-								variant="secondary"
-								href={PAGES.BUNDLE(bundle.id)}
-							>
+		<ItemsListPaginatedWrapper<Bundle>
+			queryFn={({ language: _l, ...params }) => getAllBundles(params)}
+			queryKey={({ language: _l, ...params }) =>
+				QUERY_KEYS.customization.bundle.list(params)
+			}
+			loader={<BundlesListLoader />}
+			itemCard={(bundle) => (
+				<BundleCard
+					actions={
+						<Button fullWidth variant="contained" color="secondary" asChild>
+							<Link href={PAGES.BUNDLE(bundle.id)} prefetch={false}>
 								View
-							</Button>
-						}
-						bundle={bundle}
-					/>
-				)}
-			/>
-		</div>
+							</Link>
+						</Button>
+					}
+					bundle={bundle}
+				/>
+			)}
+		/>
 	);
 };
-
-export default BundlesList;

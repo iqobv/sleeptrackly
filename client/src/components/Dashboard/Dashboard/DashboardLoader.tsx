@@ -1,14 +1,15 @@
-import DashboardWeekStatsLoader from '../DashboardWeekStats/DashboardWeekStatsLoader';
-import SleepChartLoader from '../SleepChart/SleepChartLoader';
-import WeekPaginationLoader from '../WeekPagination/WeekPaginationLoader';
+import { SectionHeaderLoader } from '@shared/ui';
+import { DashboardWeekStatsLoader } from '../DashboardWeekStats/DashboardWeekStatsLoader';
+import { SleepChartLoader } from '../SleepChart/SleepChartLoader';
+import { WeekPaginationLoader } from '../WeekPagination/WeekPaginationLoader';
 import styles from './Dashboard.module.scss';
-import DashboardSleepSessionsLoader from './DashboardSleepSessions/DashboardSleepSessionsLoader';
+import { DashboardSleepSessionsLoader } from './DashboardSleepSessions/DashboardSleepSessionsLoader';
 
-const DashboardLoader = () => {
+export const DashboardLoader = () => {
 	return (
-		<div className={styles['dashboard__wrapper']}>
+		<div className={styles.wrapper}>
 			<WeekPaginationLoader />
-			<div className={styles['dashboard__content']}>
+			<div className={styles.content}>
 				<DashboardWeekStatsLoader />
 				<SleepChartLoader />
 			</div>
@@ -17,4 +18,9 @@ const DashboardLoader = () => {
 	);
 };
 
-export default DashboardLoader;
+export const DashboardPageLoader = () => (
+	<div className={styles.dashboard}>
+		<SectionHeaderLoader titleWidth={200} />
+		<DashboardLoader />
+	</div>
+);

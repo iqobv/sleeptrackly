@@ -1,15 +1,15 @@
-import { IField } from '@/types';
-import { FieldValues, Path } from 'react-hook-form';
+import { CreateBundleDto } from '@/dto/customization/bundle.dto';
+import { Field } from '@/types/ui/field.types';
 
-export const getBundleFields = <T extends FieldValues>(): IField<T>[] => [
+export const BUNDLE_FIELDS: Field<CreateBundleDto>[] = [
 	{
-		name: 'isExclusive' as Path<T>,
+		name: 'isExclusive',
 		placeholder: 'Is Exclusive',
 		label: 'Exclusive',
 		type: 'checkbox',
 	},
 	{
-		name: 'discountPercentage' as Path<T>,
+		name: 'discountPercentage',
 		placeholder: 'Discount Percentage',
 		label: 'Discount Percentage',
 		type: 'number',

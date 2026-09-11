@@ -1,15 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
 
 export class SleepStatisticsDto {
-	@ApiProperty({ example: 1 })
-	weekNumber: number;
-
-	@ApiProperty({ example: 10000 })
-	totalSleepDuration: number;
-
-	@ApiProperty({ example: 10000 })
-	averageSleepDurationByData: number;
-
-	@ApiProperty({ example: 10000 })
-	averageSleepDurationForWeek: number;
+	@Expose() totalSleepDuration: number;
+	@Expose() averageSleepDuration: number;
+	@Expose() averageSleepRating: number;
 }

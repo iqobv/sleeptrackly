@@ -1,0 +1,16 @@
+.avatar {
+	position: relative;
+	user-select: none;
+	border-radius: 50%;
+}
+
+.skeleton {
+	position: absolute;
+	top: -0.0625rem;
+}
+
+.image {
+	border-radius: 50%;
+	object-fit: cover;
+	border: 1px solid var(--avatar-border);
+}

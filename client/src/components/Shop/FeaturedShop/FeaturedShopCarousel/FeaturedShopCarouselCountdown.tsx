@@ -6,7 +6,7 @@ interface FeaturedShopCarouselCountdownProps {
 	endDate: Date;
 }
 
-const FeaturedShopCarouselCountdown = ({
+export const FeaturedShopCarouselCountdown = ({
 	endDate,
 }: FeaturedShopCarouselCountdownProps) => {
 	const [timeLeft, setTimeLeft] = useState<string>('');
@@ -52,5 +52,3 @@ const FeaturedShopCarouselCountdown = ({
 
 	return <div>Ends in: {timeLeft}</div>;
 };
-
-export default FeaturedShopCarouselCountdown;

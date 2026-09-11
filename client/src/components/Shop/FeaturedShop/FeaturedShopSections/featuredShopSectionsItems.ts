@@ -1,34 +1,33 @@
-import { ITEM_TYPES } from '@/constants';
-import { TItemType } from '@/types';
+import { ItemType } from '@/types/item/itemType.types';
 
 interface FeaturedShopSectionItem {
-	type: TItemType;
+	type: ItemType;
 	title: string;
 }
 
 export const FEATURED_SHOP_SECTIONS_ITEMS: FeaturedShopSectionItem[] = [
 	{
-		type: ITEM_TYPES.AVATAR_FRAME,
+		type: ItemType.AVATAR_FRAME,
 		title: 'Avatar Frames',
 	},
 	{
-		type: ITEM_TYPES.BACKGROUND_IMAGE,
+		type: ItemType.BACKGROUND_IMAGE,
 		title: 'Backgrounds',
 	},
 	{
-		type: ITEM_TYPES.MINI_BACKGROUND_IMAGE,
+		type: ItemType.MINI_BACKGROUND_IMAGE,
 		title: 'Mini Profile Backgrounds',
 	},
 	{
-		type: ITEM_TYPES.ANIMATED_AVATAR,
+		type: ItemType.ANIMATED_AVATAR,
 		title: 'Animated Avatars',
 	},
 	{
-		type: ITEM_TYPES.BADGE,
+		type: ItemType.BADGE,
 		title: 'Badges',
 	},
 	{
-		type: ITEM_TYPES.AVATAR,
+		type: ItemType.AVATAR,
 		title: 'Avatars',
 	},
 ];

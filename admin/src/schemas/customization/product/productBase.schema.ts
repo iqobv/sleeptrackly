@@ -7,9 +7,9 @@ export const productBaseShape = z.object({
 	isExclusive: z.boolean(),
 	isShowInStore: z.boolean(),
 	isLimited: z.boolean(),
-	price: z.number().min(0).optional(),
-	discountedPrice: z.number().min(0).optional(),
-	maxStock: z.number().min(0).optional(),
+	price: z.coerce.number().min(0).optional(),
+	discountedPrice: z.coerce.number().min(0).optional(),
+	maxStock: z.coerce.number().min(0).optional(),
 	expiresAt: z
 		.string()
 		.optional()

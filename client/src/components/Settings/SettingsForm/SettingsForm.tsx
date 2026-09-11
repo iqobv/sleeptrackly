@@ -1,17 +1,17 @@
 'use client';
 
-import { Button, TextField } from '@/components/UI';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import SettingsField from '../SettingsField/SettingsField';
+import { SettingsField } from '../SettingsField/SettingsField';
 import styles from './SettingsForm.module.scss';
 import { SettingsFormProps } from './SettingsForm.types';
 
-const SettingsForm = <T extends FieldValues, R>({
+export const SettingsForm = <T extends FieldValues, R>({
 	fields,
 	schema,
 	defaultValues,
@@ -20,7 +20,7 @@ const SettingsForm = <T extends FieldValues, R>({
 }: SettingsFormProps<T, R>) => {
 	const router = useRouter();
 
-	const resolver = !!schema ? zodResolver(schema) : undefined;
+	const resolver = schema ? zodResolver(schema) : undefined;
 
 	const methods = useForm<T>({
 		resolver,
@@ -66,31 +66,29 @@ const SettingsForm = <T extends FieldValues, R>({
 	};
 
 	return (
-		<div className={styles['settings-form']}>
-			<form
-				className={styles['settings-form__form']}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+		<div>
+			<form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
 				{fields.map((f) => (
 					<SettingsField
 						key={f.name}
 						label={f.label}
 						mobileDirection={f.mobileDirection}
 					>
-						{!!f.render ? (
+						{f.render ? (
 							f.render({
 								...f,
 								methods,
 								error: errors[f.name]?.message as string | undefined,
 							})
 						) : (
-							<TextField
-								type={f.type}
-								placeholder={f.placeholder}
-								error={errors[f.name]?.message as string | undefined}
-								autoComplete={f.autocomplete}
-								{...register(f.name)}
-							/>
+							<Field error={errors[f.name]?.message as string}>
+								<Input
+									type={f.type}
+									placeholder={f.placeholder}
+									autoComplete={f.autoComplete}
+									{...register(f.name)}
+								/>
+							</Field>
 						)}
 					</SettingsField>
 				))}
@@ -99,7 +97,7 @@ const SettingsForm = <T extends FieldValues, R>({
 						type="submit"
 						fullWidth
 						loading={isPending}
-						className={styles['settings-form__save']}
+						className={styles.save}
 					>
 						Save
 					</Button>
@@ -108,5 +106,3 @@ const SettingsForm = <T extends FieldValues, R>({
 		</div>
 	);
 };
-
-export default SettingsForm;

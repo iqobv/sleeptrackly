@@ -1,4 +1,4 @@
-import { usePromotionSchema } from '@/schemas';
-import z from 'zod';
+import { usePromotionSchema } from '@/schemas/promotion/promotion.schema';
+import { z } from 'zod';
 
 export type UsePromotionDto = z.infer<typeof usePromotionSchema>;

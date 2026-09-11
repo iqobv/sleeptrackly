@@ -1,13 +1,13 @@
-import { TFriendStatus } from './friendStatus.types';
+import {
+	getAllFriends,
+	getPendingFriendRequests,
+	sendFriendRequest,
+} from '@/api/friend/friend.api';
 
-export interface IFriend {
-	id: string;
-	status: TFriendStatus;
-	createdAt: Date;
-	user: {
-		id: string;
-		username: string;
-		avatar: string;
-		status: string;
-	};
-}
+export type Friendship = Awaited<ReturnType<typeof sendFriendRequest>>;
+export type Friend = Awaited<
+	ReturnType<typeof getAllFriends>
+>['friends'][number];
+export type FriendRequest = Awaited<
+	ReturnType<typeof getPendingFriendRequests>
+>['friends'][number];

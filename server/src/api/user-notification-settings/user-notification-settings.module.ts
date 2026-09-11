@@ -1,11 +1,15 @@
+import { NotificationModule } from '@api/notification/notification.module';
 import { Module } from '@nestjs/common';
-import { NotificationModule } from '../notification/notification.module';
+import { UserNotificationSettingsCronService } from './services/user-notification-settings-cron.service';
+import { UserNotificationSettingsService } from './services/user-notification-settings.service';
 import { UserNotificationSettingsController } from './user-notification-settings.controller';
-import { UserNotificationSettingsService } from './user-notification-settings.service';
 
 @Module({
 	controllers: [UserNotificationSettingsController],
-	providers: [UserNotificationSettingsService],
+	providers: [
+		UserNotificationSettingsService,
+		UserNotificationSettingsCronService,
+	],
 	imports: [NotificationModule],
 	exports: [UserNotificationSettingsService],
 })

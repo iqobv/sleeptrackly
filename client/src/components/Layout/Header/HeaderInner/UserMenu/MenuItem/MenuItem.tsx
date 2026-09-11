@@ -1,30 +1,43 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button, DropdownItem } from '@shared/ui';
+import Link from 'next/link';
 import styles from './MenuItem.module.scss';
 
 interface MenuItemProps {
-	onClick: () => void;
 	label: string;
 	icon: React.ReactNode;
 	path?: string;
+	onClick?: () => void;
 }
 
-const MenuItem = ({ label, icon, path = '', onClick }: MenuItemProps) => {
+export const MenuItem = ({
+	label,
+	icon,
+	path = '',
+	onClick,
+}: MenuItemProps) => {
 	return (
-		<div className={styles['menu-item']}>
+		<DropdownItem asChild>
 			<Button
 				variant="text"
-				onClick={onClick}
-				className={styles['menu-item__link']}
+				className={styles.link}
 				fullWidth
-				{...(path && { href: path })}
+				onClick={onClick}
+				{...(path && { asChild: true })}
 			>
-				{icon}
-				{label}
+				{path ? (
+					<Link href={path}>
+						{icon}
+						{label}
+					</Link>
+				) : (
+					<>
+						{icon}
+						{label}
+					</>
+				)}
 			</Button>
-		</div>
+		</DropdownItem>
 	);
 };
-
-export default MenuItem;

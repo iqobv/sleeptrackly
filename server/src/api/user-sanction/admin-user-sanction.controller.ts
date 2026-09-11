@@ -1,74 +1,86 @@
+import { UserRole } from '@generated/prisma/enums';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
 	Delete,
 	Get,
+	HttpStatus,
 	Param,
 	Patch,
 	Post,
 } from '@nestjs/common';
-import {
-	ApiBadRequestResponse,
-	ApiNotFoundResponse,
-	ApiOkResponse,
-	ApiTags,
-} from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import {
-	CreaeteUserSanctionDto,
-	UpdateUserSanctionDto,
-	UserSanctionDto,
-} from './dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { CreaeteUserSanctionDto } from './dto/create-user-sanction.dto';
+import { UpdateUserSanctionDto } from './dto/update-user-sanction.dto';
+import { UserSanctionDto } from './dto/user-sanction.dto';
 import { UserSanctionService } from './user-sanction.service';
 
+@Auth(UserRole.ADMIN)
 @ApiTags('Admin User Sanction')
 @Controller('admin/user-sanctions')
 export class AdminUserSanctionController {
 	constructor(private readonly userSanctionService: UserSanctionService) {}
 
-	@Auth('ADMIN')
-	@ApiOkResponse({ type: [UserSanctionDto] })
+	/** Get all sanctions for a specific user */
 	@Get('user/:userId')
-	async findByUserId(@Param('userId') userId: string) {
+	@ApiOkResponse({ type: [UserSanctionDto] })
+	public async findByUserId(
+		@Param('userId') userId: string,
+	): Promise<UserSanctionDto[]> {
 		return await this.userSanctionService.findByUserId(userId);
 	}
 
-	@Auth('ADMIN')
-	@ApiOkResponse({ type: UserSanctionDto })
-	@ApiNotFoundResponse({ description: 'User sanction not found' })
+	/** Get a specific sanction by its ID */
 	@Get('id/:id')
-	async findById(@Param('id') id: string) {
+	@ApiOkResponse({ type: UserSanctionDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SANCTION.NOT_FOUND)
+	public async findById(@Param('id') id: string): Promise<UserSanctionDto> {
 		return await this.userSanctionService.findById(id);
 	}
 
-	@Auth('ADMIN')
-	@ApiOkResponse({ type: UserSanctionDto })
-	@ApiBadRequestResponse({
-		description:
-			'Start date must be before end date\n\nEnd date must be in the future',
-	})
+	/** Create a new sanction for a user */
 	@Post()
-	async create(
+	@ApiOkResponse({ type: UserSanctionDto })
+	@ApiErrorResponse(HttpStatus.BAD_REQUEST, [
+		ERROR_MESSAGES.SANCTION.START_DATE_MUST_BE_BEFORE_END_DATE,
+		ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+	])
+	public async create(
 		@Authorized('id') userId: string,
 		@Body() dto: CreaeteUserSanctionDto,
-	) {
+	): Promise<UserSanctionDto> {
 		return await this.userSanctionService.create(userId, dto);
 	}
 
-	@Auth('ADMIN')
+	/** Update an existing sanction */
 	@Patch(':id')
 	@ApiOkResponse({ type: UserSanctionDto })
-	@ApiBadRequestResponse({ description: 'End date must be in the future' })
-	@ApiNotFoundResponse({ description: 'User sanction not found' })
-	async update(@Param('id') id: string, @Body() dto: UpdateUserSanctionDto) {
+	@ApiErrorResponse(
+		HttpStatus.BAD_REQUEST,
+		ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
+	)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SANCTION.NOT_FOUND)
+	public async update(
+		@Param('id') id: string,
+		@Body() dto: UpdateUserSanctionDto,
+	): Promise<UserSanctionDto> {
 		return await this.userSanctionService.update(id, dto);
 	}
 
-	@Auth('ADMIN')
+	/** Remove a sanction by its ID */
 	@Delete(':id')
-	@ApiOkResponse({ type: Boolean })
-	@ApiNotFoundResponse({ description: 'User sanction not found' })
-	async remove(@Param('id') id: string) {
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.SANCTION.DELETED)
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.SANCTION.NOT_FOUND)
+	public async remove(@Param('id') id: string): Promise<MessageResponse> {
 		return await this.userSanctionService.remove(id);
 	}
 }

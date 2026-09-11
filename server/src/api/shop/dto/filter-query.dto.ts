@@ -1,22 +1,32 @@
+import { Prisma } from '@generated/prisma/client';
+import { ProfileItemType } from '@generated/prisma/enums';
+import { TransformEnum } from '@libs/decorators/transform-enum.decorator';
+import { TransformToArray } from '@libs/decorators/transform-to-array.decorator';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { Prisma } from 'generated/prisma/client';
-import { ProductType, ProfileItemType } from 'generated/prisma/enums';
-import { TransformEnum, TransformToArray } from 'src/libs/decorators';
-import { PaginationQueryWithLanguageDto } from 'src/libs/dto';
-import { SHOP_SORT_BY } from '../constats';
-import type { SortByType } from '../types';
+import { Type } from 'class-transformer';
+import {
+	IsArray,
+	IsEnum,
+	IsNumber,
+	IsOptional,
+	IsString,
+} from 'class-validator';
+import { ShopProductType } from '../types/shop-product-type.types';
+import { ShopSortBy } from '../types/sort-by.types';
 
 export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@ApiProperty({
 		required: false,
 		description: 'Filter by product type',
 		example: 'ALL',
+		enum: ShopProductType,
+		enumName: 'ShopProductType',
 	})
 	@IsOptional()
-	@TransformEnum<'ALL' | ProductType>()
-	@IsEnum(['ALL', ...Object.values(ProductType)] as const)
-	type?: 'ALL' | ProductType;
+	@TransformEnum<ShopProductType>()
+	@IsEnum(ShopProductType)
+	type?: ShopProductType;
 
 	@ApiProperty({
 		required: false,
@@ -32,6 +42,17 @@ export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 
 	@ApiProperty({
 		required: false,
+		description: 'Filter by collection name',
+		example: 'example-collection-1,example-collection-2',
+	})
+	@IsOptional()
+	@TransformToArray<string>()
+	@IsArray()
+	@IsString({ each: true })
+	collection?: string[];
+
+	@ApiProperty({
+		required: false,
 		description: 'Search term to filter products by name or description',
 		example: 'Cool Avatar Frame',
 	})
@@ -42,13 +63,14 @@ export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@ApiProperty({
 		required: false,
 		description: 'Sort by field',
-		example: SHOP_SORT_BY.DATE,
-		enum: SHOP_SORT_BY,
+		example: ShopSortBy.DATE,
+		enum: ShopSortBy,
+		enumName: 'ShopSortBy',
 	})
 	@IsOptional()
-	@TransformEnum<SortByType>()
-	@IsEnum(SHOP_SORT_BY)
-	sortBy?: SortByType;
+	@TransformEnum<ShopSortBy>()
+	@IsEnum(ShopSortBy)
+	sortBy?: ShopSortBy;
 
 	@ApiProperty({
 		required: false,
@@ -60,4 +82,14 @@ export class FilterQueryDto extends PaginationQueryWithLanguageDto {
 	@TransformEnum<Prisma.SortOrder>('lower')
 	@IsEnum(Prisma.SortOrder)
 	sortOrder?: Prisma.SortOrder;
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	minPrice?: number;
+
+	@IsOptional()
+	@Type(() => Number)
+	@IsNumber()
+	maxPrice?: number;
 }

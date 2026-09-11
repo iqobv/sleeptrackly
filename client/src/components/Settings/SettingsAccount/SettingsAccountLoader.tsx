@@ -1,13 +1,7 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
-const SettingsAccountLoader = () => {
-	return (
-		<>
-			<SkeletonLoader height={80} />
-		</>
-	);
+export const SettingsAccountLoader = () => {
+	return <SkeletonLoader height={80} />;
 };
-
-export default SettingsAccountLoader;

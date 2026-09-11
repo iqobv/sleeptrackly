@@ -1,0 +1,14 @@
+@use '../../../styles/mixins' as *;
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+	background-color: var(--sleep-end-time-bg);
+	border-radius: var(--border-radius);
+	padding: 0.625rem 0;
+
+	@include respond-to(md) {
+		padding: 0.625rem 1.25rem;
+	}
+}

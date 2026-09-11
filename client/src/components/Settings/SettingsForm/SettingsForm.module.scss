@@ -1,9 +1,9 @@
-.settings-form__form {
+.form {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
-.settings-form__save {
-	margin-top: 20px;
+.save {
+	margin-top: 1.25rem;
 }

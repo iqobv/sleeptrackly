@@ -1,7 +1,7 @@
+import { NotificationModule } from '@api/notification/notification.module';
+import { UserAvatarModule } from '@api/user-avatar/user-avatar.module';
+import { UserModule } from '@api/user/user.module';
 import { Module } from '@nestjs/common';
-import { NotificationModule } from '../notification/notification.module';
-import { UserAvatarModule } from '../user-avatar/user-avatar.module';
-import { UserModule } from '../user/user.module';
 import { AdminUserSanctionController } from './admin-user-sanction.controller';
 import { UserSanctionController } from './user-sanction.controller';
 import { UserSanctionService } from './user-sanction.service';

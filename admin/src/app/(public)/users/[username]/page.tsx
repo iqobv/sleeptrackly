@@ -1,5 +1,6 @@
-import { Profile } from '@/components/Profile';
-import { IError } from '@/types';
+import { Profile } from '@/components/Profile/Profile';
+import { env } from '@/env';
+import { MessageApiResponse } from '@/types/api/messageApiResponse.types';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 
@@ -20,7 +21,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 	const cookieStore = await cookies();
 
 	try {
-		const res = await fetch(`${process.env.API_URL}/v1/profiles/${username}`, {
+		const res = await fetch(`${env.API_URL}/v1/profiles/${username}`, {
 			headers: {
 				Cookie: cookieStore.toString(),
 			},
@@ -28,7 +29,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
 		const data = await res.json();
 		if (!res.ok) throw data;
 	} catch (error: unknown) {
-		const err = error as IError;
+		const err = error as MessageApiResponse;
 		if (err.statusCode === 404) {
 			notFound();
 		}

@@ -1,5 +1,5 @@
+import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { UserFcmTokenService } from './user-fcm-token.service';
 
 type PrismaMock = {

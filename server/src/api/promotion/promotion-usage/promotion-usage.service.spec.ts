@@ -1,16 +1,15 @@
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
+import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { ShopService } from '@api/shop/shop.service';
+import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
+import { AcquiredFrom, Item } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	ConflictException,
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { AcquiredFrom, Item } from 'generated/prisma/client';
-import { CoinTransactionService } from 'src/api/coin-transaction/coin-transaction.service';
-import { ProductService } from 'src/api/product/product.service';
-import { PurchaseHistoryService } from 'src/api/purchase-history/purchase-history.service';
-import { ShopService } from 'src/api/shop/shop.service';
-import { UserInventoryService } from 'src/api/user-inventory/user-inventory.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { PromotionUsageService } from './promotion-usage.service';
 
 type PrismaTxMock = {
@@ -24,7 +23,10 @@ type PrismaTxMock = {
 };
 
 type PrismaMock = {
-	$transaction: jest.Mock;
+	$transaction: jest.Mock<
+		Promise<unknown>,
+		[cb: (tx: PrismaTxMock) => unknown]
+	>;
 };
 
 type CoinTransactionMock = {
@@ -43,10 +45,6 @@ type UserInventoryMock = {
 	bulkAddItemsToInventory: jest.Mock;
 };
 
-type ProductMock = {
-	getProductById: jest.Mock;
-};
-
 describe('PromotionUsageService', () => {
 	let service: PromotionUsageService;
 	let prismaTx: PrismaTxMock;
@@ -55,35 +53,11 @@ describe('PromotionUsageService', () => {
 	let shopService: ShopMock;
 	let purchaseHistoryService: PurchaseHistoryMock;
 	let userInventoryService: UserInventoryMock;
-	let productService: ProductMock;
 
 	const mockItem = {
 		id: 'item_1',
 		translations: [{ name: 'Sword', language: 'en' }],
 	} as unknown as Item;
-
-	const mockProductWithItem = {
-		id: 'prod_1',
-		price: 1000,
-		discountedPrice: 800,
-		itemId: 'item_1',
-		item: mockItem,
-		bundleId: null,
-		bundle: null,
-	};
-
-	const mockProductWithBundle = {
-		id: 'prod_2',
-		price: 2000,
-		discountedPrice: null,
-		itemId: null,
-		item: null,
-		bundleId: 'bundle_1',
-		bundle: {
-			translations: [{ name: 'Starter Pack', language: 'en' }],
-			items: [{ item: mockItem }],
-		},
-	};
 
 	const defaultPromotion = {
 		id: 'promo_1',
@@ -108,7 +82,10 @@ describe('PromotionUsageService', () => {
 		};
 
 		prismaService = {
-			$transaction: jest.fn().mockImplementation(async (cb) => cb(prismaTx)),
+			$transaction: jest.fn(
+				async (cb: (tx: PrismaTxMock) => unknown): Promise<unknown> =>
+					await cb(prismaTx),
+			),
 		};
 
 		coinTransactionService = {
@@ -127,10 +104,6 @@ describe('PromotionUsageService', () => {
 			bulkAddItemsToInventory: jest.fn(),
 		};
 
-		productService = {
-			getProductById: jest.fn(),
-		};
-
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				PromotionUsageService,
@@ -139,7 +112,6 @@ describe('PromotionUsageService', () => {
 				{ provide: ShopService, useValue: shopService },
 				{ provide: PurchaseHistoryService, useValue: purchaseHistoryService },
 				{ provide: UserInventoryService, useValue: userInventoryService },
-				{ provide: ProductService, useValue: productService },
 			],
 		}).compile();
 
@@ -231,12 +203,14 @@ describe('PromotionUsageService', () => {
 		});
 
 		it('should successfully apply a product item reward', async () => {
+			const mockDate = new Date('2026-06-01T12:00:00Z');
+			jest.setSystemTime(mockDate);
+
 			prismaTx.promotion.findUnique.mockResolvedValue({
 				...defaultPromotion,
 				productIdReward: 'prod_1',
 			});
 
-			productService.getProductById.mockResolvedValue(mockProductWithItem);
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
 			coinTransactionService.createTransaction.mockResolvedValue({
 				transaction: { id: 'tx_1' },
@@ -244,7 +218,6 @@ describe('PromotionUsageService', () => {
 
 			const result = await service.usePromotion('TEST', 'user_1');
 
-			expect(productService.getProductById).toHaveBeenCalledWith('prod_1');
 			expect(shopService.getItemsToAdd).toHaveBeenCalledWith(
 				[mockItem],
 				'user_1',
@@ -279,7 +252,7 @@ describe('PromotionUsageService', () => {
 					{
 						userId: 'user_1',
 						itemId: 'item_1',
-						acquiredAt: expect.any(Date),
+						acquiredAt: mockDate,
 						acquiredFrom: AcquiredFrom.PROMOTION,
 						isEquipped: false,
 					},
@@ -299,7 +272,6 @@ describe('PromotionUsageService', () => {
 				productIdReward: 'prod_2',
 			});
 
-			productService.getProductById.mockResolvedValue(mockProductWithBundle);
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
 			coinTransactionService.createTransaction.mockResolvedValue({
 				transaction: { id: 'tx_2' },

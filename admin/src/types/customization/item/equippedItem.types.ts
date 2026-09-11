@@ -1,8 +1,4 @@
-import { TItemType } from './itemType.types';
+import { Profile } from '@shared/types';
 
-export interface IEquippedItem {
-	id: string;
-	type: TItemType;
-	isAnimated: boolean;
-	mediaUrl: string;
-}
+export type EquippedItems = Profile['equippedItems'][number];
+export type EquippedItem = EquippedItems['item'];

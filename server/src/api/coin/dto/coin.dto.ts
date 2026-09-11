@@ -1,23 +1,6 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { PickType } from '@nestjs/swagger';
+import { CoinEntityDto } from './coin.entity.dto';
 
-export class CoinDto {
-	@ApiProperty({
-		example: 'dbc02854-a5ec-46b9-aba6-b6e6b857c59d',
-	})
-	id: string;
+export class BaseCoinDto extends CoinEntityDto {}
 
-	@ApiProperty({
-		example: 1000,
-	})
-	amount: number;
-
-	@ApiProperty({
-		example: new Date(),
-	})
-	createdAt: Date;
-
-	@ApiProperty({
-		example: new Date(),
-	})
-	updatedAt: Date;
-}
+export class UserCoinDto extends PickType(CoinEntityDto, ['amount'] as const) {}

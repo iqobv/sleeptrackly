@@ -1,12 +1,23 @@
-import { SettingsPrivacyDto } from '@/dto';
-import { IPrivacySettings } from '@/types';
-import { fetcher } from '@/utils';
+import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type GetUserPrivacySettingsResponse =
+	paths['/v1/user-privacy-settings/me']['get']['responses']['200']['content']['application/json'];
+type UpdateUserPrivacySettingsResponse =
+	paths['/v1/user-privacy-settings/me']['patch']['responses']['200']['content']['application/json'];
 
 export const updatePrivacySettings = async (dto: SettingsPrivacyDto) =>
-	await fetcher<IPrivacySettings>('/v1/user-privacy-settings/me', {
-		method: 'PATCH',
-		body: JSON.stringify(dto),
-	});
+	(
+		await apiClient.patch<GetUserPrivacySettingsResponse>(
+			'/v1/user-privacy-settings/me',
+			dto,
+		)
+	).data;
 
 export const getUserPrivacySettings = async () =>
-	await fetcher<IPrivacySettings>('/v1/user-privacy-settings/me');
+	(
+		await apiClient.get<UpdateUserPrivacySettingsResponse>(
+			'/v1/user-privacy-settings/me',
+		)
+	).data;

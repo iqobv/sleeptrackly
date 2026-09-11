@@ -1,13 +1,14 @@
-import { MobileDirection } from '@/components/Settings/SettingsField/SettingsField';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
-import { IField } from '../ui/field.types';
+import { Field } from '../ui/field.types';
 
-export interface SettingsFormFields<T extends FieldValues> extends IField<T> {
+export type MobileDirection = 'row' | 'column';
+
+export interface SettingsFormFields<T extends FieldValues> extends Field<T> {
 	render?: (
 		props: {
 			methods: UseFormReturn<T>;
 			error?: string;
-		} & IField<T>,
+		} & Field<T>,
 	) => React.ReactNode;
 	mobileDirection?: MobileDirection;
 	accept?: string;

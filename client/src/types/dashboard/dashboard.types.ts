@@ -1,8 +1,7 @@
-import { IDashboardDay } from './dashboardDay.types';
-import { IStatistics } from './statistics.types';
+import { getDashboard } from '@/api/dashboard/dashboard.api';
+import { components } from '@shared/types';
 
-export interface IDashboard {
-	statistics: IStatistics;
-	days: IDashboardDay[];
-	totalWeeks: number;
-}
+export type Dashboard = Awaited<ReturnType<typeof getDashboard>>;
+export type DashboardDay = Dashboard['days'][number];
+export type SleepEntry = components['schemas']['SleepEntryDto'];
+export type Statistics = Dashboard['statistics'];

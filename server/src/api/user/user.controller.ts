@@ -1,38 +1,66 @@
-import { Body, Controller, Get, Patch, Query } from '@nestjs/common';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import {
-	ApiConflictResponse,
-	ApiOkResponse,
-	ApiOperation,
-} from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { SearchDto, UpdateUserDto, UserDto } from './dto';
-import { UserService } from './user.service';
+	Body,
+	Controller,
+	Get,
+	HttpStatus,
+	Patch,
+	Query,
+} from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { SearchDto } from './dto/search.dto';
+import { UpdateUserTimezoneDto } from './dto/update-user-timezone.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user-response.dto';
+import { UsersSearchResultDto } from './dto/users-search-result.dto';
+import { UserService } from './services/user.service';
 
+@Auth()
+@ApiTags('User')
 @Controller('users')
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@ApiOperation({ summary: 'Update user' })
-	@ApiOkResponse({ type: UserDto })
-	@ApiConflictResponse({ description: 'User already exists' })
-	@Auth()
+	/** Update user */
 	@Patch('me')
-	async updateUser(
+	@ApiOkResponse({ type: UserDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	@ApiErrorResponse(HttpStatus.CONFLICT, [
+		ERROR_MESSAGES.USER.USERNAME_ALREADY_TAKEN,
+		ERROR_MESSAGES.USER.ALREADY_EXISTS,
+		{
+			...ERROR_MESSAGES.USER.USERNAME_CHANGE_BANNED,
+			meta: { endsAt: new Date() },
+		},
+	])
+	public async updateUser(
 		@Authorized('id') userId: string,
 		@Body() dto: UpdateUserDto,
-	) {
+	): Promise<UserDto> {
 		return await this.userService.update(userId, dto);
 	}
 
-	@Auth()
-	@ApiOperation({
-		summary: 'Search for a user by username',
-	})
+	/** Sync user timezone */
+	@Patch('me/timezone')
+	@ApiOkResponse({ type: UserDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	public async syncTimezone(
+		@Authorized('id') userId: string,
+		@Body() dto: UpdateUserTimezoneDto,
+	): Promise<UserDto> {
+		return await this.userService.syncTimezone(userId, dto);
+	}
+
+	/** Search users by username */
 	@Get('search')
-	async findByUsername(
+	@ApiOkResponse({ type: [UsersSearchResultDto] })
+	public async findByUsername(
 		@Query() queries: SearchDto,
 		@Authorized('id') userId: string,
-	) {
+	): Promise<UsersSearchResultDto[]> {
 		const { username } = queries;
 
 		return await this.userService.findManyByUsername(username, userId);

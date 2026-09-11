@@ -1,0 +1,26 @@
+model Achievement {
+  id String @id @default(uuid())
+
+  type AchievementType
+
+  targetValue Int @map("target_value")
+
+  iconUrl String @map("icon_url")
+
+  isActive Boolean @default(true) @map("is_active")
+  isHidden Boolean @default(false) @map("is_hidden")
+
+  rewardCoins     Int     @default(0) @map("reward_coins")
+  rewardProductId String? @map("reward_product_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  translations     AchievementTranslation[]
+  userAchievements UserAchievement[]
+  notifications    Notification[]
+
+  rewardProduct Product? @relation(fields: [rewardProductId], references: [id], onDelete: SetNull)
+
+  @@map("achievements")
+}

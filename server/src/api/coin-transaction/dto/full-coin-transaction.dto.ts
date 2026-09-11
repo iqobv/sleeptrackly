@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { CoinTransactionDto } from './coin-transaction.dto';
 
 export class FullCoinTransactionDto {
-	@ApiProperty({ example: 1500 })
-	balance: number;
+	@Expose() balance: number;
 
-	@ApiProperty({ type: CoinTransactionDto })
+	@Expose()
+	@Type(() => CoinTransactionDto)
 	transaction: CoinTransactionDto;
 }

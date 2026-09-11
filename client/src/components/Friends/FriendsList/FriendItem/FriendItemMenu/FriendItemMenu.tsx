@@ -1,31 +1,33 @@
 'use client';
 
-import { IFriend } from '@/types';
-import { FRIEND_ITEM_MENU } from '../friendItemMenu';
-import styles from './FriendItemMenu.module.scss';
-import FriendItemMenuButton from './FriendItemMenuButton';
+import { Button, Dropdown, DropdownContent, DropdownTrigger } from '@shared/ui';
+import { MdOutlineMoreVert } from 'react-icons/md';
+import { FRIEND_ITEM_MENU } from './friendItemMenu';
+import { FriendItemMenuButton } from './FriendItemMenuButton';
+import { Friend } from '@/types/friend/friend.types';
 
 interface FriendItemMenuProps {
-	menuRef: React.RefObject<HTMLDivElement | null>;
-	menuUp: boolean;
-	friend: IFriend;
+	friend: Friend;
 }
 
-const FriendItemMenu = ({ menuRef, friend, menuUp }: FriendItemMenuProps) => {
+export const FriendItemMenu = ({ friend }: FriendItemMenuProps) => {
 	return (
-		<div
-			ref={menuRef}
-			className={`${styles['friend-item-menu']} ${
-				menuUp
-					? styles['friend-item-menu--up']
-					: styles['friend-item-menu--down']
-			}`}
-		>
-			{FRIEND_ITEM_MENU.map((item) => (
-				<FriendItemMenuButton key={item.label} item={item} friend={friend} />
-			))}
-		</div>
+		<Dropdown>
+			<DropdownTrigger asChild>
+				<Button variant="text" isIcon isRounded>
+					<MdOutlineMoreVert size={24} />
+				</Button>
+			</DropdownTrigger>
+			<DropdownContent
+				side="bottom"
+				align="end"
+				alignOffset={10}
+				style={{ minWidth: '150px' }}
+			>
+				{FRIEND_ITEM_MENU.map((item) => (
+					<FriendItemMenuButton key={item.label} item={item} friend={friend} />
+				))}
+			</DropdownContent>
+		</Dropdown>
 	);
 };
-
-export default FriendItemMenu;

@@ -1,16 +1,19 @@
+import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
+import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { ShopService } from '@api/shop/shop.service';
+import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
+import { AcquiredFrom, Item } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { productInclude } from '@libs/prisma/product.include.prisma';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	BadRequestException,
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
-import { AcquiredFrom, Item } from 'generated/prisma/client';
-import { CoinTransactionService } from 'src/api/coin-transaction/coin-transaction.service';
-import { ProductService } from 'src/api/product/product.service';
-import { PurchaseHistoryService } from 'src/api/purchase-history/purchase-history.service';
-import { ShopService } from 'src/api/shop/shop.service';
-import { UserInventoryService } from 'src/api/user-inventory/user-inventory.service';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 
 @Injectable()
 export class PromotionUsageService {
@@ -20,31 +23,36 @@ export class PromotionUsageService {
 		private readonly shopService: ShopService,
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
-		private readonly productService: ProductService,
 	) {}
 
-	async usePromotion(alias: string, userId: string) {
+	public async usePromotion(
+		alias: string,
+		userId: string,
+	): Promise<MessageResponse> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const promotion = await tx.promotion.findUnique({
 				where: { alias },
-				include: { usage: { where: { userId } } },
+				include: {
+					usage: { where: { userId } },
+					product: { include: productInclude() },
+				},
 			});
 
-			if (!promotion) {
-				throw new NotFoundException('Promotion not found');
-			}
+			if (!promotion)
+				throw new NotFoundException(ERROR_MESSAGES.PROMOTION.NOT_FOUND);
 
-			if (promotion.expiresAt && promotion.expiresAt < new Date()) {
-				throw new BadRequestException('Promotion has expired');
-			}
+			if (promotion.expiresAt && promotion.expiresAt < new Date())
+				throw new BadRequestException(ERROR_MESSAGES.PROMOTION.HAS_EXPIRED);
 
-			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses) {
-				throw new BadRequestException('Promotion has reached its usage limit');
-			}
+			if (promotion.maxUses && promotion.usedCount >= promotion.maxUses)
+				throw new BadRequestException(
+					ERROR_MESSAGES.PROMOTION.HAS_REACHED_ITS_USAGE_LIMIT,
+				);
 
-			if (promotion.usage.length > 0) {
-				throw new ConflictException('You have already used this promotion');
-			}
+			if (promotion.usage.length > 0)
+				throw new ConflictException(
+					ERROR_MESSAGES.PROMOTION.ALREADY_USED_THIS_PROMOTION,
+				);
 
 			await tx.promotionUsage.create({
 				data: {
@@ -71,18 +79,16 @@ export class PromotionUsageService {
 				);
 			}
 
-			if (promotion.productIdReward) {
-				const product = await this.productService.getProductById(
-					promotion.productIdReward,
-				);
+			if (promotion.productIdReward && promotion.product) {
+				const product = promotion.product;
+				const initialPrice = product.discountedPrice ?? product.price;
 
 				let items: Item[] = [];
-				const initialPrice = product.discountedPrice ?? product.price;
 
 				if (product.itemId && product.item) {
 					items = [product.item];
 				} else if (product.bundleId && product.bundle) {
-					items = product.bundle.items.map((bi) => bi.item);
+					items = product.bundle.items.map((itemInBundle) => itemInBundle.item);
 				}
 
 				const { itemsToAdd } = await this.shopService.getItemsToAdd(
@@ -135,10 +141,7 @@ export class PromotionUsageService {
 				);
 			}
 
-			return {
-				code: 'PROMOTION_SUCCESSFULLY_USED',
-				message: 'Promotion used successfully',
-			};
+			return SUCCESS_MESSAGES.PROMOTION.USED;
 		});
 	}
 }

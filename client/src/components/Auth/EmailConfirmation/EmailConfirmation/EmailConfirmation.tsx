@@ -1,17 +1,18 @@
 'use client';
 
-import { validateVerificationToken } from '@/api';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { validateVerificationToken } from '@/api/auth/token.api';
+import { AUTH_PAGES } from '@/config/authPages.config';
+import { PAGES } from '@/config/pages.config';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
-import EmailConfirmationDefault from '../EmailConfirmationDefault/EmailConfirmationDefault';
-import EmailConfirmationProccesing from './EmailConfirmationStates/EmailConfirmationProccesing';
-import EmailConfirmationSuccess from './EmailConfirmationStates/EmailConfirmationSuccess';
+import { EmailConfirmationDefault } from '../EmailConfirmationDefault/EmailConfirmationDefault';
+import { EmailConfirmationProccesing } from './EmailConfirmationStates/EmailConfirmationProccesing';
+import { EmailConfirmationSuccess } from './EmailConfirmationStates/EmailConfirmationSuccess';
 
-const EmailConfirmation = () => {
+export const EmailConfirmation = () => {
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
 	const router = useRouter();
@@ -20,10 +21,6 @@ const EmailConfirmation = () => {
 	const { mutate, isSuccess, isPending } = useMutation({
 		mutationFn: ({ token }: { token: string }) =>
 			validateVerificationToken(token),
-		mutationKey: QUERY_KEYS.auth.validateVerificationToken(
-			user?.id || '',
-			token,
-		),
 		onSuccess: () => {
 			router.refresh();
 			toast.success('Email confirmed');
@@ -34,7 +31,7 @@ const EmailConfirmation = () => {
 				toast.info('Email already confirmed');
 			} else {
 				toast.error(error.message);
-				router.push(PAGES.EMAIL_CONFIRMATION);
+				router.push(AUTH_PAGES.EMAIL_CONFIRMATION);
 			}
 		},
 	});
@@ -58,5 +55,3 @@ const EmailConfirmation = () => {
 		</div>
 	);
 };
-
-export default EmailConfirmation;

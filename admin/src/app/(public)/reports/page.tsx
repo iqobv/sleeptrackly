@@ -1,4 +1,4 @@
-import { Reports } from '@/components/Report';
+import { Reports } from '@/components/Report/Reports/Reports';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -6,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function ReportsPage() {
-	return (
-		<div>
-			<Reports />
-		</div>
-	);
+	return <Reports />;
 }

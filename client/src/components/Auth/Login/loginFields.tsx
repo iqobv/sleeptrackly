@@ -1,5 +1,5 @@
-import { LoginDto } from '@/dto';
-import { AuthField } from '@/types';
+import { LoginDto } from '@/dto/auth/auth.dto';
+import { AuthField } from '@/types/auth/authField.types';
 import { MdOutlineEmail, MdOutlineVpnKey } from 'react-icons/md';
 
 export const LOGIN_FIELDS: AuthField<LoginDto>[] = [
@@ -7,7 +7,7 @@ export const LOGIN_FIELDS: AuthField<LoginDto>[] = [
 		name: 'email',
 		label: 'Enter your email',
 		type: 'email',
-		autocomplete: 'username',
+		autoComplete: 'username',
 		placeholder: 'email@example.com',
 		icon: <MdOutlineEmail />,
 	},
@@ -16,7 +16,7 @@ export const LOGIN_FIELDS: AuthField<LoginDto>[] = [
 		label: 'Enter your password',
 		type: 'password',
 		placeholder: 'Password',
-		autocomplete: 'current-password',
+		autoComplete: 'current-password',
 		icon: <MdOutlineVpnKey />,
 	},
 ];

@@ -1,22 +1,16 @@
-import { ConfigService } from '@nestjs/config';
+import { AuthConfig } from '@config/schemas/auth.schema';
 import { CookieOptions } from 'express';
-import ms from 'ms';
+import ms, { StringValue } from 'ms';
 
-import { isDev, parseBoolean } from 'src/libs/utils';
-
-export const getCookieConfig = (config: ConfigService): CookieOptions => {
-	const maxAge = config.getOrThrow<string>('SESSION_MAX_AGE') as ms.StringValue;
-
+export const getCookieConfig = (
+	config: AuthConfig,
+	maxAge: StringValue | number,
+): CookieOptions => {
 	return {
-		domain: isDev(config)
-			? undefined
-			: config.getOrThrow<string>('COOKIE_DOMAIN'),
-		maxAge: ms(maxAge),
-		httpOnly: parseBoolean(config.getOrThrow<string>('COOKIE_HTTP_ONLY')),
-		secure: parseBoolean(config.getOrThrow<string>('COOKIE_SECURE')),
-		sameSite: config.getOrThrow<string>('COOKIE_SAME_SITE') as
-			| 'lax'
-			| 'strict'
-			| 'none',
+		domain: config.COOKIE_DOMAIN,
+		maxAge: typeof maxAge === 'string' ? ms(maxAge) : maxAge,
+		httpOnly: config.COOKIE_HTTP_ONLY,
+		secure: config.COOKIE_SECURE,
+		sameSite: config.COOKIE_SAME_SITE,
 	};
 };

@@ -1,42 +1,33 @@
 'use client';
 
-import { getReport } from '@/api';
-import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
+import { getReport } from '@/api/report/reports.api';
+import { PageWrapper } from '@/components/UI';
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { MdOutlineArrowBack } from 'react-icons/md';
-import styles from './Report.module.scss';
-import ReportActions from './ReportActions/ReportActions';
-import ReportDetail from './ReportDetail/ReportDetail';
+import { ReportActions } from './ReportActions/ReportActions';
+import { ReportDetail } from './ReportDetail/ReportDetail';
 
 interface ReportProps {
 	id: string;
 }
 
-const Report = ({ id }: ReportProps) => {
-	const router = useRouter();
-
-	const { data, isLoading: _isLoading } = useQuery({
-		queryKey: QUERY_KEYS.report.getReport(id),
+export const Report = ({ id }: ReportProps) => {
+	const { data } = useQuery({
+		queryKey: QUERY_KEYS.report.detail(id),
 		queryFn: () => getReport(id),
 		enabled: !!id,
 	});
 
+	if (!data) return null;
+
 	return (
-		<div className={styles['report']}>
-			<Button variant="text" onClick={() => router.back()}>
-				<MdOutlineArrowBack />
-				Back
-			</Button>
-			{data && (
-				<>
-					<ReportDetail report={data} />
-					<ReportActions report={data} />
-				</>
-			)}
-		</div>
+		<PageWrapper
+			title={data.title}
+			description={data.description}
+			sectionHeaderProps={{ titleProps: { variant: 'h2' }, gap: 0 }}
+		>
+			<ReportDetail report={data} />
+			<ReportActions report={data} />
+		</PageWrapper>
 	);
 };
-
-export default Report;

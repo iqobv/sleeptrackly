@@ -1,0 +1,11 @@
+.cell {
+	border-left: 1px solid var(--legal-border);
+	border-right: 1px solid var(--legal-border);
+	border-top: 1px solid var(--legal-border);
+	padding: 0.3rem;
+}
+
+tr:last-child td,
+tr:last-child th {
+	border-bottom: 1px solid var(--legal-border);
+}

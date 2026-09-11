@@ -1,7 +1,3 @@
-import { IItem } from '../item/item.types';
+import { components } from '@shared/types';
 
-export interface IItemInBundle {
-	itemId: string;
-	bundleId: string;
-	item: IItem;
-}
+export type ItemInBundle = components['schemas']['ShopBundleItemDto'];

@@ -8,12 +8,6 @@ interface DashboardCardProps {
 	className?: string;
 }
 
-const DashboardCard = ({ children, className }: DashboardCardProps) => {
-	return (
-		<div className={`${styles['dashboard-card']} ${className || ''}`}>
-			{children}
-		</div>
-	);
+export const DashboardCard = ({ children, className }: DashboardCardProps) => {
+	return <div className={`${styles.card} ${className || ''}`}>{children}</div>;
 };
-
-export default DashboardCard;

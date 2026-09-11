@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 export const promotionFields = {
 	alias: z.string().min(6).max(100).optional(),
-	maxUses: z.number().nullish(),
+	maxUses: z.coerce.number().nullish(),
 	expiresAt: z.coerce.date().nullish(),
-	coinsReward: z.number().nullish(),
-	productIdReward: z.string().uuid().nullish(),
+	coinsReward: z.coerce.number().nullish(),
+	productIdReward: z.uuidv4().nullish(),
 };
 
 export const basePromotionSchema = z

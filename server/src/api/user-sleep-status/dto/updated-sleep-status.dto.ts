@@ -1,11 +1,22 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { SleepEntryDto } from 'src/api/sleep-entry/dto';
-import { SleepStatusDto } from './sleep-status.dto';
+import { SleepEntryDto } from '@api/sleep-entry/dto/sleep-entry.dto';
+import { Expose, Type } from 'class-transformer';
+import { UserSleepStatusDto } from './sleep-status.dto';
+
+export class UpdatedSleepRewardDto {
+	@Expose() rewarded: boolean;
+	@Expose() amount: number;
+}
 
 export class UpdatedSleepStatusDto {
-	@ApiProperty({ type: SleepStatusDto })
-	userSleepStatus: SleepStatusDto;
+	@Expose()
+	@Type(() => UserSleepStatusDto)
+	userSleepStatus: UserSleepStatusDto;
 
-	@ApiProperty({ type: SleepEntryDto })
+	@Expose()
+	@Type(() => SleepEntryDto)
 	sleepEntry: SleepEntryDto | null;
+
+	@Expose()
+	@Type(() => UpdatedSleepRewardDto)
+	reward: UpdatedSleepRewardDto | null;
 }

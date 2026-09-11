@@ -1,20 +1,19 @@
 'use client';
 
-import { IUserSanction } from '@/types';
-import styles from './ReportUserSanctions.module.scss';
-import ReportUserSanctionsItem from './ReportUserSanctionsItem/ReportUserSanctionsItem';
+import { UserSanction } from '@/types/user/userSanction.types';
+import { ReportUserSanctionsItem } from './ReportUserSanctionsItem/ReportUserSanctionsItem';
 
 interface ReportUserSanctionsProps {
 	reportId: string;
-	sanctions: IUserSanction[];
+	sanctions: UserSanction[];
 }
 
-const ReportUserSanctions = ({
+export const ReportUserSanctions = ({
 	reportId,
 	sanctions,
 }: ReportUserSanctionsProps) => {
 	return (
-		<div className={styles['report-user-sanctions']}>
+		<div>
 			{sanctions.map((sanction, index) => (
 				<ReportUserSanctionsItem
 					key={sanction.id}
@@ -26,5 +25,3 @@ const ReportUserSanctions = ({
 		</div>
 	);
 };
-
-export default ReportUserSanctions;

@@ -1,5 +1,13 @@
 # Admin changelog
 
+## [0.6.0] - 2026-09-11
+
+### Added
+
+- Added achievements managment.
+- Added challenges and challenge templates management.
+- Added collections management for customization items.
+
 ## [0.5.0] - 2026-04-04
 
 ### Added

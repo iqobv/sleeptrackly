@@ -1,11 +1,11 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './UploadAvatar.module.scss';
 
-const UploadAvatarLoader = () => {
+export const UploadAvatarLoader = () => {
 	return (
-		<div className={styles['avatar__container']}>
+		<div className={styles.container}>
 			<SkeletonLoader height={120} width={'100%'} />
 			<SkeletonLoader
 				height={250}
@@ -19,5 +19,3 @@ const UploadAvatarLoader = () => {
 		</div>
 	);
 };
-
-export default UploadAvatarLoader;

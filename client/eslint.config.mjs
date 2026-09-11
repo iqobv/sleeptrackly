@@ -1,30 +1,35 @@
-import { FlatCompat } from '@eslint/eslintrc';
+import nextVitals from 'eslint-config-next/core-web-vitals';
+import oxlint from 'eslint-plugin-oxlint';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import baseConfig from '../eslint.config.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const compat = new FlatCompat({
-	baseDirectory: __dirname,
-});
-
 const eslintConfig = [
-	...compat.extends('next/core-web-vitals', 'next/typescript'),
+	...baseConfig,
+	...nextVitals,
 	{
-		plugins: {
-			react: (await import('eslint-plugin-react')).default,
-			'react-hooks': (await import('eslint-plugin-react-hooks')).default,
-		},
 		rules: {
-			'@typescript-eslint/no-unused-vars': [
+			'no-restricted-imports': [
 				'error',
 				{
-					argsIgnorePattern: '^_',
-					varsIgnorePattern: '^_',
-					destructuredArrayIgnorePattern: '^_',
+					paths: [
+						{
+							name: 'zod',
+							importNames: ['default'],
+							message:
+								"Always use named import for Zod: import { z } from 'zod'.",
+						},
+					],
 				},
 			],
+		},
+		settings: {
+			next: {
+				rootDir: __dirname,
+			},
 		},
 	},
 	{
@@ -36,6 +41,7 @@ const eslintConfig = [
 			'next-env.d.ts',
 		],
 	},
+	...oxlint.configs['flat/recommended'],
 ];
 
 export default eslintConfig;

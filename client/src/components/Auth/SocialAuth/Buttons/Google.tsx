@@ -1,11 +1,11 @@
 'use client';
 
 import { FcGoogle } from 'react-icons/fc';
-import SocialButton from '../SocialButton/SocialButton';
+import { SocialButton } from '../SocialButton/SocialButton';
 import { useLoginWindow } from '../useLoginWindow';
 
-const Google = () => {
-	const { handleOpen } = useLoginWindow(`/v1/auth/google`);
+export const Google = () => {
+	const { handleOpen } = useLoginWindow(`/v1/oauth/google`);
 
 	return (
 		<SocialButton onClick={handleOpen}>
@@ -13,5 +13,3 @@ const Google = () => {
 		</SocialButton>
 	);
 };
-
-export default Google;

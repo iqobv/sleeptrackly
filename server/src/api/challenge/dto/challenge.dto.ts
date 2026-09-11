@@ -1,31 +1,54 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { ChallengeFrequency } from 'generated/prisma/enums';
+import { FullProductDto } from '@api/product/dto/product.dto';
+import { OmitType } from '@nestjs/swagger';
+import { Expose, Transform, Type } from 'class-transformer';
+import { ChallengeTranslationDto } from './challenge-translation.dto';
+import { ChallengeEntityDto, transformMetadata } from './challenge.entity.dto';
+import { BedtimeVarianceMetadataDto } from './metadata/bedtime-variance-metadata.dto';
+import { SleepDurationMetadataDto } from './metadata/sleep-duration-metadata.dto';
+import { TimeConsistencyMetadataDto } from './metadata/time-consistency-metadata.dto';
+import { UserChallengeDto } from './user-challenge.dto';
 
-export class ChallengeDto {
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	id: string;
+export class FullChallengeDto extends OmitType(ChallengeEntityDto, [
+	'product',
+] as const) {
+	@Type(() => FullProductDto)
+	@Expose()
+	product: FullProductDto | null;
+}
 
-	@ApiProperty({ example: 'a81bc81b-dead-4e5d-abff-90865d1e13b1' })
-	userId: string;
+export class BaseChallengeDto extends OmitType(ChallengeEntityDto, [
+	'translations',
+	'product',
+] as const) {
+	@Expose()
+	@Transform(transformMetadata)
+	metadata?:
+		| SleepDurationMetadataDto
+		| TimeConsistencyMetadataDto
+		| BedtimeVarianceMetadataDto
+		| null;
+}
 
-	@ApiProperty({ example: 'Test Challenge' })
-	title: string;
+export class ChallengeDto extends OmitType(ChallengeEntityDto, [
+	'translations',
+] as const) {
+	@Type(() => ChallengeTranslationDto)
+	@Expose()
+	translation: ChallengeTranslationDto;
 
-	@ApiProperty({ example: 'Test Challenge Description' })
-	description: string;
+	@Expose()
+	@Transform(transformMetadata)
+	metadata?:
+		| SleepDurationMetadataDto
+		| TimeConsistencyMetadataDto
+		| BedtimeVarianceMetadataDto
+		| null;
+}
 
-	@ApiProperty({ example: 'WEEKLY', enum: ChallengeFrequency })
-	frequency: ChallengeFrequency;
+export class ChallengeWithUserStatusDto extends ChallengeDto {
+	@Expose() isParticipating: boolean;
 
-	@ApiProperty({ example: false })
-	isStarted: boolean;
-
-	@ApiProperty({ example: false })
-	isCompleted: boolean;
-
-	@ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
-	startDate: Date;
-
-	@ApiProperty({ example: '2025-01-01T00:00:00.000Z' })
-	endDate: Date;
+	@Type(() => UserChallengeDto)
+	@Expose()
+	userChallenge: UserChallengeDto | null;
 }

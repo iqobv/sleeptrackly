@@ -1,33 +1,16 @@
 'use client';
 
-import { getStatisticsByWeekForUser } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth, useWeekPagination } from '@/hooks';
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { getDashboard } from '@/api/dashboard/dashboard.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useDashboardParams } from './useDashboardParams.hook';
 
 export const useDashboard = () => {
-	const [showSkeleton, setShowSkeleton] = useState(true);
+	const [params] = useDashboardParams();
 
-	const { isAuthenticated, user } = useAuth();
-	const { selectedWeek } = useWeekPagination();
-
-	const { data, isLoading, isFetching } = useQuery({
-		queryKey: QUERY_KEYS.dashboard.all(user?.id || '', selectedWeek),
-		queryFn: () => getStatisticsByWeekForUser(selectedWeek),
-		enabled: !!isAuthenticated,
+	return useQuery({
+		queryKey: QUERY_KEYS.dashboard.byDate(params.date),
+		queryFn: () => getDashboard(params),
+		placeholderData: keepPreviousData,
 	});
-
-	useEffect(() => {
-		if (!isLoading && !isFetching && data) {
-			setShowSkeleton(false);
-		} else {
-			setShowSkeleton(true);
-		}
-	}, [isLoading, isFetching, data]);
-
-	return {
-		data,
-		showSkeleton,
-	};
 };

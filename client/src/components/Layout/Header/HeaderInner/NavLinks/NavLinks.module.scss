@@ -1,11 +1,11 @@
 @use '../../../../../styles/mixins' as *;
 
-.nav-list {
+.list {
 	align-items: center;
 
-	.nav-link {
+	.link {
 		color: var(--nav-color-link);
-		font-size: 18px;
+		font-size: 1.125rem;
 		font-weight: 600;
 		transition: color 0.3s ease;
 		position: relative;
@@ -16,16 +16,16 @@
 	}
 
 	@include respond-to(md) {
-		.nav-link {
-			font-size: 16px;
+		.link {
+			font-size: 1rem;
 
 			&::after {
 				position: absolute;
 				content: '';
 				width: 100%;
-				height: 2px;
+				height: 0.125rem;
 				background-color: var(--nav-color-link-hover);
-				bottom: -4px;
+				bottom: -0.25rem;
 				left: 0;
 				transform: scaleX(0);
 				transition: transform 0.3s ease;
@@ -41,13 +41,13 @@
 		}
 	}
 
-	&:not(.nav-list--lg) {
+	&:not(.lg) {
 		@include respond-to(md) {
 			flex-direction: row;
 		}
 	}
 
-	&.nav-list--lg {
+	&.lg {
 		@include respond-to(md) {
 			flex-direction: column;
 		}

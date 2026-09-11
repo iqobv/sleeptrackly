@@ -1,3 +1,18 @@
+import { FullUserDto } from '@api/user/dto/full-user.dto';
+import { UserDto } from '@api/user/dto/user-response.dto';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import {
+	ApiErrorResponse,
+	ApiSuccessResponse,
+} from '@libs/decorators/api-response.decorator';
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
+import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { Cookie } from '@libs/decorators/cookie.decorator';
+import { OptionalAuth } from '@libs/decorators/optional-auth.decorator';
+import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
 	Controller,
@@ -6,117 +21,157 @@ import {
 	HttpCode,
 	HttpStatus,
 	Post,
-	Req,
 	Res,
+	UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import {
-	ApiBody,
-	ApiConflictResponse,
-	ApiCreatedResponse,
-	ApiExcludeEndpoint,
-	ApiOkResponse,
-	ApiOperation,
-	ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
-import type { Request, Response } from 'express';
-import { User } from 'generated/prisma/client';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { CreateUserDto, UserDto } from '../user/dto';
-import { UserService } from '../user/user.service';
+import type { Response } from 'express';
+import { UserService } from '../user/services/user.service';
 import { AuthService } from './auth.service';
-import { GoogleAuth, LocalAuth } from './decorators';
-import { LoginDto, RegisterResultDto } from './dto';
+import { CookieService } from './cookie/cookie.service';
+import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
 	constructor(
 		private readonly authService: AuthService,
 		private readonly userService: UserService,
-		private readonly configService: ConfigService,
+		private readonly cookieService: CookieService,
 	) {}
 
-	@ApiOperation({ summary: 'Login with email and password' })
-	@ApiBody({ type: LoginDto })
-	@ApiUnauthorizedResponse({ description: 'Email or password is incorrect' })
+	/** Login with email and password */
 	@Throttle({
 		short: { limit: 2, ttl: 1000 },
 		medium: { limit: 3, ttl: 10000 },
 		long: { limit: 5, ttl: 60000 },
 	})
 	@ApiOkResponse({ type: UserDto })
-	@LocalAuth()
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.INVALID_CREDENTIALS,
+	)
 	@HttpCode(HttpStatus.OK)
 	@Post('login')
-	async login(@Req() req: Request) {
-		const user = req.user as User;
-		return await this.authService.login(user, req);
+	public async login(
+		@Body() dto: LoginDto,
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Res({ passthrough: true }) res: Response,
+	): Promise<UserDto> {
+		const { user, accessToken, refreshToken } = await this.authService.login(
+			dto,
+			clientInfo,
+		);
+
+		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
+
+		return user;
 	}
 
-	@ApiOperation({ summary: 'Register with email and password' })
-	@ApiBody({ type: CreateUserDto })
-	@ApiCreatedResponse({ type: RegisterResultDto })
-	@ApiConflictResponse({ description: 'User already exists' })
+	/** Register a new user */
 	@Throttle({
 		short: { limit: 2, ttl: 1000 },
 		medium: { limit: 3, ttl: 10000 },
 		long: { limit: 5, ttl: 60000 },
 	})
+	@ApiSuccessResponse(HttpStatus.CREATED, {
+		...SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS,
+		meta: { email: 'user@example.com' },
+	})
+	@ApiErrorResponse(HttpStatus.CONFLICT, ERROR_MESSAGES.USER.ALREADY_EXISTS)
 	@HttpCode(HttpStatus.CREATED)
 	@Post('register')
-	async register(@Body() dto: CreateUserDto) {
+	public async register(@Body() dto: RegisterDto): Promise<MessageResponse> {
 		return await this.authService.register(dto);
 	}
 
-	@ApiOperation({ summary: 'Login with Google' })
-	@ApiOkResponse({ type: UserDto })
-	@Get('google')
-	@GoogleAuth()
-	async googleLogin() {}
-
-	@ApiExcludeEndpoint()
-	@Get('google/callback')
-	@GoogleAuth()
-	async googleLoginCallback(
-		@Req() req: Request,
-		@Res({ passthrough: true }) res: Response,
-	) {
-		const user = req.user as User;
-		await this.authService.login(user, req);
-
-		res.send(`
-			<script>
-				window.opener.postMessage({ success: true }, '${process.env.GOOGLE_REDIRECT_ORIGIN}');
-				window.close();
-			</script>`);
-	}
-
-	@ApiOperation({ summary: 'Logout' })
-	@ApiOkResponse()
-	@Post('logout')
+	/** Logout */
+	@OptionalAuth()
+	@SkipThrottle()
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.LOGOUT_SUCCESS)
+	@ApiErrorResponse(
+		HttpStatus.UNAUTHORIZED,
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+	)
 	@HttpCode(HttpStatus.OK)
-	async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-		await this.authService.logout(req, res);
+	@Post('logout')
+	public async logout(
+		@Cookie('refreshToken') rawRefreshToken: string | undefined,
+		@Authorized('id') userId: string,
+		@Res({ passthrough: true }) res: Response,
+	): Promise<MessageResponse> {
+		if (!rawRefreshToken)
+			throw new UnauthorizedException(
+				ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+			);
+
+		await this.authService.logout(rawRefreshToken, userId);
+
+		this.cookieService.clearAuthCookies(res);
+
+		return SUCCESS_MESSAGES.AUTH.LOGOUT_SUCCESS;
 	}
 
-	@ApiOperation({ summary: 'Get profile' })
-	@ApiOkResponse({ type: UserDto })
+	/** Refresh access and refresh tokens */
+	@OptionalAuth()
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.TOKENS_REFRESHED)
+	@ApiErrorResponse(HttpStatus.UNAUTHORIZED, [
+		ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+		ERROR_MESSAGES.SESSION.EXPIRED,
+	])
+	@HttpCode(HttpStatus.OK)
+	@Post('refresh')
+	public async refreshTokens(
+		@Cookie('refreshToken') rawRefreshToken: string,
+		@ClientInfo() clientInfo: ClientInfoDto,
+		@Res({ passthrough: true }) res: Response,
+	): Promise<MessageResponse> {
+		try {
+			if (!rawRefreshToken)
+				throw new UnauthorizedException(
+					ERROR_MESSAGES.AUTH.REFRESH_TOKEN_MISSING,
+				);
+
+			const { accessToken, refreshToken } =
+				await this.authService.refreshTokens(rawRefreshToken, clientInfo);
+
+			this.cookieService.setAuthCookies(res, accessToken, refreshToken);
+		} catch (error) {
+			this.cookieService.clearAuthCookies(res);
+			throw error;
+		}
+
+		return SUCCESS_MESSAGES.AUTH.TOKENS_REFRESHED;
+	}
+
+	/** Get profile */
 	@Auth()
 	@SkipThrottle()
-	@HttpCode(HttpStatus.OK)
+	@ApiOkResponse({ type: FullUserDto })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
 	@Get('me')
-	async getProfile(@Authorized('id') userId: string) {
+	public async getProfile(
+		@Authorized('id') userId: string,
+	): Promise<FullUserDto> {
 		return await this.userService.findById(userId);
 	}
 
-	@ApiOperation({ summary: 'Delete account' })
-	@Throttle({ long: { limit: 5, ttl: 60000 } })
-	@ApiOkResponse()
+	/** Delete account */
 	@Auth()
-	@HttpCode(HttpStatus.NO_CONTENT)
+	@Throttle({ long: { limit: 5, ttl: 60000 } })
+	@ApiErrorResponse(HttpStatus.NOT_FOUND, ERROR_MESSAGES.USER.NOT_FOUND)
+	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.AUTH.USER_DELETED)
 	@Delete('delete')
-	async deleteAccount(@Authorized('id') userId: string) {
+	public async deleteAccount(
+		@Authorized('id') userId: string,
+		@Res({ passthrough: true }) res: Response,
+	): Promise<MessageResponse> {
 		await this.userService.remove(userId);
+
+		this.cookieService.clearAuthCookies(res);
+
+		return SUCCESS_MESSAGES.AUTH.USER_DELETED;
 	}
 }

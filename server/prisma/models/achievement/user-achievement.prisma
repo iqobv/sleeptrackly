@@ -1,0 +1,16 @@
+model UserAchievement {
+  id String @id @default(uuid())
+
+  userId        String @map("user_id")
+  achievementId String @map("achievement_id")
+
+  achievedAt DateTime @default(now()) @map("achieved_at")
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@index([achievementId])
+  @@map("user_achievements")
+}

@@ -1,31 +1,27 @@
 'use client';
 
-import { IProduct } from '@/types';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-
+import { CDNImage } from '@/components/UI';
+import { Product } from '@/types/product/product.types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-
-import { CDNImage } from '@/components/UI';
+import { Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import styles from './FeaturedShopCarousel.module.scss';
-import FeaturedShopCarouselBuyButton from './FeaturedShopCarouselBuyButton/FeaturedShopCarouselBuyButton';
-import FeaturedShopCarouselIncludes from './FeaturedShopCarouselIncludes/FeaturedShopCarouselIncludes';
+import { FeaturedShopCarouselBuyButton } from './FeaturedShopCarouselBuyButton/FeaturedShopCarouselBuyButton';
+import { FeaturedShopCarouselIncludes } from './FeaturedShopCarouselIncludes/FeaturedShopCarouselIncludes';
 
 interface FeaturedShopCarouselProps {
-	data: IProduct[];
+	data: Product[];
 }
 
-const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
+export const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 	const validSlides = data.filter((item) => item.bundle);
 
-	if (validSlides.length === 0) {
-		return null;
-	}
+	if (validSlides.length === 0) return null;
 
 	return (
-		<div className={styles['featured-shop-carousel']}>
+		<div className={styles.shopCarousel}>
 			<Swiper
 				modules={[Navigation, Pagination, Autoplay]}
 				spaceBetween={0}
@@ -38,24 +34,17 @@ const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 					disableOnInteraction: false,
 				}}
 				loop={validSlides.length > 1}
-				className={styles['custom-swiper']}
+				className={styles.swiper}
 			>
 				{validSlides.map((item) => {
 					if (!item.bundle) return null;
 
 					return (
-						<SwiperSlide
-							key={item.id}
-							className={styles['featured-shop-carousel__item']}
-						>
-							<div className={styles['featured-shop-carousel__info']}>
-								{item.isNew && (
-									<div className={styles['featured-shop-carousel__new']}>
-										New
-									</div>
-								)}
-								<div className={styles['featured-shop-carousel__info-content']}>
-									<h3 className={styles['featured-shop-carousel__title']}>
+						<SwiperSlide key={item.id} className={styles.item}>
+							<div className={styles.info}>
+								{item.isNew && <div className={styles.new}>New</div>}
+								<div className={styles.infoContent}>
+									<h3 className={styles.title}>
 										{item.bundle.translation.name}
 									</h3>
 									<FeaturedShopCarouselIncludes
@@ -69,14 +58,14 @@ const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 									discountPercentage={item.bundle.discountPercentage}
 									basePrice={item.bundle.basePrice}
 									expiresAt={item.expiresAt ? new Date(item.expiresAt) : null}
+									isOwned={item.isOwned}
 								/>
 							</div>
-							<div className={styles['image-wrapper']}>
+							<div className={styles.imageWrapper}>
 								<CDNImage
-									src={item.bundle.mediaUrl}
+									path={item.bundle.mediaUrl}
 									alt={item.bundle.translation.name || 'Featured Shop Item'}
-									preload
-									className={styles['featured-shop-carousel__image']}
+									className={styles.image}
 									width={300}
 									height={300}
 								/>
@@ -88,5 +77,3 @@ const FeaturedShopCarousel = ({ data }: FeaturedShopCarouselProps) => {
 		</div>
 	);
 };
-
-export default FeaturedShopCarousel;

@@ -1,23 +1,22 @@
 'use client';
 
-import { resetPassword } from '@/api';
-import { TextField } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { PassordDto } from '@/dto';
-import { passwordSchema } from '@/schemas';
+import { resetPassword } from '@/api/auth/password.api';
+import { PassordDto } from '@/dto/auth/password.dto';
+import { passwordSchema } from '@/schemas/auth/baseAuth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { MdOutlineVpnKey } from 'react-icons/md';
 import { toast } from 'react-toastify';
-import ResetForm from '../ResetForm/ResetForm';
+import { ResetForm } from '../ResetForm/ResetForm';
 
 interface NewPasswordFieldProps {
 	token: string;
 }
 
-const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
+export const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 	const router = useRouter();
 
 	const {
@@ -31,7 +30,6 @@ const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: ({ password }: PassordDto) => resetPassword(token, password),
-		mutationKey: QUERY_KEYS.auth.resetPassword,
 		onSuccess() {
 			router.refresh();
 		},
@@ -48,18 +46,19 @@ const NewPasswordField = ({ token }: NewPasswordFieldProps) => {
 			onSubmit={handleSubmit(onSubmit)}
 			isPending={isPending}
 		>
-			<TextField
-				placeholder="password"
-				autoComplete="new-password"
-				type="password"
-				fullWidth
+			<Field
 				label="Create a password"
 				error={errors.password?.message}
-				leftIcon={<MdOutlineVpnKey />}
-				{...register('password')}
-			/>
+				required
+			>
+				<Input
+					placeholder="password"
+					autoComplete="new-password"
+					type="password"
+					leftSection={<MdOutlineVpnKey />}
+					{...register('password')}
+				/>
+			</Field>
 		</ResetForm>
 	);
 };
-
-export default NewPasswordField;

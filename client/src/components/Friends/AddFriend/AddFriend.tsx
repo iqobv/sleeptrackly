@@ -1,22 +1,24 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
+import { SectionHeader } from '@shared/ui';
 import styles from './AddFriend.module.scss';
-import AddFriendList from './AddFriendList/AddFriendList';
-import AddFriendSearchContainer from './AddFriendSearchContainer/AddFriendSearchContainer';
+import { AddFriendList } from './AddFriendList/AddFriendList';
+import { AddFriendSearchContainer } from './AddFriendSearchContainer/AddFriendSearchContainer';
 import { useAddFriend } from './useAddFriend';
 
-const AddFriend = () => {
+export const AddFriend = () => {
 	const { search, setSearch, onChange, handleSearch, data, isPending } =
 		useAddFriend();
 
 	return (
-		<div className={styles['add-friend']}>
+		<div className={styles.addFriend}>
 			<SectionHeader
 				title="Add Friend"
-				titleComponent="h3"
-				titleClassName={styles['add-friend__title']}
-				containerClassName={styles['add-friend__title-container']}
+				titleProps={{
+					variant: 'h3',
+				}}
+				containerClassName={styles.titleContainer}
+				padding={10}
 			/>
 			<AddFriendSearchContainer
 				search={search}
@@ -27,5 +29,3 @@ const AddFriend = () => {
 		</div>
 	);
 };
-
-export default AddFriend;

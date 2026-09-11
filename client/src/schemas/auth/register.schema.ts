@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod';
 import { emailSchema, newPasswordSchema } from './baseAuth.schema';
 
 const authSchema = emailSchema.extend(newPasswordSchema.shape);

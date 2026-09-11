@@ -9,19 +9,17 @@ interface BottomTextProps {
 	redirectText: string;
 }
 
-const BottomText = ({
+export const BottomText = ({
 	children,
 	redirectText,
 	redirectUrl,
 }: PropsWithChildren<BottomTextProps>) => {
 	return (
-		<div className={styles['bottom-text']}>
+		<div className={styles.bottomText}>
 			{children}
-			<Link className={styles['bottom-text__link']} href={redirectUrl}>
+			<Link className={styles.link} href={redirectUrl}>
 				{redirectText}
 			</Link>
 		</div>
 	);
 };
-
-export default BottomText;

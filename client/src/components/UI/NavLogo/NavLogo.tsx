@@ -1,26 +1,31 @@
-import { Logo } from '@/components/Icons';
-import { LogoProps } from '@/components/Icons/Logo';
-import { PAGES } from '@/config';
-import Link from 'next/link';
+import { Logo, LogoProps } from '@/components/Icons/Logo';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
+import clsx from 'clsx';
 import styles from './NavLogo.module.scss';
 
 interface NavLogoProps {
 	className?: string;
 	onClick?: () => void;
 	logoProps?: LogoProps;
+	hideTextOnMobile?: boolean;
 }
 
-const NavLogo = ({ className, onClick, logoProps }: NavLogoProps) => {
+export const NavLogo = ({
+	className,
+	onClick,
+	logoProps,
+	hideTextOnMobile = false,
+}: NavLogoProps) => {
 	return (
-		<Link
-			href={PAGES.HOME}
-			className={`${styles['logo-link']} ${className || ''}`}
+		<a
+			href={CROSS_DOMAIN_ROUTES.HOME}
+			className={clsx(styles.logoLink, className)}
 			onClick={onClick}
 		>
 			<Logo {...logoProps} />
-			<span>Sleeptrackly</span>
-		</Link>
+			<span className={clsx(styles.text, hideTextOnMobile && styles.hidden)}>
+				Sleeptrackly
+			</span>
+		</a>
 	);
 };
-
-export default NavLogo;

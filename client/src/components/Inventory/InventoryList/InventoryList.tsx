@@ -1,40 +1,91 @@
 'use client';
 
-import { getInventory } from '@/api';
-import { Pagination } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { useAuth, usePagination } from '@/hooks';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
+import {
+	equipInventoryItem,
+	getInventory,
+} from '@/api/inventory/inventory.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
+import { usePagination, usePaginationBounds } from '@shared/hooks';
+import { Pagination } from '@shared/ui';
+import {
+	keepPreviousData,
+	useMutation,
+	useQuery,
+	useQueryClient,
+} from '@tanstack/react-query';
 import styles from './InventoryList.module.scss';
-import InventoryListEmpty from './InventoryListEmpty/InventoryListEmpty';
-import InventoryListItem from './InventoryListItem/InventoryListItem';
-import InventoryListLoader from './InventoryListLoader';
+import { InventoryListEmpty } from './InventoryListEmpty/InventoryListEmpty';
+import { InventoryListItem } from './InventoryListItem/InventoryListItem';
+import { InventoryListLoader } from './InventoryListLoader';
 
-const InventoryList = () => {
-	const searchParams = useSearchParams();
-	const pageFromUrl = Number(searchParams.get('page')) || 1;
+type InventoryResponse = Awaited<ReturnType<typeof getInventory>>;
 
-	const { user } = useAuth();
+export const InventoryList = () => {
+	const queryClient = useQueryClient();
 
-	const { data, isLoading, refetch } = useQuery({
-		queryKey: QUERY_KEYS.inventory.all(user ? user.id : '', pageFromUrl),
-		queryFn: () =>
-			getInventory({ page: pageFromUrl, limit: 20, language: 'en' }),
+	const { currentPage, setPage } = usePagination();
+
+	const filters: PaginationWithLanguageDto = {
+		page: currentPage,
+		limit: 20,
+		language: 'en',
+	};
+
+	const queryKey = QUERY_KEYS.inventory.list(filters);
+
+	const { data, isLoading } = useQuery({
+		queryKey,
+		queryFn: () => getInventory(filters),
 		placeholderData: keepPreviousData,
-		enabled: !!user?.id,
 	});
 
-	const { currentPage, setPage } = usePagination(data?.meta.totalPages);
+	const { mutate: equipItem } = useMutation({
+		mutationFn: (itemId: string) => equipInventoryItem(itemId),
+		onMutate: async (itemId: string) => {
+			await queryClient.cancelQueries({ queryKey });
+			const previousData =
+				queryClient.getQueryData<InventoryResponse>(queryKey);
+
+			queryClient.setQueryData<InventoryResponse>(queryKey, (old) => {
+				if (!old) return old;
+				return {
+					...old,
+					items: old.items.map((item) =>
+						item.id === itemId
+							? { ...item, isEquipped: !item.isEquipped }
+							: item,
+					),
+				};
+			});
+
+			return { previousData };
+		},
+		onError: (_e, _v, ctx) => {
+			if (ctx?.previousData) {
+				queryClient.setQueryData(queryKey, ctx.previousData);
+			}
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey });
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user.me() });
+		},
+	});
+
+	usePaginationBounds(currentPage, setPage, data?.meta.totalPages);
 
 	return (
-		<div className={styles['inventory-list']}>
+		<div className={styles.inventory}>
 			{isLoading && <InventoryListLoader />}
 			{data && data.meta.total > 0 && (
 				<>
-					<div className={styles['inventory-items__list']}>
+					<div className={styles.list}>
 						{data.items.map((item) => (
-							<InventoryListItem key={item.id} item={item} refetch={refetch} />
+							<InventoryListItem
+								key={item.id}
+								item={item}
+								onEquip={() => equipItem(item.id)}
+							/>
 						))}
 					</div>
 					<Pagination
@@ -48,5 +99,3 @@ const InventoryList = () => {
 		</div>
 	);
 };
-
-export default InventoryList;

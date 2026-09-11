@@ -1,26 +1,26 @@
 @use '../../../../styles/mixins' as *;
 
-.pendings-list-item {
+.item {
 	display: flex;
 	justify-content: space-between;
-	gap: 20px;
+	gap: 1.25rem;
 	flex-direction: column;
 	border: 1px solid var(--input-border);
-	padding: 10px;
+	padding: 0.625rem;
 	border-radius: 12px;
 
 	@include respond-to(md) {
 		flex-direction: row;
 	}
 
-	&__user {
+	.user {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: 0.625rem;
 	}
 
-	&__actions {
+	.actions {
 		display: flex;
-		gap: 10px;
+		gap: 0.625rem;
 	}
 }

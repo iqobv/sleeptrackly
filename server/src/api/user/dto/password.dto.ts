@@ -1,12 +1,12 @@
-import { IsOptional, IsString, MinLength } from 'class-validator';
+import { IsPassword } from '@libs/validators/is-password.validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class PasswordRecoveryDto {
 	@IsString()
 	@IsOptional()
-	@MinLength(6, { message: 'Password must be at least 6 characters long' })
 	oldPassword?: string;
 
-	@IsString({ message: 'Password is required' })
-	@MinLength(6, { message: 'Password must be at least 6 characters long' })
+	@IsString({ message: 'New password is required' })
+	@IsPassword()
 	newPassword: string;
 }

@@ -1,41 +1,35 @@
 'use client';
 
-import { REPORT_STATUS } from '@/constants';
-import { IReportPaginationQuery } from '@/types';
-import { capitalize } from '@/utils';
-import { Dispatch, SetStateAction } from 'react';
+import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
+import { capitalize } from '@shared/utils';
+import { ReportsChildsProps } from '../Reports';
 import styles from './ReportFilter.module.scss';
 
-interface ReportFilterProps {
-	filters: IReportPaginationQuery;
-	setFilters: Dispatch<SetStateAction<IReportPaginationQuery>>;
-}
-
 const selectProps: Partial<React.ComponentProps<'select'>> = {
-	className: styles['report-filter__select'],
+	className: styles.select,
 };
 
-const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
+export const ReportFilter = ({ filters, setFilters }: ReportsChildsProps) => {
 	const onChange = (
 		e: React.ChangeEvent<HTMLSelectElement>,
-		key: keyof IReportPaginationQuery
+		key: keyof ReportPaginationQuery,
 	) => {
 		setFilters({
-			...filters,
 			page: 1,
 			[key]: e.target.value,
 		});
 	};
 
 	return (
-		<div className={styles['report-filter']}>
-			<div className={styles['report-filter__selects']}>
+		<div>
+			<div className={styles.selects}>
 				<select
 					value={filters.status}
 					onChange={(e) => onChange(e, 'status')}
 					{...selectProps}
 				>
-					{Object.values(REPORT_STATUS).map((status) => (
+					{Object.values(ReportStatus).map((status) => (
 						<option key={status} value={status}>
 							{capitalize(status.replaceAll('_', ' ').toLowerCase())}
 						</option>
@@ -61,5 +55,3 @@ const ReportFilter = ({ filters, setFilters }: ReportFilterProps) => {
 		</div>
 	);
 };
-
-export default ReportFilter;

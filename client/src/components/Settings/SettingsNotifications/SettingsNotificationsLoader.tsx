@@ -1,16 +1,14 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './SettingsNotifications.module.scss';
-import SettingsNotificationsFormLoader from './SettingsNotificationsForm/SettingsNotificationsFormLoader';
+import { SettingsNotificationsFormLoader } from './SettingsNotificationsForm/SettingsNotificationsFormLoader';
 
-const SettingsNotificationsLoader = () => {
+export const SettingsNotificationsLoader = () => {
 	return (
-		<div className={styles['settings-notifications']}>
+		<div className={styles.notifications}>
 			<SkeletonLoader height={46} width="100%" />
 			<SettingsNotificationsFormLoader />
 		</div>
 	);
 };
-
-export default SettingsNotificationsLoader;

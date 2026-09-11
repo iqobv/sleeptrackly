@@ -1,15 +1,16 @@
-import { TItemType, TProductType } from '@/types';
+import { ItemType } from '@/types/item/itemType.types';
+import { ProductType } from '@shared/types';
 
 export const shopProductTypeOptions: {
 	label: string;
-	value: TProductType | 'ALL';
+	value: ProductType | 'ALL';
 }[] = [
 	{ label: 'All', value: 'ALL' },
 	{ label: 'Bundles', value: 'BUNDLE' },
 	{ label: 'Items', value: 'ITEM' },
 ];
 
-export const shopItemTypeOptions: { label: string; value: TItemType }[] = [
+export const shopItemTypeOptions: { label: string; value: ItemType }[] = [
 	{ label: 'Avatars', value: 'AVATAR' },
 	{ label: 'Avatar Frames', value: 'AVATAR_FRAME' },
 	{ label: 'Animated Avatars', value: 'ANIMATED_AVATAR' },

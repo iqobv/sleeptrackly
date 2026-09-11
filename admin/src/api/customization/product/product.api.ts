@@ -1,32 +1,38 @@
+import { apiClient } from '@/api/axios';
 import {
 	CreateProductDto,
-	PaginationWithLanguageDto,
 	UpdateProductDto,
-} from '@/dto';
-import { IPaginatedDataResponse, IProduct } from '@/types';
-import { fetcher } from '@/utils';
+} from '@/dto/customization/product.dto';
+import { PaginationWithLanguageDto } from '@/dto/query/pagination.dto';
+import { paths } from '@shared/types';
+
+type GetAllProductsResponse =
+	paths['/v1/products']['get']['responses']['200']['content']['application/json'];
+type GetProductByIdResponse =
+	paths['/v1/products/{id}']['get']['responses']['200']['content']['application/json'];
+type CreateProductResponse =
+	paths['/v1/products']['post']['responses']['200']['content']['application/json'];
+type UpdateProductResponse =
+	paths['/v1/products/{id}']['patch']['responses']['200']['content']['application/json'];
+type DeleteProductResponse =
+	paths['/v1/products/{id}']['delete']['responses']['200']['content']['application/json'];
 
 export const getAllProducts = async (query: PaginationWithLanguageDto) =>
-	await fetcher<IPaginatedDataResponse<IProduct>>(
-		`/api/v1/products?${new URLSearchParams(Object.entries(query).map(([key, value]) => [key, String(value)]))}`,
-	);
+	(
+		await apiClient.get<GetAllProductsResponse>(`/v1/products`, {
+			params: query,
+		})
+	).data;
 
 export const getProductById = async (id: string) =>
-	await fetcher<IProduct>(`/api/v1/products/${id}`);
+	(await apiClient.get<GetProductByIdResponse>(`/v1/products/${id}`)).data;
 
 export const createProduct = async (dto: CreateProductDto) =>
-	await fetcher<IProduct>('/api/v1/products', {
-		method: 'POST',
-		body: JSON.stringify(dto),
-	});
+	(await apiClient.post<CreateProductResponse>('/v1/products', dto)).data;
 
 export const updateProduct = async (id: string, dto: UpdateProductDto) =>
-	await fetcher<IProduct>(`/api/v1/products/${id}`, {
-		method: 'PATCH',
-		body: JSON.stringify(dto),
-	});
+	(await apiClient.patch<UpdateProductResponse>(`/v1/products/${id}`, dto))
+		.data;
 
 export const deleteProduct = async (id: string) =>
-	await fetcher<boolean>(`/api/v1/products/${id}`, {
-		method: 'DELETE',
-	});
+	(await apiClient.delete<DeleteProductResponse>(`/v1/products/${id}`)).data;

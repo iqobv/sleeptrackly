@@ -1,46 +1,39 @@
 'use client';
 
-import NotificationsButton from '@/components/Notification/NotificationsButton/NotificationsButton';
-import { Avatar } from '@/components/UI';
-import { useRef } from 'react';
+import { NotificationsButton } from '@/components/Notification/NotificationsButton/NotificationsButton';
+import { UserAvatar } from '@/components/UI';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { Dropdown, DropdownTrigger } from '@shared/ui';
 import styles from './UserMenu.module.scss';
-import UserMenuDropdown from './UserMenuDropdown/UserMenuDropdown';
-import { useUserMenu } from './useUserMenu';
+import { UserMenuDropdown } from './UserMenuDropdown/UserMenuDropdown';
+import { UserMenuLoader } from './UserMenuLoader';
 
-const UserMenu = () => {
-	const buttonRef = useRef<HTMLDivElement>(null);
+export const UserMenu = () => {
+	const { logout, user, isLoading } = useAuth();
 
-	const { open, user, onClose, handleLogout } = useUserMenu();
+	if (isLoading && !user) return <UserMenuLoader />;
+	if (!user) return null;
 
 	const avatar =
-		user?.equippedItems.find(
+		user.equippedItems?.find(
 			(ei) => ei.item.type === 'ANIMATED_AVATAR' || ei.item.type === 'AVATAR',
 		) || null;
 
-	if (!user) return null;
-
 	return (
-		<div className={styles['user-menu__controls']}>
+		<div className={styles.controls}>
 			<NotificationsButton />
-			<div className={styles['user-menu__wrapper']} ref={buttonRef}>
-				<button onClick={onClose} className={styles['user-menu__btn']}>
-					<Avatar
-						avatar={avatar ? avatar.item.mediaUrl : user.avatar?.url}
-						size={40}
-						priority
-						isVideo={avatar?.item.isAnimated || false}
-					/>
-				</button>
-				<UserMenuDropdown
-					isOpen={open}
-					onClose={onClose}
-					handleLogout={handleLogout}
-					user={user}
-					buttonRef={buttonRef as React.RefObject<HTMLDivElement>}
-				/>
-			</div>
+			<Dropdown>
+				<DropdownTrigger asChild>
+					<button className={styles.btn}>
+						<UserAvatar
+							avatarPath={avatar ? avatar.item.mediaUrl : user.avatar?.url}
+							size={40}
+							isAnimated={avatar?.item.isAnimated}
+						/>
+					</button>
+				</DropdownTrigger>
+				<UserMenuDropdown handleLogout={logout} user={user} />
+			</Dropdown>
 		</div>
 	);
 };
-
-export default UserMenu;

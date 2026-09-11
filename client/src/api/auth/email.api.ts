@@ -1,7 +1,13 @@
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+export type ResendVerificationEmailResponse =
+	paths['/v1/auth/email-confirmation/resend']['post']['responses']['200']['content']['application/json'];
 
 export const resendVerificationEmail = async (email: string) =>
-	await fetcher(`/v1/auth/email-confirmation/resend`, {
-		method: 'POST',
-		body: JSON.stringify({ email }),
-	});
+	(
+		await apiClient.post<ResendVerificationEmailResponse>(
+			`/v1/auth/email-confirmation/resend`,
+			{ email },
+		)
+	).data;

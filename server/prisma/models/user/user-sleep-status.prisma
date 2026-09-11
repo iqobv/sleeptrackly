@@ -5,6 +5,7 @@ model UserSleepStatus {
 
   isSleeping Boolean   @default(false) @map("is_sleeping")
   sleepStart DateTime? @map("sleep_start")
+  sleepEnd   DateTime? @map("sleep_end")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @map("updated_at")

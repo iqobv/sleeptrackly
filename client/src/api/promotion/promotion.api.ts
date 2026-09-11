@@ -1,5 +1,10 @@
-import { UsePromotionDto } from '@/dto';
-import { fetcher } from '@/utils';
+import { UsePromotionDto } from '@/dto/promotion/promotion.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
 
-export const apiUsePromotion = async ({ alias }: UsePromotionDto) =>
-	await fetcher(`/v1/promotion-usage/${alias}`);
+type UsePromotionResponse =
+	paths['/v1/promotion-usage/{alias}']['post']['responses']['200']['content']['application/json'];
+
+export const promotionUse = async ({ alias }: UsePromotionDto) =>
+	(await apiClient.post<UsePromotionResponse>(`/v1/promotion-usage/${alias}`))
+		.data;

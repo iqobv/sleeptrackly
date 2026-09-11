@@ -1,26 +1,18 @@
 'use client';
 
-import { getAllAvailableBundles } from '@/api';
-import BundleCard from '@/components/Customization/BundleCard/BundleCard';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { PaginationDto } from '@/dto';
-import { IBundle } from '@/types';
-import { useSearchParams } from 'next/navigation';
+import { getAllAvailableBundles } from '@/api/customization/bundle/getAvaibleBundles.api';
+import { BundleCard } from '@/components/Customization/BundleCard/BundleCard';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Button } from '@shared/ui';
 import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
 
-const ProductBundlesList = <T extends FieldValues>() => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
+type AvailableBundle = NonNullable<
+	Awaited<ReturnType<typeof getAllAvailableBundles>>['items'][number]
+>;
 
-	const params: PaginationDto = {
-		page: pageFromParams,
-		limit: 20,
-	};
-
+export const ProductBundlesList = <T extends FieldValues>() => {
 	const { setValue, watch } = useFormContext<T>();
-
 	const bundleId = watch('bundleId' as Path<T>);
 
 	const handleSelect = (id: string) => {
@@ -29,17 +21,19 @@ const ProductBundlesList = <T extends FieldValues>() => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IBundle>
-			queryFn={() => getAllAvailableBundles(params)}
-			queryKey={() => [
-				...QUERY_KEYS.customization.bundle.getAllAvailable(params),
-			]}
+		<ItemsListPaginatedWrapper<AvailableBundle>
+			queryFn={({ language: _l, ...params }) => getAllAvailableBundles(params)}
+			queryKey={({ language: _l, ...params }) =>
+				QUERY_KEYS.customization.bundle.listAvailable(params)
+			}
+			isModal
 			itemCard={(bundle) => (
 				<BundleCard
 					bundle={bundle}
 					actions={
 						<Button
-							variant={bundleId === bundle.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={bundleId === bundle.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(bundle.id)}
 						>
@@ -51,5 +45,3 @@ const ProductBundlesList = <T extends FieldValues>() => {
 		/>
 	);
 };
-
-export default ProductBundlesList;

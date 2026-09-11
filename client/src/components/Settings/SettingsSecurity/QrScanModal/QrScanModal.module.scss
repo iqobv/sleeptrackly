@@ -1,15 +1,15 @@
 @use '../../../../styles/mixins' as *;
 
-.qr-scan-modal {
+.modal {
 	max-width: 100%;
 	width: 90%;
 
 	@include respond-to(md) {
-		max-width: 400px;
+		max-width: 25rem;
 	}
 }
 
-.qr-scan-modal__body {
+.body {
 	display: flex;
 	justify-content: center;
 	align-items: center;

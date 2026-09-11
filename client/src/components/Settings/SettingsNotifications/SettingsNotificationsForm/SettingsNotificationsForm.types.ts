@@ -1,6 +1,6 @@
-import { UpdateNotificationSettingsDto } from '@/dto';
+import { UpdateNotificationSettingsDto } from '@/dto/settings/notifications.dto';
 
 export type UpdateFunction = (
-	dto: Partial<UpdateNotificationSettingsDto>
+	dto: Partial<UpdateNotificationSettingsDto>,
 ) => void;
 export type NotificationFieldName = keyof UpdateNotificationSettingsDto;

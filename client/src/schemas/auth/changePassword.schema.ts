@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod';
 import { passwordSchema } from './baseAuth.schema';
 
 export const changePasswordSchema = z.object({
@@ -7,7 +7,7 @@ export const changePasswordSchema = z.object({
 		z
 			.string()
 			.min(6, { message: 'Password must be at least 6 characters' })
-			.optional()
+			.optional(),
 	),
 	newPassword: passwordSchema.shape.password,
 });

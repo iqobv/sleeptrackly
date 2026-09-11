@@ -1,22 +1,22 @@
 'use client';
 
-import { getProfile } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useQuery } from '@tanstack/react-query';
+import { getProfile } from '@/api/profile/profile.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { env } from '@/env';
+import { skipToken, useQuery } from '@tanstack/react-query';
 import styles from './Profile.module.scss';
-import ProfileMainInfo from './ProfileMainInfo/ProfileMainInfo';
-import ProfileSkeleton from './ProfileSkeleton/ProfileSkeleton';
-import ProfileStatistics from './ProfileStatistics/ProfileStatistics';
+import { ProfileMainInfo } from './ProfileMainInfo/ProfileMainInfo';
+import { ProfileSkeleton } from './ProfileSkeleton/ProfileSkeleton';
+import { ProfileStatistics } from './ProfileStatistics/ProfileStatistics';
 
 interface ProfileProps {
 	username: string;
 }
 
-const Profile = ({ username }: ProfileProps) => {
+export const Profile = ({ username }: ProfileProps) => {
 	const { data, isLoading } = useQuery({
-		queryFn: () => getProfile(username),
+		queryFn: username ? () => getProfile(username) : skipToken,
 		queryKey: QUERY_KEYS.profile.username(username),
-		enabled: !!username,
 		retry: false,
 	});
 
@@ -26,16 +26,16 @@ const Profile = ({ username }: ProfileProps) => {
 
 	return (
 		<div
-			className={`${styles['profile']} page`}
+			className={`${styles.profile} page`}
 			style={
 				backgroundItem
 					? {
-							backgroundImage: `url(${process.env.NEXT_PUBLIC_CDN_URL}/${backgroundItem.item.mediaUrl})`,
+							backgroundImage: `url(${env.NEXT_PUBLIC_CDN_URL}/${backgroundItem.item.mediaUrl})`,
 						}
 					: {}
 			}
 		>
-			<div className={`${styles['profile__container']} container page`}>
+			<div className={`${styles.container} container page`}>
 				{isLoading && <ProfileSkeleton />}
 				{!isLoading && data && (
 					<>
@@ -49,5 +49,3 @@ const Profile = ({ username }: ProfileProps) => {
 		</div>
 	);
 };
-
-export default Profile;

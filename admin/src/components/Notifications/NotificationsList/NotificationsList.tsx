@@ -1,14 +1,7 @@
 'use client';
 
-import CreateNotification from './CreateNotification/CreateNotification';
-import styles from './NotificationsList.module.scss';
+import { CreateNotification } from './CreateNotification/CreateNotification';
 
-const NotificationsList = () => {
-	return (
-		<div className={styles['notifications-list']}>
-			<CreateNotification />
-		</div>
-	);
+export const NotificationsList = () => {
+	return <CreateNotification />;
 };
-
-export default NotificationsList;

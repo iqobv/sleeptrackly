@@ -1,26 +1,43 @@
-import { CreateNotificationDto } from '@/dto';
-import { IField } from '@/types';
+import { CreateNotificationDto } from '@/dto/notification/notification.dto';
+import { Field } from '@/types/ui/field.types';
+import { NotificationType } from '@shared/types';
+import { capitalize } from '@shared/utils';
 
-export const FIELDS: IField<CreateNotificationDto>[] = [
+export const FIELDS: Field<CreateNotificationDto>[] = [
 	{
 		name: 'title',
 		label: 'Title',
 		placeholder: 'Enter notification title',
-		autocomplete: 'off',
+		autoComplete: 'off',
 		type: 'text',
+		required: true,
 	},
 	{
 		name: 'body',
 		label: 'Body',
 		placeholder: 'Enter notification body',
-		autocomplete: 'off',
+		autoComplete: 'off',
 		type: 'text',
+		required: true,
+	},
+	{
+		name: 'type',
+		label: 'Notification Type',
+		placeholder: 'Select notification type',
+		autoComplete: 'off',
+		type: 'select',
+		required: true,
+		options: Object.values(NotificationType).map((type) => ({
+			value: type,
+			label: capitalize(type.replace(/_/g, ' ')),
+			isDefault: type === NotificationType.OTHER,
+		})),
 	},
 	{
 		name: 'redirectUrl',
 		label: 'Redirect URL',
 		placeholder: 'Enter redirect URL (optional)',
-		autocomplete: 'off',
+		autoComplete: 'off',
 		type: 'text',
 	},
 	{

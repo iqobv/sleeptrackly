@@ -1,0 +1,17 @@
+model AchievementTranslation {
+  id String @id @default(uuid())
+
+  achievementId String @map("achievement_id")
+
+  language    String
+  title       String
+  description String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  achievement Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+
+  @@unique([achievementId, language])
+  @@map("achievement_translations")
+}

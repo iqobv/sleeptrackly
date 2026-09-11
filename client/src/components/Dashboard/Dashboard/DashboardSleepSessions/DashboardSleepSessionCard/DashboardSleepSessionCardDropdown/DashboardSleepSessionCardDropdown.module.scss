@@ -1,0 +1,13 @@
+.actions {
+	display: flex;
+	flex-direction: row;
+	gap: var(--gap);
+	align-items: center;
+	justify-content: center;
+}
+
+button.button {
+	padding: 0.7rem;
+	width: 100%;
+	justify-content: start;
+}

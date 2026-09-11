@@ -1,16 +1,24 @@
 @use '../../../styles/mixins' as *;
 
-.notifications {
-	&__container {
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-	}
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
 
-	&__list {
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-		overflow-y: auto;
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	overflow-y: auto;
+	max-height: 50vh;
+}
+
+.dropdown {
+	width: 100vw;
+
+	@include respond-to(md) {
+		width: auto;
+		min-width: 31.25rem;
 	}
 }

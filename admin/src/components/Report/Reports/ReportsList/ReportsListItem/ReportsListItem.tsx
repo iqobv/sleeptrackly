@@ -1,22 +1,23 @@
 'use client';
 
-import { PAGES } from '@/config';
-import { IReport } from '@/types';
-import { capitalize } from '@/utils';
+import { PAGES } from '@/config/pages.config';
+import { Report } from '@/types/report/report.types';
+import { capitalize } from '@shared/utils';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { CSSProperties } from 'react';
 import styles from './ReportsListItem.module.scss';
 
 interface ReportsListItemProps {
-	report: IReport;
+	report: Report;
 }
 
-const ReportsListItem = ({ report }: ReportsListItemProps) => {
+export const ReportsListItem = ({ report }: ReportsListItemProps) => {
 	return (
 		<Link
 			href={PAGES.REPORT(report.id)}
-			className={styles['reports-list-item']}
+			className={styles.item}
+			prefetch={false}
 		>
 			<div>
 				<p>{report.title}</p>
@@ -25,7 +26,7 @@ const ReportsListItem = ({ report }: ReportsListItemProps) => {
 				</div>
 			</div>
 			<div
-				className={styles['reports-list-item__status']}
+				className={styles.status}
 				style={
 					{
 						'--bg': `var(--bg-report-${report.status
@@ -39,5 +40,3 @@ const ReportsListItem = ({ report }: ReportsListItemProps) => {
 		</Link>
 	);
 };
-
-export default ReportsListItem;

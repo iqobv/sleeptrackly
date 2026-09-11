@@ -8,17 +8,19 @@ import {
 
 @ValidatorConstraint({ name: 'isFutureDate', async: false })
 export class IsFutureDateConstraint implements ValidatorConstraintInterface {
-	validate(date: Date) {
+	public validate(date: Date): boolean {
+		if (!date || !(date instanceof Date)) return true;
+
 		return date instanceof Date && date.getTime() > Date.now();
 	}
 
-	defaultMessage(args: ValidationArguments) {
+	public defaultMessage(args: ValidationArguments): string {
 		return `${args.property} must be a future date`;
 	}
 }
 
 export function IsFutureDate(validationOptions?: ValidationOptions) {
-	return function (object: Object, propertyName: string) {
+	return function (object: object, propertyName: string) {
 		registerDecorator({
 			target: object.constructor,
 			propertyName: propertyName,

@@ -1,7 +1,7 @@
-import { IField } from '../ui/field.types';
-import { IOption } from '../ui/option.types';
+import { Field } from '../ui/field.types';
+import { Option } from '../ui/option.types';
 
-export interface ChallengeField<T> extends IField<T> {
+export interface ChallengeField<T> extends Field<T> {
 	componentType?: 'input' | 'textarea' | 'list';
-	options?: IOption[];
+	options?: Option[];
 }

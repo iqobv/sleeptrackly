@@ -1,12 +1,10 @@
-import { PromotionsList } from '@/components/Promotions';
-import { Button } from '@/components/UI';
-import { PAGES } from '@/config';
+import { Promotions } from '@/components/Promotions/Promotions';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Promotions',
+};
 
 export default function PromotionsPage() {
-	return (
-		<div>
-			<Button href={PAGES.PROMOTION_NEW}>Create Promotion</Button>
-			<PromotionsList />
-		</div>
-	);
+	return <Promotions />;
 }

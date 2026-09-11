@@ -1,10 +1,10 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import {
 	CoinTransaction,
 	CoinTransactionType,
 	UserCoin,
-} from 'generated/prisma/client';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
+} from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CoinTransactionService } from './coin-transaction.service';
 
 type PrismaMock = {

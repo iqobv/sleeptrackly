@@ -1,3 +1,5 @@
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import {
 	Body,
 	Controller,
@@ -7,23 +9,24 @@ import {
 	Param,
 	Post,
 } from '@nestjs/common';
-import { ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
-import { CreateUserFcmTokenDto } from './dto';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateUserFcmTokenDto } from './dto/create-user-fcm-token.dto';
+import { FcmTokenDto } from './dto/fcm-token.dto';
 import { UserFcmTokenService } from './user-fcm-token.service';
 
+@Auth()
+@ApiTags('User FCM Token')
 @Controller('fcm')
 export class UserFcmTokenController {
 	constructor(private readonly userFcmTokenService: UserFcmTokenService) {}
 
-	@Auth()
-	@ApiOperation({ summary: 'Save FCM token for the user' })
+	/** Save FCM token for the user */
 	@Post('save-token')
-	async saveFcmToken(
+	public async saveFcmToken(
 		@Authorized('id') userId: string,
 		@Body() dto: CreateUserFcmTokenDto,
 		@Headers('user-agent') userAgent?: string,
-	) {
+	): Promise<FcmTokenDto> {
 		return await this.userFcmTokenService.create(
 			userId,
 			dto,
@@ -31,30 +34,29 @@ export class UserFcmTokenController {
 		);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Get FCM tokens for the user' })
+	/** Get all FCM tokens for the user */
 	@Get('tokens')
-	async getUserFcmTokens(@Authorized('id') userId: string) {
+	public async getUserFcmTokens(
+		@Authorized('id') userId: string,
+	): Promise<FcmTokenDto[]> {
 		return await this.userFcmTokenService.getTokensByUserId(userId);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Check if FCM token exists for the user' })
+	/** Check if FCM token exists for the user */
 	@Get('exists/:token')
-	async checkTokenExists(
+	public async checkTokenExists(
 		@Authorized('id') userId: string,
 		@Param('token') token: string,
-	) {
+	): Promise<boolean> {
 		return await this.userFcmTokenService.checkTokenExists(userId, token);
 	}
 
-	@Auth()
-	@ApiOperation({ summary: 'Remove FCM token for the user' })
-	@Delete('remove-token')
-	async removeFcmToken(
+	/** Remove FCM token for the user */
+	@Delete('remove-token/:token')
+	public async removeFcmToken(
 		@Authorized('id') userId: string,
-		@Body() dto: CreateUserFcmTokenDto,
-	) {
-		return await this.userFcmTokenService.removeByToken(userId, dto.token);
+		@Param('token') token: string,
+	): Promise<boolean> {
+		return await this.userFcmTokenService.removeByToken(userId, token);
 	}
 }

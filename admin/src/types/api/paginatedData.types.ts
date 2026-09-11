@@ -1,11 +1,8 @@
-export interface IPaginatedDataMeta {
-	page: number;
-	pageSize: number;
-	total: number;
-	totalPages: number;
-}
+import { components } from '@shared/types';
 
-export interface IPaginatedDataResponse<T> {
+export type PaginatedMetaData = components['schemas']['PaginatedMetaDto'];
+
+export interface PaginatedDataResponse<T> {
 	items: T[];
-	meta: IPaginatedDataMeta;
+	meta: PaginatedMetaData;
 }

@@ -1,8 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { FullProductDto } from 'src/api/product/dto';
-import { PaginatedDataDto } from 'src/libs/dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
+import { Expose, Type } from 'class-transformer';
+import { ShopProductDto } from './shop-product.dto';
 
-export class AllShopDto extends PaginatedDataDto<FullProductDto> {
-	@ApiProperty({ type: [FullProductDto] })
-	declare items: FullProductDto[];
+export class AllShopDto extends PaginatedDataDto<ShopProductDto> {
+	@Expose()
+	@Type(() => ShopProductDto)
+	declare items: ShopProductDto[];
 }

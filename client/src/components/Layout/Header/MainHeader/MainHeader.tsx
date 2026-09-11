@@ -1,12 +1,16 @@
-import Header from '../Header';
-import { MainHeaderNav } from '../HeaderInner';
+'use client';
 
-const MainHeader = () => {
-	return (
-		<Header>
-			<MainHeaderNav />
-		</Header>
-	);
-};
+import { NavLogo } from '@/components/UI';
+import { Container } from '@shared/ui';
+import { Header } from '../Header';
+import { AuthButtons } from '../HeaderInner/AuthButtons/AuthButtons';
+import styles from './MainHeader.module.scss';
 
-export default MainHeader;
+export const MainHeader = () => (
+	<Header>
+		<Container className={styles.container}>
+			<NavLogo hideTextOnMobile logoProps={{ width: 36, height: 36 }} />
+			<AuthButtons />
+		</Container>
+	</Header>
+);

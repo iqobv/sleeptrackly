@@ -8,19 +8,21 @@ interface CheckboxFieldProps extends ComponentPropsWithRef<'input'> {
 	error?: string;
 }
 
-const CheckboxField = ({ label, error, ...props }: CheckboxFieldProps) => {
+export const CheckboxField = ({
+	label,
+	error,
+	...props
+}: CheckboxFieldProps) => {
 	const generatedId = useId();
 	const id = props.id || generatedId;
 
 	return (
-		<div className={styles['auth-form__field']}>
-			<div className={styles['auth-form__checkbox']}>
+		<div className={styles.field}>
+			<div className={styles.checkbox}>
 				<input type="checkbox" id={id} {...props} />
 				<label htmlFor={id}>{label}</label>
 			</div>
-			{error && <span className={styles['auth-form__error']}>{error}</span>}
+			{error && <span className={styles.error}>{error}</span>}
 		</div>
 	);
 };
-
-export default CheckboxField;

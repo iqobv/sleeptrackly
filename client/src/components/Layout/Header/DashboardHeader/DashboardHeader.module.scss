@@ -1,0 +1,22 @@
+@use '../../../../styles/mixins' as *;
+
+.logo {
+	display: none;
+
+	&.show {
+		display: flex;
+	}
+
+	@include respond-to(md) {
+		display: flex;
+	}
+}
+
+.nav {
+	display: none;
+	align-items: center;
+
+	@include respond-to(md) {
+		display: flex;
+	}
+}

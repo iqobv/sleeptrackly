@@ -1,10 +1,20 @@
+import { AchievementModule } from '@api/achievement/achievement.module';
+import { ChallengeModule } from '@api/challenge/challenge.module';
+import { RewardModule } from '@api/reward/reward.module';
+import { SleepEntryModule } from '@api/sleep-entry/sleep-entry.module';
+import { WeeklySummaryModule } from '@api/weekly-summary/weekly-summary.module';
 import { Module } from '@nestjs/common';
-import { RewardModule } from '../reward/reward.module';
 import { UserSleepStatusController } from './user-sleep-status.controller';
 import { UserSleepStatusService } from './user-sleep-status.service';
 
 @Module({
-	imports: [RewardModule],
+	imports: [
+		RewardModule,
+		WeeklySummaryModule,
+		SleepEntryModule,
+		AchievementModule,
+		ChallengeModule,
+	],
 	controllers: [UserSleepStatusController],
 	providers: [UserSleepStatusService],
 	exports: [UserSleepStatusService],

@@ -1,6 +1,7 @@
+import { NotificationType } from '@generated/prisma/enums';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationController } from './notification.controller';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './services/notification.service';
 
 type NotificationServiceMock = {
 	create: jest.Mock;
@@ -71,6 +72,7 @@ describe('NotificationController', () => {
 				body: 'This is a test notification.',
 				redirectUrl: '/dashboard',
 				scheduledAt: new Date(),
+				type: NotificationType.OTHER,
 			};
 
 			const result = await controller.create(dto);

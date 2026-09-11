@@ -1,14 +1,23 @@
-import { UserSanctionDto } from '@/dto';
-import { IUserSanction } from '@/types';
-import { fetcher } from '@/utils';
+import { UserSanctionDto } from '@/dto/userSanction/userSanction.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type CreateSanctionResponse =
+	paths['/v1/admin/user-sanctions']['post']['responses']['200']['content']['application/json'];
+type RemoveSanctionResponse =
+	paths['/v1/admin/user-sanctions/{id}']['delete']['responses']['200']['content']['application/json'];
 
 export const createSanction = async (data: UserSanctionDto) =>
-	await fetcher<IUserSanction>('/api/v1/admin/user-sanctions', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(
+		await apiClient.post<CreateSanctionResponse>(
+			'/v1/admin/user-sanctions',
+			data,
+		)
+	).data;
 
 export const removeUserSanction = async (id: string) =>
-	await fetcher<boolean>(`/api/v1/admin/user-sanctions/${id}`, {
-		method: 'DELETE',
-	});
+	(
+		await apiClient.delete<RemoveSanctionResponse>(
+			`/v1/admin/user-sanctions/${id}`,
+		)
+	).data;

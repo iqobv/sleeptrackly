@@ -1,27 +1,22 @@
 'use client';
 
-import { IUser } from '@/types';
 import { PropsWithChildren } from 'react';
-import AuthProvider from './AuthProvider';
+import { AuthGuard } from './AuthGuard';
+import { NuqsProvider } from './NuqsProvider';
 import { TanstackQueryProvider } from './TanstackQueryProvider';
-import ThemeProvider from './ThemeProvider';
-import ToastProvider from './ToastProvider';
+import { ThemeProvider } from './ThemeProvider';
+import { ToastProvider } from './ToastProvider';
 
-interface MainProviderProps {
-	user: IUser | null;
-}
-
-export default function MainProvider({
-	children,
-	user,
-}: PropsWithChildren<MainProviderProps>) {
+export const MainProvider = ({ children }: PropsWithChildren<unknown>) => {
 	return (
-		<AuthProvider user={user}>
-			<TanstackQueryProvider>
-				<ThemeProvider>
-					<ToastProvider>{children}</ToastProvider>
-				</ThemeProvider>
-			</TanstackQueryProvider>
-		</AuthProvider>
+		<TanstackQueryProvider>
+			<ThemeProvider>
+				<ToastProvider>
+					<NuqsProvider>
+						<AuthGuard>{children}</AuthGuard>
+					</NuqsProvider>
+				</ToastProvider>
+			</ThemeProvider>
+		</TanstackQueryProvider>
 	);
-}
+};

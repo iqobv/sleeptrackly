@@ -1,8 +1,7 @@
 'use client';
 
-import { uploadUserAvatar } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
+import { uploadUserAvatar } from '@/api/user/userAvatar.api';
+import { useAuth } from '@/hooks/useAuth.hook';
 import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -19,7 +18,6 @@ export const useUploadAvatar = () => {
 
 	const { mutate: upload, isPending } = useMutation({
 		mutationFn: (file: File) => uploadUserAvatar(file),
-		mutationKey: QUERY_KEYS.user.avatar(user?.id || ''),
 		onSuccess() {
 			toast.success('Avatar updated');
 			router.refresh();

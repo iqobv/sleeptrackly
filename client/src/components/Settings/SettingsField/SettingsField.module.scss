@@ -1,26 +1,24 @@
 @use '../../../styles/mixins' as *;
 
-.settings-field {
+.field {
 	--mobile-direction: column;
 
 	width: 100%;
 	display: flex;
 	flex-direction: var(--mobile-direction);
-	gap: 10px;
+	gap: 0.625rem;
 	border: 1px solid var(--settings-item-border);
 	background-color: var(--settings-item-bg);
 	border-radius: 6px;
-	padding: 10px;
+	padding: 0.625rem;
 	font-size: 1.1rem;
 
-	&__label {
-		flex: 1 1 100%;
-	}
-
 	@include respond-to(md) {
-		& {
-			flex-direction: row;
-			align-items: center;
-		}
+		flex-direction: row;
+		align-items: center;
 	}
+}
+
+.label {
+	flex: 1 1 100%;
 }

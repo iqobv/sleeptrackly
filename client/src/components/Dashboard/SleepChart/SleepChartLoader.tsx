@@ -1,9 +1,9 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 import styles from './SleepChart.module.scss';
 
-const SleepChartLoader = () => {
+export const SleepChartLoader = () => {
 	return (
-		<div className={styles['sleep-chart__wrapper']} style={{ padding: 0 }}>
+		<div className={styles.wrapper} style={{ padding: 0 }}>
 			<SkeletonLoader
 				height="100%"
 				borderRadius="var(--dashboard-card-border-radius)"
@@ -11,5 +11,3 @@ const SleepChartLoader = () => {
 		</div>
 	);
 };
-
-export default SleepChartLoader;

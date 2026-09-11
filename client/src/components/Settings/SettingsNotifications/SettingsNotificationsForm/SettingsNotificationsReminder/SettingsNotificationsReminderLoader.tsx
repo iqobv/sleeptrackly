@@ -1,8 +1,8 @@
 'use client';
 
-import { SkeletonLoader } from '@/components/UI';
+import { SkeletonLoader } from '@shared/ui';
 
-const SettingsNotificationsReminderLoader = () => {
+export const SettingsNotificationsReminderLoader = () => {
 	return (
 		<>
 			<SkeletonLoader height={46} width="100%" />
@@ -10,5 +10,3 @@ const SettingsNotificationsReminderLoader = () => {
 		</>
 	);
 };
-
-export default SettingsNotificationsReminderLoader;

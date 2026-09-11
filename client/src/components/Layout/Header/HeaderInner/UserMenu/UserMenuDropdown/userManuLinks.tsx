@@ -1,7 +1,8 @@
-import { PAGES } from '@/config';
-import { IUser } from '@/types';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { User } from '@/types/user/user.types';
 import { IconBaseProps } from 'react-icons';
 import {
+	MdOutlineEmojiEvents,
 	MdOutlineInventory2,
 	MdOutlinePerson,
 	MdOutlineSettings,
@@ -19,24 +20,30 @@ const iconProps: IconBaseProps = {
 	size: 22,
 };
 
-export const USER_MAIN_LINKS = (user: IUser): Link[] => [
+export const USER_MAIN_LINKS = (user: User): Link[] => [
 	{
 		name: 'profile',
 		label: 'Profile',
-		path: PAGES.PROFILE(user.username),
+		path: PRIVATE_PAGES.PROFILE(user.username),
 		icon: <MdOutlinePerson {...iconProps} />,
 	},
 	{
 		name: 'friends',
 		label: 'Friends',
-		path: PAGES.FRIENDS,
+		path: PRIVATE_PAGES.FRIENDS.ALL,
 		icon: <MdPeopleOutline {...iconProps} />,
 	},
 	{
 		name: 'inventory',
 		label: 'Inventory',
-		path: PAGES.INVENTORY,
+		path: PRIVATE_PAGES.INVENTORY,
 		icon: <MdOutlineInventory2 {...iconProps} />,
+	},
+	{
+		name: 'achievements',
+		label: 'Achievements',
+		path: PRIVATE_PAGES.ACHIEVEMENTS,
+		icon: <MdOutlineEmojiEvents {...iconProps} />,
 	},
 ];
 
@@ -44,7 +51,7 @@ export const USER_SYSTEM_LINKS: Link[] = [
 	{
 		name: 'settings',
 		label: 'Settings',
-		path: PAGES.SETTINGS,
+		path: PRIVATE_PAGES.SETTINGS.MAIN,
 		icon: <MdOutlineSettings {...iconProps} />,
 	},
 ];

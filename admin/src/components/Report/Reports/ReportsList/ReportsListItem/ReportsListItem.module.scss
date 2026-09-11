@@ -1,19 +1,19 @@
-.reports-list-item {
+.item {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	padding: 8px;
+	padding: 0.5rem;
 	border: 1px solid var(--input-border);
 	border-radius: 8px;
 }
 
-.reports-list-item__status {
+.status {
 	--bg: var(--bg-report-pending);
 	background-color: var(--bg);
-	padding: 6px;
-	font-size: 13px;
+	padding: 0.375rem;
+	font-size: 0.8125rem;
 	border-radius: 10px;
 	color: #000;
 }

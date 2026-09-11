@@ -1,11 +1,13 @@
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type ValidateVerificationTokenResponse =
+	paths['/v1/auth/email-confirmation']['post']['responses']['200']['content']['application/json'];
 
 export const validateVerificationToken = async (token: string) =>
-	await fetcher(
-		`api/v1/auth/email-confirmation`,
-		{
-			method: 'POST',
-			body: JSON.stringify({ token }),
-		},
-		false,
-	);
+	(
+		await apiClient.post<ValidateVerificationTokenResponse>(
+			`/v1/auth/email-confirmation`,
+			{ token },
+		)
+	).data;

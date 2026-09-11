@@ -1,10 +1,12 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { Expose, Type } from 'class-transformer';
 import { SleepEntryDto } from './sleep-entry.dto';
 
 export class SleepDayDto {
-	@ApiProperty({ example: '2025-01-01' })
-	day: string;
+	@Expose() day: string;
 
-	@ApiProperty({ type: SleepEntryDto })
-	data: SleepEntryDto | null;
+	@Expose() sleepDuration: number;
+
+	@Expose()
+	@Type(() => SleepEntryDto)
+	data: SleepEntryDto[];
 }

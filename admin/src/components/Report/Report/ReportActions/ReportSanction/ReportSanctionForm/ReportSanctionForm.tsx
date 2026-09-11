@@ -1,17 +1,18 @@
 'use client';
 
-import { createSanction } from '@/api';
-import { Button, Select, TextField } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { UserSanctionDto } from '@/dto';
-import { userSanctionSchema } from '@/schemas';
+import { createSanction } from '@/api/userSanction/userSanction.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UserSanctionDto } from '@/dto/userSanction/userSanction.dto';
+import { userSanctionSchema } from '@/schemas/userSanction/userSanction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { FormSelect } from '@shared/form';
+import { Button, Field, Input, SelectItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './ReportSanctionForm.module.scss';
-import { USER_SANCTIONS_OPTIONS, UserSanctionOption } from './userSanctions';
+import { USER_SANCTIONS_OPTIONS } from './userSanctions';
 
 interface ReportSanctionFormProps {
 	reportId?: string;
@@ -21,7 +22,7 @@ interface ReportSanctionFormProps {
 	defaultValues?: Partial<UserSanctionDto>;
 }
 
-const ReportSanctionForm = ({
+export const ReportSanctionForm = ({
 	reportId,
 	isUpdate = false,
 	showRemoveButton = false,
@@ -50,12 +51,11 @@ const ReportSanctionForm = ({
 
 	const { mutate, isPending } = useMutation({
 		mutationFn: (data: UserSanctionDto) => createSanction(data),
-		mutationKey: QUERY_KEYS.userSanction.create,
 		onSuccess: () => {
 			toast.success('Sanction created');
 			if (reportId) {
 				queryClient.invalidateQueries({
-					queryKey: QUERY_KEYS.report.getReport(reportId),
+					queryKey: QUERY_KEYS.report.detail(reportId),
 				});
 			}
 		},
@@ -65,45 +65,42 @@ const ReportSanctionForm = ({
 	const onSubmit = (data: UserSanctionDto) => mutate(data);
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={styles['report-sanction__form']}
-		>
-			<TextField
-				type="datetime-local"
-				label="Start date"
-				error={errors['startsAt']?.message as string}
-				{...register('startsAt')}
-			/>
-			<TextField
-				type="datetime-local"
-				label="End date"
-				error={errors['endsAt']?.message as string}
-				{...register('endsAt')}
-			/>
-			<Controller
-				name="type"
-				control={control}
-				render={({ field }) => {
-					return (
-						<Select
-							options={USER_SANCTIONS_OPTIONS as UserSanctionOption[]}
-							isClearable
-							label="Sanction type"
-							placeholder="Select sanction type"
-							error={errors['type']?.message as string}
-							value={field.value}
-							onChange={(value: string) => field.onChange(value)}
-						/>
-					);
-				}}
-			/>
-			<div className={styles['report-sanction__buttons']}>
+		<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+			<Field label="Start date" error={errors['startsAt']?.message as string}>
+				<Input type="datetime-local" {...register('startsAt')} />
+			</Field>
+			<Field label="End date" error={errors['endsAt']?.message as string}>
+				<Input type="datetime-local" {...register('endsAt')} />
+			</Field>
+			<Field
+				label="Sanction type"
+				id="type"
+				error={errors['type']?.message as string}
+			>
+				<FormSelect
+					name="type"
+					control={control}
+					placeholder="Select sanction type"
+					id="type"
+				>
+					{USER_SANCTIONS_OPTIONS.map((option) => (
+						<SelectItem key={option.value} value={option.value}>
+							{option.label}
+						</SelectItem>
+					))}
+				</FormSelect>
+			</Field>
+			<div className={styles.buttons}>
 				<Button type="submit" loading={isPending}>
 					{isUpdate ? 'Update sanction' : 'Create sanction'}
 				</Button>
 				{showRemoveButton && (
-					<Button onClick={removeSanction} type="button" variant="secondary">
+					<Button
+						onClick={removeSanction}
+						type="button"
+						variant="contained"
+						color="secondary"
+					>
 						{isUpdate ? 'Remove sanction' : 'Cancel'}
 					</Button>
 				)}
@@ -111,5 +108,3 @@ const ReportSanctionForm = ({
 		</form>
 	);
 };
-
-export default ReportSanctionForm;

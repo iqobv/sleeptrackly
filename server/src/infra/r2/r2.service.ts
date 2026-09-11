@@ -1,34 +1,38 @@
 import {
 	DeleteObjectCommand,
+	DeleteObjectCommandOutput,
 	PutObjectCommand,
 	S3Client,
 } from '@aws-sdk/client-s3';
+import { EnvService } from '@infra/env/env.service';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import path from 'path';
+import { r2EnvSchema } from '../../config/schemas/r2.schema';
 
 @Injectable()
 export class R2Service {
 	private readonly s3Client: S3Client;
 	private readonly bucketName: string;
 
-	constructor(private readonly configService: ConfigService) {
+	constructor(private readonly envService: EnvService) {
+		const config = envService.getGroup(r2EnvSchema);
+
 		this.s3Client = new S3Client({
 			region: 'auto',
-			endpoint: configService.getOrThrow<string>('CLOUDFLARE_S3_API'),
+			endpoint: config.CLOUDFLARE_S3_API,
 			credentials: {
-				accessKeyId: configService.getOrThrow<string>(
-					'CLOUDFLARE_ACCESS_KEY_ID',
-				),
-				secretAccessKey: configService.getOrThrow<string>(
-					'CLOUDFLARE_ACCESS_SECRET_KEY',
-				),
+				accessKeyId: config.CLOUDFLARE_ACCESS_KEY_ID,
+				secretAccessKey: config.CLOUDFLARE_ACCESS_SECRET_KEY,
 			},
 		});
-		this.bucketName = configService.getOrThrow<string>('R2_BUCKET_NAME');
+		this.bucketName = config.R2_BUCKET_NAME;
 	}
 
-	async upload(fileBuffer: Buffer, key: string, mimetype: string) {
+	public async upload(
+		fileBuffer: Buffer,
+		key: string,
+		mimetype: string,
+	): Promise<{ key: string; extension: string }> {
 		const extension = path.extname(key);
 
 		const command = new PutObjectCommand({
@@ -47,7 +51,7 @@ export class R2Service {
 		};
 	}
 
-	async delete(key: string) {
+	public async delete(key: string): Promise<DeleteObjectCommandOutput> {
 		const command = new DeleteObjectCommand({
 			Bucket: this.bucketName,
 			Key: key,

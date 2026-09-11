@@ -1,0 +1,124 @@
+@use '../../../../styles/mixins' as *;
+
+.container {
+	width: 100%;
+	max-width: 90%;
+
+	@include respond-to(sm) {
+		max-width: 80%;
+	}
+
+	@include respond-to(lg) {
+		max-width: 42rem;
+	}
+}
+
+.body {
+	display: flex;
+	height: 16rem;
+}
+
+.yAxis {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	font-size: 0.875rem;
+	padding-right: 0.3rem;
+	user-select: none;
+	color: var(--secondary-color);
+
+	&Label {
+		text-align: right;
+	}
+}
+
+.chart {
+	position: relative;
+	flex: 1;
+}
+
+.bars {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	padding: 0 0.5rem;
+}
+
+.barContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	width: 1.5rem;
+	height: 100%;
+	z-index: 10;
+	position: relative;
+
+	@include respond-to(sm) {
+		width: 2.5rem;
+	}
+
+	@include respond-to(md) {
+		width: 3.5rem;
+	}
+
+	@include respond-to(lg) {
+		width: 3.5rem;
+	}
+}
+
+.bar {
+	width: 100%;
+	background-color: var(--dashboard-chart-bar-bg);
+	border-radius: var(--border-radius);
+	transition: all 0.5s ease-out;
+}
+
+.xAxis {
+	display: flex;
+	padding-left: 1.3rem;
+	margin-top: 0.75rem;
+}
+
+.xAxisLabels {
+	flex: 1;
+	display: flex;
+	justify-content: space-between;
+	padding: 0 0.5rem;
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--secondary-color);
+}
+
+.xAxisLabel {
+	width: 1.5rem;
+	text-align: center;
+	display: inline-flex;
+	justify-content: center;
+	user-select: none;
+
+	@include respond-to(sm) {
+		width: 2.5rem;
+	}
+
+	@include respond-to(md) {
+		width: 3.5rem;
+	}
+
+	@include respond-to(lg) {
+		width: 3.5rem;
+	}
+}
+
+.fullLabel {
+	display: none;
+
+	@include respond-to(sm) {
+		display: block;
+	}
+}

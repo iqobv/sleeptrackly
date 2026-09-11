@@ -1,27 +1,76 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import { ShopFilterDto } from '@/dto';
+import { getShopFilters } from '@/api/shop/getShopFilters.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { ShopFilterDto } from '@/dto/shop/shop.dto';
+import { Button, Checkbox, Input, Typography } from '@shared/ui';
+import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 import { DEFAULT_SHOP_FILTER_VALUES } from '../shopFilterValues';
+import { useShopFilters } from '../useShopFilters.hook';
 import styles from './AllShopFilter.module.scss';
 import { shopItemTypeOptions, shopProductTypeOptions } from './filterOptions';
 
-const AllShopFilter = () => {
+const setValueAs = (v: unknown) =>
+	v === '' || v == null || Number.isNaN(Number(v)) ? null : Number(v);
+
+export const AllShopFilter = () => {
 	const { register, reset } = useFormContext<ShopFilterDto>();
 
-	const handleReset = () => reset(DEFAULT_SHOP_FILTER_VALUES);
+	const [, setUrlFilters] = useShopFilters();
+
+	const { data } = useQuery({
+		queryKey: QUERY_KEYS.shop.filters,
+		queryFn: () => getShopFilters({ language: 'en' }),
+	});
+
+	const handleReset = () => {
+		reset(DEFAULT_SHOP_FILTER_VALUES);
+
+		setUrlFilters({
+			type: null,
+			itemType: null,
+			search: null,
+			collection: null,
+			sortBy: null,
+			sortOrder: null,
+			page: 1,
+			minPrice: null,
+			maxPrice: null,
+		});
+	};
 
 	return (
-		<div className={styles['filter']}>
-			<div className={styles['filter__option']}>
+		<div className={styles.filter}>
+			<div className={styles.option}>
+				<Typography variant="subtitle1">Price Range</Typography>
+				<div className={styles.priceRange}>
+					<Input
+						placeholder="Min Price"
+						type="number"
+						className={styles.priceInput}
+						{...register('minPrice', {
+							setValueAs: (v) => setValueAs(v),
+						})}
+					/>
+					<Input
+						placeholder="Max Price"
+						type="number"
+						className={styles.priceInput}
+						{...register('maxPrice', {
+							setValueAs: (v) => setValueAs(v),
+						})}
+					/>
+				</div>
+			</div>
+			<div className={styles.option}>
 				{shopProductTypeOptions.map((productType) => (
-					<div key={productType.value} className={styles['filter__item']}>
+					<div key={productType.value}>
 						<input
 							type="radio"
 							id={`productType_${productType.value}`}
 							value={productType.value}
-							className={styles['radio']}
+							className={styles.radio}
 							{...register('type')}
 						/>
 						<label htmlFor={`productType_${productType.value}`}>
@@ -30,27 +79,38 @@ const AllShopFilter = () => {
 					</div>
 				))}
 			</div>
-			<div className={styles['filter__option']}>
+			<div className={styles.option}>
 				{shopItemTypeOptions.map((itemType) => (
-					<div key={itemType.value} className={styles['filter__item']}>
-						<input
-							type="checkbox"
-							id={`itemType_${itemType.value}`}
+					<div key={itemType.value}>
+						<Checkbox
+							label={itemType.label}
 							value={itemType.value}
-							className={styles['checkbox']}
+							id={`itemType_${itemType.value}`}
 							{...register('itemType')}
 						/>
-						<label htmlFor={`itemType_${itemType.value}`}>
-							{itemType.label}
-						</label>
 					</div>
 				))}
 			</div>
+			{data?.collections && (
+				<div className={styles.option}>
+					<Typography variant="subtitle1">Collections</Typography>
+					<div className={styles.option}>
+						{data.collections.map((collection) => (
+							<div key={collection.slug}>
+								<Checkbox
+									label={collection.name}
+									value={collection.slug}
+									id={`collection_${collection.slug}`}
+									{...register('collection')}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+			)}
 			<Button type="button" onClick={handleReset}>
 				Reset Filters
 			</Button>
 		</div>
 	);
 };
-
-export default AllShopFilter;

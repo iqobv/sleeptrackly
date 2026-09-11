@@ -1,9 +1,12 @@
-export const FIREBASE_CONFIG = {
-	apiKey: 'AIzaSyBBG7HyB2c3AHDb-my3Ix-rMR0KwZsVCsU',
-	authDomain: 'sleeptrackly.firebaseapp.com',
-	projectId: 'sleeptrackly',
-	storageBucket: 'sleeptrackly.appspot.com',
-	messagingSenderId: '567224368591',
-	appId: '1:567224368591:web:79db3442de95cb933026ba',
-	measurementId: 'G-JDKRG6XN5C',
+import { env } from '@/env';
+import { FirebaseOptions } from 'firebase/app';
+
+export const FIREBASE_CONFIG: FirebaseOptions = {
+	apiKey: env.NEXT_PUBLIC_FIREBASE_API_KEY,
+	authDomain: env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+	projectId: env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+	storageBucket: env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+	appId: env.NEXT_PUBLIC_FIREBASE_APP_ID,
+	measurementId: env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };

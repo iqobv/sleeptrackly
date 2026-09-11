@@ -1,17 +1,19 @@
 'use client';
 
-import { apiUsePromotion } from '@/api';
-import { QUERY_KEYS } from '@/config';
-import { UsePromotionDto } from '@/dto';
-import { usePromotionSchema } from '@/schemas';
+import { promotionUse } from '@/api/promotion/promotion.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { UsePromotionDto } from '@/dto/promotion/promotion.dto';
+import { usePromotionSchema } from '@/schemas/promotion/promotion.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { Button, Field, Input, SectionHeader } from '@shared/ui';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Button, SectionHeader, TextField } from '../UI';
 import styles from './Promotion.module.scss';
 
-const Promotion = () => {
+export const Promotion = () => {
+	const queryClient = useQueryClient();
+
 	const {
 		register,
 		handleSubmit,
@@ -23,11 +25,19 @@ const Promotion = () => {
 	});
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: (data: UsePromotionDto) => apiUsePromotion(data),
-		mutationKey: QUERY_KEYS.promotion.use,
+		mutationFn: (data: UsePromotionDto) => promotionUse(data),
 		onSuccess: () => {
 			toast.success('Promo code applied successfully!');
 			reset({ alias: '' });
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.coin.userCoin,
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.inventory.lists(),
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.shop.all,
+			});
 		},
 		onError: (error) => {
 			toast.error(error.message || 'Failed to apply promo code.');
@@ -38,40 +48,32 @@ const Promotion = () => {
 	const onSubmit = (data: UsePromotionDto) => mutate(data);
 
 	return (
-		<div className={styles['promotion']}>
-			<div className={styles['promotion__content']}>
+		<div className={styles.promotion}>
+			<div className={styles.content}>
 				<SectionHeader
 					title="Redeem Code"
 					description="Enter your promo code"
+					textAlign="center"
 				/>
-				<form
-					onSubmit={handleSubmit(onSubmit)}
-					className={styles['promotion__form']}
-				>
-					<div className={styles['promotion__field-wrapper']}>
-						<TextField
+				<form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+					<Field error={errors.alias?.message} label="Promo Code" required>
+						<Input
 							placeholder="Enter alias"
-							className={styles['promotion__field']}
-							error={errors.alias?.message && ''}
-							fullWidth
+							rightSection={
+								<Button
+									type="submit"
+									disabled={!isDirty}
+									className={styles.button}
+									loading={isPending}
+								>
+									Use
+								</Button>
+							}
 							{...register('alias')}
 						/>
-						<Button
-							type="submit"
-							disabled={!isDirty}
-							className={styles['promotion__button']}
-							loading={isPending}
-						>
-							Use
-						</Button>
-					</div>
-					{errors.alias && (
-						<p className={styles['promotion__error']}>{errors.alias.message}</p>
-					)}
+					</Field>
 				</form>
 			</div>
 		</div>
 	);
 };
-
-export default Promotion;

@@ -1,20 +1,12 @@
-import { TChallengeFrequency } from './challengeFrequncy.types';
-import { IChallengeTask } from './challengeTask.types';
+import { getAvailableChallenges } from '@/api/challenge/getAvaibleChallenges.api';
+import { getChallengeById } from '@/api/challenge/getChallengeById.api';
+import { getUserActiveChallenges } from '@/api/challenge/getUserActiveChallenges.api';
 
-export interface IChallenge {
-	id: string;
-	userId: string;
-	title: string;
-	description: string;
-	frequency: TChallengeFrequency;
-	isStarted: boolean;
-	isCompleted: boolean;
-	startDate: Date;
-	endDate: Date;
-	createdAt: Date;
-	updatedAt: Date;
-}
+export type Challenge = Awaited<
+	ReturnType<typeof getAvailableChallenges>
+>[number];
+export type ChallengeFull = Awaited<ReturnType<typeof getChallengeById>>;
 
-export interface IChallengeFull extends IChallenge {
-	tasks: IChallengeTask[];
-}
+export type ActiveChallenge = Awaited<
+	ReturnType<typeof getUserActiveChallenges>
+>[number];

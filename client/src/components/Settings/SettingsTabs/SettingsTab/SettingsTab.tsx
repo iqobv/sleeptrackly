@@ -9,17 +9,13 @@ interface SettingsTabProps {
 	isActive?: boolean;
 }
 
-const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
+export const SettingsTab = ({ tab, isActive = false }: SettingsTabProps) => {
 	return (
 		<Link
-			href={`?tab=${tab.name}`}
-			className={`${styles['settings-tab']} ${
-				isActive ? styles['settings-tab--active'] : ''
-			}`}
+			href={tab.href}
+			className={`${styles.tab} ${isActive ? styles.active : ''}`}
 		>
 			{tab.label}
 		</Link>
 	);
 };
-
-export default SettingsTab;

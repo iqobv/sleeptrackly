@@ -1,14 +1,12 @@
 import type { NextConfig } from 'next';
+import './src/env';
 
 const nextConfig: NextConfig = {
-	async rewrites() {
-		return [
-			{
-				source: '/api/:path*',
-				destination: `${process.env.API_URL}/:path*`,
-			},
-		];
-	},
+	allowedDevOrigins: [
+		'local.sleeptrackly.com',
+		'app.local.sleeptrackly.com',
+		'admin.local.sleeptrackly.com',
+	],
 	images: {
 		remotePatterns: [
 			{
@@ -25,6 +23,14 @@ const nextConfig: NextConfig = {
 			},
 		],
 	},
+	transpilePackages: [
+		'@shared/ui',
+		'@shared/utils',
+		'@shared/types',
+		'@shared/hooks',
+		'@shared/tables',
+		'@shared/forms',
+	],
 };
 
 export default nextConfig;

@@ -1,14 +1,3 @@
-import { ITranslation } from '../translation/translation.types';
-import { IItemInBundle } from './itemInBundle.types';
+import { components } from '@shared/types';
 
-export interface IBundle {
-	id: string;
-	isExclusive: false;
-	basePrice: number;
-	discountPercentage: number;
-	mediaUrl: string;
-	createdAt: Date;
-	updatedAt: Date;
-	translation: ITranslation;
-	items: IItemInBundle[];
-}
+export type Bundle = components['schemas']['ShopBundleDto'];

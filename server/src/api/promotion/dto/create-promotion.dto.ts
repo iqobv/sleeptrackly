@@ -1,3 +1,4 @@
+import { IsFutureDate } from '@libs/validators/is-future-date.validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -9,7 +10,6 @@ import {
 	Min,
 	MinLength,
 } from 'class-validator';
-import { IsFutureDate } from 'src/libs/validators';
 
 export class CreatePromotionDto {
 	@ApiProperty({ example: 'alias' })

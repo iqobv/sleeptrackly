@@ -1,40 +1,53 @@
 'use client';
 
-import { getAllItems } from '@/api';
-import { Button, Modal } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { IItem } from '@/types';
-import { useEffect, useState } from 'react';
-import { FieldValues, Path, PathValue, useFormContext } from 'react-hook-form';
-import ItemCard from '../../ItemCard/ItemCard';
-import ItemsListPaginatedWrapper from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import ItemsListWrapper from '../../ItemsListWrapper/ItemsListWrapper';
+import { getAllItems } from '@/api/customization/item/item.api';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Item } from '@/types/customization/item/item.types';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalContent,
+	ModalHeader,
+	ModalTrigger,
+} from '@shared/ui';
+import { useState } from 'react';
+import {
+	FieldValues,
+	Path,
+	PathValue,
+	useFormContext,
+	useWatch,
+} from 'react-hook-form';
+import { ItemCard } from '../../ItemCard/ItemCard';
+import { ItemsListPaginatedWrapper } from '../../ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { ItemsListWrapper } from '../../ItemsListWrapper/ItemsListWrapper';
+import styles from './BundleItems.module.scss';
 
 interface BundleItemsProps {
-	initialItems?: IItem[];
+	initialItems?: Item[];
 }
 
-const BundleItems = <T extends FieldValues>({
+export const BundleItems = <T extends FieldValues>({
 	initialItems,
 }: BundleItemsProps) => {
-	const [open, setOpen] = useState(false);
-	const [selectedItems, setSelectedItems] = useState<IItem[]>([]);
+	const [selectedItems, setSelectedItems] = useState<Item[]>(() => {
+		if (initialItems && initialItems.length > 0) {
+			return initialItems;
+		}
+		return [];
+	});
 
 	const name = 'itemsIds' as Path<T>;
+	const { setValue, control } = useFormContext<T>();
 
-	const { setValue, watch } = useFormContext<T>();
-	const selectedIds = (watch(name) as string[]) || [];
+	const selectedIds =
+		(useWatch({
+			control,
+			name,
+		}) as string[]) || [];
 
-	useEffect(() => {
-		if (initialItems && initialItems.length > 0) {
-			setSelectedItems(initialItems);
-			setValue(name, initialItems.map((i) => i.id) as PathValue<T, Path<T>>, {
-				shouldDirty: false,
-			});
-		}
-	}, [initialItems, setValue, name]);
-
-	const toggleItem = (item: IItem) => {
+	const toggleItem = (item: Item) => {
 		const isSelected = selectedIds.includes(item.id);
 
 		if (isSelected) {
@@ -52,14 +65,43 @@ const BundleItems = <T extends FieldValues>({
 		}
 	};
 
-	const handleToggleModal = () => setOpen((prev) => !prev);
-
 	return (
-		<div>
-			<Button onClick={handleToggleModal} type="button">
-				Add Items
-			</Button>
-
+		<>
+			<Modal>
+				<ModalTrigger asChild>
+					<Button type="button">Add Items</Button>
+				</ModalTrigger>
+				<ModalContent className={styles.content}>
+					<ModalHeader>Select Items</ModalHeader>
+					<ModalBody>
+						<ItemsListPaginatedWrapper
+							queryFn={({ language: _l, ...params }) => getAllItems(params)}
+							queryKey={({ language: _l, ...params }) =>
+								QUERY_KEYS.customization.item.list(params)
+							}
+							isModal
+							itemCard={(item) => {
+								const isSelected = selectedIds.includes(item.id);
+								return (
+									<ItemCard
+										key={item.id}
+										item={item}
+										actions={
+											<Button
+												type="button"
+												variant={isSelected ? 'outlined' : 'contained'}
+												onClick={() => toggleItem(item)}
+											>
+												{isSelected ? 'Remove' : 'Add'}
+											</Button>
+										}
+									/>
+								);
+							}}
+						/>
+					</ModalBody>
+				</ModalContent>
+			</Modal>
 			{selectedItems.length > 0 && (
 				<ItemsListWrapper
 					items={selectedItems}
@@ -81,33 +123,6 @@ const BundleItems = <T extends FieldValues>({
 					)}
 				/>
 			)}
-
-			<Modal isOpen={open} onClose={handleToggleModal}>
-				<ItemsListPaginatedWrapper
-					queryFn={getAllItems}
-					queryKey={(query) => [...QUERY_KEYS.customization.item.getAll(query)]}
-					itemCard={(item) => {
-						const isSelected = selectedIds.includes(item.id);
-						return (
-							<ItemCard
-								key={item.id}
-								item={item}
-								actions={
-									<Button
-										type="button"
-										variant={isSelected ? 'outlined' : 'contained'}
-										onClick={() => toggleItem(item)}
-									>
-										{isSelected ? 'Remove' : 'Add'}
-									</Button>
-								}
-							/>
-						);
-					}}
-				/>
-			</Modal>
-		</div>
+		</>
 	);
 };
-
-export default BundleItems;

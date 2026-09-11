@@ -1,17 +1,17 @@
 'use client';
 
-import { INotificationSettings } from '@/types';
+import { NotificationSettings } from '@/types/settings/notifications.types';
 import { FormProvider } from 'react-hook-form';
 import styles from './SettingsNotificationsForm.module.scss';
-import SettingsNotificationsFormFields from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';
-import SettingsNotificationsReminder from './SettingsNotificationsReminder/SettingsNotificationsReminder';
+import { SettingsNotificationsFormFields } from './SettingsNotificationsFormFields/SettingsNotificationsFormFields';
+import { SettingsNotificationsReminder } from './SettingsNotificationsReminder/SettingsNotificationsReminder';
 import { useSettingsNotificationsForm } from './useSettingsNotificationsForm.hook';
 
 interface SettingsNotificationsFormProps {
-	data: INotificationSettings;
+	data: NotificationSettings;
 }
 
-const SettingsNotificationsForm = ({
+export const SettingsNotificationsForm = ({
 	data,
 }: SettingsNotificationsFormProps) => {
 	const { methods, updateSetting } = useSettingsNotificationsForm({
@@ -20,12 +20,10 @@ const SettingsNotificationsForm = ({
 
 	return (
 		<FormProvider {...methods}>
-			<form className={styles['notifications-form']}>
+			<form className={styles.form}>
 				<SettingsNotificationsFormFields updateSetting={updateSetting} />
 				<SettingsNotificationsReminder updateSetting={updateSetting} />
 			</form>
 		</FormProvider>
 	);
 };
-
-export default SettingsNotificationsForm;

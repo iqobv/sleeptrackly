@@ -1,14 +1,14 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import { IProfile } from '@/types';
+import { Profile } from '@/types/profile/profile.types';
+import { Button } from '@shared/ui';
 import { useProfileAddToFriendButton } from './useProfileAddToFriendButton';
 
 interface ProfileAddToFriendButtonProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
-const ProfileAddToFriendButton = ({
+export const ProfileAddToFriendButton = ({
 	profile,
 }: ProfileAddToFriendButtonProps) => {
 	const { buttonConfig, isPending, mutate } =
@@ -24,5 +24,3 @@ const ProfileAddToFriendButton = ({
 		</Button>
 	);
 };
-
-export default ProfileAddToFriendButton;

@@ -1,20 +1,25 @@
 'use client';
 
-import { Button, Divider } from '@/components/UI';
-import { INotification } from '@/types';
+import { WeeklySummary } from '@/components/WeeklySummary/WeeklySummary';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { Notification } from '@/types/notification/notification.types';
+import { NotificationType } from '@shared/types';
+import { Button, Divider, DropdownItem, Modal, ModalTrigger } from '@shared/ui';
+import clsx from 'clsx';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import styles from './NotificationsListItem.module.scss';
+import { NotificationsListItemRedirect } from './NotificationsListItemRedirect';
 
 dayjs.extend(relativeTime);
 
 interface NotificationsListItemProps {
-	notification: INotification;
+	notification: Notification;
 	withDivider?: boolean;
 	onClose?: () => void;
 }
 
-const NotificationsListItem = ({
+export const NotificationsListItem = ({
 	notification,
 	withDivider,
 	onClose,
@@ -25,32 +30,53 @@ const NotificationsListItem = ({
 		<>
 			<div
 				id={notification.id}
-				className={`${styles['notification-item']} ${
-					isUnread ? styles['notification-item--unread'] : ''
-				}`}
+				className={clsx(styles.item, isUnread && styles.unread)}
 			>
-				<div className={styles['notification-item__content']}>
-					<p className={styles['notification-item__title']}>
-						{notification.title}
-					</p>
+				<div className={styles.content}>
+					<p className={styles.title}>{notification.title}</p>
 					{notification.body && (
-						<p className={styles['notification-item__body']}>
-							{notification.body}
-						</p>
+						<p className={styles.body}>{notification.body}</p>
 					)}
 				</div>
-				{notification.redirectUrl && (
-					<Button
-						fullWidth
-						href={notification.redirectUrl}
-						size="sm"
-						variant="outlined"
-						onClick={() => onClose && onClose()}
-					>
-						Open
-					</Button>
+				{notification.type === NotificationType.FRIEND_REQUEST && (
+					<NotificationsListItemRedirect href={PRIVATE_PAGES.FRIENDS.REQUESTS}>
+						View
+					</NotificationsListItemRedirect>
 				)}
-				<div className={styles['notification-item__date']}>
+				{(notification.type === NotificationType.CHALLENGE_FROZEN ||
+					notification.type === NotificationType.CHALLENGE_FAILED ||
+					notification.type === NotificationType.CHALLENGE_EXPIRED) && (
+					<NotificationsListItemRedirect
+						href={PRIVATE_PAGES.CHALLENGES.BY_ID(notification.challengeId!)}
+					>
+						View
+					</NotificationsListItemRedirect>
+				)}
+				{notification.redirectUrl && (
+					<NotificationsListItemRedirect href={notification.redirectUrl}>
+						Open
+					</NotificationsListItemRedirect>
+				)}
+				{notification.type === NotificationType.WEEKLY_SUMMARY &&
+					notification.weeklySleepSummaryId && (
+						<DropdownItem asChild>
+							<Modal>
+								<ModalTrigger asChild>
+									<Button
+										fullWidth
+										size="sm"
+										variant="outlined"
+										onClick={() => onClose && onClose()}
+										asChild
+									>
+										View Summary
+									</Button>
+								</ModalTrigger>
+								<WeeklySummary id={notification.weeklySleepSummaryId} />
+							</Modal>
+						</DropdownItem>
+					)}
+				<div className={styles.date}>
 					{dayjs(notification.createdAt).fromNow()}
 				</div>
 			</div>
@@ -58,5 +84,3 @@ const NotificationsListItem = ({
 		</>
 	);
 };
-
-export default NotificationsListItem;

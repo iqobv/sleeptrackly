@@ -1,17 +1,3 @@
-import { ITranslation } from '../translation/translation.types';
-import { TItemRarity } from './itemRarity.types';
-import { TItemType } from './itemType.types';
+import { components } from '@shared/types';
 
-export interface IItem {
-	id: string;
-	type: TItemType;
-	isExclusive: boolean;
-	rarity: TItemRarity;
-	basePrice: number;
-	mediaUrl: string;
-	previewUrl: string;
-	isAnimated: boolean;
-	createdAt: Date;
-	updatedAt: Date;
-	translation: ITranslation;
-}
+export type Item = components['schemas']['ShopItemDto'];

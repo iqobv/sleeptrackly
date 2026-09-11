@@ -1,12 +1,11 @@
 'use client';
 
-import { Loader, ToggleSwitch } from '@/components/UI';
-import SettingsField from '../../SettingsField/SettingsField';
-import { useSettingsNotificationsPush } from './useSettingsNotificationsPush.hook';
+import { usePushNotifications } from '@/hooks/usePushNotifications.hook';
+import { Loader, ToggleSwitch } from '@shared/ui';
+import { SettingsField } from '../../SettingsField/SettingsField';
 
-const SettingsNotificationsPush = () => {
-	const { isPushEnabled, isLoading, handleTogglePush } =
-		useSettingsNotificationsPush();
+export const SettingsNotificationsPush = () => {
+	const { isPushEnabled, isLoading, handleTogglePush } = usePushNotifications();
 
 	return (
 		<SettingsField label="Enable Push Notifications" mobileDirection="row">
@@ -27,5 +26,3 @@ const SettingsNotificationsPush = () => {
 		</SettingsField>
 	);
 };
-
-export default SettingsNotificationsPush;

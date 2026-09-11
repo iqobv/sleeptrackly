@@ -1,17 +1,18 @@
 'use client';
 
-import { Button, SectionHeader } from '@/components/UI';
-import { REPORT_STATUS } from '@/constants';
-import { IReportFull } from '@/types';
+import { FullReport } from '@/types/report/report.types';
+import { ReportStatus } from '@/types/report/reportStatus.types';
+import { Button, SectionHeader } from '@shared/ui';
 import { useState } from 'react';
 import styles from './ReportSanction.module.scss';
-import ReportSanctionForm from './ReportSanctionForm/ReportSanctionForm';
-import ReportUserSanctions from './ReportUserSanctions/ReportUserSanctions';
+import { ReportSanctionForm } from './ReportSanctionForm/ReportSanctionForm';
+import { ReportUserSanctions } from './ReportUserSanctions/ReportUserSanctions';
 
 interface ReportSanctionProps {
-	report: IReportFull;
+	report: FullReport;
 }
-const ReportSanction = ({ report }: ReportSanctionProps) => {
+
+export const ReportSanction = ({ report }: ReportSanctionProps) => {
 	const [sanctions, setSanctions] = useState<number[]>([]);
 
 	const handleAddSanction = () =>
@@ -22,15 +23,20 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 	};
 
 	return (
-		<div className={styles['report-sanction']}>
-			<SectionHeader title="Sanctions" titleComponent="h3" />
+		<div className={styles.sanction}>
+			<SectionHeader
+				title="Sanctions"
+				titleProps={{
+					variant: 'h3',
+				}}
+			/>
 			{report.sanctions.length > 0 && (
 				<ReportUserSanctions
 					reportId={report.id}
 					sanctions={report.sanctions}
 				/>
 			)}
-			{report.status === REPORT_STATUS.IN_PROGRESS && (
+			{report.status === ReportStatus.IN_PROGRESS && (
 				<>
 					{sanctions.map((el) => (
 						<div key={el}>
@@ -39,7 +45,7 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 								removeSanction={() => removeSanction(el)}
 								defaultValues={{
 									reportId: report.id,
-									targetUserId: report.targetUserId,
+									targetUserId: report.targetUserId ?? undefined,
 								}}
 							/>
 						</div>
@@ -52,5 +58,3 @@ const ReportSanction = ({ report }: ReportSanctionProps) => {
 		</div>
 	);
 };
-
-export default ReportSanction;

@@ -1,9 +1,5 @@
-import { ProductsList } from '@/components/Customization/Products';
+import { Products } from '@/components/Customization/Products/Products/Products';
 
 export default function ProductsPage() {
-	return (
-		<div>
-			<ProductsList />
-		</div>
-	);
+	return <Products />;
 }

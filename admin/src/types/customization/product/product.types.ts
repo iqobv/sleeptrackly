@@ -1,27 +1,3 @@
-import { IBundle } from '../bundle/bundle.types';
-import { IItem } from '../item/item.types';
-import { TItemType } from '../item/itemType.types';
-import { TProductType } from './productType.types';
+import { getProductById } from '@/api/customization/product/product.api';
 
-export interface IProduct {
-	id: string;
-	type: TProductType;
-	itemType: TItemType | null;
-	bundleId: string | null;
-	itemId: string | null;
-	isNew: boolean;
-	isPopular: boolean;
-	isExclusive: boolean;
-	isShowInStore: boolean;
-	isLimited: boolean;
-	price: number;
-	discountedPrice: number | null;
-	maxStock: number | null;
-	soldCount: number;
-	expiresAt: Date | null;
-	createdAt: Date;
-	updatedAt: Date;
-	bundle: IBundle | null;
-	item: IItem | null;
-	isOwned: boolean;
-}
+export type Product = NonNullable<Awaited<ReturnType<typeof getProductById>>>;

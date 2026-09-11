@@ -1,5 +1,5 @@
-import { defineConfig } from '@prisma/config';
 import 'dotenv/config';
+import { defineConfig } from 'prisma/config';
 
 const postgresUri = process.env.POSTGRES_URI;
 

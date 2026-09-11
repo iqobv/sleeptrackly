@@ -1,20 +1,24 @@
+import { Auth } from '@libs/decorators/auth.decorator';
+import { Authorized } from '@libs/decorators/authorized.decorator';
 import { Controller, Get } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { Auth, Authorized } from 'src/libs/decorators';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CoinTransactionService } from './coin-transaction.service';
-import { CoinTransactionDto } from './dto';
+import { CoinTransactionDto } from './dto/coin-transaction.dto';
 
+@Auth()
+@ApiTags('Coin Transactions')
 @Controller('coin-transactions')
 export class CoinTransactionController {
 	constructor(
 		private readonly coinTransactionService: CoinTransactionService,
 	) {}
 
-	@ApiOperation({ summary: 'Get coin transactions of the authenticated user' })
-	@ApiOkResponse({ type: [CoinTransactionDto] })
-	@Auth()
+	/** Get coin transactions of the authenticated user */
 	@Get('me')
-	async getUserCoinTransactions(@Authorized('id') userId: string) {
+	@ApiOkResponse({ type: [CoinTransactionDto] })
+	public async getUserCoinTransactions(
+		@Authorized('id') userId: string,
+	): Promise<CoinTransactionDto[]> {
 		return await this.coinTransactionService.getUserTransactions(userId);
 	}
 }

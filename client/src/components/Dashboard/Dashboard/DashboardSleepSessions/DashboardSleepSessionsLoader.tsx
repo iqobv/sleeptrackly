@@ -1,4 +1,4 @@
-import { SkeletonLoader } from '@/components/UI';
+import { SectionHeaderLoader, SkeletonLoader } from '@shared/ui';
 import styles from './DashboardSleepSessions.module.scss';
 
 const borderRadius = 'var(--dashboard-card-border-radius)';
@@ -8,19 +8,15 @@ const cards = Array.from({ length: 7 }).map((_, i) => (
 		key={i}
 		borderRadius={borderRadius}
 		height={85}
-		className={styles['sleep-session']}
+		className={styles.sleepSession}
 	/>
 ));
 
-const DashboardSleepSessionsLoader = () => {
+export const DashboardSleepSessionsLoader = () => {
 	return (
-		<div className={styles['sleep-sessions']}>
-			<div style={{ padding: '20px 0' }}>
-				<SkeletonLoader width={220} height={28} borderRadius={borderRadius} />
-			</div>
-			<div className={styles['sleep-sessions__list']}>{cards}</div>
+		<div className={styles.sleepSessions}>
+			<SectionHeaderLoader titleHeight={28} titleWidth={220} />
+			<div className={styles.list}>{cards}</div>
 		</div>
 	);
 };
-
-export default DashboardSleepSessionsLoader;

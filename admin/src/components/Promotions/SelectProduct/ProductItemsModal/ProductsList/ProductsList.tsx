@@ -1,25 +1,15 @@
 'use client';
 
-import { getAllProducts } from '@/api';
-import ItemsListPaginatedWrapper from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
-import { Button } from '@/components/UI';
-import { QUERY_KEYS } from '@/config';
-import { CreatePromotionDto, PaginationWithLanguageDto } from '@/dto';
-import { IProduct } from '@/types';
-import { useSearchParams } from 'next/navigation';
+import { getAllProducts } from '@/api/customization/product/product.api';
+import { ItemsListPaginatedWrapper } from '@/components/Customization/ItemsListPaginatedWrapper/ItemsListPaginatedWrapper';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { CreatePromotionDto } from '@/dto/promotion/promotion.dto';
+import { Product } from '@/types/customization/product/product.types';
+import { Button } from '@shared/ui';
 import { useFormContext } from 'react-hook-form';
-import ItemCard from './ItemCard/ItemCard';
+import { ItemCard } from './ItemCard/ItemCard';
 
-const ProductsList = () => {
-	const searchParams = useSearchParams();
-	const pageFromParams = Number(searchParams.get('page')) || 1;
-
-	const params: PaginationWithLanguageDto = {
-		page: pageFromParams,
-		limit: 20,
-		language: 'en',
-	};
-
+export const ProductsList = () => {
 	const { setValue, watch } = useFormContext<CreatePromotionDto>();
 
 	const productId = watch('productIdReward');
@@ -29,15 +19,17 @@ const ProductsList = () => {
 	};
 
 	return (
-		<ItemsListPaginatedWrapper<IProduct>
-			queryFn={() => getAllProducts(params)}
-			queryKey={() => [...QUERY_KEYS.customization.product.getAll(params)]}
+		<ItemsListPaginatedWrapper<Product>
+			queryFn={(params) => getAllProducts(params)}
+			queryKey={(params) => QUERY_KEYS.customization.product.list(params)}
+			isModal
 			itemCard={(product) => (
 				<ItemCard
 					product={product}
 					actions={
 						<Button
-							variant={productId === product.id ? 'contained' : 'secondary'}
+							variant="contained"
+							color={productId === product.id ? 'primary' : 'secondary'}
 							fullWidth
 							onClick={() => handleSelect(product.id)}
 						>
@@ -49,5 +41,3 @@ const ProductsList = () => {
 		/>
 	);
 };
-
-export default ProductsList;

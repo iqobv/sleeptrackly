@@ -1,4 +1,5 @@
-import { PaginationQueryDto } from '../dto';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
+import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
 
 export const paginate = async <T>(
 	query: PaginationQueryDto,
@@ -6,7 +7,7 @@ export const paginate = async <T>(
 		limit: number,
 		offset: number,
 	) => Promise<{ items: T[]; total: number }>,
-) => {
+): Promise<PaginatedDataDto<T>> => {
 	const { page = 1, limit = 20 } = query;
 
 	const safePage = Math.max(Number(page), 1);

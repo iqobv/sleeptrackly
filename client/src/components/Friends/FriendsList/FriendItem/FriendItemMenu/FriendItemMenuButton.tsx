@@ -1,30 +1,25 @@
 'use client';
 
-import { Button } from '@/components/UI';
-import { FriendItemMenu } from '../friendItemMenu';
-
-import { QUERY_KEYS } from '@/config';
-import { useAuth } from '@/hooks';
-import { IFriend } from '@/types';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { Friend } from '@/types/friend/friend.types';
+import { Button, DropdownItem } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import styles from './FriendItemMenu.module.scss';
+import { FriendItemMenu } from './friendItemMenu';
 
 interface FriendItemMenuProps {
 	item: FriendItemMenu;
-	friend: IFriend;
+	friend: Friend;
 }
 
-const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
-	const { user } = useAuth();
-
+export const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
 	const queryClient = useQueryClient();
 
-	const { mutate, isPending } = useMutation({
+	const { mutate } = useMutation({
 		mutationFn: item.mutationFn,
 		onSuccess: () => {
 			queryClient.refetchQueries({
-				queryKey: QUERY_KEYS.friends.all(user?.id || ''),
+				queryKey: QUERY_KEYS.friends.list(),
 			});
 			toast.success(item.successText);
 		},
@@ -36,17 +31,14 @@ const FriendItemMenuButton = ({ item, friend }: FriendItemMenuProps) => {
 	const handleClick = () => mutate(friend.id);
 
 	return (
-		<Button
-			variant="text"
-			fullWidth
-			className={styles['friend-item-menu__item']}
-			onClick={handleClick}
-			loading={isPending}
-			key={item.label}
-		>
-			{item.label}
-		</Button>
+		<DropdownItem onClick={handleClick} asChild>
+			<Button
+				fullWidth
+				variant="text"
+				style={{ justifyContent: 'flex-start', padding: '0.75rem 0.625rem' }}
+			>
+				{item.label}
+			</Button>
+		</DropdownItem>
 	);
 };
-
-export default FriendItemMenuButton;

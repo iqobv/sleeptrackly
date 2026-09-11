@@ -1,23 +1,42 @@
-import { Select, ToggleSwitch } from '@/components/UI';
-import { PRIVACY_VISIBILITY } from '@/constants';
-import { SettingsPrivacyDto } from '@/dto';
-import { IOption, SettingsFormFields } from '@/types';
-import { Controller, Path } from 'react-hook-form';
+'use client';
 
-const OPTIONS: IOption[] = [
+import { SettingsPrivacyDto } from '@/dto/settings/settings.dto';
+import { PrivacyVisibility } from '@/types/settings/privacyVisibility.types';
+import { SettingsFormFields } from '@/types/settings/settingsField.types';
+import { Option } from '@/types/ui/option.types';
+import { FormSelect } from '@shared/form';
+import { SelectItem, ToggleSwitch } from '@shared/ui';
+import { Control, Path } from 'react-hook-form';
+
+interface SettingsPrivacyFieldsProps {
+	name: Path<SettingsPrivacyDto>;
+	control: Control<SettingsPrivacyDto>;
+}
+
+const OPTIONS: Option[] = [
 	{
-		value: PRIVACY_VISIBILITY.PUBLIC,
+		value: PrivacyVisibility.PUBLIC,
 		label: 'Public',
 	},
 	{
-		value: PRIVACY_VISIBILITY.FRIENDS,
+		value: PrivacyVisibility.FRIENDS,
 		label: 'Friends',
 	},
 	{
-		value: PRIVACY_VISIBILITY.PRIVATE,
+		value: PrivacyVisibility.PRIVATE,
 		label: 'Private',
 	},
 ];
+
+const PrivacySelectField = ({ control, name }: SettingsPrivacyFieldsProps) => (
+	<FormSelect name={name} control={control}>
+		{OPTIONS.map((option) => (
+			<SelectItem key={option.value} value={option.value}>
+				{option.label}
+			</SelectItem>
+		))}
+	</FormSelect>
+);
 
 export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 	[
@@ -47,18 +66,16 @@ export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 			placeholder: 'Profile Visibility',
 			type: 'text',
 			render: ({ name, methods }) => (
-				<Controller
-					control={methods.control}
-					name={name as Path<SettingsPrivacyDto>}
-					render={({ field: { onChange, value }, fieldState: { error } }) => (
-						<Select
-							options={OPTIONS}
-							value={value as string}
-							onChange={onChange}
-							error={error?.message}
-						/>
-					)}
-				/>
+				<PrivacySelectField name={name} control={methods.control} />
+			),
+		},
+		{
+			name: 'achievementsVisibility',
+			label: 'Achievement Visibility',
+			placeholder: 'Achievement Visibility',
+			type: 'text',
+			render: ({ name, methods }) => (
+				<PrivacySelectField name={name} control={methods.control} />
 			),
 		},
 		{
@@ -67,18 +84,7 @@ export const SETTINGS_PRIVACY_FIELDS: SettingsFormFields<SettingsPrivacyDto>[] =
 			placeholder: 'Statistics Visibility',
 			type: 'text',
 			render: ({ name, methods }) => (
-				<Controller
-					control={methods.control}
-					name={name as Path<SettingsPrivacyDto>}
-					render={({ field: { onChange, value }, fieldState: { error } }) => (
-						<Select
-							options={OPTIONS}
-							value={value as string}
-							onChange={onChange}
-							error={error?.message}
-						/>
-					)}
-				/>
+				<PrivacySelectField name={name} control={methods.control} />
 			),
 		},
 	];

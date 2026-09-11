@@ -1,9 +1,11 @@
 'use client';
 
-import { Button } from '@/components/UI';
+import { Button } from '@shared/ui';
+import clsx from 'clsx';
+import Link from 'next/link';
 import { useState } from 'react';
-import { MdOutlineArrowDropDown } from 'react-icons/md';
 import { NavMenuLinksProps } from '../navMenuLinks';
+import { ButtonContent } from './ButtonContent';
 import styles from './NavMenuLink.module.scss';
 
 interface NavMenuLinkProps {
@@ -11,7 +13,7 @@ interface NavMenuLinkProps {
 	isOpen: boolean;
 }
 
-const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
+export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	const [isExpanded, setExpanded] = useState(false);
 
 	const handleExpand = (e: React.MouseEvent) => {
@@ -25,24 +27,32 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	return (
 		<div>
 			<Button
-				key={link.href}
-				href={link.href}
+				key={link.id}
 				variant="text"
-				className={`${styles['menu-link']} ${isOpen ? styles['menu-link--open'] : ''}`}
-				contentClassName={styles['menu-link__button-content']}
+				className={clsx(styles.link, isOpen && styles.open)}
+				asChild
+				onClick={(e) => {
+					if (!link.href) handleExpand(e);
+				}}
 			>
-				<div className={styles['menu-link__content']}>
-					<link.Icon size={25} className={styles['menu-link__icon']} />
-					<p className={styles['menu-link__text']}>{link.label}</p>
-				</div>
-				{isOpen && link.expanded && (
-					<div
-						className={`${styles['menu-link__expand']}`}
-						onClick={handleExpand}
+				{link.href ? (
+					<Link
+						href={link.href}
+						className={styles.buttonContent}
+						prefetch={false}
 					>
-						<MdOutlineArrowDropDown
-							className={`${styles['menu-link__expand-icon']} ${isExpanded ? styles['menu-link__expand-icon--expanded'] : ''}`}
-							size={30}
+						<ButtonContent
+							isExpanded={isExpanded}
+							isOpen={isOpen}
+							link={link}
+						/>
+					</Link>
+				) : (
+					<div className={styles.buttonContent}>
+						<ButtonContent
+							isExpanded={isExpanded}
+							isOpen={isOpen}
+							link={link}
 						/>
 					</div>
 				)}
@@ -52,25 +62,30 @@ const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 				isExpanded &&
 				link.innerLinks &&
 				link.innerLinks.length > 0 && (
-					<div className={`${styles['menu-link__inner-links']}`}>
-						{link.innerLinks.map((innerLink) => (
-							<Button
-								key={innerLink.href}
-								href={innerLink.href}
-								variant="text"
-								className={`${styles['menu-link']} ${isOpen ? styles['menu-link--open'] : ''}`}
-							>
-								<innerLink.Icon
-									size={25}
-									className={styles['menu-link__icon']}
-								/>
-								<p className={styles['menu-link__text']}>{innerLink.label}</p>
-							</Button>
-						))}
+					<div className={`${styles.innerLinks}`}>
+						{link.innerLinks.map((innerLink) => {
+							if (!innerLink.href) return null;
+
+							return (
+								<Button
+									key={innerLink.href}
+									variant="text"
+									className={`${styles.link} ${isOpen ? styles.open : ''}`}
+									asChild
+								>
+									<Link
+										href={innerLink.href}
+										className={styles.buttonContent}
+										prefetch={false}
+									>
+										<innerLink.Icon size={25} className={styles.icon} />
+										<p className={styles.text}>{innerLink.label}</p>
+									</Link>
+								</Button>
+							);
+						})}
 					</div>
 				)}
 		</div>
 	);
 };
-
-export default NavMenuLink;

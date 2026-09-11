@@ -1,8 +1,16 @@
 'use client';
 
-import { Button, Modal } from '@/components/UI';
+import {
+	Button,
+	Modal,
+	ModalBody,
+	ModalClose,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+} from '@shared/ui';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import styles from './UploadModal.module.scss';
 
@@ -12,12 +20,12 @@ interface UploadModalProps {
 	handleUpdate: () => void;
 }
 
-const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
-	const [isOpen, setIsOpen] = useState(false);
-
-	useEffect(() => {
-		if (file) setIsOpen(true);
-	}, [file]);
+export const UploadModal = ({
+	file,
+	handleClear,
+	handleUpdate,
+}: UploadModalProps) => {
+	const [isOpen, setIsOpen] = useState(() => Boolean(file));
 
 	const handleClose = () => {
 		setIsOpen(false);
@@ -30,30 +38,28 @@ const UploadModal = ({ file, handleClear, handleUpdate }: UploadModalProps) => {
 	};
 
 	return (
-		<Modal
-			isOpen={isOpen}
-			onClose={handleClose}
-			containerClassName={styles['upload-modal__container']}
-			bodyClassName={styles['upload-modal']}
-		>
-			<Image
-				src={URL.createObjectURL(file)}
-				width={250}
-				height={250}
-				alt={file.name}
-				className={styles['upload-modal__image']}
-			/>
-			<p className={styles['upload-modal__text']}>
-				Are you sure you want to upload this image?
-			</p>
-			<div className={styles['upload-modal__buttons']}>
-				<Button variant="outlined" onClick={handleClose}>
-					Cancel
-				</Button>
-				<Button onClick={handleUpload}>Upload</Button>
-			</div>
+		<Modal open={isOpen} onOpenChange={handleClose}>
+			<ModalContent className={styles.content}>
+				<ModalHeader>Upload Avatar</ModalHeader>
+				<ModalBody className={styles.body}>
+					<Image
+						src={URL.createObjectURL(file)}
+						width={250}
+						height={250}
+						alt={file.name}
+						className={styles.image}
+					/>
+					<p className={styles.text}>
+						Are you sure you want to upload this image?
+					</p>
+				</ModalBody>
+				<ModalFooter className={styles.footer}>
+					<ModalClose asChild>
+						<Button variant="outlined">Cancel</Button>
+					</ModalClose>
+					<Button onClick={handleUpload}>Upload</Button>
+				</ModalFooter>
+			</ModalContent>
 		</Modal>
 	);
 };
-
-export default UploadModal;

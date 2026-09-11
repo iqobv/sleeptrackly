@@ -1,5 +1,22 @@
 # Client changelog
 
+## [0.6.0] - 2026-09-11
+
+### Added
+
+- Added achievements system.
+- Added weekly statistics.
+- Added sleep entries control in dashboard page.
+- Added subdomain routing.
+- Added reminder settings to timer page.
+
+### Changed
+
+- Updated landing page design.
+- Updated shop to use new collections system and new filters.
+- Refactored weekly sleep stats pagination to use date-based anchoring.
+- Updated challenge system and related pages designs.
+
 ## [0.5.2] - 2026-04-04
 
 ### Fixed

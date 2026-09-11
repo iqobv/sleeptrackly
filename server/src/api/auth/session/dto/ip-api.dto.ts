@@ -1,11 +1,23 @@
+import { IsOptional, IsString } from 'class-validator';
+
 export class IpApiDto {
-	status: string;
-	message: string;
-	country: string;
-	countryCode: string;
-	region: string;
-	regionName: string;
-	city: string;
-	timezone: string;
-	query: string;
+	@IsString()
+	@IsOptional()
+	countryCode?: string;
+
+	@IsString()
+	@IsOptional()
+	region?: string;
+
+	@IsString()
+	@IsOptional()
+	regionName?: string;
+
+	@IsString()
+	@IsOptional()
+	city?: string;
+
+	@IsString()
+	@IsOptional()
+	query?: string;
 }

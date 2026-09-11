@@ -1,11 +1,13 @@
 'use client';
 
-import { List } from '@/components/UI';
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { List } from '@shared/ui';
+import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LINKS } from './links';
 import styles from './NavLinks.module.scss';
+import { NavLinksLoader } from './NavLinksLoader';
 
 interface NavLinksProps {
 	closeMenu?: () => void;
@@ -13,43 +15,39 @@ interface NavLinksProps {
 	rowDirectionOnLg?: boolean;
 }
 
-const NavLinks = ({
+export const NavLinks = ({
 	closeMenu = () => {},
 	className,
 	rowDirectionOnLg = false,
 }: NavLinksProps) => {
-	const { user } = useAuth();
+	const { user, isLoading } = useAuth();
 	const pathname = usePathname();
 
-	if (!user && LINKS.some((link) => link.isAuth)) {
-		return null;
-	}
-
-	const listClassNames = [
-		styles['nav-list'],
-		rowDirectionOnLg ? styles['nav-list--lg'] : '',
-		className,
-	]
-		.filter(Boolean)
-		.join(' ')
-		.trim();
+	if (isLoading)
+		return (
+			<NavLinksLoader
+				rowDirectionOnLg={rowDirectionOnLg}
+				className={className}
+			/>
+		);
 
 	return (
 		<List
 			items={LINKS}
-			className={listClassNames}
+			className={clsx(styles.list, rowDirectionOnLg && styles.lg, className)}
 			listComponent="ul"
 			gap={20}
 			renderItem={(link) => {
 				if (user?.role !== 'ADMIN' && link.isAdmin) return null;
 
 				return (
-					<li key={link.name} className={styles['nav-item']}>
+					<li key={link.name} className={styles.item}>
 						<Link
 							href={link.path}
-							className={`${styles['nav-link']} ${
-								pathname.startsWith(link.path) ? styles.active : ''
-							}`}
+							className={clsx(
+								styles.link,
+								pathname.startsWith(link.path) && styles.active,
+							)}
 							onClick={closeMenu}
 						>
 							{link.label}
@@ -60,5 +58,3 @@ const NavLinks = ({
 		/>
 	);
 };
-
-export default NavLinks;

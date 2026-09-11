@@ -1,15 +1,16 @@
 'use client';
 
 import { CDNImage } from '@/components/UI';
-import { IItem } from '@/types';
+import { env } from '@/env';
+import { Item } from '@/types/customization/item/item.types';
 import styles from './ItemCard.module.scss';
 
 interface ItemCardProps {
-	item: IItem;
+	item: Item;
 	actions?: React.ReactNode;
 }
 
-const ItemCard = ({ item, actions }: ItemCardProps) => {
+export const ItemCard = ({ item, actions }: ItemCardProps) => {
 	const translation =
 		item.translations.find((t) => t.language === 'en')?.name ||
 		item.translations[0]?.name ||
@@ -18,11 +19,11 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 	const imageUrl = item.previewUrl !== '' ? item.previewUrl : item.mediaUrl;
 
 	return (
-		<div key={item.id} className={styles['list-item']}>
-			<div className={styles['list-item__media']}>
+		<div key={item.id} className={styles.item}>
+			<div className={styles.media}>
 				{item.isAnimated ? (
 					<video
-						src={`${process.env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
+						src={`${env.NEXT_PUBLIC_CDN_URL}/${imageUrl}`}
 						loop
 						autoPlay
 						muted
@@ -30,7 +31,12 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 						height={200}
 					/>
 				) : (
-					<CDNImage src={imageUrl} alt={translation} width={200} height={200} />
+					<CDNImage
+						path={imageUrl}
+						alt={translation}
+						width={200}
+						height={200}
+					/>
 				)}
 			</div>
 			<div>
@@ -38,11 +44,7 @@ const ItemCard = ({ item, actions }: ItemCardProps) => {
 				<p>Type: {item.type}</p>
 				<p>Rarity: {item.rarity}</p>
 			</div>
-			{!!actions && (
-				<div className={styles['list-item__actions']}>{actions}</div>
-			)}
+			{!!actions && <div className={styles.actions}>{actions}</div>}
 		</div>
 	);
 };
-
-export default ItemCard;

@@ -1,13 +1,13 @@
 'use client';
 
-import { Button, TextField } from '@/components/UI';
-import { TranslationDto } from '@/dto';
+import { TranslationDto } from '@/dto/translation/translation.dto';
+import { FormField } from '@shared/form';
+import { Button, Input } from '@shared/ui';
 import {
 	ArrayPath,
 	FieldArray,
 	FieldErrors,
 	FieldValues,
-	Path,
 	useFieldArray,
 	useFormContext,
 } from 'react-hook-form';
@@ -18,10 +18,9 @@ interface HasTranslations extends FieldValues {
 	translations: TranslationDto[];
 }
 
-const TranslationForm = <T extends HasTranslations>() => {
+export const TranslationForm = <T extends HasTranslations>() => {
 	const {
 		control,
-		register,
 		formState: { errors },
 	} = useFormContext<T>();
 
@@ -35,32 +34,36 @@ const TranslationForm = <T extends HasTranslations>() => {
 		| undefined;
 
 	return (
-		<div className={styles['translations']}>
+		<div className={styles.translations}>
 			{fields.map((field, index) => {
 				const error = translationsErrors?.[index];
 
 				return (
-					<div key={field.id} className={styles['translations__item']}>
-						<div className={styles['translations__fields']}>
-							<TextField
-								placeholder="Language"
+					<div key={field.id} className={styles.item}>
+						<div className={styles.fields}>
+							<FormField
+								name={`translations.${index}.language`}
 								error={error?.language?.message}
-								fullWidth
 								label='Language Code (e.g. "en", "fr")'
-								{...register(`translations.${index}.language` as Path<T>)}
-							/>
-							<TextField
-								placeholder="Name"
+								required
+							>
+								<Input placeholder="Language" />
+							</FormField>
+							<FormField
+								name={`translations.${index}.name`}
 								label="Name"
-								fullWidth
 								error={error?.name?.message}
-								{...register(`translations.${index}.name` as Path<T>)}
-							/>
+								required
+							>
+								<Input placeholder="Name" />
+							</FormField>
 						</div>
 						<Button
 							type="button"
-							variant="danger"
+							variant="text"
+							color="danger"
 							isIcon
+							isRounded
 							size="md"
 							onClick={() => remove(index)}
 						>
@@ -71,7 +74,8 @@ const TranslationForm = <T extends HasTranslations>() => {
 			})}
 			<Button
 				type="button"
-				variant="secondary"
+				variant="contained"
+				color="secondary"
 				onClick={() =>
 					append({
 						language: '',
@@ -84,5 +88,3 @@ const TranslationForm = <T extends HasTranslations>() => {
 		</div>
 	);
 };
-
-export default TranslationForm;

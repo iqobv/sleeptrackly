@@ -1,32 +1,33 @@
-import { getUserCoins } from '@/api';
-import { Coin } from '@/components/Icons';
-import { QUERY_KEYS } from '@/config';
+import { getUserCoins } from '@/api/coin/userCoins.api';
+import { Coin } from '@/components/Icons/Coin';
+import { QUERY_KEYS } from '@/config/queryClient.config';
+import { formatNumber } from '@/utils/numberFormatter.util';
 import { useQuery } from '@tanstack/react-query';
 import styles from './UserMenuCoins.module.scss';
-import UserMenuCoinsLoader from './UserMenuCoinsLoader';
+import { UserMenuCoinsLoader } from './UserMenuCoinsLoader';
 
-const UserMenuCoins = () => {
+export const UserMenuCoins = () => {
 	const { data: userCoins, isLoading } = useQuery({
 		queryFn: () => getUserCoins(),
 		queryKey: QUERY_KEYS.coin.userCoin,
 	});
 
 	return (
-		<div className={styles['coins']}>
+		<div className={styles.coins}>
 			{isLoading && <UserMenuCoinsLoader />}
 			{userCoins && (
-				<div className={styles['coins__container']}>
+				<div className={styles.container}>
 					<>
-						<p className={styles['coins__label']}>Balance</p>
-						<div className={styles['coins__balance']}>
+						<p className={styles.label}>Balance</p>
+						<div className={styles.balance}>
 							<Coin
-								className={styles['coins__icon']}
+								className={styles.icon}
 								width={40}
 								height={40}
 								fill="var(--color-main-text)"
 							/>
-							<p className={styles['coins__amount']}>
-								{userCoins.amount ? userCoins.amount : 0}
+							<p className={styles.amount}>
+								{formatNumber(userCoins.amount || 0)}
 							</p>
 						</div>
 					</>
@@ -35,5 +36,3 @@ const UserMenuCoins = () => {
 		</div>
 	);
 };
-
-export default UserMenuCoins;

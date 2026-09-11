@@ -1,0 +1,20 @@
+.prize {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+}
+
+.product {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+	align-items: center;
+	justify-content: center;
+}
+
+.reward {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	justify-content: center;
+}

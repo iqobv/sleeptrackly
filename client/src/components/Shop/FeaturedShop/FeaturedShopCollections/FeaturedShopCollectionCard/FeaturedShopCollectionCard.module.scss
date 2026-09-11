@@ -1,0 +1,49 @@
+@use '../../../../../styles/mixins' as *;
+
+.card {
+	--collection-accent: var(--shop-card-bg);
+
+	width: 100%;
+	min-height: 200px;
+	background-color: var(--shop-card-bg);
+	border-radius: var(--border-radius);
+	border: 1px solid var(--border-color);
+	padding: 1rem;
+	position: relative;
+	gap: var(--gap);
+	transition:
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+	box-shadow: inset 0 0 80px -30px var(--collection-accent, transparent);
+}
+
+.imageWrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--gap);
+	justify-content: space-between;
+
+	@include respond-to(xl) {
+		flex-direction: row;
+		align-items: flex-start;
+	}
+}
+
+.cardLoader {
+	height: 60.625rem;
+	width: 100%;
+
+	@include respond-to(xl) {
+		height: 38.75rem;
+	}
+
+	@include respond-to(xxl) {
+		height: 25rem;
+	}
+}

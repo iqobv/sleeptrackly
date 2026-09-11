@@ -1,15 +1,26 @@
-import { ISession } from '@/types';
-import { fetcher } from '@/utils';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type GetSessionsResponse =
+	paths['/v1/auth/sessions/all']['get']['responses']['200']['content']['application/json'];
+type TerminateSessionResponse =
+	paths['/v1/auth/sessions/id/{id}']['delete']['responses']['200']['content']['application/json'];
+type TerminateAllSessionsResponse =
+	paths['/v1/auth/sessions/all-other']['delete']['responses']['200']['content']['application/json'];
 
 export const getAllSessions = async () =>
-	await fetcher<ISession[]>(`/v1/auth/sessions/all`);
+	(await apiClient.get<GetSessionsResponse>(`/v1/auth/sessions/all`)).data;
 
 export const terminateSession = async (id: string) =>
-	await fetcher<boolean>(`/v1/auth/sessions/session/${id}`, {
-		method: 'DELETE',
-	});
+	(
+		await apiClient.delete<TerminateSessionResponse>(
+			`/v1/auth/sessions/id/${id}`,
+		)
+	).data;
 
-export const terminateAllSessions = async (excludeId: string) =>
-	await fetcher<boolean>(`/v1/auth/sessions/except/${excludeId}`, {
-		method: 'DELETE',
-	});
+export const terminateAllSessions = async () =>
+	(
+		await apiClient.delete<TerminateAllSessionsResponse>(
+			`/v1/auth/sessions/all-other`,
+		)
+	).data;

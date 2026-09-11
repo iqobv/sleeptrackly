@@ -1,35 +1,36 @@
 'use client';
 
-import { Avatar, SectionHeader } from '@/components/UI';
-import { useAuth } from '@/hooks';
-import { IProfile } from '@/types';
+import { UserAvatar } from '@/components/UI/UserAvatar/UserAvatar';
+import { useAuth } from '@/hooks/useAuth.hook';
+import { Profile } from '@shared/types';
+import { SectionHeader } from '@shared/ui';
 import styles from './ProfileMainInfo.module.scss';
-import ProfileSanctionsButton from './ProfileSanctionsButton/ProfileSanctionsButton';
+import { ProfileSanctionsButton } from './ProfileSanctionsButton/ProfileSanctionsButton';
 
 interface ProfileMainInfoProps {
-	profile: IProfile;
+	profile: Profile;
 }
 
-const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
+export const ProfileMainInfo = ({ profile }: ProfileMainInfoProps) => {
 	const year = new Date(profile.createdAt).getFullYear().toString();
 	const { user } = useAuth();
 
 	return (
-		<div className={styles['profile-main-info']}>
-			<Avatar avatar={profile.avatar?.url} size={300} priority />
+		<div className={styles.info}>
+			<UserAvatar avatarPath={profile.avatar?.url} size={300} />
 			<SectionHeader
 				title={profile.username}
-				titleComponent="h2"
+				titleProps={{
+					variant: 'h2',
+				}}
 				description={`Joined ${year}`}
-				containerClassName={styles['profile-main-info__username']}
+				containerClassName={styles.username}
 			/>
 			{profile && user && user.id !== profile.id && (
-				<div className={styles['profile-main-info__buttons']}>
+				<div className={styles.buttons}>
 					<ProfileSanctionsButton profile={profile} />
 				</div>
 			)}
 		</div>
 	);
 };
-
-export default ProfileMainInfo;

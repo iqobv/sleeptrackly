@@ -1,47 +1,44 @@
 'use client';
 
-import { SectionHeader } from '@/components/UI';
-import { PAGES } from '@/config';
-import { IReportFull } from '@/types';
+import { PAGES } from '@/config/pages.config';
+import { FullReport } from '@/types/report/report.types';
 import Link from 'next/link';
 import styles from './ReportDetail.module.scss';
 
 interface ReportDetailProps {
-	report: IReportFull;
+	report: FullReport;
 }
 
-const ReportDetail = ({ report }: ReportDetailProps) => {
+export const ReportDetail = ({ report }: ReportDetailProps) => {
 	return (
-		<div className={styles['report-detail']}>
-			<SectionHeader
-				title={report.title}
-				description={report.description}
-				titleComponent="h2"
-			/>
-			<div className={styles['report-detail__info']}>
-				<div className={styles['report-detail__user']}>
+		<div className={styles.reportDetail}>
+			<div className={styles.info}>
+				<div className={styles.user}>
 					<p>Reported By: </p>
 					<Link
-						className={styles['report-detail__username']}
+						className={styles.username}
 						href={PAGES.USER(report.reporter.username)}
+						prefetch={false}
+						target="_blank"
 					>
 						{report.reporter.username}
 					</Link>
 				</div>
 				{report.targetUserId && report.targetUser && (
-					<div className={styles['report-detail__user']}>
+					<div className={styles.user}>
 						<p>Target User: </p>
 						<Link
-							className={styles['report-detail__username']}
+							className={styles.username}
 							href={PAGES.USER(report.targetUser.username)}
+							prefetch={false}
+							target="_blank"
 						>
 							{report.targetUser.username}
 						</Link>
 					</div>
 				)}
+				<p>Report Created At: {new Date(report.createdAt).toLocaleString()}</p>
 			</div>
 		</div>
 	);
 };
-
-export default ReportDetail;

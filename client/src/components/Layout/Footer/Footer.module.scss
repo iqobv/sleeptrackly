@@ -4,35 +4,35 @@
 	width: 100%;
 	background-color: var(--footer-bg);
 	color: var(--footer-color);
-	padding: 30px 20px 20px 20px;
+	padding: 1.875rem 1.25rem 1.25rem 1.25rem;
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
 	align-items: center;
 	font-size: 0.95rem;
 
-	&__logo {
+	.logo {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 
-	&__container {
+	.container {
 		display: flex;
 		justify-content: space-between;
-		gap: 32px;
+		gap: 2rem;
 		flex-direction: column;
 	}
 
-	&__links {
+	.links {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 18px;
+		gap: 1.125rem;
 		color: var(--footer-link-color);
 	}
 
-	&__link {
+	.link {
 		transition: color 0.3s ease-in-out;
 
 		&:hover {
@@ -40,34 +40,34 @@
 		}
 	}
 
-	&__support {
+	.support {
 		display: inline-flex;
-		gap: 6px;
+		gap: 0.375rem;
 		align-items: center;
 	}
 
-	&__copyright {
+	.copyright {
 		display: inline-flex;
-		gap: 6px;
-		font-size: 14px;
+		gap: 0.375rem;
+		font-size: 0.875rem;
 		color: var(--footer-link-color);
-		padding-top: 20px;
+		padding-top: 1.25rem;
 	}
 
 	@include respond-to(md) {
 		align-items: unset;
 
-		&__container {
+		.container {
 			flex-direction: row;
 		}
 
-		&__copyright {
-			padding-top: 10px;
+		.copyright {
+			padding-top: 0.625rem;
 		}
 	}
 
 	@include respond-to(lg) {
-		&__links {
+		.links {
 			flex-direction: row;
 		}
 	}

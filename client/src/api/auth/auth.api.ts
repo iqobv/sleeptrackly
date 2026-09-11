@@ -1,26 +1,34 @@
-import { LoginDto, RegisterDto } from '@/dto';
-import { IRegisterResult, IUser } from '@/types';
-import { fetcher } from '@/utils';
+import { LoginDto, RegisterDto } from '@/dto/auth/auth.dto';
+import { paths } from '@shared/types';
+import { apiClient } from '../axios';
+
+type LoginResponse =
+	paths['/v1/auth/login']['post']['responses']['200']['content']['application/json'];
+type RegisterResponse =
+	paths['/v1/auth/register']['post']['responses']['201']['content']['application/json'];
+type LogoutResponse =
+	paths['/v1/auth/logout']['post']['responses']['200']['content']['application/json'];
+type GetUserResponse =
+	paths['/v1/auth/me']['get']['responses']['200']['content']['application/json'];
+
+type DeleteAccountResponse =
+	paths['/v1/auth/delete']['delete']['responses']['200']['content']['application/json'];
 
 export const loginWithPassword = async (data: LoginDto) =>
-	await fetcher<IUser>('/v1/auth/login', {
-		method: 'POST',
-		body: JSON.stringify(data),
-	});
+	(await apiClient.post<LoginResponse>('/v1/auth/login', data)).data;
 
 export const registerWithPassword = async (data: RegisterDto) => {
 	const { acceptTerms: _, ...rest } = data;
 
-	return await fetcher<IRegisterResult>('/v1/auth/register', {
-		method: 'POST',
-		body: JSON.stringify(rest),
-	});
+	return (await apiClient.post<RegisterResponse>('/v1/auth/register', rest))
+		.data;
 };
 
 export const logout = async () =>
-	await fetcher<boolean>('/v1/auth/logout', { method: 'POST' });
+	(await apiClient.post<LogoutResponse>('/v1/auth/logout')).data;
 
-export const getUser = async () => await fetcher<IUser>('/v1/auth/me');
+export const getUser = async () =>
+	(await apiClient.get<GetUserResponse>('/v1/auth/me')).data;
 
 export const deleteAccount = async () =>
-	await fetcher<boolean>('/v1/auth/delete', { method: 'DELETE' });
+	(await apiClient.delete<DeleteAccountResponse>('/v1/auth/delete')).data;

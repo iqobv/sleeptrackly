@@ -1,23 +1,23 @@
 'use client';
 
-import { sendFriendRequest } from '@/api';
-import { Avatar, Button } from '@/components/UI';
-import { PAGES, QUERY_KEYS } from '@/config';
-import { IUser } from '@/types';
+import { sendFriendRequest } from '@/api/friend/friend.api';
+import { UserAvatar } from '@/components/UI';
+import { PRIVATE_PAGES } from '@/config/privatePages.config';
+import { SearchUser } from '@/types/user/user.types';
+import { Button } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
 import styles from './AddFriendItem.module.scss';
 
 interface AddFriendItemProps {
-	user: IUser;
+	user: SearchUser;
 	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
+export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	const { mutate } = useMutation({
 		mutationFn: () => sendFriendRequest(user.id),
-		mutationKey: QUERY_KEYS.friends.sendFriendRequest(user.id),
 		onSuccess() {
 			toast.success('Friend request sent');
 			setSearch('');
@@ -28,12 +28,12 @@ const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 	});
 
 	return (
-		<div className={styles['add-friend-item']}>
-			<div className={styles['add-friend-item__info']}>
-				<Avatar avatar={user?.avatar?.url} size={50} />
+		<div className={styles.item}>
+			<div className={styles.info}>
+				<UserAvatar avatarPath={user?.avatar?.url} size={50} />
 				<Link
-					href={PAGES.PROFILE(user.username)}
-					className={styles['add-friend-item__username']}
+					href={PRIVATE_PAGES.PROFILE(user.username)}
+					className={styles.username}
 				>
 					{user.username}
 				</Link>
@@ -42,5 +42,3 @@ const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
 		</div>
 	);
 };
-
-export default AddFriendItem;

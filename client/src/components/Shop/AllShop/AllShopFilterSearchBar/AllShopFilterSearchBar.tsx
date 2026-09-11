@@ -1,19 +1,19 @@
 'use client';
 
-import { ShopFilterDto } from '@/dto';
-import { Controller, useFormContext, useWatch } from 'react-hook-form';
-
-import { Select, TextField } from '@/components/UI';
-import { IOption, TShopSortBy } from '@/types';
+import { SortOrder } from '@/types/api/sortOrder.types';
+import { ShopSortBy } from '@/types/shop/shopSortBy.types';
+import { FormSelect } from '@shared/form';
+import { Field, Input, SelectItem } from '@shared/ui';
 import { useEffect } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { MdSearch } from 'react-icons/md';
+import { AllShopFiltersForm } from '../AllShop';
 import styles from './AllShopFilterSearchBar.module.scss';
 import { SHOP_FILTER_OPTIONS } from './filterSortOptions';
 
-const AllShopFilterSearchBar = () => {
-	const { register, watch, setValue, control } = useFormContext<
-		ShopFilterDto & { sort?: string }
-	>();
+export const AllShopFilterSearchBar = () => {
+	const { register, watch, setValue, control } =
+		useFormContext<AllShopFiltersForm>();
 
 	const sort = watch('sort');
 
@@ -23,20 +23,17 @@ const AllShopFilterSearchBar = () => {
 	useEffect(() => {
 		if (!sortBy || !sortOrder) return;
 
-		setValue('sort', `${sortBy}_${sortOrder}`.toUpperCase(), {
+		setValue('sort', `${sortBy}_${sortOrder}`, {
 			shouldDirty: false,
 		});
 	}, [sortBy, sortOrder, setValue]);
 
 	useEffect(() => {
 		if (sort) {
-			const [sortBy, sortOrder] = sort.split('_') as [
-				TShopSortBy,
-				'ASC' | 'DESC',
-			];
+			const [sortBy, sortOrder] = sort.split('_') as [ShopSortBy, SortOrder];
 
 			setValue('sortBy', sortBy, { shouldValidate: true, shouldDirty: true });
-			setValue('sortOrder', sortOrder.toLowerCase() as 'asc' | 'desc', {
+			setValue('sortOrder', sortOrder, {
 				shouldValidate: true,
 				shouldDirty: true,
 			});
@@ -44,39 +41,31 @@ const AllShopFilterSearchBar = () => {
 	}, [sort, setValue]);
 
 	return (
-		<div className={styles['search-bar']}>
-			<TextField
-				type="search"
-				placeholder="Search products..."
-				leftIcon={<MdSearch size={20} />}
-				containerClassName={styles['search-input']}
-				{...register('search')}
-			/>
-			<div className={styles['select-container']}>
-				<label
-					htmlFor="sort"
-					className={styles['select-label']}
-					onClick={() => document.getElementById('sort')?.focus()}
-				>
-					Sort by:
-				</label>
-				<Controller
+		<div className={styles.searchBar}>
+			<Field>
+				<Input
+					type="search"
+					placeholder="Search products..."
+					leftSection={<MdSearch size={20} />}
+					className={styles.input}
+					{...register('search')}
+				/>
+			</Field>
+			<Field className={styles.selectContainer} id="sortBy" label="Sort by:">
+				<FormSelect
 					name="sort"
 					control={control}
-					render={({ field }) => (
-						<Select
-							options={SHOP_FILTER_OPTIONS as IOption[]}
-							isClearable={false}
-							placeholder="Select filter type"
-							containerClassName={styles['select']}
-							id="sort"
-							{...field}
-						/>
-					)}
-				/>
-			</div>
+					placeholder="Select filter type"
+					className={styles.select}
+					id="sortBy"
+				>
+					{SHOP_FILTER_OPTIONS.map((option) => (
+						<SelectItem key={option.value} value={option.value}>
+							{option.label}
+						</SelectItem>
+					))}
+				</FormSelect>
+			</Field>
 		</div>
 	);
 };
-
-export default AllShopFilterSearchBar;

@@ -55,28 +55,11 @@ select:-webkit-autofill:focus {
 .container {
 	width: 100%;
 	margin: 0 auto;
-	padding: 0 0.7rem;
+	padding: 0 1rem;
+	max-width: map.get($breakpoints, xxl);
 
-	@include response(sm) {
-		max-width: map.get($breakpoints, 'sm');
-		padding: 0 1rem;
-	}
-
-	@include response(md) {
-		max-width: map.get($breakpoints, 'md');
-	}
-
-	@include response(lg) {
-		max-width: map.get($breakpoints, 'lg');
+	@include respond-to(lg) {
 		padding: 0 1.25rem;
-	}
-
-	@include response(xl) {
-		max-width: map.get($breakpoints, 'xl');
-	}
-
-	@include response(xxl) {
-		max-width: map.get($breakpoints, 'xxl');
 	}
 }
 

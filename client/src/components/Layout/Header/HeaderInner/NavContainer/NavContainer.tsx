@@ -1,10 +1,11 @@
 'use client';
 
 import { NavLogo } from '@/components/UI';
-import { TBreakpoint } from '@/types';
-import MenuButton from '../MenuButton/MenuButton';
+import { Breakpoint } from '@/types/ui/breakpoint.types';
+import clsx from 'clsx';
+import { MenuButton } from '../MenuButton/MenuButton';
 import styles from './NavContainer.module.scss';
-import NavMenu from './NavMenu/NavMenu';
+import { NavMenu } from './NavMenu/NavMenu';
 import { useNavContainer } from './useNavContainer.hook';
 
 interface NavContainerProps {
@@ -12,11 +13,11 @@ interface NavContainerProps {
 	withMenu?: boolean;
 	menuButtonClassName?: string;
 	className?: string;
-	mobileWidth?: TBreakpoint;
+	mobileWidth?: Breakpoint;
 	renderLogoInsteadOfMenu?: boolean;
 }
 
-const NavContainer = ({
+export const NavContainer = ({
 	children,
 	withMenu = true,
 	menuButtonClassName,
@@ -49,9 +50,7 @@ const NavContainer = ({
 					)}
 				</>
 			)}
-			<div className={`${styles['nav-container']} ${className || ''}`}>
-				{children}
-			</div>
+			<div className={clsx(styles.container, className)}>{children}</div>
 			{withMenu && show && !renderLogoInsteadOfMenu && (
 				<NavMenu
 					isOpen={isOpen}
@@ -64,5 +63,3 @@ const NavContainer = ({
 		</>
 	);
 };
-
-export default NavContainer;

@@ -1,0 +1,34 @@
+{
+	"name": "sleeptrackly",
+	"private": true,
+	"packageManager": "pnpm@11.7.0+sha512.19cc852c120c7125760f2443ee6be0ca5b40f9f50598de1a09a1f177503e010e57c23c77646e01e761de59bf874fb22a3398c33ab9691fc13eb946b6f0f4d620",
+	"engines": {
+		"node": ">=24.0.0"
+	},
+	"scripts": {
+		"dev:client": "pnpm --filter client dev",
+		"dev:admin": "pnpm --filter admin dev",
+		"dev:server": "pnpm --filter server start:dev",
+		"start:all": "pnpm -r --parallel start",
+		"build:all": "pnpm -r build",
+		"lint:all": "pnpm -r lint",
+		"generate:api": "npx openapi-typescript http://localhost:5000/docs-json -o shared/types/src/schema.d.ts",
+		"caddy:run": "caddy run --config ./Caddyfile"
+	},
+	"devDependencies": {
+		"@eslint/eslintrc": "catalog:",
+		"@eslint/js": "catalog:",
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"eslint": "catalog:",
+		"eslint-config-next": "catalog:",
+		"eslint-config-prettier": "catalog:",
+		"eslint-plugin-oxlint": "catalog:",
+		"globals": "catalog:",
+		"oxlint": "catalog:",
+		"prettier": "catalog:",
+		"typescript": "catalog:",
+		"typescript-eslint": "catalog:"
+	}
+}

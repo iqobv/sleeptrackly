@@ -1,5 +1,9 @@
-.items-list-wrapper {
+.wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 1rem;
+
+	&.isModal {
+		padding: 1.25rem 0;
+	}
 }

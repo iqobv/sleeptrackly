@@ -1,3 +1,14 @@
-import { PRODUCT_TYPES } from '@/constants';
+import { components, ProductType } from '@shared/types';
 
-export type TProductType = (typeof PRODUCT_TYPES)[keyof typeof PRODUCT_TYPES];
+type SwaggerProductType = components['schemas']['ProductType'];
+
+export const FilterProductType = {
+	ALL: 'ALL',
+	...ProductType,
+} as const satisfies Record<
+	'ALL' | SwaggerProductType,
+	'ALL' | SwaggerProductType
+>;
+
+export type FilterProductType =
+	(typeof FilterProductType)[keyof typeof FilterProductType];

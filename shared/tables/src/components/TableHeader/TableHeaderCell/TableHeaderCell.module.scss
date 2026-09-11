@@ -1,0 +1,24 @@
+.cell {
+	width: auto;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: 400;
+	color: var(--table-header-text);
+
+	&Inner {
+		cursor: default;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 5px;
+		white-space: nowrap;
+
+		&.sortable {
+			cursor: pointer;
+		}
+
+		&.center {
+			justify-content: center;
+		}
+	}
+}

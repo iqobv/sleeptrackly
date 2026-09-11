@@ -1,13 +1,13 @@
+import { Product, Promotion } from '@generated/prisma/client';
+import { PrismaService } from '@infra/prisma/prisma.service';
 import {
 	BadRequestException,
 	ConflictException,
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from 'src/infra/prisma/prisma.service';
 import { ProductService } from '../product/product.service';
 import { PromotionService } from './promotion.service';
-import { Product, Promotion } from 'generated/prisma/client';
 
 type PrismaMock = {
 	promotion: {
@@ -161,7 +161,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.findUnique).toHaveBeenCalled();
 			expect(prisma.promotion.create).toHaveBeenCalledWith({
 				data: {
-					alias: expect.any(String),
+					alias: 'TEST_1234567890',
 					coinsReward: 150,
 					expiresAt: dto.expiresAt,
 					maxUses: 10,
@@ -181,7 +181,7 @@ describe('PromotionService', () => {
 
 			expect(prisma.promotion.findMany).toHaveBeenCalledWith({
 				where: {
-					OR: [{ expiresAt: { gt: expect.any(Date) } }, { expiresAt: null }],
+					OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
 				},
 				orderBy: { createdAt: 'desc' },
 			});

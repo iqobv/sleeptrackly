@@ -1,42 +1,38 @@
 {
 	"name": "admin",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --port 3001 --turbopack",
-		"build": "next build --turbopack",
-		"start": "next start",
-		"lint": "eslint"
+		"build": "next build",
+		"start": "next start --port 3001",
+		"lint": "oxlint . && eslint .",
+		"lint:fix": "eslint . --fix"
 	},
 	"dependencies": {
-		"@hookform/resolvers": "^5.2.2",
-		"@tanstack/react-query": "^5.90.5",
-		"class-variance-authority": "^0.7.1",
-		"dayjs": "^1.11.19",
-		"next": "^16.2.2",
-		"next-themes": "^0.4.6",
-		"react": "^19.2.4",
-		"react-day-picker": "^9.11.1",
-		"react-dom": "^19.2.4",
-		"react-hook-form": "^7.71.1",
-		"react-icons": "^5.5.0",
-		"react-loading-skeleton": "^3.5.0",
-		"react-textarea-autosize": "^8.5.9",
-		"react-toastify": "^11.0.5",
-		"sass": "^1.93.2",
-		"zod": "^4.1.12",
-		"zustand": "^5.0.8"
-	},
-	"devDependencies": {
-		"@eslint/eslintrc": "^3",
-		"@types/node": "^20",
-		"@types/react": "^19",
-		"@types/react-dom": "^19",
-		"eslint": "^9",
-		"eslint-config-next": "15.5.6",
-		"typescript": "^5"
-	},
-	"overrides": {
-		"postcss": "^8.5.10"
+		"@hookform/resolvers": "catalog:",
+		"@shared/form": "workspace:^",
+		"@shared/hooks": "workspace:^",
+		"@shared/tables": "workspace:^",
+		"@shared/types": "workspace:^",
+		"@shared/ui": "workspace:^",
+		"@shared/utils": "workspace:^",
+		"@t3-oss/env-nextjs": "catalog:",
+		"@tanstack/react-query": "catalog:",
+		"axios": "catalog:",
+		"clsx": "catalog:",
+		"dayjs": "catalog:",
+		"jose": "^6.2.12",
+		"next": "catalog:",
+		"next-themes": "catalog:",
+		"nuqs": "catalog:",
+		"react": "catalog:",
+		"react-dom": "catalog:",
+		"react-hook-form": "catalog:",
+		"react-icons": "catalog:",
+		"react-toastify": "catalog:",
+		"sass": "catalog:",
+		"zod": "catalog:",
+		"zustand": "catalog:"
 	}
 }
