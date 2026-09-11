@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -28,13 +28,13 @@ WORKDIR /app
 RUN pnpm deploy --filter nest-server --prod /app/prod-out
 
 WORKDIR /app/prod-out
-COPY server/dist ./dist
-COPY server/prisma ./prisma
-COPY server/prisma.config.ts ./
-COPY server/generated ./generated
+RUN cp -r /app/server/dist ./dist
+RUN cp -r /app/server/prisma ./prisma
+RUN cp /app/server/prisma.config.ts ./
+RUN cp -r /app/server/generated ./generated
 RUN pnpm dlx prisma generate
 
-FROM node:22-alpine AS runner
+FROM node:24-alpine AS runner
 
 RUN apk add --no-cache libc6-compat openssl
 
