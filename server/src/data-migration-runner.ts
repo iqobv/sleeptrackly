@@ -19,11 +19,12 @@ const cleanConnectionString = connectionString.split('?')[0];
 
 const pool = new Pool({
 	connectionString: cleanConnectionString,
-	// ssl: false,
-	ssl: {
-		ca: caCert,
-		rejectUnauthorized: true,
-	},
+	ssl: caCert
+		? {
+				ca: Buffer.from(caCert),
+				rejectUnauthorized: true,
+			}
+		: undefined,
 });
 
 const adapter = new PrismaPg(pool);

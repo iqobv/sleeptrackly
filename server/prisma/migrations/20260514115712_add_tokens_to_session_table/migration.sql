@@ -14,7 +14,7 @@ DROP INDEX "sessions_session_id_key";
 -- AlterTable
 ALTER TABLE "sessions" DROP COLUMN "country",
 DROP COLUMN "session_id",
-ADD COLUMN     "hast_token" TEXT NOT NULL,
+ADD COLUMN     "hast_token" TEXT NOT NULL DEFAULT '',
 ADD COLUMN     "os_name" TEXT,
 ADD COLUMN     "previous_token" TEXT,
 ADD COLUMN     "rotated_at" TIMESTAMP(3);

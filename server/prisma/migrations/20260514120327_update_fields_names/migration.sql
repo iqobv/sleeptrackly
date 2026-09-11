@@ -7,11 +7,18 @@
 
 */
 -- DropIndex
-DROP INDEX "sessions_hast_token_key";
+DROP INDEX IF EXISTS "sessions_hast_token_key";
+DROP INDEX IF EXISTS "sessions_hash_token_key";
+
+TRUNCATE TABLE "sessions" CASCADE;
 
 -- AlterTable
-ALTER TABLE "sessions" DROP COLUMN "hast_token",
-ADD COLUMN     "hash_token" TEXT NOT NULL;
+ALTER TABLE "sessions"
+DROP COLUMN IF EXISTS "hast_token",
+DROP COLUMN IF EXISTS "hash_token";
+
+ALTER TABLE "sessions"
+ADD COLUMN "hash_token" TEXT NOT NULL;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "sessions_hash_token_key" ON "sessions"("hash_token");

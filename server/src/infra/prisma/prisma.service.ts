@@ -22,12 +22,13 @@ export class PrismaService
 
 		const pool = new Pool({
 			connectionString: cleanConnectionString,
-			ssl: isProd
-				? {
-						ca: caCert,
-						rejectUnauthorized: true,
-					}
-				: undefined,
+			ssl:
+				isProd && caCert
+					? {
+							ca: Buffer.from(caCert),
+							rejectUnauthorized: true,
+						}
+					: undefined,
 		});
 
 		const adapter = new PrismaPg(pool);
