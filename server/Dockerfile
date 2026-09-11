@@ -10,7 +10,7 @@ FROM base AS builder
 
 WORKDIR /app
 
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml package.json tsconfig.base.json eslint.config.mjs .npmrc ./
 COPY server ./server
 
 RUN pnpm install --frozen-lockfile
