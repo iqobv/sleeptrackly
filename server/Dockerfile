@@ -20,7 +20,7 @@ WORKDIR /app/server
 ARG POSTGRES_URI
 ENV POSTGRES_URI=$POSTGRES_URI
 
-RUN pnpm dlx prisma generate
+RUN pnpm exec prisma generate
 RUN pnpm run build
 
 WORKDIR /app
@@ -32,7 +32,7 @@ RUN cp -r /app/server/dist ./dist
 RUN cp -r /app/server/prisma ./prisma
 RUN cp /app/server/prisma.config.ts ./
 RUN cp -r /app/server/generated ./generated
-RUN pnpm dlx prisma generate
+RUN pnpm exec prisma generate
 
 FROM node:24-alpine AS runner
 
