@@ -15,7 +15,7 @@ export const AvailableChallengesLoader = () => (
 			titleHeight={38}
 			titleWidth={170}
 			hasDescription
-			padding={10}
+			padding={20}
 		/>
 		<AvailableChallengesGridLoader />
 	</div>

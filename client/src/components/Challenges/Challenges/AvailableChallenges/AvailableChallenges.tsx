@@ -6,6 +6,7 @@ import { useCountdown } from '@/hooks/useCountdown.hook';
 import { Grid, GridItem, pxToRem, SectionHeader, Typography } from '@shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { AvailableChallengeCard } from './AvailableChallengeCard/AvailableChallengeCard';
+import styles from './AvailableChallenges.module.scss';
 import { AvailableChallengesLoader } from './AvailableChallengesLoader';
 
 export const AvailableChallenges = () => {
@@ -24,7 +25,8 @@ export const AvailableChallenges = () => {
 					variant: 'h2',
 				}}
 				description="Explore and join new challenges to improve your sleep habits."
-				padding={10}
+				padding={20}
+				wrapperClassName={styles.wrapper}
 				rightSlot={
 					<Typography>Challenges refreshes at: {formatted}</Typography>
 				}

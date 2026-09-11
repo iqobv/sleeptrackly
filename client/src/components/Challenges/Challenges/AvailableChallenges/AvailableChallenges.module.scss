@@ -1,3 +1,12 @@
-.availableChallenges {
+@use '../../../../styles/mixins' as *;
 
+.wrapper {
+	flex-direction: column;
+	display: flex;
+	align-items: start;
+
+	@include respond-to(md) {
+		flex-direction: row;
+		align-items: center;
+	}
 }
