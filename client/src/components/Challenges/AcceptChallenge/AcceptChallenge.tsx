@@ -46,6 +46,10 @@ export const AcceptChallenge = ({
 			size={buttonProps?.size || 'md'}
 			fullWidth={buttonProps?.fullWidth || true}
 			loading={isPending}
+			style={{
+				...buttonProps?.style,
+				marginTop: 'auto',
+			}}
 			{...buttonProps}
 		>
 			{children}

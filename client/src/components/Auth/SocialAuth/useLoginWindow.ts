@@ -1,5 +1,6 @@
 'use client';
 
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import { env } from '@/env';
 import { useRouter } from 'next/navigation';
 
@@ -10,9 +11,7 @@ export const useLoginWindow = (url: string) => {
 	const router = useRouter();
 
 	const handleOpen = () => {
-		if (!apiUrl || !apiOrigin) {
-			return;
-		}
+		if (!apiUrl || !apiOrigin) return;
 
 		const width = 600;
 		const height = 800;
@@ -33,9 +32,17 @@ export const useLoginWindow = (url: string) => {
 			) {
 				return;
 			}
+
 			if (event.data?.success) {
-				window.reload();
 				window.removeEventListener('message', messageListener);
+
+				const searchParams = new URLSearchParams(window.location.search);
+				const redirectUrl =
+					searchParams.get('redirect') || CROSS_DOMAIN_ROUTES.APP_DASHBOARD;
+
+				setTimeout(() => {
+					window.location.href = redirectUrl;
+				}, 150);
 			}
 		};
 
