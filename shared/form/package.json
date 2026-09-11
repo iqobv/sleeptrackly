@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"@hookform/resolvers": "catalog:",
-		"@shared/ui": "workspace:",
+		"@shared/ui": "workspace:^",
 		"clsx": "catalog:",
 		"react-hook-form": "catalog:",
 		"zod": "catalog:"

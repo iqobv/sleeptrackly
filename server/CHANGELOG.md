@@ -1,5 +1,22 @@
 # Server changelog
 
+## [1.6.0] - 2026-09-11
+
+### Added
+
+- Added achievements system.
+- Added collections system for customization items.
+- Added weekly statistics for users.
+- Added soft delete for resources.
+- Added oportunity to edit sleep entries in dashboard.
+
+### Changed
+
+- Replaced session-based authentication with JWT-based authentication.
+- Refactored weekly sleep stats pagination to use date-based anchoring.
+- Migrate API docs to Scalar.
+- Updated challenge system.
+
 ## [1.5.3] - 2026-04-04
 
 ### Fixed

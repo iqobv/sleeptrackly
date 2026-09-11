@@ -35,7 +35,7 @@ export const AllShopFilter = () => {
 			sortBy: null,
 			sortOrder: null,
 			page: 1,
-			minPrice: 0,
+			minPrice: null,
 			maxPrice: null,
 		});
 	};

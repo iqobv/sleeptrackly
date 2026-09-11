@@ -1,5 +1,4 @@
 import { SmtpConfig } from '@config/schemas/smtp.schema';
-import { IS_PROD_ENV } from '@libs/utils/is-dev.util';
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
@@ -11,8 +10,11 @@ export const getMailerConfig = (
 > =>
 	nodemailer.createTransport({
 		host: config.MAIL_HOST,
-		secure: IS_PROD_ENV,
+		secure: config.MAIL_PORT === 465,
 		port: config.MAIL_PORT,
+		connectionTimeout: 10000,
+		greetingTimeout: 10000,
+		socketTimeout: 10000,
 		auth: {
 			user: config.MAIL_USER,
 			pass: config.MAIL_PASSWORD,

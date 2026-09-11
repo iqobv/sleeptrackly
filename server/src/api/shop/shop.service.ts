@@ -166,74 +166,75 @@ export class ShopService {
 			minPrice,
 		} = query;
 
-		const where: Prisma.ProductWhereInput = {
-			isShowInStore: true,
-			...(collection
-				? {
-						collections: {
-							some: {
-								collection: {
-									showInStore: true,
-									slug: { in: collection },
-								},
+		const andConditions: Prisma.ProductWhereInput[] = [];
+
+		if (collection && collection.length > 0) {
+			andConditions.push({
+				collections: {
+					some: { collection: { showInStore: true, slug: { in: collection } } },
+				},
+			});
+		}
+
+		if (type !== 'ALL') {
+			andConditions.push({ type });
+		}
+
+		if (itemType && itemType.length > 0) {
+			if (type === 'BUNDLE') {
+				andConditions.push({
+					bundle: { items: { some: { item: { type: { in: itemType } } } } },
+				});
+			} else {
+				andConditions.push({ itemType: { in: itemType } });
+			}
+		}
+
+		if (search) {
+			andConditions.push({
+				OR: [
+					{
+						item: {
+							translations: {
+								some: { name: { contains: search, mode: 'insensitive' } },
 							},
 						},
-					}
-				: undefined),
-			...(type === 'ALL' ? {} : { type }),
-			...(itemType
-				? type === 'BUNDLE'
-					? {
-							bundle: {
-								items: {
-									some: {
-										item: { type: { in: itemType } },
-									},
-								},
+					},
+					{
+						bundle: {
+							translations: {
+								some: { name: { contains: search, mode: 'insensitive' } },
 							},
-						}
-					: { itemType: { in: itemType } }
-				: {}),
-			...(search
-				? {
-						OR: [
-							{
-								item: {
-									translations: {
-										some: { name: { contains: search, mode: 'insensitive' } },
-									},
-								},
-							},
-							{
-								bundle: {
-									translations: {
-										some: { name: { contains: search, mode: 'insensitive' } },
-									},
-								},
-							},
-						],
-					}
-				: {}),
-			...(minPrice !== undefined || maxPrice !== undefined
-				? {
-						OR: [
-							{
-								discountedPrice: {
-									not: null,
-									...(minPrice !== undefined ? { gte: minPrice } : {}),
-									...(maxPrice !== undefined ? { lte: maxPrice } : {}),
-								},
-							},
-							{
-								discountedPrice: null,
-								price: {
-									...(minPrice !== undefined && { gte: minPrice }),
-									...(maxPrice !== undefined && { lte: maxPrice }),
-								},
-							},
-						],
-					}
-				: {}),
+						},
+					},
+				],
+			});
+		}
+
+		if (minPrice !== undefined || maxPrice !== undefined) {
+			andConditions.push({
+				OR: [
+					{
+						discountedPrice: {
+							not: null,
+							...(minPrice !== undefined ? { gte: minPrice } : {}),
+							...(maxPrice !== undefined ? { lte: maxPrice } : {}),
+						},
+					},
+					{
+						discountedPrice: null,
+						price: {
+							...(minPrice !== undefined ? { gte: minPrice } : {}),
+							...(maxPrice !== undefined ? { lte: maxPrice } : {}),
+						},
+					},
+				],
+			});
+		}
+
+		const where: Prisma.ProductWhereInput = {
+			isShowInStore: true,
+			...(andConditions.length > 0 ? { AND: andConditions } : {}),
 		};
 
 		const result = await paginate({ page, limit }, async (limit, offset) => {

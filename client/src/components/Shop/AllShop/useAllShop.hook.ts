@@ -13,7 +13,7 @@ import { useShopFilters } from './useShopFilters.hook';
 export const useAllShop = () => {
 	const [urlFilters, setUrlFilters] = useShopFilters();
 
-	const formValues = useMemo(
+	const defaultValues = useMemo(
 		() => ({
 			...urlFilters,
 			sort: `${urlFilters.sortBy}_${urlFilters.sortOrder}`.toUpperCase(),
@@ -22,95 +22,67 @@ export const useAllShop = () => {
 	);
 
 	const methods = useForm<AllShopFiltersForm>({
-		defaultValues: formValues,
+		defaultValues,
 	});
 
+	const formValues = useWatch({ control: methods.control });
+
+	const debouncedSearch = useDebounce(formValues.search, 500);
+	const debouncedMinPrice = useDebounce(formValues.minPrice, 500);
+	const debouncedMaxPrice = useDebounce(formValues.maxPrice, 500);
+
+	useEffect(() => {
+		const nextFilters = { ...formValues } as Record<string, unknown>;
+
+		delete nextFilters.sort;
+
+		nextFilters.search = debouncedSearch || null;
+		nextFilters.minPrice = debouncedMinPrice ?? null;
+		nextFilters.maxPrice = debouncedMaxPrice ?? null;
+
+		for (const key in nextFilters) {
+			const value = nextFilters[key];
+
+			if (Array.isArray(value) && value.length === 0) {
+				nextFilters[key] = null;
+			} else if (value === undefined) {
+				nextFilters[key] = null;
+			}
+		}
+
+		const hasChanges = Object.keys(nextFilters).some((key) => {
+			const typedKey = key as keyof PaginatedShopFilterDto;
+			const newVal = nextFilters[key];
+			const oldVal = urlFilters[typedKey] ?? null;
+
+			if (Array.isArray(newVal) && Array.isArray(oldVal))
+				return newVal.join(',') !== oldVal.join(',');
+
+			return newVal !== oldVal;
+		});
+
+		if (hasChanges)
+			setUrlFilters({
+				...(nextFilters as Partial<PaginatedShopFilterDto>),
+				page: 1,
+			});
+	}, [
+		formValues,
+		debouncedSearch,
+		debouncedMinPrice,
+		debouncedMaxPrice,
+		urlFilters,
+		setUrlFilters,
+	]);
+
 	const apiFilters = useMemo((): PaginatedShopFilterDto => {
-		return {
-			type: urlFilters.type,
-			itemType: urlFilters.itemType,
-			sortBy: urlFilters.sortBy,
-			sortOrder: urlFilters.sortOrder,
-			collection: urlFilters.collection,
-			search: urlFilters.search,
-			page: urlFilters.page,
-			limit: urlFilters.limit,
-			language: urlFilters.language,
-			minPrice: urlFilters.minPrice,
-			maxPrice: urlFilters.maxPrice,
-		};
+		return { ...urlFilters } as PaginatedShopFilterDto;
 	}, [urlFilters]);
 
 	const { data, isLoading } = useQuery({
 		queryKey: QUERY_KEYS.shop.catalog(apiFilters),
 		queryFn: () => getAllShop(apiFilters),
 	});
-
-	const handleSelectChange = <K extends keyof AllShopFiltersForm>(
-		name: K,
-		value: AllShopFiltersForm[K],
-	) => {
-		methods.setValue(name, value as never);
-
-		if (name === 'sort' && typeof value === 'string') {
-			const [sortBy, sortOrder] = value.split('_') as [
-				PaginatedShopFilterDto['sortBy'],
-				PaginatedShopFilterDto['sortOrder'],
-			];
-			setUrlFilters({ sortBy, sortOrder, page: 1 });
-		} else {
-			setUrlFilters({ [name]: value, page: 1 });
-		}
-	};
-
-	const watchedSearch = useWatch({ control: methods.control, name: 'search' });
-	const watchedMinPrice = useWatch({
-		control: methods.control,
-		name: 'minPrice',
-	});
-	const watchedMaxPrice = useWatch({
-		control: methods.control,
-		name: 'maxPrice',
-	});
-
-	const debouncedSearch = useDebounce(watchedSearch, 500);
-	const debouncedMinPrice = useDebounce(watchedMinPrice, 500);
-	const debouncedMaxPrice = useDebounce(watchedMaxPrice, 500);
-
-	useEffect(() => {
-		let shouldUpdate = false;
-		const newFilters: Partial<PaginatedShopFilterDto> = {};
-
-		if (debouncedSearch !== (urlFilters.search ?? undefined)) {
-			newFilters.search = debouncedSearch;
-			shouldUpdate = true;
-		}
-
-		const normalizedMinPrice = debouncedMinPrice ?? 0;
-		if (normalizedMinPrice !== urlFilters.minPrice) {
-			newFilters.minPrice = normalizedMinPrice;
-			shouldUpdate = true;
-		}
-
-		const normalizedMaxPrice = debouncedMaxPrice ?? null;
-		if (normalizedMaxPrice !== urlFilters.maxPrice) {
-			newFilters.maxPrice = normalizedMaxPrice;
-			shouldUpdate = true;
-		}
-
-		if (shouldUpdate) {
-			newFilters.page = 1;
-			setUrlFilters(newFilters);
-		}
-	}, [
-		debouncedSearch,
-		debouncedMinPrice,
-		debouncedMaxPrice,
-		setUrlFilters,
-		urlFilters.search,
-		urlFilters.minPrice,
-		urlFilters.maxPrice,
-	]);
 
 	const handlePageChange = (page: number) => setUrlFilters({ page });
 
@@ -120,6 +92,5 @@ export const useAllShop = () => {
 		methods,
 		currentPage: urlFilters.page,
 		handlePageChange,
-		handleSelectChange,
 	};
 };

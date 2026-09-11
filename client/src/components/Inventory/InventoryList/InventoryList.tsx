@@ -68,6 +68,7 @@ export const InventoryList = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey });
+			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.user.me() });
 		},
 	});
 

@@ -37,9 +37,9 @@
 	}
 }
 
-.auth {
+.actions {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 2rem;
+	gap: var(--gap);
 }

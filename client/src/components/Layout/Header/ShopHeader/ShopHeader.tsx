@@ -20,7 +20,7 @@ export const ShopHeader = () => (
 			<nav className={styles.nav}>
 				<NavLinks rowDirectionOnLg />
 			</nav>
-			<div className={styles.auth}>
+			<div className={styles.actions}>
 				<ShopBalance />
 				<UserMenu />
 			</div>

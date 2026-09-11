@@ -12,9 +12,13 @@
 	height: fit-content;
 	top: calc(var(--header-height) + 1rem);
 
-	@include respond-to('lg') {
-		max-width: 18.75rem;
+	@include respond-to(lg) {
+		max-width: 15.625rem;
 		position: sticky;
+	}
+
+	@include respond-to(xxl) {
+		max-width: 18.75rem;
 	}
 }
 

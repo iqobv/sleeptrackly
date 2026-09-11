@@ -1,6 +1,6 @@
 'use client';
 
-import { SectionHeader } from '@shared/ui';
+import { Container, SectionHeader } from '@shared/ui';
 import { useSearchParams } from 'next/navigation';
 import { EmailField } from './EmailField/EmailField';
 import { NewPasswordField } from './NewPasswordField/NewPasswordField';
@@ -11,15 +11,18 @@ export const ResetPassword = () => {
 	const token = searchParams.get('token');
 
 	return (
-		<div className={styles.resetPassword}>
-			<SectionHeader
-				title="Reset Password"
-				containerClassName={styles.header}
-				textAlign="center"
-			/>
-			<div className={styles.container}>
-				{token ? <NewPasswordField token={token} /> : <EmailField />}
+		<Container>
+			<div className={styles.resetPassword}>
+				<SectionHeader
+					title="Reset Password"
+					containerClassName={styles.header}
+					textAlign="center"
+					wrapperClassName={styles.headerWrapper}
+				/>
+				<div className={styles.container}>
+					{token ? <NewPasswordField token={token} /> : <EmailField />}
+				</div>
 			</div>
-		</div>
+		</Container>
 	);
 };

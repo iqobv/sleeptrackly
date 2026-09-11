@@ -289,6 +289,10 @@ export class AuthService {
 		clientInfo: ClientInfoDto,
 		tx?: Prisma.TransactionClient,
 	): Promise<TokensDto> {
+		if (!user.emailVerified) {
+			await this.userService.update(user.id, { emailVerified: true }, true, tx);
+		}
+
 		const rawRefreshToken = generateRawToken();
 		const refreshTokenHash = hashToken(rawRefreshToken);
 

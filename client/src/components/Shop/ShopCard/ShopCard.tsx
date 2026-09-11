@@ -4,15 +4,14 @@ import { makePurchase } from '@/api/shop/shop.api';
 import { Coin } from '@/components/Icons/Coin';
 import { ProductImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config/queryClient.config';
-import { Item } from '@/types/item/item.types';
 import { Product } from '@/types/product/product.types';
 import { formatNumber } from '@/utils/numberFormatter.util';
+import { ProductType } from '@shared/types';
 import { Button, Typography } from '@shared/ui';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import styles from './ShopCard.module.scss';
-import { ProductType } from '@shared/types';
 
 interface ShopCardProps {
 	product: Product;
@@ -31,8 +30,12 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 		},
 		onSuccess: () => {
 			toast.success('Purchase successful!');
-			queryClient.refetchQueries({
+
+			queryClient.invalidateQueries({
 				queryKey: QUERY_KEYS.coin.userCoin,
+			});
+			queryClient.invalidateQueries({
+				queryKey: QUERY_KEYS.shop.all,
 			});
 		},
 		onError: (error) => {
@@ -40,13 +43,6 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 			setIsOwned(false);
 		},
 	});
-
-	const url: string =
-		product.type === ProductType.ITEM
-			? (key as Item)?.previewUrl
-				? (key as Item)?.previewUrl
-				: (key as Item)?.mediaUrl
-			: (key?.mediaUrl ?? '');
 
 	return (
 		<div className={styles.card}>
