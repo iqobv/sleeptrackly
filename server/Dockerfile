@@ -34,9 +34,6 @@ RUN cp -r /app/server/prisma ./prisma
 RUN cp /app/server/prisma.config.ts ./
 RUN cp -r /app/server/generated ./generated
 
-ENV CI=true
-RUN pnpm exec prisma generate
-
 FROM node:24-alpine AS runner
 
 RUN apk add --no-cache libc6-compat openssl
