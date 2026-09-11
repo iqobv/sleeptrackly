@@ -25,9 +25,10 @@ RUN pnpm run build
 
 WORKDIR /app
 
-RUN pnpm deploy --filter nest-server --prod /app/prod-out
+RUN pnpm deploy --filter server --prod /app/prod-out
 
 WORKDIR /app/prod-out
+
 RUN cp -r /app/server/dist ./dist
 RUN cp -r /app/server/prisma ./prisma
 RUN cp /app/server/prisma.config.ts ./
