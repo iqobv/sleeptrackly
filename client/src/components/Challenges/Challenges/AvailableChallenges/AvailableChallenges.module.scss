@@ -1,12 +1,12 @@
 @use '../../../../styles/mixins' as *;
 
 .wrapper {
-	flex-direction: column;
-	display: flex;
-	align-items: start;
+	flex-direction: column !important;
+	display: flex !important;
+	align-items: start !important;
 
 	@include respond-to(md) {
-		flex-direction: row;
-		align-items: center;
+		flex-direction: row !important;
+		align-items: center !important;
 	}
 }
