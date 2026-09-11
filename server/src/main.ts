@@ -77,7 +77,7 @@ async function bootstrap(): Promise<void> {
 
 	if (isProd) {
 		app.use(
-			'/docs*',
+			'/docs{*splat}',
 			basicAuth({
 				challenge: true,
 				users: {
