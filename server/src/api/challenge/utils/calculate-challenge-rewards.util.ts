@@ -6,10 +6,10 @@ export interface ChallengeRewardsConfig {
 }
 
 const TIER_DAILY_REWARDS: Record<ChallengeTier, number> = {
-	[ChallengeTier.TIER_1]: 5,
-	[ChallengeTier.TIER_2]: 10,
-	[ChallengeTier.TIER_3]: 15,
-	[ChallengeTier.TIER_4]: 12,
+	[ChallengeTier.TIER_1]: 7,
+	[ChallengeTier.TIER_2]: 12,
+	[ChallengeTier.TIER_3]: 18,
+	[ChallengeTier.TIER_4]: 10,
 };
 
 export const calculateChallengeRewards = (
