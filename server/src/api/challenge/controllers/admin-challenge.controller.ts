@@ -23,6 +23,7 @@ import { ApiExtraModels, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { ChallengeQueryDto } from '../dto/challenge-query.dto';
 import { FullChallengeDto } from '../dto/challenge.dto';
 import { CreateChallengeDto } from '../dto/create-challenge.dto';
+import { GenerateWeeklyChallengesDto } from '../dto/generate-weekly-challenges.dto';
 import { BedtimeVarianceMetadataDto } from '../dto/metadata/bedtime-variance-metadata.dto';
 import { SleepDurationMetadataDto } from '../dto/metadata/sleep-duration-metadata.dto';
 import { TimeConsistencyMetadataDto } from '../dto/metadata/time-consistency-metadata.dto';
@@ -90,8 +91,11 @@ export class AdminChallengeController {
 	@Post('generate')
 	@ApiSuccessResponse(HttpStatus.OK, SUCCESS_MESSAGES.CHALLENGE.GENERATED)
 	@HttpCode(HttpStatus.OK)
-	public async generateChallenges(): Promise<MessageResponse> {
-		await this.challengeGeneratorService.generateChallenges(true);
+	public async generateChallenges(
+		@Body() body: GenerateWeeklyChallengesDto,
+	): Promise<MessageResponse> {
+		const { currentWeek = true } = body;
+		await this.challengeGeneratorService.generateChallenges(currentWeek);
 
 		return SUCCESS_MESSAGES.CHALLENGE.GENERATED;
 	}

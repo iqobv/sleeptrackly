@@ -1,6 +1,7 @@
 import { challengesQuerySchema } from '@/schemas/challenge/challengesQuery.schema';
 import { challengeTranslationSchema } from '@/schemas/challenge/challengeTranslation.schema';
 import { createChallengeSchema } from '@/schemas/challenge/createChallenge.schema';
+import { generateWeeklyChallengesSchema } from '@/schemas/challenge/generateWeeklyChallenges.schema';
 import { updateChallengeSchema } from '@/schemas/challenge/updateChallenge.schema';
 import { ChallengeType } from '@/types/challenge/challengeType.types';
 import { z } from 'zod';
@@ -11,6 +12,9 @@ export type CreateChallengeDto = z.infer<typeof createChallengeSchema>;
 export type UpdateChallengeDto = z.infer<typeof updateChallengeSchema>;
 export type ChallengeTranslationDto = z.infer<
 	typeof challengeTranslationSchema
+>;
+export type GenerateWeeklyChallengesDto = z.infer<
+	typeof generateWeeklyChallengesSchema
 >;
 
 export type SleepDurationMetadataDto = Extract<

@@ -96,33 +96,75 @@ export class ChallengeGeneratorService {
 		dto: GenerateChallengeForTierDto,
 	): Promise<void> {
 		const { availableFrom, tier, availableTo, usedTemplateIds } = dto;
+		const fallbackUsedIds = usedTemplateIds ?? [];
 
-		const template = await this.prismaService.challengeTemplate.findFirst({
+		const unusedCount = await this.prismaService.challengeTemplate.count({
 			where: {
 				tier,
 				isActive: true,
-				id: { notIn: usedTemplateIds },
-			},
-			orderBy: {
-				lastUsedAt: { sort: 'asc', nulls: 'first' },
+				id: { notIn: fallbackUsedIds },
+				lastUsedAt: null,
 			},
 		});
 
-		if (!template) {
+		let selectedTemplate = null;
+
+		if (unusedCount > 0) {
+			const skip = Math.floor(Math.random() * unusedCount);
+			selectedTemplate = await this.prismaService.challengeTemplate.findFirst({
+				where: {
+					tier,
+					isActive: true,
+					id: { notIn: fallbackUsedIds },
+					lastUsedAt: null,
+				},
+				skip,
+			});
+		} else {
+			const usedCount = await this.prismaService.challengeTemplate.count({
+				where: {
+					tier,
+					isActive: true,
+					id: { notIn: fallbackUsedIds },
+					lastUsedAt: { not: null },
+				},
+			});
+
+			if (usedCount > 0) {
+				const skip = Math.floor(Math.pow(Math.random(), 3) * usedCount);
+
+				selectedTemplate = await this.prismaService.challengeTemplate.findFirst(
+					{
+						where: {
+							tier,
+							isActive: true,
+							id: { notIn: fallbackUsedIds },
+							lastUsedAt: { not: null },
+						},
+						orderBy: {
+							lastUsedAt: 'asc',
+						},
+						skip,
+					},
+				);
+			}
+		}
+
+		if (!selectedTemplate) {
 			this.logger.warn(`No available template found for tier ${tier}`);
 			return;
 		}
 
 		await this.generateRandomChallenge({
-			templateId: template.id,
+			templateId: selectedTemplate.id,
 			availableFrom,
 			availableTo,
 		});
 
-		usedTemplateIds?.push(template.id);
+		usedTemplateIds?.push(selectedTemplate.id);
 
 		this.logger.log(
-			`Challenge generated for tier ${tier} using template ${template.id}`,
+			`Challenge generated for tier ${tier} using template ${selectedTemplate.id}`,
 		);
 	}
 

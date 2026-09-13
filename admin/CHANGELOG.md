@@ -1,5 +1,11 @@
 # Admin changelog
 
+## [0.6.1] - 2026-09-13
+
+### Added
+
+- Buttons to generate challenges for next and current week from tempaltes.
+
 ## [0.6.0] - 2026-09-11
 
 ### Added

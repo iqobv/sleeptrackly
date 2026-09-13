@@ -1,5 +1,11 @@
 # Server changelog
 
+## [0.6.1] - 2026-09-13
+
+### Changed
+
+- Refactored challenge generation logic to use a randomize.
+
 ## [1.6.0] - 2026-09-11
 
 ### Added

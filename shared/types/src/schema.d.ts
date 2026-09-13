@@ -2912,6 +2912,9 @@ export interface components {
             /** Format: date-time */
             availableTo?: string | null;
         };
+        GenerateWeeklyChallengesDto: {
+            currentWeek?: boolean;
+        };
         BaseUserPrivacySettingsDto: {
             userId: string;
             acceptFriendRequests: boolean;
@@ -3598,7 +3601,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-11T10:36:56.210Z
+             * @example 2026-09-14T16:17:18.333Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3629,7 +3632,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-11T10:36:56.210Z
+             * @example 2026-09-14T16:17:18.333Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -6683,7 +6686,11 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GenerateWeeklyChallengesDto"];
+            };
+        };
         responses: {
             /** @description Challenges generated successfully */
             200: {

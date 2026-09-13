@@ -2,6 +2,7 @@
 
 import { generateWeeklyChallenges } from '@/api/challenge/generateWeeklyChallenges.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
+import { GenerateWeeklyChallengesDto } from '@/dto/challenge/challenge.dto';
 import {
 	Button,
 	Dropdown,
@@ -18,7 +19,8 @@ export const ChallengeDropdown = () => {
 	const queryClient = useQueryClient();
 
 	const { mutate: generateChallenges, isPending } = useMutation({
-		mutationFn: generateWeeklyChallenges,
+		mutationFn: (data: GenerateWeeklyChallengesDto) =>
+			generateWeeklyChallenges(data),
 		onSuccess: () => {
 			toast.success('Weekly challenges generated successfully');
 			queryClient.invalidateQueries({ queryKey: QUERY_KEYS.challenge.all });
@@ -33,6 +35,11 @@ export const ChallengeDropdown = () => {
 		},
 	});
 
+	const generateForCurrentWeek = () =>
+		generateChallenges({ currentWeek: true });
+
+	const generateForNextWeek = () => generateChallenges({ currentWeek: false });
+
 	return (
 		<Dropdown>
 			<DropdownTrigger asChild>
@@ -44,10 +51,19 @@ export const ChallengeDropdown = () => {
 				<DropdownItem asChild>
 					<Button
 						variant="text"
-						onClick={() => generateChallenges()}
+						onClick={generateForCurrentWeek}
 						loading={isPending}
 					>
-						Generate Weekly
+						Generate for current week
+					</Button>
+				</DropdownItem>
+				<DropdownItem asChild>
+					<Button
+						variant="text"
+						onClick={generateForNextWeek}
+						loading={isPending}
+					>
+						Generate for next week
 					</Button>
 				</DropdownItem>
 			</DropdownContent>
