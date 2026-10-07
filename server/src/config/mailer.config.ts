@@ -1,13 +1,10 @@
 import { SmtpConfig } from '@config/schemas/smtp.schema';
-import nodemailer from 'nodemailer';
+import nodemailer, { Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const getMailerConfig = (
 	config: SmtpConfig,
-): nodemailer.Transporter<
-	SMTPTransport.SentMessageInfo,
-	SMTPTransport.Options
-> =>
+): Transporter<SMTPTransport.SentMessageInfo, SMTPTransport.Options> =>
 	nodemailer.createTransport({
 		host: config.MAIL_HOST,
 		secure: config.MAIL_PORT === 465,

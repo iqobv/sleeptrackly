@@ -5,6 +5,7 @@ import {
 	IsNotEmpty,
 	IsOptional,
 	IsString,
+	IsTimeZone,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -23,4 +24,8 @@ export class CreateUserDto {
 	@IsBoolean()
 	@IsOptional()
 	emailVerified?: boolean;
+
+	@IsTimeZone()
+	@IsOptional()
+	timezone?: string;
 }

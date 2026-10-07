@@ -1,6 +1,13 @@
 # Server changelog
 
-## [0.6.1] - 2026-09-13
+## [1.6.2] - 2026-10-07
+
+### Fixed
+
+- Fixed bug with challenge and challenge tasks closing for active challenges.
+- Fixed bug with challenge tasks not being closed for first time when user completes a challenge task in `BEDTIME_VARIANCE` challenge.
+
+## [1.6.1] - 2026-09-13
 
 ### Changed
 

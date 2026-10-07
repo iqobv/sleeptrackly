@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
 import { AuthService } from '../../auth.service';
+import { GoogleOneTapDto } from './dto/google-one-tap.dto';
 
 @Injectable()
 export class GoogleService {
@@ -26,9 +27,11 @@ export class GoogleService {
 	}
 
 	public async verifyOneTapToken(
-		credential: string,
+		dto: GoogleOneTapDto,
 		clientInfo: ClientInfoDto,
 	): Promise<TokensDto> {
+		const { credential } = dto;
+
 		try {
 			const ticket = await this.googleClient.verifyIdToken({
 				idToken: credential,

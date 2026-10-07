@@ -20,8 +20,6 @@ export const AuthGuard = ({ children }: PropsWithChildren<unknown>) => {
 		staleTime: 1000 * 60 * 5,
 	});
 
-	useEffect(() => {}, []);
-
 	useEffect(() => {
 		const triggerLogoutRedirect = () => {
 			queryClient.clear();

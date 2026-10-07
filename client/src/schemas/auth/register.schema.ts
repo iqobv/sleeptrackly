@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { timezoneSchema } from '../user/syncTimezone.schema';
 import { emailSchema, newPasswordSchema } from './baseAuth.schema';
 
 const authSchema = emailSchema.extend(newPasswordSchema.shape);
@@ -8,6 +9,7 @@ export const RegisterSchema = authSchema.extend({
 		.string()
 		.nonempty({ error: 'Username is required' })
 		.min(3, { error: 'Username must be at least 3 characters' }),
+	timezone: timezoneSchema,
 	acceptTerms: z.literal(true, {
 		error: 'You must accept the terms and conditions',
 	}),

@@ -150,6 +150,7 @@ export class AuthService {
 			avatarUrl,
 			email,
 			username: oAuthUsername,
+			timezone,
 		} = dto;
 
 		return await this.prismaService.$transaction(async (tx) => {
@@ -180,6 +181,7 @@ export class AuthService {
 						email,
 						username,
 						emailVerified: true,
+						timezone,
 					},
 					tx,
 				);

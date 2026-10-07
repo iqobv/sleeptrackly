@@ -67,6 +67,7 @@ export class ChallengeProcessor extends WorkerHost {
 				userChallenge.challenge,
 				sleepEntry,
 				userId,
+				userChallenge,
 			);
 
 			if (isValid) {
@@ -83,6 +84,7 @@ export class ChallengeProcessor extends WorkerHost {
 		challenge: Challenge,
 		sleepEntry: SleepEntry,
 		userId: string,
+		userChallenge: UserChallenge,
 	): Promise<boolean> {
 		const metadata = challenge.metadata as Record<string, string | number>;
 		const userTimezone = sleepEntry.timezone || 'UTC';
@@ -113,6 +115,8 @@ export class ChallengeProcessor extends WorkerHost {
 				);
 			}
 			case ChallengeType.BEDTIME_VARIANCE: {
+				if (sleepEntry.dateForChart === userChallenge.startDate) return true;
+
 				const maxVariance = Number(metadata.maxVarianceMinutes);
 				const previousTaskDate = dayjs(sleepEntry.dateForChart)
 					.subtract(1, 'day')

@@ -80,7 +80,7 @@ export class GoogleController {
 		@Res({ passthrough: true }) res: Response,
 	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
-			await this.googleService.verifyOneTapToken(dto.credential, clientInfo);
+			await this.googleService.verifyOneTapToken(dto, clientInfo);
 
 		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 

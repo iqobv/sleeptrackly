@@ -2,7 +2,7 @@ services:
   database:
     container_name: sleeptrackly_local_db
     image: postgres:18.1
-    restart: always
+    restart: no
     ports:
       - "5433:5432"
     environment:
@@ -17,7 +17,7 @@ services:
   redis:
     container_name: sleeptrackly_local_redis
     image: redis:8.8
-    restart: always
+    restart: no
     command: redis-server --requirepass ${REDIS_PASSWORD}
     ports:
       - "6380:6379"

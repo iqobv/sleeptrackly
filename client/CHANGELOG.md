@@ -1,5 +1,11 @@
 # Client changelog
 
+## [0.6.1] - 2026-10-07
+
+### Added
+
+- Added timezone syncing for user profile.
+
 ## [0.6.0] - 2026-09-11
 
 ### Added
