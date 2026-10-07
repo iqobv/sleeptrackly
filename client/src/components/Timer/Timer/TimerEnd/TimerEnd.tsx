@@ -7,6 +7,7 @@ import {
 	UpdateSleepEntryFormDto,
 } from '@/dto/sleepEntry/sleepEntry.dto';
 import { updateSleepEntryFormSchema } from '@/schemas/sleepEntry/updateSleepEntry.schema';
+import { getTimezone } from '@/utils/timezone.util';
 import { FormSubmit } from '@shared/form';
 import {
 	Button,
@@ -43,6 +44,8 @@ export const TimerEnd = ({
 	onClose,
 	open,
 }: TimerEndProps) => {
+	const timezone = getTimezone();
+
 	const defaultSleepStart = sleepStatus?.sleepStart
 		? new Date(sleepStatus.sleepStart).toISOString()
 		: new Date().toISOString();
@@ -60,7 +63,7 @@ export const TimerEnd = ({
 			...rest,
 			sleepStart: sleepStart !== defaultSleepStart ? sleepStart : undefined,
 			sleepEnd,
-			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+			timezone,
 		};
 
 		handleSaveSleep(payload);

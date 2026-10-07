@@ -1,6 +1,6 @@
 {
 	"name": "client",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"private": true,
 	"scripts": {
 		"dev": "next dev --turbopack",
@@ -48,5 +48,8 @@
 		"swiper": "^12.2.0",
 		"vanilla-cookieconsent": "^3.1.0",
 		"zod": "catalog:"
+	},
+	"overrides": {
+		"@grpc/grpc-js": "^1.13.6"
 	}
 }

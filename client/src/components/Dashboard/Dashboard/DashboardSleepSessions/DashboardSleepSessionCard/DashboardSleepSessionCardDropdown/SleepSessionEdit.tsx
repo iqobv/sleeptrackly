@@ -9,6 +9,7 @@ import {
 } from '@/dto/sleepEntry/sleepEntry.dto';
 import { updateSleepEntryFormSchema } from '@/schemas/sleepEntry/updateSleepEntry.schema';
 import { SleepEntry } from '@/types/dashboard/dashboard.types';
+import { getTimezone } from '@/utils/timezone.util';
 import { FormReset, FormSubmit } from '@shared/form';
 import { ModalBody, ModalClose, ModalFooter, SectionHeader } from '@shared/ui';
 import { formatDate, formatLocalDatetime } from '@shared/utils';
@@ -30,6 +31,7 @@ export const SleepSessionEdit = ({
 	date,
 }: SleepSessionEditProps) => {
 	const queryClient = useQueryClient();
+	const timezone = getTimezone();
 
 	const { mutate } = useMutation({
 		mutationFn: (data: UpdateSleepEntryDto) =>
@@ -75,7 +77,7 @@ export const SleepSessionEdit = ({
 
 					const finalData: UpdateSleepEntryDto = {
 						...data,
-						timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+						timezone,
 						dateForChart: dayjs(date).format('YYYY-MM-DD'),
 					};
 
