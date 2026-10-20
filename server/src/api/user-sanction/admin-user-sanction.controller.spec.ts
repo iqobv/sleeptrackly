@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AdminUserSanctionController } from './admin-user-sanction.controller';
 import { UserSanctionService } from './user-sanction.service';
 
+jest.mock('uuid', () => ({ v4: () => 'mock-uuid' }));
+
 const now = new Date();
 
 const sanction = {

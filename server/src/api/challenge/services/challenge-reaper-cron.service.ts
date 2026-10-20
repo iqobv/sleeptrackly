@@ -1,30 +1,21 @@
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
-import { Prisma } from '@generated/prisma/client';
 import {
 	ChallengeStatus,
 	ChallengeTaskStatus,
 	NotificationType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { challengeTaskInclude } from '@libs/prisma/challenge-task.include.prisma';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import { TaskPayload } from '../types/task-payload.types';
+import { ChallengeActionService } from './challenge-action.service';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-
-const challengeTaskInclude = {
-	include: {
-		userChallenge: {
-			include: {
-				user: { select: { id: true, timezone: true } },
-				challenge: { include: { translations: { where: { language: 'en' } } } },
-			},
-		},
-	},
-} satisfies Prisma.ChallengeTaskDefaultArgs;
 
 @Injectable()
 export class ChallengeReaperCronService {
@@ -33,6 +24,7 @@ export class ChallengeReaperCronService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly notificationPublisherService: NotificationPublisherService,
+		private readonly challengeActionService: ChallengeActionService,
 	) {}
 
 	@Cron(CronExpression.EVERY_HOUR)
@@ -98,9 +90,7 @@ export class ChallengeReaperCronService {
 		}
 	}
 
-	private async processExpiredTask(
-		task: Prisma.ChallengeTaskGetPayload<typeof challengeTaskInclude>,
-	): Promise<void> {
+	private async processExpiredTask(task: TaskPayload): Promise<void> {
 		const userTimezone = task.userChallenge.user.timezone || 'UTC';
 		const userNow = dayjs().tz(userTimezone);
 
@@ -113,43 +103,6 @@ export class ChallengeReaperCronService {
 
 		if (userNow.isBefore(taskDeadline)) return;
 
-		await this.prismaService.$transaction(async (tx) => {
-			await tx.challengeTask.update({
-				where: { id: task.id },
-				data: { status: ChallengeTaskStatus.FAILED },
-			});
-
-			const hasRecoveriesLeft =
-				task.userChallenge.usedRecoveries <
-				task.userChallenge.challenge.maxRecoveries;
-
-			if (hasRecoveriesLeft) {
-				await tx.userChallenge.update({
-					where: { id: task.userChallengeId },
-					data: { status: ChallengeStatus.FROZEN, frozenAt: new Date() },
-				});
-
-				await this.notificationPublisherService.dispatchCreate({
-					userId: task.userChallenge.userId,
-					type: NotificationType.CHALLENGE_FROZEN,
-					title: 'Challenge Frozen',
-					body: `Your challenge "${task.userChallenge.challenge.translations[0].title}" has been frozen because you missed a task. You have ${task.userChallenge.challenge.maxRecoveries - task.userChallenge.usedRecoveries} recoveries left.`,
-					challengeId: task.userChallenge.challengeId,
-				});
-			} else {
-				await tx.userChallenge.update({
-					where: { id: task.userChallengeId },
-					data: { status: ChallengeStatus.FAILED, frozenAt: null },
-				});
-
-				await this.notificationPublisherService.dispatchCreate({
-					userId: task.userChallenge.userId,
-					type: NotificationType.CHALLENGE_FAILED,
-					title: 'Challenge Failed',
-					body: `Your challenge "${task.userChallenge.challenge.translations[0].title}" has failed because you missed a task and have no recoveries left.`,
-					challengeId: task.userChallenge.challengeId,
-				});
-			}
-		});
+		await this.challengeActionService.failChallengeTask(task, 'TIMEOUT');
 	}
 }

@@ -13,6 +13,8 @@ export class AchievementsPublisherService {
 	public async dispatchProgressCheck(
 		payload: AchievementPayloadDto,
 	): Promise<void> {
-		await this.queue.add(QUEUE_JOB_NAME.ACHIEVEMENTS.PROCCESS, payload);
+		await this.queue.add(QUEUE_JOB_NAME.ACHIEVEMENTS.PROCCESS, payload, {
+			delay: 10000,
+		});
 	}
 }

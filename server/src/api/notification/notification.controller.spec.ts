@@ -1,4 +1,5 @@
 import { NotificationType } from '@generated/prisma/enums';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './services/notification.service';
@@ -127,7 +128,7 @@ describe('NotificationController', () => {
 			const result = await controller.markAllAsRead(userId);
 
 			expect(service.markAllAsRead).toHaveBeenCalledWith(userId);
-			expect(result).toEqual([notification]);
+			expect(result).toEqual(SUCCESS_MESSAGES.NOTIFICATION.MARKED_ALL_AS_READ);
 		});
 	});
 

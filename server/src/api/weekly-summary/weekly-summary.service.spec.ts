@@ -1,3 +1,4 @@
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { WeeklySummaryService } from './services/weekly-summary.service';
@@ -18,6 +19,9 @@ type PrismaMock = {
 describe('WeeklySummaryService', () => {
 	let service: WeeklySummaryService;
 	let prisma: PrismaMock;
+	let notificationPublisherService: {
+		dispatchCreate: jest.Mock;
+	};
 
 	beforeEach(async () => {
 		prisma = {
@@ -33,10 +37,18 @@ describe('WeeklySummaryService', () => {
 			},
 		};
 
+		notificationPublisherService = {
+			dispatchCreate: jest.fn(),
+		};
+
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				WeeklySummaryService,
 				{ provide: PrismaService, useValue: prisma },
+				{
+					provide: NotificationPublisherService,
+					useValue: notificationPublisherService,
+				},
 			],
 		}).compile();
 

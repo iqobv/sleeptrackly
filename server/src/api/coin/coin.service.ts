@@ -1,11 +1,7 @@
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
-import {
-	ConflictException,
-	Injectable,
-	NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { BaseCoinDto } from './dto/coin.dto';
 import { UpdateCoinDto } from './dto/update-coin.dto';
@@ -18,8 +14,9 @@ export class CoinService {
 		userId: string,
 		tx?: Prisma.TransactionClient,
 	): Promise<BaseCoinDto> {
-		if (await this.getUserCoin(userId))
-			throw new ConflictException(ERROR_MESSAGES.COIN.DUPLICATE);
+		const userCoin = await this.getUserCoin(userId);
+
+		if (userCoin) return userCoin;
 
 		return await this.saveToDb(userId, tx);
 	}

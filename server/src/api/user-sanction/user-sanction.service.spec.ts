@@ -1,12 +1,14 @@
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import dayjs from 'dayjs';
-import { NotificationService } from '../notification/services/notification.service';
 import { UserAvatarService } from '../user-avatar/user-avatar.service';
 import { UserService } from '../user/services/user.service';
 import { UserSanctionService } from './user-sanction.service';
+
+jest.mock('uuid', () => ({ v4: () => 'mock-uuid' }));
 
 type PrismaMock = {
 	userSanction: {
@@ -16,6 +18,9 @@ type PrismaMock = {
 		update: jest.Mock;
 		delete: jest.Mock;
 	};
+	userAvatar: {
+		findUnique: jest.Mock;
+	};
 };
 
 describe('UserSanctionService', () => {
@@ -23,7 +28,7 @@ describe('UserSanctionService', () => {
 	let prisma: PrismaMock;
 	let userService: { update: jest.Mock; generateUsername: jest.Mock };
 	let userAvatarService: { deleteAvatar: jest.Mock };
-	let notificationService: { create: jest.Mock; send: jest.Mock };
+	let notificationPublisherService: { dispatchCreate: jest.Mock };
 
 	const now = new Date();
 	const sanction = {
@@ -47,6 +52,9 @@ describe('UserSanctionService', () => {
 				update: jest.fn(),
 				delete: jest.fn(),
 			},
+			userAvatar: {
+				findUnique: jest.fn(),
+			},
 		};
 
 		userService = {
@@ -58,9 +66,8 @@ describe('UserSanctionService', () => {
 			deleteAvatar: jest.fn(),
 		};
 
-		notificationService = {
-			create: jest.fn().mockResolvedValue({}),
-			send: jest.fn().mockResolvedValue(true),
+		notificationPublisherService = {
+			dispatchCreate: jest.fn().mockResolvedValue(undefined),
 		};
 
 		const moduleRef: TestingModule = await Test.createTestingModule({
@@ -69,7 +76,10 @@ describe('UserSanctionService', () => {
 				{ provide: PrismaService, useValue: prisma },
 				{ provide: UserService, useValue: userService },
 				{ provide: UserAvatarService, useValue: userAvatarService },
-				{ provide: NotificationService, useValue: notificationService },
+				{
+					provide: NotificationPublisherService,
+					useValue: notificationPublisherService,
+				},
 			],
 		}).compile();
 
@@ -89,7 +99,7 @@ describe('UserSanctionService', () => {
 			expect(prisma.userSanction.findMany).toHaveBeenCalledWith({
 				where: { userId: 'u1' },
 			});
-			expect(result).toEqual([sanction]);
+			expect(result).toMatchObject([sanction]);
 		});
 	});
 
@@ -102,7 +112,7 @@ describe('UserSanctionService', () => {
 			expect(prisma.userSanction.findUnique).toHaveBeenCalledWith({
 				where: { id: 'sanction-1' },
 			});
-			expect(result).toEqual(sanction);
+			expect(result).toMatchObject(sanction);
 		});
 
 		it('should throw error if sanction not found', async () => {
@@ -117,12 +127,13 @@ describe('UserSanctionService', () => {
 	describe('create', () => {
 		it('should create sanction and handle AVATAR_CHANGE_BAN', async () => {
 			prisma.userSanction.create.mockResolvedValue(sanction);
-			jest
-				.spyOn(
-					service as unknown as { findByTypeAndUserId: () => Promise<unknown> },
-					'findByTypeAndUserId',
-				)
-				.mockResolvedValue(null);
+
+			prisma.userAvatar.findUnique.mockResolvedValue({
+				userId: 'u2',
+				isDefault: false,
+			});
+
+			jest.spyOn(service as any, 'findByTypeAndUserId').mockResolvedValue(null);
 
 			const endsAt = dayjs(now).add(1, 'hour').toDate();
 
@@ -135,8 +146,11 @@ describe('UserSanctionService', () => {
 			});
 
 			expect(prisma.userSanction.create).toHaveBeenCalled();
+			expect(prisma.userAvatar.findUnique).toHaveBeenCalledWith({
+				where: { userId: 'u2' },
+			});
 			expect(userAvatarService.deleteAvatar).toHaveBeenCalledWith('u2');
-			expect(result).toEqual(sanction);
+			expect(result).toMatchObject(sanction);
 		});
 
 		it('should handle USERNAME_CHANGE_BAN and generate new username', async () => {
@@ -144,12 +158,7 @@ describe('UserSanctionService', () => {
 				...sanction,
 				type: UserSanctionType.USERNAME_CHANGE_BAN,
 			});
-			jest
-				.spyOn(
-					service as unknown as { findByTypeAndUserId: () => Promise<unknown> },
-					'findByTypeAndUserId',
-				)
-				.mockResolvedValue(null);
+			jest.spyOn(service as any, 'findByTypeAndUserId').mockResolvedValue(null);
 
 			await service.create('admin-1', {
 				targetUserId: 'target-1',

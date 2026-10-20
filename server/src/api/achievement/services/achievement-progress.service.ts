@@ -4,7 +4,10 @@ import { UserInventoryService } from '@api/user-inventory/user-inventory.service
 import {
 	AchievementType,
 	AcquiredFrom,
+	ChallengeStatus,
+	ChallengeTaskStatus,
 	CoinTransactionType,
+	FriendshipStatus,
 	NotificationType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -68,16 +71,21 @@ export class AchievementProgressService {
 				return await this.prismaService.friendship.count({
 					where: {
 						OR: [{ addresseeId: userId }, { requesterId: userId }],
-						status: 'ACCEPTED',
+						status: FriendshipStatus.ACCEPTED,
 					},
 				});
 			case AchievementType.CHALLENGES_COMPLETED:
 				return await this.prismaService.userChallenge.count({
-					where: { userId, status: 'COMPLETED' },
+					where: { userId, status: ChallengeStatus.COMPLETED },
 				});
 			case AchievementType.CHALLENGES_TASKS_COMPLETED:
 				return await this.prismaService.userChallenge.count({
-					where: { userId, challengeTasks: { every: { status: 'COMPLETED' } } },
+					where: {
+						userId,
+						challengeTasks: {
+							every: { status: ChallengeTaskStatus.COMPLETED },
+						},
+					},
 				});
 			default:
 				return 0;

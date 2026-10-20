@@ -1,5 +1,15 @@
 # Server changelog
 
+## [1.6.3] - 2026-10-20
+
+### Added
+
+- Added automatic challenge freeze immediately after saving a sleep record
+
+### Fixed
+
+- Fixed a bug where restored tasks did not complete the challenge
+
 ## [1.6.2] - 2026-10-07
 
 ### Fixed

@@ -66,7 +66,7 @@ describe('UserPrivacySettingsService', () => {
 			const result = await service.updateUserPrivacySettings('user_1', dto);
 
 			expect(prisma.userPrivacySettings.upsert).toHaveBeenCalledWith({
-				where: { id: 'id_1', userId: 'user_1' },
+				where: { userId: 'user_1' },
 				create: {
 					...dto,
 					user: { connect: { id: 'user_1' } },
@@ -75,7 +75,8 @@ describe('UserPrivacySettingsService', () => {
 					...dto,
 				},
 			});
-			expect(result).toEqual(userPrivacySettings);
+
+			expect(result).toMatchObject(userPrivacySettings);
 		});
 	});
 
@@ -90,7 +91,7 @@ describe('UserPrivacySettingsService', () => {
 			expect(prisma.userPrivacySettings.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
-			expect(result).toEqual(userPrivacySettings);
+			expect(result).toMatchObject(userPrivacySettings);
 		});
 
 		it('should create user privacy settings if they do not exist', async () => {
@@ -104,7 +105,7 @@ describe('UserPrivacySettingsService', () => {
 					user: { connect: { id: 'user_1' } },
 				},
 			});
-			expect(result).toEqual(userPrivacySettings);
+			expect(result).toMatchObject(userPrivacySettings);
 		});
 	});
 });

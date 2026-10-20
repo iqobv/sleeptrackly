@@ -81,6 +81,7 @@ describe('RewardService', () => {
 					transactionType: CoinTransactionType.SLEEP_REWARD,
 					referenceId: sleepEntryId,
 				}),
+				undefined,
 			);
 		});
 
