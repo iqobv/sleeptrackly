@@ -9,6 +9,7 @@ import { AdminChallengeController } from './controllers/admin-challenge.controll
 import { ChallengeController } from './controllers/challenge.controller';
 import { ChallengeProcessor } from './processors/challenge.processor';
 import { AdminChallengeService } from './services/admin-challenge.service';
+import { ChallengeActionService } from './services/challenge-action.service';
 import { ChallengeCronService } from './services/challenge-cron.service';
 import { ChallengeGeneratorService } from './services/challenge-generator.service';
 import { ChallengePublisherService } from './services/challenge-publisher.service';
@@ -35,6 +36,7 @@ import { ChallengeService } from './services/challenge.service';
 		ChallengePublisherService,
 		ChallengeProcessor,
 		ChallengeReaperCronService,
+		ChallengeActionService,
 	],
 })
 export class ChallengeModule {}

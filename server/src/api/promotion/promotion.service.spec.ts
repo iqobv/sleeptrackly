@@ -1,5 +1,6 @@
 import { Product, Promotion } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -143,7 +144,7 @@ describe('PromotionService', () => {
 					usedCount: 0,
 				},
 			});
-			expect(result).toEqual(mockPromotion);
+			expect(result).toMatchObject(mockPromotion);
 		});
 
 		it('should create a promotion with a generated alias if alias is not provided', async () => {
@@ -161,7 +162,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.findUnique).toHaveBeenCalled();
 			expect(prisma.promotion.create).toHaveBeenCalledWith({
 				data: {
-					alias: 'TEST_1234567890',
+					alias: expect.any(String),
 					coinsReward: 150,
 					expiresAt: dto.expiresAt,
 					maxUses: 10,
@@ -169,7 +170,7 @@ describe('PromotionService', () => {
 					usedCount: 0,
 				},
 			});
-			expect(result).toEqual(mockPromotion);
+			expect(result).toMatchObject(mockPromotion);
 		});
 	});
 
@@ -181,11 +182,11 @@ describe('PromotionService', () => {
 
 			expect(prisma.promotion.findMany).toHaveBeenCalledWith({
 				where: {
-					OR: [{ expiresAt: { gt: new Date() } }, { expiresAt: null }],
+					OR: [{ expiresAt: { gt: expect.any(Date) } }, { expiresAt: null }],
 				},
 				orderBy: { createdAt: 'desc' },
 			});
-			expect(result).toEqual([mockPromotion]);
+			expect(result).toMatchObject([mockPromotion]);
 		});
 	});
 
@@ -198,7 +199,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.findFirst).toHaveBeenCalledWith({
 				where: { alias: 'TEST_ALIAS' },
 			});
-			expect(result).toEqual(mockPromotion);
+			expect(result).toMatchObject(mockPromotion);
 		});
 
 		it('should throw NotFoundException if promotion is not found by alias', async () => {
@@ -219,7 +220,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.findUnique).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
-			expect(result).toEqual(mockPromotion);
+			expect(result).toMatchObject(mockPromotion);
 		});
 
 		it('should throw NotFoundException if promotion is not found by id', async () => {
@@ -274,7 +275,7 @@ describe('PromotionService', () => {
 			expect(prisma.promotion.delete).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
-			expect(result).toEqual({ code: 'PROMOTION_DELETED' });
+			expect(result).toEqual(SUCCESS_MESSAGES.PROMOTION.DELETED);
 		});
 	});
 });

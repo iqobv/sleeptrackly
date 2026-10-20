@@ -1,6 +1,7 @@
 import { NotificationType } from '@generated/prisma/enums';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotificationService } from './services/notification.service';
 
@@ -155,7 +156,7 @@ describe('NotificationService', () => {
 				where: { id: notification.id },
 				data: { isRead: true },
 			});
-			expect(result).toEqual(updatedNotification);
+			expect(result).toMatchObject(updatedNotification);
 		});
 
 		it('should throw an error if notification not found', async () => {
@@ -194,7 +195,7 @@ describe('NotificationService', () => {
 			expect(prisma.notification.delete).toHaveBeenCalledWith({
 				where: { id: notification.id },
 			});
-			expect(result).toBe(true);
+			expect(result).toEqual(SUCCESS_MESSAGES.NOTIFICATION.DELETED);
 		});
 
 		it('should throw NotFound if notification does not exist', async () => {

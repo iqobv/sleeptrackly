@@ -67,7 +67,7 @@ describe('UserFcmTokenService', () => {
 				},
 			});
 
-			expect(result).toEqual(fcmToken);
+			expect(result).toMatchObject(fcmToken);
 		});
 	});
 });

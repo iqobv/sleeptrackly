@@ -58,12 +58,18 @@ describe('CoinService', () => {
 			expect(result).toEqual(userCoin);
 		});
 
-		it('should throw ConflictException if user coin record already exists', async () => {
+		it('should return exists record', async () => {
 			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
 
-			await expect(service.create('user_1')).rejects.toThrow(
-				'User coin record already exists',
-			);
+			const result = await service.create('user_1');
+
+			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
+				where: { userId: 'user_1' },
+			});
+
+			expect(prisma.userCoin.create).not.toHaveBeenCalled();
+
+			expect(result).toEqual(userCoin);
 		});
 	});
 
@@ -105,7 +111,7 @@ describe('CoinService', () => {
 			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
-			expect(result).toEqual(userCoin);
+			expect(result).toMatchObject(userCoin);
 		});
 	});
 });

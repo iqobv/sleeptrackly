@@ -13,6 +13,10 @@ export class ChallengePublisherService {
 	public async dispatchProgressCheck(
 		payload: ChallengePayloadDto,
 	): Promise<void> {
-		await this.queue.add(QUEUE_JOB_NAME.CHALLENGES.PROCCESS, payload);
+		await this.queue.add(QUEUE_JOB_NAME.CHALLENGES.PROCCESS, payload, {
+			attempts: 3,
+			backoff: { type: 'exponential', delay: 3000 },
+			removeOnComplete: true,
+		});
 	}
 }

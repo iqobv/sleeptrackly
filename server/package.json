@@ -1,6 +1,6 @@
 {
 	"name": "server",
-	"version": "1.6.2",
+	"version": "1.6.3",
 	"private": true,
 	"license": "UNLICENSED",
 	"scripts": {
@@ -118,16 +118,12 @@
 			"^@libs/(.*)$": "<rootDir>/src/libs/$1",
 			"^@config$": "<rootDir>/src/config/index",
 			"^@config/(.*)$": "<rootDir>/src/config/$1",
-			"^uuid$": "uuid",
 			"^(\\.{1,2}/.*)\\.js$": "$1"
 		},
 		"collectCoverageFrom": [
 			"**/*.(t|j)s"
 		],
 		"coverageDirectory": "coverage",
-		"testEnvironment": "node",
-		"transformIgnorePatterns": [
-			"node_modules/(?!(uuid)/)"
-		]
+		"testEnvironment": "node"
 	}
 }

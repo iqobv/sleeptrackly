@@ -1,24 +1,23 @@
-import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
-import { RewardProductService } from '@api/reward/services/reward-product.service';
 import {
-	AcquiredFrom,
 	Challenge,
 	ChallengeStatus,
 	ChallengeTaskStatus,
 	ChallengeType,
-	CoinTransactionType,
 	SleepEntry,
 	UserChallenge,
 } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
+import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
+import { NotFoundException } from '@nestjs/common';
 import { Job } from 'bullmq';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { ChallengePayloadDto } from '../dto/challenge-payload.dto';
+import { ChallengeActionService } from '../services/challenge-action.service';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -27,8 +26,7 @@ dayjs.extend(timezone);
 export class ChallengeProcessor extends WorkerHost {
 	constructor(
 		private readonly prismaService: PrismaService,
-		private readonly coinTransactionService: CoinTransactionService,
-		private readonly rewardProductService: RewardProductService,
+		private readonly challengeActionService: ChallengeActionService,
 	) {
 		super();
 	}
@@ -36,16 +34,20 @@ export class ChallengeProcessor extends WorkerHost {
 	public async process(job: Job<ChallengePayloadDto>): Promise<void> {
 		const { sleepEntryId, userId } = job.data;
 
-		const sleepEntry = await this.prismaService.sleepEntry.findUnique({
+		const sleepEntry = await this.prismaService.sleepEntry.findFirst({
 			where: { id: sleepEntryId, userId },
 		});
 
-		if (!sleepEntry || !sleepEntry.isVerified) return;
+		if (!sleepEntry)
+			throw new NotFoundException(ERROR_MESSAGES.SLEEP_ENTRY.NOT_FOUND);
+
+		if (!sleepEntry.isVerified) return;
 
 		const activeChallenges = await this.prismaService.userChallenge.findMany({
 			where: { userId, status: ChallengeStatus.ACTIVE },
 			include: {
-				challenge: true,
+				user: true,
+				challenge: { include: { translations: true } },
 				challengeTasks: {
 					where: {
 						date: sleepEntry.dateForChart,
@@ -71,10 +73,16 @@ export class ChallengeProcessor extends WorkerHost {
 			);
 
 			if (isValid) {
-				await this.completeTaskWithRewards(
+				await this.challengeActionService.completeChallengeTask({
 					userChallenge,
-					todaysTask.id,
-					sleepEntryId,
+					taskId: todaysTask.id,
+					sleepEntryId: sleepEntryId,
+					isRecovery: false,
+				});
+			} else {
+				await this.challengeActionService.failChallengeTask(
+					{ ...todaysTask, userChallenge },
+					'CONDITION_FAILED',
 				);
 			}
 		}
@@ -167,63 +175,5 @@ export class ChallengeProcessor extends WorkerHost {
 		if (diff > 720) diff = 1440 - diff;
 
 		return diff <= marginMinutes;
-	}
-
-	private async completeTaskWithRewards(
-		userChallenge: UserChallenge & { challenge: Challenge },
-		taskId: string,
-		sleepEntryId: string,
-	): Promise<void> {
-		await this.prismaService.$transaction(async (tx) => {
-			await tx.challengeTask.update({
-				where: { id: taskId },
-				data: { status: ChallengeStatus.COMPLETED, sleepEntryId },
-			});
-
-			await tx.userChallenge.update({
-				where: { id: userChallenge.id },
-				data: { progress: { increment: 1 } },
-			});
-
-			if (userChallenge.challenge.dailyRewardCoins > 0) {
-				await this.coinTransactionService.createTransaction({
-					amount: userChallenge.challenge.dailyRewardCoins,
-					transactionType: CoinTransactionType.CHALLENGE_TASK_REWARD,
-					userId: userChallenge.userId,
-					referenceId: taskId,
-				});
-			}
-
-			const pendingTasks = await tx.challengeTask.findMany({
-				where: {
-					userChallengeId: userChallenge.id,
-					status: ChallengeTaskStatus.PENDING,
-				},
-			});
-
-			if (pendingTasks.length === 0) {
-				await tx.userChallenge.update({
-					where: { id: userChallenge.id },
-					data: { status: ChallengeStatus.COMPLETED },
-				});
-
-				if (userChallenge.challenge.rewardCoins > 0) {
-					await this.coinTransactionService.createTransaction({
-						amount: userChallenge.challenge.rewardCoins,
-						transactionType: CoinTransactionType.CHALLENGE_REWARD,
-						userId: userChallenge.userId,
-						referenceId: userChallenge.id,
-					});
-				}
-
-				if (userChallenge.challenge.rewardProductId) {
-					await this.rewardProductService.rewardProduct(
-						userChallenge.challenge.rewardProductId,
-						userChallenge.userId,
-						AcquiredFrom.CHALLENGE_REWARD,
-					);
-				}
-			}
-		});
 	}
 }

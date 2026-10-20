@@ -26,13 +26,17 @@ import tz from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import { ChallengeDto, ChallengeWithUserStatusDto } from '../dto/challenge.dto';
 import { FullUserChallengeDto } from '../dto/user-challenge.dto';
+import { ChallengeActionService } from './challenge-action.service';
 
 dayjs.extend(utc);
 dayjs.extend(tz);
 
 @Injectable()
 export class ChallengeService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly challengeActionService: ChallengeActionService,
+	) {}
 
 	public async findUserChallenges(
 		userId: string,
@@ -284,39 +288,16 @@ export class ChallengeService {
 				ERROR_MESSAGES.CHALLENGE.NOT_ENOUGH_RECOVERIES_LEFT,
 			);
 
-		const isOneTask = failedTasks.length === 1;
-
-		await this.prismaService.$transaction(async (tx) => {
-			await tx.userChallenge.update({
-				where: { id: userChallenge.id },
-				data: {
-					status: isOneTask ? ChallengeStatus.ACTIVE : ChallengeStatus.FROZEN,
-					...(isOneTask && { frozenAt: null }),
-					usedRecoveries: { increment: 1 },
-				},
+		const { isChallengeCompleted } =
+			await this.challengeActionService.completeChallengeTask({
+				userChallenge,
+				taskId: failedTasks[0].id,
+				isRecovery: true,
 			});
 
-			await tx.challengeTask.update({
-				where: {
-					id: failedTasks[0].id,
-				},
-				data: {
-					status: ChallengeTaskStatus.RECOVERED,
-					completedAt: new Date(),
-				},
-			});
-
-			await tx.user.update({
-				where: { id: userId },
-				data: {
-					challengeRecoveries: { decrement: 1 },
-				},
-			});
-		});
-
-		if (isOneTask) return SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_RECOVERED;
-
-		return SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_TASK_RECOVERED;
+		return isChallengeCompleted
+			? SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_RECOVERED
+			: SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_TASK_RECOVERED;
 	}
 
 	public async declineChallengeParticipation(

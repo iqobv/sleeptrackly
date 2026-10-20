@@ -32,18 +32,17 @@ export class PromotionService {
 
 		let finalAlias: string;
 
-		if (productIdReward) {
+		if (productIdReward)
 			await this.productService.getProductById(productIdReward);
-		}
 
 		if (alias) {
 			finalAlias = alias;
 			const existingPromotion = await this.prismaService.promotion.findUnique({
 				where: { alias: finalAlias },
 			});
-			if (existingPromotion) {
+
+			if (existingPromotion)
 				throw new ConflictException(ERROR_MESSAGES.PROMOTION.ALREADY_EXISTS);
-			}
 		} else {
 			let attempts = 0;
 			let isUnique = false;

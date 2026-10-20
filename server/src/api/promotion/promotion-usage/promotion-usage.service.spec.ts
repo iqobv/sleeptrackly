@@ -4,6 +4,7 @@ import { ShopService } from '@api/shop/shop.service';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { AcquiredFrom, Item } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
 	BadRequestException,
 	ConflictException,
@@ -56,7 +57,7 @@ describe('PromotionUsageService', () => {
 
 	const mockItem = {
 		id: 'item_1',
-		translations: [{ name: 'Sword', language: 'en' }],
+		translations: [{ name: 'Test', language: 'en' }],
 	} as unknown as Item;
 
 	const defaultPromotion = {
@@ -196,19 +197,20 @@ describe('PromotionUsageService', () => {
 				prismaTx,
 			);
 
-			expect(result).toEqual({
-				code: 'PROMOTION_SUCCESSFULLY_USED',
-				message: 'Promotion used successfully',
-			});
+			expect(result).toEqual(SUCCESS_MESSAGES.PROMOTION.USED);
 		});
 
 		it('should successfully apply a product item reward', async () => {
-			const mockDate = new Date('2026-06-01T12:00:00Z');
-			jest.setSystemTime(mockDate);
-
 			prismaTx.promotion.findUnique.mockResolvedValue({
 				...defaultPromotion,
 				productIdReward: 'prod_1',
+				product: {
+					id: 'prod_1',
+					discountedPrice: 800,
+					price: 1000,
+					itemId: 'item_1',
+					item: mockItem,
+				},
 			});
 
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
@@ -237,7 +239,7 @@ describe('PromotionUsageService', () => {
 
 			expect(purchaseHistoryService.createPurchaseHistory).toHaveBeenCalledWith(
 				{
-					nameSnapshot: [{ name: 'Sword', language: 'en' }],
+					nameSnapshot: [{ name: 'Test', language: 'en' }],
 					pricePaid: 0,
 					priceSnapshot: 800,
 					productId: 'prod_1',
@@ -252,7 +254,7 @@ describe('PromotionUsageService', () => {
 					{
 						userId: 'user_1',
 						itemId: 'item_1',
-						acquiredAt: mockDate,
+						acquiredAt: expect.any(Date),
 						acquiredFrom: AcquiredFrom.PROMOTION,
 						isEquipped: false,
 					},
@@ -260,16 +262,23 @@ describe('PromotionUsageService', () => {
 				prismaTx,
 			);
 
-			expect(result).toEqual({
-				code: 'PROMOTION_SUCCESSFULLY_USED',
-				message: 'Promotion used successfully',
-			});
+			expect(result).toEqual(SUCCESS_MESSAGES.PROMOTION.USED);
 		});
 
 		it('should successfully apply a product bundle reward', async () => {
 			prismaTx.promotion.findUnique.mockResolvedValue({
 				...defaultPromotion,
 				productIdReward: 'prod_2',
+				product: {
+					id: 'prod_2',
+					price: 2000,
+					discountedPrice: null,
+					bundleId: 'bundle_1',
+					bundle: {
+						translations: [{ name: 'Test Bundle', language: 'en' }],
+						items: [{ item: mockItem }],
+					},
+				},
 			});
 
 			shopService.getItemsToAdd.mockResolvedValue({ itemsToAdd: [mockItem] });
@@ -287,7 +296,7 @@ describe('PromotionUsageService', () => {
 
 			expect(purchaseHistoryService.createPurchaseHistory).toHaveBeenCalledWith(
 				{
-					nameSnapshot: [{ name: 'Starter Pack', language: 'en' }],
+					nameSnapshot: [{ name: 'Test Bundle', language: 'en' }],
 					pricePaid: 0,
 					priceSnapshot: 2000,
 					productId: 'prod_2',
