@@ -13,18 +13,12 @@ dayjs.extend(utc);
 const config = validate(process.env);
 
 const connectionString = config.POSTGRES_URI;
-const caCert = config.DB_CA_CERT_BASE64;
 
 const cleanConnectionString = connectionString.split('?')[0];
 
 const pool = new Pool({
 	connectionString: cleanConnectionString,
-	ssl: caCert
-		? {
-				ca: Buffer.from(caCert),
-				rejectUnauthorized: true,
-			}
-		: undefined,
+	ssl: false,
 });
 
 const adapter = new PrismaPg(pool);
