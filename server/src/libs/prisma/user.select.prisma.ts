@@ -10,8 +10,6 @@ export const userSelect = {
 	createdAt: true,
 	updatedAt: true,
 	deletedAt: true,
-	challengeRecoveries: true,
-	challengeRecoveriesUpdatedAt: true,
 	avatar: {
 		select: {
 			url: true,
@@ -30,6 +28,17 @@ export const userSelect = {
 			profileVisibility: true,
 			showActivity: true,
 			statisticsVisibility: true,
+		},
+	},
+	userStats: {
+		select: {
+			challengeRestores: true,
+			challengeRestoresResetAt: true,
+			streakRestores: true,
+			streakRestoresResetAt: true,
+			currentStreakId: true,
+			updatedAt: true,
+			activeStreak: true,
 		},
 	},
 } satisfies Prisma.UserSelect;

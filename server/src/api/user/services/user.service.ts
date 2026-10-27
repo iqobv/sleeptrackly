@@ -1,3 +1,4 @@
+import { UserStatsService } from '@api/user-stats/user-stats.service';
 import { Prisma } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -27,7 +28,10 @@ import { UsersSearchResultDto } from '../dto/users-search-result.dto';
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly userStatsService: UserStatsService,
+	) {}
 
 	public async create(
 		dto: CreateUserDto,
@@ -118,10 +122,18 @@ export class UserService {
 
 		if (!user) throw new NotFoundException(ERROR_MESSAGES.USER.NOT_FOUND);
 
+		const userStats = await this.userStatsService.syncUserStats(
+			id,
+			user.userStats ?? undefined,
+		);
+
 		const { inventory, ...dataUser } = user;
+
+		if (!userStats) throw new InternalServerErrorException();
 
 		const finalUser: FullUserDto | FullUserWithPasswordDto = {
 			...dataUser,
+			userStats,
 			equippedItems: inventory || [],
 		};
 

@@ -3,6 +3,7 @@ import { BaseUserAvatarDto } from '@api/user-avatar/dto/user-avatar.dto';
 import { UserEquippedItemDto } from '@api/user-inventory/dto/equipped-item.dto';
 import { UserPrivacySettingsDto } from '@api/user-privacy-settings/dto/user-privacy-settings.dto';
 import { UserSanctionDto } from '@api/user-sanction/dto/user-sanction.dto';
+import { BaseUserStatsWithoutUserIdDto } from '@api/user-stats/dto/user-stats.dto';
 import { UserRole } from '@generated/prisma/enums';
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { ApiProperty } from '@nestjs/swagger';
@@ -14,8 +15,6 @@ export class UserEntityDto extends DefaultFieldsDto {
 	@Expose() emailVerified: boolean;
 	@Expose() password: string | null;
 	@Expose() timezone: string;
-	@Expose() challengeRecoveries: number;
-	@Expose() challengeRecoveriesUpdatedAt: Date | null;
 
 	@Expose()
 	@ApiProperty({ enum: UserRole, enumName: 'UserRole' })
@@ -42,4 +41,8 @@ export class UserEntityDto extends DefaultFieldsDto {
 	@Expose()
 	@Type(() => UserSanctionDto)
 	sanctions: UserSanctionDto[] | null;
+
+	@Type(() => BaseUserStatsWithoutUserIdDto)
+	@Expose()
+	userStats: BaseUserStatsWithoutUserIdDto;
 }

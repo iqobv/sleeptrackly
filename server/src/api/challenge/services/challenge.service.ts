@@ -258,7 +258,17 @@ export class ChallengeService {
 			where: { userId_challengeId: { userId, challengeId } },
 			include: {
 				challenge: true,
-				user: { select: { id: true, challengeRecoveries: true } },
+				user: {
+					select: {
+						id: true,
+						userStats: {
+							select: {
+								challengeRestores: true,
+								challengeRestoresResetAt: true,
+							},
+						},
+					},
+				},
 				challengeTasks: { orderBy: { date: 'asc' } },
 			},
 		});
@@ -283,7 +293,9 @@ export class ChallengeService {
 				ERROR_MESSAGES.CHALLENGE.RECOVERY_LIMIT_REACHED,
 			);
 
-		if (userChallenge.user.challengeRecoveries <= 0)
+		const restores = userChallenge.user.userStats?.challengeRestores;
+
+		if (restores && restores <= 0)
 			throw new BadRequestException(
 				ERROR_MESSAGES.CHALLENGE.NOT_ENOUGH_RECOVERIES_LEFT,
 			);

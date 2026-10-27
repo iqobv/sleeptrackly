@@ -1,0 +1,20 @@
+model UserStats {
+  userId String @id
+
+  currentStreakId String? @unique @map("current_streak_id")
+
+  streakRestores Int @default(1) @map("streak_restores")
+
+  streakRestoresResetAt DateTime @default(now()) @map("streak_restores_reset_at")
+
+  challengeRestores Int @default(2) @map("challenge_restores")
+
+  challengeRestoresResetAt DateTime @default(now()) @map("challenge_restores_reset_at")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeStreak Streak? @relation("ActiveStreak", fields: [currentStreakId], references: [id], onDelete: SetNull)
+
+  @@map("user_stats")
+}

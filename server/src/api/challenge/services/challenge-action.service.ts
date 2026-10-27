@@ -108,11 +108,10 @@ export class ChallengeActionService {
 			});
 
 			if (isRecovery) {
-				await tx.user.update({
-					where: { id: userId },
+				await tx.userStats.update({
+					where: { userId },
 					data: {
-						challengeRecoveries: { decrement: 1 },
-						challengeRecoveriesUpdatedAt: new Date(),
+						challengeRestores: { increment: 1 },
 					},
 				});
 			}

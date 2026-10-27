@@ -11,10 +11,6 @@ model User {
 
   timezone String @default("UTC")
 
-  challengeRecoveries Int @default(2) @map("challenge_recoveries")
-
-  challengeRecoveriesUpdatedAt DateTime? @map("challenge_recoveries_updated_at")
-
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
@@ -38,6 +34,8 @@ model User {
   weeklySummaries         WeeklySleepSummary[]
   userAchievements        UserAchievement[]
   challenges              UserChallenge[]
+  userStats               UserStats?
+  streaks                 Streak[]
 
   sentFriendRequests     Friendship[] @relation("SentFriendRequests")
   receivedFriendRequests Friendship[] @relation("ReceivedFriendRequests")

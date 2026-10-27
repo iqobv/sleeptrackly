@@ -1,0 +1,23 @@
+model Streak {
+  id String @id @default(uuid())
+
+  userId String @map("user_id")
+
+  startDate DateTime  @map("start_date")
+  endDate   DateTime? @map("end_date")
+
+  length       Int @default(0)
+  restoresUsed Int @default(0) @map("restores_used")
+
+  lastRestoredAt DateTime? @map("last_restored_at")
+
+  userStats UserStats? @relation("ActiveStreak")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("streaks")
+}
