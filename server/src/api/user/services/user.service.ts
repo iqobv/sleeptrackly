@@ -124,6 +124,7 @@ export class UserService {
 
 		const userStats = await this.userStatsService.syncUserStats(
 			id,
+			user.timezone,
 			user.userStats ?? undefined,
 		);
 

@@ -19,6 +19,7 @@ export { REPORT_ERROR_MESSAGES } from './report.constants';
 export { SANCTION_ERROR_MESSAGES } from './sanction.constants';
 export { SESSION_ERROR_MESSAGES } from './session.constants';
 export { SLEEP_ENTRY_ERROR_MESSAGES } from './sleep-entry.constants';
+export { STREAK_ERROR_MESSAGES } from './streak.constants';
 export { TOKEN_ERROR_MESSAGES } from './token.constants';
 export { USER_INVENTORY_ERROR_MESSAGES } from './user-inventory.constants';
 export { USER_ERROR_MESSAGES } from './user.constants';

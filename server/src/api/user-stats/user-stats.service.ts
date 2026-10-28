@@ -1,3 +1,4 @@
+import { StreakService } from '@api/streak/streak.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { userSelect } from '@libs/prisma/user.select.prisma';
@@ -18,10 +19,14 @@ type UserStats = Prisma.UserStatsGetPayload<typeof userSelect.userStats>;
 
 @Injectable()
 export class UserStatsService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly streakService: StreakService,
+	) {}
 
 	public async syncUserStats(
 		userId: string,
+		timezone: string,
 		userStats?: Prisma.UserStatsGetPayload<typeof userSelect.userStats>,
 	): Promise<UserStatsDto> {
 		let stats =
@@ -39,6 +44,20 @@ export class UserStatsService {
 
 			return plainToInstance(UserStatsDto, stats);
 		}
+
+		const wasStreakUpdated = await this.streakService.validateStreakExpiration(
+			userId,
+			timezone,
+			stats.activeStreak ?? undefined,
+		);
+
+		if (wasStreakUpdated) {
+			const freshStats = await this.prismaService.userStats.findUnique({
+				where: { userId },
+				include: { activeStreak: true },
+			});
+			if (freshStats) stats = freshStats;
+		}	
 
 		const now = new Date();
 

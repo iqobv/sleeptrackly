@@ -3,8 +3,12 @@ model Streak {
 
   userId String @map("user_id")
 
+  status StreakStatus @default(ACTIVE)
+
   startDate DateTime  @map("start_date")
   endDate   DateTime? @map("end_date")
+
+  lastActivityDate String @map("last_activity_date")
 
   length       Int @default(0)
   restoresUsed Int @default(0) @map("restores_used")

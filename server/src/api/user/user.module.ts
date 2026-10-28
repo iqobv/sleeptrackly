@@ -4,7 +4,6 @@ import { UserChallengeRecoveryCronService } from './services/user-challenge-reco
 import { UserCleanupService } from './services/user-cleanup.service';
 import { UserService } from './services/user.service';
 import { UserController } from './user.controller';
-import { UserStatsService } from '@api/user-stats/user-stats.service';
 
 @Module({
 	exports: [UserService],
@@ -12,8 +11,8 @@ import { UserStatsService } from '@api/user-stats/user-stats.service';
 		UserService,
 		UserCleanupService,
 		UserChallengeRecoveryCronService,
-		UserStatsService,
 	],
 	controllers: [UserController],
+	imports: [UserStatsModule],
 })
 export class UserModule {}

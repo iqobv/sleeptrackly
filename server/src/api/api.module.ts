@@ -31,6 +31,7 @@ import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.mod
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 import { UserStatsModule } from './user-stats/user-stats.module';
+import { StreakModule } from './streak/streak.module';
 
 @Module({
 	imports: [
@@ -66,6 +67,7 @@ import { UserStatsModule } from './user-stats/user-stats.module';
 		WeeklySummaryModule,
 		ImageModule,
 		UserStatsModule,
+		StreakModule,
 	],
 })
 export class ApiModule {}

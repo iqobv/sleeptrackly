@@ -13,7 +13,8 @@ model UserStats {
 
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   activeStreak Streak? @relation("ActiveStreak", fields: [currentStreakId], references: [id], onDelete: SetNull)
 
   @@map("user_stats")

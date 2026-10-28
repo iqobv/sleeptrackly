@@ -1,5 +1,6 @@
+import { StreakService } from '@api/streak/streak.service';
 import { WeeklySummaryPublisherService } from '@api/weekly-summary/services/weekly-summary-publisher.service';
-import { Prisma } from '@generated/prisma/client';
+import { Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -32,6 +33,7 @@ export class SleepEntryService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly weeklySummaryPublisherService: WeeklySummaryPublisherService,
+		private readonly streakService: StreakService,
 	) {}
 
 	public async findByUserId(userId: string): Promise<SleepEntryDto[]> {
@@ -134,29 +136,39 @@ export class SleepEntryService {
 	public async createSleepEntry(
 		userId: string,
 		dto: InternalCreateSleepEntryDto,
-		tx?: Prisma.TransactionClient,
+		externalTx?: Prisma.TransactionClient,
 	): Promise<SleepEntryDto> {
 		const { sleepStart, sleepEnd, dateForChart, ...rest } = dto;
-
-		const prisma = tx ?? this.prismaService;
 
 		const start = new Date(sleepStart);
 		const end = new Date(sleepEnd);
 
-		await this.ensureNoOverlap({ userId, start, end }, prisma);
+		const execute = async (
+			tx: Prisma.TransactionClient,
+		): Promise<SleepEntry> => {
+			await this.ensureNoOverlap({ userId, start, end }, tx);
 
-		const { sleepDuration } = calculateSleepDuration(sleepStart, sleepEnd);
+			const { sleepDuration } = calculateSleepDuration(sleepStart, sleepEnd);
 
-		const created = await prisma.sleepEntry.create({
-			data: {
-				...rest,
-				sleepDuration,
-				dateForChart: dateForChart,
-				sleepEnd: new Date(sleepEnd),
-				sleepStart: new Date(sleepStart),
-				user: { connect: { id: userId } },
-			},
-		});
+			const created = await tx.sleepEntry.create({
+				data: {
+					...rest,
+					sleepDuration,
+					dateForChart: dateForChart,
+					sleepEnd: new Date(sleepEnd),
+					sleepStart: new Date(sleepStart),
+					user: { connect: { id: userId } },
+				},
+			});
+
+			await this.streakService.calculateStreak(userId, tx);
+
+			return created;
+		};
+
+		const createdSleepEntry = externalTx
+			? await execute(externalTx)
+			: await this.prismaService.$transaction(execute);
 
 		await this.weeklySummaryPublisherService.dispatchRecalculation({
 			userId,
@@ -164,7 +176,9 @@ export class SleepEntryService {
 			isManual: true,
 		});
 
-		return plainToInstance(SleepEntryDto, created);
+		await this.streakService.calculateStreak(userId);
+
+		return plainToInstance(SleepEntryDto, createdSleepEntry);
 	}
 
 	public async updateSleepEntry(

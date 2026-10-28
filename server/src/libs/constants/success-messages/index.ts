@@ -16,5 +16,6 @@ export { RESTORE_SUCCESS_MESSAGES } from './restore.constants';
 export { SANCTION_SUCCESS_MESSAGES } from './sanction.constants';
 export { SESSION_SUCCESS_MESSAGES } from './session.constants';
 export { SLEEP_ENTRY_SUCCESS_MESSAGES } from './sleep-entry.constants';
+export { STREAK_SUCCESS_MESSAGES } from './streak.constants';
 export { USER_INVENTORY_SUCCESS_MESSAGES } from './user-inventory.constants';
 export { USER_SLEEP_STATUS_SUCCESS_MESSAGES } from './user-sleep-status.constants';

@@ -1,7 +1,7 @@
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
 import { OmitType } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { BaseStreakDto } from './streak.dto';
+import { BaseStreakDto } from '../../streak/dto/streak.dto';
 
 export class UserStatsEntityDto extends OmitType(DefaultFieldsDto, [
 	'createdAt',
