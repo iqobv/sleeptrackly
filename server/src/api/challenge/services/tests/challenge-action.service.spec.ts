@@ -4,6 +4,7 @@ import { TaskPayload } from '@api/challenge/types/task-payload.types';
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { RewardProductService } from '@api/reward/services/reward-product.service';
+import { UserStatsService } from '@api/user-stats/user-stats.service';
 import {
 	AcquiredFrom,
 	ChallengeStatus,
@@ -22,7 +23,8 @@ type MockType<T> = {
 type PrismaMock = {
 	challengeTask: { update: jest.Mock; findMany: jest.Mock };
 	userChallenge: { update: jest.Mock };
-	user: { update: jest.Mock };
+	user: { update: jest.Mock; findUnique: jest.Mock };
+	userStats: { update: jest.Mock };
 	$transaction: jest.Mock;
 };
 
@@ -33,6 +35,7 @@ describe('ChallengeActionService', () => {
 	let coinTransactionService: MockType<CoinTransactionService>;
 	let rewardProductService: MockType<RewardProductService>;
 	let achievementsPublisherService: MockType<AchievementsPublisherService>;
+	let userStatsService: MockType<UserStatsService>;
 
 	const userId = 'user-123';
 	const taskId = 'task-123';
@@ -94,7 +97,8 @@ describe('ChallengeActionService', () => {
 		prismaService = {
 			challengeTask: { update: jest.fn(), findMany: jest.fn() },
 			userChallenge: { update: jest.fn() },
-			user: { update: jest.fn() },
+			user: { update: jest.fn(), findUnique: jest.fn() },
+			userStats: { update: jest.fn() },
 			$transaction: jest.fn(async (cb: (tx: PrismaMock) => Promise<void>) =>
 				cb(prismaService),
 			),
@@ -104,6 +108,7 @@ describe('ChallengeActionService', () => {
 		coinTransactionService = { createTransaction: jest.fn() };
 		rewardProductService = { rewardProduct: jest.fn() };
 		achievementsPublisherService = { dispatchProgressCheck: jest.fn() };
+		userStatsService = { syncUserStats: jest.fn() };
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
@@ -118,6 +123,10 @@ describe('ChallengeActionService', () => {
 				{
 					provide: AchievementsPublisherService,
 					useValue: achievementsPublisherService,
+				},
+				{
+					provide: UserStatsService,
+					useValue: userStatsService,
 				},
 			],
 		}).compile();
@@ -279,6 +288,9 @@ describe('ChallengeActionService', () => {
 			prismaService.challengeTask.findMany.mockResolvedValue([
 				{ id: 'task-456', status: ChallengeTaskStatus.PENDING },
 			]);
+			prismaService.user.findUnique.mockResolvedValue({
+				timezone: 'UTC',
+			});
 
 			const recoveryDto = { ...mockCompleteDto, isRecovery: true };
 
@@ -305,11 +317,10 @@ describe('ChallengeActionService', () => {
 				}),
 			);
 
-			expect(prismaService.user.update).toHaveBeenCalledWith({
-				where: { id: userId },
+			expect(prismaService.userStats.update).toHaveBeenCalledWith({
+				where: { userId },
 				data: {
-					challengeRecoveries: { decrement: 1 },
-					challengeRecoveriesUpdatedAt: expect.any(Date),
+					challengeRestores: { decrement: 1 },
 				},
 			});
 

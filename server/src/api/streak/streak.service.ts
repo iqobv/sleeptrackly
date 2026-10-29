@@ -207,7 +207,7 @@ export class StreakService {
 				where: { id },
 				data: {
 					status: StreakStatus.ENDED,
-					endDate: dayjs(streak.lastActivityDate).add(1, 'day').toDate(),
+					endDate: dayjs(streak.lastActivityDate).toDate(),
 				},
 			});
 

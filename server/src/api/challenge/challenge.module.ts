@@ -2,6 +2,7 @@ import { AchievementModule } from '@api/achievement/achievement.module';
 import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
 import { NotificationModule } from '@api/notification/notification.module';
 import { RewardModule } from '@api/reward/reward.module';
+import { UserStatsModule } from '@api/user-stats/user-stats.module';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { BullModule } from '@nestjs/bullmq';
 import { Module } from '@nestjs/common';
@@ -25,6 +26,7 @@ import { ChallengeService } from './services/challenge.service';
 			name: QUEUE_NAME.CHALLENGES,
 		}),
 		NotificationModule,
+		UserStatsModule,
 	],
 	controllers: [ChallengeController, AdminChallengeController],
 	exports: [ChallengeService, ChallengePublisherService],

@@ -24,6 +24,24 @@ export class UserStatsService {
 		private readonly streakService: StreakService,
 	) {}
 
+	public async getUserStats(userId: string): Promise<UserStatsDto> {
+		const stats = await this.prismaService.userStats.findUnique({
+			where: { userId },
+			include: { activeStreak: true },
+		});
+
+		if (!stats) {
+			const newStats = await this.prismaService.userStats.create({
+				data: { userId },
+				include: { activeStreak: true },
+			});
+
+			return plainToInstance(UserStatsDto, newStats);
+		}
+
+		return plainToInstance(UserStatsDto, stats);
+	}
+
 	public async syncUserStats(
 		userId: string,
 		timezone: string,
@@ -56,8 +74,9 @@ export class UserStatsService {
 				where: { userId },
 				include: { activeStreak: true },
 			});
+
 			if (freshStats) stats = freshStats;
-		}	
+		}
 
 		const now = new Date();
 

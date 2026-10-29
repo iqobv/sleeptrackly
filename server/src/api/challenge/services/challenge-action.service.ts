@@ -2,6 +2,7 @@ import { AchievementsPublisherService } from '@api/achievement/services/achievem
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { RewardProductService } from '@api/reward/services/reward-product.service';
+import { UserStatsService } from '@api/user-stats/user-stats.service';
 import {
 	AchievementType,
 	AcquiredFrom,
@@ -24,6 +25,7 @@ export class ChallengeActionService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly rewardProductService: RewardProductService,
 		private readonly achievementsPublisherService: AchievementsPublisherService,
+		private readonly userStatsService: UserStatsService,
 	) {}
 
 	public async failChallengeTask(
@@ -111,9 +113,22 @@ export class ChallengeActionService {
 				await tx.userStats.update({
 					where: { userId },
 					data: {
-						challengeRestores: { increment: 1 },
+						challengeRestores: { decrement: 1 },
 					},
 				});
+
+				const user = await tx.user.findUnique({
+					where: { id: userId },
+					select: {
+						timezone: true,
+					},
+				});
+
+				await this.userStatsService.syncUserStats(
+					userId,
+					user?.timezone ?? 'UTC',
+					undefined,
+				);
 			}
 
 			if (!isRecovery && userChallenge.challenge.dailyRewardCoins > 0) {
