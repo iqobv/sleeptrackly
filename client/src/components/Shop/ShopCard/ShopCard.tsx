@@ -1,7 +1,7 @@
 'use client';
 
 import { makePurchase } from '@/api/shop/shop.api';
-import { Coin } from '@/components/Icons/Coin';
+import { CoinIcon } from '@/assets/icons';
 import { ProductImage } from '@/components/UI';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Product } from '@/types/product/product.types';
@@ -64,7 +64,7 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 							{formatNumber(product.discountedPrice)}
 						</span>
 					)}
-					<Coin width={26} height={26} />
+					<CoinIcon width={26} height={26} fill="currentColor" />
 				</div>
 				<Button
 					onClick={() => mutate()}

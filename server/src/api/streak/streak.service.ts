@@ -1,5 +1,6 @@
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { Prisma, Streak } from '@generated/prisma/client';
-import { StreakStatus } from '@generated/prisma/enums';
+import { NotificationType, StreakStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -19,7 +20,10 @@ dayjs.extend(timezone);
 
 @Injectable()
 export class StreakService {
-	constructor(private readonly prismaService: PrismaService) {}
+	constructor(
+		private readonly prismaService: PrismaService,
+		private readonly notificationPublisherService: NotificationPublisherService,
+	) {}
 
 	public async calculateStreak(
 		userId: string,
@@ -135,6 +139,7 @@ export class StreakService {
 			take: 3,
 			where: {
 				userId,
+				isVerified: true,
 			},
 			orderBy: {
 				dateForChart: 'desc',
@@ -202,6 +207,14 @@ export class StreakService {
 					status: StreakStatus.FROZEN,
 				},
 			});
+
+			await this.notificationPublisherService.dispatchCreate({
+				title: 'Streak Frozen',
+				type: NotificationType.STREAK_FROZEN,
+				body: 'Your sleep streak has been frozen due to inactivity. You have 1 day to restore it.',
+				userId,
+				showInApp: true,
+			});
 		} else if (missedDays > 1 && streak.status !== StreakStatus.ENDED) {
 			await prisma.streak.update({
 				where: { id },
@@ -216,6 +229,14 @@ export class StreakService {
 				data: {
 					currentStreakId: null,
 				},
+			});
+
+			await this.notificationPublisherService.dispatchCreate({
+				title: 'Streak Ended',
+				type: NotificationType.STREAK_ENDED,
+				body: 'Your sleep streak has ended due to inactivity.',
+				userId,
+				showInApp: true,
 			});
 		}
 	}

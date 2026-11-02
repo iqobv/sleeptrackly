@@ -32,7 +32,7 @@ export const RestoreChallenge = ({
 
 	const canRecover =
 		(user &&
-			user.challengeRecoveries > 0 &&
+			user.userStats.challengeRestores > 0 &&
 			status === ChallengeStatus.FROZEN &&
 			usedRecoveries < maxRecoveries) ??
 		false;

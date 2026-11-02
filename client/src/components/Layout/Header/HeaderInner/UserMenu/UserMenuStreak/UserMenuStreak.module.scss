@@ -1,0 +1,66 @@
+@keyframes flame-flicker {
+	0%,
+	100% {
+		transform: rotate(0deg) scale(1);
+		filter: drop-shadow(1px -5px 3px var(--shadow-color));
+	}
+	33% {
+		transform: rotate(-2deg) scale(1.05);
+		filter: drop-shadow(0px -7px 6px var(--shadow-color));
+	}
+	66% {
+		transform: rotate(2deg) scale(0.95);
+		filter: drop-shadow(2px -4px 4px var(--shadow-color));
+	}
+}
+
+.container {
+	--gradient: var(--streak-active-background-gradient-rgb);
+	--border-color: rgba(var(--streak-active-border-rgb), 0.3);
+	--active-color: var(--streak-active-color);
+	--shadow-color: rgba(var(--streak-active-shadow-rgb), 0.5);
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--gap);
+	padding: 0.625rem;
+	border-radius: var(--border-radius);
+	border: 1px solid var(--border-color);
+	background: rgba(var(--gradient), 0.1);
+	background: linear-gradient(
+		135deg,
+		rgba(var(--gradient), 0.1) 0%,
+		rgba(var(--gradient), 0.06) 100%
+	);
+
+	&.frozen {
+		--gradient: var(--streak-frozen-background-gradient-rgb);
+		--border-color: rgba(var(--streak-frozen-border-rgb), 0.3);
+		--active-color: var(--streak-frozen-color);
+		--shadow-color: rgba(var(--streak-frozen-shadow-rgb), 0.5);
+
+		.streakIcon {
+			filter: none;
+			transform: none;
+			rotate: 10deg;
+			scale: 0.8;
+			animation: none;
+		}
+	}
+
+	.streakIcon {
+		fill: var(--active-color);
+		filter: drop-shadow(1px -5px 3px var(--shadow-color));
+
+		transform-origin: bottom center;
+		animation: flame-flicker 2s ease-in-out infinite;
+	}
+
+	.info,
+	.frozenInfo {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+}

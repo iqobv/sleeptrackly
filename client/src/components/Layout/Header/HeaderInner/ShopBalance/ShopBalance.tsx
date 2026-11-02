@@ -1,7 +1,7 @@
 'use client';
 
 import { getUserCoins } from '@/api/coin/userCoins.api';
-import { Coin } from '@/components/Icons/Coin';
+import { CoinIcon } from '@/assets/icons';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { formatNumber } from '@/utils/numberFormatter.util';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +15,12 @@ export const ShopBalance = () => {
 
 	return (
 		<div className={styles.balance}>
-			<Coin className={styles.icon} width={40} height={40} />
+			<CoinIcon
+				className={styles.icon}
+				width={40}
+				height={40}
+				fill="currentColor"
+			/>
 			<div className={`${styles.amountWrapper} ${data ? styles.visible : ''}`}>
 				{formatNumber(data?.amount || 0)}
 			</div>

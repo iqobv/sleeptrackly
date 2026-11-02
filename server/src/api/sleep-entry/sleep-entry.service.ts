@@ -176,8 +176,6 @@ export class SleepEntryService {
 			isManual: true,
 		});
 
-		await this.streakService.calculateStreak(userId);
-
 		return plainToInstance(SleepEntryDto, createdSleepEntry);
 	}
 

@@ -1,8 +1,8 @@
 'use client';
 
+import { CoinIcon } from '@/assets/icons';
 import { AcceptChallenge } from '@/components/Challenges/AcceptChallenge/AcceptChallenge';
 import { ChallengeTag } from '@/components/Challenges/ChallengeTag/ChallengeTag';
-import { Coin } from '@/components/Icons/Coin';
 import { ProductImage } from '@/components/UI';
 import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { CHALLENGE_TIERS } from '@/constants/challengeTier.constants';
@@ -62,7 +62,7 @@ export const AvailableChallengeCard = ({
 							Daily Reward
 						</Typography>
 						<div className={styles.dailyReward}>
-							<Coin width={30} height={30} />
+							<CoinIcon width={30} height={30} fill="currentColor" />
 							<Typography as="span" weight="semibold">
 								{formatter.format(challenge.dailyRewardCoins)} / day
 							</Typography>
@@ -76,7 +76,7 @@ export const AvailableChallengeCard = ({
 					<div className={styles.prizes}>
 						{challenge.rewardCoins > 0 && (
 							<div className={clsx(styles.reward, styles.coins)}>
-								<Coin width={40} height={40} />
+								<CoinIcon width={40} height={40} fill="currentColor" />
 								<Typography as="span" weight="semibold">
 									{formatter.format(challenge.rewardCoins)}
 								</Typography>

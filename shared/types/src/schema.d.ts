@@ -157,6 +157,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/user-stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get user stats */
+        get: operations["UserStatsController_getUserStats_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/streaks/restore": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Restore a sleep streak */
+        post: operations["StreakController_restoreStreak_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/user-avatar/upload": {
         parameters: {
             query?: never;
@@ -1977,6 +2011,37 @@ export interface components {
             /** @enum {string} */
             statisticsVisibility?: "PUBLIC" | "PRIVATE" | "FRIENDS";
         };
+        /** @enum {string} */
+        StreakStatus: "ACTIVE" | "FROZEN" | "ENDED";
+        BaseStreakDto: {
+            status: components["schemas"]["StreakStatus"];
+            userId: string;
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate: string | null;
+            length: number;
+            restoresUsed: number;
+            /** Format: date-time */
+            lastRestoredAt: string | null;
+            lastActivityDate: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
+        };
+        BaseUserStatsWithoutUserIdDto: {
+            currentStreakId: string | null;
+            streakRestores: number;
+            /** Format: date-time */
+            streakRestoresResetAt: string;
+            challengeRestores: number;
+            /** Format: date-time */
+            challengeRestoresResetAt: string;
+            activeStreak: components["schemas"]["BaseStreakDto"] | null;
+        };
         UserDto: {
             role: components["schemas"]["UserRole"];
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
@@ -1989,20 +2054,19 @@ export interface components {
             username: string;
             emailVerified: boolean;
             timezone: string;
-            challengeRecoveries: number;
-            /** Format: date-time */
-            challengeRecoveriesUpdatedAt: string | null;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
             coins: components["schemas"]["UserCoinDto"] | null;
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
+            userStats: components["schemas"]["BaseUserStatsWithoutUserIdDto"];
         };
         RegisterDto: {
             /** Format: email */
             email: string;
             username: string;
             password?: string;
+            timezone?: string;
         };
         /** @enum {string} */
         ProfileItemType: "AVATAR" | "AVATAR_FRAME" | "ANIMATED_AVATAR" | "BACKGROUND_IMAGE" | "MINI_BACKGROUND_IMAGE" | "BADGE";
@@ -2046,9 +2110,6 @@ export interface components {
             username: string;
             emailVerified: boolean;
             timezone: string;
-            challengeRecoveries: number;
-            /** Format: date-time */
-            challengeRecoveriesUpdatedAt: string | null;
             /** Format: date-time */
             deletedAt: string | null;
             avatar: components["schemas"]["BaseUserAvatarDto"] | null;
@@ -2056,11 +2117,13 @@ export interface components {
             userPrivacySettings: components["schemas"]["UserPrivacySettingsDto"] | null;
             equippedItems: components["schemas"]["UserEquippedItemDto"][];
             sanctions: components["schemas"]["UserSanctionDto"][] | null;
+            userStats: components["schemas"]["BaseUserStatsWithoutUserIdDto"];
         };
         UpdateUserDto: {
             /** Format: email */
             email?: string;
             username?: string;
+            timezone?: string;
         };
         UpdateUserTimezoneDto: {
             timezone: string;
@@ -2073,6 +2136,19 @@ export interface components {
             id: string;
             username: string;
             avatar: components["schemas"]["AvatarSearchDto"] | null;
+        };
+        UserStatsDto: {
+            /** Format: date-time */
+            updatedAt: string;
+            userId: string;
+            currentStreakId: string | null;
+            streakRestores: number;
+            /** Format: date-time */
+            streakRestoresResetAt: string;
+            challengeRestores: number;
+            /** Format: date-time */
+            challengeRestoresResetAt: string;
+            activeStreak: components["schemas"]["BaseStreakDto"] | null;
         };
         UploadUserAvatarDto: {
             /** Format: binary */
@@ -3601,7 +3677,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-14T16:17:18.333Z
+             * @example 2026-10-31T13:35:44.451Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3632,7 +3708,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-09-14T16:17:18.333Z
+             * @example 2026-10-31T13:35:44.451Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -4043,6 +4119,92 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UsersSearchResultDto"][];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    UserStatsController_getUserStats_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserStatsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    StreakController_restoreStreak_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Streak has been successfully restored */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+            /** @description No active streak found for the user | User has no restores left | Streak has already ended | Streak is already active */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
                 };
             };
             /** @description Unauthorized */

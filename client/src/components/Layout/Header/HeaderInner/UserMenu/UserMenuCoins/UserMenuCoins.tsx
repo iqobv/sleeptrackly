@@ -1,5 +1,5 @@
 import { getUserCoins } from '@/api/coin/userCoins.api';
-import { Coin } from '@/components/Icons/Coin';
+import { CoinIcon } from '@/assets/icons';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { formatNumber } from '@/utils/numberFormatter.util';
 import { useQuery } from '@tanstack/react-query';
@@ -20,7 +20,7 @@ export const UserMenuCoins = () => {
 					<>
 						<p className={styles.label}>Balance</p>
 						<div className={styles.balance}>
-							<Coin
+							<CoinIcon
 								className={styles.icon}
 								width={40}
 								height={40}

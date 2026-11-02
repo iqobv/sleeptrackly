@@ -10,6 +10,7 @@ import {
 import { MenuItem } from '../MenuItem/MenuItem';
 import { ThemeSwitcher } from '../ThemeSwitcher/ThemeSwitcher';
 import { UserMenuCoins } from '../UserMenuCoins/UserMenuCoins';
+import { UserMenuStreak } from '../UserMenuStreak/UserMenuStreak';
 import { USER_MAIN_LINKS, USER_SYSTEM_LINKS } from './userManuLinks';
 import styles from './UserMenuDropdown.module.scss';
 
@@ -25,6 +26,7 @@ export const UserMenuDropdown = ({
 	return (
 		<DropdownContent align="end" sideOffset={10} className={styles.content}>
 			<UserMenuCoins />
+			<UserMenuStreak />
 			{USER_MAIN_LINKS(user).map((link) => (
 				<MenuItem {...link} key={link.name} icon={link.icon || undefined} />
 			))}

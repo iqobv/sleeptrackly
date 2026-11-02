@@ -1,6 +1,6 @@
 'use client';
 
-import { Coin } from '@/components/Icons/Coin';
+import { CoinIcon } from '@/assets/icons';
 import { ProductImage } from '@/components/UI';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { ChallengeStatus, ProductType } from '@shared/types';
@@ -45,7 +45,8 @@ export const ChallengePrize = ({ challenge }: ChallengePrizeProps) => {
 			{reward && product && <Divider />}
 			{reward && reward > 0 && (
 				<Typography className={styles.reward} align="center" weight="semibold">
-					<Coin width={48} height={48} /> {formatter.format(reward)} Coins
+					<CoinIcon width={48} height={48} fill="currentColor" />{' '}
+					{formatter.format(reward)} Coins
 				</Typography>
 			)}
 			{!challenge.userChallenge && (

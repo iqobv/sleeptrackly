@@ -1,3 +1,4 @@
+import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserStatsDto } from '@api/user-stats/dto/user-stats.dto';
 import { StreakStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -19,9 +20,14 @@ type PrismaMock = {
 	$transaction: jest.Mock;
 };
 
+type NotificationPublisherServiceMock = {
+	dispatchCreate: jest.Mock;
+};
+
 describe('StreakService', () => {
 	let service: StreakService;
 	let prisma: PrismaMock;
+	let notificationPublisherService: NotificationPublisherServiceMock;
 
 	const userStats: UserStatsDto = {
 		activeStreak: null,
@@ -56,11 +62,6 @@ describe('StreakService', () => {
 		userId: 'user_1',
 	};
 
-	const userStatsWithStreak = {
-		...internalUserStats,
-		activeStreak: streak,
-	};
-
 	const mockNowStr = '2026-10-20';
 	const mockNowDate = new Date(`${mockNowStr}T12:00:00Z`);
 
@@ -74,8 +75,19 @@ describe('StreakService', () => {
 			$transaction: jest.fn((callback) => callback(prisma)),
 		};
 
+		notificationPublisherService = {
+			dispatchCreate: jest.fn(),
+		};
+
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [StreakService, { provide: PrismaService, useValue: prisma }],
+			providers: [
+				StreakService,
+				{ provide: PrismaService, useValue: prisma },
+				{
+					provide: NotificationPublisherService,
+					useValue: notificationPublisherService,
+				},
+			],
 		}).compile();
 
 		service = module.get<StreakService>(StreakService);

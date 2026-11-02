@@ -8,14 +8,9 @@ import styles from './AddFriendList.module.scss';
 interface AddFriendListProps {
 	data: SearchUser[] | null | undefined;
 	isPending: boolean;
-	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const AddFriendList = ({
-	data,
-	isPending,
-	setSearch,
-}: AddFriendListProps) => {
+export const AddFriendList = ({ data, isPending }: AddFriendListProps) => {
 	return (
 		<div className={styles.list}>
 			{isPending && <SkeletonLoader width="100%" height={55} />}
@@ -23,9 +18,7 @@ export const AddFriendList = ({
 				data.length > 0 ? (
 					<List
 						items={data}
-						renderItem={(user) => (
-							<AddFriendItem key={user.id} user={user} setSearch={setSearch} />
-						)}
+						renderItem={(user) => <AddFriendItem key={user.id} user={user} />}
 					/>
 				) : (
 					<p className={styles.empty}>No results</p>

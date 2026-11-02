@@ -1,7 +1,7 @@
 'use client';
 
 import { makePurchase } from '@/api/shop/shop.api';
-import { Coin } from '@/components/Icons/Coin';
+import { CoinIcon } from '@/assets/icons';
 import { AUTH_PAGES } from '@/config/authPages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { useAuth } from '@/hooks/useAuth.hook';
@@ -89,7 +89,7 @@ export const FeaturedShopCarouselBuyButton = ({
 								{formatNumber(discountedPrice || price)}
 							</span>
 						</div>
-						<Coin width={26} height={26} />
+						<CoinIcon width={26} height={26} fill="currentColor" />
 					</Button>
 				)}
 				{expiresAt && (
