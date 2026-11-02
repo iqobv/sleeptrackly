@@ -30,6 +30,8 @@ import { UserSanctionModule } from './user-sanction/user-sanction.module';
 import { UserSleepStatusModule } from './user-sleep-status/user-sleep-status.module';
 import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
+import { UserStatsModule } from './user-stats/user-stats.module';
+import { StreakModule } from './streak/streak.module';
 
 @Module({
 	imports: [
@@ -64,6 +66,8 @@ import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 		PromotionModule,
 		WeeklySummaryModule,
 		ImageModule,
+		UserStatsModule,
+		StreakModule,
 	],
 })
 export class ApiModule {}

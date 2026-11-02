@@ -12,7 +12,13 @@ export const DashboardHeader = () => {
 		<Header>
 			<NavContainer withMenu renderLogoInsteadOfMenu={false}>
 				<div className={styles.logo}>
-					<NavLogo />
+					<NavLogo
+						logoProps={{
+							fill: 'currentColor',
+							width: '28px',
+							height: '28px',
+						}}
+					/>
 				</div>
 				<nav className={styles.nav}>
 					<NavLinks />

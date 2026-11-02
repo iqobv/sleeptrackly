@@ -12,15 +12,13 @@ import styles from './AddFriendItem.module.scss';
 
 interface AddFriendItemProps {
 	user: SearchUser;
-	setSearch: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const AddFriendItem = ({ user, setSearch }: AddFriendItemProps) => {
+export const AddFriendItem = ({ user }: AddFriendItemProps) => {
 	const { mutate } = useMutation({
 		mutationFn: () => sendFriendRequest(user.id),
 		onSuccess() {
 			toast.success('Friend request sent');
-			setSearch('');
 		},
 		onError(error) {
 			toast.error(error.message);

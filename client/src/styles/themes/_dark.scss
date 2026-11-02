@@ -196,6 +196,18 @@ html.dark {
 	--sleep-end-star-color: #f5c518;
 	--sleep-end-time-bg: #1a1a1a;
 
+	/* Active Streak */
+	--streak-active-color: #ff9800;
+	--streak-active-border-rgb: 255, 152, 0;
+	--streak-active-background-gradient-rgb: 255, 240, 225;
+	--streak-active-shadow-rgb: 255, 111, 0;
+
+	/* Frozen Streak */
+	--streak-frozen-color: #b0b0b0;
+	--streak-frozen-border-rgb: 176, 176, 176;
+	--streak-frozen-background-gradient-rgb: 245, 245, 245;
+	--streak-frozen-shadow-rgb: 176, 176, 176;
+
 	/* Cookie Consent */
 	--cc-bg: #1a1a1a;
 	--cc-primary-color: var(--text-primary);

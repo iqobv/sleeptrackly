@@ -16,7 +16,7 @@ export const ChallengeRecoveriesTokens = () => {
 			<MdOutlineShield size={32} />
 			<div>
 				<Typography variant="h5" as="p">
-					{user?.challengeRecoveries || 0} tokens remaining
+					{user?.userStats.challengeRestores || 0} tokens remaining
 				</Typography>
 				<Typography variant="subtitle2" as="p" color="secondary">
 					Resets in: {formatted}

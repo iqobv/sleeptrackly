@@ -51,5 +51,8 @@
 	},
 	"overrides": {
 		"@grpc/grpc-js": "^1.13.6"
+	},
+	"devDependencies": {
+		"@svgr/webpack": "^8.1.0"
 	}
 }

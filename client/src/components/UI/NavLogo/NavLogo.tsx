@@ -1,4 +1,4 @@
-import { Logo, LogoProps } from '@/components/Icons/Logo';
+import { LogoIcon } from '@/assets/icons';
 import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import clsx from 'clsx';
 import styles from './NavLogo.module.scss';
@@ -6,7 +6,7 @@ import styles from './NavLogo.module.scss';
 interface NavLogoProps {
 	className?: string;
 	onClick?: () => void;
-	logoProps?: LogoProps;
+	logoProps?: React.SVGProps<SVGSVGElement>;
 	hideTextOnMobile?: boolean;
 }
 
@@ -16,13 +16,20 @@ export const NavLogo = ({
 	logoProps,
 	hideTextOnMobile = false,
 }: NavLogoProps) => {
+	const {
+		fill = 'currentColor',
+		width = '28px',
+		height = '28px',
+		...restLogoProps
+	} = logoProps || {};
+
 	return (
 		<a
 			href={CROSS_DOMAIN_ROUTES.HOME}
 			className={clsx(styles.logoLink, className)}
 			onClick={onClick}
 		>
-			<Logo {...logoProps} />
+			<LogoIcon fill={fill} width={width} height={height} {...restLogoProps} />
 			<span className={clsx(styles.text, hideTextOnMobile && styles.hidden)}>
 				Sleeptrackly
 			</span>

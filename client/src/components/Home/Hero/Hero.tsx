@@ -1,4 +1,4 @@
-import { AUTH_PAGES } from '@/config/authPages.config';
+import { CROSS_DOMAIN_ROUTES } from '@/config/navigation.config';
 import { Button, Container, SectionHeader } from '@shared/ui';
 import Link from 'next/link';
 import styles from './Hero.module.scss';
@@ -26,7 +26,7 @@ export const Hero = () => {
 					textTransform="uppercase"
 					size="lg"
 				>
-					<Link href={AUTH_PAGES.REGISTER}>Start Logging</Link>
+					<Link href={CROSS_DOMAIN_ROUTES.APP_REGISTER}>Start Logging</Link>
 				</Button>
 			</div>
 			<HeroChart />

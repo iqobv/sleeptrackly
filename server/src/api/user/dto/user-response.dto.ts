@@ -8,6 +8,7 @@ export class BaseUserDto extends OmitType(UserEntityDto, [
 	'userPrivacySettings',
 	'equippedItems',
 	'sanctions',
+	'userStats',
 ] as const) {}
 
 export class UserDto extends OmitType(UserEntityDto, [
@@ -20,4 +21,3 @@ export class UserWithPasswordDto extends IntersectionType(
 	UserDto,
 	PickType(UserEntityDto, ['password'] as const),
 ) {}
-
