@@ -1,5 +1,11 @@
 # Client changelog
 
+## [0.7.0] - 2026-
+
+### Added
+
+- Added sleep streaks system
+
 ## [0.6.1] - 2026-10-07
 
 ### Added

@@ -1,6 +1,11 @@
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { Prisma, Streak } from '@generated/prisma/client';
-import { NotificationType, StreakStatus } from '@generated/prisma/enums';
+import {
+	AchievementType,
+	NotificationType,
+	StreakStatus,
+} from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -23,6 +28,7 @@ export class StreakService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly notificationPublisherService: NotificationPublisherService,
+		private readonly achievementsPublisherService: AchievementsPublisherService,
 	) {}
 
 	public async calculateStreak(
@@ -61,6 +67,11 @@ export class StreakService {
 		} else {
 			await this.prismaService.$transaction(execute);
 		}
+
+		await this.achievementsPublisherService.dispatchProgressCheck({
+			type: AchievementType.STREAK,
+			userId,
+		});
 	}
 
 	public async validateStreakExpiration(
@@ -122,6 +133,11 @@ export class StreakService {
 					},
 				},
 			});
+		});
+
+		await this.achievementsPublisherService.dispatchProgressCheck({
+			type: AchievementType.STREAK,
+			userId,
 		});
 
 		return SUCCESS_MESSAGES.STREAK.STREAK_RESTORED;

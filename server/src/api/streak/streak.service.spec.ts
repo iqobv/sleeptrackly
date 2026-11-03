@@ -1,3 +1,4 @@
+import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { UserStatsDto } from '@api/user-stats/dto/user-stats.dto';
 import { StreakStatus } from '@generated/prisma/enums';
@@ -24,10 +25,15 @@ type NotificationPublisherServiceMock = {
 	dispatchCreate: jest.Mock;
 };
 
+type AchievementsPublisherServiceMock = {
+	dispatchProgressCheck: jest.Mock;
+};
+
 describe('StreakService', () => {
 	let service: StreakService;
 	let prisma: PrismaMock;
 	let notificationPublisherService: NotificationPublisherServiceMock;
+	let achievementsPublisherService: AchievementsPublisherServiceMock;
 
 	const userStats: UserStatsDto = {
 		activeStreak: null,
@@ -79,6 +85,10 @@ describe('StreakService', () => {
 			dispatchCreate: jest.fn(),
 		};
 
+		achievementsPublisherService = {
+			dispatchProgressCheck: jest.fn(),
+		};
+
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				StreakService,
@@ -86,6 +96,10 @@ describe('StreakService', () => {
 				{
 					provide: NotificationPublisherService,
 					useValue: notificationPublisherService,
+				},
+				{
+					provide: AchievementsPublisherService,
+					useValue: achievementsPublisherService,
 				},
 			],
 		}).compile();

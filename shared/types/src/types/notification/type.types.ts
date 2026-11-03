@@ -19,6 +19,9 @@ export const NotificationType = {
 	CHALLENGE_FROZEN: 'CHALLENGE_FROZEN',
 	CHALLENGE_INVITATION: 'CHALLENGE_INVITATION',
 	CHALLENGE_RESTORED: 'CHALLENGE_RESTORED',
+	STREAK_ENDED: 'STREAK_ENDED',
+	STREAK_FROZEN: 'STREAK_FROZEN',
+	STREAK_RESTORED: 'STREAK_RESTORED',
 } as const satisfies Record<SwaggerNotificationType, SwaggerNotificationType>;
 
 export type NotificationType =
