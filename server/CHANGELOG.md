@@ -1,5 +1,12 @@
 # Server changelog
 
+## [1.7.0] - 2026-
+
+### Added
+
+- Added sleep streaks system
+- Streak achievement type
+
 ## [1.6.3] - 2026-10-20
 
 ### Added

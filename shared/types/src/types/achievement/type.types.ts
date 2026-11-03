@@ -8,6 +8,7 @@ export const AchievementType = {
 	FRIENDS_COUNT: 'FRIENDS_COUNT',
 	CHALLENGES_COMPLETED: 'CHALLENGES_COMPLETED',
 	CHALLENGES_TASKS_COMPLETED: 'CHALLENGES_TASKS_COMPLETED',
+	STREAK: 'STREAK',
 } as const satisfies Record<SwaggerType, SwaggerType>;
 
 export type AchievementType =

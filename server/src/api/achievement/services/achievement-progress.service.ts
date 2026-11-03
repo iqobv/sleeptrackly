@@ -9,6 +9,7 @@ import {
 	CoinTransactionType,
 	FriendshipStatus,
 	NotificationType,
+	StreakStatus,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -87,6 +88,12 @@ export class AchievementProgressService {
 						},
 					},
 				});
+			case AchievementType.STREAK:
+				const activeStreak = await this.prismaService.streak.findFirst({
+					where: { userId, status: StreakStatus.ACTIVE },
+				});
+
+				return activeStreak ? activeStreak.length : 0;
 			default:
 				return 0;
 		}
