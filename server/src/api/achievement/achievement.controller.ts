@@ -78,8 +78,8 @@ export class AchievementController {
 		ERROR_MESSAGES.IMAGE.PROCESSING_FAILED,
 	)
 	public async createAchievement(
-		@UploadedFile(ImageValidationPipe()) icon: Express.Multer.File,
 		@Body() dto: CreateAchievementDto,
+		@UploadedFile(ImageValidationPipe(5, false)) icon?: Express.Multer.File,
 	): Promise<AchievementDto> {
 		return await this.achievementService.createAchievement(dto, icon);
 	}
