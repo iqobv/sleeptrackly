@@ -4,5 +4,5 @@ export const DEFAULT_URLS = {
 	ITEM_PREVIEW: 'defaults/item-preview.webp',
 	BUNDLE: 'defaults/bundle.webp',
 	COLLECTION_ICON: 'defaults/collection-icon.webp',
-	ACHIEVEMENT: 'defaults/achievement.wepb',
+	ACHIEVEMENT: 'defaults/achievement.webp',
 };
