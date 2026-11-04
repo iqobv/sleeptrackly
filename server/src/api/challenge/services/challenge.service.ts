@@ -1,3 +1,5 @@
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import {
 	Challenge,
 	ChallengeStatus,
@@ -36,6 +38,7 @@ export class ChallengeService {
 	constructor(
 		private readonly prismaService: PrismaService,
 		private readonly challengeActionService: ChallengeActionService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async findUserChallenges(
@@ -202,9 +205,7 @@ export class ChallengeService {
 		const userNow = dayjs().tz(user.timezone);
 		let startDateTime = userNow;
 
-		if (userNow.hour() >= 5) {
-			startDateTime = userNow.add(1, 'day');
-		}
+		if (userNow.hour() >= 5) startDateTime = userNow.add(1, 'day');
 
 		const startDate = startDateTime.format(DATE_FORMAT);
 		const endDate = startDateTime
@@ -247,6 +248,11 @@ export class ChallengeService {
 				data: tasksData,
 				skipDuplicates: true,
 			});
+		});
+
+		await this.statisticsPublisherService.dispatchStatisticsProcessing({
+			type: StatisticsType.CHALLENGE_STARTED,
+			data: { userId },
 		});
 	}
 

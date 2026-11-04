@@ -1,3 +1,5 @@
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { TokenService } from '@api/token/token.service';
 import { Prisma } from '@generated/prisma/client';
 import { TokenType } from '@generated/prisma/enums';
@@ -26,6 +28,7 @@ export class EmailConfirmationService {
 		@Inject(forwardRef(() => AuthService))
 		private readonly authService: AuthService,
 		private readonly prismaService: PrismaService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async verifyEmail(
@@ -48,6 +51,11 @@ export class EmailConfirmationService {
 			});
 
 			await this.tokenService.deleteToken(existsToken.id, tx);
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.USER_REGISTERED,
+				data: { userId: updatedUser.id },
+			});
 
 			return await this.authService.generateAndSaveTokens(
 				updatedUser,

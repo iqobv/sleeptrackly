@@ -1,0 +1,23 @@
+model WeeklyStatistics {
+  id String @id @default(uuid())
+
+  year    Int
+  isoWeek Int @map("iso_week")
+
+  registeredCount  Int @default(0) @map("registered_count")
+  activeUsersCount Int @default(0) @map("active_users_count")
+
+  achievementsCount Int @default(0) @map("achievements_count")
+
+  challengesCompletedCount Int @default(0) @map("challenges_completed_count")
+  challengesStartedCount   Int @default(0) @map("challenges_started_count")
+  challengesFailedCount    Int @default(0) @map("challenges_failed_count")
+
+  purchasesCount Int @default(0) @map("purchases_count")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([year, isoWeek])
+  @@map("weekly_statistics")
+}

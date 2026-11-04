@@ -1,4 +1,6 @@
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import {
 	ChallengeStatus,
 	ChallengeTaskStatus,
@@ -25,6 +27,7 @@ export class ChallengeReaperCronService {
 		private readonly prismaService: PrismaService,
 		private readonly notificationPublisherService: NotificationPublisherService,
 		private readonly challengeActionService: ChallengeActionService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	@Cron(CronExpression.EVERY_HOUR)
@@ -73,12 +76,19 @@ export class ChallengeReaperCronService {
 				});
 
 			for (const userChallenge of userChallenges) {
+				const userId = userChallenge.userId;
+
 				await this.notificationPublisherService.dispatchCreate({
-					userId: userChallenge.userId,
+					userId,
 					type: NotificationType.CHALLENGE_FAILED,
 					title: 'Challenge Failed',
 					body: `Challenge "${userChallenge.challenge.translations[0].title}" has failed because it was frozen for more than 48 hours.`,
 					challengeId: userChallenge.challengeId,
+				});
+
+				await this.statisticsPublisherService.dispatchStatisticsProcessing({
+					type: StatisticsType.CHALLENGE_FAILED,
+					data: { userId },
 				});
 			}
 

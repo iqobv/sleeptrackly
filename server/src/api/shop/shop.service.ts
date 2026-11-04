@@ -1,6 +1,8 @@
 import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { PurchaseHistoryService } from '@api/purchase-history/purchase-history.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import { Item, Prisma } from '@generated/prisma/client';
 import {
@@ -41,6 +43,7 @@ export class ShopService {
 		private readonly purchaseHistoryService: PurchaseHistoryService,
 		private readonly userInventoryService: UserInventoryService,
 		private readonly achievementPublisherService: AchievementsPublisherService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async getFeaturedProducts(
@@ -382,6 +385,11 @@ export class ShopService {
 			await this.achievementPublisherService.dispatchProgressCheck({
 				userId,
 				type: AchievementType.ITEMS_PURCHASED,
+			});
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.PURCHASE_MADE,
+				data: { userId },
 			});
 
 			const translations = (purchaseHistoryResult.nameSnapshot || []) as {

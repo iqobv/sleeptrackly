@@ -1,6 +1,7 @@
 import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
 import { ImageModule } from '@api/image/image.module';
 import { NotificationModule } from '@api/notification/notification.module';
+import { StatisticsModule } from '@api/statistics/statistics.module';
 import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
 import { BullModule } from '@nestjs/bullmq';
@@ -21,6 +22,7 @@ import { AchievementsPublisherService } from './services/achievements-publisher.
 		BullModule.registerQueue({
 			name: QUEUE_NAME.ACHIEVEMENTS,
 		}),
+		StatisticsModule,
 	],
 	providers: [
 		AchievementCrudService,

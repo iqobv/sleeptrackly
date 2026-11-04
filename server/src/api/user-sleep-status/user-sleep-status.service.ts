@@ -3,6 +3,8 @@ import { ChallengePublisherService } from '@api/challenge/services/challenge-pub
 import { SleepReward } from '@api/reward/interfaces/sleep-reward.interface';
 import { RewardService } from '@api/reward/services/reward.service';
 import { SleepEntryService } from '@api/sleep-entry/sleep-entry.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { AchievementType, Prisma, SleepEntry } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -34,6 +36,7 @@ export class UserSleepStatusService {
 		private readonly sleepEntryService: SleepEntryService,
 		private readonly achievementPublisherService: AchievementsPublisherService,
 		private readonly challengePublisherService: ChallengePublisherService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async getSleepStatus(
@@ -216,6 +219,11 @@ export class UserSleepStatusService {
 				await this.challengePublisherService.dispatchProgressCheck({
 					userId,
 					sleepEntryId: sleepEntry.id,
+				});
+
+				await this.statisticsPublisherService.dispatchStatisticsProcessing({
+					type: StatisticsType.SLEEP_ENTRY_ADDED,
+					data: { userId, date: dateForChart },
 				});
 			}
 

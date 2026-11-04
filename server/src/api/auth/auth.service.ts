@@ -1,3 +1,5 @@
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
 import { UserProviderService } from '@api/user-provider/user-provider.service';
 import { CreateUserDto } from '@api/user/dto/create-user.dto';
@@ -47,6 +49,7 @@ export class AuthService {
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
 		private readonly envService: EnvService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {
 		this.JWT_ACCESS_SECRET = envService.get('JWT_ACCESS_SECRET');
 	}
@@ -203,6 +206,11 @@ export class AuthService {
 				},
 				tx,
 			);
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.USER_REGISTERED,
+				data: { userId: user.id },
+			});
 
 			return await this.generateAndSaveTokens(user, clientInfo, tx);
 		});

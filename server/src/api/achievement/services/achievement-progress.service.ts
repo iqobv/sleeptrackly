@@ -1,5 +1,7 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import {
 	AchievementType,
@@ -22,6 +24,7 @@ export class AchievementProgressService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly userInventoryService: UserInventoryService,
 		private readonly notificationPublisherService: NotificationPublisherService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async checkProgress(
@@ -167,6 +170,11 @@ export class AchievementProgressService {
 					}
 				}
 			}
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.ACHIEVEMENT_UNLOCKED,
+				data: { userId },
+			});
 
 			return achievement;
 		});

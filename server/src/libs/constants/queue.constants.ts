@@ -3,6 +3,7 @@ export const QUEUE_NAME = {
 	CHALLENGES: 'challenges',
 	WEEKLY_SUMMARY: 'weekly-summaries',
 	NOTIFICATIONS: 'notifications',
+	STATISTICS: 'statistics',
 } as const;
 
 export const QUEUE_JOB_NAME = {
@@ -18,5 +19,8 @@ export const QUEUE_JOB_NAME = {
 	NOTIFICATIONS: {
 		CREATE: 'create-notification',
 		DIRECT_PUSH: 'direct-push-notification',
+	},
+	STATISTICS: {
+		PROCCESS: 'process-statistics',
 	},
 } as const;
