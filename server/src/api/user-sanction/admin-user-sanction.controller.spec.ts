@@ -1,43 +1,32 @@
 import { UserSanctionType } from '@generated/prisma/enums';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { AdminUserSanctionController } from './admin-user-sanction.controller';
+import { UserSanctionDto } from './dto/user-sanction.dto';
 import { UserSanctionService } from './user-sanction.service';
 
 jest.mock('uuid', () => ({ v4: () => 'mock-uuid' }));
 
-const now = new Date();
-
-const sanction = {
-	id: 'sanction-1',
-	userId: 'u1',
-	reportId: 'rep1',
-	createdById: 'admin1',
-	startsAt: now,
-	endsAt: new Date(now.getTime() + 1000 * 60 * 60),
-	type: UserSanctionType.AVATAR_CHANGE_BAN,
-	createdAt: now,
-	updatedAt: now,
-};
-
 describe('AdminUserSanctionController', () => {
 	let controller: AdminUserSanctionController;
-	let service: {
-		findByUserId: jest.Mock;
-		findById: jest.Mock;
-		create: jest.Mock;
-		update: jest.Mock;
-		remove: jest.Mock;
+	let service = mock<UserSanctionService>();
+
+	const now = new Date();
+
+	const sanction: UserSanctionDto = {
+		id: 'sanction-1',
+		userId: 'u1',
+		reportId: 'rep1',
+		createdById: 'admin1',
+		startsAt: now,
+		endsAt: new Date(now.getTime() + 1000 * 60 * 60),
+		type: UserSanctionType.AVATAR_CHANGE_BAN,
+		createdAt: now,
+		updatedAt: now,
 	};
 
 	beforeEach(async () => {
-		service = {
-			findByUserId: jest.fn(),
-			findById: jest.fn(),
-			create: jest.fn(),
-			update: jest.fn(),
-			remove: jest.fn(),
-		};
-
 		const moduleRef: TestingModule = await Test.createTestingModule({
 			controllers: [AdminUserSanctionController],
 			providers: [
@@ -114,12 +103,12 @@ describe('AdminUserSanctionController', () => {
 
 	describe('remove', () => {
 		it('should remove sanction', async () => {
-			service.remove.mockResolvedValue(sanction);
+			service.remove.mockResolvedValue(SUCCESS_MESSAGES.SANCTION.DELETED);
 
 			const result = await controller.remove('sanction-1');
 
 			expect(service.remove).toHaveBeenCalledWith('sanction-1');
-			expect(result).toEqual(sanction);
+			expect(result).toEqual(SUCCESS_MESSAGES.SANCTION.DELETED);
 		});
 	});
 });

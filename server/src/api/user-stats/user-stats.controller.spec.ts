@@ -1,15 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock, mockReset } from 'jest-mock-extended';
 import { UserStatsDto } from './dto/user-stats.dto';
 import { UserStatsController } from './user-stats.controller';
 import { UserStatsService } from './user-stats.service';
 
-type UserStatsServiceMock = {
-	getUserStats: jest.Mock;
-};
-
 describe('UserStatsController', () => {
 	let controller: UserStatsController;
-	let service: UserStatsServiceMock;
+	let service = mock<UserStatsService>();
 
 	const userStats: UserStatsDto = {
 		activeStreak: null,
@@ -23,9 +20,7 @@ describe('UserStatsController', () => {
 	};
 
 	beforeEach(async () => {
-		service = {
-			getUserStats: jest.fn(),
-		};
+		mockReset(service);
 
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [UserStatsController],

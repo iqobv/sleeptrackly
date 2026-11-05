@@ -8,7 +8,7 @@ export class StatisticsMetricsDto {
 
 export class StatisticsDto {
 	@Expose() totalRegisteredUsersCount: number;
-	@Expose() hasNextWeekData: boolean;
+	@Expose() hasPreviousWeekData: boolean;
 
 	@Expose()
 	@Type(() => StatisticsMetricsDto)

@@ -1,41 +1,32 @@
 import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
-import { UserStatsDto } from '@api/user-stats/dto/user-stats.dto';
+import { Streak, User, UserStats } from '@generated/prisma/client';
 import { StreakStatus } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { prismaMock } from '@libs/prisma/prisma.mock';
+import { partialMock } from '@libs/utils/mock-helper.util';
 import {
 	BadRequestException,
 	InternalServerErrorException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import dayjs from 'dayjs';
-import { BaseStreakDto } from './dto/streak.dto';
+import { mock, mockReset } from 'jest-mock-extended';
 import { StreakService } from './streak.service';
 
-type PrismaMock = {
-	userStats: { findUnique: jest.Mock; update: jest.Mock };
-	sleepEntry: { groupBy: jest.Mock };
-	streak: { create: jest.Mock; update: jest.Mock };
-	$transaction: jest.Mock;
-};
-
-type NotificationPublisherServiceMock = {
-	dispatchCreate: jest.Mock;
-};
-
-type AchievementsPublisherServiceMock = {
-	dispatchProgressCheck: jest.Mock;
+type UserStatsWithRelations = UserStats & {
+	user?: Partial<User>;
+	activeStreak?: Partial<Streak> | null;
 };
 
 describe('StreakService', () => {
 	let service: StreakService;
-	let prisma: PrismaMock;
-	let notificationPublisherService: NotificationPublisherServiceMock;
-	let achievementsPublisherService: AchievementsPublisherServiceMock;
+	const notificationPublisherService = mock<NotificationPublisherService>();
+	const achievementsPublisherService = mock<AchievementsPublisherService>();
 
-	const userStats: UserStatsDto = {
+	const userStats = partialMock<UserStatsWithRelations>({
 		activeStreak: null,
 		challengeRestores: 0,
 		challengeRestoresResetAt: new Date(),
@@ -44,17 +35,17 @@ describe('StreakService', () => {
 		streakRestoresResetAt: new Date(),
 		userId: 'user_1',
 		updatedAt: new Date(),
-	};
+	});
 
-	const internalUserStats = {
+	const internalUserStats = partialMock<UserStatsWithRelations>({
 		...userStats,
 		user: {
 			id: 'user_1',
 			timezone: 'UTC',
 		},
-	};
+	});
 
-	const streak: BaseStreakDto = {
+	const streak = partialMock<Streak>({
 		createdAt: new Date(),
 		endDate: null,
 		id: 'streak_1',
@@ -66,33 +57,30 @@ describe('StreakService', () => {
 		status: 'ACTIVE',
 		updatedAt: new Date(),
 		userId: 'user_1',
-	};
+	});
 
 	const mockNowStr = '2026-10-20';
 	const mockNowDate = new Date(`${mockNowStr}T12:00:00Z`);
 
-	beforeEach(async () => {
+	beforeAll(() => {
 		jest.useFakeTimers().setSystemTime(mockNowDate);
+	});
 
-		prisma = {
-			userStats: { findUnique: jest.fn(), update: jest.fn() },
-			sleepEntry: { groupBy: jest.fn() },
-			streak: { create: jest.fn(), update: jest.fn() },
-			$transaction: jest.fn((callback) => callback(prisma)),
-		};
+	afterAll(() => {
+		jest.useRealTimers();
+	});
 
-		notificationPublisherService = {
-			dispatchCreate: jest.fn(),
-		};
+	beforeEach(async () => {
+		mockReset(prismaMock);
+		mockReset(notificationPublisherService);
+		mockReset(achievementsPublisherService);
 
-		achievementsPublisherService = {
-			dispatchProgressCheck: jest.fn(),
-		};
+		prismaMock.$transaction.mockImplementation(async (cb) => cb(prismaMock));
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				StreakService,
-				{ provide: PrismaService, useValue: prisma },
+				{ provide: PrismaService, useValue: prismaMock },
 				{
 					provide: NotificationPublisherService,
 					useValue: notificationPublisherService,
@@ -107,37 +95,35 @@ describe('StreakService', () => {
 		service = module.get<StreakService>(StreakService);
 	});
 
-	afterEach(() => {
-		jest.clearAllMocks();
-		jest.useRealTimers();
-	});
-
 	it('should be defined', () => {
 		expect(service).toBeDefined();
 	});
 
 	describe('calculateStreak', () => {
 		it('should throw an InternalServerErrorException if userStats is not found', async () => {
-			prisma.userStats.findUnique.mockResolvedValue(null);
+			prismaMock.userStats.findUnique.mockResolvedValue(null);
 
 			await expect(service.calculateStreak('userId')).rejects.toThrow(
 				InternalServerErrorException,
 			);
 		});
 
-		describe('createStreak (private method called when no streak exists)', () => {
+		describe('createStreak', () => {
 			it('should create a new streak if there are 3 consecutive days ending today', async () => {
-				prisma.userStats.findUnique.mockResolvedValue(internalUserStats);
-				prisma.sleepEntry.groupBy.mockResolvedValue([
+				prismaMock.userStats.findUnique.mockResolvedValue(internalUserStats);
+				(prismaMock.sleepEntry.groupBy as jest.Mock).mockResolvedValue([
 					{ dateForChart: '2026-10-20' },
 					{ dateForChart: '2026-10-19' },
 					{ dateForChart: '2026-10-18' },
 				]);
-				prisma.streak.create.mockResolvedValue(streak);
+
+				prismaMock.streak.create.mockResolvedValue(
+					partialMock<Streak>({ id: 'streak_1' }),
+				);
 
 				await service.calculateStreak('user_1');
 
-				expect(prisma.streak.create).toHaveBeenCalledWith({
+				expect(prismaMock.streak.create).toHaveBeenCalledWith({
 					data: {
 						userId: 'user_1',
 						startDate: dayjs('2026-10-18').toDate(),
@@ -147,17 +133,16 @@ describe('StreakService', () => {
 						status: 'ACTIVE',
 					},
 				});
-				expect(prisma.userStats.update).toHaveBeenCalledWith({
+				expect(prismaMock.userStats.update).toHaveBeenCalledWith({
 					where: { userId: 'user_1' },
 					data: {
 						activeStreak: { connect: { id: 'streak_1' } },
 					},
 				});
 			});
-
 			it('should not create a streak if the last 3 days are not consecutive', async () => {
-				prisma.userStats.findUnique.mockResolvedValue(internalUserStats);
-				prisma.sleepEntry.groupBy.mockResolvedValue([
+				prismaMock.userStats.findUnique.mockResolvedValue(internalUserStats);
+				(prismaMock.sleepEntry.groupBy as jest.Mock).mockResolvedValue([
 					{ dateForChart: '2026-10-20' },
 					{ dateForChart: '2026-10-18' },
 					{ dateForChart: '2026-10-17' },
@@ -165,20 +150,22 @@ describe('StreakService', () => {
 
 				await service.calculateStreak('user_1');
 
-				expect(prisma.streak.create).not.toHaveBeenCalled();
+				expect(prismaMock.streak.create).not.toHaveBeenCalled();
 			});
 		});
 
-		describe('updateExistingStreak (private method called when streak exists)', () => {
-			it('should increment length if missedDays === 0 (user logged today/yesterday)', async () => {
-				prisma.userStats.findUnique.mockResolvedValue({
-					...internalUserStats,
-					activeStreak: { ...streak, lastActivityDate: '2026-10-19' },
-				});
+		describe('updateExistingStreak', () => {
+			it('should increment length if missedDays === 0', async () => {
+				prismaMock.userStats.findUnique.mockResolvedValue(
+					partialMock<UserStatsWithRelations>({
+						...internalUserStats,
+						activeStreak: { ...streak, lastActivityDate: '2026-10-19' },
+					}),
+				);
 
 				await service.calculateStreak('user_1');
 
-				expect(prisma.streak.update).toHaveBeenCalledWith({
+				expect(prismaMock.streak.update).toHaveBeenCalledWith({
 					where: { id: 'streak_1' },
 					data: {
 						lastActivityDate: '2026-10-20',
@@ -188,35 +175,39 @@ describe('StreakService', () => {
 			});
 
 			it('should freeze streak if missedDays === 1 and streak is ACTIVE', async () => {
-				prisma.userStats.findUnique.mockResolvedValue({
-					...internalUserStats,
-					activeStreak: { ...streak, lastActivityDate: '2026-10-18' },
-				});
+				prismaMock.userStats.findUnique.mockResolvedValue(
+					partialMock<UserStatsWithRelations>({
+						...internalUserStats,
+						activeStreak: { ...streak, lastActivityDate: '2026-10-18' },
+					}),
+				);
 
 				await service.calculateStreak('user_1');
 
-				expect(prisma.streak.update).toHaveBeenCalledWith({
+				expect(prismaMock.streak.update).toHaveBeenCalledWith({
 					where: { id: 'streak_1' },
 					data: { status: StreakStatus.FROZEN },
 				});
 			});
 
 			it('should end steak if missedDays > 1', async () => {
-				prisma.userStats.findUnique.mockResolvedValue({
-					...internalUserStats,
-					activeStreak: { ...streak, lastActivityDate: '2026-10-17' },
-				});
+				prismaMock.userStats.findUnique.mockResolvedValue(
+					partialMock<UserStatsWithRelations>({
+						...internalUserStats,
+						activeStreak: { ...streak, lastActivityDate: '2026-10-17' },
+					}),
+				);
 
 				await service.calculateStreak('user_1');
 
-				expect(prisma.streak.update).toHaveBeenCalledWith({
+				expect(prismaMock.streak.update).toHaveBeenCalledWith({
 					where: { id: 'streak_1' },
 					data: {
 						status: StreakStatus.ENDED,
 						endDate: dayjs('2026-10-17').toDate(),
 					},
 				});
-				expect(prisma.userStats.update).toHaveBeenCalledWith({
+				expect(prismaMock.userStats.update).toHaveBeenCalledWith({
 					where: { userId: 'user_1' },
 					data: { currentStreakId: null },
 				});
@@ -226,7 +217,10 @@ describe('StreakService', () => {
 
 	describe('validateStreakExpiration', () => {
 		it('should return false if streak is missing or ended', async () => {
-			const endedStreak = { ...streak, status: StreakStatus.ENDED };
+			const endedStreak = partialMock<Streak>({
+				...streak,
+				status: StreakStatus.ENDED,
+			});
 			const result1 = await service.validateStreakExpiration(
 				'user_1',
 				'UTC',
@@ -266,7 +260,7 @@ describe('StreakService', () => {
 
 	describe('restoreStreak', () => {
 		it('should throw BadRequestException if no active streak exists', async () => {
-			prisma.userStats.findUnique.mockResolvedValue(null);
+			prismaMock.userStats.findUnique.mockResolvedValue(null);
 
 			await expect(service.restoreStreak('user_1')).rejects.toThrow(
 				new BadRequestException(ERROR_MESSAGES.STREAK.NO_ACTIVE_STREAK),
@@ -274,11 +268,13 @@ describe('StreakService', () => {
 		});
 
 		it('should throw BadRequestException if user has 0 streakRestores', async () => {
-			prisma.userStats.findUnique.mockResolvedValue({
-				...userStats,
-				activeStreak: { ...streak, status: StreakStatus.FROZEN },
-				streakRestores: 0,
-			});
+			prismaMock.userStats.findUnique.mockResolvedValue(
+				partialMock<UserStatsWithRelations>({
+					...userStats,
+					activeStreak: { ...streak, status: StreakStatus.FROZEN },
+					streakRestores: 0,
+				}),
+			);
 
 			await expect(service.restoreStreak('user_1')).rejects.toThrow(
 				new BadRequestException(ERROR_MESSAGES.STREAK.NOT_ENOUGH_RESTORES),
@@ -286,11 +282,13 @@ describe('StreakService', () => {
 		});
 
 		it('should throw BadRequestException if streak is already ENDED', async () => {
-			prisma.userStats.findUnique.mockResolvedValue({
-				...userStats,
-				activeStreak: { ...streak, status: StreakStatus.ENDED },
-				streakRestores: 1,
-			});
+			prismaMock.userStats.findUnique.mockResolvedValue(
+				partialMock<UserStatsWithRelations>({
+					...userStats,
+					activeStreak: { ...streak, status: StreakStatus.ENDED },
+					streakRestores: 1,
+				}),
+			);
 
 			await expect(service.restoreStreak('user_1')).rejects.toThrow(
 				new BadRequestException(ERROR_MESSAGES.STREAK.ALREADY_ENDED),
@@ -298,11 +296,13 @@ describe('StreakService', () => {
 		});
 
 		it('should throw BadRequestException if streak is already ACTIVE', async () => {
-			prisma.userStats.findUnique.mockResolvedValue({
-				...userStats,
-				activeStreak: { ...streak, status: StreakStatus.ACTIVE },
-				streakRestores: 1,
-			});
+			prismaMock.userStats.findUnique.mockResolvedValue(
+				partialMock<UserStatsWithRelations>({
+					...userStats,
+					activeStreak: { ...streak, status: StreakStatus.ACTIVE },
+					streakRestores: 1,
+				}),
+			);
 
 			await expect(service.restoreStreak('user_1')).rejects.toThrow(
 				new BadRequestException(ERROR_MESSAGES.STREAK.ALREADY_ACTIVE),
@@ -310,15 +310,17 @@ describe('StreakService', () => {
 		});
 
 		it('should restore streak successfully if it is FROZEN and user has restores', async () => {
-			prisma.userStats.findUnique.mockResolvedValue({
-				...userStats,
-				activeStreak: { ...streak, status: StreakStatus.FROZEN },
-				streakRestores: 1,
-			});
+			prismaMock.userStats.findUnique.mockResolvedValue(
+				partialMock<UserStatsWithRelations>({
+					...userStats,
+					activeStreak: { ...streak, status: StreakStatus.FROZEN },
+					streakRestores: 1,
+				}),
+			);
 
 			const result = await service.restoreStreak('user_1');
 
-			expect(prisma.userStats.update).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.update).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 				data: {
 					streakRestores: { decrement: 1 },

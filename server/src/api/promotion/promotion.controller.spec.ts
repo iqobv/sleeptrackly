@@ -1,29 +1,17 @@
-import { ConfigService } from '@nestjs/config';
+import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
+import { PromotionDto } from './dto/promotion.dto';
 import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { PromotionController } from './promotion.controller';
 import { PromotionService } from './promotion.service';
 
-type PromotionServiceMock = {
-	createPromotion: jest.Mock;
-	getAllActivePromotions: jest.Mock;
-	getPromotionByAlias: jest.Mock;
-	getPromotionById: jest.Mock;
-	updatePromotion: jest.Mock;
-	deletePromotion: jest.Mock;
-};
-
-type ConfigServiceMock = {
-	get: jest.Mock;
-};
-
 describe('PromotionController', () => {
 	let controller: PromotionController;
-	let promotionService: PromotionServiceMock;
-	let configService: ConfigServiceMock;
+	let promotionService = mock<PromotionService>();
 
-	const mockPromotion = {
+	const mockPromotion: PromotionDto = {
 		id: 'promo_1',
 		alias: 'TEST_ALIAS',
 		coinsReward: 100,
@@ -36,29 +24,12 @@ describe('PromotionController', () => {
 	};
 
 	beforeEach(async () => {
-		promotionService = {
-			createPromotion: jest.fn(),
-			getAllActivePromotions: jest.fn(),
-			getPromotionByAlias: jest.fn(),
-			getPromotionById: jest.fn(),
-			updatePromotion: jest.fn(),
-			deletePromotion: jest.fn(),
-		};
-
-		configService = {
-			get: jest.fn(),
-		};
-
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [PromotionController],
 			providers: [
 				{
 					provide: PromotionService,
 					useValue: promotionService,
-				},
-				{
-					provide: ConfigService,
-					useValue: configService,
 				},
 			],
 		}).compile();
@@ -145,13 +116,14 @@ describe('PromotionController', () => {
 
 	describe('deletePromotion', () => {
 		it('should call deletePromotion on the service and return the result', async () => {
-			const deleteResponse = { code: 'PROMOTION_DELETED' };
-			promotionService.deletePromotion.mockResolvedValue(deleteResponse);
+			promotionService.deletePromotion.mockResolvedValue(
+				SUCCESS_MESSAGES.PROMOTION.DELETED,
+			);
 
 			const result = await controller.deletePromotion('promo_1');
 
 			expect(promotionService.deletePromotion).toHaveBeenCalledWith('promo_1');
-			expect(result).toEqual(deleteResponse);
+			expect(result).toEqual(SUCCESS_MESSAGES.PROMOTION.DELETED);
 		});
 	});
 });

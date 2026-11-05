@@ -4,7 +4,9 @@ import {
 	UserCoin,
 } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { prismaMock } from '@libs/prisma/prisma.mock';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mockReset } from 'jest-mock-extended';
 import { CoinTransactionService } from './coin-transaction.service';
 
 type PrismaMock = {
@@ -22,7 +24,6 @@ type PrismaMock = {
 
 describe('CoinTransactionService', () => {
 	let service: CoinTransactionService;
-	let prisma: PrismaMock;
 
 	const userCoin: UserCoin = {
 		id: 'uc_1',
@@ -47,25 +48,16 @@ describe('CoinTransactionService', () => {
 	};
 
 	beforeEach(async () => {
-		prisma = {
-			coinTransaction: {
-				create: jest.fn(),
-				findMany: jest.fn(),
-				findUnique: jest.fn(),
-			},
-			userCoin: {
-				findUnique: jest.fn(),
-				update: jest.fn(),
-			},
-			$transaction: jest.fn(),
-		};
+		mockReset(prismaMock);
+
+		prismaMock.$transaction.mockImplementation(async (cb) => cb(prismaMock));
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				CoinTransactionService,
 				{
 					provide: PrismaService,
-					useValue: prisma,
+					useValue: prismaMock,
 				},
 			],
 		}).compile();
@@ -79,15 +71,12 @@ describe('CoinTransactionService', () => {
 
 	describe('createCoinTransaction', () => {
 		it('should create a coin transaction', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
-			prisma.userCoin.update.mockResolvedValue({ ...userCoin, amount: 1100 });
-			prisma.coinTransaction.create.mockResolvedValue(coinTransaction);
-
-			prisma.$transaction.mockImplementation(
-				async (cb: (client: PrismaMock) => Promise<CoinTransaction>) => {
-					return cb(prisma);
-				},
-			);
+			prismaMock.userCoin.findUnique.mockResolvedValue(userCoin);
+			prismaMock.userCoin.update.mockResolvedValue({
+				...userCoin,
+				amount: 1100,
+			});
+			prismaMock.coinTransaction.create.mockResolvedValue(coinTransaction);
 
 			const result = await service.createTransaction({
 				amount: 100,
@@ -97,17 +86,13 @@ describe('CoinTransactionService', () => {
 
 			expect(result.transaction).toEqual(coinTransaction);
 			expect(result.balance).toEqual(1100);
-			expect(prisma.userCoin.findUnique).toHaveBeenCalled();
-			expect(prisma.coinTransaction.create).toHaveBeenCalled();
+			expect(prismaMock.userCoin.findUnique).toHaveBeenCalled();
+			expect(prismaMock.coinTransaction.create).toHaveBeenCalled();
 		});
 
 		it('should throw InsufficientCoinsException when user has insufficient coins', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
-			prisma.$transaction.mockImplementation(
-				async (cb: (client: PrismaMock) => Promise<CoinTransaction>) => {
-					return cb(prisma);
-				},
-			);
+			prismaMock.userCoin.findUnique.mockResolvedValue(userCoin);
+
 			await expect(
 				service.createTransaction({
 					amount: -2000,

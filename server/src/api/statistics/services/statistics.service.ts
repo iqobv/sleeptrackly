@@ -58,7 +58,7 @@ export class StatisticsService {
 
 		const result: StatisticsDto = {
 			totalRegisteredUsersCount,
-			hasNextWeekData: !!previousStats,
+			hasPreviousWeekData: !!previousStats,
 			registered: getMetric('registeredCount'),
 			activeUsers: getMetric('activeUsersCount'),
 			achievements: getMetric('achievementsCount'),
