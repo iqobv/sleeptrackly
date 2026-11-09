@@ -7,13 +7,13 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import {
 	BadRequestException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
 import { CreaeteUserSanctionDto } from './dto/create-user-sanction.dto';
 import { UpdateUserSanctionDto } from './dto/update-user-sanction.dto';
 import { UserSanctionDto } from './dto/user-sanction.dto';
@@ -73,16 +73,16 @@ export class UserSanctionService {
 				ERROR_MESSAGES.SANCTION.END_DATE_MUST_BE_IN_THE_FUTURE,
 			);
 
-		let endDate = dayjs(endsAt).toDate();
+		let endDate = appDayjs(endsAt).toDate();
 
 		const sanction = await this.findByTypeAndUserId(type, targetUserId);
 
 		let userSanction: UserSanction;
 
 		if (sanction) {
-			endDate = dayjs(sanction.endsAt).isAfter(dayjs(endsAt))
-				? dayjs(sanction.endsAt).toDate()
-				: dayjs(endsAt).toDate();
+			endDate = appDayjs(sanction.endsAt).isAfter(appDayjs(endsAt))
+				? appDayjs(sanction.endsAt).toDate()
+				: appDayjs(endsAt).toDate();
 
 			userSanction = await this.prismaService.userSanction.update({
 				where: { userId_type: { type, userId: targetUserId } },
@@ -122,7 +122,7 @@ export class UserSanctionService {
 		await this.notificationPublisherService.dispatchCreate({
 			userId: targetUserId,
 			title: 'New Sanction Applied',
-			body: `You have been sanctioned with a ${type.replace(/_/g, ' ')} until ${dayjs(
+			body: `You have been sanctioned with a ${type.replace(/_/g, ' ')} until ${appDayjs(
 				endDate,
 			).format('DD.MM.YYYY HH:mm')}.`,
 			type: NotificationType.SANCTION,

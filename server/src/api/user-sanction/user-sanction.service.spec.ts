@@ -5,10 +5,10 @@ import { UserAvatar, UserSanction } from '@generated/prisma/client';
 import { UserSanctionType } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { prismaMock } from '@libs/prisma/prisma.mock';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { partialMock } from '@libs/utils/mock-helper.util';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import dayjs from 'dayjs';
 import { mock, mockReset } from 'jest-mock-extended';
 import { UserSanctionDto } from './dto/user-sanction.dto';
 import { UserSanctionService } from './user-sanction.service';
@@ -28,7 +28,7 @@ describe('UserSanctionService', () => {
 		reportId: 'rep1',
 		createdById: 'admin1',
 		startsAt: now,
-		endsAt: dayjs(now).add(1, 'hour').toDate(),
+		endsAt: appDayjs(now).add(1, 'hour').toDate(),
 		type: UserSanctionType.AVATAR_CHANGE_BAN,
 		createdAt: now,
 		updatedAt: now,
@@ -108,7 +108,7 @@ describe('UserSanctionService', () => {
 				}),
 			);
 
-			const endsAt = dayjs(now).add(1, 'hour').toDate();
+			const endsAt = appDayjs(now).add(1, 'hour').toDate();
 
 			const result = await service.create('u1', {
 				targetUserId: 'u2',
@@ -140,7 +140,7 @@ describe('UserSanctionService', () => {
 				targetUserId: 'target-1',
 				type: UserSanctionType.USERNAME_CHANGE_BAN,
 				startsAt: now,
-				endsAt: dayjs(now).add(1, 'day').toDate(),
+				endsAt: appDayjs(now).add(1, 'day').toDate(),
 			});
 
 			expect(userService.generateUsername).toHaveBeenCalled();
@@ -152,8 +152,8 @@ describe('UserSanctionService', () => {
 		});
 
 		it('should update existing sanction if it already exists', async () => {
-			const existingEndsAt = dayjs(now).add(1, 'day').toDate();
-			const newEndsAt = dayjs(now).add(2, 'days').toDate();
+			const existingEndsAt = appDayjs(now).add(1, 'day').toDate();
+			const newEndsAt = appDayjs(now).add(2, 'days').toDate();
 
 			prismaMock.userSanction.findUnique.mockResolvedValue(
 				partialMock<UserSanction>({
@@ -191,8 +191,8 @@ describe('UserSanctionService', () => {
 			const dto = {
 				targetUserId: 'target-1',
 				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: dayjs(now).add(2, 'hour').toDate(),
-				endsAt: dayjs(now).add(1, 'hour').toDate(),
+				startsAt: appDayjs(now).add(2, 'hour').toDate(),
+				endsAt: appDayjs(now).add(1, 'hour').toDate(),
 			};
 
 			await expect(service.create('admin-1', dto)).rejects.toThrow(
@@ -204,8 +204,8 @@ describe('UserSanctionService', () => {
 			const dto = {
 				targetUserId: 'target-1',
 				type: UserSanctionType.AVATAR_CHANGE_BAN,
-				startsAt: dayjs(now).subtract(2, 'hour').toDate(),
-				endsAt: dayjs(now).subtract(1, 'hour').toDate(),
+				startsAt: appDayjs(now).subtract(2, 'hour').toDate(),
+				endsAt: appDayjs(now).subtract(1, 'hour').toDate(),
 			};
 
 			await expect(service.create('admin-1', dto)).rejects.toThrow(
@@ -217,7 +217,7 @@ describe('UserSanctionService', () => {
 	describe('update', () => {
 		it('should update sanction successfully', async () => {
 			prismaMock.userSanction.findUnique.mockResolvedValue(sanction);
-			const newEndsAt = dayjs(now).add(2, 'hours').toDate();
+			const newEndsAt = appDayjs(now).add(2, 'hours').toDate();
 			prismaMock.userSanction.update.mockResolvedValue({
 				...sanction,
 				endsAt: newEndsAt,

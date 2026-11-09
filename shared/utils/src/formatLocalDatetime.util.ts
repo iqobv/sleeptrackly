@@ -1,9 +1,9 @@
-import dayjs from 'dayjs';
+import { appDayjs } from '.';
 
 export const formatLocalDatetime = (dateInput: string | Date): string => {
 	if (!dateInput) return '';
 
-	const date = dayjs(dateInput);
+	const date = appDayjs(dateInput);
 
 	if (!date.isValid()) return '';
 

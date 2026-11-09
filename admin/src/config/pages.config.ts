@@ -1,6 +1,7 @@
 export const PAGES = {
 	HOME: '/',
 	LOGIN: '/login',
+	DASHBOARD: '/dashboard',
 	USERS: '/users',
 	USER: (username: string) => `/users/${username}`,
 	REPORTS: '/reports',

@@ -1,10 +1,7 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
+import { appDayjs } from './dayjs.util';
 
 export const getNextMondayUTC = (fromDate: Date): Date => {
-	const now = dayjs.utc(fromDate);
+	const now = appDayjs.utc(fromDate);
 
 	const currentDay = now.day();
 	const daysToAdd = (1 - currentDay + 7) % 7;

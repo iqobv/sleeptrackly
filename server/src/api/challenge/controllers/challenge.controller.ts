@@ -1,3 +1,4 @@
+import { Platform } from '@generated/prisma/enums';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
@@ -6,6 +7,7 @@ import {
 } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
 import { Authorized } from '@libs/decorators/authorized.decorator';
+import { CurrentPlatform } from '@libs/decorators/platform.decorator';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Controller,
@@ -73,8 +75,9 @@ export class ChallengeController {
 	public async restoreChallenge(
 		@Param('id') id: string,
 		@Authorized('id') userId: string,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<MessageResponse> {
-		return await this.challengeService.restoreChallenge(id, userId);
+		return await this.challengeService.restoreChallenge(id, userId, platform);
 	}
 
 	/** Participate in a specific challenge by ID */
@@ -100,8 +103,9 @@ export class ChallengeController {
 	public async participateInChallenge(
 		@Param('id') id: string,
 		@Authorized('id') userId: string,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<MessageResponse> {
-		await this.challengeService.participateInChallenge(id, userId);
+		await this.challengeService.participateInChallenge(id, userId, platform);
 
 		return SUCCESS_MESSAGES.CHALLENGE.PARTICIPATION_STARTED;
 	}

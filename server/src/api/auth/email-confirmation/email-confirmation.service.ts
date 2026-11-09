@@ -2,7 +2,7 @@ import { StatisticsPublisherService } from '@api/statistics/services/statistics-
 import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { TokenService } from '@api/token/token.service';
 import { Prisma } from '@generated/prisma/client';
-import { TokenType } from '@generated/prisma/enums';
+import { Platform, TokenType } from '@generated/prisma/enums';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
@@ -34,6 +34,7 @@ export class EmailConfirmationService {
 	public async verifyEmail(
 		dto: ConfirmationDto,
 		clientInfo: ClientInfoDto,
+		platform?: Platform,
 	): Promise<TokensDto> {
 		return await this.prismaService.$transaction(async (tx) => {
 			const existsToken = await this.tokenService.findToken(
@@ -54,7 +55,7 @@ export class EmailConfirmationService {
 
 			await this.statisticsPublisherService.dispatchStatisticsProcessing({
 				type: StatisticsType.USER_REGISTERED,
-				data: { userId: updatedUser.id },
+				data: { userId: updatedUser.id, entityId: updatedUser.id, platform },
 			});
 
 			return await this.authService.generateAndSaveTokens(

@@ -1,11 +1,10 @@
-model WeeklyStatistics {
+model DailyStatistics {
   id String @id @default(uuid())
 
-  year    Int
-  isoWeek Int @map("iso_week")
+  date     String
+  platform Platform
 
-  registeredCount  Int @default(0) @map("registered_count")
-  activeUsersCount Int @default(0) @map("active_users_count")
+  registeredCount Int @default(0) @map("registered_count")
 
   achievementsCount Int @default(0) @map("achievements_count")
 
@@ -18,6 +17,6 @@ model WeeklyStatistics {
   updatedAt DateTime @updatedAt @map("updated_at")
   createdAt DateTime @default(now()) @map("created_at")
 
-  @@unique([year, isoWeek])
-  @@map("weekly_statistics")
+  @@unique([date, platform])
+  @@map("daily_statistics")
 }

@@ -1,9 +1,4 @@
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
+import { appDayjs } from '@libs/utils/dayjs.util';
 
 interface GeneratedRange {
 	availableFrom: Date;
@@ -11,7 +6,7 @@ interface GeneratedRange {
 }
 
 export const generateRange = (currentWeek: boolean = false): GeneratedRange => {
-	const now = dayjs().utc();
+	const now = appDayjs().utc();
 
 	const nextMonday3Am = now.add(1, 'week').startOf('isoWeek').hour(3);
 

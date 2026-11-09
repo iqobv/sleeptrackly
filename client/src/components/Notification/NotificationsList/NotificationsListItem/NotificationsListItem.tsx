@@ -5,13 +5,10 @@ import { PRIVATE_PAGES } from '@/config/privatePages.config';
 import { Notification } from '@/types/notification/notification.types';
 import { NotificationType } from '@shared/types';
 import { Button, Divider, DropdownItem, Modal, ModalTrigger } from '@shared/ui';
+import { appDayjs } from '@shared/utils';
 import clsx from 'clsx';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import styles from './NotificationsListItem.module.scss';
 import { NotificationsListItemRedirect } from './NotificationsListItemRedirect';
-
-dayjs.extend(relativeTime);
 
 interface NotificationsListItemProps {
 	notification: Notification;
@@ -77,7 +74,7 @@ export const NotificationsListItem = ({
 						</DropdownItem>
 					)}
 				<div className={styles.date}>
-					{dayjs(notification.createdAt).fromNow()}
+					{appDayjs(notification.createdAt).fromNow()}
 				</div>
 			</div>
 			{withDivider && <Divider />}

@@ -1,14 +1,12 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { DATE_FORMAT } from '@libs/constants/date-format.constants';
+import { sleepEntryWhere } from '@libs/prisma/daily-statistics-sleep-entries.where.prisma';
+import { dailyStatisticsAggregate } from '@libs/prisma/daily-statistics.aggregate.prisma';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import utc from 'dayjs/plugin/utc';
 import { StatisticsQueryDto } from '../dto/statistics-query.dto';
 import { StatisticsDto, StatisticsMetricsDto } from '../dto/statistics.dto';
-
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
 
 @Injectable()
 export class StatisticsService {
@@ -19,53 +17,92 @@ export class StatisticsService {
 	): Promise<StatisticsDto> {
 		const { date } = query;
 
-		const targetDate = dayjs(date);
-		const previousDate = targetDate.subtract(1, 'week');
+		const targetDate = appDayjs(date);
+		const currentWeekStart = targetDate.startOf('isoWeek').format(DATE_FORMAT);
+		const currentWeekEnd = targetDate.endOf('isoWeek').format(DATE_FORMAT);
 
-		const [currentStats, previousStats, totalRegisteredUsersCount] =
-			await Promise.all([
-				this.prismaService.weeklyStatistics.findUnique({
-					where: {
-						year_isoWeek: {
-							year: targetDate.year(),
-							isoWeek: targetDate.isoWeek(),
-						},
-					},
-				}),
-				this.prismaService.weeklyStatistics.findUnique({
-					where: {
-						year_isoWeek: {
-							year: previousDate.year(),
-							isoWeek: previousDate.isoWeek(),
-						},
-					},
-				}),
-				this.prismaService.user.count({ where: { emailVerified: true } }),
-			]);
+		const previousWeekStart = targetDate
+			.subtract(1, 'week')
+			.startOf('isoWeek')
+			.format(DATE_FORMAT);
+		const previousWeekEnd = targetDate
+			.subtract(1, 'week')
+			.endOf('isoWeek')
+			.format(DATE_FORMAT);
+
+		const [
+			currentStats,
+			previousStats,
+			currentActiveUsers,
+			previousActiveUsers,
+			totalRegisteredUsersCount,
+		] = await Promise.all([
+			this.prismaService.dailyStatistics.aggregate(
+				dailyStatisticsAggregate(currentWeekStart, currentWeekEnd),
+			),
+			this.prismaService.dailyStatistics.aggregate(
+				dailyStatisticsAggregate(previousWeekStart, previousWeekEnd),
+			),
+			this.prismaService.sleepEntry
+				.groupBy({
+					by: ['userId'],
+					where: sleepEntryWhere(currentWeekStart, currentWeekEnd),
+				})
+				.then((result) => result.length),
+			this.prismaService.sleepEntry
+				.groupBy({
+					by: ['userId'],
+					where: sleepEntryWhere(previousWeekStart, previousWeekEnd),
+				})
+				.then((result) => result.length),
+			this.prismaService.user.count({
+				where: { deletedAt: null, emailVerified: true },
+			}),
+		]);
+
+		const getSum = (stats: any, field: string) => stats?._sum?.[field] || 0;
 
 		const getMetric = (
-			field: keyof NonNullable<typeof currentStats>,
-		): StatisticsMetricsDto => {
-			const current = (currentStats?.[field] as number) || 0;
-			const previous = (previousStats?.[field] as number) || 0;
+			current: number,
+			previous: number,
+		): StatisticsMetricsDto => ({
+			current,
+			previous,
+			percentageChange: this.calculatePercentageChange(current, previous),
+		});
 
-			return {
-				current,
-				previous,
-				percentageChange: this.calculatePercentageChange(current, previous),
-			};
-		};
+		const hasPreviousWeekData =
+			Object.values(previousStats._sum || {}).some((v) => v !== null) ||
+			previousActiveUsers > 0;
 
 		const result: StatisticsDto = {
 			totalRegisteredUsersCount,
-			hasPreviousWeekData: !!previousStats,
-			registered: getMetric('registeredCount'),
-			activeUsers: getMetric('activeUsersCount'),
-			achievements: getMetric('achievementsCount'),
-			challengesStarted: getMetric('challengesStartedCount'),
-			challengesCompleted: getMetric('challengesCompletedCount'),
-			challengesFailed: getMetric('challengesFailedCount'),
-			purchases: getMetric('purchasesCount'),
+			hasPreviousWeekData,
+			registered: getMetric(
+				getSum(currentStats, 'registeredCount'),
+				getSum(previousStats, 'registeredCount'),
+			),
+			activeUsers: getMetric(currentActiveUsers, previousActiveUsers),
+			achievements: getMetric(
+				getSum(currentStats, 'achievementsCount'),
+				getSum(previousStats, 'achievementsCount'),
+			),
+			challengesStarted: getMetric(
+				getSum(currentStats, 'challengesStartedCount'),
+				getSum(previousStats, 'challengesStartedCount'),
+			),
+			challengesCompleted: getMetric(
+				getSum(currentStats, 'challengesCompletedCount'),
+				getSum(previousStats, 'challengesCompletedCount'),
+			),
+			challengesFailed: getMetric(
+				getSum(currentStats, 'challengesFailedCount'),
+				getSum(previousStats, 'challengesFailedCount'),
+			),
+			purchases: getMetric(
+				getSum(currentStats, 'purchasesCount'),
+				getSum(previousStats, 'purchasesCount'),
+			),
 		};
 
 		return plainToInstance(StatisticsDto, result);

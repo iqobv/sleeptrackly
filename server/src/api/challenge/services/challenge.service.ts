@@ -5,6 +5,7 @@ import {
 	ChallengeStatus,
 	ChallengeTaskStatus,
 	ChallengeVisibility,
+	Platform,
 	Prisma,
 } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -16,6 +17,7 @@ import { transformProduct } from '@libs/mappers/translation-products.mapper';
 import { challengeTranslationSelect } from '@libs/prisma/challenge-translation.select.prisma';
 import { productInclude } from '@libs/prisma/product.include.prisma';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import {
 	BadRequestException,
 	ConflictException,
@@ -23,15 +25,9 @@ import {
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
-import tz from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { ChallengeDto, ChallengeWithUserStatusDto } from '../dto/challenge.dto';
 import { FullUserChallengeDto } from '../dto/user-challenge.dto';
 import { ChallengeActionService } from './challenge-action.service';
-
-dayjs.extend(utc);
-dayjs.extend(tz);
 
 @Injectable()
 export class ChallengeService {
@@ -183,6 +179,7 @@ export class ChallengeService {
 	public async participateInChallenge(
 		challengeId: string,
 		userId: string,
+		platform?: Platform,
 	): Promise<void> {
 		const user = await this.prismaService.user.findUnique({
 			where: { id: userId },
@@ -202,7 +199,7 @@ export class ChallengeService {
 
 		this.validateChallengeAvailability(false, challenge);
 
-		const userNow = dayjs().tz(user.timezone);
+		const userNow = appDayjs().tz(user.timezone);
 		let startDateTime = userNow;
 
 		if (userNow.hour() >= 5) startDateTime = userNow.add(1, 'day');
@@ -252,13 +249,14 @@ export class ChallengeService {
 
 		await this.statisticsPublisherService.dispatchStatisticsProcessing({
 			type: StatisticsType.CHALLENGE_STARTED,
-			data: { userId },
+			data: { userId, entityId: challenge.id, platform },
 		});
 	}
 
 	public async restoreChallenge(
 		challengeId: string,
 		userId: string,
+		platform?: Platform,
 	): Promise<MessageResponse> {
 		const userChallenge = await this.prismaService.userChallenge.findUnique({
 			where: { userId_challengeId: { userId, challengeId } },
@@ -307,11 +305,14 @@ export class ChallengeService {
 			);
 
 		const { isChallengeCompleted } =
-			await this.challengeActionService.completeChallengeTask({
-				userChallenge,
-				taskId: failedTasks[0].id,
-				isRecovery: true,
-			});
+			await this.challengeActionService.completeChallengeTask(
+				{
+					userChallenge,
+					taskId: failedTasks[0].id,
+					isRecovery: true,
+				},
+				platform,
+			);
 
 		return isChallengeCompleted
 			? SUCCESS_MESSAGES.CHALLENGE.CHALLENGE_RECOVERED

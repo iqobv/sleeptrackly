@@ -2,10 +2,10 @@
 
 import { WeeklySummary } from '@/types/weeklySummary/weeklySummary.types';
 import {
+	appDayjs,
 	formatUtcOffsetToLocalTime,
 	transformSecondsToHours,
 } from '@shared/utils';
-import dayjs from 'dayjs';
 import { IconType } from 'react-icons';
 import {
 	MdArrowDownward,
@@ -51,7 +51,7 @@ export const WEEKLY_SUMMARY_CARDS = (
 			<>
 				<p>{transformSecondsToHours(data.maxSleepDuration)}</p>
 				{data.maxSleepDate && (
-					<span>on {dayjs(data.maxSleepDate).format('dddd')}</span>
+					<span>on {appDayjs(data.maxSleepDate).format('dddd')}</span>
 				)}
 			</>
 		),
@@ -63,7 +63,7 @@ export const WEEKLY_SUMMARY_CARDS = (
 			<>
 				<p>{transformSecondsToHours(data.minSleepDuration)}</p>
 				{data.minSleepDate && (
-					<span>on {dayjs(data.minSleepDate).format('dddd')}</span>
+					<span>on {appDayjs(data.minSleepDate).format('dddd')}</span>
 				)}
 			</>
 		),

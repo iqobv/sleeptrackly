@@ -13,8 +13,8 @@ import { UpdateSleepEntryDto } from '@/dto/sleepEntry/sleepEntry.dto';
 import { UserSleepStatusDto } from '@/dto/user/userSleepStatus.dto';
 import { SleepEntry } from '@/types/dashboard/dashboard.types';
 import { formatTime } from '@/utils/formatTime.util';
+import { appDayjs } from '@shared/utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 export type UseTimerReturnType = ReturnType<typeof useTimer>;
@@ -145,10 +145,10 @@ export const useTimer = () => {
 	const handleSaveSleep = (dto: UpdateSleepEntryDto) => {
 		const { sleepEnd, rating, sleepStart, timezone } = dto;
 		const dateForChart = sleepEnd
-			? dayjs(sleepEnd).format(CHART_DATE_FORMAT)
+			? appDayjs(sleepEnd).format(CHART_DATE_FORMAT)
 			: finishTime
-				? dayjs(finishTime).format(CHART_DATE_FORMAT)
-				: dayjs().format(CHART_DATE_FORMAT);
+				? appDayjs(finishTime).format(CHART_DATE_FORMAT)
+				: appDayjs().format(CHART_DATE_FORMAT);
 
 		const finalDto: UserSleepStatusDto = {
 			sleepStart,

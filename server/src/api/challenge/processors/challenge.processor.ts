@@ -10,17 +10,12 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { QUEUE_NAME } from '@libs/constants/queue.constants';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { NotFoundException } from '@nestjs/common';
 import { Job } from 'bullmq';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { ChallengePayloadDto } from '../dto/challenge-payload.dto';
 import { ChallengeActionService } from '../services/challenge-action.service';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 @Processor(QUEUE_NAME.CHALLENGES)
 export class ChallengeProcessor extends WorkerHost {
@@ -32,7 +27,7 @@ export class ChallengeProcessor extends WorkerHost {
 	}
 
 	public async process(job: Job<ChallengePayloadDto>): Promise<void> {
-		const { sleepEntryId, userId } = job.data;
+		const { sleepEntryId, userId, platform } = job.data;
 
 		const sleepEntry = await this.prismaService.sleepEntry.findFirst({
 			where: { id: sleepEntryId, userId },
@@ -73,16 +68,20 @@ export class ChallengeProcessor extends WorkerHost {
 			);
 
 			if (isValid) {
-				await this.challengeActionService.completeChallengeTask({
-					userChallenge,
-					taskId: todaysTask.id,
-					sleepEntryId: sleepEntryId,
-					isRecovery: false,
-				});
+				await this.challengeActionService.completeChallengeTask(
+					{
+						userChallenge,
+						taskId: todaysTask.id,
+						sleepEntryId: sleepEntryId,
+						isRecovery: false,
+					},
+					platform,
+				);
 			} else {
 				await this.challengeActionService.failChallengeTask(
 					{ ...todaysTask, userChallenge },
 					'CONDITION_FAILED',
+					platform,
 				);
 			}
 		}
@@ -126,7 +125,7 @@ export class ChallengeProcessor extends WorkerHost {
 				if (sleepEntry.dateForChart === userChallenge.startDate) return true;
 
 				const maxVariance = Number(metadata.maxVarianceMinutes);
-				const previousTaskDate = dayjs(sleepEntry.dateForChart)
+				const previousTaskDate = appDayjs(sleepEntry.dateForChart)
 					.subtract(1, 'day')
 					.format(DATE_FORMAT);
 
@@ -138,8 +137,8 @@ export class ChallengeProcessor extends WorkerHost {
 
 				if (!previousSleepEntry) return true;
 
-				const currentBedtime = dayjs(sleepEntry.sleepStart).tz(userTimezone);
-				const previousBedtime = dayjs(previousSleepEntry.sleepStart).tz(
+				const currentBedtime = appDayjs(sleepEntry.sleepStart).tz(userTimezone);
+				const previousBedtime = appDayjs(previousSleepEntry.sleepStart).tz(
 					userTimezone,
 				);
 
@@ -165,7 +164,7 @@ export class ChallengeProcessor extends WorkerHost {
 		marginMinutes: number,
 		timezone: string,
 	): boolean {
-		const actualLocal = dayjs(actualTimeUtc).tz(timezone);
+		const actualLocal = appDayjs(actualTimeUtc).tz(timezone);
 		const actualMinutes = actualLocal.hour() * 60 + actualLocal.minute();
 		const [targetHour, targetMinute] = targetTimeString.split(':').map(Number);
 		const targetMinutes = targetHour * 60 + targetMinute;

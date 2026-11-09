@@ -12,10 +12,9 @@ import { SleepEntry } from '@/types/dashboard/dashboard.types';
 import { getTimezone } from '@/utils/timezone.util';
 import { FormReset, FormSubmit } from '@shared/form';
 import { ModalBody, ModalClose, ModalFooter, SectionHeader } from '@shared/ui';
-import { formatDate, formatLocalDatetime } from '@shared/utils';
+import { appDayjs, formatDate, formatLocalDatetime } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { isAxiosError } from 'axios';
-import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import styles from './DashboardSleepSessionCardDropdown.module.scss';
 import { DashboardSleepSessionCardFormModal } from './DashboardSleepSessionCardFormModal';
@@ -62,8 +61,8 @@ export const SleepSessionEdit = ({
 
 					if (!data.sleepEnd) return;
 
-					const startOfDay = dayjs(date).startOf('day').toDate();
-					const endOfDay = dayjs(date).endOf('day').toDate();
+					const startOfDay = appDayjs(date).startOf('day').toDate();
+					const endOfDay = appDayjs(date).endOf('day').toDate();
 					const sleepEnd = new Date(data.sleepEnd);
 
 					if (sleepEnd < startOfDay || sleepEnd > endOfDay) {
@@ -78,7 +77,7 @@ export const SleepSessionEdit = ({
 					const finalData: UpdateSleepEntryDto = {
 						...data,
 						timezone,
-						dateForChart: dayjs(date).format('YYYY-MM-DD'),
+						dateForChart: appDayjs(date).format('YYYY-MM-DD'),
 					};
 
 					mutate(finalData, {

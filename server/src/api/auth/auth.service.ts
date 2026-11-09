@@ -9,7 +9,7 @@ import {
 	UserWithPasswordDto,
 } from '@api/user/dto/user-response.dto';
 import { UserService } from '@api/user/services/user.service';
-import { Prisma } from '@generated/prisma/client';
+import { Platform, Prisma } from '@generated/prisma/client';
 import { EnvService } from '@infra/env/env.service';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -146,6 +146,7 @@ export class AuthService {
 	public async validateOAuthLogin(
 		dto: OAuthDto,
 		clientInfo: ClientInfoDto,
+		platform?: Platform,
 	): Promise<TokensDto> {
 		const {
 			provider,
@@ -209,7 +210,7 @@ export class AuthService {
 
 			await this.statisticsPublisherService.dispatchStatisticsProcessing({
 				type: StatisticsType.USER_REGISTERED,
-				data: { userId: user.id },
+				data: { userId: user.id, entityId: user.id, platform },
 			});
 
 			return await this.generateAndSaveTokens(user, clientInfo, tx);

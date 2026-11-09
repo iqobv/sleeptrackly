@@ -7,15 +7,14 @@ import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { calculateSleepDuration } from '@libs/utils/calculate-sleep-duration.util';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import {
 	ConflictException,
 	Injectable,
 	NotFoundException,
 } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs, { Dayjs } from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import utc from 'dayjs/plugin/utc';
+import { Dayjs } from 'dayjs';
 import { InternalCreateSleepEntryDto } from './dto/create-sleep-entry.dto';
 import { QueryDto } from './dto/query.dto';
 import { SleepDashboardDto } from './dto/sleep-dashboard.dto';
@@ -24,9 +23,6 @@ import { SleepEntryDto } from './dto/sleep-entry.dto';
 import { SleepStatisticsDto } from './dto/statistics.dto';
 import { UpdateSleepEntryDto } from './dto/update-sleep-entry.dto';
 import { NoOverlapParams } from './interfaces/no-overlap-params.interface';
-
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
 
 @Injectable()
 export class SleepEntryService {
@@ -66,8 +62,8 @@ export class SleepEntryService {
 	): Promise<SleepDashboardDto> {
 		const { date } = query;
 
-		const startOfWeek = dayjs(date, DATE_FORMAT).startOf('isoWeek');
-		const endOfWeek = dayjs(date, DATE_FORMAT).endOf('isoWeek');
+		const startOfWeek = appDayjs(date, DATE_FORMAT).startOf('isoWeek');
+		const endOfWeek = appDayjs(date, DATE_FORMAT).endOf('isoWeek');
 		const startDate = startOfWeek.format(DATE_FORMAT);
 		const endDate = endOfWeek.format(DATE_FORMAT);
 

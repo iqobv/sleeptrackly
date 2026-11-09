@@ -1,3 +1,4 @@
+import { Platform } from '@generated/prisma/enums';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
@@ -6,6 +7,7 @@ import {
 } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
 import { Authorized } from '@libs/decorators/authorized.decorator';
+import { CurrentPlatform } from '@libs/decorators/platform.decorator';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { Controller, HttpStatus, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -28,7 +30,8 @@ export class StreakController {
 	])
 	public async restoreStreak(
 		@Authorized('id') userId: string,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<MessageResponse> {
-		return await this.streakService.restoreStreak(userId);
+		return await this.streakService.restoreStreak(userId, platform);
 	}
 }

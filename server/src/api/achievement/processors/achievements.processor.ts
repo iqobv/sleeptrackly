@@ -28,6 +28,7 @@ export class AchievementsProcessor extends WorkerHost {
 		await this.achievementProgressService.checkProgress(
 			payload.userId,
 			payload.type,
+			payload.platform,
 		);
 	}
 }

@@ -12,6 +12,7 @@ import {
 	ChallengeTaskStatus,
 	CoinTransactionType,
 	NotificationType,
+	Platform,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -34,6 +35,7 @@ export class ChallengeActionService {
 	public async failChallengeTask(
 		task: TaskPayload,
 		reason: TaskFailReason,
+		platform?: Platform,
 	): Promise<void> {
 		await this.prismaService.$transaction(async (tx) => {
 			await tx.challengeTask.update({
@@ -77,7 +79,7 @@ export class ChallengeActionService {
 
 				await this.statisticsPublisherService.dispatchStatisticsProcessing({
 					type: StatisticsType.CHALLENGE_FAILED,
-					data: { userId },
+					data: { userId, entityId: task.userChallenge.challengeId, platform },
 				});
 
 				await this.notificationPublisherService.dispatchCreate({
@@ -93,6 +95,7 @@ export class ChallengeActionService {
 
 	public async completeChallengeTask(
 		dto: CompleteChallengeTaskDto,
+		platform?: Platform,
 	): Promise<{ isChallengeCompleted: boolean }> {
 		const { isRecovery, taskId, userChallenge, sleepEntryId } = dto;
 		const userId = userChallenge.userId;
@@ -169,7 +172,7 @@ export class ChallengeActionService {
 
 				await this.statisticsPublisherService.dispatchStatisticsProcessing({
 					type: StatisticsType.CHALLENGE_COMPLETED,
-					data: { userId },
+					data: { userId, entityId: userChallenge.challengeId, platform },
 				});
 
 				if (userChallenge.challenge.rewardCoins > 0) {
@@ -210,11 +213,13 @@ export class ChallengeActionService {
 		await this.achievementsPublisherService.dispatchProgressCheck({
 			type: AchievementType.CHALLENGES_TASKS_COMPLETED,
 			userId,
+			platform,
 		});
 
 		await this.achievementsPublisherService.dispatchProgressCheck({
 			type: AchievementType.CHALLENGES_COMPLETED,
 			userId,
+			platform,
 		});
 
 		return { isChallengeCompleted };

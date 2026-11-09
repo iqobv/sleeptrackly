@@ -6,13 +6,13 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { prismaMock } from '@libs/prisma/prisma.mock';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { partialMock } from '@libs/utils/mock-helper.util';
 import {
 	BadRequestException,
 	InternalServerErrorException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import dayjs from 'dayjs';
 import { mock, mockReset } from 'jest-mock-extended';
 import { StreakService } from './streak.service';
 
@@ -126,7 +126,7 @@ describe('StreakService', () => {
 				expect(prismaMock.streak.create).toHaveBeenCalledWith({
 					data: {
 						userId: 'user_1',
-						startDate: dayjs('2026-10-18').toDate(),
+						startDate: appDayjs('2026-10-18').toDate(),
 						length: 3,
 						restoresUsed: 0,
 						lastActivityDate: '2026-10-20',
@@ -204,7 +204,7 @@ describe('StreakService', () => {
 					where: { id: 'streak_1' },
 					data: {
 						status: StreakStatus.ENDED,
-						endDate: dayjs('2026-10-17').toDate(),
+						endDate: appDayjs('2026-10-17').toDate(),
 					},
 				});
 				expect(prismaMock.userStats.update).toHaveBeenCalledWith({

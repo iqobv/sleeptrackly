@@ -2,8 +2,7 @@
 
 import { PAGES } from '@/config/pages.config';
 import { Report } from '@/types/report/report.types';
-import { capitalize } from '@shared/utils';
-import dayjs from 'dayjs';
+import { appDayjs, capitalize } from '@shared/utils';
 import Link from 'next/link';
 import { CSSProperties } from 'react';
 import styles from './ReportsListItem.module.scss';
@@ -22,7 +21,7 @@ export const ReportsListItem = ({ report }: ReportsListItemProps) => {
 			<div>
 				<p>{report.title}</p>
 				<div>
-					Created at: {dayjs(report.createdAt).format('DD.MM.YYYY HH:mm:ss')}
+					Created at: {appDayjs(report.createdAt).format('DD.MM.YYYY HH:mm:ss')}
 				</div>
 			</div>
 			<div

@@ -15,9 +15,7 @@ export class StatisticsPublisherService {
 	): Promise<void> {
 		const { type, data } = payload;
 
-		const jobId = data.date
-			? `stats-${type}-${data.userId}-${data.date}`
-			: `stats-${type}-${data.userId}`;
+		const jobId = `stats-${type}-${data.userId}-${data.entityId}`;
 
 		await this.queue.add(QUEUE_JOB_NAME.STATISTICS.PROCCESS, payload, {
 			delay: 2 * 60 * 1000,

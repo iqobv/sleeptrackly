@@ -3,9 +3,9 @@ import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { prismaMock } from '@libs/prisma/prisma.mock';
 import { userSelect } from '@libs/prisma/user.select.prisma';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { partialMock } from '@libs/utils/mock-helper.util';
 import { Test, TestingModule } from '@nestjs/testing';
-import dayjs from 'dayjs';
 import { mock, mockReset } from 'jest-mock-extended';
 import { UserStatsDto } from './dto/user-stats.dto';
 import { UserStatsService } from './user-stats.service';
@@ -173,7 +173,7 @@ describe('UserStatsService', () => {
 		it('should return null if now is before resetAt', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
-				challengeRestoresResetAt: dayjs().add(1, 'day').toDate(),
+				challengeRestoresResetAt: appDayjs().add(1, 'day').toDate(),
 			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
@@ -183,7 +183,7 @@ describe('UserStatsService', () => {
 		it('should return 3 restores if missed an entire week', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
-				challengeRestoresResetAt: dayjs().subtract(7, 'day').toDate(),
+				challengeRestoresResetAt: appDayjs().subtract(7, 'day').toDate(),
 			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
@@ -197,7 +197,7 @@ describe('UserStatsService', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
 				challengeRestores: 2,
-				challengeRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
+				challengeRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
 			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
@@ -211,7 +211,7 @@ describe('UserStatsService', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
 				challengeRestores: 1,
-				challengeRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
+				challengeRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
 			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
@@ -226,7 +226,7 @@ describe('UserStatsService', () => {
 		it('should return null if now is before resetAt', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
-				streakRestoresResetAt: dayjs().add(1, 'day').toDate(),
+				streakRestoresResetAt: appDayjs().add(1, 'day').toDate(),
 			});
 
 			const result = service.getStreakUpdates(stats, new Date());
@@ -236,7 +236,7 @@ describe('UserStatsService', () => {
 		it('should return streak updates if now is after resetAt', () => {
 			const stats = partialMock<UserStatsWithRelations>({
 				...dbUserStats,
-				streakRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
+				streakRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
 			});
 
 			const result = service.getStreakUpdates(stats, new Date());

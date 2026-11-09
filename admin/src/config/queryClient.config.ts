@@ -7,6 +7,10 @@ import {
 import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.types';
 
 export const QUERY_KEYS = {
+	dashboard: {
+		all: ['dashboard'] as const,
+		date: (date: string) => [...QUERY_KEYS.dashboard.all, date] as const,
+	},
 	user: {
 		me: () => ['user', 'me'] as const,
 	},

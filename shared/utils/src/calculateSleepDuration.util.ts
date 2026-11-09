@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import { appDayjs } from '.';
 
 export interface CalculatedSleepDuration {
 	sleepDuration: number;
@@ -10,9 +10,9 @@ export const calculateSleepDuration = (
 	end: Date,
 	dateFormat: string = 'YYYY-MM-DD',
 ): CalculatedSleepDuration => {
-	const sleepEndDate = dayjs(end).toDate();
-	const sleepDuration = dayjs(sleepEndDate).diff(start, 'second');
-	const dateForChart = dayjs(sleepEndDate).startOf('day').format(dateFormat);
+	const sleepEndDate = appDayjs(end).toDate();
+	const sleepDuration = appDayjs(sleepEndDate).diff(start, 'second');
+	const dateForChart = appDayjs(sleepEndDate).startOf('day').format(dateFormat);
 
 	return { sleepDuration, dateForChart };
 };

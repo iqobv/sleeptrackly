@@ -18,7 +18,7 @@ export const Dashboard = () => {
 	if (!isPlaceholderData && isVisuallyLoading) {
 		setIsVisuallyLoading(false);
 	}
-	
+
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
 

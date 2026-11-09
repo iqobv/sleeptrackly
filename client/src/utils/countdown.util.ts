@@ -1,9 +1,4 @@
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
-dayjs.extend(duration);
+import { appDayjs } from '@shared/utils';
 
 export interface CountdownResult {
 	ms: number;
@@ -15,14 +10,14 @@ export interface CountdownResult {
 }
 
 export const getCountdownToNextMonday = (): CountdownResult => {
-	const now = dayjs.utc();
+	const now = appDayjs.utc();
 
 	let target = now.day(1).hour(3).minute(0).second(0).millisecond(0);
 
 	if (!target.isAfter(now)) target = target.add(1, 'week');
 
 	const diffMs = target.diff(now);
-	const timeLeft = dayjs.duration(diffMs);
+	const timeLeft = appDayjs.duration(diffMs);
 
 	const days = Math.floor(timeLeft.asDays());
 	const hours = timeLeft.hours();

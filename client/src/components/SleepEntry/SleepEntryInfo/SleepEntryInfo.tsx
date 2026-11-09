@@ -1,7 +1,7 @@
 'use client';
 
 import { Divider } from '@shared/ui';
-import dayjs from 'dayjs';
+import { appDayjs } from '@shared/utils';
 import styles from './SleepEntryInfo.module.scss';
 import { SleepEntryInfoItem } from './SleepEntryInfoItem/SleepEntryInfoItem';
 
@@ -20,11 +20,11 @@ export const SleepEntryInfo = ({
 	isOnlyForm = false,
 	date,
 }: SleepEntryInfoProps) => {
-	const minLocalString = dayjs(date ?? new Date())
+	const minLocalString = appDayjs(date ?? new Date())
 		.subtract(1, 'day')
 		.startOf('day')
 		.format('YYYY-MM-DDTHH:mm');
-	const maxLocalString = dayjs(date ?? new Date())
+	const maxLocalString = appDayjs(date ?? new Date())
 		.endOf('day')
 		.format('YYYY-MM-DDTHH:mm');
 

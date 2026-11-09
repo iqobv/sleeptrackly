@@ -9,6 +9,7 @@ import {
 	AchievementType,
 	AcquiredFrom,
 	CoinTransactionType,
+	Platform,
 	ProductType,
 	ProfileItemType,
 } from '@generated/prisma/enums';
@@ -293,6 +294,7 @@ export class ShopService {
 		userId: string,
 		productId: string,
 		language: string = 'en',
+		platform?: Platform,
 	): Promise<PurchaseDto> {
 		const result = await this.prismaService.$transaction(async (tx) => {
 			const product = await tx.product.findUnique({
@@ -385,11 +387,12 @@ export class ShopService {
 			await this.achievementPublisherService.dispatchProgressCheck({
 				userId,
 				type: AchievementType.ITEMS_PURCHASED,
+				platform,
 			});
 
 			await this.statisticsPublisherService.dispatchStatisticsProcessing({
 				type: StatisticsType.PURCHASE_MADE,
-				data: { userId },
+				data: { userId, entityId: product.id, platform },
 			});
 
 			const translations = (purchaseHistoryResult.nameSnapshot || []) as {

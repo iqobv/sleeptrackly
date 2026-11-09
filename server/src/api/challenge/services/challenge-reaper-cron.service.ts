@@ -8,16 +8,11 @@ import {
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { challengeTaskInclude } from '@libs/prisma/challenge-task.include.prisma';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { TaskPayload } from '../types/task-payload.types';
 import { ChallengeActionService } from './challenge-action.service';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 @Injectable()
 export class ChallengeReaperCronService {
@@ -56,7 +51,7 @@ export class ChallengeReaperCronService {
 		);
 
 		try {
-			const deadline = dayjs().subtract(48, 'hours').toDate();
+			const deadline = appDayjs().subtract(48, 'hours').toDate();
 
 			const frozenChallenges = await this.prismaService.userChallenge.findMany({
 				where: { status: ChallengeStatus.FROZEN, frozenAt: { lte: deadline } },
@@ -88,7 +83,7 @@ export class ChallengeReaperCronService {
 
 				await this.statisticsPublisherService.dispatchStatisticsProcessing({
 					type: StatisticsType.CHALLENGE_FAILED,
-					data: { userId },
+					data: { userId, entityId: userChallenge.challengeId },
 				});
 			}
 
@@ -102,9 +97,9 @@ export class ChallengeReaperCronService {
 
 	private async processExpiredTask(task: TaskPayload): Promise<void> {
 		const userTimezone = task.userChallenge.user.timezone || 'UTC';
-		const userNow = dayjs().tz(userTimezone);
+		const userNow = appDayjs().tz(userTimezone);
 
-		const taskDeadline = dayjs(task.date)
+		const taskDeadline = appDayjs(task.date)
 			.tz(userTimezone)
 			.add(1, 'day')
 			.hour(5)

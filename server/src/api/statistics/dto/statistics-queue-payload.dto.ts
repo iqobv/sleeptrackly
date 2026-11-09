@@ -1,4 +1,4 @@
-import { IsChartDate } from '@libs/validators/is-chart-date.validator';
+import { Platform } from '@generated/prisma/enums';
 import { Type } from 'class-transformer';
 import {
 	IsEnum,
@@ -13,9 +13,12 @@ export class StatisticsQueueDataDto {
 	@IsUUID('4')
 	userId: string;
 
+	@IsUUID('4')
+	entityId: string;
+
+	@IsEnum(Platform)
 	@IsOptional()
-	@IsChartDate()
-	date?: string;
+	platform?: Platform;
 }
 
 export class StatisticsQueuePayloadDto {

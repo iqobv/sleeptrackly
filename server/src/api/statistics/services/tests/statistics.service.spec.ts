@@ -1,10 +1,9 @@
-import { WeeklyStatistics } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { prismaMock } from '@libs/prisma/prisma.mock';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { partialMock } from '@libs/utils/mock-helper.util';
 import { Test, TestingModule } from '@nestjs/testing';
-import dayjs from 'dayjs';
 import { mockReset } from 'jest-mock-extended';
 import { StatisticsDto, StatisticsMetricsDto } from '../../dto/statistics.dto';
 import { StatisticsService } from '../statistics.service';
@@ -30,8 +29,46 @@ describe('StatisticsService', () => {
 		purchases: defaultMetric,
 	};
 
-	const testDate = dayjs('2026-11-01');
+	const testDate = appDayjs('2026-11-01');
 	const dateString = testDate.format(DATE_FORMAT);
+
+	const currentWeekStart = testDate.startOf('isoWeek').format(DATE_FORMAT);
+	const currentWeekEnd = testDate.endOf('isoWeek').format(DATE_FORMAT);
+	const previousWeekStart = testDate
+		.subtract(1, 'week')
+		.startOf('isoWeek')
+		.format(DATE_FORMAT);
+	const previousWeekEnd = testDate
+		.subtract(1, 'week')
+		.endOf('isoWeek')
+		.format(DATE_FORMAT);
+
+	type AggregateMockReturn = Awaited<
+		ReturnType<typeof prismaMock.dailyStatistics.aggregate>
+	>;
+
+	type GroupByMockElement = Awaited<
+		ReturnType<typeof prismaMock.sleepEntry.groupBy>
+	>[number];
+
+	const emptyAggregate = partialMock<AggregateMockReturn>({
+		_sum: {
+			registeredCount: null,
+			achievementsCount: null,
+			challengesStartedCount: null,
+			challengesCompletedCount: null,
+			challengesFailedCount: null,
+			purchasesCount: null,
+		},
+	});
+
+	const generateActiveUsersMock = (count: number): GroupByMockElement[] => {
+		return Array.from({ length: count }, (_, index) =>
+			partialMock<GroupByMockElement>({
+				userId: `user-id-${index}`,
+			}),
+		);
+	};
 
 	beforeEach(async () => {
 		mockReset(prismaMock);
@@ -52,53 +89,73 @@ describe('StatisticsService', () => {
 
 	describe('getStatistics', () => {
 		it('should return default statistics when no data is available', async () => {
-			prismaMock.weeklyStatistics.findUnique
-				.mockResolvedValueOnce(null)
-				.mockResolvedValueOnce(null);
-			prismaMock.user.count.mockResolvedValue(0);
+			jest
+				.spyOn(prismaMock.dailyStatistics, 'aggregate')
+				.mockResolvedValueOnce(emptyAggregate)
+				.mockResolvedValueOnce(emptyAggregate);
+
+			jest
+				.spyOn(prismaMock.sleepEntry, 'groupBy')
+				.mockResolvedValueOnce([])
+				.mockResolvedValueOnce([]);
+
+			jest.spyOn(prismaMock.user, 'count').mockResolvedValue(0);
 
 			const result = await service.getStatistics({ date: dateString });
 
 			expect(result).toMatchObject(defaultStatistics);
-			expect(prismaMock.weeklyStatistics.findUnique).toHaveBeenCalledWith({
-				where: {
-					year_isoWeek: {
-						year: testDate.year(),
-						isoWeek: testDate.isoWeek(),
-					},
-				},
-			});
+
+			expect(prismaMock.dailyStatistics.aggregate).toHaveBeenNthCalledWith(
+				1,
+				expect.objectContaining({
+					where: { date: { gte: currentWeekStart, lte: currentWeekEnd } },
+				}),
+			);
+			expect(prismaMock.dailyStatistics.aggregate).toHaveBeenNthCalledWith(
+				2,
+				expect.objectContaining({
+					where: { date: { gte: previousWeekStart, lte: previousWeekEnd } },
+				}),
+			);
 			expect(prismaMock.user.count).toHaveBeenCalledWith({
-				where: { emailVerified: true },
+				where: { deletedAt: null, emailVerified: true },
 			});
 		});
 
 		it('should return correct statistics when data is available', async () => {
-			const currentStats = partialMock<WeeklyStatistics>({
-				registeredCount: 150,
-				activeUsersCount: 40,
-				achievementsCount: 200,
-				challengesStartedCount: 15,
-				challengesCompletedCount: 0,
-				challengesFailedCount: 5,
-				purchasesCount: 110,
+			const currentAggregate = partialMock<AggregateMockReturn>({
+				_sum: {
+					registeredCount: 150,
+					achievementsCount: 200,
+					challengesStartedCount: 15,
+					challengesCompletedCount: 0,
+					challengesFailedCount: 5,
+					purchasesCount: 110,
+				},
 			});
 
-			const previousStats = partialMock<WeeklyStatistics>({
-				registeredCount: 100,
-				activeUsersCount: 50,
-				achievementsCount: 100,
-				challengesStartedCount: 20,
-				challengesCompletedCount: 10,
-				challengesFailedCount: 0,
-				purchasesCount: 100,
+			const previousAggregate = partialMock<AggregateMockReturn>({
+				_sum: {
+					registeredCount: 100,
+					achievementsCount: 100,
+					challengesStartedCount: 20,
+					challengesCompletedCount: 10,
+					challengesFailedCount: 0,
+					purchasesCount: 100,
+				},
 			});
 
-			prismaMock.weeklyStatistics.findUnique
-				.mockResolvedValueOnce(currentStats)
-				.mockResolvedValueOnce(previousStats);
+			jest
+				.spyOn(prismaMock.dailyStatistics, 'aggregate')
+				.mockResolvedValueOnce(currentAggregate)
+				.mockResolvedValueOnce(previousAggregate);
 
-			prismaMock.user.count.mockResolvedValue(1000);
+			jest
+				.spyOn(prismaMock.sleepEntry, 'groupBy')
+				.mockResolvedValueOnce(generateActiveUsersMock(40))
+				.mockResolvedValueOnce(generateActiveUsersMock(50));
+
+			jest.spyOn(prismaMock.user, 'count').mockResolvedValue(1000);
 
 			const result = await service.getStatistics({ date: dateString });
 
@@ -120,17 +177,28 @@ describe('StatisticsService', () => {
 		});
 
 		it('should handle correctly when only current week data is available', async () => {
-			const currentStats = partialMock<WeeklyStatistics>({
-				registeredCount: 100,
-				activeUsersCount: 50,
-				achievementsCount: 0,
+			const currentAggregate = partialMock<AggregateMockReturn>({
+				_sum: {
+					registeredCount: 100,
+					achievementsCount: 0,
+					challengesStartedCount: 0,
+					challengesCompletedCount: null,
+					challengesFailedCount: null,
+					purchasesCount: null,
+				},
 			});
 
-			prismaMock.weeklyStatistics.findUnique
-				.mockResolvedValueOnce(currentStats)
-				.mockResolvedValueOnce(null);
+			jest
+				.spyOn(prismaMock.dailyStatistics, 'aggregate')
+				.mockResolvedValueOnce(currentAggregate)
+				.mockResolvedValueOnce(emptyAggregate);
 
-			prismaMock.user.count.mockResolvedValue(500);
+			jest
+				.spyOn(prismaMock.sleepEntry, 'groupBy')
+				.mockResolvedValueOnce(generateActiveUsersMock(50))
+				.mockResolvedValueOnce([]);
+
+			jest.spyOn(prismaMock.user, 'count').mockResolvedValue(500);
 
 			const result = await service.getStatistics({ date: dateString });
 
@@ -145,16 +213,28 @@ describe('StatisticsService', () => {
 		});
 
 		it('should handle correctly when only previous week data is available', async () => {
-			const previousStats = partialMock<WeeklyStatistics>({
-				registeredCount: 100,
-				activeUsersCount: 50,
+			const previousAggregate = partialMock<AggregateMockReturn>({
+				_sum: {
+					registeredCount: 100,
+					achievementsCount: 0,
+					challengesStartedCount: 0,
+					challengesCompletedCount: null,
+					challengesFailedCount: null,
+					purchasesCount: null,
+				},
 			});
 
-			prismaMock.weeklyStatistics.findUnique
-				.mockResolvedValueOnce(null)
-				.mockResolvedValueOnce(previousStats);
+			jest
+				.spyOn(prismaMock.dailyStatistics, 'aggregate')
+				.mockResolvedValueOnce(emptyAggregate)
+				.mockResolvedValueOnce(previousAggregate);
 
-			prismaMock.user.count.mockResolvedValue(300);
+			jest
+				.spyOn(prismaMock.sleepEntry, 'groupBy')
+				.mockResolvedValueOnce([])
+				.mockResolvedValueOnce(generateActiveUsersMock(50));
+
+			jest.spyOn(prismaMock.user, 'count').mockResolvedValue(300);
 
 			const result = await service.getStatistics({ date: dateString });
 

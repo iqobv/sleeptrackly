@@ -20,5 +20,6 @@ model SleepEntry {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@index([dateForChart, isVerified, userId])
   @@map("sleep_entries")
 }
