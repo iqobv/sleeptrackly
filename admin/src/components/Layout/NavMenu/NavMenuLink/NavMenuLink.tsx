@@ -3,6 +3,7 @@
 import { Button } from '@shared/ui';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { NavMenuLinksProps } from '../navMenuLinks';
 import { ButtonContent } from './ButtonContent';
@@ -15,6 +16,7 @@ interface NavMenuLinkProps {
 
 export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 	const [isExpanded, setExpanded] = useState(false);
+	const pathname = usePathname();
 
 	const handleExpand = (e: React.MouseEvent) => {
 		if (link.expanded && link.innerLinks) {
@@ -24,12 +26,18 @@ export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 		}
 	};
 
+	const isActive = link.href === pathname;
+
 	return (
 		<div>
 			<Button
 				key={link.id}
 				variant="text"
-				className={clsx(styles.link, isOpen && styles.open)}
+				className={clsx(
+					styles.link,
+					isOpen && styles.open,
+					isActive && styles.active,
+				)}
 				asChild
 				onClick={(e) => {
 					if (!link.href) handleExpand(e);
@@ -62,15 +70,21 @@ export const NavMenuLink = ({ link, isOpen }: NavMenuLinkProps) => {
 				isExpanded &&
 				link.innerLinks &&
 				link.innerLinks.length > 0 && (
-					<div className={`${styles.innerLinks}`}>
+					<div className={styles.innerLinks}>
 						{link.innerLinks.map((innerLink) => {
 							if (!innerLink.href) return null;
+
+							const isActive = innerLink.href === pathname;
 
 							return (
 								<Button
 									key={innerLink.href}
 									variant="text"
-									className={`${styles.link} ${isOpen ? styles.open : ''}`}
+									className={clsx(
+										styles.link,
+										isOpen && styles.open,
+										isActive && styles.active,
+									)}
 									asChild
 								>
 									<Link

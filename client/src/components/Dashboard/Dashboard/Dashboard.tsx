@@ -15,23 +15,20 @@ export const Dashboard = () => {
 	const { data, isLoading, isPlaceholderData } = useDashboard();
 	const [isVisuallyLoading, setIsVisuallyLoading] = useState(false);
 
-	if (!isPlaceholderData && isVisuallyLoading) {
-		setIsVisuallyLoading(false);
-	}
-	
+	if (!isPlaceholderData && isVisuallyLoading) setIsVisuallyLoading(false);
+
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;
 
 		if (isPlaceholderData) {
-			timeoutId = setTimeout(() => {
-				setIsVisuallyLoading(true);
-			}, 200);
+			timeoutId = setTimeout(() => setIsVisuallyLoading(true), 200);
 		}
 
 		return () => {
 			if (timeoutId) clearTimeout(timeoutId);
 		};
 	}, [isPlaceholderData]);
+
 	return (
 		<div className={styles.dashboard}>
 			<SectionHeader title="Weekly Rest" containerClassName={styles.header} />

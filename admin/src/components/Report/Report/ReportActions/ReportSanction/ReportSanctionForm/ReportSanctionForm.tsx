@@ -7,8 +7,8 @@ import { userSanctionSchema } from '@/schemas/userSanction/userSanction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormSelect } from '@shared/form';
 import { Button, Field, Input, SelectItem } from '@shared/ui';
+import { appDayjs } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import styles from './ReportSanctionForm.module.scss';
@@ -41,10 +41,10 @@ export const ReportSanctionForm = ({
 		defaultValues: {
 			...defaultValues,
 			startsAt: defaultValues?.startsAt
-				? dayjs(defaultValues.startsAt).format('YYYY-MM-DDTHH:mm')
+				? appDayjs(defaultValues.startsAt).format('YYYY-MM-DDTHH:mm')
 				: '',
 			endsAt: defaultValues?.endsAt
-				? dayjs(defaultValues.endsAt).format('YYYY-MM-DDTHH:mm')
+				? appDayjs(defaultValues.endsAt).format('YYYY-MM-DDTHH:mm')
 				: '',
 		},
 	});

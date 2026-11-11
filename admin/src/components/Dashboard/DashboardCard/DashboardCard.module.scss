@@ -1,0 +1,63 @@
+.container {
+	border-radius: var(--border-radius);
+	background-color: var(--bg-dashboard-card);
+	padding: 1rem;
+	border: 1px solid var(--dashboard-card-borders);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+
+	.header {
+		display: flex;
+		flex-direction: row;
+		gap: 0.3125rem;
+		align-items: center;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.currentWeek {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.percentage {
+		font-size: 0.875rem;
+		font-weight: 500;
+		display: flex;
+		width: fit-content;
+		padding: 0.3125rem 1.25rem;
+		min-width: 5rem;
+		text-align: center;
+		align-items: center;
+		justify-content: center;
+		border-radius: var(--border-radius);
+		gap: 0.3125rem;
+
+		&.positive {
+			color: var(--dashboard-trending-positive-color);
+			background-color: var(--dashboard-trending-positive-bg);
+		}
+
+		&.negative {
+			color: var(--dashboard-trending-negative-color);
+			background-color: var(--dashboard-trending-negative-bg);
+		}
+
+		&.neutral {
+			color: var(--dashboard-trending-neutral-color);
+			background-color: var(--dashboard-trending-neutral-bg);
+		}
+	}
+
+	.previousWeek {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}

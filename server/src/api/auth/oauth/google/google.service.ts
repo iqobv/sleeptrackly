@@ -1,4 +1,5 @@
 import { TokensDto } from '@api/auth/dto/tokens.dto';
+import { Platform } from '@generated/prisma/enums';
 import { EnvService } from '@infra/env/env.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
@@ -29,6 +30,7 @@ export class GoogleService {
 	public async verifyOneTapToken(
 		dto: GoogleOneTapDto,
 		clientInfo: ClientInfoDto,
+		platform?: Platform,
 	): Promise<TokensDto> {
 		const { credential } = dto;
 
@@ -55,6 +57,7 @@ export class GoogleService {
 					username: 'NO_USERNAME',
 				},
 				clientInfo,
+				platform,
 			);
 		} catch {
 			throw new UnauthorizedException(ERROR_MESSAGES.AUTH.INVALID_GOOGLE_TOKEN);

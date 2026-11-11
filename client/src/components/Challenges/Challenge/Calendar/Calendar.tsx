@@ -4,14 +4,11 @@ import { CHART_DATE_FORMAT } from '@/constants/dateFormat.constants';
 import { ChallengeFull } from '@/types/challenge/challenge.types';
 import { ChallengeTaskStatus } from '@shared/types';
 import { Typography } from '@shared/ui';
-import dayjs from 'dayjs';
-import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { appDayjs } from '@shared/utils';
 import { IconBaseProps } from 'react-icons';
 import { MdCheck, MdOutlineClose, MdRestore } from 'react-icons/md';
 import { ChallengeCardContainer } from '../ChallengeCardContainer/ChallengeCardContainer';
 import styles from './Calendar.module.scss';
-
-dayjs.extend(isSameOrBefore);
 
 interface CalendarProps {
 	data: ChallengeFull;
@@ -31,18 +28,20 @@ const iconProps: IconBaseProps = {
 export const Calendar = ({ data }: CalendarProps) => {
 	const durationDays = data.durationDays;
 
-	const now = dayjs().format(CHART_DATE_FORMAT);
+	const now = appDayjs().format(CHART_DATE_FORMAT);
 
 	const days: CalendarDay[] = Array.from({ length: durationDays }, (_, i) => ({
 		id: `day-${i + 1}`,
 		number: i + 1,
 		isToday: !data.userChallenge
 			? false
-			: dayjs(data.userChallenge?.startDate).add(i, 'day').isSame(now, 'day'),
+			: appDayjs(data.userChallenge?.startDate)
+					.add(i, 'day')
+					.isSame(now, 'day'),
 		status:
 			data.userChallenge?.tasks.find((task) =>
-				dayjs(task.date).isSame(
-					dayjs(data.userChallenge?.startDate).add(i, 'day'),
+				appDayjs(task.date).isSame(
+					appDayjs(data.userChallenge?.startDate).add(i, 'day'),
 					'day',
 				),
 			)?.status || ChallengeTaskStatus.PENDING,

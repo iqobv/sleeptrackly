@@ -1,55 +1,42 @@
 import { StreakService } from '@api/streak/streak.service';
+import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { prismaMock } from '@libs/prisma/prisma.mock';
+import { userSelect } from '@libs/prisma/user.select.prisma';
+import { appDayjs } from '@libs/utils/dayjs.util';
+import { partialMock } from '@libs/utils/mock-helper.util';
 import { Test, TestingModule } from '@nestjs/testing';
-import dayjs from 'dayjs';
+import { mock, mockReset } from 'jest-mock-extended';
 import { UserStatsDto } from './dto/user-stats.dto';
 import { UserStatsService } from './user-stats.service';
 
-type PrismaMock = {
-	userStats: {
-		findUnique: jest.Mock;
-		create: jest.Mock;
-		updateMany: jest.Mock;
-	};
-};
-
-type StreakServiceMock = {
-	validateStreakExpiration: jest.Mock;
-};
+type UserStatsWithRelations = Prisma.UserStatsGetPayload<
+	typeof userSelect.userStats
+> & { userId: string };
 
 describe('UserStatsService', () => {
 	let service: UserStatsService;
-	let prisma: PrismaMock;
-	let streakService: StreakServiceMock;
+	const streakService = mock<StreakService>();
 
-	const userStats: UserStatsDto = {
-		activeStreak: null,
+	const dbUserStats = partialMock<UserStatsWithRelations>({
 		challengeRestores: 0,
 		challengeRestoresResetAt: new Date(),
 		currentStreakId: null,
 		streakRestores: 0,
 		streakRestoresResetAt: new Date(),
-		userId: 'user_1',
 		updatedAt: new Date(),
-	};
+		activeStreak: null,
+		userId: 'user_1',
+	});
 
 	beforeEach(async () => {
-		prisma = {
-			userStats: {
-				create: jest.fn(),
-				findUnique: jest.fn(),
-				updateMany: jest.fn(),
-			},
-		};
-
-		streakService = {
-			validateStreakExpiration: jest.fn(),
-		};
+		mockReset(prismaMock);
+		mockReset(streakService);
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				UserStatsService,
-				{ provide: PrismaService, useValue: prisma },
+				{ provide: PrismaService, useValue: prismaMock },
 				{ provide: StreakService, useValue: streakService },
 			],
 		}).compile();
@@ -63,24 +50,29 @@ describe('UserStatsService', () => {
 
 	describe('syncUserStats', () => {
 		it('should create user stats if not exists', async () => {
-			prisma.userStats.findUnique.mockResolvedValue(null);
-			prisma.userStats.create.mockResolvedValue(userStats);
+			prismaMock.userStats.findUnique.mockResolvedValue(null);
+			prismaMock.userStats.create.mockResolvedValue(dbUserStats);
 
 			const result = await service.syncUserStats('user_1', 'UTC');
 
-			expect(prisma.userStats.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 				include: { activeStreak: true },
 			});
-			expect(prisma.userStats.create).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.create).toHaveBeenCalledWith({
 				data: { userId: 'user_1' },
 				include: { activeStreak: true },
 			});
-			expect(result).toMatchObject(userStats);
+			expect(result).toBeInstanceOf(UserStatsDto);
+			expect(result).toMatchObject({
+				userId: 'user_1',
+				challengeRestores: 0,
+				streakRestores: 0,
+			});
 		});
 
 		it('should return existing user stats if not need to update streak or challenge restores', async () => {
-			prisma.userStats.findUnique.mockResolvedValue(userStats);
+			prismaMock.userStats.findUnique.mockResolvedValue(dbUserStats);
 			streakService.validateStreakExpiration.mockResolvedValue(false);
 
 			jest.spyOn(service, 'resetChallengeRestores').mockReturnValue(null);
@@ -88,7 +80,7 @@ describe('UserStatsService', () => {
 
 			const result = await service.syncUserStats('user_1', 'UTC');
 
-			expect(prisma.userStats.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 				include: { activeStreak: true },
 			});
@@ -97,13 +89,18 @@ describe('UserStatsService', () => {
 				'UTC',
 				undefined,
 			);
-			expect(result).toMatchObject(userStats);
+			expect(result).toBeInstanceOf(UserStatsDto);
+			expect(result).toMatchObject({
+				userId: 'user_1',
+				challengeRestores: 0,
+				streakRestores: 0,
+			});
 		});
 
 		it('should update user stats if streak was updated', async () => {
-			prisma.userStats.findUnique.mockResolvedValue(userStats);
+			prismaMock.userStats.findUnique.mockResolvedValue(dbUserStats);
 			streakService.validateStreakExpiration.mockResolvedValue(true);
-			prisma.userStats.updateMany.mockResolvedValue({
+			prismaMock.userStats.updateMany.mockResolvedValue({
 				count: 1,
 			});
 
@@ -115,13 +112,7 @@ describe('UserStatsService', () => {
 
 			const result = await service.syncUserStats('user_1', 'UTC');
 
-			const updatedStats = {
-				...userStats,
-				streakRestores: 2,
-				streakRestoresResetAt: expect.any(Date),
-			};
-
-			expect(prisma.userStats.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 				include: { activeStreak: true },
 			});
@@ -130,29 +121,36 @@ describe('UserStatsService', () => {
 				'UTC',
 				undefined,
 			);
-			expect(prisma.userStats.updateMany).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.updateMany).toHaveBeenCalledWith({
 				where: {
 					userId: 'user_1',
-					streakRestoresResetAt: userStats.streakRestoresResetAt,
+					streakRestoresResetAt: dbUserStats.streakRestoresResetAt,
 				},
 				data: {
 					streakRestores: 2,
 					streakRestoresResetAt: expect.any(Date),
 				},
 			});
-			expect(result).toMatchObject(updatedStats);
+			expect(result).toBeInstanceOf(UserStatsDto);
+			expect(result).toMatchObject({
+				userId: 'user_1',
+				streakRestores: 2,
+			});
 		});
 	});
 
 	it('should fallback to findUnique if updateMany returns count 0', async () => {
-		const updatedUserStats = { ...userStats, streakRestores: 2 };
+		const updatedDbStats = partialMock<UserStatsWithRelations>({
+			...dbUserStats,
+			streakRestores: 2,
+		});
 
-		prisma.userStats.findUnique
-			.mockResolvedValueOnce(userStats)
-			.mockResolvedValueOnce(updatedUserStats);
+		prismaMock.userStats.findUnique
+			.mockResolvedValueOnce(dbUserStats)
+			.mockResolvedValueOnce(updatedDbStats);
 
 		streakService.validateStreakExpiration.mockResolvedValue(false);
-		prisma.userStats.updateMany.mockResolvedValue({ count: 0 });
+		prismaMock.userStats.updateMany.mockResolvedValue({ count: 0 });
 
 		jest.spyOn(service, 'resetChallengeRestores').mockReturnValue(null);
 		jest.spyOn(service, 'getStreakUpdates').mockReturnValue({
@@ -162,27 +160,31 @@ describe('UserStatsService', () => {
 
 		const result = await service.syncUserStats('user_1', 'UTC');
 
-		expect(prisma.userStats.updateMany).toHaveBeenCalled();
-		expect(prisma.userStats.findUnique).toHaveBeenCalledTimes(2);
-		expect(result).toMatchObject(updatedUserStats);
+		expect(prismaMock.userStats.updateMany).toHaveBeenCalled();
+		expect(prismaMock.userStats.findUnique).toHaveBeenCalledTimes(2);
+		expect(result).toBeInstanceOf(UserStatsDto);
+		expect(result).toMatchObject({
+			userId: 'user_1',
+			streakRestores: 2,
+		});
 	});
 
 	describe('resetChallengeRestores', () => {
 		it('should return null if now is before resetAt', () => {
-			const stats: UserStatsDto = {
-				...userStats,
-				challengeRestoresResetAt: dayjs().add(1, 'day').toDate(),
-			};
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
+				challengeRestoresResetAt: appDayjs().add(1, 'day').toDate(),
+			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
 			expect(result).toBeNull();
 		});
 
 		it('should return 3 restores if missed an entire week', () => {
-			const stats: UserStatsDto = {
-				...userStats,
-				challengeRestoresResetAt: dayjs().subtract(7, 'day').toDate(),
-			};
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
+				challengeRestoresResetAt: appDayjs().subtract(7, 'day').toDate(),
+			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
 			expect(result).toEqual({
@@ -192,11 +194,11 @@ describe('UserStatsService', () => {
 		});
 
 		it('should return 3 restores if challengeRestores >= 2', () => {
-			const stats: UserStatsDto = {
-				...userStats,
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
 				challengeRestores: 2,
-				challengeRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
-			};
+				challengeRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
+			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
 			expect(result).toEqual({
@@ -206,11 +208,11 @@ describe('UserStatsService', () => {
 		});
 
 		it('should return 2 restores if challengeRestores < 2', () => {
-			const stats: UserStatsDto = {
-				...userStats,
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
 				challengeRestores: 1,
-				challengeRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
-			};
+				challengeRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
+			});
 
 			const result = service.resetChallengeRestores(stats, new Date());
 			expect(result).toEqual({
@@ -222,20 +224,20 @@ describe('UserStatsService', () => {
 
 	describe('getStreakUpdates', () => {
 		it('should return null if now is before resetAt', () => {
-			const stats: UserStatsDto = {
-				...userStats,
-				streakRestoresResetAt: dayjs().add(1, 'day').toDate(),
-			};
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
+				streakRestoresResetAt: appDayjs().add(1, 'day').toDate(),
+			});
 
 			const result = service.getStreakUpdates(stats, new Date());
 			expect(result).toBeNull();
 		});
 
 		it('should return streak updates if now is after resetAt', () => {
-			const stats: UserStatsDto = {
-				...userStats,
-				streakRestoresResetAt: dayjs().subtract(1, 'day').toDate(),
-			};
+			const stats = partialMock<UserStatsWithRelations>({
+				...dbUserStats,
+				streakRestoresResetAt: appDayjs().subtract(1, 'day').toDate(),
+			});
 
 			const result = service.getStreakUpdates(stats, new Date());
 			expect(result).toEqual({

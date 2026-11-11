@@ -1,20 +1,14 @@
+import { UserCoin } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { prismaMock } from '@libs/prisma/prisma.mock';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mockReset } from 'jest-mock-extended';
 import { CoinService } from './coin.service';
-
-type PrismaMock = {
-	userCoin: {
-		create: jest.Mock;
-		findUnique: jest.Mock;
-		update: jest.Mock;
-	};
-};
 
 describe('CoinService', () => {
 	let service: CoinService;
-	let prisma: PrismaMock;
 
-	const userCoin = {
+	const userCoin: UserCoin = {
 		id: 'coin_1',
 		userId: 'user_1',
 		amount: 100,
@@ -23,16 +17,13 @@ describe('CoinService', () => {
 	};
 
 	beforeEach(async () => {
-		prisma = {
-			userCoin: {
-				create: jest.fn(),
-				findUnique: jest.fn(),
-				update: jest.fn(),
-			},
-		};
+		mockReset(prismaMock);
 
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [CoinService, { provide: PrismaService, useValue: prisma }],
+			providers: [
+				CoinService,
+				{ provide: PrismaService, useValue: prismaMock },
+			],
 		}).compile();
 
 		service = module.get<CoinService>(CoinService);
@@ -44,30 +35,30 @@ describe('CoinService', () => {
 
 	describe('create', () => {
 		it('should create a user coin record if not exists', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(null);
-			prisma.userCoin.create.mockResolvedValue(userCoin);
+			prismaMock.userCoin.findUnique.mockResolvedValue(null);
+			prismaMock.userCoin.create.mockResolvedValue(userCoin);
 
 			const result = await service.create('user_1');
 
-			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
-			expect(prisma.userCoin.create).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.create).toHaveBeenCalledWith({
 				data: { user: { connect: { id: 'user_1' } } },
 			});
 			expect(result).toEqual(userCoin);
 		});
 
 		it('should return exists record', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
+			prismaMock.userCoin.findUnique.mockResolvedValue(userCoin);
 
 			const result = await service.create('user_1');
 
-			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
 
-			expect(prisma.userCoin.create).not.toHaveBeenCalled();
+			expect(prismaMock.userCoin.create).not.toHaveBeenCalled();
 
 			expect(result).toEqual(userCoin);
 		});
@@ -75,18 +66,18 @@ describe('CoinService', () => {
 
 	describe('update', () => {
 		it('should update the user coin amount if record exists', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
-			prisma.userCoin.update.mockResolvedValue({
+			prismaMock.userCoin.findUnique.mockResolvedValue(userCoin);
+			prismaMock.userCoin.update.mockResolvedValue({
 				...userCoin,
 				amount: 200,
 			});
 
 			const result = await service.update({ userId: 'user_1', amount: 200 });
 
-			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
-			expect(prisma.userCoin.update).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.update).toHaveBeenCalledWith({
 				where: { userId: 'user_1', id: 'coin_1' },
 				data: { amount: 200 },
 			});
@@ -94,7 +85,7 @@ describe('CoinService', () => {
 		});
 
 		it('should throw NotFoundException if user coin record does not exist', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(null);
+			prismaMock.userCoin.findUnique.mockResolvedValue(null);
 
 			await expect(
 				service.update({ userId: 'user_1', amount: 200 }),
@@ -104,11 +95,11 @@ describe('CoinService', () => {
 
 	describe('getUserCoin', () => {
 		it('should return user coin record if exists', async () => {
-			prisma.userCoin.findUnique.mockResolvedValue(userCoin);
+			prismaMock.userCoin.findUnique.mockResolvedValue(userCoin);
 
 			const result = await service.getUserCoin('user_1');
 
-			expect(prisma.userCoin.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.userCoin.findUnique).toHaveBeenCalledWith({
 				where: { userId: 'user_1' },
 			});
 			expect(result).toMatchObject(userCoin);

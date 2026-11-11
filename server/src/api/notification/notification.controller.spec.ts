@@ -1,22 +1,17 @@
 import { NotificationType } from '@generated/prisma/enums';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock, mockReset } from 'jest-mock-extended';
+import { NotificationDto } from './dto/notification.dto';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './services/notification.service';
 
-type NotificationServiceMock = {
-	create: jest.Mock;
-	getAllForUser: jest.Mock;
-	update: jest.Mock;
-	markAllAsRead: jest.Mock;
-	remove: jest.Mock;
-};
-
 describe('NotificationController', () => {
 	let controller: NotificationController;
-	let service: NotificationServiceMock;
+	let service = mock<NotificationService>();
 
-	const notification = {
+	const notification: NotificationDto = {
 		id: 'notif_1',
 		userId: 'user_1',
 		isGlobal: false,
@@ -31,16 +26,24 @@ describe('NotificationController', () => {
 		scheduledAt: new Date(),
 		createdAt: new Date(),
 		updatedAt: new Date(),
+		type: NotificationType.OTHER,
+		achievementId: null,
+		challengeId: null,
+		weeklySleepSummaryId: null,
+	};
+
+	const paginatedNotifications: PaginatedDataDto<NotificationDto> = {
+		items: [notification],
+		meta: {
+			page: 1,
+			pageSize: 10,
+			total: 1,
+			totalPages: 1,
+		},
 	};
 
 	beforeEach(async () => {
-		service = {
-			create: jest.fn(),
-			getAllForUser: jest.fn(),
-			update: jest.fn(),
-			markAllAsRead: jest.fn(),
-			remove: jest.fn(),
-		};
+		mockReset(service);
 
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [NotificationController],
@@ -78,21 +81,21 @@ describe('NotificationController', () => {
 
 			const result = await controller.create(dto);
 
-			expect(result).toEqual(notification);
+			expect(result).toMatchObject(notification);
 			expect(service.create).toHaveBeenCalledWith(dto);
 		});
 	});
 
 	describe('getAllForUser', () => {
 		it('should get all notifications for the user', async () => {
-			service.getAllForUser.mockResolvedValue([notification]);
+			service.getAllForUser.mockResolvedValue(paginatedNotifications);
 
 			const userId = 'user_1';
 			const query = { page: 1, limit: 10 };
 
 			const result = await controller.getAllForUser(userId, query);
 
-			expect(result).toEqual([notification]);
+			expect(result).toMatchObject(paginatedNotifications);
 			expect(service.getAllForUser).toHaveBeenCalledWith(userId, query);
 		});
 	});
@@ -107,7 +110,7 @@ describe('NotificationController', () => {
 			const result = await controller.update(id, dto);
 
 			expect(service.update).toHaveBeenCalledWith(id, dto);
-			expect(result).toEqual(notification);
+			expect(result).toMatchObject(notification);
 		});
 
 		it('should throw an error if notification not found', async () => {
@@ -122,8 +125,6 @@ describe('NotificationController', () => {
 		});
 
 		it('should mark all notifications as read for the user', async () => {
-			service.markAllAsRead.mockResolvedValue([notification]);
-
 			const userId = 'user_1';
 			const result = await controller.markAllAsRead(userId);
 
@@ -134,13 +135,13 @@ describe('NotificationController', () => {
 
 	describe('remove', () => {
 		it('should remove a notification by ID', async () => {
-			service.remove.mockResolvedValue(true);
+			service.remove.mockResolvedValue(SUCCESS_MESSAGES.NOTIFICATION.DELETED);
 
 			const id = 'notif_1';
 			const result = await controller.remove(id);
 
 			expect(service.remove).toHaveBeenCalledWith(id);
-			expect(result).toBe(true);
+			expect(result).toEqual(SUCCESS_MESSAGES.NOTIFICATION.DELETED);
 		});
 	});
 });

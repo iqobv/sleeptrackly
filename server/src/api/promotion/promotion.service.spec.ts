@@ -1,34 +1,20 @@
 import { Product, Promotion } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
+import { prismaMock } from '@libs/prisma/prisma.mock';
 import {
 	BadRequestException,
 	ConflictException,
 	NotFoundException,
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock, mockReset } from 'jest-mock-extended';
 import { ProductService } from '../product/product.service';
 import { PromotionService } from './promotion.service';
 
-type PrismaMock = {
-	promotion: {
-		create: jest.Mock;
-		findMany: jest.Mock;
-		findUnique: jest.Mock;
-		findFirst: jest.Mock;
-		update: jest.Mock;
-		delete: jest.Mock;
-	};
-};
-
-type ProductServiceMock = {
-	getProductById: jest.Mock;
-};
-
 describe('PromotionService', () => {
 	let service: PromotionService;
-	let prisma: PrismaMock;
-	let productService: ProductServiceMock;
+	let productService = mock<ProductService>();
 
 	const mockPromotion: Promotion = {
 		id: 'promo_1',
@@ -63,25 +49,13 @@ describe('PromotionService', () => {
 	};
 
 	beforeEach(async () => {
-		prisma = {
-			promotion: {
-				create: jest.fn(),
-				findMany: jest.fn(),
-				findUnique: jest.fn(),
-				findFirst: jest.fn(),
-				update: jest.fn(),
-				delete: jest.fn(),
-			},
-		};
-
-		productService = {
-			getProductById: jest.fn(),
-		};
+		mockReset(prismaMock);
+		mockReset(productService);
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				PromotionService,
-				{ provide: PrismaService, useValue: prisma },
+				{ provide: PrismaService, useValue: prismaMock },
 				{ provide: ProductService, useValue: productService },
 			],
 		}).compile();
@@ -107,7 +81,7 @@ describe('PromotionService', () => {
 		});
 
 		it('should throw ConflictException if provided alias already exists', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.findUnique.mockResolvedValue(mockPromotion);
 
 			const dto = {
 				alias: 'TEST_ALIAS',
@@ -120,9 +94,11 @@ describe('PromotionService', () => {
 		});
 
 		it('should create a promotion with a provided alias and productIdReward', async () => {
-			productService.getProductById.mockResolvedValue(mockProduct);
-			prisma.promotion.findUnique.mockResolvedValue(null);
-			prisma.promotion.create.mockResolvedValue(mockPromotion);
+			productService.getProductById.mockResolvedValue(
+				mockProduct as Awaited<ReturnType<ProductService['getProductById']>>,
+			);
+			prismaMock.promotion.findUnique.mockResolvedValue(null);
+			prismaMock.promotion.create.mockResolvedValue(mockPromotion);
 
 			const dto = {
 				alias: 'CUSTOM_ALIAS',
@@ -134,7 +110,7 @@ describe('PromotionService', () => {
 			const result = await service.createPromotion(dto);
 
 			expect(productService.getProductById).toHaveBeenCalledWith('prod_1');
-			expect(prisma.promotion.create).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.create).toHaveBeenCalledWith({
 				data: {
 					alias: 'CUSTOM_ALIAS',
 					coinsReward: undefined,
@@ -148,8 +124,8 @@ describe('PromotionService', () => {
 		});
 
 		it('should create a promotion with a generated alias if alias is not provided', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(null);
-			prisma.promotion.create.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.findUnique.mockResolvedValue(null);
+			prismaMock.promotion.create.mockResolvedValue(mockPromotion);
 
 			const dto = {
 				coinsReward: 150,
@@ -159,8 +135,8 @@ describe('PromotionService', () => {
 
 			const result = await service.createPromotion(dto);
 
-			expect(prisma.promotion.findUnique).toHaveBeenCalled();
-			expect(prisma.promotion.create).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findUnique).toHaveBeenCalled();
+			expect(prismaMock.promotion.create).toHaveBeenCalledWith({
 				data: {
 					alias: expect.any(String),
 					coinsReward: 150,
@@ -176,11 +152,11 @@ describe('PromotionService', () => {
 
 	describe('getAllActivePromotions', () => {
 		it('should return a list of active promotions', async () => {
-			prisma.promotion.findMany.mockResolvedValue([mockPromotion]);
+			prismaMock.promotion.findMany.mockResolvedValue([mockPromotion]);
 
 			const result = await service.getAllActivePromotions();
 
-			expect(prisma.promotion.findMany).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findMany).toHaveBeenCalledWith({
 				where: {
 					OR: [{ expiresAt: { gt: expect.any(Date) } }, { expiresAt: null }],
 				},
@@ -192,18 +168,18 @@ describe('PromotionService', () => {
 
 	describe('getPromotionByAlias', () => {
 		it('should return a promotion by alias', async () => {
-			prisma.promotion.findFirst.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.findFirst.mockResolvedValue(mockPromotion);
 
 			const result = await service.getPromotionByAlias('TEST_ALIAS');
 
-			expect(prisma.promotion.findFirst).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findFirst).toHaveBeenCalledWith({
 				where: { alias: 'TEST_ALIAS' },
 			});
 			expect(result).toMatchObject(mockPromotion);
 		});
 
 		it('should throw NotFoundException if promotion is not found by alias', async () => {
-			prisma.promotion.findFirst.mockResolvedValue(null);
+			prismaMock.promotion.findFirst.mockResolvedValue(null);
 
 			await expect(
 				service.getPromotionByAlias('UNKNOWN_ALIAS'),
@@ -213,18 +189,18 @@ describe('PromotionService', () => {
 
 	describe('getPromotionById', () => {
 		it('should return a promotion by id', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.findUnique.mockResolvedValue(mockPromotion);
 
 			const result = await service.getPromotionById('promo_1');
 
-			expect(prisma.promotion.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findUnique).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
 			expect(result).toMatchObject(mockPromotion);
 		});
 
 		it('should throw NotFoundException if promotion is not found by id', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(null);
+			prismaMock.promotion.findUnique.mockResolvedValue(null);
 
 			await expect(service.getPromotionById('unknown_id')).rejects.toThrow(
 				NotFoundException,
@@ -234,8 +210,8 @@ describe('PromotionService', () => {
 
 	describe('updatePromotion', () => {
 		it('should update a promotion successfully', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(mockPromotion);
-			prisma.promotion.update.mockResolvedValue({
+			prismaMock.promotion.findUnique.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.update.mockResolvedValue({
 				...mockPromotion,
 				coinsReward: 200,
 			});
@@ -246,10 +222,10 @@ describe('PromotionService', () => {
 
 			const result = await service.updatePromotion('promo_1', dto);
 
-			expect(prisma.promotion.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findUnique).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
-			expect(prisma.promotion.update).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.update).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 				data: {
 					coinsReward: 200,
@@ -264,15 +240,15 @@ describe('PromotionService', () => {
 
 	describe('deletePromotion', () => {
 		it('should delete a promotion successfully', async () => {
-			prisma.promotion.findUnique.mockResolvedValue(mockPromotion);
-			prisma.promotion.delete.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.findUnique.mockResolvedValue(mockPromotion);
+			prismaMock.promotion.delete.mockResolvedValue(mockPromotion);
 
 			const result = await service.deletePromotion('promo_1');
 
-			expect(prisma.promotion.findUnique).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.findUnique).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
-			expect(prisma.promotion.delete).toHaveBeenCalledWith({
+			expect(prismaMock.promotion.delete).toHaveBeenCalledWith({
 				where: { id: 'promo_1' },
 			});
 			expect(result).toEqual(SUCCESS_MESSAGES.PROMOTION.DELETED);

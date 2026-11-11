@@ -6,19 +6,14 @@ import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs, { Dayjs } from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import tz from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+
+import { appDayjs } from '@libs/utils/dayjs.util';
+import { Dayjs } from 'dayjs';
 import { WeeklySummaryPayloadDto } from '../dto/weekly-summary-payload.dto';
 import { WeeklySummaryDto } from '../dto/weekly-summary.dto';
 import { CalculateStatisticsParams } from '../interfaces/calculate-statistics-params.interface';
 import { Dates } from '../interfaces/dates.interface';
 import { WeeklyStatistics } from '../interfaces/weekly-statistics.interface';
-
-dayjs.extend(utc);
-dayjs.extend(isoWeek);
-dayjs.extend(tz);
 
 @Injectable()
 export class WeeklySummaryService {
@@ -39,7 +34,7 @@ export class WeeklySummaryService {
 
 		if (!user || !user.timezone) return;
 
-		const currentLocalTime = dayjs().tz(user.timezone);
+		const currentLocalTime = appDayjs().tz(user.timezone);
 		const startOfWeek = currentLocalTime.startOf('isoWeek').format(DATE_FORMAT);
 
 		if (dateForChart < startOfWeek) {
@@ -51,7 +46,7 @@ export class WeeklySummaryService {
 		userId: string,
 		dateForChart: string,
 	): Promise<WeeklySummaryDto | null> {
-		const targetDate = dayjs(dateForChart, DATE_FORMAT);
+		const targetDate = appDayjs(dateForChart, DATE_FORMAT);
 
 		const {
 			week,
@@ -126,7 +121,7 @@ export class WeeklySummaryService {
 		userId: string,
 		currentDateForChart: string,
 	): Promise<WeeklySummaryDto | null> {
-		const previousWeek = dayjs(currentDateForChart, DATE_FORMAT).subtract(
+		const previousWeek = appDayjs(currentDateForChart, DATE_FORMAT).subtract(
 			1,
 			'week',
 		);
@@ -233,8 +228,8 @@ export class WeeklySummaryService {
 		const startDateString = date.startOf('isoWeek').format(DATE_FORMAT);
 		const endDateString = date.endOf('isoWeek').format(DATE_FORMAT);
 
-		const weekStartDate = dayjs.utc(startDateString, DATE_FORMAT).toDate();
-		const weekEndDate = dayjs
+		const weekStartDate = appDayjs.utc(startDateString, DATE_FORMAT).toDate();
+		const weekEndDate = appDayjs
 			.utc(endDateString, DATE_FORMAT)
 			.endOf('day')
 			.toDate();
@@ -324,7 +319,7 @@ export class WeeklySummaryService {
 		if (dates.length === 0) return 0;
 
 		const totalMinutes = dates.reduce((sum, date) => {
-			const d = dayjs(date).utc();
+			const d = appDayjs(date).utc();
 			const absoluteMinutes = d.hour() * 60 + d.minute();
 			const adjustedMinutes =
 				absoluteMinutes < 720 ? absoluteMinutes + 1440 : absoluteMinutes;
@@ -341,7 +336,7 @@ export class WeeklySummaryService {
 		if (dates.length === 0) return 0;
 
 		const totalMinutes = dates.reduce((sum, date) => {
-			const d = dayjs(date).utc();
+			const d = appDayjs(date).utc();
 			return sum + (d.hour() * 60 + d.minute());
 		}, 0);
 

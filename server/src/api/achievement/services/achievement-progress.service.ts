@@ -1,5 +1,7 @@
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserInventoryService } from '@api/user-inventory/user-inventory.service';
 import {
 	AchievementType,
@@ -9,6 +11,7 @@ import {
 	CoinTransactionType,
 	FriendshipStatus,
 	NotificationType,
+	Platform,
 	StreakStatus,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -22,11 +25,13 @@ export class AchievementProgressService {
 		private readonly coinTransactionService: CoinTransactionService,
 		private readonly userInventoryService: UserInventoryService,
 		private readonly notificationPublisherService: NotificationPublisherService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async checkProgress(
 		userId: string,
 		type: AchievementType,
+		platform?: Platform,
 	): Promise<void> {
 		const userAchievements = await this.prismaService.userAchievement.findMany({
 			where: { userId },
@@ -50,7 +55,7 @@ export class AchievementProgressService {
 
 		for (const achievement of pendingAchievements) {
 			if (currentValue >= achievement.targetValue) {
-				await this.awardAchievement(userId, achievement.id);
+				await this.awardAchievement(userId, achievement.id, platform);
 			}
 		}
 	}
@@ -102,6 +107,7 @@ export class AchievementProgressService {
 	private async awardAchievement(
 		userId: string,
 		achievementId: string,
+		platform?: Platform,
 	): Promise<AchievementDto | null> {
 		const achievement = await this.prismaService.$transaction(async (tx) => {
 			const achievement = await tx.achievement.findUnique({
@@ -167,6 +173,11 @@ export class AchievementProgressService {
 					}
 				}
 			}
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.ACHIEVEMENT_UNLOCKED,
+				data: { userId, entityId: achievement.id, platform },
+			});
 
 			return achievement;
 		});

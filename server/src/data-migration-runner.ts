@@ -1,14 +1,9 @@
 import { validate } from '@config/env.validation';
 import { Prisma, PrismaClient } from '@generated/prisma/client';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { PrismaPg } from '@prisma/adapter-pg';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import utc from 'dayjs/plugin/utc';
 import 'dotenv/config';
 import { Pool } from 'pg';
-
-dayjs.extend(isoWeek);
-dayjs.extend(utc);
 
 const config = validate(process.env);
 
@@ -31,7 +26,7 @@ const calculateAvgBedtimeOffset = (dates: Date[]): number => {
 	if (dates.length === 0) return 0;
 
 	const totalMinutes = dates.reduce((sum, date) => {
-		const d = dayjs(date).utc();
+		const d = appDayjs(date).utc();
 		const absoluteMinutes = d.hour() * 60 + d.minute();
 		const adjustedMinutes =
 			absoluteMinutes < 720 ? absoluteMinutes + 1440 : absoluteMinutes;
@@ -48,7 +43,7 @@ const calculateAvgWakeTimeOffset = (dates: Date[]): number => {
 	if (dates.length === 0) return 0;
 
 	const totalMinutes = dates.reduce((sum, date) => {
-		const d = dayjs(date).utc();
+		const d = appDayjs(date).utc();
 		return sum + (d.hour() * 60 + d.minute());
 	}, 0);
 
@@ -79,7 +74,7 @@ async function runDataMigration(): Promise<void> {
 
 			const groupedByWeek = entries.reduce(
 				(acc, entry) => {
-					const d = dayjs(entry.sleepEnd).utc();
+					const d = appDayjs(entry.sleepEnd).utc();
 					const key = `${d.isoWeekYear()}-${d.isoWeek()}`;
 
 					if (!acc[key]) {
@@ -96,7 +91,7 @@ async function runDataMigration(): Promise<void> {
 				const year = parseInt(yearStr, 10);
 				const weekNumber = parseInt(weekStr, 10);
 
-				const weekStartDate = dayjs()
+				const weekStartDate = appDayjs()
 					.utc()
 					.year(year)
 					.month(0)
@@ -105,7 +100,7 @@ async function runDataMigration(): Promise<void> {
 					.add(weekNumber - 1, 'week')
 					.toDate();
 
-				const weekEndDate = dayjs(weekStartDate).endOf('isoWeek').toDate();
+				const weekEndDate = appDayjs(weekStartDate).endOf('isoWeek').toDate();
 
 				const totalSleepDuration = weekRecords.reduce(
 					(acc, curr) => acc + curr.sleepDuration,

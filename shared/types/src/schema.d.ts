@@ -455,6 +455,23 @@ export interface paths {
         patch: operations["UserInventoryController_equipItem_v1"];
         trace?: never;
     };
+    "/v1/statistics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get statistics for a specific date */
+        get: operations["StatisticsController_getStatistics_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/user-avatar/upload": {
         parameters: {
             query?: never;
@@ -2499,6 +2516,24 @@ export interface components {
         UpdateUserInvetoryDto: {
             isEquipped?: boolean;
         };
+        /** @enum {string} */
+        Platform: "WEB" | "ANDROID" | "IOS";
+        StatisticsMetricsDto: {
+            current: number;
+            previous: number;
+            percentageChange: number;
+        };
+        StatisticsDto: {
+            totalRegisteredUsersCount: number;
+            hasPreviousWeekData: boolean;
+            registered: components["schemas"]["StatisticsMetricsDto"];
+            activeUsers: components["schemas"]["StatisticsMetricsDto"];
+            achievements: components["schemas"]["StatisticsMetricsDto"];
+            challengesStarted: components["schemas"]["StatisticsMetricsDto"];
+            challengesCompleted: components["schemas"]["StatisticsMetricsDto"];
+            challengesFailed: components["schemas"]["StatisticsMetricsDto"];
+            purchases: components["schemas"]["StatisticsMetricsDto"];
+        };
         UploadUserAvatarDto: {
             /** Format: binary */
             avatar: string;
@@ -3677,7 +3712,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-04T14:28:12.924Z
+             * @example 2026-11-12T13:05:20.309Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3708,7 +3743,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-04T14:28:12.924Z
+             * @example 2026-11-12T13:05:20.309Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -5019,6 +5054,42 @@ export interface operations {
             };
             /** @description Item not found in user inventory */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MessageResponseDto"] & {
+                        /** @description The name of the field that caused the validation error */
+                        field?: string;
+                        /** @description Additional dynamic metadata for the response context */
+                        meta?: Record<string, never>;
+                    };
+                };
+            };
+        };
+    };
+    StatisticsController_getStatistics_v1: {
+        parameters: {
+            query?: {
+                platform?: components["schemas"]["Platform"];
+                date?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["StatisticsDto"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };

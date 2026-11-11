@@ -50,7 +50,7 @@ export const ShopCard = ({ product }: ShopCardProps) => {
 				<ProductImage product={product} height={160} width={160} />
 			</div>
 			<div>
-				<Typography variant="h4" className={styles.title}>
+				<Typography variant="h5" className={styles.title}>
 					{key?.translation.name}
 				</Typography>
 			</div>

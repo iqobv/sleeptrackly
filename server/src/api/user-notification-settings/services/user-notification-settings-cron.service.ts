@@ -1,14 +1,9 @@
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 @Injectable()
 export class UserNotificationSettingsCronService {
@@ -37,7 +32,7 @@ export class UserNotificationSettingsCronService {
 			},
 		});
 
-		const nowUTC = dayjs().utc();
+		const nowUTC = appDayjs().utc();
 
 		for (const user of users) {
 			const { timezone, notificationSettings, sleepStatus, userFcmTokens } =
@@ -49,9 +44,9 @@ export class UserNotificationSettingsCronService {
 
 			if (!sleepStatus?.isSleeping) continue;
 
-			const todayInUserTZ = dayjs().tz(timezone).format(DATE_FORMAT);
+			const todayInUserTZ = appDayjs().tz(timezone).format(DATE_FORMAT);
 			const userTargetTimeStr = `${todayInUserTZ} ${reminderTime}`;
-			const targetTimeUTC = dayjs.tz(userTargetTimeStr, timezone).utc();
+			const targetTimeUTC = appDayjs.tz(userTargetTimeStr, timezone).utc();
 			const targetMinute = targetTimeUTC.startOf('minute').valueOf();
 			const nowMinute = nowUTC.startOf('minute').valueOf();
 

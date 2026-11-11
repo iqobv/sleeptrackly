@@ -1,6 +1,7 @@
 export type * from './schema';
 
 // User
+export { Platform } from './types/user/platform.types';
 export { UserRole } from './types/user/role.types';
 export type { User } from './types/user/user.types';
 
@@ -30,3 +31,5 @@ export { ProductType } from './types/customization/product/type.types';
 
 // Notification
 export { NotificationType } from './types/notification/type.types';
+
+export type { StrictParsersMap } from './types/parserMap.types';

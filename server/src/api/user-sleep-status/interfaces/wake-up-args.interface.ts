@@ -1,3 +1,5 @@
+import { Platform } from '@generated/prisma/enums';
+
 export interface WakeUpArgs {
 	userId: string;
 	sleepStart: Date;
@@ -6,4 +8,5 @@ export interface WakeUpArgs {
 	rating: number;
 	isVerified: boolean;
 	timezone: string;
+	platform?: Platform;
 }

@@ -1,16 +1,9 @@
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { DATE_FORMAT } from '@libs/constants/date-format.constants';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import dayjs from 'dayjs';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { WeeklySummaryService } from './weekly-summary.service';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(isoWeek);
 
 @Injectable()
 export class WeeklySummaryCronService {
@@ -35,7 +28,7 @@ export class WeeklySummaryCronService {
 			.map((t) => t.timezone)
 			.filter((tz) => {
 				try {
-					const localTime = dayjs().tz(tz);
+					const localTime = appDayjs().tz(tz);
 					return localTime.hour() === TARGET_HOUR && localTime.day() === 1;
 				} catch {
 					return false;
@@ -60,7 +53,7 @@ export class WeeklySummaryCronService {
 
 			const batchPromises = batch.map(async (user) => {
 				try {
-					const localTime = dayjs().tz(user.timezone);
+					const localTime = appDayjs().tz(user.timezone);
 					const currentDateForChart = localTime.format(DATE_FORMAT);
 
 					await this.weeklySummaryService.generateSummaryForPreviousWeek(

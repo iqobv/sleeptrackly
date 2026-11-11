@@ -4,6 +4,7 @@ import { Prisma, Streak } from '@generated/prisma/client';
 import {
 	AchievementType,
 	NotificationType,
+	Platform,
 	StreakStatus,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -11,17 +12,12 @@ import { DATE_FORMAT } from '@libs/constants/date-format.constants';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import {
 	BadRequestException,
 	Injectable,
 	InternalServerErrorException,
 } from '@nestjs/common';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 @Injectable()
 export class StreakService {
@@ -53,7 +49,7 @@ export class StreakService {
 
 			const streak = userStats.activeStreak;
 
-			const now = dayjs().tz(userStats.user.timezone).format(DATE_FORMAT);
+			const now = appDayjs().tz(userStats.user.timezone).format(DATE_FORMAT);
 
 			if (!streak) {
 				await this.createStreak(userId, now, tx);
@@ -81,9 +77,12 @@ export class StreakService {
 	): Promise<boolean> {
 		if (!streak || streak.status === StreakStatus.ENDED) return false;
 
-		const now = dayjs().tz(timezone).format(DATE_FORMAT);
+		const now = appDayjs().tz(timezone).format(DATE_FORMAT);
 
-		const diffInDays = dayjs(now).diff(dayjs(streak.lastActivityDate), 'day');
+		const diffInDays = appDayjs(now).diff(
+			appDayjs(streak.lastActivityDate),
+			'day',
+		);
 		const missedDays = diffInDays - 1;
 
 		const needsUpdate =
@@ -98,7 +97,10 @@ export class StreakService {
 		return false;
 	}
 
-	public async restoreStreak(userId: string): Promise<MessageResponse> {
+	public async restoreStreak(
+		userId: string,
+		platform?: Platform,
+	): Promise<MessageResponse> {
 		const userStats = await this.prismaService.userStats.findUnique({
 			where: { userId },
 			include: {
@@ -128,7 +130,7 @@ export class StreakService {
 					activeStreak: {
 						update: {
 							status: StreakStatus.ACTIVE,
-							lastRestoredAt: dayjs.utc().toDate(),
+							lastRestoredAt: appDayjs.utc().toDate(),
 						},
 					},
 				},
@@ -138,6 +140,7 @@ export class StreakService {
 		await this.achievementsPublisherService.dispatchProgressCheck({
 			type: AchievementType.STREAK,
 			userId,
+			platform,
 		});
 
 		return SUCCESS_MESSAGES.STREAK.STREAK_RESTORED;
@@ -168,15 +171,15 @@ export class StreakService {
 			const day3 = sleepEntries[2].dateForChart;
 
 			const isConsecutive =
-				dayjs(day1).diff(dayjs(day2), 'day') === 1 &&
-				dayjs(day2).diff(dayjs(day3), 'day') === 1;
+				appDayjs(day1).diff(appDayjs(day2), 'day') === 1 &&
+				appDayjs(day2).diff(appDayjs(day3), 'day') === 1;
 
 			if (isConsecutive && day1 === now) {
 				const createdStreak = await prisma.streak.create({
 					data: {
 						lastActivityDate: day1,
 						userId,
-						startDate: dayjs(day3).toDate(),
+						startDate: appDayjs(day3).toDate(),
 						length: 3,
 						restoresUsed: 0,
 						status: StreakStatus.ACTIVE,
@@ -201,7 +204,10 @@ export class StreakService {
 	): Promise<void> {
 		const prisma = tx ?? this.prismaService;
 
-		const diffInDays = dayjs(now).diff(dayjs(streak.lastActivityDate), 'day');
+		const diffInDays = appDayjs(now).diff(
+			appDayjs(streak.lastActivityDate),
+			'day',
+		);
 		const missedDays = diffInDays - 1;
 
 		if (missedDays < 0) return;
@@ -236,7 +242,7 @@ export class StreakService {
 				where: { id },
 				data: {
 					status: StreakStatus.ENDED,
-					endDate: dayjs(streak.lastActivityDate).toDate(),
+					endDate: appDayjs(streak.lastActivityDate).toDate(),
 				},
 			});
 

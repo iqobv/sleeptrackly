@@ -5,9 +5,8 @@ import { PAGES } from '@/config/pages.config';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { UserSanction } from '@/types/user/userSanction.types';
 import { Button, ConfirmModal, SectionHeader } from '@shared/ui';
-import { capitalize } from '@shared/utils';
+import { appDayjs, capitalize } from '@shared/utils';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import Link from 'next/link';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
 import styles from './ReportUserSanctionsItem.module.scss';
@@ -74,8 +73,8 @@ export const ReportUserSanctionsItem = ({
 					<span>Unknown</span>
 				)}
 			</div>
-			<p>Start at: {dayjs(sanction.startsAt).format('DD.MM.YYYY HH:mm')}</p>
-			<p>End at: {dayjs(sanction.endsAt).format('DD.MM.YYYY HH:mm')}</p>
+			<p>Start at: {appDayjs(sanction.startsAt).format('DD.MM.YYYY HH:mm')}</p>
+			<p>End at: {appDayjs(sanction.endsAt).format('DD.MM.YYYY HH:mm')}</p>
 			<p>
 				Type:
 				{capitalize(sanction.type.replaceAll('_', ' ').toLowerCase())}

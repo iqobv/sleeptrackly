@@ -1,6 +1,7 @@
 import { AchievementModule } from '@api/achievement/achievement.module';
 import { CoinTransactionModule } from '@api/coin-transaction/coin-transaction.module';
 import { PurchaseHistoryModule } from '@api/purchase-history/purchase-history.module';
+import { StatisticsModule } from '@api/statistics/statistics.module';
 import { UserInventoryModule } from '@api/user-inventory/user-inventory.module';
 import { Module } from '@nestjs/common';
 import { ShopController } from './shop.controller';
@@ -13,6 +14,7 @@ import { ShopService } from './shop.service';
 		PurchaseHistoryModule,
 		UserInventoryModule,
 		AchievementModule,
+		StatisticsModule,
 	],
 	exports: [ShopService],
 	providers: [ShopService],

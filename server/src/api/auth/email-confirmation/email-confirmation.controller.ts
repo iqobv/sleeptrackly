@@ -1,3 +1,4 @@
+import { Platform } from '@generated/prisma/enums';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import {
@@ -5,6 +6,7 @@ import {
 	ApiSuccessResponse,
 } from '@libs/decorators/api-response.decorator';
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { CurrentPlatform } from '@libs/decorators/platform.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
@@ -46,9 +48,14 @@ export class EmailConfirmationController {
 		@Body() dto: ConfirmationDto,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
-			await this.emailConfirmationService.verifyEmail(dto, clientInfo);
+			await this.emailConfirmationService.verifyEmail(
+				dto,
+				clientInfo,
+				platform,
+			);
 
 		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 

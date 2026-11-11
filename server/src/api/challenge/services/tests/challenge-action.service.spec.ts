@@ -4,7 +4,9 @@ import { TaskPayload } from '@api/challenge/types/task-payload.types';
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { RewardProductService } from '@api/reward/services/reward-product.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
 import { UserStatsService } from '@api/user-stats/user-stats.service';
+import { ChallengeTask, User } from '@generated/prisma/client';
 import {
 	AcquiredFrom,
 	ChallengeStatus,
@@ -13,29 +15,20 @@ import {
 	NotificationType,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { prismaMock } from '@libs/prisma/prisma.mock';
+import { partialMock } from '@libs/utils/mock-helper.util';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock, mockReset } from 'jest-mock-extended';
 import { ChallengeActionService } from '../challenge-action.service';
-
-type MockType<T> = {
-	[P in keyof T]?: jest.Mock;
-};
-
-type PrismaMock = {
-	challengeTask: { update: jest.Mock; findMany: jest.Mock };
-	userChallenge: { update: jest.Mock };
-	user: { update: jest.Mock; findUnique: jest.Mock };
-	userStats: { update: jest.Mock };
-	$transaction: jest.Mock;
-};
 
 describe('ChallengeActionService', () => {
 	let service: ChallengeActionService;
-	let prismaService: PrismaMock;
-	let notificationPublisherService: MockType<NotificationPublisherService>;
-	let coinTransactionService: MockType<CoinTransactionService>;
-	let rewardProductService: MockType<RewardProductService>;
-	let achievementsPublisherService: MockType<AchievementsPublisherService>;
-	let userStatsService: MockType<UserStatsService>;
+	const notificationPublisherService = mock<NotificationPublisherService>();
+	const coinTransactionService = mock<CoinTransactionService>();
+	const rewardProductService = mock<RewardProductService>();
+	const achievementsPublisherService = mock<AchievementsPublisherService>();
+	const userStatsService = mock<UserStatsService>();
+	const statisticsPublisherService = mock<StatisticsPublisherService>();
 
 	const userId = 'user-123';
 	const taskId = 'task-123';
@@ -94,26 +87,20 @@ describe('ChallengeActionService', () => {
 	};
 
 	beforeEach(async () => {
-		prismaService = {
-			challengeTask: { update: jest.fn(), findMany: jest.fn() },
-			userChallenge: { update: jest.fn() },
-			user: { update: jest.fn(), findUnique: jest.fn() },
-			userStats: { update: jest.fn() },
-			$transaction: jest.fn(async (cb: (tx: PrismaMock) => Promise<void>) =>
-				cb(prismaService),
-			),
-		};
+		mockReset(prismaMock);
+		mockReset(notificationPublisherService);
+		mockReset(coinTransactionService);
+		mockReset(rewardProductService);
+		mockReset(achievementsPublisherService);
+		mockReset(userStatsService);
+		mockReset(statisticsPublisherService);
 
-		notificationPublisherService = { dispatchCreate: jest.fn() };
-		coinTransactionService = { createTransaction: jest.fn() };
-		rewardProductService = { rewardProduct: jest.fn() };
-		achievementsPublisherService = { dispatchProgressCheck: jest.fn() };
-		userStatsService = { syncUserStats: jest.fn() };
+		prismaMock.$transaction.mockImplementation(async (cb) => cb(prismaMock));
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				ChallengeActionService,
-				{ provide: PrismaService, useValue: prismaService },
+				{ provide: PrismaService, useValue: prismaMock },
 				{
 					provide: NotificationPublisherService,
 					useValue: notificationPublisherService,
@@ -128,6 +115,10 @@ describe('ChallengeActionService', () => {
 					provide: UserStatsService,
 					useValue: userStatsService,
 				},
+				{
+					provide: StatisticsPublisherService,
+					useValue: statisticsPublisherService,
+				},
 			],
 		}).compile();
 
@@ -138,12 +129,12 @@ describe('ChallengeActionService', () => {
 		it('should freeze challenge if recoveries are left and reason is TIMEOUT', async () => {
 			await service.failChallengeTask(mockTaskPayload, 'TIMEOUT');
 
-			expect(prismaService.challengeTask.update).toHaveBeenCalledWith({
+			expect(prismaMock.challengeTask.update).toHaveBeenCalledWith({
 				where: { id: taskId },
 				data: { status: ChallengeTaskStatus.FAILED },
 			});
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith({
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith({
 				where: { id: userChallengeId },
 				data: {
 					status: ChallengeStatus.FROZEN,
@@ -187,7 +178,7 @@ describe('ChallengeActionService', () => {
 
 			await service.failChallengeTask(payloadWithoutRecoveries, 'TIMEOUT');
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith({
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith({
 				where: { id: userChallengeId },
 				data: { status: ChallengeStatus.FAILED, frozenAt: null },
 			});
@@ -205,15 +196,18 @@ describe('ChallengeActionService', () => {
 
 	describe('completeChallengeTask', () => {
 		it('should complete standard task, issue daily rewards, and keep challenge ACTIVE if pending tasks exist', async () => {
-			prismaService.challengeTask.findMany.mockResolvedValue([
-				{ id: 'task-456', status: ChallengeTaskStatus.PENDING },
+			prismaMock.challengeTask.findMany.mockResolvedValue([
+				partialMock<ChallengeTask>({
+					id: 'task-456',
+					status: ChallengeTaskStatus.PENDING,
+				}),
 			]);
 
 			const result = await service.completeChallengeTask(mockCompleteDto);
 
 			expect(result.isChallengeCompleted).toBe(false);
 
-			expect(prismaService.challengeTask.update).toHaveBeenCalledWith({
+			expect(prismaMock.challengeTask.update).toHaveBeenCalledWith({
 				where: { id: taskId },
 				data: {
 					status: ChallengeStatus.COMPLETED,
@@ -221,7 +215,7 @@ describe('ChallengeActionService', () => {
 				},
 			});
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith(
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith(
 				expect.objectContaining({
 					where: { id: userChallengeId },
 					data: { progress: { increment: 1 } },
@@ -235,7 +229,7 @@ describe('ChallengeActionService', () => {
 				referenceId: taskId,
 			});
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith({
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith({
 				where: { id: userChallengeId },
 				data: { status: ChallengeStatus.ACTIVE, frozenAt: null },
 			});
@@ -246,26 +240,29 @@ describe('ChallengeActionService', () => {
 		});
 
 		it('should set challenge status to FROZEN if there are failed tasks remaining', async () => {
-			prismaService.challengeTask.findMany.mockResolvedValue([
-				{ id: 'task-456', status: ChallengeTaskStatus.FAILED },
+			prismaMock.challengeTask.findMany.mockResolvedValue([
+				partialMock<ChallengeTask>({
+					id: 'task-456',
+					status: ChallengeTaskStatus.FAILED,
+				}),
 			]);
 
 			await service.completeChallengeTask(mockCompleteDto);
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith({
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith({
 				where: { id: userChallengeId },
 				data: { status: ChallengeStatus.FROZEN },
 			});
 		});
 
 		it('should complete challenge, issue final rewards, and grant product if no pending or failed tasks remain', async () => {
-			prismaService.challengeTask.findMany.mockResolvedValue([]);
+			prismaMock.challengeTask.findMany.mockResolvedValue([]);
 
 			const result = await service.completeChallengeTask(mockCompleteDto);
 
 			expect(result.isChallengeCompleted).toBe(true);
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith({
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith({
 				where: { id: userChallengeId },
 				data: { status: ChallengeStatus.COMPLETED, frozenAt: null },
 			});
@@ -285,12 +282,17 @@ describe('ChallengeActionService', () => {
 		});
 
 		it('should handle task recovery correctly without issuing daily rewards', async () => {
-			prismaService.challengeTask.findMany.mockResolvedValue([
-				{ id: 'task-456', status: ChallengeTaskStatus.PENDING },
+			prismaMock.challengeTask.findMany.mockResolvedValue([
+				partialMock<ChallengeTask>({
+					id: 'task-456',
+					status: ChallengeTaskStatus.PENDING,
+				}),
 			]);
-			prismaService.user.findUnique.mockResolvedValue({
-				timezone: 'UTC',
-			});
+			prismaMock.user.findUnique.mockResolvedValue(
+				partialMock<User>({
+					timezone: 'UTC',
+				}),
+			);
 
 			const recoveryDto = { ...mockCompleteDto, isRecovery: true };
 
@@ -298,7 +300,7 @@ describe('ChallengeActionService', () => {
 
 			expect(result.isChallengeCompleted).toBe(false);
 
-			expect(prismaService.challengeTask.update).toHaveBeenCalledWith({
+			expect(prismaMock.challengeTask.update).toHaveBeenCalledWith({
 				where: { id: taskId },
 				data: {
 					status: ChallengeTaskStatus.RECOVERED,
@@ -307,7 +309,7 @@ describe('ChallengeActionService', () => {
 				},
 			});
 
-			expect(prismaService.userChallenge.update).toHaveBeenCalledWith(
+			expect(prismaMock.userChallenge.update).toHaveBeenCalledWith(
 				expect.objectContaining({
 					where: { id: userChallengeId },
 					data: expect.objectContaining({
@@ -317,7 +319,7 @@ describe('ChallengeActionService', () => {
 				}),
 			);
 
-			expect(prismaService.userStats.update).toHaveBeenCalledWith({
+			expect(prismaMock.userStats.update).toHaveBeenCalledWith({
 				where: { userId },
 				data: {
 					challengeRestores: { decrement: 1 },

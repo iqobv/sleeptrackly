@@ -32,6 +32,7 @@ import { UserModule } from './user/user.module';
 import { WeeklySummaryModule } from './weekly-summary/weekly-summary.module';
 import { UserStatsModule } from './user-stats/user-stats.module';
 import { StreakModule } from './streak/streak.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 @Module({
 	imports: [
@@ -68,6 +69,7 @@ import { StreakModule } from './streak/streak.module';
 		ImageModule,
 		UserStatsModule,
 		StreakModule,
+		StatisticsModule,
 	],
 })
 export class ApiModule {}

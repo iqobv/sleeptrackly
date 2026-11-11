@@ -1,29 +1,14 @@
-import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { mock, mockReset } from 'jest-mock-extended';
 import { PromotionUsageController } from './promotion-usage.controller';
 import { PromotionUsageService } from './promotion-usage.service';
 
-type PromotionUsageServiceMock = {
-	usePromotion: jest.Mock;
-};
-
-type ConfigServiceMock = {
-	get: jest.Mock;
-};
-
 describe('PromotionUsageController', () => {
 	let controller: PromotionUsageController;
-	let promotionUsageService: PromotionUsageServiceMock;
-	let configService: ConfigServiceMock;
+	let promotionUsageService = mock<PromotionUsageService>();
 
 	beforeEach(async () => {
-		promotionUsageService = {
-			usePromotion: jest.fn(),
-		};
-
-		configService = {
-			get: jest.fn(),
-		};
+		mockReset(promotionUsageService);
 
 		const module: TestingModule = await Test.createTestingModule({
 			controllers: [PromotionUsageController],
@@ -31,10 +16,6 @@ describe('PromotionUsageController', () => {
 				{
 					provide: PromotionUsageService,
 					useValue: promotionUsageService,
-				},
-				{
-					provide: ConfigService,
-					useValue: configService,
 				},
 			],
 		}).compile();

@@ -1,7 +1,9 @@
+import { Platform } from '@generated/prisma/enums';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { ApiErrorResponse } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
 import { Authorized } from '@libs/decorators/authorized.decorator';
+import { CurrentPlatform } from '@libs/decorators/platform.decorator';
 import { LanguageQueryDto } from '@libs/dto/language-query.dto';
 import {
 	Controller,
@@ -87,7 +89,13 @@ export class ShopController {
 	public async purchaseProduct(
 		@Authorized('id') userId: string,
 		@Param('productId') productId: string,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<PurchaseDto> {
-		return await this.shopService.purchaseProduct(userId, productId);
+		return await this.shopService.purchaseProduct(
+			userId,
+			productId,
+			'en',
+			platform,
+		);
 	}
 }

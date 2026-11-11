@@ -1,50 +1,22 @@
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
+import { prismaMock } from '@libs/prisma/prisma.mock';
 import { Test, TestingModule } from '@nestjs/testing';
-import { WeeklySummaryService } from './services/weekly-summary.service';
-
-type PrismaMock = {
-	weeklySleepSummary: {
-		findUnique: jest.Mock;
-		create: jest.Mock;
-	};
-	sleepEntry: {
-		findMany: jest.Mock;
-	};
-	coinTransaction: {
-		findMany: jest.Mock;
-	};
-};
+import { mock, mockReset } from 'jest-mock-extended';
+import { WeeklySummaryService } from '../weekly-summary.service';
 
 describe('WeeklySummaryService', () => {
 	let service: WeeklySummaryService;
-	let prisma: PrismaMock;
-	let notificationPublisherService: {
-		dispatchCreate: jest.Mock;
-	};
+	let notificationPublisherService = mock<NotificationPublisherService>();
 
 	beforeEach(async () => {
-		prisma = {
-			weeklySleepSummary: {
-				findUnique: jest.fn(),
-				create: jest.fn(),
-			},
-			sleepEntry: {
-				findMany: jest.fn(),
-			},
-			coinTransaction: {
-				findMany: jest.fn(),
-			},
-		};
-
-		notificationPublisherService = {
-			dispatchCreate: jest.fn(),
-		};
+		mockReset(prismaMock);
+		mockReset(notificationPublisherService);
 
 		const module: TestingModule = await Test.createTestingModule({
 			providers: [
 				WeeklySummaryService,
-				{ provide: PrismaService, useValue: prisma },
+				{ provide: PrismaService, useValue: prismaMock },
 				{
 					provide: NotificationPublisherService,
 					useValue: notificationPublisherService,

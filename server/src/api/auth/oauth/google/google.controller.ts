@@ -1,10 +1,12 @@
 import { CookieService } from '@api/auth/cookie/cookie.service';
 import { GoogleAuth } from '@api/auth/decorators/google-auth.decorator';
 import { OAuthDto } from '@api/auth/dto/o-auth.dto';
+import { Platform } from '@generated/prisma/enums';
 import { EnvService } from '@infra/env/env.service';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { ApiSuccessResponse } from '@libs/decorators/api-response.decorator';
 import { ClientInfo } from '@libs/decorators/client-info.decorator';
+import { CurrentPlatform } from '@libs/decorators/platform.decorator';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
@@ -52,11 +54,12 @@ export class GoogleController {
 		@Req() req: Request,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<void> {
 		const user = req.user as unknown as OAuthDto;
 
 		const { accessToken, refreshToken } =
-			await this.authService.validateOAuthLogin(user, clientInfo);
+			await this.authService.validateOAuthLogin(user, clientInfo, platform);
 
 		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
@@ -78,9 +81,10 @@ export class GoogleController {
 		@Body() dto: GoogleOneTapDto,
 		@ClientInfo() clientInfo: ClientInfoDto,
 		@Res({ passthrough: true }) res: Response,
+		@CurrentPlatform() platform?: Platform,
 	): Promise<MessageResponse> {
 		const { accessToken, refreshToken } =
-			await this.googleService.verifyOneTapToken(dto, clientInfo);
+			await this.googleService.verifyOneTapToken(dto, clientInfo, platform);
 
 		this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 

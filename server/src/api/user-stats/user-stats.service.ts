@@ -2,18 +2,13 @@ import { StreakService } from '@api/streak/streak.service';
 import { Prisma } from '@generated/prisma/client';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { userSelect } from '@libs/prisma/user.select.prisma';
+import { appDayjs } from '@libs/utils/dayjs.util';
 import { getNextMondayUTC } from '@libs/utils/get-next-monday-utc.util';
 import { Injectable } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
 import { UserStatsDto } from './dto/user-stats.dto';
 import { GetChallengeRestoresUpdatesResponse } from './interfaces/get-challenge-restores-updates.interface';
 import { GetStreakUpdatesResponse } from './interfaces/get-streak-updates.interface';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
 
 type UserStats = Prisma.UserStatsGetPayload<typeof userSelect.userStats>;
 
@@ -129,7 +124,7 @@ export class UserStatsService {
 
 		if (now < resetAt) return null;
 
-		const missedEntireWeek = dayjs(now).diff(resetAt, 'week') >= 1;
+		const missedEntireWeek = appDayjs(now).diff(resetAt, 'week') >= 1;
 
 		let newRestores: number;
 

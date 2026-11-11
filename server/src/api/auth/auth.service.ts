@@ -1,3 +1,5 @@
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserAvatarService } from '@api/user-avatar/user-avatar.service';
 import { UserProviderService } from '@api/user-provider/user-provider.service';
 import { CreateUserDto } from '@api/user/dto/create-user.dto';
@@ -7,7 +9,7 @@ import {
 	UserWithPasswordDto,
 } from '@api/user/dto/user-response.dto';
 import { UserService } from '@api/user/services/user.service';
-import { Prisma } from '@generated/prisma/client';
+import { Platform, Prisma } from '@generated/prisma/client';
 import { EnvService } from '@infra/env/env.service';
 import { MailService } from '@infra/mail/mail.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
@@ -47,6 +49,7 @@ export class AuthService {
 		private readonly prismaService: PrismaService,
 		private readonly mailService: MailService,
 		private readonly envService: EnvService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {
 		this.JWT_ACCESS_SECRET = envService.get('JWT_ACCESS_SECRET');
 	}
@@ -143,6 +146,7 @@ export class AuthService {
 	public async validateOAuthLogin(
 		dto: OAuthDto,
 		clientInfo: ClientInfoDto,
+		platform?: Platform,
 	): Promise<TokensDto> {
 		const {
 			provider,
@@ -203,6 +207,11 @@ export class AuthService {
 				},
 				tx,
 			);
+
+			await this.statisticsPublisherService.dispatchStatisticsProcessing({
+				type: StatisticsType.USER_REGISTERED,
+				data: { userId: user.id, entityId: user.id, platform },
+			});
 
 			return await this.generateAndSaveTokens(user, clientInfo, tx);
 		});

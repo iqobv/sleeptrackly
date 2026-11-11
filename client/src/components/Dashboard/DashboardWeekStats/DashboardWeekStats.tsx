@@ -2,13 +2,9 @@
 
 import { Dashboard } from '@/types/dashboard/dashboard.types';
 import { transformSecondsToHours } from '@shared/utils';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
 import { DashboardCard } from '../DashboardCard/DashboardCard';
 import styles from './DashboardWeekStats.module.scss';
 import { DASHBOARD_WEEK_STATS_CARDS } from './dashboardWeekStatsCards';
-
-dayjs.extend(duration);
 
 interface DashboardWeekStatsProps {
 	data: Dashboard;

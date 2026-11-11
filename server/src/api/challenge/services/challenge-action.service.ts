@@ -2,6 +2,8 @@ import { AchievementsPublisherService } from '@api/achievement/services/achievem
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
 import { RewardProductService } from '@api/reward/services/reward-product.service';
+import { StatisticsPublisherService } from '@api/statistics/services/statistics-publisher.service';
+import { StatisticsType } from '@api/statistics/types/statistics-type.types';
 import { UserStatsService } from '@api/user-stats/user-stats.service';
 import {
 	AchievementType,
@@ -10,6 +12,7 @@ import {
 	ChallengeTaskStatus,
 	CoinTransactionType,
 	NotificationType,
+	Platform,
 } from '@generated/prisma/enums';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -26,17 +29,21 @@ export class ChallengeActionService {
 		private readonly rewardProductService: RewardProductService,
 		private readonly achievementsPublisherService: AchievementsPublisherService,
 		private readonly userStatsService: UserStatsService,
+		private readonly statisticsPublisherService: StatisticsPublisherService,
 	) {}
 
 	public async failChallengeTask(
 		task: TaskPayload,
 		reason: TaskFailReason,
+		platform?: Platform,
 	): Promise<void> {
 		await this.prismaService.$transaction(async (tx) => {
 			await tx.challengeTask.update({
 				where: { id: task.id },
 				data: { status: ChallengeTaskStatus.FAILED },
 			});
+
+			const userId = task.userChallenge.userId;
 
 			const usedRecoveries = task.userChallenge.usedRecoveries;
 			const maxRecoveries = task.userChallenge.challenge.maxRecoveries;
@@ -58,7 +65,7 @@ export class ChallengeActionService {
 				});
 
 				await this.notificationPublisherService.dispatchCreate({
-					userId: task.userChallenge.userId,
+					userId,
 					type: NotificationType.CHALLENGE_FROZEN,
 					title: 'Challenge Frozen',
 					body: `Your challenge "${title}" has been frozen because ${reasonText}. You have ${recoveriesLeft} recoveries left.`,
@@ -70,8 +77,13 @@ export class ChallengeActionService {
 					data: { status: ChallengeStatus.FAILED, frozenAt: null },
 				});
 
+				await this.statisticsPublisherService.dispatchStatisticsProcessing({
+					type: StatisticsType.CHALLENGE_FAILED,
+					data: { userId, entityId: task.userChallenge.challengeId, platform },
+				});
+
 				await this.notificationPublisherService.dispatchCreate({
-					userId: task.userChallenge.userId,
+					userId,
 					type: NotificationType.CHALLENGE_FAILED,
 					title: 'Challenge Failed',
 					body: `Your challenge "${title}" has failed because you missed a task and have no recoveries left.`,
@@ -83,6 +95,7 @@ export class ChallengeActionService {
 
 	public async completeChallengeTask(
 		dto: CompleteChallengeTaskDto,
+		platform?: Platform,
 	): Promise<{ isChallengeCompleted: boolean }> {
 		const { isRecovery, taskId, userChallenge, sleepEntryId } = dto;
 		const userId = userChallenge.userId;
@@ -157,6 +170,11 @@ export class ChallengeActionService {
 					data: { status: ChallengeStatus.COMPLETED, frozenAt: null },
 				});
 
+				await this.statisticsPublisherService.dispatchStatisticsProcessing({
+					type: StatisticsType.CHALLENGE_COMPLETED,
+					data: { userId, entityId: userChallenge.challengeId, platform },
+				});
+
 				if (userChallenge.challenge.rewardCoins > 0) {
 					await this.coinTransactionService.createTransaction({
 						amount: userChallenge.challenge.rewardCoins,
@@ -195,11 +213,13 @@ export class ChallengeActionService {
 		await this.achievementsPublisherService.dispatchProgressCheck({
 			type: AchievementType.CHALLENGES_TASKS_COMPLETED,
 			userId,
+			platform,
 		});
 
 		await this.achievementsPublisherService.dispatchProgressCheck({
 			type: AchievementType.CHALLENGES_COMPLETED,
 			userId,
+			platform,
 		});
 
 		return { isChallengeCompleted };

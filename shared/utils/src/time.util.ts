@@ -1,10 +1,7 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
-dayjs.extend(utc);
+import { appDayjs } from '.';
 
 export const formatUtcOffsetToLocalTime = (offsetMinutes: number): string => {
-	return dayjs
+	return appDayjs
 		.utc()
 		.startOf('day')
 		.add(offsetMinutes, 'minute')

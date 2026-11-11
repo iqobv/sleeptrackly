@@ -1,0 +1,37 @@
+:root {
+	/* General Colors */
+	--bg-body: #0a0a0a;
+	--bg-header: #0b0b0b;
+	--header-border-color: #7a7a7a30;
+	--color-main-text: #ffffff;
+	--secondary-color: #464f58;
+	--header-height: 3.75rem;
+	--sidebar-width: 17.5rem;
+	--border-color: #e1e1e1;
+
+	/* Navigation */
+	--nav-color-link-active: #262626;
+
+	/* Profile */
+	--profile-stat-card-bg: #151515;
+	--profile-stat-card-border: #333;
+
+	/* Sections */
+	--bg-section: #333;
+
+	/* Report status */
+	--bg-report-pending: #a3c1e3;
+	--bg-report-in-progress: #598dd6;
+	--bg-report-approved: #5ab66d;
+	--bg-report-rejected: #e3c5c3;
+
+	/* Dashboard */
+	--bg-dashboard-card: #1a1a1a;
+	--dashboard-card-border: #333;
+	--dashboard-trending-positive-bg: rgba(78, 223, 162, 0.15);
+	--dashboard-trending-positive-color: #4edea3;
+	--dashboard-trending-negative-bg: rgba(255, 180, 171, 0.15);
+	--dashboard-trending-negative-color: #ffb4ab;
+	--dashboard-trending-neutral-bg: rgba(255, 255, 255, 0.15);
+	--dashboard-trending-neutral-color: #ffffff;
+}

@@ -38,6 +38,10 @@
 			visibility: visible;
 		}
 	}
+
+	&.active {
+		background-color: var(--nav-color-link-active);
+	}
 }
 
 .buttonContent {
