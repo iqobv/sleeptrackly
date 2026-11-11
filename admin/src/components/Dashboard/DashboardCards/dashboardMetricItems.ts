@@ -20,7 +20,7 @@ export const DASHBOARD_METRIC_ITEMS: MetricItem[] = [
 		key: 'activeUsers',
 		title: 'Active Users',
 		tooltip:
-			'This metric indicates the number of users who have logged and interacted with the application within the last 7 days.',
+			'Number of unique users with verified sleep entries for the selected week.',
 	},
 	{
 		key: 'achievements',

@@ -5,6 +5,7 @@ import {
 	ChallengeTaskStatus,
 	ChallengeTranslation,
 	ChallengeType,
+	Platform,
 	SleepEntry,
 	UserChallenge,
 } from '@generated/prisma/client';
@@ -37,8 +38,10 @@ describe('ChallengeProcessor', () => {
 	const sleepEntryId = 'sleep-123';
 	const dateForChart = '2026-10-15';
 
+	const platform = Platform.WEB;
+
 	const defaultJob = {
-		data: { sleepEntryId, userId },
+		data: { sleepEntryId, userId, platform },
 	} as Job<ChallengePayloadDto>;
 
 	const defaultSleepEntry: SleepEntry = {
@@ -147,6 +150,7 @@ describe('ChallengeProcessor', () => {
 					sleepEntryId,
 					isRecovery: false,
 				},
+				platform,
 			);
 			expect(challengeActionService.failChallengeTask).not.toHaveBeenCalled();
 		});
@@ -165,6 +169,7 @@ describe('ChallengeProcessor', () => {
 			expect(challengeActionService.failChallengeTask).toHaveBeenCalledWith(
 				{ ...defaultChallengeTask, userChallenge: defaultUserChallenge },
 				'CONDITION_FAILED',
+				platform,
 			);
 			expect(
 				challengeActionService.completeChallengeTask,

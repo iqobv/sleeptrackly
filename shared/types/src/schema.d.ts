@@ -2516,6 +2516,8 @@ export interface components {
         UpdateUserInvetoryDto: {
             isEquipped?: boolean;
         };
+        /** @enum {string} */
+        Platform: "WEB" | "ANDROID" | "IOS";
         StatisticsMetricsDto: {
             current: number;
             previous: number;
@@ -2523,7 +2525,7 @@ export interface components {
         };
         StatisticsDto: {
             totalRegisteredUsersCount: number;
-            hasNextWeekData: boolean;
+            hasPreviousWeekData: boolean;
             registered: components["schemas"]["StatisticsMetricsDto"];
             activeUsers: components["schemas"]["StatisticsMetricsDto"];
             achievements: components["schemas"]["StatisticsMetricsDto"];
@@ -3710,7 +3712,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-05T16:14:32.422Z
+             * @example 2026-11-12T13:05:20.309Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3741,7 +3743,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-05T16:14:32.422Z
+             * @example 2026-11-12T13:05:20.309Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -5068,8 +5070,9 @@ export interface operations {
     };
     StatisticsController_getStatistics_v1: {
         parameters: {
-            query: {
-                date: string;
+            query?: {
+                platform?: components["schemas"]["Platform"];
+                date?: string;
             };
             header?: never;
             path?: never;

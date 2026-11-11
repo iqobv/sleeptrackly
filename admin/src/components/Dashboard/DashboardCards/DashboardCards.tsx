@@ -2,6 +2,7 @@
 
 import { Dashboard } from '@/types/dashboard/dashboard.types';
 import { DashboardCard } from '../DashboardCard/DashboardCard';
+import { GlobalDashboardCard } from '../DashboardCard/GlobalDashboardCard';
 import styles from './DashboardCards.module.scss';
 import {
 	DASHBOARD_METRIC_ITEMS,
@@ -19,10 +20,14 @@ export const DashboardCards = ({ data }: DashboardCardsProps) => {
 	}));
 
 	return (
-		<div className={styles.dashboardCards}>
+		<div className={styles.cards}>
 			{cards.map(({ key, ...rest }) => (
 				<DashboardCard key={key} {...rest} />
 			))}
+			<GlobalDashboardCard
+				title="Total Registed Users"
+				value={data.totalRegisteredUsersCount}
+			/>
 		</div>
 	);
 };

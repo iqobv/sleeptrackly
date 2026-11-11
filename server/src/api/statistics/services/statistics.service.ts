@@ -15,7 +15,7 @@ export class StatisticsService {
 	public async getStatistics(
 		query: StatisticsQueryDto,
 	): Promise<StatisticsDto> {
-		const { date } = query;
+		const { date, platform } = query;
 
 		const targetDate = appDayjs(date);
 		const currentWeekStart = targetDate.startOf('isoWeek').format(DATE_FORMAT);
@@ -38,10 +38,10 @@ export class StatisticsService {
 			totalRegisteredUsersCount,
 		] = await Promise.all([
 			this.prismaService.dailyStatistics.aggregate(
-				dailyStatisticsAggregate(currentWeekStart, currentWeekEnd),
+				dailyStatisticsAggregate(currentWeekStart, currentWeekEnd, platform),
 			),
 			this.prismaService.dailyStatistics.aggregate(
-				dailyStatisticsAggregate(previousWeekStart, previousWeekEnd),
+				dailyStatisticsAggregate(previousWeekStart, previousWeekEnd, platform),
 			),
 			this.prismaService.sleepEntry
 				.groupBy({

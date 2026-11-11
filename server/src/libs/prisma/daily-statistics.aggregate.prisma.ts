@@ -1,8 +1,9 @@
-import { Prisma } from '@generated/prisma/client';
+import { Platform, Prisma } from '@generated/prisma/client';
 
 export const dailyStatisticsAggregate = (
 	startDate: string,
 	endDate: string,
+	platform?: Platform,
 ): Prisma.DailyStatisticsAggregateArgs => ({
 	_sum: {
 		achievementsCount: true,
@@ -17,5 +18,6 @@ export const dailyStatisticsAggregate = (
 			gte: startDate,
 			lte: endDate,
 		},
+		...(platform && { platform }),
 	},
 });

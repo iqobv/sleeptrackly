@@ -1,22 +1,19 @@
 'use client';
 
-import { getDashboard } from '@/api/dashboard/getDashboard.api';
-import { QUERY_KEYS } from '@/config/queryClient.config';
-import { useQuery } from '@tanstack/react-query';
+import styles from './Dashboard.module.scss';
 import { DashboardCards } from './DashboardCards/DashboardCards';
-
-const date = '2026-11-09';
+import { DashboardLoader } from './DashboardLoader';
+import { DashboardPagination } from './DashboardPagination/DashboardPagination';
+import { useDashboard } from './useDashboard.hook';
 
 export const Dashboard = () => {
-	const { data, isLoading } = useQuery({
-		queryFn: () => getDashboard(date),
-		queryKey: QUERY_KEYS.dashboard.date(date),
-	});
+	const { data, isLoading } = useDashboard();
 
-	if (!data || isLoading) return null;
+	if (!data || isLoading) return <DashboardLoader />;
 
 	return (
-		<div>
+		<div className={styles.container}>
+			<DashboardPagination hasPreviousWeek={data.hasPreviousWeekData} />
 			<DashboardCards data={data} />
 		</div>
 	);

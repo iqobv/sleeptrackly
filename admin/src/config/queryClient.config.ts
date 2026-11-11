@@ -1,5 +1,6 @@
 import { ChallengeQueryDto } from '@/dto/challenge/challenge.dto';
 import { ChallengeTemplatesQueryDto } from '@/dto/challenge/challengeTemplate.dto';
+import { DashboardQueryDto } from '@/dto/dashboard/dashboard.dto';
 import {
 	PaginationDto,
 	PaginationWithLanguageDto,
@@ -9,7 +10,8 @@ import { ReportPaginationQuery } from '@/types/report/reportPaginationQuery.type
 export const QUERY_KEYS = {
 	dashboard: {
 		all: ['dashboard'] as const,
-		date: (date: string) => [...QUERY_KEYS.dashboard.all, date] as const,
+		filter: (params: DashboardQueryDto) =>
+			[...QUERY_KEYS.dashboard.all, params] as const,
 	},
 	user: {
 		me: () => ['user', 'me'] as const,

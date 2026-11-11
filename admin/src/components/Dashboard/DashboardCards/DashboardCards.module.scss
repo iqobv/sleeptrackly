@@ -1,3 +1,23 @@
-.dashboardCards {
+@use '../../../styles/mixins' as *;
 
+.cards {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--gap);
+
+	& > div {
+		width: 100%;
+
+		@include respond-to(md) {
+			width: calc(50% - var(--gap) / 2);
+		}
+
+		@include respond-to(lg) {
+			width: calc(33.3333% - var(--gap) / 1.5);
+		}
+
+		&:last-child {
+			flex-grow: 1;
+		}
+	}
 }
