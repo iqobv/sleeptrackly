@@ -6,6 +6,7 @@
 
 - Added sleep streaks system
 - Streak achievement type
+- Added a statistics system with several metrics.
 
 ## [1.6.3] - 2026-10-20
 

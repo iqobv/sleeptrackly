@@ -1,5 +1,11 @@
 # Admin changelog
 
+## [0.7.0] - 2026-
+
+### Added
+
+- Added a dashboard page to display statistics with several metrics.
+
 ## [0.6.1] - 2026-09-13
 
 ### Added
