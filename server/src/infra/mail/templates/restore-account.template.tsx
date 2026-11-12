@@ -1,68 +1,27 @@
 import React from 'react';
-import {
-	Body,
-	Head,
-	Heading,
-	Html,
-	Link,
-	Preview,
-	Tailwind,
-	Text,
-} from 'react-email';
+import { Heading, Text } from 'react-email';
+import { BaseEmailProps } from './base-email-props.types';
+import Button from './components/button';
+import Footer from './components/footer';
+import Wrapper from './components/wrapper';
+import { baseEmailMock } from './mocks';
 
-interface RestoreAccountTemplateProps {
-	domain: string;
-	token: string;
-}
-
-export const RestoreAccountTemplate = ({
-	domain,
-	token,
-}: RestoreAccountTemplateProps) => {
-	const url = `${domain}/restore-account?token=${token}`;
-
+const RestoreAccountTemplate = ({ url }: BaseEmailProps) => {
 	return (
-		<Html>
-			<Head />
-			<Preview>Restore your account on Sleeptackly!</Preview>
-			<Tailwind>
-				<Body className="text-black text-center">
-					<Heading className="text-center text-3xl">
-						Restore your account on Sleeptackly!
-					</Heading>
-					<Text className="text-center">
-						We received a request to restore your account. Please click the
-						button below to proceed with restoring your account.
-					</Text>
-					<Link
-						href={url}
-						target="_blank"
-						rel="noopener noreferrer"
-						style={
-							{
-								backgroundColor: '#3b82f6',
-								color: '#ffffff',
-								padding: '12px 24px',
-								borderRadius: '8px',
-								textDecoration: 'none',
-								display: 'inline-block',
-								fontWeight: 'bold',
-								marginTop: '16px',
-								textAlign: 'center',
-							} as React.CSSProperties
-						}
-					>
-						Restore Account
-					</Link>
-					<Text>
-						This link will expire in 1 hour. If you did not request this email
-						you can ignore it.
-					</Text>
-					<Text>
-						Best regards, <br /> The Sleeptackly Team
-					</Text>
-				</Body>
-			</Tailwind>
-		</Html>
+		<Wrapper preview="We received a request to restore your account. Please click the button below to proceed with restoring your account.">
+			<Heading>Restore your account!</Heading>
+			<Text>
+				We received a request to restore your account. Please click the button
+				below to proceed with restoring your account.
+			</Text>
+			<Button href={url} target="_blank" rel="noopener noreferrer">
+				Restore Account
+			</Button>
+			<Footer expiresIn="1 hour" />
+		</Wrapper>
 	);
 };
+
+RestoreAccountTemplate.PreviewProps = baseEmailMock;
+
+export default RestoreAccountTemplate;

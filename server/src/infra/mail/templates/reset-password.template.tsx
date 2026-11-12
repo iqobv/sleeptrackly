@@ -1,65 +1,27 @@
 import * as React from 'react';
-import {
-	Body,
-	Head,
-	Heading,
-	Html,
-	Link,
-	Preview,
-	Tailwind,
-	Text,
-} from 'react-email';
+import { Heading, Text } from 'react-email';
+import { BaseEmailProps } from './base-email-props.types';
+import Button from './components/button';
+import Footer from './components/footer';
+import Wrapper from './components/wrapper';
+import { baseEmailMock } from './mocks';
 
-interface ResetPasswordTemplateProps {
-	domain: string;
-	token: string;
-}
-
-export const ResetPasswordTemplate = ({
-	domain,
-	token,
-}: ResetPasswordTemplateProps) => {
-	const url = `${domain}/reset-password?token=${token}`;
-
+const ResetPasswordTemplate = ({ url }: BaseEmailProps) => {
 	return (
-		<Html>
-			<Head />
-			<Preview>Reset your password</Preview>
-			<Tailwind>
-				<Body className="text-black text-center">
-					<Heading className="text-center text-3xl">
-						Welcome to Sleeptackly!
-					</Heading>
-					<Text className="text-center">
-						Please click the button below to reset your password.
-					</Text>
-					<Link
-						href={url}
-						target="_blank"
-						rel="noopener noreferrer"
-						style={
-							{
-								backgroundColor: '#3b82f6',
-								color: '#ffffff',
-								padding: '12px 24px',
-								borderRadius: '8px',
-								textDecoration: 'none',
-								display: 'inline-block',
-								fontWeight: 'bold',
-								marginTop: '16px',
-								textAlign: 'center',
-							} as React.CSSProperties
-						}
-					>
-						Reset Password
-					</Link>
-					<Text>
-						This link will expire in 1 hour. If you did not request this email
-						you can ignore it.
-					</Text>
-					<Text>Thanks, for using our service!</Text>
-				</Body>
-			</Tailwind>
-		</Html>
+		<Wrapper preview="We received a request to reset your password. Please click the button below to proceed with resetting your password.">
+			<Heading>Reset your password</Heading>
+			<Text>
+				We received a request to reset your password. Please click the button
+				below to proceed with resetting your password.
+			</Text>
+			<Button href={url} target="_blank" rel="noopener noreferrer">
+				Reset Password
+			</Button>
+			<Footer expiresIn="1 hour" />
+		</Wrapper>
 	);
 };
+
+ResetPasswordTemplate.PreviewProps = baseEmailMock;
+
+export default ResetPasswordTemplate;

@@ -1,67 +1,28 @@
 import * as React from 'react';
-import {
-	Body,
-	Head,
-	Heading,
-	Html,
-	Link,
-	Preview,
-	Tailwind,
-	Text,
-} from 'react-email';
+import { Heading, Text } from 'react-email';
+import type { BaseEmailProps } from './base-email-props.types';
+import Button from './components/button';
+import Footer from './components/footer';
+import Wrapper from './components/wrapper';
+import { baseEmailMock } from './mocks';
 
-interface ConfirmationTemplateProps {
-	domain: string;
-	token: string;
-}
-
-export const ConfirmationTemplate = ({
-	domain,
-	token,
-}: ConfirmationTemplateProps) => {
-	const url = `${domain}/email-confirmation?token=${token}`;
-
+const ConfirmationTemplate = ({ url }: BaseEmailProps) => {
 	return (
-		<Html>
-			<Head />
-			<Preview>Confirm your email for Sleeptrackly</Preview>
-			<Tailwind>
-				<Body className="text-black text-center">
-					<Heading className="text-center text-3xl">
-						Welcome to Sleeptrackly
-					</Heading>
-					<Text className="text-center">
-						Please confirm your email address to activate your account and start
-						tracking your sleep patterns. This helps us ensure the security of
-						your data.
-					</Text>
-					<Link
-						href={url}
-						target="_blank"
-						rel="noopener noreferrer"
-						style={
-							{
-								backgroundColor: '#3b82f6',
-								color: '#ffffff',
-								padding: '12px 24px',
-								borderRadius: '8px',
-								textDecoration: 'none',
-								display: 'inline-block',
-								fontWeight: 'bold',
-								marginTop: '16px',
-								textAlign: 'center',
-							} as React.CSSProperties
-						}
-					>
-						Confirm Email
-					</Link>
-					<Text>
-						This link will expire in 1 hour. If you did not request this email
-						you can safely ignore it.
-					</Text>
-					<Text>Thanks, for using our service!</Text>
-				</Body>
-			</Tailwind>
-		</Html>
+		<Wrapper preview="Thank you for signing up! Please confirm your email address to activate your account.">
+			<Heading className="mobile:text-2xl">Welcome to Sleeptrackly!</Heading>
+			<Text>
+				Please confirm your email address to activate your account and start
+				tracking your sleep patterns. This helps us ensure the security of your
+				data.
+			</Text>
+			<Button href={url} target="_blank" rel="noopener noreferrer">
+				Confirm Email
+			</Button>
+			<Footer expiresIn="1 hour" />
+		</Wrapper>
 	);
 };
+
+ConfirmationTemplate.PreviewProps = baseEmailMock;
+
+export default ConfirmationTemplate;

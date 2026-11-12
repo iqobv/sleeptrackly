@@ -33,7 +33,8 @@ export class PasswordRecoveryService {
 	): Promise<MessageResponse> {
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) return SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT;
+		if (!user || user.deletedAt)
+			return SUCCESS_MESSAGES.PASSWORD_RECOVERY.EMAIL_SENT;
 
 		const token = await this.generateVerificationToken(user.id);
 

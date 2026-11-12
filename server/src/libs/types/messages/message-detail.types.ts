@@ -1,3 +1,5 @@
+import { MessageMetaDto } from '@libs/dto/message-metadata.dto';
+
 export interface BaseMessage {
 	code: string;
 	message: string;
@@ -10,10 +12,10 @@ export interface MessageDetail<
 	code: K;
 	message: V;
 	field?: string;
-	meta?: Record<string, unknown>;
+	meta?: MessageMetaDto;
 }
 
 export interface MessageResponse extends BaseMessage {
 	field?: string;
-	meta?: Record<string, unknown>;
+	meta?: MessageMetaDto;
 }
