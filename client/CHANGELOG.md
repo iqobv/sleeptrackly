@@ -5,6 +5,7 @@
 ### Added
 
 - Added sleep streaks system
+- Added email provider configuration for show link to email provider on pending pages.
 
 ## [0.6.1] - 2026-10-07
 

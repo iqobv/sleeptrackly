@@ -7,6 +7,15 @@
 - Added sleep streaks system
 - Streak achievement type
 - Added a statistics system with several metrics.
+- Added components for email templates and email sending.
+
+### Changed
+
+- Refactored email templates to use a new system with components.
+
+### Fixed
+
+- Fixed a bug with sending empty `meta` object after registering a new user.
 
 ## [1.6.3] - 2026-10-20
 
