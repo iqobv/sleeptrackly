@@ -1,3 +1,4 @@
+import { MessageMetaDto } from '@libs/dto/message-metadata.dto';
 import { MessageDetail } from '@libs/types/messages/message-detail.types';
 import { applyDecorators, HttpStatus } from '@nestjs/common';
 import { ApiExtraModels, ApiResponse, getSchemaPath } from '@nestjs/swagger';
@@ -15,7 +16,7 @@ type MessageExample = {
 		code: string;
 		message: string;
 		field?: string;
-		meta?: Record<string, unknown>;
+		meta?: MessageMetaDto;
 	};
 };
 

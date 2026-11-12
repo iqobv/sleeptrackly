@@ -10,6 +10,7 @@ import { User } from '@/types/user/user.types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
@@ -100,10 +101,12 @@ export const AuthForm = <T extends FieldValues, R>({
 			}
 		},
 		onError: (error) => {
-			if (error.message === 'Account is deleted. You can still restore it.') {
-				setIsDeletedError(true);
+			if (isAxiosError(error) && error.response?.data) {
+				if (error.response.data.code === 'AUTH_ACCOUNT_SUSPENDED')
+					setIsDeletedError(true);
+
+				setError('root', { message: error.response.data.message });
 			}
-			setError('root', { message: error.message });
 			resetField('password' as Path<T>);
 		},
 	});

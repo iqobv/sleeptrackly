@@ -11,6 +11,7 @@ export const appEnvSchema = z.object({
 	SENTRY_DSN: z.url().nonempty('SENTRY_DSN is required'),
 	SWAGGER_USER: z.string().nonempty('SWAGGER_USER is required'),
 	SWAGGER_PASSWORD: z.string().nonempty('SWAGGER_PASSWORD is required'),
+	ICON_URL: z.url().nonempty('ICON_URL is required'),
 });
 
 export type AppConfig = z.infer<typeof appEnvSchema>;

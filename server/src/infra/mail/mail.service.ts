@@ -5,10 +5,11 @@ import { pretty, render } from '@react-email/render';
 import Mail from 'nodemailer/lib/mailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SmtpConfig, smtpEnvSchema } from '../../config/schemas/smtp.schema';
+import { EmailLink } from './constants/links.constants';
 import { SendEmailDto } from './dto/send-email.dto';
-import { ConfirmationTemplate } from './templates/confirmation.template';
-import { ResetPasswordTemplate } from './templates/reset-password.template';
-import { RestoreAccountTemplate } from './templates/restore-account.template';
+import ConfirmationTemplate from './templates/confirmation.template';
+import ResetPasswordTemplate from './templates/reset-password.template';
+import RestoreAccountTemplate from './templates/restore-account.template';
 
 type SendNotificationResponse = Promise<
 	SMTPTransport.SentMessageInfo | undefined
@@ -31,9 +32,9 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await pretty(
-			await render(ConfirmationTemplate({ domain: this.domain, token })),
-		);
+		const url = this.getUrl(token, EmailLink.emailConfirmation);
+
+		const html = await pretty(await render(ConfirmationTemplate({ url })));
 
 		return await this.sendEmail({
 			recipients: [email],
@@ -46,9 +47,9 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await pretty(
-			await render(ResetPasswordTemplate({ domain: this.domain, token })),
-		);
+		const url = this.getUrl(token, EmailLink.resetPassword);
+
+		const html = await pretty(await render(ResetPasswordTemplate({ url })));
 
 		return await this.sendEmail({
 			recipients: [email],
@@ -61,9 +62,9 @@ export class MailService {
 		email: string,
 		token: string,
 	): SendNotificationResponse {
-		const html = await pretty(
-			await render(RestoreAccountTemplate({ domain: this.domain, token })),
-		);
+		const url = this.getUrl(token, EmailLink.restoreAccount);
+
+		const html = await pretty(await render(RestoreAccountTemplate({ url })));
 
 		return await this.sendEmail({
 			recipients: [email],
@@ -91,5 +92,9 @@ export class MailService {
 		} catch (error) {
 			console.log('error', error);
 		}
+	}
+
+	private getUrl(token: string, path: EmailLink): string {
+		return `${this.domain}${path}?token=${token}`;
 	}
 }

@@ -3,7 +3,8 @@
 import { resendVerificationEmail } from '@/api/auth/email.api';
 import { AUTH_PAGES } from '@/config/authPages.config';
 import { LOCAL_STORAGE_KEYS } from '@/constants/localStorageKeys.constants';
-import { Button, SectionHeader } from '@shared/ui';
+import { getEmailProvider } from '@/utils/getEmailProvider.util';
+import { Button, SectionHeader, Typography } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -16,12 +17,11 @@ const localStorageEmailKey = LOCAL_STORAGE_KEYS.auth.registrationEmail;
 export const EmailConfirmationDefault = () => {
 	const [timer, setTimer] = useState(0);
 
-	const [email] = useState<string | null>(() => {
-		if (typeof window !== 'undefined') {
-			return localStorage.getItem(localStorageEmailKey);
-		}
-		return null;
-	});
+	const [email, setEmail] = useState<string | null>(null);
+
+	useEffect(() => {
+		setEmail(localStorage.getItem(localStorageEmailKey));
+	}, []);
 
 	const { mutate } = useMutation({
 		mutationFn: (emailToVerify: string) =>
@@ -52,12 +52,37 @@ export const EmailConfirmationDefault = () => {
 		}
 	};
 
+	const emailProvider = getEmailProvider(email || '');
+
 	return (
 		<EmailConfirmationWrapper>
 			<div className={styles.default}>
 				<SectionHeader
 					title="Your Email is not Verified!"
-					description="Your email is not verified. Please check your inbox for a verification email. If you did not receive the email, you can resend the verification email or change your email address."
+					descriptionProps={{
+						as: 'div',
+					}}
+					description={
+						<div className={styles.description}>
+							<Typography>
+								Your email is not verified. Please check your inbox for a
+								verification email. If you did not receive the email, you can
+								resend the verification email or change your email address.
+							</Typography>
+							{emailProvider && (
+								<Button asChild variant="outlined">
+									<Link
+										href={emailProvider.inboxUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<emailProvider.Icon />
+										{`Open ${emailProvider.name}`}
+									</Link>
+								</Button>
+							)}
+						</div>
+					}
 					textAlign="center"
 				/>
 				<Button onClick={handleResendEmail} disabled={timer > 0 || !email}>

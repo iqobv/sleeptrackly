@@ -24,7 +24,8 @@ export class RestoreService {
 
 		const user = await this.userService.findByEmail(email);
 
-		if (!user) return SUCCESS_MESSAGES.RESTORE.EMAIL_SENT;
+		if (!user || user.deletedAt === null)
+			return SUCCESS_MESSAGES.RESTORE.EMAIL_SENT;
 
 		const { token } = await this.tokenService.createToken({
 			type: TokenType.RESTORE_ACCOUNT,

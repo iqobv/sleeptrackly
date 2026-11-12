@@ -88,7 +88,7 @@ export class UserService {
 		full: boolean = false,
 	): Promise<unknown> {
 		const user = await this.prismaService.user.findUnique({
-			where: { email, deletedAt: null },
+			where: { email },
 			select: {
 				...userSelect,
 				...(full && { password: true }),

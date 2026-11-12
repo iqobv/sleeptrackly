@@ -16,8 +16,8 @@ import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { ClientInfoDto } from '@libs/dto/client-info.dto';
+import { MessageResponseDto } from '@libs/dto/message-response.dto';
 import { JwtPayload } from '@libs/types/jwt-payload.types';
-import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { comparePassword } from '@libs/utils/password.util';
 import { createRefreshToken, splitToken } from '@libs/utils/refresh-token.util';
 import { generateRawToken, hashToken } from '@libs/utils/token.util';
@@ -99,7 +99,7 @@ export class AuthService {
 		return { user: finalUser, ...tokens };
 	}
 
-	public async register(dto: CreateUserDto): Promise<MessageResponse> {
+	public async register(dto: CreateUserDto): Promise<MessageResponseDto> {
 		const { user, token } = await this.prismaService.$transaction(
 			async (tx) => {
 				const user = await this.userService.create(dto, tx);
@@ -116,10 +116,10 @@ export class AuthService {
 
 		await this.mailService.sendVerificationEmail(user.email, token);
 
-		return {
+		return plainToInstance(MessageResponseDto, {
 			...SUCCESS_MESSAGES.AUTH.REGISTRATION_SUCCESS,
 			meta: { email: user.email },
-		};
+		});
 	}
 
 	public async logout(rawRefreshToken: string, userId?: string): Promise<void> {
@@ -132,9 +132,8 @@ export class AuthService {
 			hashedToken,
 		);
 
-		if (userId && session.userId !== userId) {
+		if (userId && session.userId !== userId)
 			throw new ForbiddenException(ERROR_MESSAGES.TOKEN.MISMATCH);
-		}
 
 		await this.sessionService.deleteSession(session.userId, session.id);
 	}
@@ -288,9 +287,8 @@ export class AuthService {
 		const deletionTime = user.deletedAt.getTime();
 		const isRecoverable = Date.now() - deletionTime < fourteenDaysInMs;
 
-		if (isRecoverable) {
+		if (isRecoverable)
 			throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_SUSPENDED);
-		}
 
 		throw new ForbiddenException(ERROR_MESSAGES.AUTH.ACCOUNT_DELETED);
 	}

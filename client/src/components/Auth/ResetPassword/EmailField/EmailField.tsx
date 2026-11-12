@@ -3,20 +3,24 @@
 import { sendEmailForResetPassword } from '@/api/auth/password.api';
 import { EmailDto } from '@/dto/auth/password.dto';
 import { emailSchema } from '@/schemas/auth/baseAuth.schema';
+import { getEmailProvider } from '@/utils/getEmailProvider.util';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Field, Input } from '@shared/ui';
 import { useMutation } from '@tanstack/react-query';
 import Link from 'next/link';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FcGoogle } from 'react-icons/fc';
 import { ResetForm } from '../ResetForm/ResetForm';
 import styles from './EmailField.module.scss';
 
 export const EmailField = () => {
+	const [timer, setTimer] = useState(0);
+
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
+		getValues,
 	} = useForm<EmailDto>({
 		resolver: zodResolver(emailSchema),
 		defaultValues: {
@@ -30,6 +34,8 @@ export const EmailField = () => {
 
 	const onSubmit = (data: EmailDto) => mutate(data);
 
+	const emailProvider = getEmailProvider(getValues('email'));
+
 	return (
 		<div className={styles.field}>
 			{isSuccess && (
@@ -38,12 +44,18 @@ export const EmailField = () => {
 						Reset link was sent to your email. Please check your inbox. If you
 						didn&apos;t receive an email, please check your spam folder.
 					</p>
-					<Button variant="outlined" asChild>
-						<Link href="https://gmail.com" target="_blank">
-							<FcGoogle />
-							Gmail
-						</Link>
-					</Button>
+					{emailProvider && (
+						<Button variant="outlined" asChild>
+							<Link
+								href={emailProvider.inboxUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<emailProvider.Icon />
+								{`Open ${emailProvider.name}`}
+							</Link>
+						</Button>
+					)}
 				</div>
 			)}
 			<ResetForm
