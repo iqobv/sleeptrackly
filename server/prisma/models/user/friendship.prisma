@@ -6,6 +6,8 @@ model Friendship {
 
   status FriendshipStatus @default(PENDING)
 
+  notifications Notification[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

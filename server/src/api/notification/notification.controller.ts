@@ -1,3 +1,4 @@
+import type { User } from '@generated/prisma/client';
 import { UserRole } from '@generated/prisma/enums';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
@@ -7,7 +8,7 @@ import {
 } from '@libs/decorators/api-response.decorator';
 import { Auth } from '@libs/decorators/auth.decorator';
 import { Authorized } from '@libs/decorators/authorized.decorator';
-import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import {
 	Body,
@@ -21,15 +22,18 @@ import {
 	Query,
 	Sse,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiExtraModels, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 import { CreateNotificationDto } from './dto/create-notification.dto';
+import { NotificationMetaModels } from './dto/metadata/notification-meta-map';
 import { NotificationDto } from './dto/notification.dto';
 import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
 import { UpdateNotificationDto } from './dto/update-notification.dto';
 import { SseSignalEvent } from './interfaces/signal.interface';
 import { NotificationService } from './services/notification.service';
 
+// @ApiExtraModels(ChallengeFrozenMetaDto, ChallengeFailedMetaDto)
+@ApiExtraModels(...NotificationMetaModels)
 @ApiTags('Notification')
 @Controller('notifications')
 export class NotificationController {
@@ -50,10 +54,10 @@ export class NotificationController {
 	@Auth()
 	@ApiOkResponse({ type: PaginatedNotificationDto })
 	public async getAllForUser(
-		@Authorized('id') userId: string,
-		@Query() query: PaginationQueryDto,
+		@Authorized() user: User,
+		@Query() query: PaginationQueryWithLanguageDto,
 	): Promise<PaginatedNotificationDto> {
-		return await this.notificationService.getAllForUser(userId, query);
+		return await this.notificationService.getAllForUser(user, query);
 	}
 
 	/** Subscribe to real-time notification signals */

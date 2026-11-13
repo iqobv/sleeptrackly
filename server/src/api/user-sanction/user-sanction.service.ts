@@ -122,9 +122,6 @@ export class UserSanctionService {
 		await this.notificationPublisherService.dispatchCreate({
 			userId: targetUserId,
 			title: 'New Sanction Applied',
-			body: `You have been sanctioned with a ${type.replace(/_/g, ' ')} until ${appDayjs(
-				endDate,
-			).format('DD.MM.YYYY HH:mm')}.`,
 			type: NotificationType.SANCTION,
 		});
 

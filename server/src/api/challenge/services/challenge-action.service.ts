@@ -17,6 +17,7 @@ import {
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CompleteChallengeTaskDto } from '../dto/complete-challenge-task.dto';
+import { ChallengeFailReason } from '../types/challenge-fail-reason.types';
 import { TaskFailReason } from '../types/task-fail-reason.types';
 import { TaskPayload } from '../types/task-payload.types';
 
@@ -51,13 +52,6 @@ export class ChallengeActionService {
 			const hasRecoveriesLeft = usedRecoveries < maxRecoveries;
 			const recoveriesLeft = maxRecoveries - usedRecoveries;
 
-			const title = task.userChallenge.challenge.translations[0].title;
-
-			const reasonText =
-				reason === 'TIMEOUT'
-					? 'you missed a task'
-					: "your sleep didn't meet the conditions";
-
 			if (hasRecoveriesLeft) {
 				await tx.userChallenge.update({
 					where: { id: task.userChallengeId },
@@ -67,8 +61,10 @@ export class ChallengeActionService {
 				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					type: NotificationType.CHALLENGE_FROZEN,
-					title: 'Challenge Frozen',
-					body: `Your challenge "${title}" has been frozen because ${reasonText}. You have ${recoveriesLeft} recoveries left.`,
+					meta: {
+						reason: ChallengeFailReason.CONDITION_FAILED,
+						recoveriesLeft,
+					},
 					challengeId: task.userChallenge.challengeId,
 				});
 			} else {
@@ -85,8 +81,7 @@ export class ChallengeActionService {
 				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					type: NotificationType.CHALLENGE_FAILED,
-					title: 'Challenge Failed',
-					body: `Your challenge "${title}" has failed because you missed a task and have no recoveries left.`,
+					meta: { reason: ChallengeFailReason.RESTORE_LIMIT_EXCEEDED },
 					challengeId: task.userChallenge.challengeId,
 				});
 			}

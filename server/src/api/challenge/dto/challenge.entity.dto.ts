@@ -80,7 +80,7 @@ export class ChallengeEntityDto extends DefaultFieldsDto {
 	})
 	@Expose()
 	@Transform(transformMetadata)
-	metadata?:
+	metadata:
 		| SleepDurationMetadataDto
 		| TimeConsistencyMetadataDto
 		| BedtimeVarianceMetadataDto

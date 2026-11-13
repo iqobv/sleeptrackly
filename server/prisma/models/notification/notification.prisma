@@ -5,6 +5,9 @@ model Notification {
   weeklySleepSummaryId String? @map("weekly_sleep_summary_id")
   achievementId        String? @map("achievement_id")
   challengeId          String? @map("challenge_id")
+  sanctionId           String? @map("sanction_id")
+  friendshipId         String? @map("friendship_id")
+  streakId             String? @map("streak_id")
 
   type NotificationType @default(OTHER)
 
@@ -15,9 +18,11 @@ model Notification {
   isScheduled Boolean @default(false) @map("is_scheduled")
   isEmail     Boolean @default(false) @map("is_email")
 
-  title       String
+  title       String?
   body        String?
   redirectUrl String? @map("redirect_url")
+
+  meta Json?
 
   scheduledAt DateTime? @map("scheduled_at")
 
@@ -31,6 +36,9 @@ model Notification {
   weeklySleepSummary WeeklySleepSummary? @relation(fields: [weeklySleepSummaryId], references: [id], onDelete: Cascade)
   achievement        Achievement?        @relation(fields: [achievementId], references: [id], onDelete: Cascade)
   challenge          Challenge?          @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  sanction           UserSanction?       @relation(fields: [sanctionId], references: [id], onDelete: Cascade)
+  friendship         Friendship?         @relation(fields: [friendshipId], references: [id], onDelete: Cascade)
+  streak             Streak?             @relation(fields: [streakId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("notifications")

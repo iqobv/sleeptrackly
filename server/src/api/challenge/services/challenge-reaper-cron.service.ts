@@ -11,6 +11,7 @@ import { challengeTaskInclude } from '@libs/prisma/challenge-task.include.prisma
 import { appDayjs } from '@libs/utils/dayjs.util';
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
+import { ChallengeFailReason } from '../types/challenge-fail-reason.types';
 import { TaskPayload } from '../types/task-payload.types';
 import { ChallengeActionService } from './challenge-action.service';
 
@@ -76,8 +77,7 @@ export class ChallengeReaperCronService {
 				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					type: NotificationType.CHALLENGE_FAILED,
-					title: 'Challenge Failed',
-					body: `Challenge "${userChallenge.challenge.translations[0].title}" has failed because it was frozen for more than 48 hours.`,
+					meta: { reason: ChallengeFailReason.EXCEEDED_FROZEN_PERIOD },
 					challengeId: userChallenge.challengeId,
 				});
 

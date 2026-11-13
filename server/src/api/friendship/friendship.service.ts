@@ -83,7 +83,7 @@ export class FriendshipService {
 			await this.notificationPublisherService.dispatchCreate({
 				userId: addressee.id,
 				title: 'New Friend Request',
-				body: `You have a new friend request from ${newFriendship.requester.username}`,
+				friendshipId: newFriendship.id,
 				type: NotificationType.FRIEND_REQUEST,
 			});
 		}

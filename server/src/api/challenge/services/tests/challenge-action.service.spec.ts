@@ -1,5 +1,6 @@
 import { AchievementsPublisherService } from '@api/achievement/services/achievements-publisher.service';
 import { CompleteChallengeTaskDto } from '@api/challenge/dto/complete-challenge-task.dto';
+import { ChallengeFailReason } from '@api/challenge/types/challenge-fail-reason.types';
 import { TaskPayload } from '@api/challenge/types/task-payload.types';
 import { CoinTransactionService } from '@api/coin-transaction/coin-transaction.service';
 import { NotificationPublisherService } from '@api/notification/services/notification-publisher.service';
@@ -146,8 +147,11 @@ describe('ChallengeActionService', () => {
 				expect.objectContaining({
 					type: NotificationType.CHALLENGE_FROZEN,
 					userId,
+					meta: {
+						reason: ChallengeFailReason.CONDITION_FAILED,
+						recoveriesLeft: 2,
+					},
 					challengeId,
-					body: expect.stringContaining('you missed a task'),
 				}),
 			);
 		});
@@ -160,9 +164,10 @@ describe('ChallengeActionService', () => {
 					type: NotificationType.CHALLENGE_FROZEN,
 					userId,
 					challengeId,
-					body: expect.stringContaining(
-						"your sleep didn't meet the conditions",
-					),
+					meta: {
+						reason: ChallengeFailReason.CONDITION_FAILED,
+						recoveriesLeft: 2,
+					},
 				}),
 			);
 		});
@@ -188,7 +193,7 @@ describe('ChallengeActionService', () => {
 					type: NotificationType.CHALLENGE_FAILED,
 					userId,
 					challengeId,
-					body: expect.stringContaining('have no recoveries left'),
+					meta: { reason: ChallengeFailReason.RESTORE_LIMIT_EXCEEDED },
 				}),
 			);
 		});

@@ -192,8 +192,6 @@ export class AchievementProgressService {
 				await this.notificationPublisherService.dispatchCreate({
 					userId,
 					achievementId,
-					title: 'Achievement Unlocked!',
-					body: `You have unlocked new achievement.`,
 					type: NotificationType.ACHIEVEMENT_UNLOCKED,
 				});
 			}

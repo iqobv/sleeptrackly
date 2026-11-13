@@ -22,7 +22,7 @@ export class BaseChallengeDto extends OmitType(ChallengeEntityDto, [
 ] as const) {
 	@Expose()
 	@Transform(transformMetadata)
-	metadata?:
+	metadata:
 		| SleepDurationMetadataDto
 		| TimeConsistencyMetadataDto
 		| BedtimeVarianceMetadataDto
@@ -38,7 +38,7 @@ export class ChallengeDto extends OmitType(ChallengeEntityDto, [
 
 	@Expose()
 	@Transform(transformMetadata)
-	metadata?:
+	metadata:
 		| SleepDurationMetadataDto
 		| TimeConsistencyMetadataDto
 		| BedtimeVarianceMetadataDto

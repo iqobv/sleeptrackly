@@ -1,5 +1,6 @@
 import { NotificationType } from '@generated/prisma/enums';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiPolymorphicMeta } from '@libs/decorators/api-polymorphic-meta.decorator';
+import { ApiExtraModels, ApiProperty } from '@nestjs/swagger';
 import {
 	IsBoolean,
 	IsDate,
@@ -8,7 +9,15 @@ import {
 	IsString,
 	IsUUID,
 } from 'class-validator';
+import { ChallengeFailedMetaDto } from './metadata/challenge-failed-meta.dto';
+import { ChallengeFrozenMetaDto } from './metadata/challenge-frozen-meta.dto';
+import {
+	NotificationMetaMap,
+	NotificationMetaModels,
+} from './metadata/notification-meta-map';
 
+@ApiExtraModels(...NotificationMetaModels)
+// @ApiExtraModels(ChallengeFrozenMetaDto, ChallengeFailedMetaDto)
 export class CreateNotificationDto {
 	@IsUUID('4')
 	@IsOptional()
@@ -35,7 +44,7 @@ export class CreateNotificationDto {
 	isEmail?: boolean;
 
 	@IsString()
-	title: string;
+	title?: string;
 
 	@IsString()
 	@IsOptional()
@@ -64,4 +73,20 @@ export class CreateNotificationDto {
 	@IsUUID('4')
 	@IsOptional()
 	challengeId?: string;
+
+	@IsUUID('4')
+	@IsOptional()
+	sanctionId?: string;
+
+	@IsUUID('4')
+	@IsOptional()
+	friendshipId?: string;
+
+	@IsUUID('4')
+	@IsOptional()
+	streakId?: string;
+
+	@ApiPolymorphicMeta(NotificationMetaMap)
+	@IsOptional()
+	meta?: ChallengeFrozenMetaDto | ChallengeFailedMetaDto;
 }

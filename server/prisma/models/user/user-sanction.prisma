@@ -10,6 +10,8 @@ model UserSanction {
 
   type UserSanctionType
 
+  notifications Notification[]
+
   user      User @relation("UserSanctions", fields: [userId], references: [id], onDelete: Cascade)
   createdBy User @relation("CreatedUserSanctions", fields: [createdById], references: [id], onDelete: Cascade)
 

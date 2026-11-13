@@ -1,11 +1,11 @@
-import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
-import { Expose } from 'class-transformer';
+import { PickType } from '@nestjs/swagger';
+import { UserSanctionEntityDto } from './user-sanction.entity.dto';
 
-export class UserSanctionDto extends DefaultFieldsDto {
-	@Expose() userId: string;
-	@Expose() reportId: string | null;
-	@Expose() createdById: string;
-	@Expose() startsAt: Date;
-	@Expose() endsAt: Date | null;
-	@Expose() type: string;
-}
+export class UserSanctionDto extends UserSanctionEntityDto {}
+
+export class BaseUserSanctionDto extends PickType(UserSanctionDto, [
+	'id',
+	'endsAt',
+	'type',
+	'reportId',
+] as const) {}

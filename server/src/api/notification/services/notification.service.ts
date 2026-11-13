@@ -1,9 +1,9 @@
-import { Prisma } from '@generated/prisma/client';
+import { Prisma, type User } from '@generated/prisma/client';
 import { FcmService } from '@infra/fcm/fcm.service';
 import { PrismaService } from '@infra/prisma/prisma.service';
 import { ERROR_MESSAGES } from '@libs/constants/error-messages.constants';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
-import { PaginationQueryDto } from '@libs/dto/pagination-query.dto';
+import { PaginationQueryWithLanguageDto } from '@libs/dto/pagination-language-query.dto';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { paginate } from '@libs/utils/pagination.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -54,7 +54,7 @@ export class NotificationService {
 		dto: CreateNotificationDto,
 		tx?: Prisma.TransactionClient,
 	): Promise<NotificationDto> {
-		const { isPush, scheduledAt, ...rest } = dto;
+		const { isPush, scheduledAt, meta, ...rest } = dto;
 
 		const prisma = tx ?? this.prismaService;
 
@@ -63,6 +63,7 @@ export class NotificationService {
 				isPush,
 				isScheduled: !!scheduledAt,
 				scheduledAt,
+				...(meta && { meta: meta as unknown as Prisma.InputJsonObject }),
 				...rest,
 			},
 		});
@@ -75,10 +76,12 @@ export class NotificationService {
 	}
 
 	public async getAllForUser(
-		userId: string,
-		query: PaginationQueryDto,
+		user: User,
+		query: PaginationQueryWithLanguageDto,
 	): Promise<PaginatedNotificationDto> {
-		const { page = 1, limit = 10 } = query;
+		const { page = 1, limit = 10, language = 'en' } = query;
+
+		const userId = user.id;
 
 		const result = await paginate<NotificationDto>(
 			{ page, limit },
@@ -90,17 +93,22 @@ export class NotificationService {
 							isPush: false,
 							isScheduled: false,
 							isEmail: false,
-							OR: [{ isGlobal: false, userId }, { isGlobal: true }],
+							OR: [
+								{ isGlobal: false, userId },
+								{ isGlobal: true, createdAt: { gte: user.createdAt } },
+							],
 						},
 					}),
 					this.prismaService.$queryRaw<NotificationDto[]>(
-						getNotificationsForUserSql(userId, limit, offset),
+						getNotificationsForUserSql(userId, limit, offset, language),
 					),
 				]);
 
 				return { items, total };
 			},
 		);
+
+		console.log(result);
 
 		return plainToInstance(PaginatedNotificationDto, result);
 	}
@@ -177,11 +185,13 @@ export class NotificationService {
 					select: { token: true },
 				});
 
+				if (fcmTokens.length === 0) continue;
+
 				await this.fcmService.sendNotification(
 					fcmTokens.map((t) => t.token),
 					{
 						notification: {
-							title,
+							title: title || 'Notification',
 							...(!!body && { body }),
 						},
 						data: {
