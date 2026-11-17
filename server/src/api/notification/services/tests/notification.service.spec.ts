@@ -1,4 +1,4 @@
-import { NotificationDto } from '@api/notification/dto/notification.dto';
+import { NotificationDto } from '@api/notification/dto/responses/notification.dto';
 import { Notification } from '@generated/prisma/client';
 import { NotificationType } from '@generated/prisma/enums';
 import { FcmService } from '@infra/fcm/fcm.service';

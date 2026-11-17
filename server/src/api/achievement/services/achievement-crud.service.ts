@@ -8,10 +8,13 @@ import { productInclude } from '@libs/prisma/product.include.prisma';
 import { MessageResponse } from '@libs/types/messages/message-detail.types';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { AchievementDto, FullAchievementDto } from '../dto/achievement.dto';
-import { CreateAchievementDto } from '../dto/create-achievement.dto';
-import { UpdateAchievementDto } from '../dto/update-achievement.dto';
-import { UserAchievementDto } from '../dto/user-achievement.dto';
+import { CreateAchievementDto } from '../dto/requests/create-achievement.dto';
+import { UpdateAchievementDto } from '../dto/requests/update-achievement.dto';
+import {
+	AchievementDto,
+	FullAchievementDto,
+} from '../dto/responses/achievement.dto';
+import { UserAchievementDto } from '../dto/responses/user-achievement.dto';
 
 @Injectable()
 export class AchievementCrudService {

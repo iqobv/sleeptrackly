@@ -9,13 +9,14 @@ import { paginate } from '@libs/utils/pagination.util';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { plainToInstance } from 'class-transformer';
-import { filter, map, Observable, Subject } from 'rxjs';
-import { CreateDirectPushDto } from '../dto/create-direct-push.dto';
-import { CreateNotificationDto } from '../dto/create-notification.dto';
-import { NotificationDto } from '../dto/notification.dto';
-import { PaginatedNotificationDto } from '../dto/paginated-notification.dto';
-import { UpdateNotificationDto } from '../dto/update-notification.dto';
-import { SignalPayload, SseSignalEvent } from '../interfaces/signal.interface';
+import { debounceTime, filter, map, Observable, Subject } from 'rxjs';
+import { CreateDirectPushDto } from '../dto/requests/create-direct-push.dto';
+import { CreateNotificationDto } from '../dto/requests/create-notification.dto';
+import { UpdateNotificationDto } from '../dto/requests/update-notification.dto';
+import { NotificationSseSignalEvent } from '../dto/responses/notification-signal.dto';
+import { NotificationDto } from '../dto/responses/notification.dto';
+import { PaginatedNotificationDto } from '../dto/responses/paginated-notification.dto';
+import { SignalPayload } from '../interfaces/signal.interface';
 import { getNotificationsForUserSql } from '../sql/get-all-notifications.sql';
 
 @Injectable()
@@ -27,19 +28,24 @@ export class NotificationService {
 		private readonly fcmService: FcmService,
 	) {}
 
-	public subscribeToSignals(userId: string): Observable<SseSignalEvent> {
+	public subscribeToSignals(
+		userId: string,
+	): Observable<NotificationSseSignalEvent> {
 		return this.signalSubject.asObservable().pipe(
 			filter(
 				(payload: SignalPayload) =>
 					payload.userId === userId || payload.userId === null,
 			),
-			map((payload: SignalPayload) => ({
-				data: {
-					action: 'FETCH_NOTIFICATIONS',
-					timestamp: payload.timestamp,
-				},
-				type: 'notification_signal',
-			})),
+			debounceTime(1000),
+			map((payload: SignalPayload) =>
+				plainToInstance(NotificationSseSignalEvent, {
+					data: {
+						action: 'FETCH_NOTIFICATIONS',
+						timestamp: payload.timestamp,
+					},
+					type: 'notification_signal',
+				}),
+			),
 		);
 	}
 
@@ -79,7 +85,7 @@ export class NotificationService {
 		user: User,
 		query: PaginationQueryWithLanguageDto,
 	): Promise<PaginatedNotificationDto> {
-		const { page = 1, limit = 10, language = 'en' } = query;
+		const { page = 1, limit = 20, language = 'en' } = query;
 
 		const userId = user.id;
 
@@ -107,8 +113,6 @@ export class NotificationService {
 				return { items, total };
 			},
 		);
-
-		console.log(result);
 
 		return plainToInstance(PaginatedNotificationDto, result);
 	}

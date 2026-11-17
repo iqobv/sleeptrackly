@@ -9,15 +9,14 @@ import {
 	IsString,
 	IsUUID,
 } from 'class-validator';
-import { ChallengeFailedMetaDto } from './metadata/challenge-failed-meta.dto';
-import { ChallengeFrozenMetaDto } from './metadata/challenge-frozen-meta.dto';
+import { ChallengeFailedMetaDto } from '../responses/metadata/challenge-failed-meta.dto';
+import { ChallengeFrozenMetaDto } from '../responses/metadata/challenge-frozen-meta.dto';
 import {
 	NotificationMetaMap,
 	NotificationMetaModels,
-} from './metadata/notification-meta-map';
+} from '../responses/metadata/notification-meta-map';
 
 @ApiExtraModels(...NotificationMetaModels)
-// @ApiExtraModels(ChallengeFrozenMetaDto, ChallengeFailedMetaDto)
 export class CreateNotificationDto {
 	@IsUUID('4')
 	@IsOptional()

@@ -1,10 +1,14 @@
 'use client';
 
+import { QUERY_KEYS } from '@/config/queryClient.config';
 import { env } from '@/env';
 import { SseSignalPayload } from '@/types/api/sseSignalPayload.types';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 
-export const useNotificationStream = (refetch: () => void) => {
+export const useNotificationStream = () => {
+	const queryClient = useQueryClient();
+
 	useEffect(() => {
 		const eventSource = new EventSource(
 			`${env.NEXT_PUBLIC_API_URL}/v1/notifications/me/stream`,
@@ -18,18 +22,15 @@ export const useNotificationStream = (refetch: () => void) => {
 			(event: MessageEvent<string>) => {
 				const payload = JSON.parse(event.data) as SseSignalPayload;
 
-				if (payload.action === 'FETCH_NOTIFICATIONS') {
-					refetch();
-				}
+				if (payload.action === 'FETCH_NOTIFICATIONS')
+					queryClient.invalidateQueries({
+						queryKey: QUERY_KEYS.notifications.list(),
+					});
 			},
 		);
 
-		eventSource.addEventListener('error', () => {
-			eventSource.close();
-		});
+		eventSource.addEventListener('error', () => eventSource.close());
 
-		return () => {
-			eventSource.close();
-		};
-	}, [refetch]);
+		return () => eventSource.close();
+	}, [queryClient]);
 };

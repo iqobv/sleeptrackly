@@ -121,7 +121,7 @@ export class UserSanctionService {
 
 		await this.notificationPublisherService.dispatchCreate({
 			userId: targetUserId,
-			title: 'New Sanction Applied',
+			sanctionId: userSanction.id,
 			type: NotificationType.SANCTION,
 		});
 

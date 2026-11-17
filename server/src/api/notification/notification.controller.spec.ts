@@ -1,9 +1,11 @@
+import { User } from '@generated/prisma/client';
 import { NotificationType } from '@generated/prisma/enums';
 import { SUCCESS_MESSAGES } from '@libs/constants/success-messages.constants';
 import { PaginatedDataDto } from '@libs/dto/paginated-data.dto';
+import { partialMock } from '@libs/utils/mock-helper.util';
 import { Test, TestingModule } from '@nestjs/testing';
 import { mock, mockReset } from 'jest-mock-extended';
-import { NotificationDto } from './dto/notification.dto';
+import { NotificationDto } from './dto/responses/notification.dto';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './services/notification.service';
 
@@ -30,7 +32,24 @@ describe('NotificationController', () => {
 		achievementId: null,
 		challengeId: null,
 		weeklySleepSummaryId: null,
+		friendshipId: null,
+		sanctionId: null,
+		streakId: null,
+		meta: null,
+		sanction: null,
+		challenge: null,
+		streak: null,
+		friendship: null,
+		achievement: null,
 	};
+
+	const user = partialMock<User>({
+		id: 'user_1',
+		username: 'testuser',
+		timezone: 'UTC',
+	});
+
+	const userId = user.id;
 
 	const paginatedNotifications: PaginatedDataDto<NotificationDto> = {
 		items: [notification],
@@ -68,7 +87,7 @@ describe('NotificationController', () => {
 			service.create.mockResolvedValue(notification);
 
 			const dto = {
-				userId: 'user_1',
+				userId,
 				isGlobal: false,
 				isPush: false,
 				showInApp: true,
@@ -90,13 +109,12 @@ describe('NotificationController', () => {
 		it('should get all notifications for the user', async () => {
 			service.getAllForUser.mockResolvedValue(paginatedNotifications);
 
-			const userId = 'user_1';
 			const query = { page: 1, limit: 10 };
 
-			const result = await controller.getAllForUser(userId, query);
+			const result = await controller.getAllForUser(user, query);
 
 			expect(result).toMatchObject(paginatedNotifications);
-			expect(service.getAllForUser).toHaveBeenCalledWith(userId, query);
+			expect(service.getAllForUser).toHaveBeenCalledWith(user, query);
 		});
 	});
 
@@ -125,7 +143,6 @@ describe('NotificationController', () => {
 		});
 
 		it('should mark all notifications as read for the user', async () => {
-			const userId = 'user_1';
 			const result = await controller.markAllAsRead(userId);
 
 			expect(service.markAllAsRead).toHaveBeenCalledWith(userId);

@@ -7,6 +7,7 @@ import {
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { Button, Dropdown, DropdownTrigger } from '@shared/ui';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import clsx from 'clsx';
 import { useState } from 'react';
 import { MdOutlineNotifications } from 'react-icons/md';
 import { NotificationsList } from '../NotificationsList/NotificationsList';
@@ -33,9 +34,7 @@ export const NotificationsButton = () => {
 	const handleOpenChange = (open: boolean) => {
 		setIsOpen(open);
 
-		if (!open && haveUnread) {
-			mutate();
-		}
+		if (!open && haveUnread) mutate();
 	};
 
 	return (
@@ -45,7 +44,7 @@ export const NotificationsButton = () => {
 					isIcon
 					size="sm"
 					variant="outlined"
-					className={`${styles.button} ${haveUnread ? styles.unread : ''}`}
+					className={clsx(styles.button, haveUnread && styles.unread)}
 				>
 					<MdOutlineNotifications size={24} />
 				</Button>

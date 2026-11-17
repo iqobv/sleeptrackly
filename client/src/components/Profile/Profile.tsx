@@ -4,6 +4,7 @@ import { getProfile } from '@/api/profile/profile.api';
 import { QUERY_KEYS } from '@/config/queryClient.config';
 import { env } from '@/env';
 import { skipToken, useQuery } from '@tanstack/react-query';
+import clsx from 'clsx';
 import styles from './Profile.module.scss';
 import { ProfileMainInfo } from './ProfileMainInfo/ProfileMainInfo';
 import { ProfileSkeleton } from './ProfileSkeleton/ProfileSkeleton';
@@ -35,7 +36,7 @@ export const Profile = ({ username }: ProfileProps) => {
 					: {}
 			}
 		>
-			<div className={`${styles.container} container page`}>
+			<div className={clsx(styles.container, 'container', 'page')}>
 				{isLoading && <ProfileSkeleton />}
 				{!isLoading && data && (
 					<>

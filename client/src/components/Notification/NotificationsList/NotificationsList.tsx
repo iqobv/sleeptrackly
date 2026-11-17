@@ -16,8 +16,8 @@ interface NotificationsListProps {
 export const NotificationsList = ({
 	queryNotifications,
 }: NotificationsListProps) => {
-	const { data, isLoading, refetch } = queryNotifications;
-	useNotificationStream(refetch);
+	const { data, isLoading } = queryNotifications;
+	useNotificationStream();
 
 	return (
 		<DropdownContent align="end" sideOffset={10} className={styles.dropdown}>

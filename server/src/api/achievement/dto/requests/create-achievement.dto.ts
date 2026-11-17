@@ -13,7 +13,7 @@ import {
 	Min,
 	ValidateNested,
 } from 'class-validator';
-import { AchievementTranslationDto } from './achievement-translation.dto';
+import { CreateAchievementTranslationDto } from './create-achievement-translation.dto';
 
 export class CreateAchievementDto {
 	/**
@@ -58,9 +58,9 @@ export class CreateAchievementDto {
 
 	@IsArray()
 	@ValidateNested({ each: true })
-	@Type(() => AchievementTranslationDto)
-	@TransformTranslations(AchievementTranslationDto)
-	translations: AchievementTranslationDto[];
+	@Type(() => CreateAchievementTranslationDto)
+	@TransformTranslations(CreateAchievementTranslationDto)
+	translations: CreateAchievementTranslationDto[];
 }
 
 export class CreateAchievementSwaggerDto extends CreateAchievementDto {

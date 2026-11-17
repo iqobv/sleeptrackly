@@ -9,6 +9,7 @@ import { appDayjs } from '@shared/utils';
 import clsx from 'clsx';
 import styles from './NotificationsListItem.module.scss';
 import { NotificationsListItemRedirect } from './NotificationsListItemRedirect';
+import { getNotificationText } from './notificationMessages';
 
 interface NotificationsListItemProps {
 	notification: Notification;
@@ -23,6 +24,8 @@ export const NotificationsListItem = ({
 }: NotificationsListItemProps) => {
 	const isUnread = !notification.isRead;
 
+	const { title, body } = getNotificationText(notification);
+
 	return (
 		<>
 			<div
@@ -30,10 +33,8 @@ export const NotificationsListItem = ({
 				className={clsx(styles.item, isUnread && styles.unread)}
 			>
 				<div className={styles.content}>
-					<p className={styles.title}>{notification.title}</p>
-					{notification.body && (
-						<p className={styles.body}>{notification.body}</p>
-					)}
+					<p className={styles.title}>{title}</p>
+					{body && <p className={styles.body}>{body}</p>}
 				</div>
 				{notification.type === NotificationType.FRIEND_REQUEST && (
 					<NotificationsListItemRedirect href={PRIVATE_PAGES.FRIENDS.REQUESTS}>

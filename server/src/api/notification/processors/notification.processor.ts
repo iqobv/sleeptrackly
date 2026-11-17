@@ -1,8 +1,8 @@
 import { QUEUE_JOB_NAME, QUEUE_NAME } from '@libs/constants/queue.constants';
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
-import { CreateDirectPushDto } from '../dto/create-direct-push.dto';
-import { CreateNotificationDto } from '../dto/create-notification.dto';
+import { CreateDirectPushDto } from '../dto/requests/create-direct-push.dto';
+import { CreateNotificationDto } from '../dto/requests/create-notification.dto';
 import { NotificationService } from '../services/notification.service';
 
 @Processor(QUEUE_NAME.NOTIFICATIONS)

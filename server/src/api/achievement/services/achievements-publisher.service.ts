@@ -2,7 +2,7 @@ import { QUEUE_JOB_NAME, QUEUE_NAME } from '@libs/constants/queue.constants';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { Queue } from 'bullmq';
-import { AchievementPayloadDto } from '../dto/achievement-payload.dto';
+import { AchievementPayloadDto } from '../dto/requests/achievement-payload.dto';
 
 @Injectable()
 export class AchievementsPublisherService {

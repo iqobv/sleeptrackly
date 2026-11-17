@@ -17,6 +17,7 @@ model Notification {
   showInApp   Boolean @default(true) @map("show_in_app")
   isScheduled Boolean @default(false) @map("is_scheduled")
   isEmail     Boolean @default(false) @map("is_email")
+  isImportant Boolean @default(false) @map("is_important")
 
   title       String?
   body        String?
@@ -40,6 +41,8 @@ model Notification {
   friendship         Friendship?         @relation(fields: [friendshipId], references: [id], onDelete: Cascade)
   streak             Streak?             @relation(fields: [streakId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, isImportant(sort: Desc), createdAt(sort: Desc)])
+  @@index([isGlobal, isImportant(sort: Desc), createdAt(sort: Desc)])
+  @@index([isImportant, createdAt])
   @@map("notifications")
 }

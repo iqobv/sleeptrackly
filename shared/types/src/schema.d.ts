@@ -1996,13 +1996,16 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        MessageMetaDto: {
+            email?: string;
+            /** Format: date-time */
+            endsAt?: string;
+        };
         MessageResponseDto: {
             code: string;
             message: string;
             field?: string;
-            meta?: {
-                [key: string]: unknown;
-            };
+            meta?: components["schemas"]["MessageMetaDto"];
         };
         LoginDto: {
             /** Format: email */
@@ -2099,7 +2102,10 @@ export interface components {
             id: string;
             item: components["schemas"]["EquippedItemDetailsDto"];
         };
+        /** @enum {string} */
+        UserSanctionType: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
         UserSanctionDto: {
+            type: components["schemas"]["UserSanctionType"];
             userId: string;
             reportId: string | null;
             createdById: string;
@@ -2107,7 +2113,6 @@ export interface components {
             startsAt: string;
             /** Format: date-time */
             endsAt: string | null;
-            type: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2168,9 +2173,29 @@ export interface components {
             activeStreak: components["schemas"]["BaseStreakDto"] | null;
         };
         /** @enum {string} */
+        ChallengeFailReason: "EXCEEDED_FROZEN_PERIOD" | "RESTORE_LIMIT_EXCEEDED" | "CONDITION_FAILED";
+        ChallengeFrozenMetaDto: {
+            reason: components["schemas"]["ChallengeFailReason"];
+            recoveriesLeft: number;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "ChallengeFrozenMetaDto";
+        };
+        ChallengeFailedMetaDto: {
+            reason: components["schemas"]["ChallengeFailReason"];
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "ChallengeFailedMetaDto";
+        };
+        /** @enum {string} */
         NotificationType: "FRIEND_REQUEST" | "SANCTION" | "WEEKLY_SUMMARY" | "INFORMATION" | "MAINTENANCE" | "UPDATE" | "PERSONAL_MESSAGE" | "MARKETING" | "ACHIEVEMENT_UNLOCKED" | "CHALLENGE_COMPLETED" | "CHALLENGE_FAILED" | "CHALLENGE_FROZEN" | "CHALLENGE_EXPIRED" | "CHALLENGE_INVITATION" | "CHALLENGE_RESTORED" | "STREAK_FROZEN" | "STREAK_ENDED" | "STREAK_RESTORED" | "OTHER";
         CreateNotificationDto: {
             type: components["schemas"]["NotificationType"];
+            meta?: components["schemas"]["ChallengeFrozenMetaDto"] | components["schemas"]["ChallengeFailedMetaDto"];
             /** Format: uuid */
             userId?: string;
             isGlobal?: boolean;
@@ -2178,7 +2203,7 @@ export interface components {
             isPush?: boolean;
             showInApp?: boolean;
             isEmail?: boolean;
-            title: string;
+            title?: string;
             body?: string;
             redirectUrl?: string;
             /** Format: date-time */
@@ -2189,24 +2214,81 @@ export interface components {
             achievementId?: string;
             /** Format: uuid */
             challengeId?: string;
+            /** Format: uuid */
+            sanctionId?: string;
+            /** Format: uuid */
+            friendshipId?: string;
+            /** Format: uuid */
+            streakId?: string;
+        };
+        NotificationSanctionDto: {
+            type: components["schemas"]["UserSanctionType"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            endsAt: string | null;
+            reportId: string | null;
+        };
+        NotificationStreakDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            length: number;
+        };
+        ChallengeTranslationDto: {
+            language: string;
+            title: string;
+            description: string;
+        };
+        NotificationChallengeDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            translation: components["schemas"]["ChallengeTranslationDto"];
+        };
+        NotificationFriendshipDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            username: string;
+        };
+        AchievementTranslationDto: {
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
+             * @example en
+             */
+            language: string;
+            title: string;
+            description: string;
+        };
+        NotificationAchievementDto: {
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            translation: components["schemas"]["AchievementTranslationDto"];
         };
         NotificationDto: {
             type: components["schemas"]["NotificationType"];
-            userId?: string | null;
-            weeklySleepSummaryId?: string | null;
-            achievementId?: string | null;
-            challengeId?: string | null;
+            meta?: components["schemas"]["ChallengeFrozenMetaDto"] | components["schemas"]["ChallengeFailedMetaDto"];
+            userId: string | null;
+            weeklySleepSummaryId: string | null;
+            achievementId: string | null;
+            challengeId: string | null;
+            sanctionId: string | null;
+            friendshipId: string | null;
+            streakId: string | null;
             isGlobal: boolean;
             isRead: boolean;
             isPush: boolean;
             showInApp: boolean;
             isScheduled: boolean;
             isEmail: boolean;
-            title: string;
-            body?: string | null;
-            redirectUrl?: string | null;
+            title: string | null;
+            body: string | null;
+            redirectUrl: string | null;
             /** Format: date-time */
-            scheduledAt?: string | null;
+            scheduledAt: string | null;
+            sanction: components["schemas"]["NotificationSanctionDto"] | null;
+            streak: components["schemas"]["NotificationStreakDto"] | null;
+            challenge: components["schemas"]["NotificationChallengeDto"] | null;
+            friendship: components["schemas"]["NotificationFriendshipDto"] | null;
+            achievement: components["schemas"]["NotificationAchievementDto"] | null;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -2224,20 +2306,19 @@ export interface components {
             items: components["schemas"]["NotificationDto"][];
             meta: components["schemas"]["PaginatedMetaDto"];
         };
+        NotificationSseSignalEventData: {
+            action: string;
+            timestamp: number;
+        };
+        NotificationSseSignalEvent: {
+            data: components["schemas"]["NotificationSseSignalEventData"];
+            type: string;
+        };
         UpdateNotificationDto: {
             isRead?: boolean;
         };
         /** @enum {string} */
         AchievementType: "SLEEP_COUNT" | "ITEMS_PURCHASED" | "FRIENDS_COUNT" | "CHALLENGES_COMPLETED" | "CHALLENGES_TASKS_COMPLETED" | "STREAK";
-        AchievementTranslationDto: {
-            /**
-             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
-             * @example en
-             */
-            language: string;
-            title: string;
-            description: string;
-        };
         UserAchievementRewardProductDto: {
             name: string;
         };
@@ -2260,6 +2341,15 @@ export interface components {
             translation: components["schemas"]["AchievementTranslationDto"];
             rewardProduct: components["schemas"]["UserAchievementRewardProductDto"] | null;
         };
+        CreateAchievementTranslationDto: {
+            /**
+             * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
+             * @example en
+             */
+            language: string;
+            title: string;
+            description: string;
+        };
         CreateAchievementSwaggerDto: {
             /**
              * @description Type of the achievement, which determines the criteria for unlocking it.
@@ -2278,31 +2368,24 @@ export interface components {
              * @example 123e4567-e89b-12d3-a456-426614174000
              */
             rewardProductId?: string;
-            translations: components["schemas"]["AchievementTranslationDto"][];
+            translations: components["schemas"]["CreateAchievementTranslationDto"][];
         };
         AchievementDto: {
             type: components["schemas"]["AchievementType"];
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
             targetValue: number;
             iconUrl: string;
             isActive: boolean;
             isHidden: boolean;
             rewardCoins: number;
             rewardProductId: string | null;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
         };
         FullAchievementTranslationDto: {
-            achievementId: string;
-            /** @example 123e4567-e89b-12d3-a456-426614174000 */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
             /**
              * @description ISO 639-1 language code (e.g., 'en', 'es', 'fr').
              * @example en
@@ -2310,6 +2393,13 @@ export interface components {
             language: string;
             title: string;
             description: string;
+            achievementId: string;
+            /** @example 123e4567-e89b-12d3-a456-426614174000 */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt: string;
         };
         /** @enum {string} */
         ProductType: "ITEM" | "BUNDLE";
@@ -2421,14 +2511,14 @@ export interface components {
             isHidden: boolean;
             rewardCoins: number;
             rewardProductId: string | null;
+            translations: components["schemas"]["FullAchievementTranslationDto"][];
+            rewardProduct: components["schemas"]["FullProductDto"] | null;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
             createdAt: string;
             /** Format: date-time */
             updatedAt: string;
-            translations: components["schemas"]["FullAchievementTranslationDto"][];
-            rewardProduct: components["schemas"]["FullProductDto"] | null;
         };
         UpdateAchievementSwaggerDto: {
             /**
@@ -2448,7 +2538,7 @@ export interface components {
              * @example 123e4567-e89b-12d3-a456-426614174000
              */
             rewardProductId?: string;
-            translations?: components["schemas"]["AchievementTranslationDto"][];
+            translations?: components["schemas"]["CreateAchievementTranslationDto"][];
         };
         /** @enum {string} */
         CoinTransactionType: "EARN" | "SLEEP_REWARD" | "SLEEP_STREAK" | "ACHIEVEMENT" | "DEPOSIT" | "SPEND" | "REFUND" | "ADMIN_ADJUSTMENT" | "PROMOTION" | "CHALLENGE_TASK_REWARD" | "CHALLENGE_REWARD";
@@ -2794,11 +2884,6 @@ export interface components {
             /** Format: date-time */
             updatedAt: string;
         };
-        ChallengeTranslationDto: {
-            language: string;
-            title: string;
-            description: string;
-        };
         ChallengeDto: {
             type: components["schemas"]["ChallengeType"];
             tier: components["schemas"]["ChallengeTier"];
@@ -3078,8 +3163,6 @@ export interface components {
             isAchievementUnlockedEnabled?: boolean;
             reminderTime?: string;
         };
-        /** @enum {string} */
-        UserSanctionType: "AVATAR_CHANGE_BAN" | "USERNAME_CHANGE_BAN";
         CreaeteUserSanctionDto: {
             type: components["schemas"]["UserSanctionType"];
             /** Format: uuid */
@@ -3232,6 +3315,7 @@ export interface components {
             updatedAt: string;
         };
         ReportSanctionsDto: {
+            type: components["schemas"]["UserSanctionType"];
             userId: string;
             reportId: string | null;
             createdById: string;
@@ -3239,7 +3323,6 @@ export interface components {
             startsAt: string;
             /** Format: date-time */
             endsAt: string | null;
-            type: string;
             /** @example 123e4567-e89b-12d3-a456-426614174000 */
             id: string;
             /** Format: date-time */
@@ -3712,7 +3795,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-12T13:05:20.309Z
+             * @example 2026-11-18T16:21:18.049Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -3743,7 +3826,7 @@ export interface components {
             maxUses?: number;
             /**
              * Format: date-time
-             * @example 2026-11-12T13:05:20.309Z
+             * @example 2026-11-18T16:21:18.049Z
              */
             expiresAt?: string;
             /** @example 0 */
@@ -4300,6 +4383,8 @@ export interface operations {
             query?: {
                 page?: number;
                 limit?: number;
+                /** @description Optional ISO 639-1 language code (e.g., 'en', 'es', 'fr'). Defaults to 'en' if not provided. */
+                language?: string;
             };
             header?: never;
             path?: never;
@@ -4345,7 +4430,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": Record<string, never>;
+                    "application/json": components["schemas"]["NotificationSseSignalEvent"];
                 };
             };
             /** @description Unauthorized */
@@ -5865,7 +5950,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description If a user with this email exists, a restore email will be sent */
+            /** @description Restore email sent successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -8091,12 +8176,12 @@ export interface operations {
     AdminReportController_getAll_v1: {
         parameters: {
             query?: {
-                page?: number;
-                limit?: number;
                 sortOrder?: "asc" | "desc";
                 sortBy?: "createdAt" | "updatedAt";
                 status?: "PENDING" | "REJECTED" | "IN_PROGRESS" | "APPROVED";
                 reportType?: string;
+                page?: number;
+                limit?: number;
             };
             header?: never;
             path?: never;

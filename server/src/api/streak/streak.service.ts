@@ -231,9 +231,7 @@ export class StreakService {
 			});
 
 			await this.notificationPublisherService.dispatchCreate({
-				title: 'Streak Frozen',
 				type: NotificationType.STREAK_FROZEN,
-				body: 'Your sleep streak has been frozen due to inactivity. You have 1 day to restore it.',
 				userId,
 				showInApp: true,
 			});
@@ -254,9 +252,7 @@ export class StreakService {
 			});
 
 			await this.notificationPublisherService.dispatchCreate({
-				title: 'Streak Ended',
 				type: NotificationType.STREAK_ENDED,
-				body: 'Your sleep streak has ended due to inactivity.',
 				userId,
 				showInApp: true,
 			});

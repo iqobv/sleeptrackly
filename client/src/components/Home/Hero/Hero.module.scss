@@ -17,7 +17,6 @@
 }
 
 .content {
-	// flex: 0 1 50%;
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -26,10 +25,6 @@
 	@include respond-to(lg) {
 		width: 50%;
 	}
-
-	// @include respond-to(lg) {
-	// 	flex: 0 1 40%;
-	// }
 }
 
 .headerContainer {

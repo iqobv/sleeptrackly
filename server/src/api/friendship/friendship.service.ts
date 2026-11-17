@@ -82,7 +82,6 @@ export class FriendshipService {
 		if (addressee.notificationSettings?.isFriendRequestsEnabled) {
 			await this.notificationPublisherService.dispatchCreate({
 				userId: addressee.id,
-				title: 'New Friend Request',
 				friendshipId: newFriendship.id,
 				type: NotificationType.FRIEND_REQUEST,
 			});

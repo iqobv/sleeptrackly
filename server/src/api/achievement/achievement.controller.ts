@@ -31,16 +31,19 @@ import {
 	ApiOkResponse,
 	ApiTags,
 } from '@nestjs/swagger';
-import { AchievementDto, FullAchievementDto } from './dto/achievement.dto';
 import {
 	CreateAchievementDto,
 	CreateAchievementSwaggerDto,
-} from './dto/create-achievement.dto';
+} from './dto/requests/create-achievement.dto';
 import {
 	UpdateAchievementDto,
 	UpdateAchievementSwaggerDto,
-} from './dto/update-achievement.dto';
-import { UserAchievementDto } from './dto/user-achievement.dto';
+} from './dto/requests/update-achievement.dto';
+import {
+	AchievementDto,
+	FullAchievementDto,
+} from './dto/responses/achievement.dto';
+import { UserAchievementDto } from './dto/responses/user-achievement.dto';
 import { AchievementCrudService } from './services/achievement-crud.service';
 
 @ApiTags('Achievements')

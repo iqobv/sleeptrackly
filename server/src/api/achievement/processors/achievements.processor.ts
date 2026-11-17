@@ -3,7 +3,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
-import { AchievementPayloadDto } from '../dto/achievement-payload.dto';
+import { AchievementPayloadDto } from '../dto/requests/achievement-payload.dto';
 import { AchievementProgressService } from '../services/achievement-progress.service';
 
 @Processor(QUEUE_NAME.ACHIEVEMENTS)

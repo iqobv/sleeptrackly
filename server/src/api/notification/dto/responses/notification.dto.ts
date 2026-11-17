@@ -1,4 +1,3 @@
-import { BaseUserSanctionDto } from '@api/user-sanction/dto/user-sanction.dto';
 import { NotificationType } from '@generated/prisma/enums';
 import { ApiPolymorphicMeta } from '@libs/decorators/api-polymorphic-meta.decorator';
 import { DefaultFieldsDto } from '@libs/dto/default-fields.dto';
@@ -10,6 +9,11 @@ import {
 	NotificationMetaMap,
 	NotificationMetaModels,
 } from './metadata/notification-meta-map';
+import { NotificationAchievementDto } from './models/notification-achievement.dto';
+import { NotificationChallengeDto } from './models/notification-challenge.dto';
+import { NotificationFriendshipDto } from './models/notification-friendship.dto';
+import { NotificationSanctionDto } from './models/notification-sanction.dto';
+import { NotificationStreakDto } from './models/notification-streak.dto';
 
 @ApiExtraModels(...NotificationMetaModels)
 export class NotificationDto extends DefaultFieldsDto {
@@ -41,6 +45,22 @@ export class NotificationDto extends DefaultFieldsDto {
 	meta: ChallengeFrozenMetaDto | ChallengeFailedMetaDto | null;
 
 	@Expose()
-	@Type(() => BaseUserSanctionDto)
-	sanction: BaseUserSanctionDto | null;
+	@Type(() => NotificationSanctionDto)
+	sanction: NotificationSanctionDto | null;
+
+	@Expose()
+	@Type(() => NotificationStreakDto)
+	streak: NotificationStreakDto | null;
+
+	@Expose()
+	@Type(() => NotificationChallengeDto)
+	challenge: NotificationChallengeDto | null;
+
+	@Expose()
+	@Type(() => NotificationFriendshipDto)
+	friendship: NotificationFriendshipDto | null;
+
+	@Expose()
+	@Type(() => NotificationAchievementDto)
+	achievement: NotificationAchievementDto | null;
 }

@@ -24,15 +24,14 @@ import {
 } from '@nestjs/common';
 import { ApiExtraModels, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
-import { CreateNotificationDto } from './dto/create-notification.dto';
-import { NotificationMetaModels } from './dto/metadata/notification-meta-map';
-import { NotificationDto } from './dto/notification.dto';
-import { PaginatedNotificationDto } from './dto/paginated-notification.dto';
-import { UpdateNotificationDto } from './dto/update-notification.dto';
-import { SseSignalEvent } from './interfaces/signal.interface';
+import { CreateNotificationDto } from './dto/requests/create-notification.dto';
+import { UpdateNotificationDto } from './dto/requests/update-notification.dto';
+import { NotificationMetaModels } from './dto/responses/metadata/notification-meta-map';
+import { NotificationSseSignalEvent } from './dto/responses/notification-signal.dto';
+import { NotificationDto } from './dto/responses/notification.dto';
+import { PaginatedNotificationDto } from './dto/responses/paginated-notification.dto';
 import { NotificationService } from './services/notification.service';
 
-// @ApiExtraModels(ChallengeFrozenMetaDto, ChallengeFailedMetaDto)
 @ApiExtraModels(...NotificationMetaModels)
 @ApiTags('Notification')
 @Controller('notifications')
@@ -63,9 +62,10 @@ export class NotificationController {
 	/** Subscribe to real-time notification signals */
 	@Sse('me/stream')
 	@Auth()
+	@ApiOkResponse({ type: NotificationSseSignalEvent })
 	public streamSignals(
 		@Authorized('id') userId: string,
-	): Observable<SseSignalEvent> {
+	): Observable<NotificationSseSignalEvent> {
 		return this.notificationService.subscribeToSignals(userId);
 	}
 
